@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  packages/tokens:
     devDependencies:
       '@terrazzo/cli':
         specifier: ^2.7.1

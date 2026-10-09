@@ -4,6 +4,8 @@ set -euo pipefail
 REFERENCE="${1:-main}"
 OUTPUT_FILE="${2:-build-diff.diff}"
 ROOT_DIR="$(git rev-parse --show-toplevel)"
+PACKAGE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+PACKAGE_PATH="${PACKAGE_DIR#"$ROOT_DIR"/}"
 CURRENT_BRANCH="$(git branch --show-current)"
 TMP_DIR="$(mktemp -d)"
 REFERENCE_WORKTREE="$TMP_DIR/reference"
@@ -17,7 +19,7 @@ if [[ "$OUTPUT_FILE" != *.diff ]]; then
   exit 1
 fi
 
-OUTPUT_PATH="$ROOT_DIR/$OUTPUT_FILE"
+OUTPUT_PATH="$PACKAGE_DIR/$OUTPUT_FILE"
 
 cleanup() {
   git -C "$ROOT_DIR" worktree remove --force "$REFERENCE_WORKTREE" >/dev/null 2>&1 || true
@@ -46,6 +48,7 @@ echo "Building current working tree (${CURRENT_BRANCH:-detached HEAD})..."
 (
   cd "$ROOT_DIR"
   pnpm install --frozen-lockfile
+  cd "$PACKAGE_DIR"
   pnpm run build
   cp -R dist/. "$CURRENT_DIST"/
 )
@@ -54,6 +57,10 @@ echo "Building $REFERENCE..."
 (
   cd "$REFERENCE_WORKTREE"
   pnpm install --frozen-lockfile
+  # References from before the monorepo have the package at the repository root
+  if [ -f "$PACKAGE_PATH/package.json" ]; then
+    cd "$PACKAGE_PATH"
+  fi
   pnpm run build
   cp -R dist/. "$REFERENCE_DIST"/
 )
