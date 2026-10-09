@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@terrazzo/cli": "^2.7.1",
-    "@types/node": "^25.5.0",
+    "@types/node": "^26.6.4",
     "fs-extra": "^11.3.4",
     "glob": "^13.0.6",
     "style-dictionary": "^5.4.0",
