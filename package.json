@@ -14,5 +14,5 @@
   "scripts": {
     "build": "pnpm --recursive run build"
   },
-  "packageManager": "pnpm@10.21.0"
+  "packageManager": "pnpm@12.10.1"
 }
