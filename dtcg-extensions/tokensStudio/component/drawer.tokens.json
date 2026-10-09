@@ -1,0 +1,76 @@
+{
+  "drawer": {
+    "large": {
+      "collapsed": {
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "expanded": {
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "collapsed": {
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "expanded": {
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "collapsed": {
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "expanded": {
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

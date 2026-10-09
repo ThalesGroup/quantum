@@ -1,0 +1,10 @@
+{
+  "divider": {
+    "color": { "value": "{color.bluegrey.100.value}" },
+    "small": { "height": { "value": "{border.size.thin.value}" } },
+    "medium": { "height": { "value": "{border.size.medium.value}" } },
+    "large": { "height": { "value": "{border.size.thick.value}" } },
+    "rounded": { "radius": { "value": "{border.radius.full.value}" } },
+    "sharpe": { "radius": { "value": "{border.radius.none.value}" } }
+  }
+}

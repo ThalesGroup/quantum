@@ -1,0 +1,175 @@
+{
+  "header": {
+    "brand": {
+      "margin": {
+        "right": {
+          "$value": "{spacing.3xl}"
+        }
+      }
+    },
+    "container": {
+      "background": {
+        "color": {
+          "$value": "{color.white.100}"
+        }
+      },
+      "shadow": {
+        "$value": "{shadow.s.light}"
+      }
+    },
+    "divider": {
+      "color": {
+        "$value": "{color.bluegrey.100}"
+      },
+      "margin": {
+        "right": {
+          "$value": "{spacing.xxl}"
+        }
+      },
+      "width": {
+        "$value": "{border.size.thin}"
+      }
+    },
+    "large": {
+      "container": {
+        "height": {
+          "$value": "{spacing.7xl}"
+        },
+        "padding": {
+          "left": {
+            "$value": "{spacing.m}"
+          },
+          "right": {
+            "$value": "{spacing.m}"
+          }
+        }
+      },
+      "divider": {
+        "height": {
+          "$value": "{spacing.3xl}"
+        }
+      },
+      "logo": {
+        "height": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 3.25
+          }
+        }
+      },
+      "product": {
+        "name": {
+          "font": {
+            "size": {
+              "$value": "{font.scale.6.size}"
+            }
+          },
+          "line": {
+            "height": {
+              "$value": "{font.scale.6.line.height}"
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "container": {
+        "height": {
+          "$value": "{spacing.5xl}"
+        },
+        "padding": {
+          "left": {
+            "$value": "{spacing.s}"
+          },
+          "right": {
+            "$value": "{spacing.s}"
+          }
+        }
+      },
+      "divider": {
+        "height": {
+          "$value": "{spacing.xxl}"
+        }
+      },
+      "logo": {
+        "height": {
+          "$value": "{spacing.xxl}"
+        }
+      },
+      "product": {
+        "name": {
+          "font": {
+            "size": {
+              "$value": "{font.scale.7.size}"
+            },
+            "weight": {
+              "$value": "{font.weight.medium}"
+            }
+          }
+        }
+      }
+    },
+    "menu": {
+      "left": {
+        "margin": {
+          "right": {
+            "$value": "{spacing.m}"
+          }
+        }
+      }
+    },
+    "product": {
+      "name": {
+        "font": {
+          "color": {
+            "$value": "{color.bluegrey.500}"
+          }
+        }
+      }
+    },
+    "small": {
+      "container": {
+        "height": {
+          "$value": "{spacing.3xl}"
+        },
+        "padding": {
+          "left": {
+            "$value": "{spacing.xs}"
+          },
+          "right": {
+            "$value": "{spacing.xs}"
+          }
+        }
+      },
+      "divider": {
+        "height": {
+          "$value": "{spacing.xl}"
+        }
+      },
+      "logo": {
+        "height": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 1.75
+          }
+        }
+      },
+      "product": {
+        "name": {
+          "font": {
+            "size": {
+              "$value": "{font.scale.8.size}"
+            }
+          },
+          "line": {
+            "height": {
+              "$value": "{font.scale.8.line.height}"
+            }
+          }
+        }
+      }
+    }
+  }
+}

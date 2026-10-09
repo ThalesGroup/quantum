@@ -1,0 +1,277 @@
+{
+  "grids": {
+    "xlarge": {
+      "minWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "columns": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "exclude": true
+            }
+          }
+        }
+      },
+      "margin": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      },
+      "gap": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      }
+    },
+    "large": {
+      "minWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "maxWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "columns": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "exclude": true
+            }
+          }
+        }
+      },
+      "margin": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      },
+      "gap": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "minWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "maxWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "columns": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "exclude": true
+            }
+          }
+        }
+      },
+      "margin": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      },
+      "gap": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "minWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "maxWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "columns": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "exclude": true
+            }
+          }
+        }
+      },
+      "margin": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      },
+      "gap": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      }
+    },
+    "xsmall": {
+      "minWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "maxWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "columns": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "exclude": true
+            }
+          }
+        }
+      },
+      "margin": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      },
+      "gap": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      }
+    },
+    "xxsmall": {
+      "minWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "maxWidth": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "columns": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "exclude": true
+            }
+          }
+        }
+      },
+      "margin": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      },
+      "gap": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "spacing"
+            }
+          }
+        }
+      }
+    }
+  }
+}

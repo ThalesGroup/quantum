@@ -1,0 +1,60 @@
+{
+  "progress": {
+    "bar": {
+      "font": {
+        "family": { "value": "{font.family.roboto.value}" },
+        "weight": { "value": "{font.weight.regular.value}" }
+      },
+      "label": {
+        "color": { "value": "{color.bluegrey.900.value}" },
+        "font": { "weight": { "value": "{font.weight.medium.value}" } },
+        "small": {
+          "font": { "size": { "value": "{font.scale.8.size.value}" } },
+          "line": { "height": { "value": "{font.scale.8.line.height.value}" } }
+        },
+        "medium": {
+          "font": { "size": { "value": "{font.scale.7.size.value}" } },
+          "line": { "height": { "value": "{font.scale.7.line.height.value}" } }
+        },
+        "large": {
+          "font": { "size": { "value": "{font.scale.6.size.value}" } },
+          "line": { "height": { "value": "{font.scale.6.line.height.value}" } }
+        }
+      },
+      "percentage": {
+        "color": { "value": "{color.bluegrey.900.value}" },
+        "font": {
+          "weight": { "value": "{font.weight.bold.value}" },
+          "size": { "value": "{font.scale.8.size.value}" }
+        },
+        "line": { "height": { "value": "{font.scale.8.line.height.value}" } },
+        "large": {
+          "font": { "size": { "value": "{font.scale.7.size.value}" } },
+          "line": { "height": { "value": "{font.scale.7.line.height.value}" } }
+        }
+      },
+      "caption": {
+        "color": { "value": "{color.bluegrey.500.value}" },
+        "error": { "color": { "value": "{color.red.500.value}" } }
+      },
+      "margin": { "top": { "value": "{spacing.xs.value}" } },
+      "height": { "value": "{border.size.thick.value}" },
+      "track": {
+        "color": { "value": "{color.black.10.value}" },
+        "border": { "radius": { "value": "{border.radius.medium.value}" } },
+        "animation": { "duration": { "value": "600ms" } }
+      },
+      "primary": {
+        "lead": { "color": { "value": "{color.primary.500.value}" } }
+      },
+      "neutral": {
+        "lead": { "color": { "value": "{color.bluegrey.500.value}" } }
+      },
+      "lead": {
+        "error": { "color": { "value": "{color.red.500.value}" } },
+        "success": { "color": { "value": "{color.green.500.value}" } },
+        "border": { "radius": { "value": "{border.radius.medium.value}" } }
+      }
+    }
+  }
+}

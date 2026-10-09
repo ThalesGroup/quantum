@@ -1,0 +1,15 @@
+{
+  "tooltip": {
+    "arrow": {
+      "border": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderWidth"
+            }
+          }
+        }
+      }
+    }
+  }
+}

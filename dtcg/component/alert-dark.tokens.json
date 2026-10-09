@@ -1,0 +1,147 @@
+{
+  "alert": {
+    "color": {
+      "$value": "{color.bluegrey.25}"
+    },
+    "error": {
+      "activebar": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.red.400}"
+          }
+        }
+      },
+      "background": {
+        "color": {
+          "$value": "{color.dark.red.900}"
+        }
+      },
+      "highemphasis": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.red.400}"
+          }
+        }
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.dark.red.400}"
+        }
+      }
+    },
+    "highemphasis": {
+      "color": {
+        "$value": "{color.bluegrey.900}"
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.bluegrey.900}"
+        }
+      }
+    },
+    "informative": {
+      "activebar": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.primary.400}"
+          }
+        }
+      },
+      "background": {
+        "color": {
+          "$value": "{color.dark.primary.900}"
+        }
+      },
+      "highemphasis": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.primary.400}"
+          }
+        }
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.dark.primary.400}"
+        }
+      }
+    },
+    "neutral": {
+      "activebar": {
+        "background": {
+          "color": {
+            "$value": "{color.bluegrey.400}"
+          }
+        }
+      },
+      "background": {
+        "color": {
+          "$value": "{color.bluegrey.850}"
+        }
+      },
+      "highemphasis": {
+        "background": {
+          "color": {
+            "$value": "{color.bluegrey.400}"
+          }
+        }
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.bluegrey.400}"
+        }
+      }
+    },
+    "success": {
+      "activebar": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.green.400}"
+          }
+        }
+      },
+      "background": {
+        "color": {
+          "$value": "{color.dark.green.900}"
+        }
+      },
+      "highemphasis": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.green.400}"
+          }
+        }
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.dark.green.400}"
+        }
+      }
+    },
+    "warning": {
+      "activebar": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.orange.400}"
+          }
+        }
+      },
+      "background": {
+        "color": {
+          "$value": "{color.dark.orange.900}"
+        }
+      },
+      "highemphasis": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.orange.400}"
+          }
+        }
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.dark.orange.400}"
+        }
+      }
+    }
+  }
+}

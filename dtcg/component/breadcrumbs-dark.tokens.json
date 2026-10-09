@@ -1,0 +1,72 @@
+{
+  "breadcrumbs": {
+    "item": {
+      "active": {
+        "font": {
+          "color": {
+            "$value": "{color.dark.primary.100}"
+          }
+        }
+      },
+      "focus": {
+        "ring": {
+          "color": {
+            "$value": "{color.dark.primary.200}"
+          }
+        }
+      },
+      "font": {
+        "color": {
+          "$value": "{color.dark.primary.300}"
+        }
+      },
+      "neutral": {
+        "active": {
+          "font": {
+            "color": {
+              "$value": "{color.bluegrey.100}"
+            }
+          }
+        },
+        "font": {
+          "color": {
+            "$value": "{color.bluegrey.300}"
+          }
+        },
+        "pressed": {
+          "font": {
+            "color": {
+              "$value": "{color.bluegrey.200}"
+            }
+          }
+        }
+      },
+      "pressed": {
+        "font": {
+          "color": {
+            "$value": "{color.dark.primary.200}"
+          }
+        }
+      }
+    },
+    "separator": {
+      "chevron": {
+        "color": {
+          "$value": "{color.bluegrey.400}"
+        },
+        "large": {
+          "icon": {
+            "color": {
+              "$value": "{color.bluegrey.400}"
+            }
+          }
+        }
+      },
+      "slash": {
+        "color": {
+          "$value": "{color.bluegrey.400}"
+        }
+      }
+    }
+  }
+}

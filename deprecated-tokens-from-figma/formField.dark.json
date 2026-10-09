@@ -1,0 +1,14 @@
+{
+  "formfield": {
+    "label": {
+      "color": { "value": "{color.bluegrey.25.value}" },
+      "requiredchar": { "color": { "value": "{color.dark.red.500.value}" } }
+    },
+    "counter": { "color": { "value": "{color.bluegrey.300.value}" } },
+    "caption": {
+      "color": { "value": "{color.bluegrey.300.value}" },
+      "warning": { "color": { "value": "{color.dark.orange.500.value}" } },
+      "error": { "color": { "value": "{color.dark.red.500.value}" } }
+    }
+  }
+}

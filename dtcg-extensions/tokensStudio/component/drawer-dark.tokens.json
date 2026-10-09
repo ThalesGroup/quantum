@@ -1,0 +1,21 @@
+{
+  "drawer": {
+    "itemlist": {
+      "subitem": {
+        "active": {
+          "font": {
+            "weight": {
+              "$extensions": {
+                "qtm": {
+                  "tokensStudio": {
+                    "exclude": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

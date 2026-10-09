@@ -1,0 +1,29 @@
+{
+  "dropdown": {
+    "overlay": {
+      "background": {
+        "color": {
+          "$value": "{color.white.100}"
+        }
+      },
+      "border": {
+        "radius": {
+          "$value": "{border.radius.medium}"
+        }
+      },
+      "margin": {
+        "top": {
+          "$value": "{spacing.xxs}"
+        }
+      },
+      "padding": {
+        "vertical": {
+          "$value": "{spacing.xxs}"
+        }
+      },
+      "shadow": {
+        "$value": "{shadow.m.strong}"
+      }
+    }
+  }
+}

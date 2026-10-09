@@ -1,0 +1,13 @@
+{
+  "progress": {
+    "circle": {
+      "track": { "color": { "value": "{color.white.10.value}" } },
+      "primary": {
+        "lead": { "color": { "value": "{color.dark.primary.400.value}" } }
+      },
+      "neutral": {
+        "lead": { "color": { "value": "{color.bluegrey.25.value}" } }
+      }
+    }
+  }
+}

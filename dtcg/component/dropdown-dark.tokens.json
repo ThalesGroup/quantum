@@ -1,0 +1,11 @@
+{
+  "dropdown": {
+    "overlay": {
+      "background": {
+        "color": {
+          "$value": "{color.black.100}"
+        }
+      }
+    }
+  }
+}

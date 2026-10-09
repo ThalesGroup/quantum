@@ -1,0 +1,49 @@
+{
+  "container": {
+    "s": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "m": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "l": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "xl": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "2xl": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    }
+  }
+}

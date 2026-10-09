@@ -1,0 +1,74 @@
+{
+  "border": {
+    "radius": {
+      "circle": {
+        "$type": "qtm.other",
+        "$value": "50%"
+      },
+      "full": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 62.5
+        }
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 0.25
+        }
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 0.125
+        }
+      },
+      "none": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 0
+        }
+      }
+    },
+    "size": {
+      "medium": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 0.125
+        }
+      },
+      "none": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 0
+        }
+      },
+      "thick": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 0.25
+        }
+      },
+      "thin": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 0.0625
+        }
+      }
+    },
+    "style": {
+      "default": {
+        "$type": "strokeStyle",
+        "$value": "solid"
+      }
+    }
+  }
+}

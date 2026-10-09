@@ -1,0 +1,47 @@
+{
+  "splitbutton": {
+    "action": {
+      "border": {
+        "bottom": {
+          "right": {
+            "radius": {
+              "$value": "{border.radius.none}"
+            }
+          }
+        },
+        "top": {
+          "right": {
+            "radius": {
+              "$value": "{border.radius.none}"
+            }
+          }
+        }
+      },
+      "margin": {
+        "right": {
+          "$value": "{spacing.3xs}"
+        }
+      }
+    },
+    "dropdown": {
+      "trigger": {
+        "border": {
+          "bottom": {
+            "left": {
+              "radius": {
+                "$value": "{border.radius.none}"
+              }
+            }
+          },
+          "top": {
+            "left": {
+              "radius": {
+                "$value": "{border.radius.none}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

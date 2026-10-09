@@ -1,0 +1,80 @@
+{
+  "border": {
+    "size": {
+      "none": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderWidth"
+            }
+          }
+        }
+      },
+      "thin": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderWidth"
+            }
+          }
+        }
+      },
+      "medium": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderWidth"
+            }
+          }
+        }
+      },
+      "thick": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderWidth"
+            }
+          }
+        }
+      }
+    },
+    "radius": {
+      "none": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderRadius"
+            }
+          }
+        }
+      },
+      "medium": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderRadius"
+            }
+          }
+        }
+      },
+      "large": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderRadius"
+            }
+          }
+        }
+      },
+      "full": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderRadius"
+            }
+          }
+        }
+      }
+    }
+  }
+}

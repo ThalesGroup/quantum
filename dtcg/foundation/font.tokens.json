@@ -1,0 +1,222 @@
+{
+  "font": {
+    "family": {
+      "roboto": {
+        "$type": "fontFamily",
+        "$value": "Roboto"
+      },
+      "roboto-mono": {
+        "$type": "fontFamily",
+        "$value": "Roboto Mono"
+      }
+    },
+    "scale": {
+      "1": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 4.5
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 3
+          }
+        }
+      },
+      "10": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 0.75
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 0.5
+          }
+        }
+      },
+      "2": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 3.75
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 2.5
+          }
+        }
+      },
+      "3": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 3
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 2
+          }
+        }
+      },
+      "4": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 2.25
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 1.5
+          }
+        }
+      },
+      "5": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 2
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 1.25
+          }
+        }
+      },
+      "6": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 1.5
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 1
+          }
+        }
+      },
+      "7": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 1.25
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 0.875
+          }
+        }
+      },
+      "8": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 1
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 0.75
+          }
+        }
+      },
+      "9": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": {
+              "unit": "rem",
+              "value": 1
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 0.625
+          }
+        }
+      }
+    },
+    "weight": {
+      "black": {
+        "$type": "fontWeight",
+        "$value": 900
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700
+      },
+      "light": {
+        "$type": "fontWeight",
+        "$value": 300
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "thin": {
+        "$type": "fontWeight",
+        "$value": 100
+      }
+    }
+  }
+}

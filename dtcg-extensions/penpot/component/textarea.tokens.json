@@ -1,0 +1,162 @@
+{
+  "textarea": {
+    "large": {
+      "font": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "fontSizes"
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "line": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "font": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "fontSizes"
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "line": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "padding": {
+        "top": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "spacing"
+              }
+            }
+          }
+        },
+        "bottom": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "spacing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "font": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "fontSizes"
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "line": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "color": {
+    "background": {
+      "default": {
+        "value": "{color.bluegrey.900.value}",
+        "alt": { "value": "{color.bluegrey.850.value}" }
+      }
+    },
+    "font": {
+      "onBackground": {
+        "default": {
+          "value": "{color.bluegrey.25.value}",
+          "alt": { "value": "{color.bluegrey.25.value}" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "checkbox": {
+    "border": {
+      "width": { "value": "{border.size.thin.value}" },
+      "radius": { "value": "{border.radius.medium.value}" }
+    },
+    "focus": {
+      "ring": {
+        "border": {
+          "color": { "value": "{color.primary.200.value}" },
+          "width": { "value": "{border.size.medium.value}" }
+        },
+        "offset": { "width": { "value": "{spacing.3xs.value}" } }
+      }
+    },
+    "caption": {
+      "margin": { "top": { "value": "{spacing.xxs.value}" } },
+      "color": { "value": "{color.bluegrey.500.value}" },
+      "font": { "size": { "value": "{font.scale.8.size.value}" } },
+      "line": { "height": { "value": "{font.scale.8.line.height.value}" } }
+    },
+    "font": {
+      "family": { "value": "{font.family.roboto.value}" },
+      "weight": { "value": "{font.weight.regular.value}" }
+    },
+    "small": {
+      "label": {
+        "font": {
+          "size": { "value": "{font.scale.8.size.value}" },
+          "weight": { "value": "{font.weight.medium.value}" }
+        },
+        "line": { "height": { "value": "{font.scale.8.line.height.value}" } }
+      },
+      "input": {
+        "height": { "value": "{spacing.m.value}" },
+        "width": { "value": "{spacing.m.value}" }
+      }
+    },
+    "medium": {
+      "label": {
+        "font": {
+          "size": { "value": "{font.scale.7.size.value}" },
+          "weight": { "value": "{font.weight.medium.value}" }
+        },
+        "line": { "height": { "value": "{font.scale.7.line.height.value}" } }
+      },
+      "input": {
+        "height": { "value": "1.25rem" },
+        "width": { "value": "1.25rem" }
+      }
+    },
+    "large": {
+      "label": {
+        "font": {
+          "size": { "value": "{font.scale.6.size.value}" },
+          "weight": { "value": "{font.weight.medium.value}" }
+        },
+        "line": { "height": { "value": "{font.scale.6.line.height.value}" } }
+      },
+      "input": {
+        "height": { "value": "{spacing.l.value}" },
+        "width": { "value": "{spacing.l.value}" }
+      }
+    },
+    "input": { "margin": { "right": { "value": "{spacing.xs.value}" } } },
+    "label": { "color": { "value": "{color.bluegrey.900.value}" } },
+    "background": { "color": { "value": "{color.bluegrey.25.value}" } },
+    "error": { "border": { "color": { "value": "{color.red.500.value}" } } },
+    "disabled": {
+      "label": { "color": { "value": "{color.bluegrey.400.value}" } }
+    },
+    "checked": {
+      "icon": { "color": { "value": "{color.bluegrey.25.value}" } },
+      "disabled": {
+        "icon": { "color": { "value": "{color.bluegrey.400.value}" } },
+        "background": { "color": { "value": "{color.bluegrey.100.value}" } }
+      },
+      "background": { "color": { "value": "{color.primary.500.value}" } },
+      "hover": {
+        "background": { "color": { "value": "{color.primary.600.value}" } }
+      },
+      "pressed": {
+        "background": { "color": { "value": "{color.primary.700.value}" } }
+      }
+    },
+    "neutral": {
+      "checked": {
+        "background": { "color": { "value": "{color.bluegrey.500.value}" } },
+        "hover": {
+          "background": { "color": { "value": "{color.bluegrey.600.value}" } }
+        },
+        "pressed": {
+          "background": { "color": { "value": "{color.bluegrey.700.value}" } }
+        }
+      }
+    },
+    "unchecked": {
+      "border": { "color": { "value": "{color.bluegrey.500.value}" } },
+      "hover": {
+        "border": { "color": { "value": "{color.bluegrey.600.value}" } },
+        "background": { "color": { "value": "{color.bluegrey.50.value}" } }
+      },
+      "pressed": {
+        "border": { "color": { "value": "{color.bluegrey.700.value}" } },
+        "background": { "color": { "value": "{color.bluegrey.100.value}" } }
+      },
+      "disabled": {
+        "border": { "color": { "value": "{color.bluegrey.100.value}" } },
+        "background": { "color": { "value": "{color.bluegrey.25.value}" } }
+      }
+    }
+  },
+  "checkboxgroup": {
+    "small": {
+      "checkbox": { "margin": { "bottom": { "value": "{spacing.xs.value}" } } }
+    },
+    "medium": {
+      "checkbox": { "margin": { "bottom": { "value": "{spacing.s.value}" } } }
+    },
+    "large": {
+      "checkbox": { "margin": { "bottom": { "value": "{spacing.m.value}" } } }
+    }
+  }
+}

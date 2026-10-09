@@ -1,0 +1,15 @@
+{
+  "dialog": {
+    "background": { "color": { "value": "{color.black.100.value}" } },
+    "header": {
+      "title": { "color": { "value": "{color.bluegrey.25.value}" } },
+      "subtitle": { "color": { "value": "{color.bluegrey.300.value}" } }
+    },
+    "divider": {
+      "background": { "color": { "value": "{color.bluegrey.600.value}" } }
+    },
+    "overlay": {
+      "background": { "color": { "value": "{color.black.50.value}" } }
+    }
+  }
+}

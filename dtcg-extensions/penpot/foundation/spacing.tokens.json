@@ -1,0 +1,310 @@
+{
+  "spacing": {
+    "none": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "3xs": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "xxs": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "xs": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "s": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "m": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "l": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "xxl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "3xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "4xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "5xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "6xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "7xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "8xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "9xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "10xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "11xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "12xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "13xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "14xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "15xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "16xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "17xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "18xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "19xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "20xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "21xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "22xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "23xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "24xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "25xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "26xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    },
+    "27xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "spacing"
+          }
+        }
+      }
+    }
+  }
+}

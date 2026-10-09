@@ -1,0 +1,67 @@
+{
+  "tags": {
+    "medium": {
+      "button": {
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "padding": {
+        "right": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "spacing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "button": {
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

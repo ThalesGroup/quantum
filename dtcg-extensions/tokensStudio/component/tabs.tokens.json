@@ -1,0 +1,82 @@
+{
+  "tabs": {
+    "medium": {
+      "height": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "tab": {
+        "column": {
+          "icon": {
+            "size": {
+              "$extensions": {
+                "qtm": {
+                  "tokensStudio": {
+                    "type": "sizing"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "row": {
+          "icon": {
+            "size": {
+              "$extensions": {
+                "qtm": {
+                  "tokensStudio": {
+                    "type": "sizing"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "height": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "tab": {
+        "column": {
+          "icon": {
+            "size": {
+              "$extensions": {
+                "qtm": {
+                  "tokensStudio": {
+                    "type": "sizing"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "row": {
+          "icon": {
+            "size": {
+              "$extensions": {
+                "qtm": {
+                  "tokensStudio": {
+                    "type": "sizing"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

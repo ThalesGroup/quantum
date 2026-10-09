@@ -1,0 +1,60 @@
+{
+  "itemlist": {
+    "item": {
+      "active": {
+        "label": {
+          "color": {
+            "$value": "{color.bluegrey.25}"
+          }
+        }
+      },
+      "activebar": {
+        "background": {
+          "color": {
+            "$value": "{color.dark.primary.400}"
+          }
+        }
+      },
+      "focus": {
+        "border": {
+          "color": {
+            "$value": "{color.dark.primary.200}"
+          }
+        }
+      },
+      "hover": {
+        "background": {
+          "color": {
+            "$value": "{color.white.10}"
+          }
+        }
+      },
+      "label": {
+        "color": {
+          "$value": "{color.bluegrey.25}"
+        }
+      },
+      "pressed": {
+        "background": {
+          "color": {
+            "$value": "{color.white.20}"
+          }
+        }
+      }
+    },
+    "subitem": {
+      "active": {
+        "label": {
+          "color": {
+            "$value": "{color.bluegrey.25}"
+          }
+        }
+      },
+      "label": {
+        "color": {
+          "$value": "{color.bluegrey.500}"
+        }
+      }
+    }
+  }
+}
