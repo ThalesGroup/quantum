@@ -22,9 +22,9 @@
   ],
   "scripts": {
     "prebuild:dtcg": "node dtcg-index.mjs",
-    "build:tokens-studio": "ts-node --project tsconfig.cli.json src/main.mts --parser tokensStudio",
-    "build:penpot": "ts-node --project tsconfig.cli.json src/main.mts --parser penpot",
-    "build:figma": "ts-node --project tsconfig.cli.json src/main.mts --parser figma",
+    "build:tokens-studio": "node src/main.mts --parser tokensStudio",
+    "build:penpot": "node src/main.mts --parser penpot",
+    "build:figma": "node src/main.mts --parser figma",
     "build:style-dictionary": "style-dictionary build --verbose --config config.js",
     "build:deprecated": "node prepare-deprecated-tokens.mjs && style-dictionary build --config config.deprecated.js && rm -rf properties",
     "build": "rm -rf dist ; pnpm run prebuild:dtcg ; pnpm run \"/^build:.*/\" ; node sort-dist-json-files.mjs ; cp -R deprecated-tokens-from-figma dist/json ; cp -R dtcg dist/",
@@ -37,8 +37,7 @@
     "fs-extra": "^11.4.1",
     "glob": "^13.0.6",
     "style-dictionary": "^5.6.0",
-    "ts-node": "^10.9.2",
-    "typescript": "~6.0.2"
+    "typescript": "~7.0.2"
   },
   "packageManager": "pnpm@12.10.1"
 }
