@@ -11,6 +11,8 @@ Run these commands from the `packages/tokens` directory, or from the repository 
 - `pnpm check:dtcg` validates the DTCG tokens
 - `pnpm run diff:build` shows how the generated `dist/` differs from `main` (see the [README](README.md#comparing-built-files-with-a-branch-tag-or-commit))
 
+The build scripts in `src/` are written in TypeScript and run directly by Node.js, which strips the types without type checking them.
+
 ## Vendor Extensions
 
 ### `qtm.other` type
