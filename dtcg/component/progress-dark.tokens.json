@@ -1,0 +1,78 @@
+{
+  "progress": {
+    "bar": {
+      "caption": {
+        "color": {
+          "$value": "{color.bluegrey.300}"
+        },
+        "error": {
+          "color": {
+            "$value": "{color.dark.red.500}"
+          }
+        }
+      },
+      "label": {
+        "color": {
+          "$value": "{color.bluegrey.25}"
+        }
+      },
+      "lead": {
+        "error": {
+          "color": {
+            "$value": "{color.dark.red.500}"
+          }
+        },
+        "success": {
+          "color": {
+            "$value": "{color.dark.green.500}"
+          }
+        }
+      },
+      "neutral": {
+        "lead": {
+          "color": {
+            "$value": "{color.bluegrey.25}"
+          }
+        }
+      },
+      "percentage": {
+        "color": {
+          "$value": "{color.bluegrey.25}"
+        }
+      },
+      "primary": {
+        "lead": {
+          "color": {
+            "$value": "{color.dark.primary.400}"
+          }
+        }
+      },
+      "track": {
+        "color": {
+          "$value": "{color.white.10}"
+        }
+      }
+    },
+    "circle": {
+      "neutral": {
+        "lead": {
+          "color": {
+            "$value": "{color.bluegrey.25}"
+          }
+        }
+      },
+      "primary": {
+        "lead": {
+          "color": {
+            "$value": "{color.dark.primary.400}"
+          }
+        }
+      },
+      "track": {
+        "color": {
+          "$value": "{color.white.10}"
+        }
+      }
+    }
+  }
+}

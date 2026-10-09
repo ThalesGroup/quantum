@@ -1,0 +1,162 @@
+{
+  "textarea": {
+    "large": {
+      "font": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "fontSizes"
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "line": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "lineHeights"
+              }
+            }
+          }
+        }
+      },
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },    
+    "medium": {
+      "font": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "fontSizes"
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "line": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "lineHeights"
+              }
+            }
+          }
+        }
+      },
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "padding": {
+        "top": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "spacing"
+              }
+            }
+          }
+        },
+        "bottom": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "spacing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "font": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "fontSizes"
+              }
+            }
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "line": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "lineHeights"
+              }
+            }
+          }
+        }
+      },
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

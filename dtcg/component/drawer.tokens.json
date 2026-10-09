@@ -1,0 +1,304 @@
+{
+  "drawer": {
+    "background": {
+      "color": {
+        "$value": "{color.white.100}"
+      }
+    },
+    "divider": {
+      "color": {
+        "$value": "{color.bluegrey.200}"
+      },
+      "height": {
+        "$value": "{border.size.thin}"
+      }
+    },
+    "height": {
+      "$type": "qtm.other",
+      "$value": "100vh"
+    },
+    "itemlist": {
+      "item": {
+        "active": {
+          "label": {
+            "color": {
+              "$value": "{color.bluegrey.900}"
+            }
+          }
+        },
+        "font": {
+          "weight": {
+            "$value": "{font.weight.medium}"
+          }
+        }
+      },
+      "subitem": {
+        "active": {
+          "font": {
+            "weight": {
+              "$value": "{font.weight.medium}"
+            }
+          },
+          "label": {
+            "color": {
+              "$value": "{color.bluegrey.900}"
+            }
+          }
+        },
+        "font": {
+          "weight": {
+            "$value": "{font.weight.regular}"
+          }
+        },
+        "label": {
+          "color": {
+            "$value": "{color.bluegrey.500}"
+          }
+        }
+      }
+    },
+    "large": {
+      "collapsed": {
+        "header": {
+          "padding": {
+            "horizontal": {
+              "$value": "{spacing.m}"
+            },
+            "vertical": {
+              "$value": "{spacing.m}"
+            }
+          }
+        },
+        "itemlist": {
+          "item": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.m}"
+              },
+              "vertical": {
+                "$value": "{spacing.m}"
+              }
+            }
+          }
+        },
+        "width": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 4.5
+          }
+        }
+      },
+      "expanded": {
+        "header": {
+          "padding": {
+            "horizontal": {
+              "$value": "{spacing.m}"
+            },
+            "vertical": {
+              "$value": "{spacing.m}"
+            }
+          }
+        },
+        "itemlist": {
+          "item": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.s}"
+              },
+              "leftOverride": {
+                "$value": "{spacing.m}"
+              },
+              "vertical": {
+                "$value": "{spacing.m}"
+              }
+            }
+          },
+          "subitem": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.s}"
+              },
+              "leftOverride": {
+                "$value": "{spacing.xxl}"
+              },
+              "vertical": {
+                "$value": "{spacing.s}"
+              }
+            }
+          }
+        },
+        "width": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 20
+          }
+        }
+      }
+    },
+    "medium": {
+      "collapsed": {
+        "header": {
+          "padding": {
+            "horizontal": {
+              "$value": "{spacing.s}"
+            },
+            "vertical": {
+              "$value": "{spacing.s}"
+            }
+          }
+        },
+        "itemlist": {
+          "item": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.m}"
+              },
+              "vertical": {
+                "$value": "{spacing.s}"
+              }
+            }
+          }
+        },
+        "width": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 4
+          }
+        }
+      },
+      "expanded": {
+        "header": {
+          "padding": {
+            "horizontal": {
+              "$value": "{spacing.s}"
+            },
+            "vertical": {
+              "$value": "{spacing.s}"
+            }
+          }
+        },
+        "itemlist": {
+          "item": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.s}"
+              },
+              "leftOverride": {
+                "$value": "{spacing.m}"
+              },
+              "vertical": {
+                "$value": "{spacing.s}"
+              }
+            }
+          },
+          "subitem": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.s}"
+              },
+              "leftOverride": {
+                "$value": "{spacing.xxl}"
+              },
+              "vertical": {
+                "$value": "{spacing.s}"
+              }
+            }
+          }
+        },
+        "width": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 15
+          }
+        }
+      }
+    },
+    "shadow": {
+      "$value": "{shadow.xs.ultralight}"
+    },
+    "small": {
+      "collapsed": {
+        "header": {
+          "padding": {
+            "horizontal": {
+              "$value": "{spacing.xs}"
+            },
+            "vertical": {
+              "$value": "{spacing.xs}"
+            }
+          }
+        },
+        "itemlist": {
+          "item": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.m}"
+              },
+              "vertical": {
+                "$value": "{spacing.s}"
+              }
+            }
+          }
+        },
+        "width": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 2.875
+          }
+        }
+      },
+      "expanded": {
+        "header": {
+          "padding": {
+            "horizontal": {
+              "$value": "{spacing.xs}"
+            },
+            "vertical": {
+              "$value": "{spacing.xs}"
+            }
+          }
+        },
+        "itemlist": {
+          "item": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.s}"
+              },
+              "leftOverride": {
+                "$value": "{spacing.m}"
+              },
+              "vertical": {
+                "$value": "{spacing.s}"
+              }
+            }
+          },
+          "subitem": {
+            "padding": {
+              "horizontal": {
+                "$value": "{spacing.s}"
+              },
+              "leftOverride": {
+                "$value": "{spacing.xxl}"
+              },
+              "vertical": {
+                "$value": "{spacing.xs}"
+              }
+            }
+          }
+        },
+        "width": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 12.5
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "button": {
+    "height": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "icononly": {
+      "large": {
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "tokensStudio": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "medium": {
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "tokensStudio": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "small": {
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "tokensStudio": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "xlarge": {
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "tokensStudio": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "large": {
+      "height": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "height": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      },
+      "padding": {
+        "top": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "spacing"
+              }
+            }
+          }
+        },
+        "bottom": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "spacing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "height": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "xlarge": {
+      "height": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    }
+  }
+}

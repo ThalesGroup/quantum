@@ -1,0 +1,159 @@
+{
+  "slider": {
+    "large": {
+      "handle": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "legend": {
+        "margin": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "spacing"
+              }
+            }
+          }
+        }
+      },
+      "mark": {
+        "main": {
+          "height": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "secondary": {
+          "height": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "track": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "handle": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "mark": {
+        "main": {
+          "height": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "secondary": {
+          "height": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "track": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "handle": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "mark": {
+        "main": {
+          "height": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "secondary": {
+          "height": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "track": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

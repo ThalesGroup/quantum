@@ -1,45 +1,27 @@
-Describe here all the security policies in place on this repository to help your contributors to handle security issues efficiently.
-
-## Goods practices to follow
-
-:warning:**You must never store credentials information into source code or config file in a GitHub repository**
-- Block sensitive data being pushed to GitHub by git-secrets or its likes as a git pre-commit hook
-- Audit for slipped secrets with dedicated tools
-- Use environment variables for secrets in CI/CD (e.g. GitHub Secrets) and secret managers in production
-
 # Security Policy
+
+Quantum ships design token definitions and the scripts that turn them into CSS, Sass, JavaScript, Android and design tool formats. It does not run any service, but a problem in the build scripts, the dependencies or the published package can still affect the projects that use it.
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are currently being supported with security updates.
+Only the latest minor version receives security fixes.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 1.10.x  | :white_check_mark: |
+| < 1.10  | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-Tell them where to go, how often they can expect to get an update on a reported vulnerability, what to expect if the vulnerability is accepted or declined, etc.
+Please do not report security vulnerabilities through public GitHub issues, discussions or pull requests.
 
-You can ask for support by contacting oss@thalesgroup.com
+Send your report to [oss@thalesgroup.com](mailto:oss@thalesgroup.com) instead, with a description of the issue, the affected version, and the steps to reproduce it. We will acknowledge your report, keep you informed while we investigate, and let you know whether the issue is accepted or declined.
 
-## Disclosure policy
+Once a fix is available, it is released in a new version and described in the [changelog](CHANGELOG.md).
 
-Define the procedure for what a reporter who finds a security issue needs to do in order to fully disclose the problem safely, including who to contact and how.
+## Good practices for contributors
 
-## Security Update policy
+:warning: **Never store credentials in source code or configuration files.**
 
-Define how you intend to update users about new security vulnerabilities as they are found.
-
-## Security related configuration
-
-Settings users should consider that would impact the security posture of deploying this project, such as HTTPS, authorization and many others.
-
-## Known security gaps & future enhancements
-
-Security improvements you haven’t gotten to yet.
-Inform users those security controls aren’t in place, and perhaps suggest they contribute an implementation
+- Block sensitive data from being pushed to GitHub with [git-secrets](https://github.com/awslabs/git-secrets) or a similar pre-commit hook.
+- Use GitHub Actions secrets for anything the CI needs.

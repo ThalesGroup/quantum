@@ -1,0 +1,70 @@
+{
+  "checkbox": {
+    "large": {
+      "input": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "input": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "input": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

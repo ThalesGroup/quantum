@@ -1,0 +1,70 @@
+{
+  "icon": {
+    "large": {
+      "size": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "size": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "size": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "xlarge": {
+      "size": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "xsmall": {
+      "size": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "xxlarge": {
+      "size": {
+        "$extensions": {
+          "qtm": {
+            "tokensStudio": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    }
+  }
+}

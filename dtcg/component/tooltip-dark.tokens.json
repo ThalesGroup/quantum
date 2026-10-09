@@ -1,0 +1,23 @@
+{
+  "tooltip": {
+    "font": {
+      "color": {
+        "$value": "{color.bluegrey.900}"
+      }
+    },
+    "highcontrast": {
+      "background": {
+        "color": {
+          "$value": "{color.bluegrey.25}"
+        }
+      }
+    },
+    "lowcontrast": {
+      "background": {
+        "color": {
+          "$value": "{color.bluegrey.400}"
+        }
+      }
+    }
+  }
+}

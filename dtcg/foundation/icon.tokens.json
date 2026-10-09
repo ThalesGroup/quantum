@@ -1,0 +1,38 @@
+{
+  "icon": {
+    "large": {
+      "size": {
+        "$value": "{spacing.l}"
+      }
+    },
+    "medium": {
+      "size": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "rem",
+          "value": 1.25
+        }
+      }
+    },
+    "small": {
+      "size": {
+        "$value": "{spacing.m}"
+      }
+    },
+    "xlarge": {
+      "size": {
+        "$value": "{spacing.xl}"
+      }
+    },
+    "xsmall": {
+      "size": {
+        "$value": "{spacing.s}"
+      }
+    },
+    "xxlarge": {
+      "size": {
+        "$value": "{spacing.3xl}"
+      }
+    }
+  }
+}

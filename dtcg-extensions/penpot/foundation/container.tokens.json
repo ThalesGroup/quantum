@@ -1,0 +1,49 @@
+{
+  "container": {
+    "s": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "m": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "l": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "2xl": {
+      "$extensions": {
+        "qtm": {
+          "penpot": {
+            "type": "sizing"
+          }
+        }
+      }
+    }
+  }
+}

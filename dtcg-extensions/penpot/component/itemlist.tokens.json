@@ -1,0 +1,118 @@
+{
+  "itemlist": {
+    "item": {
+      "large": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "medium": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "padding": {
+          "vertical": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "spacing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "small": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "subitem": {
+      "large": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "medium": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "small": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

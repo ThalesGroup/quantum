@@ -1,0 +1,39 @@
+{
+  "container": {
+    "2xl": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 1536
+      }
+    },
+    "l": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 1024
+      }
+    },
+    "m": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 768
+      }
+    },
+    "s": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 640
+      }
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 1280
+      }
+    }
+  }
+}

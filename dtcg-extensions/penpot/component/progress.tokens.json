@@ -1,0 +1,83 @@
+{
+  "progress": {
+    "bar": {
+      "height": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "sizing"
+            }
+          }
+        }
+      }
+    },
+    "circle": {
+      "border": {
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "large": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "medium": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "small": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "xlarge": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "xsmall": {
+        "size": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

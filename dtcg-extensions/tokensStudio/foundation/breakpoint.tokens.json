@@ -1,0 +1,58 @@
+{
+  "breakpoint": {
+    "xxsmall": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "xsmall": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "small": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "medium": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "large": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    },
+    "xlarge": {
+      "$extensions": {
+        "qtm": {
+          "tokensStudio": {
+            "type": "sizing"
+          }
+        }
+      }
+    }
+  }
+}

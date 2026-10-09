@@ -1,0 +1,226 @@
+{
+  "switch": {
+    "input": {
+      "large": {
+        "button": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "medium": {
+        "button": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "off": {
+        "large": {
+          "button": {
+            "padding": {
+              "right": {
+                "$extensions": {
+                  "qtm": {
+                    "penpot": {
+                      "type": "spacing"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "medium": {
+          "button": {
+            "padding": {
+              "right": {
+                "$extensions": {
+                  "qtm": {
+                    "penpot": {
+                      "type": "spacing"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "small": {
+          "button": {
+            "padding": {
+              "right": {
+                "$extensions": {
+                  "qtm": {
+                    "penpot": {
+                      "type": "spacing"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "on": {
+        "large": {
+          "button": {
+            "padding": {
+              "left": {
+                "$extensions": {
+                  "qtm": {
+                    "penpot": {
+                      "type": "spacing"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "medium": {
+          "button": {
+            "padding": {
+              "left": {
+                "$extensions": {
+                  "qtm": {
+                    "penpot": {
+                      "type": "spacing"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "small": {
+          "button": {
+            "padding": {
+              "left": {
+                "$extensions": {
+                  "qtm": {
+                    "penpot": {
+                      "type": "spacing"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "small": {
+        "button": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        },
+        "icon": {
+          "size": {
+            "$extensions": {
+              "qtm": {
+                "penpot": {
+                  "type": "sizing"
+                }
+              }
+            }
+          }
+        },
+        "width": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

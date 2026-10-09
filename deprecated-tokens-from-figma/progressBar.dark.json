@@ -1,0 +1,23 @@
+{
+  "progress": {
+    "bar": {
+      "label": { "color": { "value": "{color.bluegrey.25.value}" } },
+      "percentage": { "color": { "value": "{color.bluegrey.25.value}" } },
+      "caption": {
+        "color": { "value": "{color.bluegrey.300.value}" },
+        "error": { "color": { "value": "{color.dark.red.500.value}" } }
+      },
+      "track": { "color": { "value": "{color.white.10.value}" } },
+      "primary": {
+        "lead": { "color": { "value": "{color.dark.primary.400.value}" } }
+      },
+      "neutral": {
+        "lead": { "color": { "value": "{color.bluegrey.25.value}" } }
+      },
+      "lead": {
+        "error": { "color": { "value": "{color.dark.red.500.value}" } },
+        "success": { "color": { "value": "{color.dark.green.500.value}" } }
+      }
+    }
+  }
+}

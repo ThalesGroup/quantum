@@ -1,0 +1,70 @@
+{
+  "dialog": {
+    "font": { "family": { "value": "{font.family.roboto.value}" } },
+    "background": {
+      "color": { "value": "{color.white.100.value}" },
+      "shadow": { "value": "{shadow.xl.light.value}" }
+    },
+    "max": { "height": { "value": "calc(100vh - 16px)" } },
+    "header": {
+      "title": { "color": { "value": "{color.bluegrey.900.value}" } },
+      "subtitle": {
+        "color": { "value": "{color.bluegrey.500.value}" },
+        "font": { "size": { "value": "{font.scale.9.size.value}" } },
+        "line": { "height": { "value": "{font.scale.9.line.height.value}" } }
+      },
+      "small": {
+        "title": {
+          "font": { "size": { "value": "{font.scale.6.size.value}" } },
+          "line": { "height": { "value": "{font.scale.6.line.height.value}" } }
+        }
+      },
+      "medium": {
+        "title": {
+          "font": { "size": { "value": "{font.scale.5.size.value}" } },
+          "line": { "height": { "value": "{font.scale.5.line.height.value}" } }
+        }
+      },
+      "large": {
+        "title": {
+          "font": { "size": { "value": "{font.scale.4.size.value}" } },
+          "line": { "height": { "value": "{font.scale.4.line.height.value}" } }
+        }
+      },
+      "padding": {
+        "horizontal": { "value": "{spacing.l.value}" },
+        "vertical": { "value": "{spacing.m.value}" }
+      }
+    },
+    "body": {
+      "padding": {
+        "horizontal": { "value": "{spacing.l.value}" },
+        "bottom": { "value": "{spacing.l.value}" }
+      },
+      "font": { "size": { "value": "{font.scale.7.size.value}" } },
+      "line": { "height": { "value": "{font.scale.7.line.height.value}" } }
+    },
+    "divider": {
+      "size": { "value": "1px" },
+      "background": { "color": { "value": "{color.bluegrey.100.value}" } }
+    },
+    "footer": {
+      "padding": {
+        "horizontal": { "value": "{spacing.l.value}" },
+        "vertical": { "value": "{spacing.m.value}" }
+      }
+    },
+    "buttongroup": { "margin": { "value": "{spacing.xs.value}" } },
+    "overlay": {
+      "background": { "color": { "value": "{color.black.30.value}" } }
+    },
+    "breakpoint": {
+      "xxsmall": { "width": { "value": "calc(100vw - 32px)" } },
+      "xsmall": { "width": { "value": "calc(100vw - 32px)" } },
+      "small": { "width": { "value": "calc(100vw - 32px)" } },
+      "medium": { "width": { "value": "50%" } },
+      "large": { "width": { "value": "50%" } },
+      "xlarge": { "width": { "value": "50%" } }
+    }
+  }
+}

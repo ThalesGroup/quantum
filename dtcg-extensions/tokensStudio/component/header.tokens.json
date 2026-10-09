@@ -1,0 +1,109 @@
+{
+  "header": {
+    "large": {
+      "container": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "divider": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "logo": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "container": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "divider": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "logo": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "container": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "divider": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      },
+      "logo": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "tokensStudio": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

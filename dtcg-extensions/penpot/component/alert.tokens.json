@@ -1,0 +1,43 @@
+{
+  "alert": {
+    "large": {
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "medium": {
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "small": {
+      "min": {
+        "height": {
+          "$extensions": {
+            "qtm": {
+              "penpot": {
+                "type": "sizing"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

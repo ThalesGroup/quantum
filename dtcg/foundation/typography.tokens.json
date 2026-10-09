@@ -1,0 +1,373 @@
+{
+  "typography": {
+    "body-1": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.6.size}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.6.line.height}"
+      }
+    },
+    "body-1-bold": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.6.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.6.line.height}"
+      }
+    },
+    "body-1-medium": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.6.size}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.6.line.height}"
+      }
+    },
+    "body-2": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.7.size}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.7.line.height}"
+      }
+    },
+    "body-2-bold": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.7.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.7.line.height}"
+      }
+    },
+    "body-2-medium": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.7.size}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.7.line.height}"
+      }
+    },
+    "caption-1": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.8.size}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.8.line.height}"
+      }
+    },
+    "caption-1-bold": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.8.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.8.line.height}"
+      }
+    },
+    "caption-1-medium": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.8.size}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.8.line.height}"
+      }
+    },
+    "caption-2": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.9.size}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.9.line.height}"
+      }
+    },
+    "caption-2-bold": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.9.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.9.line.height}"
+      }
+    },
+    "caption-2-medium": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.9.size}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.9.line.height}"
+      }
+    },
+    "code-1": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto-mono}",
+        "fontSize": "{font.scale.6.size}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.6.line.height}"
+      }
+    },
+    "code-2": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto-mono}",
+        "fontSize": "{font.scale.7.size}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.7.line.height}"
+      }
+    },
+    "overline": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.9.size}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.9.line.height}"
+      }
+    },
+    "overline-bold": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.9.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.9.line.height}"
+      }
+    },
+    "overline-bold-text": {
+      "case": {
+        "$type": "qtm.other",
+        "$value": "uppercase"
+      }
+    },
+    "overline-medium": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.9.size}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.9.line.height}"
+      }
+    },
+    "overline-medium-text": {
+      "case": {
+        "$type": "qtm.other",
+        "$value": "uppercase"
+      }
+    },
+    "overline-text": {
+      "case": {
+        "$type": "qtm.other",
+        "$value": "uppercase"
+      }
+    },
+    "subtitle-1": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.4.size}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.4.line.height}"
+      }
+    },
+    "subtitle-1-bold": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.4.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.4.line.height}"
+      }
+    },
+    "subtitle-2": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.5.size}",
+        "fontWeight": "{font.weight.medium}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.5.line.height}"
+      }
+    },
+    "subtitle-2-bold": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.5.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.5.line.height}"
+      }
+    },
+    "title-1": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.1.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.1.line.height}"
+      }
+    },
+    "title-1-black": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.1.size}",
+        "fontWeight": "{font.weight.black}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.1.line.height}"
+      }
+    },
+    "title-2": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.2.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.2.line.height}"
+      }
+    },
+    "title-2-black": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.2.size}",
+        "fontWeight": "{font.weight.black}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.2.line.height}"
+      }
+    },
+    "title-3": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.3.size}",
+        "fontWeight": "{font.weight.bold}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.3.line.height}"
+      }
+    },
+    "title-3-black": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.roboto}",
+        "fontSize": "{font.scale.3.size}",
+        "fontWeight": "{font.weight.black}",
+        "letterSpacing": {
+          "unit": "rem",
+          "value": 0
+        },
+        "lineHeight": "{font.scale.3.line.height}"
+      }
+    }
+  }
+}

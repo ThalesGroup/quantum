@@ -1,0 +1,65 @@
+{
+  "tabs": {
+    "tab": {
+      "gap": { "value": "{spacing.xxs.value}" },
+      "font": {
+        "family": { "value": "{font.family.roboto.value}" },
+        "weight": { "value": "{font.weight.regular.value}" }
+      },
+      "padding": {
+        "vertical": { "value": "{spacing.xs.value}" },
+        "horizontal": { "value": "{spacing.m.value}" }
+      },
+      "background": { "color": { "value": "transparent" } },
+      "label": { "color": { "value": "{color.bluegrey.900.value}" } },
+      "disabled": {
+        "background": { "color": { "value": "{color.bluegrey.25.value}" } },
+        "label": { "color": { "value": "{color.bluegrey.400.value}" } }
+      },
+      "hover": {
+        "background": { "color": { "value": "{color.bluegrey.50.value}" } }
+      },
+      "pressed": {
+        "background": { "color": { "value": "{color.bluegrey.100.value}" } }
+      },
+      "active": {
+        "label": { "color": { "value": "{color.primary.500.value}" } }
+      },
+      "activebar": {
+        "background": { "color": { "value": "{color.primary.500.value}" } },
+        "height": { "value": "{border.size.thick.value}" },
+        "border": { "radius": { "value": "{border.radius.medium.value}" } }
+      },
+      "focus": {
+        "border": {
+          "radius": { "value": "{border.radius.medium.value}" },
+          "width": { "value": "{border.size.medium.value}" },
+          "color": { "value": "{color.primary.200.value}" },
+          "type": { "value": "{border.style.default.value}" }
+        }
+      }
+    },
+    "small": {
+      "height": { "value": "2.25rem" },
+      "tab": {
+        "font": { "size": { "value": "{font.scale.7.size.value}" } },
+        "row": { "icon": { "size": { "value": "1.25rem" } } },
+        "column": { "icon": { "size": { "value": "1.25rem" } } }
+      }
+    },
+    "medium": {
+      "height": { "value": "2.5rem" },
+      "tab": {
+        "font": { "size": { "value": "{font.scale.6.size.value}" } },
+        "row": { "icon": { "size": { "value": "1.25rem" } } },
+        "column": { "icon": { "size": { "value": "1.5rem" } } }
+      }
+    },
+    "divider": {
+      "border": {
+        "width": { "value": "{border.size.thin.value}" },
+        "color": { "value": "{color.bluegrey.100.value}" }
+      }
+    }
+  }
+}

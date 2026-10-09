@@ -1,0 +1,125 @@
+{
+  "radio": {
+    "small": {
+      "input": { "size": { "value": "{spacing.m.value}" } },
+      "checked": { "symbol": { "size": { "value": "0.625rem" } } },
+      "label": {
+        "font": {
+          "size": { "value": "{font.scale.8.size.value}" },
+          "weight": { "value": "{font.weight.medium.value}" }
+        },
+        "line": { "height": { "value": "{font.scale.8.line.height.value}" } }
+      }
+    },
+    "medium": {
+      "small": { "margin": { "right": { "value": "{spacing.xs.value}" } } },
+      "input": { "size": { "value": "1.25rem" } },
+      "checked": { "symbol": { "size": { "value": "0.875rem" } } },
+      "label": {
+        "font": {
+          "size": { "value": "{font.scale.7.size.value}" },
+          "weight": { "value": "{font.weight.medium.value}" }
+        },
+        "line": { "height": { "value": "{font.scale.7.line.height.value}" } }
+      }
+    },
+    "label": {
+      "font": { "family": { "value": "{font.family.roboto.value}" } },
+      "color": { "value": "{color.bluegrey.900.value}" }
+    },
+    "large": {
+      "input": { "size": { "value": "{spacing.l.value}" } },
+      "checked": { "symbol": { "size": { "value": "1.125rem" } } },
+      "label": {
+        "font": {
+          "size": { "value": "{font.scale.6.size.value}" },
+          "weight": { "value": "{font.weight.medium.value}" }
+        },
+        "line": { "height": { "value": "{font.scale.6.line.height.value}" } }
+      }
+    },
+    "input": {
+      "margin": { "right": { "value": "{spacing.xs.value}" } },
+      "border": {
+        "width": { "value": "{border.size.thin.value}" },
+        "color": { "value": "{color.bluegrey.500.value}" }
+      },
+      "background": { "color": { "value": "{color.bluegrey.25.value}" } },
+      "checked": {
+        "symbol": {
+          "background": { "color": { "value": "{color.primary.500.value}" } }
+        },
+        "hover": {
+          "symbol": {
+            "background": { "color": { "value": "{color.primary.600.value}" } }
+          }
+        },
+        "pressed": {
+          "symbol": {
+            "background": { "color": { "value": "{color.primary.700.value}" } }
+          }
+        }
+      },
+      "hover": {
+        "border": { "color": { "value": "{color.bluegrey.600.value}" } },
+        "background": { "color": { "value": "{color.bluegrey.50.value}" } }
+      },
+      "pressed": {
+        "background": { "color": { "value": "{color.bluegrey.100.value}" } },
+        "border": { "color": { "value": "{color.bluegrey.700.value}" } }
+      },
+      "ring": {
+        "color": { "value": "{color.primary.200.value}" },
+        "offset": { "width": { "value": "{spacing.3xs.value}" } },
+        "width": { "value": "{border.size.medium.value}" }
+      }
+    },
+    "neutral": {
+      "input": {
+        "checked": {
+          "symbol": {
+            "background": { "color": { "value": "{color.bluegrey.500.value}" } }
+          },
+          "hover": {
+            "symbol": {
+              "background": {
+                "color": { "value": "{color.bluegrey.600.value}" }
+              }
+            }
+          },
+          "pressed": {
+            "symbol": {
+              "background": {
+                "color": { "value": "{color.bluegrey.700.value}" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "disabled": {
+      "input": {
+        "background": { "color": { "value": "{color.bluegrey.25.value}" } },
+        "border": { "color": { "value": "{color.bluegrey.100.value}" } },
+        "checked": {
+          "symbol": { "color": { "value": "{color.bluegrey.100.value}" } }
+        }
+      },
+      "label": { "color": { "value": "{color.bluegrey.400.value}" } }
+    },
+    "error": {
+      "input": { "border": { "color": { "value": "{color.red.500.value}" } } }
+    }
+  },
+  "radiogroup": {
+    "small": {
+      "radio": { "margin": { "bottom": { "value": "{spacing.xs.value}" } } }
+    },
+    "medium": {
+      "radio": { "margin": { "bottom": { "value": "{spacing.s.value}" } } }
+    },
+    "large": {
+      "radio": { "margin": { "bottom": { "value": "{spacing.m.value}" } } }
+    }
+  }
+}

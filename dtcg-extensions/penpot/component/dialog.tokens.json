@@ -1,0 +1,15 @@
+{
+  "dialog": {
+    "divider": {
+      "size": {
+        "$extensions": {
+          "qtm": {
+            "penpot": {
+              "type": "borderWidth"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "input": {
+    "background": {
+      "color": {
+        "$value": "{color.white.100}"
+      }
+    },
+    "border": {
+      "color": {
+        "$value": "{color.bluegrey.500}"
+      },
+      "radius": {
+        "$value": "{border.radius.medium}"
+      },
+      "style": {
+        "$value": "{border.style.default}"
+      },
+      "width": {
+        "$value": "{border.size.thin}"
+      }
+    },
+    "default": {
+      "icon": {
+        "left": {
+          "color": {
+            "$value": "{color.bluegrey.500}"
+          }
+        }
+      }
+    },
+    "disabled": {
+      "background": {
+        "color": {
+          "$value": "{color.bluegrey.25}"
+        }
+      },
+      "border": {
+        "color": {
+          "$value": "{color.bluegrey.100}"
+        }
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.bluegrey.400}"
+        }
+      },
+      "text": {
+        "color": {
+          "$value": "{color.bluegrey.400}"
+        }
+      }
+    },
+    "error": {
+      "border": {
+        "color": {
+          "$value": "{color.red.500}"
+        }
+      }
+    },
+    "focus": {
+      "border": {
+        "color": {
+          "$value": "{color.primary.500}"
+        }
+      }
+    },
+    "font": {
+      "family": {
+        "$value": "{font.family.roboto}"
+      },
+      "weight": {
+        "$value": "{font.weight.regular}"
+      }
+    },
+    "hover": {
+      "background": {
+        "color": {
+          "$value": "{color.bluegrey.25}"
+        }
+      },
+      "icon": {
+        "color": {
+          "$value": "{color.bluegrey.500}"
+        }
+      }
+    },
+    "icon": {
+      "color": {
+        "$value": "{color.bluegrey.900}"
+      },
+      "error": {
+        "color": {
+          "$value": "{color.red.500}"
+        }
+      },
+      "success": {
+        "color": {
+          "$value": "{color.green.500}"
+        }
+      },
+      "warning": {
+        "color": {
+          "$value": "{color.orange.500}"
+        }
+      }
+    },
+    "large": {
+      "font": {
+        "size": {
+          "$value": "{font.scale.6.size}"
+        }
+      },
+      "height": {
+        "$value": "{spacing.3xl}"
+      },
+      "icon": {
+        "left": {
+          "margin": {
+            "right": {
+              "$value": "{spacing.xxs}"
+            }
+          }
+        },
+        "right": {
+          "margin": {
+            "left": {
+              "$value": "{spacing.xs}"
+            }
+          }
+        },
+        "size": {
+          "$value": "{spacing.l}"
+        }
+      },
+      "line": {
+        "height": {
+          "$value": "{font.scale.6.line.height}"
+        }
+      },
+      "padding": {
+        "bottom": {
+          "$value": "{spacing.s}"
+        },
+        "left": {
+          "$value": "{spacing.xs}"
+        },
+        "right": {
+          "$value": "{spacing.xs}"
+        },
+        "top": {
+          "$value": "{spacing.s}"
+        }
+      }
+    },
+    "medium": {
+      "font": {
+        "size": {
+          "$value": "{font.scale.7.size}"
+        }
+      },
+      "height": {
+        "$value": "{spacing.xxl}"
+      },
+      "icon": {
+        "left": {
+          "margin": {
+            "right": {
+              "$value": "{spacing.xxs}"
+            }
+          }
+        },
+        "right": {
+          "margin": {
+            "left": {
+              "$value": "{spacing.xs}"
+            }
+          }
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": {
+            "unit": "rem",
+            "value": 1.25
+          }
+        }
+      },
+      "line": {
+        "height": {
+          "$value": "{font.scale.7.line.height}"
+        }
+      },
+      "padding": {
+        "bottom": {
+          "$value": "{spacing.s}"
+        },
+        "left": {
+          "$value": "{spacing.xs}"
+        },
+        "right": {
+          "$value": "{spacing.xs}"
+        },
+        "top": {
+          "$value": "{spacing.s}"
+        }
+      }
+    },
+    "placeholder": {
+      "color": {
+        "$value": "{color.bluegrey.500}"
+      }
+    },
+    "small": {
+      "font": {
+        "size": {
+          "$value": "{font.scale.8.size}"
+        }
+      },
+      "height": {
+        "$value": "{spacing.xl}"
+      },
+      "icon": {
+        "left": {
+          "margin": {
+            "right": {
+              "$value": "{spacing.xxs}"
+            }
+          }
+        },
+        "right": {
+          "margin": {
+            "left": {
+              "$value": "{spacing.xs}"
+            }
+          }
+        },
+        "size": {
+          "$value": "{spacing.m}"
+        }
+      },
+      "line": {
+        "height": {
+          "$value": "{font.scale.8.line.height}"
+        }
+      },
+      "padding": {
+        "bottom": {
+          "$value": "{spacing.xs}"
+        },
+        "left": {
+          "$value": "{spacing.xs}"
+        },
+        "right": {
+          "$value": "{spacing.xs}"
+        },
+        "top": {
+          "$value": "{spacing.xs}"
+        }
+      }
+    },
+    "text": {
+      "color": {
+        "$value": "{color.bluegrey.900}"
+      }
+    },
+    "warning": {
+      "border": {
+        "color": {
+          "$value": "{color.orange.500}"
+        }
+      }
+    }
+  }
+}
