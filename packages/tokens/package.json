@@ -1,0 +1,44 @@
+{
+  "name": "@quantum-ds/tokens",
+  "version": "1.10.0",
+  "description": "Quantum tokens defined via the Design Tokens Format (DTCG) specification",
+  "author": "Quantum Core Team",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/ThalesGroup/quantum/tree/main/packages/tokens#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThalesGroup/quantum.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/ThalesGroup/quantum/issues"
+  },
+  "main": "dist/tokens.js",
+  "files": [
+    "CHANGELOG.md",
+    "dist",
+    "!dist/figma",
+    "!dist/tokens_studio"
+  ],
+  "scripts": {
+    "prebuild:dtcg": "node dtcg-index.mjs",
+    "build:tokens-studio": "ts-node --project tsconfig.cli.json src/main.mts --parser tokensStudio",
+    "build:penpot": "ts-node --project tsconfig.cli.json src/main.mts --parser penpot",
+    "build:figma": "ts-node --project tsconfig.cli.json src/main.mts --parser figma",
+    "build:style-dictionary": "style-dictionary build --verbose --config config.js",
+    "build:deprecated": "node prepare-deprecated-tokens.mjs && style-dictionary build --config config.deprecated.js && rm -rf properties",
+    "build": "rm -rf dist ; pnpm run prebuild:dtcg ; pnpm run \"/^build:.*/\" ; node sort-dist-json-files.mjs ; cp -R deprecated-tokens-from-figma dist/json ; cp -R dtcg dist/",
+    "diff:build": "bash ./scripts/diff-built-files.sh",
+    "check:dtcg": "tz check"
+  },
+  "devDependencies": {
+    "@terrazzo/cli": "^2.7.1",
+    "@types/node": "^25.5.0",
+    "fs-extra": "^11.3.4",
+    "glob": "^13.0.6",
+    "style-dictionary": "^5.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~6.0.2"
+  },
+  "packageManager": "pnpm@10.21.0"
+}

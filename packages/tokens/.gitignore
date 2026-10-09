@@ -1,0 +1,8 @@
+# Output files
+/dist
+
+# Package
+quantum-ds-tokens*
+
+# Diff files
+build-diff.diff

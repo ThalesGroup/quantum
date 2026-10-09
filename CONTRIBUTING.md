@@ -1,26 +1,24 @@
 # Contributing
 
+## Repository structure
+
+This repository is a monorepo managed with [pnpm workspaces](https://pnpm.io/workspaces). Each package lives in its own directory under `packages/`:
+
+| Package | Directory | Contributing guide |
+| ------- | --------- | ------------------ |
+| `@quantum-ds/tokens` | [`packages/tokens`](packages/tokens) | [packages/tokens/CONTRIBUTING.md](packages/tokens/CONTRIBUTING.md) |
+
 ## Commands
 
 You need an LTS version of [Node.js](https://nodejs.org/) (22 or 24) and [pnpm](https://pnpm.io/) 10.
 
-- `pnpm i` installs the dependencies
-- `pnpm build` generates all output formats
-- `pnpm build:<tool>` builds tokens for a specific tool (e.g., `pnpm build:penpot`)
+From the repository root:
 
-## Vendor Extensions
+- `pnpm i` installs the dependencies of all packages
+- `pnpm build` builds all packages
+- `pnpm --filter <package> <command>` runs a command of a single package, for example `pnpm --filter @quantum-ds/tokens build:penpot`
 
-### `qtm.other` type
-
-`@quantum-ds/tokens` introduces a `"$type": "qtm.other"` vendor type to support custom or non-standard token values that do not fit within the official [Design Tokens Format types](https://www.designtokens.org/tr/2025.10/format/#types).
-
-### Tool-specific overrides
-
-`@quantum-ds/tokens` also supports custom `$extensions` fields for tool-specific metadata. These are defined in `dtcg-extensions` directory, with subdirectories for each supported tool.
-
-For instance, launching `pnpm build:penpot` will first merge tokens in `dtcg` directory with the matching ones in `dtcg-extensions/penpot`, and then transform them into Penpot-compatible output formats in `dist/penpot`.
-
-This allows for tool-specific customization without affecting the base token definitions, ensuring compatibility and flexibility across different design platforms.
+You can also run the commands of a package from its directory. Each package's contributing guide lists its own commands.
 
 ## Proprietary images
 
@@ -30,4 +28,4 @@ Logos, avatars and other brand images are not covered by the Apache License 2.0.
 
 Commit messages and pull request titles follow the [Conventional Commits](https://www.conventionalcommits.org/) specification, for example `feat: add Dataviz tokens` or `fix: correct the border radius of buttons`.
 
-Before opening a pull request, make sure `pnpm check:dtcg` and `pnpm build` both succeed. If your change affects the generated files, `pnpm run diff:build` shows how `dist/` differs from `main`.
+Before opening a pull request, make sure the packages you changed pass the checks described in their contributing guide.
