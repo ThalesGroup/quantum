@@ -36,7 +36,7 @@
     "@types/node": "^25.5.0",
     "fs-extra": "^11.3.4",
     "glob": "^13.0.6",
-    "style-dictionary": "^5.4.0",
+    "style-dictionary": "^5.4.4",
     "ts-node": "^10.9.2",
     "typescript": "~6.0.2"
   },
