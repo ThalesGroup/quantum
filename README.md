@@ -31,7 +31,7 @@ Quantum is the Thales Design System. This repository is a monorepo that hosts it
 > [!WARNING]
 > The packages are not yet published on npm. Until they are, you can build them from this repository.
 
-To install the dependencies and build all packages, you need an LTS version of [Node.js](https://nodejs.org/) (22 or 24) and [pnpm](https://pnpm.io/) 10:
+To install the dependencies and build all packages, you need the latest LTS version of [Node.js](https://nodejs.org/), as defined in [`.nvmrc`](.nvmrc), and [pnpm](https://pnpm.io/) 12:
 
 ```sh
 pnpm i

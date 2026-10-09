@@ -10,7 +10,7 @@ This repository is a monorepo managed with [pnpm workspaces](https://pnpm.io/wor
 
 ## Commands
 
-You need an LTS version of [Node.js](https://nodejs.org/) (22 or 24) and [pnpm](https://pnpm.io/) 10.
+You need the latest LTS version of [Node.js](https://nodejs.org/), as defined in [`.nvmrc`](.nvmrc) (run `nvm use` if you use [nvm](https://github.com/nvm-sh/nvm)), and [pnpm](https://pnpm.io/) 12.
 
 From the repository root:
 
