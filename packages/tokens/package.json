@@ -3,7 +3,7 @@
   "version": "1.10.0",
   "description": "Quantum tokens defined via the Design Tokens Format (DTCG) specification",
   "author": "Quantum Core Team",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "homepage": "https://github.com/ThalesGroup/quantum/tree/main/packages/tokens#readme",
   "repository": {
     "type": "git",
