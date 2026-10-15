@@ -87,4 +87,4 @@ If you are interested in contributing to this package, start by reading the [Con
 
 ## License
 
-This package is licensed under the [Apache License 2.0](https://github.com/ThalesGroup/quantum/blob/main/packages/tokens/LICENSE).
+The code in this package is licensed under the [MIT License](https://github.com/ThalesGroup/quantum/blob/main/packages/tokens/LICENSE). The documentation is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).

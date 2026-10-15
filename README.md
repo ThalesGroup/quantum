@@ -58,6 +58,6 @@ If you are interested in contributing to the Quantum project, start by reading t
 
 ## License
 
-This project is licensed under the [Apache License 2.0](LICENSE).
+The code in this project is licensed under the [MIT License](LICENSE). The documentation is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
-The images in [`assets/brand/`](assets/brand/) are proprietary and are not covered by this license. See [`assets/brand/LICENSE`](assets/brand/LICENSE) for details.
+The images in [`assets/brand/`](assets/brand/) are proprietary and are not covered by these licenses. See [`assets/brand/LICENSE`](assets/brand/LICENSE) for details.

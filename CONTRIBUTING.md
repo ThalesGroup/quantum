@@ -22,7 +22,7 @@ You can also run the commands of a package from its directory. Each package's co
 
 ## Proprietary images
 
-Logos, avatars and other brand images are not covered by the Apache License 2.0. Add them to the `assets/brand/` directory, which has its own [license](assets/brand/LICENSE), and nowhere else in the repository.
+Logos, avatars and other brand images are not covered by the MIT License. Add them to the `assets/brand/` directory, which has its own [license](assets/brand/LICENSE), and nowhere else in the repository.
 
 ## Pull requests
 

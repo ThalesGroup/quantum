@@ -2,7 +2,7 @@
   "name": "quantum",
   "private": true,
   "description": "Quantum Design System",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "homepage": "https://github.com/ThalesGroup/quantum#readme",
   "repository": {
     "type": "git",
