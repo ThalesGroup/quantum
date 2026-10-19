@@ -47,5 +47,10 @@ jobs:
       - if: steps.version.outputs.published != 'true'
         run: pnpm --filter @quantum-ds/tokens run build
       - if: steps.version.outputs.published != 'true'
+        id: publish
         working-directory: packages/tokens
         run: pnpm publish --provenance --no-git-checks
+      - name: Explain how to fix a failed publication
+        if: failure() && steps.publish.outcome == 'failure'
+        run: |
+          echo "::error title=npm publication failed::A 404 from npm usually means that the trusted publisher of @quantum-ds/tokens on npmjs.com has lapsed or no longer matches the repository ThalesGroup/quantum, the workflow release.yml and the environment npm. Re-create it as described in CONTRIBUTING.md, then re-run the failed job."
