@@ -1,5 +1,7 @@
 # @quantum-ds/tokens
 
+[![npm version](https://img.shields.io/npm/v/@quantum-ds/tokens)](https://www.npmjs.com/package/@quantum-ds/tokens)
+
 Quantum tokens defined via the [Design Tokens Format (DTCG) specification](https://www.designtokens.org/).
 
 ## Description
@@ -10,16 +12,13 @@ This package transforms these canonical tokens into formats that are consumable 
 
 ## Usage
 
-The tokens are published as the `@quantum-ds/tokens` package.
-
-> [!WARNING]
-> `@quantum-ds/tokens` is not yet published on npm. Until it is, you can build the tokens from the [Quantum repository](https://github.com/ThalesGroup/quantum) with `pnpm build` and use the generated `packages/tokens/dist/` directory.
-
-Install in your project:
+The tokens are published on npm as the [`@quantum-ds/tokens`](https://www.npmjs.com/package/@quantum-ds/tokens) package. Install it in your project:
 
 ```sh
 pnpm add @quantum-ds/tokens
 ```
+
+Versions after 1.10.0 are published from the [Quantum repository](https://github.com/ThalesGroup/quantum) by a GitHub Actions workflow using [npm trusted publishing](https://docs.npmjs.com/trusted-publishers), and come with a [provenance attestation](https://docs.npmjs.com/generating-provenance-statements) that you can check with `npm audit signatures`.
 
 The compiled artifacts are available under `node_modules/@quantum-ds/tokens/dist`:
 
@@ -35,7 +34,12 @@ The compiled artifacts are available under `node_modules/@quantum-ds/tokens/dist
   - **Tokens Studio:** `dist/tokens_studio/*.json` (not yet packaged)
 
 > [!WARNING]
-> The previous source of truth was the tokens defined in Figma artboards. These now live under `deprecated-tokens-from-figma/` and are still included in the package to avoid breaking changes, but **they are deprecated and must not be used for new work**.
+> The previous source of truth was the tokens defined in Figma artboards. Two outputs still come from them and are included in the package to avoid breaking changes, but **they are deprecated, must not be used for new work, and will be removed in a future major version**:
+>
+> - `dist/json/`, the original JSON tokens exported from Figma
+> - `dist/tokens.js`, the JavaScript module generated from `dist/json/`, which is also the package entry point (`main`)
+>
+> For new integrations, use the DTCG tokens in `dist/dtcg/` or one of the formats generated from them. In JavaScript, `dist/tokens-es6.js` exposes one named export per token, for example `BorderRadiusMedium`. It is not a drop-in replacement for the nested object of `dist/tokens.js`.
 
 ## Comparing built files with a branch, tag, or commit
 

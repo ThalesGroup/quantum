@@ -20,6 +20,9 @@
     "!dist/figma",
     "!dist/tokens_studio"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "prebuild:dtcg": "node dtcg-index.mjs",
     "build:tokens-studio": "node src/main.mts --parser tokensStudio",

@@ -34,17 +34,7 @@ Quantum is the Thales Design System. This repository is a monorepo that hosts it
 | ------- | ----------- |
 | [`@quantum-ds/tokens`](packages/tokens) | Quantum tokens defined via the [Design Tokens Format (DTCG) specification](https://www.designtokens.org/) and transformed into formats for design tools and programming languages |
 
-> [!WARNING]
-> The packages are not yet published on npm. Until they are, you can build them from this repository.
-
-To install the dependencies and build all packages, you need the latest LTS version of [Node.js](https://nodejs.org/), as defined in [`.nvmrc`](.nvmrc), and [pnpm](https://pnpm.io/) 12:
-
-```sh
-pnpm i
-pnpm build
-```
-
-See the README of each package for its usage.
+The packages are published on npm under the [`@quantum-ds`](https://www.npmjs.com/org/quantum-ds) scope. See the README of each package for its usage.
 
 <!--
 ## Documentation
