@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+jobs:
+  # Publishes @quantum-ds/tokens to npm with trusted publishing (OIDC) when a release tagged @quantum-ds/tokens@<version> is published
+  publish-tokens:
+    if: startsWith(github.event.release.tag_name, '@quantum-ds/tokens@')
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write # Required by npm trusted publishing and provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: Check that the release tag matches the package version
+        id: version
+        working-directory: packages/tokens
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "@quantum-ds/tokens@$version" ]; then
+            echo "::error::Release tag $TAG does not match the package version @quantum-ds/tokens@$version"
+            exit 1
+          fi
+          if [ -n "$(npm view "@quantum-ds/tokens@$version" version 2>/dev/null)" ]; then
+            echo "::notice::@quantum-ds/tokens@$version is already on npm, skipping the publication"
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.version.outputs.published != 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.version.outputs.published != 'true'
+        run: pnpm --filter @quantum-ds/tokens run check:dtcg
+      - if: steps.version.outputs.published != 'true'
+        run: pnpm --filter @quantum-ds/tokens run build
+      - if: steps.version.outputs.published != 'true'
+        working-directory: packages/tokens
+        run: pnpm publish --provenance --no-git-checks
