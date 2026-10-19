@@ -1,6 +1,12 @@
 <div align="center">
 
-<p><img src="./assets/brand/README-avatar.png" alt="Quantum avatar" width="120" height="120"></p>
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/brand/README-avatar-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/brand/README-avatar-light.png">
+    <img src="./assets/brand/README-avatar-light.png" alt="Quantum avatar" width="120" height="120">
+  </picture>
+</p>
 
 # Quantum
 
