@@ -167,8 +167,8 @@ importers:
   .:
     devDependencies:
       '@directededges/specs-schema':
-        specifier: 0.34.0
-        version: 0.34.0
+        specifier: 0.35.0
+        version: 0.35.0
       ajv:
         specifier: ^8.17.1
         version: 8.20.0
@@ -179,8 +179,8 @@ importers:
   apps/docs:
     dependencies:
       '@component-anatomy/core':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.0
+        version: 0.2.0
       '@quantum-ds/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -379,12 +379,12 @@ packages:
     resolution: {integrity: sha512-dlT1m5e/0yUL0kRNcQn7yGLVThkgbB0Ga/1AmfDDC/8ik6AIiSf2QLQO2zPYvefsHP0aFgxO93cVLCCfDp7kzQ==}
     engines: {node: '>= 20.12.0'}
 
-  '@component-anatomy/core@0.1.0':
-    resolution: {integrity: sha512-vWx09yGnA2OHfjQMK32kxIqEOASOd/owmsvnYvSQTiUlVwtd3uLjetlFsPcNpKXIqMV4ag6jnF+X0G7yVxuMPQ==}
+  '@component-anatomy/core@0.2.0':
+    resolution: {integrity: sha512-waedd2LBPSkd5fBoovrvprz2T5sb44BZLNQL4oP3U/h1BItjXd81+M1kl/WT3Sd2UxdCoqiEmEKbtomewuq4Ww==}
     engines: {node: '>=22.12.0'}
 
-  '@directededges/specs-schema@0.34.0':
-    resolution: {integrity: sha512-+Noz7EHtiD4kwD9t+KiKx7PIwNln5WcKoOX/ZJJX/Fs7xN4obN+/bC8SqcOUOAVTQX4EOQxZZwHNdgJDBG0ldA==}
+  '@directededges/specs-schema@0.35.0':
+    resolution: {integrity: sha512-rI56aA75iKGBqYCrIPpSiw0FC10LGd+efEqjepITX/usG5ZhQthWdBojVseHS5hF6VH6nXYV6C4KBma35aN23Q==}
 
   '@emnapi/core@1.11.1':
     resolution: {integrity: sha512-RSvbQmHzdKzNsLYa/wHrbc3KN4sYLKAdPZxqiM2HATqv/SBk2/ENSHpvXGaLOMcsAyz0poEGqkmmKYG3OWiJEQ==}
@@ -2062,9 +2062,9 @@ snapshots:
       fast-wrap-ansi: 0.2.2
       sisteransi: 1.0.5
 
-  '@component-anatomy/core@0.1.0': {}
+  '@component-anatomy/core@0.2.0': {}
 
-  '@directededges/specs-schema@0.34.0': {}
+  '@directededges/specs-schema@0.35.0': {}
 
   '@emnapi/core@1.11.1':
     dependencies:

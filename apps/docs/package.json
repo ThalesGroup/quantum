@@ -10,7 +10,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@component-anatomy/core": "^0.1.0",
+    "@component-anatomy/core": "^0.2.0",
     "@quantum-ds/tokens": "workspace:*",
     "@shikijs/transformers": "^4.4.3",
     "astro": "^7.3.5",
