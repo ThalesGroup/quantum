@@ -69,7 +69,7 @@ sheet per question (skill `review-sheet`). Reference run: an earlier step-by-ste
 
 1. Recheck variant by variant: every color of the final repository (resolved, light) against
    the export, and every dimension, so that the list is complete and not just the sum of the steps.
-2. Open one issue labelled `upstream-figma-ds` plus the component labels, and `nextgen` when
+2. Open one issue labelled `upstream-figma-ds`, `components` and the component labels, and `nextgen` when
    the work concerns Quantum NextGen (skill `backlog`),
    written for the Figma designer:
    - each departure: Figma value, repository value, the Figma variable to bind (token path
