@@ -76,6 +76,7 @@ updates:
       include: 'scope'
     labels:
       - 'dependencies'
+      - 'nextgen'
     groups:
       nextgen-npm-minor-and-patch:
         applies-to: version-updates
@@ -107,6 +108,7 @@ updates:
       include: 'scope'
     labels:
       - 'dependencies'
+      - 'nextgen'
     groups:
       nextgen-github-actions:
         patterns:
