@@ -75,13 +75,14 @@ body.site {
 /* position: relative keeps the visually hidden status word inside the (scrolling) sidebar. */
 .site-sidebar__list a[aria-current] { color: var(--global-text-on-base-neutral-primary); background: var(--global-bg-level-1-default); border-color: var(--global-border-level-edge-level-1); }
 
-.site-content { flex: 1 1 auto; min-width: 0; display: flex; justify-content: center; gap: var(--space-64); padding: var(--space-40) var(--space-24) var(--space-80); }
+.site-content { flex: 1 1 auto; min-width: 0; display: flex; justify-content: center; gap: var(--space-64); padding: var(--space-40) var(--space-64) var(--space-80); }
 .site-main { flex: 1 1 auto; min-width: 0; max-width: var(--site-content); }
 
 
-/* "On this page": the outline of the content, sticky next to it on wide screens. */
+/* "On this page": the outline of the content, sticky next to it on wide screens. Its column is kept
+ * (empty) on pages without an outline, so the content starts at the same place on every page. */
 .site-outline { flex: none; width: var(--site-outline); position: sticky; top: var(--site-top); align-self: flex-start; max-height: calc(100vh - var(--site-top)); overflow-y: auto; padding: var(--space-24) 0 var(--space-24) var(--space-4); }
-.site-outline[hidden] { display: none; }
+.site-outline[hidden] { display: block; visibility: hidden; }
 .site-outline__title { margin: 0 0 var(--space-12); padding-left: var(--space-16); font-size: var(--body-size-2xs); font-weight: var(--body-weight-medium); letter-spacing: var(--font-letter-spacing-tight-xs); text-transform: uppercase; color: var(--global-text-on-base-neutral-tertiary); }
 .site-outline__list { list-style: none; margin: 0; padding: 0; border-left: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }
 .site-outline__list a { display: block; padding: var(--space-8) var(--space-16); margin-left: calc(-1 * var(--stroke-width-sm)); border-left: var(--stroke-width-lg) solid transparent; font-size: var(--body-size-sm); font-weight: var(--body-weight-medium); line-height: var(--font-line-height-tight); letter-spacing: var(--font-letter-spacing-tight-sm); color: var(--global-text-on-base-neutral-tertiary); text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -99,7 +100,8 @@ body.site {
 .site-footer__nav a:hover { color: var(--global-text-on-base-neutral-primary); }
 
 @media (max-width: 1200px) {
-  .site-outline { display: none; }
+  .site-outline, .site-outline[hidden] { display: none; }
+  .site-content { padding-inline: var(--space-40); }
 }
 @media (max-width: 900px) {
   /* The sidebar becomes rows above the content: the mode switch and the areas, then the pages. */
