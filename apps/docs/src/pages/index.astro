@@ -33,15 +33,14 @@ const filterable = specs.length > 6;
   <section aria-labelledby="site-components-title">
     <div class="site-list-head">
       <h2 id="site-components-title">All components</h2>
-      {filterable ? <div class="site-filter" set:html={getTemplate('search-field')?.render({ label: 'Filter components', id: 'component-filter', size: 'small', placeholder: 'Filter by name, role or status', attrs: { 'data-filter': true } })}></div> : null}
+      {filterable ? <div class="site-filter" set:html={getTemplate('search-field')?.render({ label: 'Filter components', id: 'component-filter', size: 'small', placeholder: 'Filter by name', attrs: { 'data-filter': true } })}></div> : null}
     </div>
     <ul class="site-list" data-list>
       {specs.map((s) => {
         const tpl = getTemplate(s.id);
         const html = tpl ? tpl.render(defaultProps(s.data)) : '';
-        const keywords = [s.data.name, s.data.role, s.data.status, ...(s.data.tags ?? [])].join(' ').toLowerCase();
         return (
-          <li class="site-list__item" data-keywords={keywords}>
+          <li class="site-list__item" data-name={s.data.name.toLowerCase()}>
             <div class="site-list__thumb site-preview__stage" set:html={html} inert aria-hidden="true"></div>
             <div>
               <h3 class="site-list__title"><a class="site-list__link" href={`${base}/components/${s.id}`}>{s.data.name}</a> <Status status={s.data.status} /></h3>
@@ -71,7 +70,7 @@ const filterable = specs.length > 6;
     const q = input.value.trim().toLowerCase();
     let shown = 0;
     for (const li of items) {
-      const match = !q || li.dataset.keywords!.includes(q);
+      const match = !q || li.dataset.name!.includes(q);
       li.hidden = !match;
       if (match) shown++;
     }
