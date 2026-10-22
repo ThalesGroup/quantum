@@ -33,11 +33,24 @@ The repository is the GitHub repository
   The body stands alone: context, the artifacts involved (paths), what is expected. Report the
   issue URL.
 - **Labels.** On every issue and every pull request, pick every label that fits from the
-  repository's existing set (`gh label list --repo ThalesGroup/quantum`): `bug`, `enhancement`,
-  `documentation`, `question`, one per commit type (`feat`, `fix`, `docs`, `ci`…)… Every issue
-  and pull request that concerns Quantum NextGen (a pull request against `nextgen`, an issue
-  about its packages, specs, docs site, guides or skills) always takes `nextgen`. Do not invent
-  labels on the fly; create a new one only when asked.
+  repository's existing set (`gh label list --repo ThalesGroup/quantum`):
+  - **Kind.** A pull request takes the label of its commit type (`feat`, `fix`, `docs`, `ci`,
+    `test`, `perf`, `build`, `chore`, `refactor`), plus `dependencies` when it changes
+    dependencies. An issue takes `bug`, `enhancement` or `question` instead, never a commit type
+    (`docs` aside, as an area).
+  - **Area**, every one the change or the issue touches: `site` (the docs website's code,
+    `apps/docs/` and its screens), `content` (its guidance pages, `apps/docs/content/`),
+    `tokens` (`packages/tokens/`), `components` (`packages/components/`: specs, CSS,
+    templates), `docs` (README, CONTRIBUTING, the agent guides in `agents/` and the skills; the
+    same label as the commit type, there is no `documentation` label). Scripts and workflows take
+    no area label: the kind says it (`build`, `ci`).
+  - **Quantum NextGen.** Every issue and pull request that concerns it (a pull request against
+    `nextgen`, an issue about its packages, specs, docs site, guides or skills) always takes
+    `nextgen`.
+
+  The area is the part of the repository, not the commit scope: `fix(docs): …` on the site's
+  code takes `fix` and `site`; `docs` goes only on what touches the repository's own docs. Do not invent labels on the fly; create a new one
+  only when asked.
 - **This repository only.** Always pass `--repo ThalesGroup/quantum`. Never open an issue or a
   pull request, or comment on one, in any other repository, including upstream projects
   (Specs, Astro, W3C…): describe the upstream problem in an issue here instead.

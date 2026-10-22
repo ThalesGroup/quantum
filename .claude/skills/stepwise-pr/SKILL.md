@@ -26,8 +26,8 @@ Repository rules still apply in full: `agents/workflow.md` (decision loop), `age
    Run `pnpm install` in it.
 2. Put any input material in place (an export goes to `raw_content/components/`, `agents/token-sources.md`).
 3. Push and open a **draft** pull request right away, even before the first change, with the
-   labels that fit, `nextgen` always when the work concerns Quantum NextGen
-   (`gh pr create --draft --repo ThalesGroup/quantum …`).
+   labels that fit (its commit type and its areas, `agents/git.md` "Labels"), `nextgen` always
+   when the work concerns Quantum NextGen (`gh pr create --draft --repo ThalesGroup/quantum …`).
 4. Start a preview of the worktree (skill `worktree-preview`) so steps can be shown.
 5. Write the plan into the description (template below), then stop and let the team read it.
 

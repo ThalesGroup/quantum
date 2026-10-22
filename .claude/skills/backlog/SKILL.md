@@ -13,9 +13,11 @@ issue right away instead of being done or left in the chat.
 
 `gh label list --repo ThalesGroup/quantum --limit 100`, then every label of that set that fits:
 
-- **Kind:** `bug`, `enhancement`, `documentation`, `question`.
-- **Area**, when the set has them: tokens, accessibility, a new component, a gap found while
-  building a screen.
+- **Kind:** `bug`, `enhancement` or `question`. Commit types (`fix`, `feat`…) are for pull requests only,
+  `docs` aside as an area.
+- **Area**, every one concerned: `site` (the docs website's code, its screens included),
+  `content` (its guidance pages), `tokens`, `components`, `docs` (README, CONTRIBUTING,
+  guides, skills) (`agents/git.md` "Labels").
 - **One label per component id** (`button`, `icon-button`, `text-field`…), when the set has them: every component
   concerned. A component that mirrors another (`scripts/lib/mirrors.mjs`) gets its label too.
 - **One label per platform** (`web`, `ios`, `android`, `desktop`), when the set has them and the issue is scoped to it.
