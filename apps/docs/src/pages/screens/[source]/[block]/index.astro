@@ -28,9 +28,8 @@ const widths = [
 ];
 const select = getTemplate('select')!;
 ---
-<Layout title={screen.meta.name} sidebar="screens" description={screen.meta.description}>
+<Layout title={screen.meta.name} description={screen.meta.description}>
   <header class="site-page-header">
-    <p class="site-eyebrow"><a href={`${base}/screens`}>Screens</a><span aria-hidden="true">/</span><span>{section?.name}</span></p>
     <h1>{screen.meta.name}</h1>
     <p class="site-page-header__desc">{screen.meta.description}</p>
   </header>

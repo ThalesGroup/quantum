@@ -7,7 +7,7 @@ const screens = getScreens();
 const sources = getSources();
 const sections = getSections().map((s) => ({ ...s, screens: screens.filter((x) => x.meta.section === s.id) })).filter((s) => s.screens.length);
 ---
-<Layout title="Screens" sidebar="screens" description="Real-world screens rebuilt with the design system's components and tokens, with their source and licence.">
+<Layout title="Screens" description="Real-world screens rebuilt with the design system's components and tokens, with their source and licence.">
   <header class="site-page-header">
     <h1>Screens</h1>
     <p class="site-lede">Real-world screens rebuilt only with the components and tokens of the design system. A component proves itself when it is assembled with others: screens show the system on pages people recognise, test how components combine, and list what the system still lacks.</p>

@@ -70,7 +70,7 @@ const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')
 ---
 <Layout title={tab ? `${current.label} · ${spec.name}` : spec.name} description={spec.summary}>
   <header class="site-page-header">
-    <p class="site-eyebrow"><a href={`${base}/`}>Components</a> <span aria-hidden="true">/</span> role <code>{spec.role}</code></p>
+    <p class="site-eyebrow">role <code>{spec.role}</code></p>
     <h1>{spec.name} <Status status={spec.status} /> <span class="site-version">v{spec.version}</span></h1>
     <p class="site-lede">{spec.summary}</p>
     {spec.description ? <p class="site-page-header__desc">{spec.description}</p> : null}

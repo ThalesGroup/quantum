@@ -19,7 +19,7 @@ interface Props {
 const { spec, template, initial } = Astro.props;
 const icons = template.meta?.icons ?? [];
 const props = spec.properties.filter((p: any) => p.type !== 'node');
-// Mode context of the stage: the page's (header switch), or one mode set on the stage itself.
+// Mode context of the stage: the page's (Mode switch), or one mode set on the stage itself.
 const { modes, attribute, auto } = getModes();
 const modeChoices = [...modes.map((m) => m.id), ...(auto ? [auto] : [])];
 const inspectorId = `inspector-${spec.id}`;

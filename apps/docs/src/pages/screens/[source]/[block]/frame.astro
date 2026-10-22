@@ -27,7 +27,7 @@ const values = [...(auto ? [auto] : []), ...modes.map((m) => m.id)];
     <title>{screen.meta.name}</title>
     {attribute ? (
       <script is:inline define:vars={{ attribute, values }}>
-        // The mode of the docs (header switch, remembered per browser) or ?mode=; the screen page
+        // The mode of the docs (Mode switch, remembered per browser) or ?mode=; the screen page
         // also sets it directly when its Mode context select changes.
         const apply = (value) => { if (values.includes(value)) document.documentElement.setAttribute(attribute, value); };
         try { apply(new URLSearchParams(location.search).get('mode') ?? localStorage.getItem('site-mode')); } catch {}
