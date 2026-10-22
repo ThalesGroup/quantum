@@ -1,0 +1,51 @@
+{
+  "$description": "Component tokens for Skeleton. Path grammar: skeleton.<part>.<property>[.<shape>]. Parts, options and states must exist in packages/components/specs/components/skeleton.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "skeleton": {
+    "container": {
+      "background": {
+        "$type": "color",
+        "$value": "{global.bg.state.skeleton.default}"
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "text": {
+          "$value": "{corner-radius.2xs}"
+        },
+        "rectangle": {
+          "$value": "{corner-radius.sm}"
+        },
+        "circle": {
+          "$value": "{corner-radius.full}"
+        }
+      },
+      "height": {
+        "$type": "dimension",
+        "$description": "Default height when none is given: a line of body text, a square avatar, a block.",
+        "text": {
+          "$value": "{space.16}"
+        },
+        "circle": {
+          "$value": "{space.40}"
+        },
+        "rectangle": {
+          "$value": "{space.96}"
+        }
+      },
+      "opacity": {
+        "$type": "number",
+        "$description": "Low point of the pulse; the high point is fully opaque.",
+        "$value": "{opacity.50}"
+      },
+      "animation": {
+        "duration": {
+          "$type": "duration",
+          "$value": "{duration.normal}"
+        },
+        "easing": {
+          "$type": "cubicBezier",
+          "$value": "{easing.standard}"
+        }
+      }
+    }
+  }
+}

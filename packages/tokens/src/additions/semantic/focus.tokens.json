@@ -1,0 +1,15 @@
+{
+  "$description": "The focus ring of every component (Focus ring foundation). Not in the Figma library: added by the design system.",
+  "focus": {
+    "$type": "dimension",
+    "ring": {
+      "width": {
+        "$value": "{stroke-width.lg}",
+        "$description": "Focus ring of every component: the strong focus of the stroke scale, thick enough for WCAG 2.4.13 Focus Appearance (AAA)."
+      },
+      "offset": {
+        "$value": "{space.4}"
+      }
+    }
+  }
+}

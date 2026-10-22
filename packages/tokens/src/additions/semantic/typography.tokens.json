@@ -1,0 +1,86 @@
+{
+  "$description": "Typography the design system adds to the Figma library: the icon font and its axes, line heights and letter spacing. Not in the Figma library: added by the design system.",
+  "font": {
+    "icon": {
+      "$description": "Icon font: Material Symbols Outlined, latest version served by Google Fonts. The axes (fill, weight, grade, optical size) are fixed: web/fonts.css requests exactly these values, change both together.",
+      "family": {
+        "$type": "fontFamily",
+        "$value": [
+          "Material Symbols Outlined"
+        ]
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "light": {
+          "$value": 300
+        }
+      },
+      "fill": {
+        "$type": "number",
+        "$description": "FILL axis: 0 is the outlined glyph, 1 the filled one.",
+        "off": {
+          "$value": 0
+        }
+      },
+      "grade": {
+        "$type": "number",
+        "$description": "GRAD axis: stroke thickness without changing the glyph size.",
+        "normal": {
+          "$value": 0
+        }
+      },
+      "optical-size": {
+        "20": {
+          "$value": 20
+        },
+        "$type": "number",
+        "$description": "opsz axis, in px: the size the glyph strokes are drawn for."
+      }
+    },
+    "line-height": {
+      "$type": "number",
+      "$description": "Line heights as multipliers of the font size.",
+      "compact": {
+        "$value": 1,
+        "$description": "The line box equals the font size: single-line labels set as in the Figma prototype (Button)."
+      },
+      "tight": {
+        "$value": 1.2
+      },
+      "normal": {
+        "$value": 1.5
+      }
+    },
+    "letter-spacing": {
+      "$type": "dimension",
+      "$description": "Letter spacing.",
+      "normal": {
+        "$value": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "tight": {
+        "$description": "Negative tracking of the Figma prototype's button labels: -2 % of body.size.xs and body.size.sm, -3 % of body.size.md, written in px (the token format has no em).",
+        "xs": {
+          "$value": {
+            "value": -0.24,
+            "unit": "px"
+          }
+        },
+        "sm": {
+          "$value": {
+            "value": -0.28,
+            "unit": "px"
+          }
+        },
+        "md": {
+          "$value": {
+            "value": -0.48,
+            "unit": "px"
+          }
+        }
+      }
+    }
+  }
+}

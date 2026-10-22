@@ -1,0 +1,34 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getScreens, getSections, getSources } from '../../lib/screens';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const screens = getScreens();
+const sources = getSources();
+const sections = getSections().map((s) => ({ ...s, screens: screens.filter((x) => x.meta.section === s.id) })).filter((s) => s.screens.length);
+---
+<Layout title="Screens" sidebar="screens" description="Real-world screens rebuilt with the design system's components and tokens, with their source and licence.">
+  <header class="site-page-header">
+    <h1>Screens</h1>
+    <p class="site-lede">Real-world screens rebuilt only with the components and tokens of the design system. A component proves itself when it is assembled with others: screens show the system on pages people recognise, test how components combine, and list what the system still lacks.</p>
+    <p class="site-page-header__desc">From <code>apps/docs/screens/&lt;source&gt;/&lt;block&gt;.screen.mjs</code>: each screen renders the components' own templates, laid out by <code>apps/docs/screens/screens.css</code> on semantic tokens. They follow every change of a component or a token. Each screen keeps its source and licence; the first batch comes from {sources.map((s, i) => <>{i ? ', ' : ''}<a href={s.url}>{s.name}</a></>)} (<a href={`${base}/screens/sources`}>sources and licences</a>).</p>
+  </header>
+
+  {sections.map((section) => (
+    <section class="site-section" aria-labelledby={`site-screens-${section.id}`}>
+      <h2 id={`site-screens-${section.id}`}>{section.name}</h2>
+      <p class="site-muted">{section.description}</p>
+      <ul class="site-screen-grid">
+        {section.screens.map((s) => (
+          <li class="site-screen-card">
+            <div class="site-screen-card__thumb" inert aria-hidden="true">
+              <iframe src={`${base}/screens/${s.id}/frame`} loading="lazy" tabindex="-1" title={s.meta.name}></iframe>
+            </div>
+            <h3 class="site-screen-card__title"><a href={`${base}/screens/${s.id}`}>{s.meta.name}</a></h3>
+            <p class="site-screen-card__meta"><code>{s.block}</code> · {sources.find((x) => x.id === s.source)?.name} · {s.meta.gaps.length} gap{s.meta.gaps.length === 1 ? '' : 's'}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Layout>

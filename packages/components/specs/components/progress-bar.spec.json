@@ -1,0 +1,457 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "progress-bar",
+  "name": "Progress bar",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "progressbar",
+  "summary": "Shows how far a task has progressed, or that it is in progress when its length is unknown.",
+  "description": "A progress bar fills a track from start to end as a task advances: an upload, an export, the steps of a setup. It has a visible label naming the task and, when the progress can be measured, an optional value in percent. When the length is unknown, the bar is indeterminate: a segment moves along the track to say that something is happening. It only reports: a progress bar is never a control.",
+  "tags": [
+    "feedback",
+    "status",
+    "loading"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Stacks the label row (label and value) and the track; carries the size and the forced state."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "Text naming the task (Uploading photos). Provides the accessible name of the bar."
+    },
+    {
+      "id": "value",
+      "role": "value",
+      "required": false,
+      "description": "The progress in percent, at the end of the label row. Shown only when the value is known and asked for."
+    },
+    {
+      "id": "track",
+      "role": "track",
+      "required": true,
+      "description": "The full length of the bar: the native progress element, drawn by the component. Holds the value and the maximum."
+    },
+    {
+      "id": "indicator",
+      "role": "indicator",
+      "required": true,
+      "decorative": true,
+      "parent": "track",
+      "description": "The filled part of the track, as long as the value; a moving segment when indeterminate. Drawn by the track (a pseudo-element on the web): it has tokens but no element of its own."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Thickness of the track.",
+      "affects": [
+        "track",
+        "indicator"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Thin (4 px): inline progress in lists and cards."
+        },
+        {
+          "value": "medium",
+          "description": "Default (8 px)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "The task in progress, as a noun or a verb phrase (Uploading 12 photos)."
+    },
+    {
+      "id": "value",
+      "name": "Value",
+      "type": "number",
+      "bindsTo": "track",
+      "description": "Progress made, from 0 to the maximum. Leave it unset when the length of the task is unknown: the bar is then indeterminate."
+    },
+    {
+      "id": "max",
+      "name": "Maximum",
+      "type": "number",
+      "default": 100,
+      "description": "Value of a completed task."
+    },
+    {
+      "id": "showValue",
+      "name": "Show value",
+      "type": "boolean",
+      "default": false,
+      "description": "Shows the progress in percent at the end of the label row. Ignored when the bar is indeterminate."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "Determinate: the indicator fills the track in proportion to the value."
+    },
+    {
+      "id": "indeterminate",
+      "trigger": "system",
+      "description": "The value is unknown: a segment moves along the track from start to end, and keeps moving until a value is set or the bar is removed. Under reduced motion the segment rests at the start."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "stretch",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "The label row comes first: the label at the start, the value at the end; the track fills the width below it.",
+      "The bar fills the width its container gives it; the layout decides that width."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "progressbar",
+    "name": {
+      "text": "Computed from the label, associated with the track as its label element on the web (a progress element is labelable). The value is exposed as the current value of the bar, with its maximum.",
+      "refs": [
+        "html-progress",
+        "mdn-progress",
+        "html-aam-progress"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "Expose the progressbar role, its name, its current value and its maximum through the platform's native progress indicator, so assistive technology can report the progress as a value, not as a drawing.",
+        "refs": [
+          "wcag:4.1.2",
+          "wcag:1.3.1",
+          "aria-progressbar",
+          "compose-progress"
+        ]
+      },
+      {
+        "text": "Use the native progress element with value and max: it has the implicit progressbar role, exposes the value and the maximum, and is indeterminate when value is absent. Do not set aria-valuemax on it.",
+        "refs": [
+          "html-aria-progress",
+          "html-aam-progress",
+          "html-progress"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every progress bar has a visible label naming the task, associated with the bar: a bar without a name tells people that something is happening, not what.",
+        "refs": [
+          "wcag:4.1.2",
+          "html-progress",
+          "mdn-progress"
+        ]
+      },
+      {
+        "text": "Associate the label with a label element whose for attribute names the progress element's id, as for a form control.",
+        "refs": [
+          "mdn-progress",
+          "html-label",
+          "wcag-h44"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The indicator is a graphical object required to understand the progress: it contrasts at least 3:1 with the track it fills, 4.85:1 in light mode and 10.73:1 in dark mode, and 5.79:1 and 12.80:1 with the default surface. The track itself is not required to contrast with the page: the label and the indicator carry the information.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-graphics"
+        ]
+      },
+      {
+        "text": "Label and value text contrast at least 4.5:1 with the surface: 19.07:1 and 12.87:1 (light), 11.27:1 and 8.80:1 (dark) on the default surface.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The progress is shown by the length of the indicator and, when asked for, by the value in text, never by color alone.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "An indeterminate bar moves for as long as the task runs. A moving indicator of a task that is not presented in parallel with other content is the preloader case that WCAG 2.2.2 describes as acceptable; when the page is usable meanwhile, prefer a determinate bar or keep the animation subtle. The movement is removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.2.2",
+          "understanding-pause-stop-hide",
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "The indeterminate look is the native one, a progress without value (:indeterminate); the forced state for review draws the same segment. Under prefers-reduced-motion: reduce the animation stops and the segment rests at the start of the track.",
+        "refs": [
+          "mdn-indeterminate",
+          "mdn-reduced-motion"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "When a status message reports the completion of the task (Upload complete), it is announced through a live region of the page; the bar itself announces its name and value when people reach it.",
+        "refs": [
+          "wcag:4.1.3",
+          "understanding-status-messages"
+        ]
+      },
+      {
+        "text": "Use a determinate progress indicator for a task with a well-defined duration and an indeterminate one for unquantifiable tasks; when possible, use a determinate indicator. Reduce automatic animations when Reduce Motion is on.",
+        "refs": [
+          "hig-progress-indicators",
+          "hig-accessibility-cognitive"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Expose the progress with the progress tracking semantics so the current value is read out.",
+        "refs": [
+          "compose-progress"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "aria-progressbar",
+        "title": "WAI-ARIA 1.2: progressbar role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#progressbar"
+      },
+      {
+        "id": "html-aria-progress",
+        "title": "ARIA in HTML: progress element (role progressbar)",
+        "url": "https://www.w3.org/TR/html-aria/#el-progress"
+      },
+      {
+        "id": "html-aam-progress",
+        "title": "HTML-AAM: progress element (progressbar, value and maximum)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-progress"
+      },
+      {
+        "id": "html-progress",
+        "title": "HTML: the progress element (value, max, indeterminate; a labelable element)",
+        "url": "https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element"
+      },
+      {
+        "id": "html-label",
+        "title": "HTML: the label element (for attribute, labeled control)",
+        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
+      },
+      {
+        "id": "mdn-progress",
+        "title": "MDN: the progress element, labeling",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/progress#labeling"
+      },
+      {
+        "id": "mdn-indeterminate",
+        "title": "MDN: :indeterminate (progress elements without a value)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:indeterminate"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "wcag-h44",
+        "title": "WCAG technique H44: label elements to associate text labels with form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
+      },
+      {
+        "id": "understanding-non-text-contrast-graphics",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: graphical objects",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects"
+      },
+      {
+        "id": "understanding-pause-stop-hide",
+        "title": "Understanding WCAG 2.2.2 Pause, Stop, Hide (a preloader animation example)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      },
+      {
+        "id": "understanding-status-messages",
+        "title": "Understanding WCAG 4.1.3 Status Messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      },
+      {
+        "id": "hig-progress-indicators",
+        "title": "Apple HIG: Progress indicators, best practices (determinate when the duration is known)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/progress-indicators#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-cognitive",
+        "title": "Apple HIG: Accessibility, cognitive (Reduce Motion)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive"
+      },
+      {
+        "id": "compose-progress",
+        "title": "Jetpack Compose accessibility: progress tracking semantics",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#progress-tracking"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The label names the task: Uploading 12 photos, Exporting report, Setting up your workspace. Sentence case, no trailing punctuation.",
+      "Show the value when people wait for it and it is accurate; hide it when it jumps or stalls.",
+      "When the task ends, replace or complete the bar with a message that says so (Upload complete)."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "label": "Uploading 12 photos",
+        "value": 40
+      }
+    },
+    {
+      "id": "medium-value",
+      "name": "Medium, with value",
+      "props": {
+        "size": "medium",
+        "label": "Exporting report",
+        "value": 72,
+        "showValue": true
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "label": "Storage used",
+        "value": 95,
+        "showValue": true
+      }
+    },
+    {
+      "id": "medium-indeterminate",
+      "name": "Medium, indeterminate",
+      "description": "The length of the task is unknown: no value is set.",
+      "props": {
+        "size": "medium",
+        "label": "Preparing your workspace"
+      }
+    },
+    {
+      "id": "medium-complete",
+      "name": "Medium, complete",
+      "props": {
+        "size": "medium",
+        "label": "Setup",
+        "value": 5,
+        "max": 5,
+        "showValue": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/progress-bar.tokens.json",
+    "prefix": "progress-bar"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/progress-bar/progress-bar.css",
+      "template": "packages/components/src/components/progress-bar/progress-bar.template.mjs",
+      "selector": ".ds-progress-bar",
+      "element": "div",
+      "attributes": {
+        "size": "data-size"
+      },
+      "stateAttribute": "data-state",
+      "rolePart": "track",
+      "partSelectors": {
+        "container": ".ds-progress-bar",
+        "label": ".ds-progress-bar__label",
+        "value": ".ds-progress-bar__value",
+        "track": ".ds-progress-bar__track"
+      }
+    }
+  },
+  "related": [],
+  "decisions": [
+    {
+      "id": "track-and-indicator-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The track is the third neutral base fill (global.bg.base.neutral.3) and the indicator the accent brand fill, in every mode; the label is primary text and the value secondary text.",
+      "rationale": "The Figma library maps no color to progress; the brand fill keeps 3:1 against the neutral track in both modes (WCAG 1.4.11).",
+      "tokens": [
+        "progress-bar.track.background",
+        "progress-bar.indicator.background",
+        "progress-bar.label.color",
+        "progress-bar.value.color"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two track thicknesses from the space scale, 4 px (small) and 8 px (medium, the default), fully rounded; the label is 14 px medium and the value 14 px regular.",
+      "tokens": [
+        "progress-bar.track.height.*",
+        "progress-bar.track.border-radius",
+        "progress-bar.indicator.border-radius",
+        "progress-bar.label.typography",
+        "progress-bar.value.typography"
+      ]
+    },
+    {
+      "id": "indeterminate-motion",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "motion",
+      "status": "active",
+      "text": "A determinate bar animates its length with the normal duration and the standard easing; the indeterminate segment sweeps the track in six times the normal duration (1.5 s), forever, and stops under reduced motion. The six-fold factor is written in the CSS because the additions have no long duration token: a decision to take.",
+      "tokens": [
+        "progress-bar.indicator.transition.*"
+      ],
+      "refs": [
+        "wcag:2.3.3",
+        "wcag:2.2.2"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions track-and-indicator-colors, sizes, indeterminate-motion). Native progress element named by a label element, with an optional value in percent; states default and indeterminate; sizes small and medium. Contrast, light / dark: indicator on track 4.85 / 10.73, indicator on the default surface 5.79 / 12.80, label 19.07 / 11.27, value 12.87 / 8.80."
+    }
+  ]
+}

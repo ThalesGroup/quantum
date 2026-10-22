@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { getModes, modeTokens } from '../lib/tokens';
+import { getTemplate } from '../lib/web';
+import { onWeb } from '../lib/platforms';
+import { highlight } from '../lib/highlight';
+import { displayValue } from '../lib/tokens';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { modes, attribute, auto } = getModes();
+const overlays = modeTokens();
+const def = modes.find((m) => m.default);
+const specs = (await getCollection('specs')).map((s) => s.data).sort((a: any, b: any) => a.name.localeCompare(b.name));
+// Every component's web examples, rendered once per mode context: the same markup, one attribute apart.
+const previews = specs
+  .map((spec: any) => ({ spec, template: getTemplate(spec.id), examples: (spec.examples ?? []).filter(onWeb) }))
+  .filter((p) => p.template && p.examples.length);
+const swatch = (type: string | null, value: string) => (type === 'color' && !value.startsWith('error') ? value : null);
+const usage = attribute
+  ? [
+      `<!-- The whole page follows the system preference -->`,
+      `<html ${attribute}="${auto ?? def?.id}">`,
+      ...modes.filter((m) => !m.default).map((m) => `  <!-- A subtree in ${m.id} mode, whatever the page mode -->\n  <section ${attribute}="${m.id}">…</section>`),
+      `</html>`,
+    ].join('\n')
+  : '';
+---
+<Layout title="Modes" description="The color modes of the design system: the token values that change per mode and how each platform selects them.">
+  <header class="site-page-header">
+    <h1>Modes</h1>
+    <p class="site-lede">A mode is a context in which the same tokens take other values: light and dark today. Components never change per mode; their tokens alias semantic tokens, and only the semantic values differ.</p>
+    <p class="site-page-header__desc">From <code>packages/tokens/tokens.config.json</code> (<code>modes</code>) and the overlays under <code>packages/tokens/src/modes/</code> (the Figma library) and <code>packages/tokens/src/additions/modes/</code> (the design system). The default mode is the base tiers; every other mode overrides semantic tokens with the same paths. Use the Mode switch in the header to review the whole site in one mode.</p>
+  </header>
+
+  <section class="site-section">
+    <h2>Vocabulary</h2>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">Mode</th><th scope="col">Scheme</th><th scope="col">Sources</th><th scope="col">Web context</th><th scope="col">Other platforms</th></tr></thead>
+        <tbody>
+          {modes.map((m) => (
+            <tr>
+              <th scope="row">{m.id} {m.default ? <span class="site-chip">default</span> : null}<div class="site-muted site-small">{m.description}</div></th>
+              <td>{m.scheme ?? <span class="site-muted">—</span>}</td>
+              <td class="site-small">{m.default ? <span class="site-muted">base tiers</span> : m.files.map((f) => <code class="site-chip">tokens/{f}</code>)}</td>
+              <td class="site-small">{attribute ? <code>[{attribute}="{m.id}"]</code> : null}{m.default ? <span class="site-muted"> and the root</span> : null}</td>
+              <td class="site-small"><code>platforms/&lt;platform&gt;/{m.id}.tokens.json</code></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {attribute ? (
+      <>
+        <h3>On the web</h3>
+        <p>The attribute <code>{attribute}</code> sets the mode of an element and everything inside it, so a page and a region of it can use different modes.{auto ? <> The value <code>{auto}</code> follows the system preference (<code>prefers-color-scheme</code>) through each mode's scheme.</> : null} Without the attribute the page is in the default mode. Each context also sets <code>color-scheme</code>, so native form controls and scrollbars match.</p>
+        <pre><code set:html={highlight(usage, 'html')}></code></pre>
+      </>
+    ) : null}
+    <h3>On other platforms</h3>
+    <p>Each platform gets one resolved DTCG tree per mode; the technology picks the tree that matches the system appearance named by the mode's scheme (light or dark) and switches when it changes. See <a href={`${base}/platforms`}>Platforms</a>.</p>
+  </section>
+
+  {previews.length && attribute ? (
+    <section class="site-section">
+      <h2>Components in every mode</h2>
+      <p class="site-muted">The web examples of each component, rendered once per mode context.</p>
+      {previews.map(({ spec, template, examples }) => (
+        <div class="site-subsection">
+          <h3><a href={`${base}/components/${spec.id}`}>{spec.name}</a></h3>
+          <div class="site-mode-grid">
+            {modes.map((m) => (
+              <figure class="site-mode-grid__item">
+                <figcaption class="site-small site-muted">{m.id}</figcaption>
+                <div class="site-preview__stage" {...{ [attribute]: m.id }} set:html={examples.map((ex: any) => template!.render(ex.props)).join('\n')}></div>
+              </figure>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  ) : null}
+
+  {overlays.map((o) => (
+    <section class="site-section">
+      <h2>{o.id} mode tokens <span class="site-muted site-small">{o.overrides.length} overridden · {o.affects.length} component tokens follow</span></h2>
+      <div class="site-table-wrap">
+        <table class="site-table">
+          <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">{def?.id ?? 'default'}</th><th scope="col">{o.id}</th></tr></thead>
+          <tbody>
+            {o.overrides.map((t) => (
+              <tr>
+                <th scope="row"><code>{t.path}</code>{t.description ? <div class="site-muted site-small">{t.description}</div> : null}</th>
+                <td class="site-small"><code class="site-alias">{displayValue(t.value)}</code></td>
+                <td>{swatch(t.type, t.base) ? <span class="site-swatch" style={`--swatch: ${t.base}`}></span> : null}<code class="site-small">{t.base}</code></td>
+                <td>{swatch(t.type, t.mode) ? <span class="site-swatch" style={`--swatch: ${t.mode}`}></span> : null}<code class="site-small">{t.mode}</code></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  ))}
+</Layout>

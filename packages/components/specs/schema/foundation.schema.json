@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-system.local/schemas/foundation.schema.json",
+  "title": "Foundation specification",
+  "description": "A global specification shared by every component (color, typography, spacing, focus ring…). Technology-agnostic like a component spec, but with no anatomy, role or properties: it owns semantic tokens, states what they mean as rules, presents the tokens it is built from as specimens, carries its own accessibility contract, contrast requirements checked in every platform x mode, examples rendered with the components that follow it, a decision log and a changelog. Shared definitions come from component.schema.json.",
+  "type": "object",
+  "required": ["id", "name", "version", "status", "summary", "tokens", "rules", "accessibility", "changelog"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "$ref": "component.schema.json#/$defs/kebab", "description": "Unique among foundations and components. Same id for the docs page (docs/foundations/<id>.md) and the site page." },
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "status": { "enum": ["draft", "review", "stable", "deprecated"] },
+    "summary": { "type": "string", "minLength": 1, "description": "One sentence for listings." },
+    "description": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "tokens": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Semantic token paths (or group.* patterns) this foundation owns. Each must match at least one semantic token. Components follow the foundation by aliasing them. Empty while the foundation has no semantic decision yet: it then only presents raw primitives in its specimens.",
+      "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }
+    },
+    "appliesTo": {
+      "enum": ["every-component", "focusable-components"],
+      "description": "Components that must follow the foundation. focusable-components: every component whose role profile is focusable aliases every exact token path of `tokens` (validated). Omit when following it is a choice."
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "description": "What the foundation IS, one aspect per rule (shape, width, color, trigger…). Present tense, technology-agnostic. The values live in the tokens.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "component.schema.json#/$defs/kebab" },
+          "name": { "type": "string", "minLength": 1 },
+          "text": { "type": "string", "minLength": 1 },
+          "tokens": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }, "description": "Token paths carrying this aspect; shown with their value in every mode." },
+          "platforms": { "$ref": "component.schema.json#/$defs/platforms" }
+        }
+      }
+    },
+    "specimens": {
+      "type": "array",
+      "description": "How the site presents the tokens the foundation is built from, raw primitives included: one section per specimen, drawing every token its patterns match, so a new token appears with no site change. The display says how a value is drawn; scripts/lib/specimens.mjs lists the displays and the $types each one draws.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "display", "tokens"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "component.schema.json#/$defs/kebab" },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "description": "What the scale is for, in one or two sentences." },
+          "display": { "enum": ["palette", "color", "length", "size", "radius", "stroke", "blur", "opacity", "typography", "font-family", "font-size", "font-weight", "line-height", "letter-spacing", "duration", "easing", "icon", "icon-size", "value"] },
+          "tokens": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }, "description": "Raw or semantic token paths or group.* patterns, never component tokens." },
+          "tier": { "enum": ["raw", "semantic"], "description": "Keep only the tokens of this tier, when raw and semantic tokens share a group (space.* holds the raw scale and the semantic space.inset.*)." }
+        }
+      }
+    },
+    "contrast": {
+      "type": "array",
+      "description": "Contrast pairs, computed by pnpm validate from the resolved tokens in every platform x mode context. A pair under its minimum is an error, a warning while knownIssue tracks it; a pair without minimum is measured and shown only.",
+      "items": {
+        "type": "object",
+        "required": ["id", "foreground", "backgrounds", "refs"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "component.schema.json#/$defs/kebab" },
+          "description": { "type": "string", "description": "Where the pair occurs, and why its minimum applies or why it has none." },
+          "foreground": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*$", "description": "Color token drawn by the foundation." },
+          "backgrounds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }, "description": "Color tokens (or group.*) the foreground can sit on." },
+          "on": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }, "description": "Surfaces (color tokens or group.*) a translucent background is composited over before measuring, one pair per surface. Opaque backgrounds ignore it. Without it, a translucent background is composited over white." },
+          "minimum": { "type": "number", "minimum": 1, "maximum": 21, "description": "Required ratio: a pair under it fails pnpm validate. Omit it to measure a pair that has no requirement (an inactive component, a border that does not identify a component): computed and shown, never failing." },
+          "knownIssue": { "type": "string", "minLength": 1, "description": "A short description of the known problem behind pairs under the minimum (what fails and why it is kept for now), tracked in the issue backlog: pnpm validate reports them as warnings instead of errors, and fails once every pair passes, so the marker is removed with the fix. Requires minimum." },
+          "refs": { "$ref": "component.schema.json#/$defs/refs" }
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["guidelines", "references"],
+      "description": "Same grammar as a component's guidelines and references (component.schema.json); no role, name or keyboard.",
+      "properties": {
+        "guidelines": { "$ref": "component.schema.json#/$defs/accessibility/properties/guidelines" },
+        "references": { "$ref": "component.schema.json#/$defs/accessibility/properties/references" }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "description": "What the foundation looks like in use, rendered on its page in every mode: components following it, rendered by their web template with these props (the sandbox `state` prop forces a state), or code samples highlighted with the system's syntax theme.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["id", "name", "component", "props"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "$ref": "component.schema.json#/$defs/kebab" },
+              "name": { "type": "string", "minLength": 1 },
+              "description": { "type": "string" },
+              "component": { "$ref": "component.schema.json#/$defs/kebab" },
+              "props": { "type": "object" },
+              "platforms": { "$ref": "component.schema.json#/$defs/platforms" }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["id", "name", "source"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "$ref": "component.schema.json#/$defs/kebab" },
+              "name": { "type": "string", "minLength": 1 },
+              "description": { "type": "string" },
+              "source": { "type": "string", "pattern": "^packages/components/specs/foundations/[a-z0-9-]+/[a-z0-9-]+\\.(css|diff|html|js|json|md|sh|yml)$", "description": "A code sample: a file next to the spec, in specs/foundations/<foundation id>/. Its extension names the language: css, diff, html, js (JavaScript), json, md (Markdown), sh (shell), yml (YAML), the grammars the docs site loads. Shiki's notation comments ([!code highlight], [!code ++], [!code --], [!code error], [!code warning]) mark lines." },
+              "platforms": { "$ref": "component.schema.json#/$defs/platforms" }
+            }
+          }
+        ]
+      }
+    },
+    "decisions": { "type": "array", "items": { "$ref": "component.schema.json#/$defs/decision" }, "description": "Decision log, newest first, same rules as a component's." },
+    "changelog": { "$ref": "component.schema.json#/properties/changelog" }
+  }
+}

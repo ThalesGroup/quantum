@@ -1,0 +1,21 @@
+{
+  "$description": "PLACEHOLDER Android overlay of the Figma library's Typography families: the system font family for heading and body text. Not in the Figma library: added by the design system.",
+  "heading": {
+    "family": {
+      "$type": "fontFamily",
+      "$value": [
+        "Roboto",
+        "sans-serif"
+      ]
+    }
+  },
+  "body": {
+    "family": {
+      "$type": "fontFamily",
+      "$value": [
+        "Roboto",
+        "sans-serif"
+      ]
+    }
+  }
+}

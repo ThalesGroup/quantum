@@ -1,0 +1,311 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "skeleton",
+  "name": "Skeleton",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "presentation",
+  "summary": "A placeholder shape that stands in for content while it loads.",
+  "description": "A skeleton draws the outline of content that is not there yet: a line of text, an avatar, a card. Several skeletons laid out like the content they stand for tell people what is coming and where, with less jump than a spinner followed by the real content. A skeleton is invisible to assistive technology; the region that loads says so itself.",
+  "tags": [
+    "feedback",
+    "loading",
+    "placeholder"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: the shape itself, hidden from assistive technology. Carries the shape; width and height are the content it stands for."
+    }
+  ],
+  "properties": [
+    {
+      "id": "shape",
+      "name": "Shape",
+      "type": "enum",
+      "default": "text",
+      "description": "What the placeholder stands for; sets the corners and the default height.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "text",
+          "description": "A line of text: full width, 16 px high, slightly rounded."
+        },
+        {
+          "value": "circle",
+          "description": "An avatar or an icon: a 40 px disc."
+        },
+        {
+          "value": "rectangle",
+          "description": "A block (an image, a card): full width, 96 px high, 8 px corners."
+        }
+      ]
+    },
+    {
+      "id": "width",
+      "name": "Width",
+      "type": "string",
+      "description": "Width of the shape as a CSS length or percentage (60%, 12rem); the content's width. Full width by default, or the height for a circle."
+    },
+    {
+      "id": "height",
+      "name": "Height",
+      "type": "string",
+      "description": "Height of the shape as a CSS length; the content's height. The shape's default otherwise."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: the shape pulses while it is shown."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "start",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "A skeleton takes the size given to it, or the shape's default; the layout places skeletons as it will place the content.",
+      "A text skeleton is one line: stack several, the last one shorter, for a paragraph."
+    ]
+  },
+  "accessibility": {
+    "name": {
+      "text": "A skeleton has no name and no role: it is hidden from assistive technology. The loading region names what is happening, with a status message or by being marked busy.",
+      "refs": [
+        "aria-hidden",
+        "aria-busy",
+        "understanding-status-messages"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "A skeleton is pure decoration standing in for content: it is implemented so assistive technology ignores it, it carries no text, and the structure it sketches is conveyed by the content once loaded, and by the loading region's status meanwhile.",
+        "refs": [
+          "wcag:1.3.1",
+          "wcag:1.1.1",
+          "understanding-non-text-content",
+          "aria-hidden"
+        ]
+      },
+      {
+        "text": "Render each shape with aria-hidden=\"true\". Mark the region that loads with aria-busy=\"true\" while the skeletons show, and announce the loading and the arrival of the content with a status message when the wait is long.",
+        "refs": [
+          "aria-hidden",
+          "aria-busy",
+          "mdn-aria-busy",
+          "wcag:4.1.3",
+          "understanding-status-messages"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The shapes convey nothing by themselves (1.12:1 and 1.21:1 against the default surface): the layout of the skeletons, not their color, says what is coming. They never carry information people need.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "The pulse is a gentle opacity change, stopped when the user asks for reduced motion; skeletons disappear as soon as the content arrives, so they are never a long-running animation next to other content.",
+        "refs": [
+          "wcag:2.3.3",
+          "wcag:2.2.2",
+          "understanding-pause-stop-hide",
+          "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "Reduce automatic animations when Reduce Motion is on.",
+        "refs": [
+          "hig-accessibility-cognitive"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Pass null as the contentDescription of placeholder graphics so they are not communicated.",
+        "refs": [
+          "compose-graphic-elements"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "hig-accessibility-cognitive",
+        "title": "Apple HIG: Accessibility, cognitive (Reduce Motion)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "aria-busy",
+        "title": "WAI-ARIA 1.2: aria-busy",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-busy"
+      },
+      {
+        "id": "mdn-aria-busy",
+        "title": "MDN: aria-busy (an element being modified or loading)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-busy"
+      },
+      {
+        "id": "understanding-non-text-content",
+        "title": "Understanding WCAG 1.1.1 Non-text Content (pure decoration)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      },
+      {
+        "id": "understanding-status-messages",
+        "title": "Understanding WCAG 4.1.3 Status Messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      },
+      {
+        "id": "understanding-pause-stop-hide",
+        "title": "Understanding WCAG 2.2.2 Pause, Stop, Hide (a preloader animation example)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "A skeleton carries no text. The loading region's status message says what loads: Loading your projects."
+    ]
+  },
+  "examples": [
+    {
+      "id": "text",
+      "name": "Text",
+      "props": {
+        "shape": "text",
+        "width": "60%"
+      }
+    },
+    {
+      "id": "text-full",
+      "name": "Text, full width",
+      "props": {
+        "shape": "text"
+      }
+    },
+    {
+      "id": "circle",
+      "name": "Circle",
+      "props": {
+        "shape": "circle"
+      }
+    },
+    {
+      "id": "rectangle",
+      "name": "Rectangle",
+      "props": {
+        "shape": "rectangle"
+      }
+    },
+    {
+      "id": "rectangle-sized",
+      "name": "Rectangle, sized",
+      "description": "A card thumbnail.",
+      "props": {
+        "shape": "rectangle",
+        "width": "12rem",
+        "height": "8rem"
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/skeleton.tokens.json",
+    "prefix": "skeleton"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/skeleton/skeleton.css",
+      "template": "packages/components/src/components/skeleton/skeleton.template.mjs",
+      "selector": ".ds-skeleton",
+      "element": "span",
+      "attributes": {
+        "shape": "data-shape"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-skeleton"
+      }
+    }
+  },
+  "related": [
+    "spinner",
+    "progress-bar"
+  ],
+  "decisions": [
+    {
+      "id": "skeleton-fill",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "A skeleton is filled with the Figma library's skeleton state color (global.bg.state.skeleton.default, translucent) and pulses between fully opaque and the 50 % opacity step, six times the normal duration per half cycle.",
+      "tokens": [
+        "skeleton.container.background",
+        "skeleton.container.opacity",
+        "skeleton.container.animation.*"
+      ]
+    },
+    {
+      "id": "shapes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Three shapes with default sizes from the space scale: text (16 px high, 2 px corners), circle (40 px, fully round) and rectangle (96 px high, 8 px corners); width and height are the consumer's.",
+      "tokens": [
+        "skeleton.container.height.*",
+        "skeleton.container.border-radius.*"
+      ]
+    },
+    {
+      "id": "hidden-from-assistive-technology",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A skeleton is hidden from assistive technology; the loading region is marked busy and announces the loading with a status message.",
+      "refs": [
+        "aria-hidden",
+        "aria-busy",
+        "wcag:4.1.3"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions skeleton-fill, shapes, hidden-from-assistive-technology). A hidden pulsing shape in three shapes with consumer sizes; no interaction state. Fill measured only: 1.12 (light) and 1.21 (dark) against the default surface."
+    }
+  ]
+}

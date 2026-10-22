@@ -1,0 +1,162 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "shape",
+  "name": "Shape",
+  "version": "0.2.0",
+  "status": "draft",
+  "summary": "Corner radii and stroke widths: how round components are and how thick their borders are.",
+  "description": "Two scales from the Figma library (Dimension), as they are, shape every component: corner radius, from sharp to fully round, and stroke width, from none to the strong focus stroke. Components and the docs site read them directly, each component choosing its radius and border width in its own tokens.",
+  "tags": [
+    "shape",
+    "radius",
+    "border"
+  ],
+  "tokens": [
+    "corner-radius.*",
+    "stroke-width.*"
+  ],
+  "rules": [
+    {
+      "id": "radius-scale",
+      "name": "Corner radius scale",
+      "text": "Corner radii go from none (sharp) through 3xs to 2xl, plus full for fully round ends."
+    },
+    {
+      "id": "stroke-scale",
+      "name": "Stroke scale",
+      "text": "Stroke widths go from none through sm (the default border) and md (an emphasis border) to lg (the strong focus stroke, owned by the Focus ring foundation)."
+    },
+    {
+      "id": "components",
+      "name": "Components pick from the scales",
+      "text": "A component chooses its corner radius and border width from these scales in its own tokens: the controls take corner-radius.2xs (2 px) at extra small and small and corner-radius.xs (4 px) at medium and large, the Dropdown menu corner-radius.sm, and every border stroke-width.sm (0.6 px)."
+    },
+    {
+      "id": "same-box",
+      "name": "Same box in every variant",
+      "text": "A component keeps its border width in every emphasis and state; a variant without a visible border draws a transparent one, so switching variants never shifts the layout."
+    },
+    {
+      "id": "sub-pixel",
+      "name": "Sub-pixel widths",
+      "text": "Browsers snap border and outline widths to whole device pixels, so the sub-pixel strokes render thinner or thicker than written depending on the screen density.",
+      "platforms": [
+        "web"
+      ]
+    }
+  ],
+  "specimens": [
+    {
+      "id": "corner-radius",
+      "name": "Corner radius scale",
+      "display": "radius",
+      "tokens": [
+        "corner-radius.*"
+      ],
+      "description": "Every radius on the same box."
+    },
+    {
+      "id": "stroke-width",
+      "name": "Stroke scale",
+      "display": "stroke",
+      "tokens": [
+        "stroke-width.*"
+      ],
+      "description": "Every raw stroke width."
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "Shape never carries meaning on its own: instructions never refer to a component by its shape (\"the round button\"), only by its name or label.",
+        "refs": [
+          "wcag:1.3.3"
+        ]
+      },
+      {
+        "text": "When a border is the only thing showing where a component is, it contrasts at least 3:1 with the surface around it, whatever its width; a component identified by its label or icon needs no visible border.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-ntc-boundaries"
+        ]
+      },
+      {
+        "text": "In forced colors mode the browser replaces border and outline colors with system colors and removes box shadows: an edge or a focus indicator is drawn with a border or an outline, never a shadow.",
+        "refs": [
+          "mdn-forced-colors"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "understanding-ntc-boundaries",
+        "title": "Understanding 1.4.11 Non-text Contrast: boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "button-xsmall",
+      "name": "Button, extra small",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "size": "xsmall",
+        "label": "Extra small"
+      }
+    },
+    {
+      "id": "button-large",
+      "name": "Button, large",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "size": "large",
+        "label": "Large"
+      }
+    },
+    {
+      "id": "button-subtle",
+      "name": "Button, subtle brand",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "brand",
+        "label": "Border"
+      }
+    },
+    {
+      "id": "button-ghost",
+      "name": "Button, ghost brand",
+      "component": "button",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "brand",
+        "label": "Transparent border"
+      }
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-10-02",
+      "note": "Breaking: the semantic shape layer, invented by the repository and not in the Figma library, is removed: radius.control.*, radius.surface.*, radius.full, border.width.*. Components alias corner-radius.* and stroke-width.* directly, with the same values. These the Figma library's scales are now the tokens components and the site read."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft: the radius and stroke scales and the semantic radii and border widths as they are, specified once (no token changes)."
+    }
+  ]
+}

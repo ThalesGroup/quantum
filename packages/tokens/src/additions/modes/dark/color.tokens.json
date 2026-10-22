@@ -1,0 +1,9 @@
+{
+  "$description": "Dark mode values of the semantic colors the design system adds to the Figma library. Not in the Figma library: added by the design system.",
+  "color": {
+    "$type": "color",
+    "focus": {
+      "ring": { "$value": "{brand.dark.200}", "$description": "Focus indicator color shared by every interactive component. Dark mode: the brand accent fill of the mode (global.bg.accent.brand.default), as in light mode." }
+    }
+  }
+}

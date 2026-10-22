@@ -1,0 +1,165 @@
+/*
+ * Accordion — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/accordion.spec.json
+ * Tokens: packages/tokens/dist/css/components/accordion.css (generated from packages/tokens/src/components/accordion.tokens.json)
+ *
+ * Rules:
+ *  - Only --accordion-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - No script: each item is a native details element; its summary is the trigger, the browser
+ *    toggles it with Enter and Space and exposes its expanded state.
+ *  - Size is a data attribute on the root; the states are the summary's pseudo-classes and the
+ *    details' open attribute; [data-state="<state>"] on the root or on an item forces them.
+ */
+
+.ds-accordion {
+  --_title-font-family: var(--accordion-title-typography-medium-font-family);
+  --_title-font-size: var(--accordion-title-typography-medium-font-size);
+  --_title-font-weight: var(--accordion-title-typography-medium-font-weight);
+  --_title-line-height: var(--accordion-title-typography-medium-line-height);
+  --_title-letter-spacing: var(--accordion-title-typography-medium-letter-spacing);
+  --_panel-font-family: var(--accordion-panel-typography-medium-font-family);
+  --_panel-font-size: var(--accordion-panel-typography-medium-font-size);
+  --_panel-font-weight: var(--accordion-panel-typography-medium-font-weight);
+  --_panel-line-height: var(--accordion-panel-typography-medium-line-height);
+  --_panel-letter-spacing: var(--accordion-panel-typography-medium-letter-spacing);
+  --_trigger-min-height: var(--accordion-trigger-min-height-medium);
+  --_indicator-size: var(--accordion-indicator-size-medium);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.ds-accordion[data-size="small"] {
+  --_title-font-family: var(--accordion-title-typography-small-font-family);
+  --_title-font-size: var(--accordion-title-typography-small-font-size);
+  --_title-font-weight: var(--accordion-title-typography-small-font-weight);
+  --_title-line-height: var(--accordion-title-typography-small-line-height);
+  --_title-letter-spacing: var(--accordion-title-typography-small-letter-spacing);
+  --_panel-font-family: var(--accordion-panel-typography-small-font-family);
+  --_panel-font-size: var(--accordion-panel-typography-small-font-size);
+  --_panel-font-weight: var(--accordion-panel-typography-small-font-weight);
+  --_panel-line-height: var(--accordion-panel-typography-small-line-height);
+  --_panel-letter-spacing: var(--accordion-panel-typography-small-letter-spacing);
+  --_trigger-min-height: var(--accordion-trigger-min-height-small);
+  --_indicator-size: var(--accordion-indicator-size-small);
+}
+
+.ds-accordion__item {
+  --_trigger-background: var(--accordion-trigger-background-default);
+
+  border-block-end: var(--accordion-item-border-width) solid var(--accordion-item-border-color);
+}
+
+/* ---- Trigger ------------------------------------------------------------- */
+
+.ds-accordion__trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--accordion-trigger-gap);
+  min-height: var(--_trigger-min-height);
+  padding-block: var(--accordion-trigger-padding-block);
+  padding-inline: var(--accordion-trigger-padding-inline);
+  border-radius: var(--accordion-trigger-border-radius);
+  background-color: var(--_trigger-background);
+  color: var(--accordion-title-color);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: background-color var(--accordion-trigger-transition-duration) var(--accordion-trigger-transition-easing);
+}
+.ds-accordion__trigger::-webkit-details-marker {
+  display: none;
+}
+.ds-accordion__trigger::marker {
+  content: none;
+}
+
+.ds-accordion__title {
+  flex: 1 1 auto;
+  font-family: var(--_title-font-family);
+  font-size: var(--_title-font-size);
+  font-weight: var(--_title-font-weight);
+  line-height: var(--_title-line-height);
+  letter-spacing: var(--_title-letter-spacing);
+}
+
+.ds-accordion__indicator {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_indicator-size);
+  block-size: var(--_indicator-size);
+  overflow: hidden;
+  font-family: var(--accordion-indicator-font-family);
+  font-size: var(--_indicator-size);
+  font-weight: var(--accordion-indicator-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--accordion-indicator-fill),
+    "GRAD" var(--accordion-indicator-grade),
+    "opsz" var(--accordion-indicator-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_indicator-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  transition: rotate var(--accordion-indicator-transition-duration) var(--accordion-indicator-transition-easing);
+}
+
+/* ---- Panel --------------------------------------------------------------- */
+
+.ds-accordion__panel {
+  padding-block: var(--accordion-panel-padding-block);
+  padding-inline: var(--accordion-panel-padding-inline);
+  color: var(--accordion-panel-color);
+  font-family: var(--_panel-font-family);
+  font-size: var(--_panel-font-size);
+  font-weight: var(--_panel-font-weight);
+  line-height: var(--_panel-line-height);
+  letter-spacing: var(--_panel-letter-spacing);
+}
+.ds-accordion__panel > :first-child {
+  margin-block-start: 0;
+}
+.ds-accordion__panel > :last-child {
+  margin-block-end: 0;
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+:where(.ds-accordion[data-state="hover"], .ds-accordion__item[data-state="hover"]) .ds-accordion__trigger,
+.ds-accordion:not([data-state]) .ds-accordion__item:not([data-state]) > .ds-accordion__trigger:hover {
+  --_trigger-background: var(--accordion-trigger-background-hover);
+}
+
+:where(.ds-accordion[data-state="active"], .ds-accordion__item[data-state="active"]) .ds-accordion__trigger,
+.ds-accordion__trigger:active {
+  --_trigger-background: var(--accordion-trigger-background-active);
+}
+
+/* Expanded: the details is open (the template also sets open for the forced state). The chevron turns. */
+:where(.ds-accordion[data-state="expanded"], .ds-accordion__item[data-state="expanded"]) .ds-accordion__indicator,
+.ds-accordion__item[open] > .ds-accordion__trigger .ds-accordion__indicator {
+  rotate: 180deg;
+}
+
+.ds-accordion__trigger:focus {
+  outline: none;
+}
+
+:where(.ds-accordion[data-state="focus-visible"], .ds-accordion__item[data-state="focus-visible"]) .ds-accordion__trigger,
+.ds-accordion__trigger:focus-visible {
+  outline: var(--accordion-trigger-outline-width-focus-visible) solid var(--accordion-trigger-outline-color-focus-visible);
+  outline-offset: var(--accordion-trigger-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-accordion__trigger,
+  .ds-accordion__indicator {
+    transition: none;
+  }
+}

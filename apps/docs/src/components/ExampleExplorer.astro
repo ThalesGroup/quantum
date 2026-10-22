@@ -1,0 +1,126 @@
+---
+/**
+ * Examples of a spec as a master-detail explorer: a vertical tab list (APG tabs pattern, automatic
+ * activation, synced to the URL hash) and, for the selected example, its stage and the props that
+ * define it. An example scoped to platforms without the web has no rendering: its panel lists the
+ * props and says where it applies.
+ *
+ * With `samples` (a foundation's code examples), each panel shows a highlighted code sample instead
+ * of a stage, with the playground's "Mode context" select: the block follows the page mode, or the
+ * mode set on it (the same data-theme attribute as the playground stage). The choice is shared by
+ * every sample of the explorer.
+ */
+import { getTemplate, type Template } from '../lib/web';
+import { onWeb, scopeLabel } from '../lib/platforms';
+import { getModes } from '../lib/tokens';
+
+interface Sample { id: string; name: string; description?: string; source: string; html: string; platforms?: string[] }
+interface Props {
+  spec: any;
+  template?: Template;
+  playgroundHref?: string;
+  samples?: Sample[];
+}
+const { spec, template, playgroundHref, samples } = Astro.props;
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const examples = samples
+  ? samples.map((ex) => ({ ...ex, id: slug(ex.name), web: true, scope: scopeLabel(ex), code: true }))
+  : (spec.examples ?? []).map((ex: any) => {
+      const id = slug(ex.name);
+      const web = onWeb(ex);
+      const html = web ? template!.render(ex.props) : '';
+      const query = new URLSearchParams(Object.entries(ex.props).map(([k, v]) => [k, typeof v === 'object' ? JSON.stringify(v) : String(v)])).toString();
+      return { ...ex, id, web, scope: scopeLabel(ex), html, playground: `${playgroundHref}?${query}` };
+    });
+// Mode context of a code sample, as in the playground: the page's mode, or one set on the block.
+const { modes, attribute, auto } = getModes();
+const modeChoices = [...modes.map((m) => m.id), ...(auto ? [auto] : [])];
+const modeSelect = Boolean(samples && attribute && modeChoices.length > 1);
+---
+<div class="site-explorer" data-explorer>
+  <div class="site-explorer__list" role="tablist" aria-orientation="vertical" aria-label={`${spec.name} examples`}>
+    {examples.map((ex: any, i: number) => (
+      <button type="button" role="tab" class="site-explorer__tab" id={`tab-${ex.id}`} data-example={ex.id}
+        aria-controls={`example-${ex.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+        <span class="site-explorer__tab-name">{ex.name}{ex.scope ? <span class="site-explorer__tab-scope">{ex.scope}</span> : null}</span>
+        {ex.description ? <span class="site-explorer__tab-desc">{ex.description}</span> : null}
+      </button>
+    ))}
+  </div>
+
+  {examples.map((ex: any, i: number) => ex.code ? (
+    <section class="site-explorer__panel" role="tabpanel" id={`example-${ex.id}`} aria-labelledby={`tab-${ex.id}`} hidden={i !== 0}>
+      <pre class="site-explorer__code" tabindex="0" aria-label={`${ex.name} sample`} data-mode-target><code set:html={ex.html}></code></pre>
+      <div class="site-explorer__bar">
+        <code class="site-explorer__source">{ex.source}</code>
+        {modeSelect ? (
+          <div class="site-explorer__mode" set:html={getTemplate('select')?.render({ label: `Mode context (${attribute})`, id: `example-${ex.id}-mode`, size: 'small', options: [{ label: '(page mode)', value: '' }, ...modeChoices.map((m) => ({ label: m, value: m }))], attrs: { 'data-mode-context': attribute } })}></div>
+        ) : null}
+      </div>
+    </section>
+  ) : (
+    <section class="site-explorer__panel" role="tabpanel" id={`example-${ex.id}`} aria-labelledby={`tab-${ex.id}`} hidden={i !== 0}>
+      {ex.web ? (
+        <div class="site-explorer__stage site-preview__stage" set:html={ex.html}></div>
+      ) : (
+        <p class="site-callout">Applies to {ex.scope} only. The web implementation does not render it; the props below define it.</p>
+      )}
+
+      <div class="site-explorer__bar">
+        <ul class="site-explorer__props" aria-label="Props">
+          {Object.entries(ex.props).map(([k, v]) => (
+            <li><code><span class="site-explorer__prop-key">{k}</span>={typeof v === 'string' ? `"${v}"` : typeof v === 'object' ? JSON.stringify(v) : String(v)}</code></li>
+          ))}
+        </ul>
+        {ex.web ? <a class="site-explorer__link" href={ex.playground}>Open in playground <span aria-hidden="true">→</span></a> : null}
+      </div>
+    </section>
+  ))}
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-explorer]')) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+
+    const select = (tab: HTMLButtonElement, { focus = false, updateHash = true } = {}) => {
+      for (const t of tabs) {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+      }
+      if (focus) tab.focus();
+      if (updateHash) history.replaceState(null, '', `#${tab.dataset.example}`);
+    };
+
+    root.addEventListener('click', (e) => {
+      const tab = (e.target as HTMLElement).closest<HTMLButtonElement>('[role="tab"]');
+      if (tab) select(tab);
+    });
+
+    root.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(e.target as HTMLButtonElement);
+      if (i < 0) return;
+      const next = { ArrowDown: i + 1, ArrowRight: i + 1, ArrowUp: i - 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      select(tabs[(next + tabs.length) % tabs.length], { focus: true });
+    });
+
+    const syncFromHash = () => {
+      const tab = tabs.find((t) => `#${t.dataset.example}` === location.hash);
+      if (tab) select(tab, { updateHash: false });
+    };
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
+
+    // Code samples: one mode context for every block of the explorer, set like the playground's.
+    const selects = [...root.querySelectorAll<HTMLSelectElement>('[data-mode-context]')];
+    const targets = [...root.querySelectorAll<HTMLElement>('[data-mode-target]')];
+    const applyMode = (value: string, attr: string) => {
+      for (const s of selects) s.value = value;
+      for (const t of targets) (value ? t.setAttribute(attr, value) : t.removeAttribute(attr));
+    };
+    for (const s of selects) s.addEventListener('change', () => applyMode(s.value, s.dataset.modeContext!));
+  }
+</script>

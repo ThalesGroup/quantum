@@ -1,0 +1,32 @@
+/*
+ * Divider — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/divider.spec.json
+ * Tokens: packages/tokens/dist/css/components/divider.css (generated from packages/tokens/src/components/divider.tokens.json)
+ *
+ * Rules:
+ *  - Only --divider-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is an hr; the line is its block-start (horizontal) or inline-start (vertical) border.
+ *  - Orientation is a data attribute; a divider has no interaction state.
+ */
+
+.ds-divider {
+  box-sizing: border-box;
+  display: block;
+  inline-size: 100%;
+  margin-block: var(--divider-container-margin-block-horizontal);
+  margin-inline: 0;
+  border: none;
+  border-block-start: var(--divider-container-border-width) solid var(--divider-container-color);
+}
+
+.ds-divider[data-orientation="vertical"] {
+  display: inline-block;
+  align-self: stretch;
+  inline-size: 0;
+  min-block-size: var(--divider-container-min-height-vertical);
+  margin-block: 0;
+  margin-inline: var(--divider-container-margin-inline-vertical);
+  border-block-start: none;
+  border-inline-start: var(--divider-container-border-width) solid var(--divider-container-color);
+  vertical-align: middle;
+}

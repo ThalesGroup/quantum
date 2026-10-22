@@ -1,0 +1,913 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "color",
+  "name": "Color",
+  "version": "3.0.0",
+  "status": "draft",
+  "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
+  "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
+  "tags": [
+    "color",
+    "modes",
+    "contrast"
+  ],
+  "tokens": [
+    "global.*",
+    "brand-identity.*",
+    "ai.bg.*",
+    "ai.text.*",
+    "ai.icon.*",
+    "ai.border.*",
+    "dataviz.*",
+    "color.transparent"
+  ],
+  "rules": [
+    {
+      "id": "palettes",
+      "name": "Palettes",
+      "text": "Raw palettes are ramps from 25 (lightest) to 950 (darkest): neutral (ash and slate) and brand in a light and a dark variant, the functional hues (error, warning, success, info, severe), AI, extended and branded extended hues, and the brand identity colors. Only other tokens reference them, never a component."
+    },
+    {
+      "id": "palette-switch",
+      "name": "Palette switch",
+      "text": "The roles never read a neutral ramp directly: they read light-switch.base.<step> and dark-switch.base.<step>, which point to one neutral palette. Ash is the palette today; slate, the other one, will switch every neutral role at once when the system supports a second palette."
+    },
+    {
+      "id": "roles",
+      "name": "Roles",
+      "text": "A mapped color names what a color does, not what it looks like: global.bg (fills and surfaces), global.text, global.icon and global.border, then the context (level, base, accent, subtle, sunken, state…), the color family (neutral, brand, functional.<hue>, extended.<hue>) and the state. Components alias roles, never a palette step. The focus ring color belongs to the Focus ring foundation."
+    },
+    {
+      "id": "levels",
+      "name": "Surface levels",
+      "text": "Surfaces are numbered by how far they sit from the page: level 0 is the page, levels 1 and 2 are raised on it (panels, cards, menus, dialogs), level 3 is the highest, and sunken is a plane recessed below the page. Levels 0 to 2 and sunken have hover and active steps for surfaces people interact with. They are built from the neutral steps global.bg.base.neutral.1 to 5.",
+      "tokens": [
+        "global.bg.level.*",
+        "global.bg.base.*"
+      ]
+    },
+    {
+      "id": "levels-light-dark",
+      "name": "Levels in light and dark mode",
+      "text": "In light mode the levels alternate between two neutral steps, so each one differs from the level under it and borders separate them. In dark mode they follow the Figma library's dark mapping.",
+      "tokens": [
+        "global.bg.level.*"
+      ]
+    },
+    {
+      "id": "emphasis",
+      "name": "Emphasis and family",
+      "text": "Fills come by emphasis: accent, a strong fill; subtle, a tinted fill; sunken, a deeper tint. Each emphasis exists for the neutral, brand, functional and extended families, with default, hover and active steps where the Figma library defines them. Every fill has its own text and icon color: on-accent, on-subtle and on-sunken, per family.",
+      "tokens": [
+        "global.bg.accent.*",
+        "global.bg.subtle.*",
+        "global.bg.sunken.*"
+      ]
+    },
+    {
+      "id": "text",
+      "name": "Text",
+      "text": "Text on a surface is on-base: neutral primary for running text and labels, secondary and tertiary for less important text, and one color per brand, functional and extended family. Code has its own colors (keyword, variable, function, class and type, string, number, comment).",
+      "tokens": [
+        "global.text.*"
+      ]
+    },
+    {
+      "id": "icons",
+      "name": "Icons",
+      "text": "Every icon role aliases the text role of the same context, so an icon and the text next to it always match; they stay separate tokens so they can diverge later.",
+      "tokens": [
+        "global.icon.*"
+      ]
+    },
+    {
+      "id": "level-borders",
+      "name": "Level borders",
+      "text": "Borders that follow the surface levels come in three families. Edge is the outline around a surface, separating it from what surrounds it (level.edge.level.<n>, level.edge.sunken). On-level is a line painted on a surface: dividers, table rules (level.on-level.<n>). Blend is the color of the surface itself, to detach elements stacked on each other (level.blend.<n>). Edges alone have states, hover and active, shared by every level.",
+      "tokens": [
+        "global.border.level.*"
+      ]
+    },
+    {
+      "id": "borders",
+      "name": "Borders by emphasis",
+      "text": "Base borders (neutral 1 to 5, brand, functional, extended) outline elements on a surface; accent and subtle borders follow the fills of the same emphasis and family, with their states.",
+      "tokens": [
+        "global.border.base.*",
+        "global.border.accent.*",
+        "global.border.subtle.*"
+      ]
+    },
+    {
+      "id": "states",
+      "name": "Disabled and skeleton",
+      "text": "An inactive component takes the disabled fill, border, text and icon whatever its emphasis and family: disabled is a state, not a variant. Skeleton colors draw placeholders while content loads.",
+      "tokens": [
+        "global.bg.state.*",
+        "global.text.state.*",
+        "global.icon.state.*",
+        "global.border.state.*"
+      ]
+    },
+    {
+      "id": "transparency",
+      "name": "Transparency",
+      "text": "Fade and overlay are translucent layers from none to blackout: fade lightens what it covers, overlay darkens it (behind a dialog, for instance).",
+      "tokens": [
+        "global.bg.transparency.*"
+      ]
+    },
+    {
+      "id": "translucency",
+      "name": "Composed colors",
+      "text": "The Figma library composes some colors from a palette step and an opacity of the Effect scale (the subtle neutral fills, the disabled and skeleton colors, transparency, the shadow colors). DTCG cannot compose two tokens, so these are written as the resulting translucent color, and each one names its step and opacity in its description. They tint whatever they sit on: their contrast is measured over each surface."
+    },
+    {
+      "id": "unfinished",
+      "name": "AI and data visualization",
+      "text": "The Figma library marks its AI and data visualization roles as unfinished. They are kept as they are, typos (functionnal, subtile) and aliases to colors the Figma library does not contain (kept as their literal value) included, until a component needs them.",
+      "tokens": [
+        "ai.bg.*",
+        "ai.text.*",
+        "ai.icon.*",
+        "ai.border.*",
+        "dataviz.*"
+      ]
+    },
+    {
+      "id": "additions",
+      "name": "Added by the design system",
+      "text": "color.transparent is fully transparent: a ghost element aliases it to keep its box without a visible fill or edge. The Figma library has no such color; it lives in tokens/additions/.",
+      "tokens": [
+        "color.transparent"
+      ]
+    },
+    {
+      "id": "modes",
+      "name": "Modes",
+      "text": "Every role has a value in every mode: light (the default) and dark, the Figma library's two mappings. A mode changes the palette step a role aliases, never the role: a component's color decisions hold in every mode and never mention one."
+    },
+    {
+      "id": "not-alone",
+      "name": "Never color alone",
+      "text": "A family color reinforces a meaning the label or the icon already carries. Color is never the only way to tell an error action, a selected item or a state from the rest."
+    }
+  ],
+  "specimens": [
+    {
+      "id": "neutral",
+      "name": "Neutral palette",
+      "display": "palette",
+      "tokens": [
+        "neutral.*"
+      ],
+      "description": "Ash and slate, each in a light and a dark ramp."
+    },
+    {
+      "id": "palette-switch",
+      "name": "Palette switch",
+      "display": "palette",
+      "tokens": [
+        "light-switch.*",
+        "dark-switch.*"
+      ],
+      "description": "The neutral ramp the roles read: ash today."
+    },
+    {
+      "id": "brand",
+      "name": "Brand palette",
+      "display": "palette",
+      "tokens": [
+        "brand.*"
+      ],
+      "description": "Brand ramps for light and dark mode, and the brand identity colors."
+    },
+    {
+      "id": "functional",
+      "name": "Functional palette",
+      "display": "palette",
+      "tokens": [
+        "functional.*"
+      ],
+      "description": "Hues that carry a status: error, warning, success, info and severe."
+    },
+    {
+      "id": "ai",
+      "name": "AI palette",
+      "display": "palette",
+      "tokens": [
+        "ai.*"
+      ],
+      "tier": "raw",
+      "description": "For features generated or assisted by AI."
+    },
+    {
+      "id": "extended",
+      "name": "Extended palette",
+      "display": "palette",
+      "tokens": [
+        "extended.*"
+      ],
+      "description": "Additional hues for categories, illustrations and data."
+    },
+    {
+      "id": "branded-extended",
+      "name": "Branded extended palette",
+      "display": "palette",
+      "tokens": [
+        "branded-extended.*"
+      ],
+      "description": "Brand-flavoured additional hues."
+    },
+    {
+      "id": "utility",
+      "name": "Utility",
+      "display": "palette",
+      "tokens": [
+        "color.transparent"
+      ],
+      "description": "Added by the design system: fully transparent, for fills and borders that keep their space without showing."
+    },
+    {
+      "id": "level-roles",
+      "name": "Surface levels",
+      "display": "color",
+      "tokens": [
+        "global.bg.level.*",
+        "global.bg.base.*"
+      ],
+      "description": "The levels and the sunken plane with their states, and the neutral steps they are built from."
+    },
+    {
+      "id": "fill-roles",
+      "name": "Fills",
+      "display": "color",
+      "tokens": [
+        "global.bg.accent.*",
+        "global.bg.subtle.*",
+        "global.bg.sunken.*",
+        "global.bg.state.*",
+        "global.bg.transparency.*"
+      ],
+      "description": "Fills by emphasis, family and state; disabled and skeleton; transparency layers."
+    },
+    {
+      "id": "text-roles",
+      "name": "Text",
+      "display": "color",
+      "tokens": [
+        "global.text.*"
+      ],
+      "description": "Text on surfaces and on each fill, code colors, disabled and skeleton."
+    },
+    {
+      "id": "icon-roles",
+      "name": "Icons",
+      "display": "color",
+      "tokens": [
+        "global.icon.*"
+      ],
+      "description": "Icon colors, each aliasing the text color of its context."
+    },
+    {
+      "id": "border-roles",
+      "name": "Borders",
+      "display": "color",
+      "tokens": [
+        "global.border.*"
+      ],
+      "description": "Level borders, borders by emphasis and family, disabled."
+    },
+    {
+      "id": "brand-identity-roles",
+      "name": "Brand identity",
+      "display": "color",
+      "tokens": [
+        "brand-identity.*"
+      ],
+      "description": "The brand identity colors as roles."
+    },
+    {
+      "id": "ai-roles",
+      "name": "AI roles",
+      "display": "color",
+      "tokens": [
+        "ai.bg.*",
+        "ai.text.*",
+        "ai.icon.*",
+        "ai.border.*"
+      ],
+      "description": "Unfinished in the Figma library: fills, text, icons, borders and gradients for AI features."
+    },
+    {
+      "id": "dataviz-roles",
+      "name": "Data visualization roles",
+      "display": "color",
+      "tokens": [
+        "dataviz.*"
+      ],
+      "description": "Unfinished in the Figma library: series colors by family and the structure of charts (axes, grid, track)."
+    }
+  ],
+  "contrast": [
+    {
+      "id": "text-primary",
+      "description": "Running text and labels on every surface level and on sunken.",
+      "foreground": "global.text.on-base.neutral.primary",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-secondary",
+      "description": "Secondary text is still text: same minimum.",
+      "foreground": "global.text.on-base.neutral.secondary",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-tertiary",
+      "description": "Tertiary text is still text: same minimum.",
+      "foreground": "global.text.on-base.neutral.tertiary",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-brand",
+      "description": "Brand text on every surface.",
+      "foreground": "global.text.on-base.brand.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-error",
+      "description": "Error text on every surface.",
+      "foreground": "global.text.on-base.functional.error.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ],
+      "knownIssue": "The Figma library's error colors: the error text and fills fall under 4.5:1 in some states, kept as they are until the palette is redefined"
+    },
+    {
+      "id": "on-accent-neutral",
+      "description": "Text and icons on the neutral accent fill, in every state.",
+      "foreground": "global.text.on-accent.neutral.primary",
+      "backgrounds": [
+        "global.bg.accent.neutral.default",
+        "global.bg.accent.neutral.hover",
+        "global.bg.accent.neutral.active"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "on-accent-brand",
+      "description": "Text and icons on the brand accent fill, in every state.",
+      "foreground": "global.text.on-accent.brand.default",
+      "backgrounds": [
+        "global.bg.accent.brand.default",
+        "global.bg.accent.brand.hover",
+        "global.bg.accent.brand.active"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "on-accent-error",
+      "description": "Text and icons on the error accent fill, in every state.",
+      "foreground": "global.text.on-accent.functional.error.default",
+      "backgrounds": [
+        "global.bg.accent.functional.error.default",
+        "global.bg.accent.functional.error.hover",
+        "global.bg.accent.functional.error.active"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ],
+      "knownIssue": "The Figma library's error colors: the error text and fills fall under 4.5:1 in some states, kept as they are until the palette is redefined"
+    },
+    {
+      "id": "on-subtle-neutral",
+      "description": "Text and icons on the neutral subtle fill, in every state. The fill is translucent: measured over each surface.",
+      "foreground": "global.text.on-subtle.neutral.default",
+      "backgrounds": [
+        "global.bg.subtle.neutral.default",
+        "global.bg.subtle.neutral.hover",
+        "global.bg.subtle.neutral.active"
+      ],
+      "on": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "on-subtle-brand",
+      "description": "Text and icons on the brand subtle fill, in every state.",
+      "foreground": "global.text.on-subtle.brand.default",
+      "backgrounds": [
+        "global.bg.subtle.brand.default",
+        "global.bg.subtle.brand.hover",
+        "global.bg.subtle.brand.active"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "on-subtle-error",
+      "description": "Text and icons on the error subtle fill, in every state.",
+      "foreground": "global.text.on-subtle.functional.error.default",
+      "backgrounds": [
+        "global.bg.subtle.functional.error.default",
+        "global.bg.subtle.functional.error.hover",
+        "global.bg.subtle.functional.error.active"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ],
+      "knownIssue": "The Figma library's error colors: the error text and fills fall under 4.5:1 in some states, kept as they are until the palette is redefined"
+    },
+    {
+      "id": "text-disabled",
+      "description": "Text of inactive components: measured, no minimum (WCAG 1.4.3 exempts them).",
+      "foreground": "global.text.state.disabled.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "edge-level-0",
+      "description": "Outline of a level 0 surface against the surface itself: measured, no minimum (never the only edge of a component).",
+      "foreground": "global.border.level.edge.level.0",
+      "backgrounds": [
+        "global.bg.level.0.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "edge-level-1",
+      "description": "Outline of a level 1 surface against the surface itself: measured, no minimum (never the only edge of a component).",
+      "foreground": "global.border.level.edge.level.1",
+      "backgrounds": [
+        "global.bg.level.1.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "edge-level-2",
+      "description": "Outline of a level 2 surface against the surface itself: measured, no minimum (never the only edge of a component).",
+      "foreground": "global.border.level.edge.level.2",
+      "backgrounds": [
+        "global.bg.level.2.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "edge-level-3",
+      "description": "Outline of a level 3 surface against the surface itself: measured, no minimum (never the only edge of a component).",
+      "foreground": "global.border.level.edge.level.3",
+      "backgrounds": [
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "edge-sunken",
+      "description": "Outline of the sunken plane against it: measured, no minimum.",
+      "foreground": "global.border.level.edge.sunken.default",
+      "backgrounds": [
+        "global.bg.level.sunken.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "on-level-0",
+      "description": "Lines painted on a level 0 surface: measured, no minimum.",
+      "foreground": "global.border.level.on-level.0",
+      "backgrounds": [
+        "global.bg.level.0.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "on-level-1",
+      "description": "Lines painted on a level 1 surface: measured, no minimum.",
+      "foreground": "global.border.level.on-level.1",
+      "backgrounds": [
+        "global.bg.level.1.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "on-level-2",
+      "description": "Lines painted on a level 2 surface: measured, no minimum.",
+      "foreground": "global.border.level.on-level.2",
+      "backgrounds": [
+        "global.bg.level.2.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "on-level-3",
+      "description": "Lines painted on a level 3 surface: measured, no minimum.",
+      "foreground": "global.border.level.on-level.3",
+      "backgrounds": [
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "edge-hover",
+      "description": "Edge of an interactive surface under the pointer, on levels 0 to 2: measured, no minimum.",
+      "foreground": "global.border.level.edge.state.hover",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
+      "id": "edge-active",
+      "description": "Edge of an interactive surface being pressed, on levels 0 to 2: measured, no minimum.",
+      "foreground": "global.border.level.edge.state.active",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "Text contrasts at least 4.5:1 with what it sits on, in every mode, family and enabled state: on-base text on every surface level and on sunken, on-accent and on-subtle text on their fills. The Figma library’s error roles fall short today (error text on some levels, text on the error accent fill, text on the hover and active subtle error fills), tracked as a known issue.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Text of an inactive component has no contrast requirement, so the disabled text is free to recede.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Contrast is measured against the background people actually see: a translucent fill is composited over each surface it can sit on before measuring.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "A border needs 3:1 against the surface only when it is what shows the component is there. A control whose text or icon identifies it needs no boundary, so the level borders, under 3:1, are never the only edge of a component without other visible content.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-ntc-boundaries"
+        ]
+      },
+      {
+        "text": "Inactive components are exempt from the 3:1 of non-text contrast as well.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-ntc-inactive"
+        ]
+      },
+      {
+        "text": "Color is never the only visual means of conveying information: intent, state and selection are also carried by text, an icon or a shape.",
+        "refs": [
+          "wcag:1.4.1",
+          "hig-accessibility-vision"
+        ]
+      },
+      {
+        "text": "In forced colors mode the browser replaces text, background, border and outline colors with system colors: nothing may depend on a token color surviving there.",
+        "refs": [
+          "mdn-forced-colors"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every color has a light and a dark value, as Apple asks of custom colors. Apple also asks for an increased-contrast variant of each, which the system does not define yet.",
+        "refs": [
+          "hig-color-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android asks for 4.5:1 for text under 18 sp (14 sp bold) and 3:1 above; the system applies 4.5:1 to every text size.",
+        "refs": [
+          "android-text-visibility"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "understanding-ntc-boundaries",
+        "title": "Understanding 1.4.11 Non-text Contrast: boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "understanding-ntc-inactive",
+        "title": "Understanding 1.4.11 Non-text Contrast: inactive user interface components",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#inactive-controls"
+      },
+      {
+        "id": "hig-accessibility-vision",
+        "title": "Apple HIG: Accessibility, vision",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Vision"
+      },
+      {
+        "id": "hig-color-best-practices",
+        "title": "Apple HIG: Color, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/color#Best-practices"
+      },
+      {
+        "id": "android-text-visibility",
+        "title": "Android: Make apps more accessible, increase text visibility",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#text-visibility"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "button-accent",
+      "name": "Button, accent neutral",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "label": "Save changes"
+      }
+    },
+    {
+      "id": "button-accent-brand",
+      "name": "Button, accent brand",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "label": "Continue"
+      }
+    },
+    {
+      "id": "button-accent-error",
+      "name": "Button, accent error",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "error",
+        "label": "Delete"
+      }
+    },
+    {
+      "id": "button-subtle",
+      "name": "Button, subtle neutral",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "label": "Cancel"
+      }
+    },
+    {
+      "id": "button-subtle-brand",
+      "name": "Button, subtle brand",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "brand",
+        "label": "Save draft"
+      }
+    },
+    {
+      "id": "button-subtle-error",
+      "name": "Button, subtle error",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "error",
+        "label": "Remove"
+      }
+    },
+    {
+      "id": "button-ghost",
+      "name": "Button, ghost neutral",
+      "component": "button",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "neutral",
+        "label": "Learn more"
+      }
+    },
+    {
+      "id": "button-disabled",
+      "name": "Button, accent brand, disabled",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "label": "Unavailable",
+        "disabled": true
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "figma-library-colors",
+      "date": "2026-10-02",
+      "version": "3.0.0",
+      "area": "color",
+      "status": "active",
+      "text": "The color tokens are the Figma library's Colors / Base, Colors / Palette Switch (ash) and Colors / Mapped (light and dark), recreated with the same paths made valid, the same values and the same aliases, errors and limitations included. The design system adds only color.transparent and the focus ring color, kept apart in tokens/additions/.",
+      "rationale": "One vocabulary: the current state mixed the repository's first decisions with tokens partly taken from the Figma library, which made every decision hard to discuss. The Figma library as it is becomes the starting point the system evolves from.",
+      "tokens": [
+        "global.*",
+        "neutral.*",
+        "light-switch.*",
+        "dark-switch.*",
+        "brand.*",
+        "functional.*",
+        "extended.*",
+        "branded-extended.*",
+        "brand-identity.*",
+        "ai.*",
+        "dataviz.*",
+        "color.*"
+      ],
+      "supersedes": [
+        "level-borders",
+        "surface-levels-light-alternate",
+        "surface-levels"
+      ]
+    },
+    {
+      "id": "level-borders",
+      "date": "2026-10-01",
+      "version": "2.0.0",
+      "area": "color",
+      "status": "superseded",
+      "text": "Borders follow the surface levels in three families: edge (the outline around a surface: light ash 200 on levels 0 and 2, ash 300 on levels 1 and 3 and sunken; dark ash 800, 700, 600, 500 from level 0 to 3, ash 700 on sunken), on-level (lines painted on a surface: light ash 100 on levels 0 and 2, ash 200 on levels 1 and 3; dark ash 600, 500, 400, 300 from level 0 to 3) and blend (the surface color of each level). Edges alone have states, shared by every level: hover light ash 500, dark ash 500; active light ash 900, dark ash 100. color.border.default is removed; color.border.strong stays.",
+      "tokens": [
+        "color.border.edge.*",
+        "color.border.on-level.*",
+        "color.border.blend.*"
+      ]
+    },
+    {
+      "id": "surface-levels-light-alternate",
+      "date": "2026-10-01",
+      "version": "1.0.0",
+      "area": "color",
+      "status": "superseded",
+      "text": "In light mode the surface levels alternate between ash 25 (levels 0 and 2) and ash 50 (levels 1 and 3), and sunken is ash 50. In dark mode they climb toward lighter steps: ash 900, 800, 700 and 600, and sunken is ash 975, a new step darker than 950.",
+      "tokens": [
+        "color.surface.*",
+        "color.neutral.dark.ash.975"
+      ]
+    },
+    {
+      "id": "surface-levels",
+      "date": "2026-10-01",
+      "version": "1.0.0",
+      "area": "color",
+      "status": "superseded",
+      "text": "Surfaces are numbered levels: color.surface.level.0 (the page) to color.surface.level.3 (the highest), plus color.surface.sunken, a plane recessed below the page. They replace color.surface.default (now level 0) and color.surface.subtle (now level 1).",
+      "rationale": "Numbered levels are easier to use for designers and developers than names by meaning, which are often hard to choose between.",
+      "tokens": [
+        "color.surface.*"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "3.0.0",
+      "date": "2026-10-02",
+      "note": "Decision figma-library-colors. Breaking: every color token path changes. The raw palettes are the Figma library's Colors / Base (color.neutral.light.ash.25 becomes neutral.light.ash.25, color.brand.light.600 becomes brand.light.600, color.ai.* becomes ai.*; brand.identity.* becomes brand.identity-base.*, whose CSS variable would otherwise collide with the mapped brand-identity.*), plus the palette switch light-switch.base.* and dark-switch.base.* (ash). The roles are the Figma library's Colors / Mapped: color.surface.level.<n> becomes global.bg.level.<n>.default, color.surface.sunken global.bg.level.sunken.default, color.background.<emphasis>.<intent>.<state> global.bg.<emphasis>.<family>.<state> (error is functional.error), color.text.default / muted / inverse global.text.on-base.neutral.primary / on-base.neutral.tertiary / on-accent.neutral.primary, color.text.on-<emphasis>.<intent> global.text.on-<emphasis>.<family>.<default|primary>, color.text.disabled global.text.state.disabled.default, color.border.edge.* / on-level.* / blend.* global.border.level.edge.* / on-level.* / blend.*, color.border.strong global.border.base.neutral.4, color.background.disabled and color.border.disabled global.*.state.disabled.default. New roles: icons (global.icon.*), on-base and sunken families, functional and extended hues, code colors, skeleton, transparency, brand identity, and the Figma library’s unfinished AI and data visualization roles. Removed: the repository’s raw ash-alpha steps and dark ash 975 (the Figma library writes its translucent colors as literals, kept as such). Removed: color.background.none and color.border.none (invented); components alias color.transparent, kept as an addition in tokens/additions/. Values: light mode unchanged except the error roles, which follow the Figma library (accent error fill error 500/600/700, error text on tinted fills error 600); dark mode is the Figma library’s dark mapping (levels, fills and borders change). Contrast, lowest over every platform and surface: primary text light 17.99:1, dark 8.46:1; secondary 12.14 / 6.61:1; tertiary 5.74 / 4.77:1; brand text 5.46 / 9.61:1; on accent neutral 8.65 / 8.80:1, brand 5.74 / 7.76:1; on subtle neutral 10.79 / 5.73:1, brand 5.38 / 9.48:1 (4.5:1 required, WCAG 1.4.3). Known failures, kept as the Figma library defines them and tracked as a known issue: error text on the surfaces light 4.26:1, dark 3.73:1; on accent error 4.46:1 in both modes; on subtle error light 3.28:1. Measured without a minimum: disabled text 3.11 / 3.12:1; level edges light 1.34 to 1.37:1, dark 1.09 to 1.24:1; on-level light 1.19 to 1.27:1, dark 1.33 to 4.77:1; edge hover light 3.11:1, dark 1.22:1; edge active light 15.36:1, dark 9.45:1."
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-10-01",
+      "note": "Decision level-borders. Breaking: color.border.default is removed; use color.border.edge.level.<n> for the outline of a level n surface and color.border.on-level.<n> for lines painted on it. New: color.border.edge.level.0-3, edge.sunken, edge.hover, edge.active, color.border.on-level.0-3, color.border.blend.level.0-3. Measured without a minimum (WCAG 1.4.11: these borders never identify a component on their own), against the surface they belong to: edge against its own level light 1.35:1 (levels 0, 2) and 1.38:1 (levels 1, 3, sunken), dark 1.09 to 1.12:1 on the levels and 1.32:1 on sunken; edge against the level it sits on light 1.27 to 1.46:1, dark 1.19 to 1.22:1; on-level light 1.19:1 (levels 0, 2) and 1.27:1 (levels 1, 3), dark 1.33, 1.33, 3.24 and 4.78:1 from level 0 to 3; edge hover light 3.12:1 or more, dark 1.45, 1.33 and 1.22:1 on levels 0 to 2 (level 3 takes no state; a stronger dark hover is still to be reviewed); edge active light 15.37:1 or more, dark 8.47:1 or more. In dark mode the outline of a surface is fainter than the former default border (1.33:1 on the page): surfaces separate by their level color first."
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-10-01",
+      "note": "Decisions surface-levels and surface-levels-light-alternate. Breaking: color.surface.default and color.surface.subtle are removed; use color.surface.level.0 and color.surface.level.1, which keep their values in every mode. New: color.surface.level.2, color.surface.level.3, color.surface.sunken, and the raw step color.neutral.dark.ash.975. Contrast, lowest per pair over every surface level and sunken, every platform: default text light 17.99:1, dark 8.47:1 (level 3); muted text light 5.74:1, dark 4.78:1 (level 3); on subtle neutral, the translucent fill composited over each surface, light 10.80:1, dark 5.74:1 (level 3); the other text pairs do not depend on the surface and are unchanged (4.5:1 required, WCAG 1.4.3). Measured without a minimum: disabled text light 3.12:1, dark 3.13:1; default border light 1.38:1, dark 1.00:1 on level 3; strong border light 1.91:1, dark 1.09:1 on level 3. The dark default and strong borders no longer show against levels 2 and 3: borders that follow the level are still to be decided."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft: the palettes and the semantic color roles as they are, specified once (no token changes). Text contrast, lowest per pair over both surfaces, every platform: default text light 17.99:1, dark 10.32:1; muted light 5.74:1, dark 5.83:1; on accent neutral / brand / error light 8.65 / 5.74 / 6.05:1, dark 8.81 / 7.76 / 6.05:1; on subtle neutral / brand / error, the translucent neutral fill measured over each surface, light 10.79 / 5.38 / 4.75:1, dark 6.45 / 9.48 / 7.25:1 (4.5:1 required, WCAG 1.4.3). Measured without a minimum: disabled text light 3.11:1, dark 3.58:1 (inactive components); default border light 1.37:1, dark 1.21:1, strong border light 1.91:1, dark 1.33:1 (borders that do not identify a component, WCAG 1.4.11)."
+    }
+  ]
+}

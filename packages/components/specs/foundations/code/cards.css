@@ -1,0 +1,45 @@
+/* A product page consuming the design system: its tokens, the component
+   styles the team implemented from the specs, semantic tokens for every
+   decision, literal lengths for its own layout only. */
+@import url("@quantum-ds/tokens/css/index.css") layer(design-system);
+@import url("./components.css") layer(design-system);
+
+@layer product {
+  :root { --product-columns: 3; }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--product-columns), minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .product-card {
+    position: relative;
+    padding: 1.25rem 1.5rem;
+    border: var(--stroke-width-sm) solid
+      var(--global-border-level-edge-level-1);
+    border-radius: var(--corner-radius-sm);
+    background: var(--global-bg-level-1-default);
+    color: var(--global-text-on-base-neutral-primary);
+    transition: border-color var(--duration-fast, 120ms)
+      var(--easing-standard);
+  }
+
+  .product-card:where(:hover, :focus-within) {
+    border-color: var(--global-border-level-edge-state-hover);
+  }
+
+  .product-card > h2::after {
+    content: " \2192";
+    color: color-mix(
+      in srgb, var(--global-text-on-base-neutral-tertiary) 80%, transparent
+    );
+  }
+
+  #featured.product-card:not(:has(img)) { grid-column: span 2; }
+}
+
+@media (max-width: 48em) {
+  :root { --product-columns: 1; }
+  #featured.product-card { grid-column: auto !important; }
+}

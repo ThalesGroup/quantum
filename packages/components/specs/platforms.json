@@ -1,0 +1,38 @@
+{
+  "$description": "Platform vocabulary. A platform is the runtime whose conventions and accessibility sources apply to a component; a technology (Flutter, React Native, Qt, JavaFX, a web framework) targets one or several platforms and consumes that platform's resolved tokens, one tree per mode (platforms/<id>/<mode>.tokens.json). Every artifact is agnostic by default; a `platforms` array on a state, an example, a keyboard entry or a guideline scopes it to the listed platforms, and a `### <Name>` sub-heading scopes a paragraph of the docs. Ids must equal the `platform` enum of specs/schema/component.schema.json and the keys of `implementations` and of `platforms` in tokens/config.json.",
+  "platforms": {
+    "web": {
+      "name": "Web",
+      "description": "Browsers on any device, framework or not. The reference implementation in web/ targets it and the site renders it.",
+      "inputs": ["pointer", "touch", "keyboard"],
+      "technologies": ["HTML and CSS", "Web Components", "React", "Vue", "Angular", "Flutter web"],
+      "sources": ["wcag", "wcag-guidance", "wai-aria", "apg", "accname", "html-aam", "core-aam", "html-aria", "wai-tutorials", "whatwg-html", "mdn", "rgaa", "en-301-549", "orange"]
+    },
+    "ios": {
+      "name": "iOS",
+      "description": "iOS and iPadOS apps. Touch first; pointer and keyboard exist (trackpad, Full Keyboard Access).",
+      "inputs": ["touch", "pointer", "keyboard"],
+      "technologies": ["UIKit", "SwiftUI", "Flutter", "React Native"],
+      "sources": ["apple-hig", "en-301-549", "orange"]
+    },
+    "android": {
+      "name": "Android",
+      "description": "Android apps. Touch first; pointer and keyboard exist (mouse, stylus, hardware keyboard).",
+      "inputs": ["touch", "pointer", "keyboard"],
+      "technologies": ["Jetpack Compose", "Android Views", "Flutter", "React Native"],
+      "sources": ["android", "material", "en-301-549", "orange"]
+    },
+    "desktop": {
+      "name": "Desktop",
+      "description": "Native desktop apps on macOS, Windows and Linux. Pointer and keyboard; no touch assumed. No platform token overlay: the base values apply.",
+      "inputs": ["pointer", "keyboard"],
+      "technologies": ["Qt", "JavaFX", "WPF", "AppKit", "SwiftUI", "Flutter desktop"],
+      "sources": ["apple-hig", "en-301-549"]
+    }
+  },
+  "inputs": {
+    "pointer": "A pointing device that can hover: mouse, trackpad, stylus.",
+    "touch": "Direct touch; no hover, coarse targets.",
+    "keyboard": "Physical or assistive keyboard; focus moves between controls."
+  }
+}

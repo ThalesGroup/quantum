@@ -1,0 +1,14 @@
+/*
+ * Webfonts named by the font-family tokens of @quantum-ds/tokens (src/semantic/typography.tokens.json, from
+ * the Figma library, and src/additions/semantic/typography.tokens.json for the icon font), served by
+ * Google Fonts. Hand-written: when a family token changes, change the URL with it
+ * (pnpm validate checks that the primary family of every token is loaded here).
+ * Inter is variable (every weight in one file); Fragment Mono has a single regular weight.
+ *
+ * Material Symbols Outlined is the icon font (latest version: Google Fonts always serves the
+ * newest release). Only the instance named by the font.icon.* tokens is requested
+ * (opsz 20, wght 300, FILL 0, GRAD 0): when one of those tokens changes, change the axes here.
+ * display=block hides the ligature names ("arrow_forward") until the font has loaded.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0&display=block");

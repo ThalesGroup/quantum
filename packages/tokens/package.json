@@ -1,7 +1,7 @@
 {
   "name": "@quantum-ds/tokens",
-  "version": "1.10.0",
-  "description": "Quantum tokens defined via the Design Tokens Format (DTCG) specification",
+  "version": "2.0.0-alpha.0",
+  "description": "Quantum design tokens: DTCG sources in three tiers (raw, semantic, component) with platform and mode overlays, built into CSS, Sass, JavaScript, Android, Figma, Penpot and Tokens Studio formats",
   "author": "Quantum Core Team",
   "license": "MIT",
   "homepage": "https://github.com/ThalesGroup/quantum/tree/main/packages/tokens#readme",
@@ -13,7 +13,31 @@
   "bugs": {
     "url": "https://github.com/ThalesGroup/quantum/issues"
   },
-  "main": "dist/tokens.js",
+  "keywords": [
+    "design-tokens",
+    "dtcg",
+    "design-system",
+    "css-custom-properties",
+    "style-dictionary"
+  ],
+  "main": "dist/tokens-es6.js",
+  "types": "dist/tokens-es6.d.ts",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/tokens-es6.d.ts",
+      "style": "./dist/css/index.css",
+      "default": "./dist/tokens-es6.js"
+    },
+    "./css/*": "./dist/css/*",
+    "./platforms/*": "./dist/platforms/*",
+    "./shiki-theme.json": "./dist/shiki-theme.json",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "style": "dist/css/index.css",
   "files": [
     "CHANGELOG.md",
     "dist",
@@ -24,23 +48,10 @@
     "access": "public"
   },
   "scripts": {
-    "prebuild:dtcg": "node dtcg-index.mjs",
-    "build:tokens-studio": "node src/main.mts --parser tokensStudio",
-    "build:penpot": "node src/main.mts --parser penpot",
-    "build:figma": "node src/main.mts --parser figma",
-    "build:style-dictionary": "style-dictionary build --verbose --config config.js",
-    "build:deprecated": "node prepare-deprecated-tokens.mjs && style-dictionary build --config config.deprecated.js && rm -rf properties",
-    "build": "rm -rf dist ; pnpm run prebuild:dtcg ; pnpm run \"/^build:.*/\" ; node sort-dist-json-files.mjs ; cp -R deprecated-tokens-from-figma dist/json ; cp -R dtcg dist/",
-    "diff:build": "bash ./scripts/diff-built-files.sh",
-    "check:dtcg": "tz check"
+    "build": "rm -rf dist && node ../../scripts/build-tokens.mjs && node style-dictionary.config.mjs",
+    "prepack": "pnpm run build"
   },
   "devDependencies": {
-    "@terrazzo/cli": "^2.7.1",
-    "@types/node": "^26.6.5",
-    "fs-extra": "^11.4.1",
-    "glob": "^13.0.6",
-    "style-dictionary": "^5.6.1",
-    "typescript": "~7.0.2"
-  },
-  "packageManager": "pnpm@12.10.1"
+    "style-dictionary": "^5.7.0"
+  }
 }

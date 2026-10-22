@@ -1,0 +1,10 @@
+---
+/** Status badge. `compact` shows the colored dot only and keeps the word for assistive tech. */
+interface Props { status: string; compact?: boolean }
+const { status, compact = false } = Astro.props;
+---
+{compact ? (
+  <span class={`site-status site-status--${status} site-status--dot`} title={status}><span class="site-sr">{status}</span></span>
+) : (
+  <span class={`site-status site-status--${status}`}>{status}</span>
+)}

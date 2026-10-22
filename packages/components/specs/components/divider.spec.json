@@ -1,0 +1,238 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "divider",
+  "name": "Divider",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "presentation",
+  "summary": "A thin line that separates two groups of content.",
+  "description": "A divider is a hairline between two sections of content or two groups of controls: between items of a list, between a header and a body, between the actions of a toolbar. It is horizontal by default and vertical inside a row. A divider says that a topic or a group changes; spacing alone often says it as well, so a divider is used when the separation must be seen.",
+  "tags": [
+    "layout",
+    "separator"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: the line itself (an hr on the web). Carries the orientation."
+    }
+  ],
+  "properties": [
+    {
+      "id": "orientation",
+      "name": "Orientation",
+      "type": "enum",
+      "default": "horizontal",
+      "description": "Direction of the line.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "horizontal",
+          "description": "A full-width line between stacked content, with space above and below. The default."
+        },
+        {
+          "value": "vertical",
+          "description": "A line between items on one row (a toolbar), stretched to the row's height, with space before and after."
+        }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: a divider has no interaction."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "sizing": "fill",
+    "notes": [
+      "Horizontal: the line spans the width of its container, with margin-block above and below.",
+      "Vertical: the line stretches to the height of its row, or to its minimum height when the row does not stretch it, with margin-inline before and after."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "separator",
+    "name": {
+      "text": "A divider has no accessible name: it exposes the separator role (an hr on the web), which assistive technology announces as a separator or skips, depending on the settings.",
+      "refs": [
+        "aria-separator",
+        "html-aria-hr",
+        "html-aam-hr"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "A divider that marks a change of topic or of group is a thematic break: expose it as a separator so the structure it shows is available to assistive technology too. A divider that is pure decoration (a line under a heading) may be hidden instead.",
+        "refs": [
+          "wcag:1.3.1",
+          "understanding-info-relationships",
+          "aria-separator",
+          "html-hr"
+        ]
+      },
+      {
+        "text": "Render an hr: it represents a paragraph-level thematic break and has the implicit separator role, without ARIA. A vertical divider says so with aria-orientation=\"vertical\", a property of the separator role.",
+        "refs": [
+          "html-hr",
+          "html-aria-hr",
+          "html-aam-hr",
+          "mdn-hr",
+          "aria-separator",
+          "aria-orientation"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The line is decoration from the point of view of contrast: nothing depends on seeing it, so it needs no 3:1 against the surface (2.02:1 in light mode, 1.45:1 in dark mode on the default surface). A separation that must be perceived is also conveyed by spacing or structure.",
+        "refs": [
+          "wcag:1.4.11",
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "A divider is never a target and never receives focus.",
+        "refs": [
+          "aria-separator"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "aria-separator",
+        "title": "WAI-ARIA 1.2: separator role (aria-orientation)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#separator"
+      },
+      {
+        "id": "aria-orientation",
+        "title": "WAI-ARIA 1.2: aria-orientation",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-orientation"
+      },
+      {
+        "id": "html-aria-hr",
+        "title": "ARIA in HTML: hr element (role separator)",
+        "url": "https://www.w3.org/TR/html-aria/#el-hr"
+      },
+      {
+        "id": "html-aam-hr",
+        "title": "HTML-AAM: hr element (separator)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-hr"
+      },
+      {
+        "id": "html-hr",
+        "title": "HTML: the hr element (a paragraph-level thematic break)",
+        "url": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-hr-element"
+      },
+      {
+        "id": "mdn-hr",
+        "title": "MDN: the hr element (implicit separator role)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/hr"
+      },
+      {
+        "id": "understanding-info-relationships",
+        "title": "Understanding WCAG 1.3.1 Info and Relationships",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "A divider carries no text."
+    ]
+  },
+  "examples": [
+    {
+      "id": "horizontal",
+      "name": "Horizontal",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    {
+      "id": "vertical",
+      "name": "Vertical",
+      "description": "Between the items of a row; the stage shows its minimum height.",
+      "props": {
+        "orientation": "vertical"
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/divider.tokens.json",
+    "prefix": "divider"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/divider/divider.css",
+      "template": "packages/components/src/components/divider/divider.template.mjs",
+      "selector": ".ds-divider",
+      "element": "hr",
+      "attributes": {
+        "orientation": "data-orientation"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-divider"
+      }
+    }
+  },
+  "related": [
+    "dropdown"
+  ],
+  "decisions": [
+    {
+      "id": "hairline",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The divider is a 0.6 px line (stroke-width.sm) in the fourth neutral base border color (global.border.base.neutral.4), in every mode.",
+      "rationale": "The Figma library's level edge borders are made for the edges of surfaces; the base neutral border is visible on the default surface without competing with text.",
+      "tokens": [
+        "divider.container.color",
+        "divider.container.border-width"
+      ]
+    },
+    {
+      "id": "orientation-spacing",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "layout",
+      "status": "active",
+      "text": "A horizontal divider has 16 px of space above and below; a vertical one 16 px before and after, and is at least 24 px high when its row does not stretch it.",
+      "tokens": [
+        "divider.container.margin-block.*",
+        "divider.container.margin-inline.*",
+        "divider.container.min-height.*"
+      ]
+    },
+    {
+      "id": "separator-semantics",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A divider is a thematic break exposed as a separator (an hr); a decorative line is not this component.",
+      "refs": [
+        "aria-separator",
+        "html-hr",
+        "wcag:1.3.1"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions hairline, orientation-spacing, separator-semantics). An hr, horizontal or vertical (aria-orientation); no interaction state. Line contrast measured only: 2.02 (light) and 1.45 (dark) on the default surface."
+    }
+  ]
+}

@@ -1,0 +1,1115 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "dropdown",
+  "name": "Dropdown",
+  "version": "0.4.1",
+  "status": "draft",
+  "role": "disclosure",
+  "summary": "A button that opens a menu of related actions.",
+  "description": "A dropdown gathers actions that relate to one purpose (share, export, more actions on a row) behind a single button, and shows them in a menu when the button is activated. Activating an action closes the menu. The trigger is the Button component, so it takes every emphasis, intent and size of the button. A dropdown offers actions: choosing a value is the Select component, and a button whose main action sits next to its menu is the Split button component.",
+  "tags": [
+    "action",
+    "menu",
+    "overlay"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Holds the trigger and its menu, and anchors the menu to the trigger."
+    },
+    {
+      "id": "trigger",
+      "role": "action",
+      "required": true,
+      "component": "button",
+      "description": "The Button that opens and closes the menu. Provides the accessible name and exposes whether the menu is expanded."
+    },
+    {
+      "id": "indicator",
+      "role": "indicator",
+      "required": true,
+      "decorative": true,
+      "parent": "trigger",
+      "description": "Chevron after the trigger label: the Button's trailing icon. Signals that the button opens a menu; hidden from assistive technology, which learns it from the expanded state."
+    },
+    {
+      "id": "menu",
+      "role": "panel",
+      "required": true,
+      "visibleIn": [
+        "expanded"
+      ],
+      "description": "The opened menu: a level 2 surface floating above the page, under the trigger, holding groups of items. Exists only while the trigger is expanded."
+    },
+    {
+      "id": "group",
+      "role": "container",
+      "required": true,
+      "repeatable": true,
+      "parent": "menu",
+      "description": "A run of items between two separators. A list on the web."
+    },
+    {
+      "id": "item",
+      "role": "action",
+      "required": true,
+      "repeatable": true,
+      "parent": "group",
+      "description": "One action. Activating it performs the action and closes the menu. With a destination, the item is a link and navigates.",
+      "properties": [
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "string",
+          "required": true,
+          "bindsTo": "item-label",
+          "description": "Verb-first name of the action. Provides the item's accessible name."
+        },
+        {
+          "id": "icon",
+          "name": "Icon",
+          "type": "icon",
+          "bindsTo": "item-icon",
+          "description": "Leading icon reinforcing the verb. Give icons to every item of a group, or to none."
+        },
+        {
+          "id": "intent",
+          "name": "Intent",
+          "type": "enum",
+          "default": "neutral",
+          "description": "Kind of action, as on the button.",
+          "affects": [
+            "item",
+            "item-label",
+            "item-icon"
+          ],
+          "options": [
+            {
+              "value": "neutral",
+              "description": "Generic actions."
+            },
+            {
+              "value": "error",
+              "description": "Destructive or irreversible actions (delete, remove, revoke): the label and icon take the error color."
+            }
+          ]
+        },
+        {
+          "id": "disabled",
+          "name": "Disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "The item stays in the menu, dimmed, and cannot be activated. Prefer removing an action that never applies."
+        },
+        {
+          "id": "href",
+          "name": "Destination",
+          "type": "string",
+          "description": "Where the item navigates. The item becomes a link; without it, the item is an action."
+        }
+      ]
+    },
+    {
+      "id": "item-icon",
+      "role": "icon",
+      "required": false,
+      "decorative": true,
+      "parent": "item",
+      "description": "Optional glyph of the icon font before the item label. Inherits the label color."
+    },
+    {
+      "id": "item-label",
+      "role": "label",
+      "required": true,
+      "parent": "item",
+      "description": "Text naming the action."
+    },
+    {
+      "id": "separator",
+      "role": "separator",
+      "required": false,
+      "repeatable": true,
+      "decorative": false,
+      "parent": "menu",
+      "description": "Line between two groups of related items."
+    }
+  ],
+  "properties": [
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "trigger",
+      "description": "Trigger label: names the set of actions (Share, Export, More actions). Also names the menu."
+    },
+    {
+      "id": "emphasis",
+      "name": "Emphasis",
+      "type": "enum",
+      "default": "accent",
+      "description": "Emphasis of the trigger Button: same options, same meaning.",
+      "affects": [
+        "trigger"
+      ],
+      "options": [
+        {
+          "value": "accent",
+          "description": "Highest emphasis."
+        },
+        {
+          "value": "subtle",
+          "description": "Medium emphasis."
+        },
+        {
+          "value": "ghost",
+          "description": "Lowest emphasis."
+        }
+      ]
+    },
+    {
+      "id": "intent",
+      "name": "Intent",
+      "type": "enum",
+      "default": "neutral",
+      "description": "Intent of the trigger Button: same options, same meaning.",
+      "affects": [
+        "trigger"
+      ],
+      "options": [
+        {
+          "value": "neutral",
+          "description": "Generic actions."
+        },
+        {
+          "value": "brand",
+          "description": "The main path through a flow."
+        },
+        {
+          "value": "error",
+          "description": "A set of destructive actions."
+        }
+      ]
+    },
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Size of the trigger Button: same options, same meaning. The menu keeps one size.",
+      "affects": [
+        "trigger"
+      ],
+      "options": [
+        {
+          "value": "xsmall",
+          "description": "Very dense UIs."
+        },
+        {
+          "value": "small",
+          "description": "Dense UIs, toolbars, table rows."
+        },
+        {
+          "value": "medium",
+          "description": "Default."
+        },
+        {
+          "value": "large",
+          "description": "Marketing surfaces."
+        }
+      ]
+    },
+    {
+      "id": "iconStart",
+      "name": "Leading icon",
+      "type": "icon",
+      "bindsTo": "trigger",
+      "description": "Leading icon of the trigger Button."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Disables the trigger: the menu cannot open."
+    },
+    {
+      "id": "items",
+      "name": "Items",
+      "type": "list",
+      "required": true,
+      "of": [
+        "item",
+        "separator"
+      ],
+      "bindsTo": "menu",
+      "description": "Entries of the menu, in order: items, and separators between groups of items."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "parts": [
+        "trigger",
+        "item"
+      ],
+      "description": "Resting state. The trigger is collapsed: the menu is closed."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "parts": [
+        "trigger",
+        "item"
+      ],
+      "description": "Pointer over the trigger (the Button's hover) or over an item, which gains the tint of its intent. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "active",
+      "trigger": "interaction",
+      "parts": [
+        "trigger",
+        "item"
+      ],
+      "description": "Pointer, finger or key pressed down on the trigger (the Button's press state) or on an item (the next tint of its intent)."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "parts": [
+        "trigger",
+        "item"
+      ],
+      "description": "Keyboard focus on the trigger or on an item. Shows the shared focus ring outside it; pointer focus shows none."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "parts": [
+        "trigger",
+        "item"
+      ],
+      "description": "Non-interactive. A disabled trigger takes the Button's disabled colors and cannot open the menu; a disabled item (its own disabled property) shows the disabled text color and cannot be activated."
+    },
+    {
+      "id": "expanded",
+      "trigger": "interaction",
+      "parts": [
+        "trigger"
+      ],
+      "description": "The menu is open under the trigger. The trigger keeps its look; the menu shows the state, and assistive technology announces it."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "start",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "hug",
+    "notes": [
+      "The trigger sizes like a Button; the menu opens below it, aligned with its start edge, separated by menu.offset.",
+      "The menu is at least as wide as the trigger and grows with its longest item. When it does not fit below or after the trigger, it opens above or towards the start edge.",
+      "The menu floats above the page: it never moves the content around it.",
+      "Items fill the width of the menu; icon and label sit on one row separated by item.gap, the label never wraps."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "button",
+    "name": {
+      "text": "The trigger's name is computed from its label; the chevron and the leading icon are hidden and add nothing. Each item's name is computed from its label. The menu is named by the trigger.",
+      "refs": [
+        "apg-disclosure-roles",
+        "accname-content",
+        "accname-hidden",
+        "aria-labelledby"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to the trigger. When the menu is open, the next Tab moves into it, through its enabled items in order, then on to the content after the dropdown; Shift + Tab moves back to the trigger. Disabled items are skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "wcag:2.4.3",
+          "html-popover-focus-order",
+          "mdn-popover-a11y",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "On the trigger: opens or closes the menu; focus stays on the trigger. On an item: performs its action, closes the menu and returns focus to the trigger.",
+        "refs": [
+          "apg-disclosure-keyboard",
+          "html-popover-target",
+          "html-popover-hide-action",
+          "html-hide-popover"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Space",
+        "action": "Same as Enter on the trigger and on an action item.",
+        "refs": [
+          "apg-disclosure-keyboard",
+          "html-popover-target",
+          "html-popover-hide-action"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Escape",
+        "action": "Closes the menu. When focus was in the menu, it returns to the trigger; otherwise it stays where it is.",
+        "refs": [
+          "html-popover-auto",
+          "html-close-requests",
+          "html-hide-popover",
+          "mdn-popover-a11y"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "The trigger exposes the button role, its name and whether the menu is expanded or collapsed: the disclosure pattern.",
+        "refs": [
+          "wcag:4.1.2",
+          "apg-disclosure-roles"
+        ]
+      },
+      {
+        "text": "Use the native button with popovertarget for the trigger and a popover for the menu: the browser exposes aria-expanded on the trigger from the state of the menu, without ARIA or script.",
+        "refs": [
+          "html-aam-popovertarget",
+          "html-popover-target",
+          "mdn-popover-a11y"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The menu is not given the ARIA menu role: that role promises arrow-key navigation and focus management, which only script provides, and the reference implementation has none. Its items are native buttons and links reached with Tab, as in the disclosure pattern.",
+        "refs": [
+          "apg-read-me-first",
+          "apg-menubar-keyboard",
+          "html-popover-scripting",
+          "apg-disclosure-navigation"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A popover without a role of its own is exposed as a group; the menu is named by the trigger with aria-labelledby, so entering it announces which actions it holds.",
+        "refs": [
+          "html-aam-popover",
+          "aria-labelledby"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The menu comes right after the trigger in the DOM, so its items follow the trigger in the focus and reading order.",
+        "refs": [
+          "wcag:2.4.3",
+          "wcag:1.3.2",
+          "html-popover-target"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Each group of items is a list and each separator an hr, so assistive technology announces the number of items in a group and the separation between groups.",
+        "refs": [
+          "wcag:1.3.1",
+          "html-aria-ul",
+          "html-aria-li",
+          "html-aria-hr"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "An item that performs an action is a button; an item that navigates is a link. The role matches the function.",
+        "refs": [
+          "wcag:4.1.2",
+          "apg-read-me-first"
+        ]
+      },
+      {
+        "text": "Action items close the menu with popovertargetaction=\"hide\", which returns focus to the trigger when they are activated from the keyboard. A link item cannot carry that attribute: use links for destinations outside the current view.",
+        "refs": [
+          "html-popover-hide-action",
+          "html-hide-popover"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The menu closes on Escape and on a click or tap outside it. It does not close when keyboard focus moves past its last item: it may then cover the control receiving focus, and Escape reveals that control without moving focus.",
+        "refs": [
+          "wcag:2.4.11",
+          "understanding-focus-not-obscured-note",
+          "html-light-dismiss",
+          "html-close-requests"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A disabled action item uses the native disabled attribute and leaves the Tab order, like a disabled button. A disabled link item has no destination, keeps the link role and says it is disabled with aria-disabled. When people need to find an unavailable action, keep it enabled and explain on activation.",
+        "refs": [
+          "html-disabled",
+          "html-aria-a-no-href",
+          "aria-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On macOS, the default Tab sequence of a browser may skip links until people turn on the system setting that moves focus to every control: prefer action items inside a menu.",
+        "refs": [
+          "apg-tab-sequence"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never rely on color alone: an error item names its consequence (Delete project), and the chevron is backed by the expanded state the trigger exposes.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Item labels contrast at least 4.5:1 with the item background in every color mode, intent and enabled state, on the menu surface. Disabled items are inactive and exempt. Known exception, from the Figma library's error colors: a pressed error item in light mode (4.35:1), tracked as a known issue.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Items are identified by their labels, so the menu border and the separators need no 3:1 contrast. The focus ring of the trigger and of each item contrasts at least 3:1 with the surface around it in every color mode.",
+        "refs": [
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears on the trigger and on each item when it receives keyboard focus, drawn outside it; the menu padding keeps an item's ring inside the menu.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The trigger is a Button, a pointer target of at least 24 x 24 CSS pixels at every size; each item is at least 32 CSS pixels high and as wide as the menu.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The visible labels are the accessible names, so speech-input users can open the menu and pick an item by saying what they see.",
+        "refs": [
+          "wcag:2.5.3"
+        ]
+      },
+      {
+        "text": "Icons, including the chevron, are decorative and hidden from assistive technology with aria-hidden=\"true\": an icon-font glyph is written as its ligature name, which would otherwise be read with the label.",
+        "refs": [
+          "wcag:1.1.1",
+          "aria-hidden",
+          "accname-hidden"
+        ]
+      },
+      {
+        "text": "Use a pull-down button for commands directly related to the button's action. Destructive items show in red; unavailable items appear dimmed; separators distinguish groups of items.",
+        "refs": [
+          "hig-pull-down-buttons",
+          "hig-menus-organization",
+          "hig-menus-labels"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Apple recommends a hit region of at least 44 x 44 pt. The trigger at extra small to medium and the items (32 pt high) fall under it on iOS today: the Figma library has no platform heights.",
+        "refs": [
+          "hig-buttons-best-practices",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp. The trigger at extra small to medium and the items (32 dp high) fall under it on Android today: the Figma library has no platform heights.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Color transitions of the items are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3"
+        ]
+      },
+      {
+        "text": "The item transition is switched off under prefers-reduced-motion: reduce.",
+        "refs": [
+          "mdn-reduced-motion"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-disclosure-roles",
+        "title": "APG: Disclosure pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/#roles_states_properties"
+      },
+      {
+        "id": "apg-disclosure-keyboard",
+        "title": "APG: Disclosure pattern, keyboard interaction",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/#keyboard_interaction"
+      },
+      {
+        "id": "apg-disclosure-navigation",
+        "title": "APG: Disclosure navigation menu example, why it does not use the menu role",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/#aboutthisexample"
+      },
+      {
+        "id": "apg-menubar-keyboard",
+        "title": "APG: Menu and menubar pattern, keyboard interaction (arrow keys, focus managed by script)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/menubar/#keyboard_interaction"
+      },
+      {
+        "id": "apg-read-me-first",
+        "title": "APG: Read me first, no ARIA is better than bad ARIA (a role is a promise)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/#no_aria_better_bad_aria"
+      },
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "apg-tab-sequence",
+        "title": "APG: Keyboard navigation between components (the tab sequence, macOS default)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_general_between"
+      },
+      {
+        "id": "understanding-focus-not-obscured-note",
+        "title": "Understanding WCAG 2.4.11 Focus Not Obscured (Minimum), note 2: content opened by the user",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html#success-criterion"
+      },
+      {
+        "id": "html-popover-target",
+        "title": "HTML: the popover target attributes",
+        "url": "https://html.spec.whatwg.org/multipage/popover.html#the-popover-target-attributes"
+      },
+      {
+        "id": "html-popover-hide-action",
+        "title": "HTML: popovertargetaction hide state",
+        "url": "https://html.spec.whatwg.org/multipage/popover.html#attr-popovertargetaction-hide"
+      },
+      {
+        "id": "html-popover-auto",
+        "title": "HTML: the popover auto state (light dismiss, close requests)",
+        "url": "https://html.spec.whatwg.org/multipage/popover.html#attr-popover-auto"
+      },
+      {
+        "id": "html-light-dismiss",
+        "title": "HTML: popover light dismiss",
+        "url": "https://html.spec.whatwg.org/multipage/popover.html#popover-light-dismiss"
+      },
+      {
+        "id": "html-close-requests",
+        "title": "HTML: close requests (the Esc key)",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#close-requests"
+      },
+      {
+        "id": "html-hide-popover",
+        "title": "HTML: hide popover algorithm (focus returns to the previously focused element)",
+        "url": "https://html.spec.whatwg.org/multipage/popover.html#hide-popover-algorithm"
+      },
+      {
+        "id": "html-popover-focus-order",
+        "title": "HTML: flattened tabindex-ordered focus navigation scope (popover content after its trigger)",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#flattened-tabindex-ordered-focus-navigation-scope"
+      },
+      {
+        "id": "html-popover-scripting",
+        "title": "HTML: the popover attribute (a custom menu still needs author scripting)",
+        "url": "https://html.spec.whatwg.org/multipage/popover.html#the-popover-attribute"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "html-aam-popovertarget",
+        "title": "HTML-AAM: popovertarget attribute (aria-expanded)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#att-popovertarget"
+      },
+      {
+        "id": "html-aam-popover",
+        "title": "HTML-AAM: popover attribute (a generic element maps to group)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#att-popover"
+      },
+      {
+        "id": "html-aria-ul",
+        "title": "ARIA in HTML: ul element",
+        "url": "https://www.w3.org/TR/html-aria/#el-ul"
+      },
+      {
+        "id": "html-aria-li",
+        "title": "ARIA in HTML: li element",
+        "url": "https://www.w3.org/TR/html-aria/#el-li"
+      },
+      {
+        "id": "html-aria-hr",
+        "title": "ARIA in HTML: hr element",
+        "url": "https://www.w3.org/TR/html-aria/#el-hr"
+      },
+      {
+        "id": "html-aria-a-no-href",
+        "title": "ARIA in HTML: a element without href",
+        "url": "https://www.w3.org/TR/html-aria/#el-a-no-href"
+      },
+      {
+        "id": "aria-disabled",
+        "title": "WAI-ARIA 1.2: aria-disabled",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-disabled"
+      },
+      {
+        "id": "aria-labelledby",
+        "title": "WAI-ARIA 1.2: aria-labelledby",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-labelledby"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "accname-content",
+        "title": "AccName 1.2: name from content (step 2F)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_name_from_content"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: hidden nodes are excluded (step 2A)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "mdn-popover-a11y",
+        "title": "MDN: Using the Popover API, popover accessibility features",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using#popover_accessibility_features"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "hig-pull-down-buttons",
+        "title": "Apple HIG: Pull-down buttons, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/pull-down-buttons#Best-practices"
+      },
+      {
+        "id": "hig-menus-organization",
+        "title": "Apple HIG: Menus, organization (separators)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/menus#Organization"
+      },
+      {
+        "id": "hig-menus-labels",
+        "title": "Apple HIG: Menus, labels (unavailable items appear dimmed)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/menus#Labels"
+      },
+      {
+        "id": "hig-buttons-best-practices",
+        "title": "Apple HIG: Buttons, best practices (hit region)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "Trigger label: a noun or a verb naming the set of actions (Share, Export, More actions), never the first action of the menu.",
+      "Item labels start with a verb: Duplicate, Rename, Delete project.",
+      "One to three words per item; items never wrap.",
+      {
+        "text": "Sentence case, no trailing punctuation.",
+        "platforms": [
+          "web",
+          "android",
+          "desktop"
+        ]
+      },
+      "With the error intent, name the consequence: Delete project, Remove member.",
+      "Group related items between separators; put destructive items last, in a group of their own.",
+      "Give icons to every item of a group or to none, so labels stay aligned."
+    ]
+  },
+  "examples": [
+    {
+      "id": "subtle-neutral",
+      "name": "Subtle neutral",
+      "description": "Actions on a document, the destructive one last in its own group.",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "label": "Actions",
+        "items": [
+          {
+            "label": "Duplicate",
+            "icon": "content_copy"
+          },
+          {
+            "label": "Rename",
+            "icon": "edit"
+          },
+          {
+            "label": "Download",
+            "icon": "download"
+          },
+          {
+            "part": "separator"
+          },
+          {
+            "label": "Delete project",
+            "icon": "delete",
+            "intent": "error"
+          }
+        ]
+      }
+    },
+    {
+      "id": "accent-neutral",
+      "name": "Accent neutral",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "label": "Export",
+        "iconStart": "download",
+        "items": [
+          {
+            "label": "Export as PDF"
+          },
+          {
+            "label": "Export as CSV"
+          },
+          {
+            "label": "Export as image"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ghost-neutral-small",
+      "name": "Ghost neutral, small",
+      "description": "Row actions in a dense table.",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "neutral",
+        "size": "small",
+        "label": "More actions",
+        "items": [
+          {
+            "label": "Edit",
+            "icon": "edit"
+          },
+          {
+            "label": "Share",
+            "icon": "share"
+          },
+          {
+            "part": "separator"
+          },
+          {
+            "label": "Remove",
+            "icon": "close",
+            "intent": "error"
+          }
+        ]
+      }
+    },
+    {
+      "id": "subtle-brand-links",
+      "name": "Subtle brand, with links",
+      "description": "Items that navigate are links; an unavailable destination is disabled.",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "brand",
+        "label": "Help",
+        "items": [
+          {
+            "label": "Read the documentation",
+            "href": "https://example.com/docs"
+          },
+          {
+            "label": "Contact support",
+            "href": "https://example.com/support"
+          },
+          {
+            "label": "Join the beta",
+            "href": "https://example.com/beta",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "subtle-neutral-disabled-item",
+      "name": "Subtle neutral, disabled item",
+      "description": "An action that does not apply right now stays visible, dimmed.",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "label": "Edit",
+        "items": [
+          {
+            "label": "Cut"
+          },
+          {
+            "label": "Copy"
+          },
+          {
+            "label": "Paste",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "subtle-neutral-disabled",
+      "name": "Subtle neutral, disabled",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "label": "Actions",
+        "disabled": true,
+        "items": [
+          {
+            "label": "Duplicate"
+          }
+        ]
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/dropdown.tokens.json",
+    "prefix": "dropdown"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/dropdown/dropdown.css",
+      "template": "packages/components/src/components/dropdown/dropdown.template.mjs",
+      "selector": ".ds-dropdown",
+      "element": "div",
+      "rolePart": "trigger",
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-dropdown",
+        "trigger": ".ds-dropdown__trigger",
+        "indicator": ".ds-dropdown__trigger > .ds-button__icon[data-position=\"end\"]",
+        "menu": ".ds-dropdown__menu",
+        "group": ".ds-dropdown__group",
+        "item": ".ds-dropdown__item",
+        "item-icon": ".ds-dropdown__item-icon",
+        "item-label": ".ds-dropdown__item-label",
+        "separator": ".ds-dropdown__separator"
+      }
+    }
+  },
+  "related": [
+    "button"
+  ],
+  "decisions": [
+    {
+      "id": "menu-level-2-figma-library",
+      "date": "2026-10-02",
+      "version": "0.4.0",
+      "area": "color",
+      "status": "active",
+      "text": "The menu is a level 2 surface wherever it opens: its background is global.bg.level.2.default, its outline global.border.level.edge.level.2 and its separators global.border.level.on-level.2. Items alias the Figma library's mapped roles as they are (neutral and functional.error families, subtle tints on hover and press), in light and dark mode.",
+      "tokens": [
+        "dropdown.menu.background",
+        "dropdown.menu.border-color",
+        "dropdown.separator.color",
+        "dropdown.item.background.*",
+        "dropdown.item-label.color.*"
+      ],
+      "supersedes": [
+        "menu-level-2"
+      ]
+    },
+    {
+      "id": "menu-level-2",
+      "date": "2026-10-02",
+      "version": "0.3.0",
+      "area": "color",
+      "status": "superseded",
+      "text": "The menu is a level 2 surface wherever it opens: its background is color.surface.level.2, its outline color.border.edge.level.2 and its separators color.border.on-level.2.",
+      "tokens": [
+        "dropdown.menu.background",
+        "dropdown.menu.border-color",
+        "dropdown.separator.color"
+      ]
+    },
+    {
+      "id": "no-script-disclosure",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "The dropdown is accessible in every state without relying on code the consumer has to write. On the web, the reference implementation works without any script: the trigger opens a native popover and the menu follows the disclosure pattern, items being buttons and links reached with Tab, never an ARIA menu.",
+      "rationale": "Accessible at all cost, all the time; the web implementation ships CSS and HTML only.",
+      "tokens": [
+        "dropdown.menu.*"
+      ],
+      "refs": [
+        "apg-disclosure-roles",
+        "apg-read-me-first",
+        "html-popover-scripting",
+        "html-aam-popovertarget"
+      ]
+    },
+    {
+      "id": "item-features",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "Menu items can have a leading icon, can be disabled, and can take the error intent for destructive actions; separators split the menu into groups of items.",
+      "tokens": [
+        "dropdown.item.*",
+        "dropdown.item-label.*",
+        "dropdown.item-icon.*",
+        "dropdown.separator.*"
+      ]
+    },
+    {
+      "id": "anatomy-opened",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The dropdown is made of its trigger and its opened menu: the menu, its groups, items and separators are parts of the component, with states of their own next to the trigger's."
+    },
+    {
+      "id": "trigger-is-button",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "variant",
+      "status": "active",
+      "text": "The trigger is the Button component with all its options (emphasis, intent, size, leading icon, disabled) and its defaults, and a chevron as its trailing icon.",
+      "tokens": [
+        "button.*"
+      ]
+    },
+    {
+      "id": "scope-actions",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A dropdown opens a menu of actions. Choosing a value is a separate component (Select), and so is a button whose main action sits next to its menu (Split button)."
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.4.1",
+      "date": "2026-10-15",
+      "note": "Fix: the focus ring shows on a keyboard-focused item. The ring rule was wrapped in :where(), so the :focus reset (outline: none) outranked it; it now uses :is() and wins by source order. The trigger takes the fix from Button 0.22.1. No token or decision changes."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-10-02",
+      "note": "Decision menu-level-2-figma-library: the tokens are recreated from the Figma library (Color foundation 3.0.0). Component tokens keep their paths and the CSS is unchanged; the menu, separators and items alias the Figma library's mapped roles (global.bg.level.2.default, global.border.level.edge.level.2, global.border.level.on-level.2, global.bg.subtle.*, global.text.on-subtle.*) instead of the repository's color.* roles. Visible changes: error item text follows the Figma library (error 600 instead of 700) and dark mode is the Figma library's dark mapping. Item label contrast on the menu, every platform: light 5.45:1 or more, dark 7.77:1 or more, except a pressed error item in light mode, 4.35:1. Focus ring on the menu light 5.79:1, dark 10.73:1. Measured without a minimum: separators light 1.19:1, dark 3.24:1; menu outline on levels 0 and 1 light 1.27:1 or more, dark 1.22:1 or more. Menu radius, border, padding, item heights, item text, icons and motion alias the Figma library's scales and the additions directly instead of the repository's invented semantic tokens: same values, no visual change. iOS and Android lose the overlays that raised the item and trigger heights to 44 pt and 48 dp."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-10-02",
+      "note": "Decision menu-level-2. The menu moves from level 0 to level 2. Light mode: unchanged (levels 0 and 2 share the page color and the outline step). Dark mode: the menu fill is ash 700, 1.19:1 against the page and 1.09:1 against a level 1 panel (it was the page color), its outline ash 600, 1.33:1 against the page and 1.22:1 against a level 1 panel (was 1.09:1 and 1.00:1), its separators ash 400. Contrast, every intent x enabled state on the level 2 menu and its tinted items: item label light 6.30:1 minimum (error, pressed), dark 7.78:1 (error, rest), was 8.49:1 (4.5:1 required, WCAG 1.4.3); focus ring light 4.13:1 minimum (on the pressed error tint), dark 7.62:1, was 8.95:1 (3:1 required, WCAG 1.4.11). Disabled item label measured without a minimum: light 3.31:1, dark 3.38:1."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-10-01",
+      "note": "The menu outline aliases color.border.edge.level.0 and the separators color.border.on-level.0, the level borders that replace color.border.default (Color foundation 2.0.0, decision level-borders). Visible: in light mode the outline is one step lighter (ash 200, 1.35:1 against the menu) and the separators two steps lighter (ash 100, 1.19:1); in dark mode the outline is fainter (ash 800, 1.09:1) and the separators unchanged (ash 600, 1.33:1). Neither identifies the menu or its groups on their own: the item labels do (WCAG 1.4.11), as the Accessibility section already states. Item and focus contrast unchanged."
+    },
+    {
+      "version": "0.1.1",
+      "date": "2026-10-01",
+      "note": "The menu background aliases color.surface.level.0, the new name of the page surface (Color foundation 1.0.0). Same value in every mode: nothing changes visually. Which level a floating menu takes stays an open question."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft. Decisions scope-actions, trigger-is-button, anatomy-opened, item-features and no-script-disclosure. Trigger: the Button with a chevron. Menu: a native popover under the trigger (CSS anchor positioning), on the default surface with a divider border; groups of items as lists, separators as hr; items as buttons (closing the menu with popovertargetaction=\"hide\") or links, with an optional icon, the neutral or error intent and a disabled state. Items take the ghost button's tint. Contrast, every intent x enabled state on the menu surface: item label 6.30:1 minimum in light mode (error, pressed), 8.49:1 in dark mode; focus ring 5.27:1 or more in light mode and 8.94:1 or more in dark mode, against the menu and the tinted items. Trigger contrast is the Button's."
+    }
+  ]
+}

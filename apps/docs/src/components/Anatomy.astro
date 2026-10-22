@@ -1,0 +1,100 @@
+---
+/**
+ * Anatomy of a spec: a live rendering linked to the parts table with @component-anatomy/core.
+ * Hovering or focusing a row outlines the part in the rendering; hovering the rendering marks the
+ * row. Parts are located through `implementations.web.partSelectors`, so nothing here knows a
+ * component. The rendering is the web example showing the most parts (chosen client-side among
+ * the candidates below, each also rendered in the states listed by a part's `visibleIn`); without
+ * JavaScript the default props rendering stays and the table works.
+ */
+import type { Template } from '../lib/web';
+import { onWeb } from '../lib/platforms';
+
+interface Props {
+  spec: any;
+  template: Template | null;
+  initial: Record<string, unknown>;
+}
+const { spec, template, initial } = Astro.props;
+const web = spec.implementations.web;
+const selectors: Record<string, string> = web.partSelectors ?? {};
+// Parts shown only in some states (a menu shown when expanded): each candidate is first rendered
+// with those states forced. Hidden parts are still in the markup, so the counts tie and the
+// opened rendering, which comes first, wins.
+const reveals = [...new Set(spec.anatomy.flatMap((p: any) => p.visibleIn?.slice(0, 1) ?? []))] as string[];
+const candidates = template
+  ? [initial, ...(spec.examples ?? []).filter((ex: any) => onWeb(ex)).map((ex: any) => ex.props)]
+      .flatMap((p) => [...reveals.map((state) => ({ ...p, state })), p])
+      .map((p) => template.render(p))
+  : [];
+// The overlay chip shows the part id, as the first column of the table does.
+const parts = spec.anatomy.map((p: any) => ({ id: p.id, name: p.id, selector: selectors[p.id] ?? null }));
+---
+<div class="site-anatomy" data-anatomy={JSON.stringify(parts)}>
+  {template ? (
+    <div class="site-anatomy__preview site-preview__stage" aria-hidden="true" data-anatomy-preview set:html={candidates[0]}></div>
+  ) : null}
+  {candidates.slice(1).map((html) => <template data-anatomy-candidate set:html={html}></template>)}
+  <div class="site-table-wrap">
+    <table class="site-table">
+      <thead><tr><th scope="col">Part</th><th scope="col">Role</th><th scope="col">Required</th><th scope="col">Description</th><th scope="col">Web selector</th></tr></thead>
+      <tbody data-anatomy-panel>
+        {spec.anatomy.map((p: any) => (
+          <tr data-anatomy-item={selectors[p.id] ? p.id : undefined} tabindex={selectors[p.id] ? 0 : undefined}>
+            <th scope="row"><code>{p.id}</code>{p.repeatable ? <span class="site-muted site-small"> (repeatable)</span> : null}{p.decorative ? <span class="site-muted site-small"> (decorative)</span> : null}</th>
+            <td><code>{p.role}</code></td>
+            <td>{p.required ? 'yes' : 'no'}</td>
+            <td>{p.description}{p.component ? <div class="site-small site-muted">Instance of <code>{p.component}</code></div> : null}{p.visibleIn?.length ? <div class="site-small site-muted">Shown when {p.visibleIn.map((s: string) => <code>{s}</code>)}</div> : null}</td>
+            <td><code class="site-small">{selectors[p.id] ?? '—'}</code></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {template ? <p class="site-muted site-small">Hover or focus a row to outline the part in the rendering above; hover the rendering to find its row.</p> : null}
+</div>
+
+<script>
+  import { createAnatomy } from '@component-anatomy/core';
+
+  type Part = { id: string; name: string; selector: string | null };
+  const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex], [contenteditable]';
+
+  // Marks every element matching a part selector with data-part, which is what the library reads.
+  const tag = (root: Element, parts: Part[]) => {
+    let found = 0;
+    for (const p of parts) {
+      if (!p.selector) continue;
+      const matches = [...(root.matches(p.selector) ? [root] : []), ...root.querySelectorAll(p.selector)];
+      for (const el of matches) (el as HTMLElement).dataset.part = p.id;
+      if (matches.length) found++;
+    }
+    return found;
+  };
+
+  for (const el of document.querySelectorAll<HTMLElement>('[data-anatomy]')) {
+    const preview = el.querySelector<HTMLElement>('[data-anatomy-preview]');
+    const panel = el.querySelector<HTMLElement>('[data-anatomy-panel]');
+    if (!preview || !panel) continue;
+    const parts: Part[] = JSON.parse(el.dataset.anatomy!);
+
+    // Show the candidate rendering that exposes the most parts.
+    let best = tag(preview.firstElementChild ?? preview, parts);
+    for (const t of el.querySelectorAll<HTMLTemplateElement>('[data-anatomy-candidate]')) {
+      const node = t.content.firstElementChild;
+      if (!node) continue;
+      const count = tag(node, parts);
+      if (count > best) { best = count; preview.replaceChildren(node); }
+    }
+
+    // The rendering is an illustration: out of the tab order (it is aria-hidden) but still hoverable.
+    for (const f of preview.querySelectorAll<HTMLElement>(FOCUSABLE)) f.tabIndex = -1;
+
+    createAnatomy({
+      root: preview,
+      panel,
+      parts: parts.map(({ id, name }) => ({ id, name })),
+      overlay: { padding: 2 },
+    });
+  }
+</script>

@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Status from '../components/Status.astro';
+import { getTemplate, defaultProps } from '../lib/web';
+import { getTokens } from '../lib/tokens';
+import { conformanceTarget } from '../lib/a11y';
+
+const specs = (await getCollection('specs')).sort((a, b) => a.data.name.localeCompare(b.data.name));
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { rows, config } = getTokens();
+const tiers = (config.tiers as { name: string }[]).map((t) => ({ name: t.name, count: rows.filter((r) => r.tier === t.name).length }));
+const target = conformanceTarget();
+// A filter only earns its place once the list no longer fits on one screen.
+const filterable = specs.length > 6;
+---
+<Layout title="Components" description="Component specifications, tokens and the vanilla CSS reference implementation.">
+  <section class="site-hero">
+    <h1>Components</h1>
+    <p class="site-lede">
+      Specified once, technology-agnostically, with their own DTCG tokens, Markdown guidance and a vanilla CSS reference rendering.
+    </p>
+  </section>
+
+  <ul class="site-stats" aria-label="Summary">
+    <li><span class="site-stats__value">{specs.length}</span><span class="site-stats__label">{specs.length === 1 ? 'component' : 'components'}</span></li>
+    {tiers.map((t, i) => (
+      <li><a href={`${base}/tokens${i === 0 ? '' : `/${t.name}`}`}><span class="site-stats__value">{t.count}</span><span class="site-stats__label">{t.name} tokens</span></a></li>
+    ))}
+    <li><span class="site-stats__value">{target.version} {target.level}</span><span class="site-stats__label">{target.standard} target</span></li>
+  </ul>
+
+  <section aria-labelledby="site-components-title">
+    <div class="site-list-head">
+      <h2 id="site-components-title">All components</h2>
+      {filterable ? <div class="site-filter" set:html={getTemplate('search-field')?.render({ label: 'Filter components', id: 'component-filter', size: 'small', placeholder: 'Filter by name, role or status', attrs: { 'data-filter': true } })}></div> : null}
+    </div>
+    <ul class="site-list" data-list>
+      {specs.map((s) => {
+        const tpl = getTemplate(s.id);
+        const html = tpl ? tpl.render(defaultProps(s.data)) : '';
+        const keywords = [s.data.name, s.data.role, s.data.status, ...(s.data.tags ?? [])].join(' ').toLowerCase();
+        return (
+          <li class="site-list__item" data-keywords={keywords}>
+            <div class="site-list__thumb site-preview__stage" set:html={html} inert aria-hidden="true"></div>
+            <div>
+              <h3 class="site-list__title"><a class="site-list__link" href={`${base}/components/${s.id}`}>{s.data.name}</a> <Status status={s.data.status} /></h3>
+              <p class="site-list__summary">{s.data.summary}</p>
+              <p class="site-list__meta">
+                <span>role <code>{s.data.role}</code></span>
+                <span>v{s.data.version}</span>
+                <span>{s.data.anatomy.length} parts</span>
+                <span>{s.data.properties.length} properties</span>
+                <span>{s.data.states.length} states</span>
+              </p>
+            </div>
+            <span class="site-list__arrow" aria-hidden="true">→</span>
+          </li>
+        );
+      })}
+    </ul>
+    {filterable ? <p class="site-list__empty" hidden data-empty>No component matches.</p> : null}
+  </section>
+</Layout>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-filter]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-list] > li')];
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let shown = 0;
+    for (const li of items) {
+      const match = !q || li.dataset.keywords!.includes(q);
+      li.hidden = !match;
+      if (match) shown++;
+    }
+    if (empty) empty.hidden = shown > 0;
+  });
+</script>

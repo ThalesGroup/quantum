@@ -1,0 +1,197 @@
+/*
+ * Checkbox — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/checkbox.spec.json
+ * Tokens: packages/tokens/dist/css/components/checkbox.css (generated from packages/tokens/src/components/checkbox.tokens.json)
+ *
+ * Rules:
+ *  - Only --checkbox-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (grid: control, label, description); the native input is the control,
+ *    drawn by the component (appearance: none). The mark is a pseudo-element of the input.
+ *  - Size is a data attribute on the root; states are native pseudo-classes of the input, and the
+ *    root's [data-state="<state>"] forces them for review. Precedence follows the spec order:
+ *    default < hover < focus-visible < checked < indeterminate < invalid < disabled, so hover does not
+ *    repaint a checked box and disabled wins over everything (packages/tokens/AGENTS.md "Which token applies").
+ *  - Private properties (--_*) are the single place an option or a state writes to.
+ */
+
+.ds-checkbox {
+  /* Defaults = size "medium", state "default". */
+  --_control-size: var(--checkbox-control-size-medium);
+  --_control-radius: var(--checkbox-control-border-radius-medium);
+  --_control-background: var(--checkbox-control-background-default);
+  --_control-border-color: var(--checkbox-control-border-color-default);
+  --_control-color: var(--checkbox-control-color-checked);
+  --_label-color: var(--checkbox-label-color-default);
+  --_description-color: var(--checkbox-description-color-default);
+  --_label-font-family: var(--checkbox-label-typography-medium-font-family);
+  --_label-font-size: var(--checkbox-label-typography-medium-font-size);
+  --_label-font-weight: var(--checkbox-label-typography-medium-font-weight);
+  --_label-line-height: var(--checkbox-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--checkbox-label-typography-medium-letter-spacing);
+  --_description-font-family: var(--checkbox-description-typography-medium-font-family);
+  --_description-font-size: var(--checkbox-description-typography-medium-font-size);
+  --_description-font-weight: var(--checkbox-description-typography-medium-font-weight);
+  --_description-line-height: var(--checkbox-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--checkbox-description-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--checkbox-container-column-gap);
+  row-gap: var(--checkbox-container-row-gap);
+  align-items: start;
+  vertical-align: middle;
+}
+
+/* ---- Size ---------------------------------------------------------------- */
+
+.ds-checkbox[data-size="small"] {
+  --_control-size: var(--checkbox-control-size-small);
+  --_control-radius: var(--checkbox-control-border-radius-small);
+  --_label-font-family: var(--checkbox-label-typography-small-font-family);
+  --_label-font-size: var(--checkbox-label-typography-small-font-size);
+  --_label-font-weight: var(--checkbox-label-typography-small-font-weight);
+  --_label-line-height: var(--checkbox-label-typography-small-line-height);
+  --_label-letter-spacing: var(--checkbox-label-typography-small-letter-spacing);
+  --_description-font-family: var(--checkbox-description-typography-small-font-family);
+  --_description-font-size: var(--checkbox-description-typography-small-font-size);
+  --_description-font-weight: var(--checkbox-description-typography-small-font-weight);
+  --_description-line-height: var(--checkbox-description-typography-small-line-height);
+  --_description-letter-spacing: var(--checkbox-description-typography-small-letter-spacing);
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.ds-checkbox__control {
+  box-sizing: border-box;
+  display: inline-grid;
+  place-content: center;
+  inline-size: var(--_control-size);
+  block-size: var(--_control-size);
+  flex: none;
+  margin: 0;
+  /* Centers the box on the first line of the label. */
+  margin-block-start: calc((var(--_label-line-height) * var(--_label-font-size) - var(--_control-size)) / 2);
+  border: var(--checkbox-control-border-width) solid var(--_control-border-color);
+  border-radius: var(--_control-radius);
+  background-color: var(--_control-background);
+  color: var(--_control-color);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--checkbox-control-transition-duration) var(--checkbox-control-transition-easing),
+    border-color var(--checkbox-control-transition-duration) var(--checkbox-control-transition-easing);
+}
+
+/* The mark: a check (two borders rotated) when checked, a bar when indeterminate. Drawn in currentColor
+   from the control's color token; its geometry is a fraction of the control size, never a literal length. */
+.ds-checkbox__control::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  inline-size: calc(var(--_control-size) * 0.3);
+  block-size: calc(var(--_control-size) * 0.55);
+  margin-block-end: calc(var(--_control-size) * 0.12);
+  border: solid currentColor;
+  border-width: 0 calc(var(--_control-size) * 0.12) calc(var(--_control-size) * 0.12) 0;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+.ds-checkbox__label {
+  grid-column: 2;
+  color: var(--_label-color);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
+  cursor: pointer;
+}
+
+.ds-checkbox__description {
+  grid-column: 2;
+  margin: 0;
+  color: var(--_description-color);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
+}
+
+/* ---- States -------------------------------------------------------------- */
+/* Order matters: hover < checked < indeterminate < invalid < disabled. Hover never repaints a checked,
+   indeterminate or disabled box (the checked token wins over hover, as in the token rule). */
+
+.ds-checkbox:where([data-state="hover"]) .ds-checkbox__control:not(:checked, :indeterminate, :disabled),
+.ds-checkbox:not([data-state]) .ds-checkbox__control:hover:not(:checked, :indeterminate, :disabled) {
+  --_control-background: var(--checkbox-control-background-hover);
+  --_control-border-color: var(--checkbox-control-border-color-hover);
+}
+
+.ds-checkbox:where([data-state="checked"]) .ds-checkbox__control,
+.ds-checkbox__control:checked {
+  --_control-background: var(--checkbox-control-background-checked);
+  --_control-border-color: var(--checkbox-control-border-color-checked);
+  --_control-color: var(--checkbox-control-color-checked);
+}
+.ds-checkbox:where([data-state="checked"]) .ds-checkbox__control::after,
+.ds-checkbox__control:checked::after {
+  opacity: 1;
+}
+
+.ds-checkbox:where([data-state="indeterminate"]) .ds-checkbox__control,
+.ds-checkbox__control:indeterminate {
+  --_control-background: var(--checkbox-control-background-indeterminate);
+  --_control-border-color: var(--checkbox-control-border-color-indeterminate);
+  --_control-color: var(--checkbox-control-color-indeterminate);
+}
+.ds-checkbox:where([data-state="indeterminate"]) .ds-checkbox__control::after,
+.ds-checkbox__control:indeterminate::after {
+  inline-size: calc(var(--_control-size) * 0.5);
+  block-size: 0;
+  margin: 0;
+  border-width: 0 0 calc(var(--_control-size) * 0.12) 0;
+  transform: none;
+  opacity: 1;
+}
+
+.ds-checkbox:where([data-state="invalid"]) .ds-checkbox__control,
+.ds-checkbox__control[aria-invalid="true"] {
+  --_control-border-color: var(--checkbox-control-border-color-invalid);
+}
+
+.ds-checkbox:where([data-state="disabled"]),
+.ds-checkbox:has(.ds-checkbox__control:disabled) {
+  --_label-color: var(--checkbox-label-color-disabled);
+  --_description-color: var(--checkbox-description-color-disabled);
+}
+.ds-checkbox:where([data-state="disabled"]) .ds-checkbox__control,
+.ds-checkbox__control:disabled {
+  --_control-background: var(--checkbox-control-background-disabled);
+  --_control-border-color: var(--checkbox-control-border-color-disabled);
+  --_control-color: var(--checkbox-control-color-disabled);
+  cursor: not-allowed;
+}
+.ds-checkbox:where([data-state="disabled"]) .ds-checkbox__label,
+.ds-checkbox:has(.ds-checkbox__control:disabled) .ds-checkbox__label {
+  cursor: not-allowed;
+}
+
+.ds-checkbox__control:focus {
+  outline: none;
+}
+
+.ds-checkbox:where([data-state="focus-visible"]) .ds-checkbox__control,
+.ds-checkbox__control:focus-visible {
+  outline: var(--checkbox-control-outline-width-focus-visible) solid var(--checkbox-control-outline-color-focus-visible);
+  outline-offset: var(--checkbox-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-checkbox__control {
+    transition: none;
+  }
+}

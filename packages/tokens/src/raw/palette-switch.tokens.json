@@ -1,0 +1,35 @@
+{
+  "$description": "Recreated from the Figma library (Colors / Palette Switch) by scripts/figma-library.mjs: same paths made valid, same values, same aliases. Ash mode: the default palette. The Slate mode is not recreated yet. The system's own tokens live in tokens/additions/.",
+  "light-switch": {
+    "base": {
+      "25": {"$type":"color","$value":"{neutral.light.ash.25}"},
+      "50": {"$type":"color","$value":"{neutral.light.ash.50}"},
+      "100": {"$type":"color","$value":"{neutral.light.ash.100}"},
+      "200": {"$type":"color","$value":"{neutral.light.ash.200}"},
+      "300": {"$type":"color","$value":"{neutral.light.ash.300}"},
+      "400": {"$type":"color","$value":"{neutral.light.ash.400}"},
+      "500": {"$type":"color","$value":"{neutral.light.ash.500}"},
+      "600": {"$type":"color","$value":"{neutral.light.ash.600}"},
+      "700": {"$type":"color","$value":"{neutral.light.ash.700}"},
+      "800": {"$type":"color","$value":"{neutral.light.ash.800}"},
+      "900": {"$type":"color","$value":"{neutral.light.ash.900}"},
+      "950": {"$type":"color","$value":"{neutral.light.ash.950}"}
+    }
+  },
+  "dark-switch": {
+    "base": {
+      "25": {"$type":"color","$value":"{neutral.dark.ash.25}"},
+      "50": {"$type":"color","$value":"{neutral.dark.ash.50}"},
+      "100": {"$type":"color","$value":"{neutral.dark.ash.100}"},
+      "200": {"$type":"color","$value":"{neutral.dark.ash.200}"},
+      "300": {"$type":"color","$value":"{neutral.dark.ash.300}"},
+      "400": {"$type":"color","$value":"{neutral.dark.ash.400}"},
+      "500": {"$type":"color","$value":"{neutral.dark.ash.500}"},
+      "600": {"$type":"color","$value":"{neutral.dark.ash.600}"},
+      "700": {"$type":"color","$value":"{neutral.dark.ash.700}"},
+      "800": {"$type":"color","$value":"{neutral.dark.ash.800}"},
+      "900": {"$type":"color","$value":"{neutral.dark.ash.900}"},
+      "950": {"$type":"color","$value":"{neutral.dark.ash.950}"}
+    }
+  }
+}

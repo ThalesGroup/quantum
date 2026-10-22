@@ -1,0 +1,11 @@
+{
+  "global": {
+    "text": {
+      "code": {
+        "keyword": { "$value": "{extended.lavender.700}" }
+        "variable": { "$value": "{extended.orchid.700}" },
+        comment: { "$value": "{light-switch.base.700}" }
+      }
+    }
+  }
+}

@@ -1,0 +1,588 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "accordion",
+  "name": "Accordion",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "disclosure",
+  "summary": "A stack of sections whose content shows and hides under a header people activate.",
+  "description": "An accordion stacks sections of content, each behind a header: activating the header shows the section, activating it again hides it. It saves vertical space when people need only one or two sections at a time (settings groups, frequently asked questions, order details). Several sections may be open at once; the component never closes one when another opens. One section alone is the same thing with a single item.",
+  "tags": [
+    "disclosure",
+    "layout",
+    "content"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Stacks the items; carries the size and the states forced for review."
+    },
+    {
+      "id": "item",
+      "role": "container",
+      "required": true,
+      "repeatable": true,
+      "description": "One section: its trigger and its panel (a details element on the web). Takes the states of its trigger and the expanded state.",
+      "properties": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "string",
+          "required": true,
+          "bindsTo": "title",
+          "description": "Name of the section, shown in the trigger. Provides its accessible name."
+        },
+        {
+          "id": "content",
+          "name": "Content",
+          "type": "string",
+          "required": true,
+          "bindsTo": "panel",
+          "description": "Text of the section (a paragraph in the reference rendering; the consumer's content in a product)."
+        },
+        {
+          "id": "open",
+          "name": "Open",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the section is shown at first."
+        }
+      ]
+    },
+    {
+      "id": "trigger",
+      "role": "action",
+      "required": true,
+      "parent": "item",
+      "description": "The header row people activate: the title and the chevron. Receives focus and exposes whether the section is expanded."
+    },
+    {
+      "id": "title",
+      "role": "label",
+      "required": true,
+      "parent": "trigger",
+      "description": "Text naming the section."
+    },
+    {
+      "id": "indicator",
+      "role": "indicator",
+      "required": true,
+      "decorative": true,
+      "parent": "trigger",
+      "description": "Chevron glyph of the icon font at the end of the trigger, turned upside down when the section is expanded. Hidden from assistive technology, which learns the state from the trigger."
+    },
+    {
+      "id": "panel",
+      "role": "panel",
+      "required": true,
+      "parent": "item",
+      "visibleIn": [
+        "expanded"
+      ],
+      "description": "The section's content, shown while the item is expanded and out of the reading and tab order otherwise."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Trigger height, title and content text size scale together.",
+      "affects": [
+        "item",
+        "trigger",
+        "title",
+        "indicator",
+        "panel"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Dense panels (40 px triggers, 14 px text)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (48 px triggers, 16 px text)."
+        }
+      ]
+    },
+    {
+      "id": "items",
+      "name": "Items",
+      "type": "list",
+      "required": true,
+      "of": [
+        "item"
+      ],
+      "bindsTo": "item",
+      "description": "The sections, in order."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "parts": [
+        "item"
+      ],
+      "description": "Collapsed: the trigger alone, chevron pointing down."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "parts": [
+        "item"
+      ],
+      "description": "Pointer over the trigger: it takes a light tint. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "active",
+      "trigger": "interaction",
+      "parts": [
+        "item"
+      ],
+      "description": "Pointer, finger or key pressed down on the trigger: the next tint."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "parts": [
+        "item"
+      ],
+      "description": "Keyboard focus on the trigger. Shows the shared focus ring around it; pointer focus shows none."
+    },
+    {
+      "id": "expanded",
+      "trigger": "property",
+      "property": "items",
+      "parts": [
+        "item"
+      ],
+      "description": "The section is shown (the entry's open property, or activation): the panel appears under the trigger and the chevron turns."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "stretch",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "Items stack, each closed by a hairline at its bottom; the trigger fills the width with the title at the start and the chevron at the end.",
+      "The panel sits under its trigger, inset by its padding, and pushes the following items down: an accordion never floats."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "button",
+    "name": {
+      "text": "Each trigger is named by its title (name from content; the chevron is hidden). The platform exposes the trigger as a button-like control with its expanded or collapsed state; the accordion as a whole has no name.",
+      "refs": [
+        "apg-accordion-roles",
+        "accname-content",
+        "accname-hidden",
+        "html-aam-summary"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to each trigger in turn, and through the content of the expanded sections; collapsed content is skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "wcag:2.4.3",
+          "html-focusable-area"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "Expands the focused section when it is collapsed, collapses it when it is expanded.",
+        "refs": [
+          "apg-accordion-keyboard",
+          "html-summary"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Space",
+        "action": "Same as Enter.",
+        "refs": [
+          "apg-accordion-keyboard",
+          "mdn-details"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Each header is a control that shows and hides its section and exposes whether it is expanded: the disclosure behind the accordion pattern.",
+        "refs": [
+          "wcag:4.1.2",
+          "apg-accordion",
+          "apg-accordion-roles"
+        ]
+      },
+      {
+        "text": "Use a details element per item, with its summary as the trigger: the browser toggles the section, keeps the hidden content out of the tab order and exposes the expanded state from the open attribute. The summary has no WAI-ARIA role of its own; user agents expose it as a button-like disclosure control, which is what the pattern needs, without ARIA or script.",
+        "refs": [
+          "html-details",
+          "html-summary",
+          "html-aria-summary",
+          "html-aria-details",
+          "html-aam-summary",
+          "html-aam-open-details",
+          "mdn-summary"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The title is not a heading: the trigger is exposed as a button, whose descendants are presentational, so a heading inside it would be lost. People navigating by heading do not find the sections; place the accordion under a heading of the page.",
+        "refs": [
+          "aria-button-children",
+          "aria-children-presentational",
+          "apg-accordion-roles"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never rely on color alone: the chevron's direction and the shown or hidden content say the state, and assistive technology announces it.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Title text contrasts 19.07:1 (light) and 11.27:1 (dark) with the default surface, 17.99:1 and 10.32:1 on the hover tint; content text 12.87:1 and 8.80:1. The hairlines are decoration.",
+        "refs": [
+          "wcag:1.4.3",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears around the focused trigger; the focus ring contrasts 5.79:1 (light) and 12.80:1 (dark) with the surface.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Triggers are 40 or 48 CSS pixels high and as wide as the accordion: pointer targets above the minimum.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The content of an expanded section follows its trigger in the reading and focus order.",
+        "refs": [
+          "wcag:2.4.3",
+          "wcag:1.3.2",
+          "html-details"
+        ]
+      },
+      {
+        "text": "Disclosure controls reveal and hide information and functionality related to specific controls or views: the iOS and macOS counterpart of an accordion section.",
+        "refs": [
+          "hig-disclosure-controls"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "The chevron rotation and the tint transition are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "accname-content",
+        "title": "AccName 1.2: name from content (step 2F)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_name_from_content"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: hidden nodes are excluded (step 2A)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "apg-accordion",
+        "title": "APG: Accordion pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+      },
+      {
+        "id": "apg-accordion-keyboard",
+        "title": "APG: Accordion pattern, keyboard interaction (Enter, Space)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/#keyboardinteraction"
+      },
+      {
+        "id": "apg-accordion-roles",
+        "title": "APG: Accordion pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/#roles_states_properties"
+      },
+      {
+        "id": "html-details",
+        "title": "HTML: the details element (a disclosure widget; the open attribute)",
+        "url": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element"
+      },
+      {
+        "id": "html-summary",
+        "title": "HTML: the summary element (its activation toggles the details)",
+        "url": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-summary-element"
+      },
+      {
+        "id": "html-aria-summary",
+        "title": "ARIA in HTML: summary element (no corresponding role)",
+        "url": "https://www.w3.org/TR/html-aria/#el-summary"
+      },
+      {
+        "id": "html-aria-details",
+        "title": "ARIA in HTML: details element (role group)",
+        "url": "https://www.w3.org/TR/html-aria/#el-details"
+      },
+      {
+        "id": "html-aam-summary",
+        "title": "HTML-AAM: summary element (exposed as a button-like control with an expanded state)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-summary"
+      },
+      {
+        "id": "html-aam-open-details",
+        "title": "HTML-AAM: the details open attribute (aria-expanded)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#att-open-details"
+      },
+      {
+        "id": "mdn-details",
+        "title": "MDN: the details element (open; Space toggles a focused summary)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/details"
+      },
+      {
+        "id": "mdn-summary",
+        "title": "MDN: the summary element (its exposed role varies across browsers)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/summary"
+      },
+      {
+        "id": "aria-button-children",
+        "title": "WAI-ARIA 1.2: button role (children presentational)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#button"
+      },
+      {
+        "id": "aria-children-presentational",
+        "title": "WAI-ARIA 1.2: presentational children",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#childrenArePresentational"
+      },
+      {
+        "id": "hig-disclosure-controls",
+        "title": "Apple HIG: Disclosure controls",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/disclosure-controls"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "Titles are short noun phrases that let people decide whether to open the section: Shipping and returns, Payment methods.",
+      "Sentence case, no trailing punctuation; titles never wrap to a second line when possible.",
+      "Open at first only the section people most likely need; keep the others closed."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "items": [
+          {
+            "title": "Shipping and returns",
+            "content": "Orders ship within two business days. Returns are free within 30 days.",
+            "open": true
+          },
+          {
+            "title": "Payment methods",
+            "content": "We accept cards, bank transfers and most digital wallets."
+          },
+          {
+            "title": "Warranty",
+            "content": "Every product is covered for two years from the delivery date."
+          }
+        ]
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "items": [
+          {
+            "title": "Advanced settings",
+            "content": "Change the region, the retention period and the export format."
+          },
+          {
+            "title": "Danger zone",
+            "content": "Delete the workspace and all its data."
+          }
+        ]
+      }
+    },
+    {
+      "id": "medium-all-closed",
+      "name": "Medium, all closed",
+      "props": {
+        "size": "medium",
+        "items": [
+          {
+            "title": "What is included?",
+            "content": "Unlimited projects, 20 members and priority support."
+          },
+          {
+            "title": "Can I cancel at any time?",
+            "content": "Yes. Your plan stays active until the end of the billing period."
+          },
+          {
+            "title": "Do you offer discounts?",
+            "content": "Yearly billing saves two months."
+          }
+        ]
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/accordion.tokens.json",
+    "prefix": "accordion"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/accordion/accordion.css",
+      "template": "packages/components/src/components/accordion/accordion.template.mjs",
+      "selector": ".ds-accordion",
+      "element": "div",
+      "attributes": {
+        "size": "data-size"
+      },
+      "stateAttribute": "data-state",
+      "rolePart": "trigger",
+      "partSelectors": {
+        "container": ".ds-accordion",
+        "item": ".ds-accordion__item",
+        "trigger": ".ds-accordion__trigger",
+        "title": ".ds-accordion__title",
+        "indicator": ".ds-accordion__indicator",
+        "panel": ".ds-accordion__panel"
+      }
+    }
+  },
+  "related": [
+    "dropdown",
+    "card"
+  ],
+  "decisions": [
+    {
+      "id": "native-details",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "Each section is a native disclosure (details and summary on the web); any number of sections may be open at once, and the component never closes one when another opens. The accordion ships no script.",
+      "rationale": "The native disclosure gives the toggle, the keyboard, the hidden content and the expanded state for free; closing other sections needs script.",
+      "refs": [
+        "html-details",
+        "apg-accordion"
+      ]
+    },
+    {
+      "id": "title-not-a-heading",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "The section title is plain text in the trigger, not a heading, because the trigger is exposed as a button whose children are presentational; the accordion sits under a heading of the page.",
+      "refs": [
+        "aria-button-children",
+        "aria-children-presentational"
+      ]
+    },
+    {
+      "id": "trigger-tints",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "Triggers are transparent at rest, take the subtle neutral fill on hover and its hover step on press (the Button's ghost tints); items are separated by a hairline in the on-level border color; the title is primary text, the content secondary text.",
+      "tokens": [
+        "accordion.trigger.background.*",
+        "accordion.item.border-color",
+        "accordion.title.color",
+        "accordion.panel.color"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two sizes: small (40 px triggers, 14 px title and content, 20 px chevron) and medium (48 px, 16 px, 24 px, the default); triggers have 8 px of padding and 4 px corners, panels 12 px of block padding.",
+      "tokens": [
+        "accordion.trigger.min-height.*",
+        "accordion.title.typography.*",
+        "accordion.panel.typography.*",
+        "accordion.indicator.size.*",
+        "accordion.trigger.padding-inline",
+        "accordion.trigger.padding-block",
+        "accordion.panel.padding-block"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions native-details, title-not-a-heading, trigger-tints, sizes). Native details and summary per item, a chevron indicator, a panel; states default, hover, active, focus-visible, expanded on the item part; sizes small and medium. Contrast, light / dark, default surface: title 19.07 / 11.27 (17.99 / 10.32 on hover), content 12.87 / 8.80, focus ring 5.79 / 12.80."
+    }
+  ]
+}

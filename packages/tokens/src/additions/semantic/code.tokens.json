@@ -1,0 +1,26 @@
+{
+  "$description": "Code colors the design system adds to the Figma library's global.text.code (Code foundation): diff, invalid code and links, and the line states of highlighted code. Not in the Figma library: added by the design system, from colors it already has (to backport to the Figma library). Text colors alias palette steps, with their dark value in tokens/additions/modes/dark/code.tokens.json; line backgrounds alias the subtle fills, which carry their own dark value.",
+  "global": {
+    "text": {
+      "code": {
+        "$type": "color",
+        "inserted": { "$value": "{functional.success.700}", "$description": "Lines a diff adds. The on-base success text step." },
+        "deleted": { "$value": "{functional.error.600}", "$description": "Lines a diff removes. The step of error text on tinted fills: on-base error (error 500) is 4.26:1 on level 1." },
+        "changed": { "$value": "{functional.severe.700}", "$description": "Lines a context diff changes. The on-base severe text step." },
+        "invalid": { "$value": "{functional.error.600}", "$description": "Code a grammar marks invalid or deprecated. Same step as deleted." },
+        "link": { "$value": "{brand.light.600}", "$description": "URLs and links in code and markup. The on-base brand text step." }
+      }
+    },
+    "bg": {
+      "code": {
+        "$type": "color",
+        "$description": "Backgrounds of marked lines in a block of code. Each one also carries a marker (+, -, a bar): never color alone.",
+        "highlighted": { "$value": "{global.bg.subtle.brand.default}", "$description": "A line the author points out." },
+        "inserted": { "$value": "{global.bg.subtle.functional.success.default}", "$description": "A line an example adds." },
+        "deleted": { "$value": "{global.bg.subtle.functional.error.default}", "$description": "A line an example removes." },
+        "error": { "$value": "{global.bg.subtle.functional.error.default}", "$description": "A line in error." },
+        "warning": { "$value": "{global.bg.subtle.functional.warning.default}", "$description": "A line with a warning." }
+      }
+    }
+  }
+}

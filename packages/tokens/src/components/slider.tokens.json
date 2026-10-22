@@ -1,0 +1,162 @@
+{
+  "$description": "Component tokens for Slider. Path grammar: slider.<part>.<property>[.<size>][.<state>]: colors vary by state only, track and thumb dimensions by size. The thumb is drawn by the control (vendor pseudo-elements on the web), so it has tokens but no element. Parts, options and states must exist in packages/components/specs/components/slider.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "slider": {
+    "container": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.4}",
+        "$description": "Between the label row and the control."
+      },
+      "column-gap": {
+        "$type": "dimension",
+        "$value": "{space.8}",
+        "$description": "Between the label and the value."
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.medium}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "value": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.secondary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.regular}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "control": {
+      "$description": "The track: the native range input drawn by the component; the thumb slides along it.",
+      "height": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.4}"
+        },
+        "medium": {
+          "$value": "{space.8}"
+        }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.full}"
+      },
+      "background": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.bg.base.neutral.3}"
+        },
+        "disabled": {
+          "$value": "{global.bg.state.disabled.default}"
+        }
+      },
+      "min-height": {
+        "$type": "dimension",
+        "$value": "{space.24}",
+        "$description": "Pointer target height of the whole control, whatever the track height."
+      },
+      "outline-width": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.width}"
+        }
+      },
+      "outline-offset": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.offset}"
+        }
+      },
+      "outline-color": {
+        "$type": "color",
+        "focus-visible": {
+          "$value": "{color.focus.ring}"
+        }
+      },
+      "transition": {
+        "duration": {
+          "$type": "duration",
+          "$value": "{duration.fast}"
+        },
+        "easing": {
+          "$type": "cubicBezier",
+          "$value": "{easing.standard}"
+        }
+      }
+    },
+    "thumb": {
+      "$description": "The knob people drag: a disc centered on the track.",
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.16}"
+        },
+        "medium": {
+          "$value": "{space.20}"
+        }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.full}"
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{stroke-width.md}"
+      },
+      "background": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.bg.accent.brand.default}"
+        },
+        "hover": {
+          "$value": "{global.bg.accent.brand.hover}"
+        },
+        "active": {
+          "$value": "{global.bg.accent.brand.active}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
+        }
+      },
+      "border-color": {
+        "$type": "color",
+        "$description": "A light rim separating the thumb from the track.",
+        "default": {
+          "$value": "{global.bg.level.0.default}"
+        },
+        "disabled": {
+          "$value": "{global.bg.level.0.default}"
+        }
+      }
+    }
+  }
+}

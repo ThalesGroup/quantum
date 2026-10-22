@@ -1,0 +1,84 @@
+{
+  "$description": "Component tokens for Switch. Path grammar: switch.<part>.<property>[.<size>][.<state>]: colors vary by state only, dimensions and type by size. The thumb is drawn by the control (a pseudo-element on the web), so it has tokens but no element. Parts, options and states must exist in packages/components/specs/components/switch.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "switch": {
+    "container": {
+      "column-gap": { "$type": "dimension", "$value": "{space.8}", "$description": "Between the track and the label column." },
+      "row-gap": { "$type": "dimension", "$value": "{space.2}", "$description": "Between the label and its description." }
+    },
+    "control": {
+      "$description": "The track: a native checkbox exposed as a switch, drawn by the component. Outlined when off, filled with the brand color when on.",
+      "width": {
+        "$type": "dimension",
+        "small": { "$value": "{space.32}" },
+        "medium": { "$value": "{space.40}" }
+      },
+      "height": {
+        "$type": "dimension",
+        "small": { "$value": "{space.20}" },
+        "medium": { "$value": "{space.24}" }
+      },
+      "border-radius": { "$type": "dimension", "$value": "{corner-radius.full}" },
+      "border-width": { "$type": "dimension", "$value": "{stroke-width.md}" },
+      "background": {
+        "$type": "color",
+        "default": { "$value": "{global.bg.level.0.default}" },
+        "hover": { "$value": "{global.bg.level.0.hover}" },
+        "checked": { "$value": "{global.bg.accent.brand.default}" },
+        "disabled": { "$value": "{global.bg.state.disabled.default}" }
+      },
+      "border-color": {
+        "$type": "color",
+        "default": { "$value": "{global.border.accent.neutral.default}" },
+        "hover": { "$value": "{global.border.accent.neutral.default}" },
+        "checked": { "$value": "{global.border.accent.brand.default}" },
+        "disabled": { "$value": "{global.border.state.disabled.default}" }
+      },
+      "outline-width": { "$type": "dimension", "focus-visible": { "$value": "{focus.ring.width}" } },
+      "outline-offset": { "$type": "dimension", "focus-visible": { "$value": "{focus.ring.offset}" } },
+      "outline-color": { "$type": "color", "focus-visible": { "$value": "{color.focus.ring}" } },
+      "transition": {
+        "duration": { "$type": "duration", "$value": "{duration.fast}" },
+        "easing": { "$type": "cubicBezier", "$value": "{easing.standard}" }
+      }
+    },
+    "thumb": {
+      "$description": "The knob that slides from the start edge (off) to the end edge (on).",
+      "size": {
+        "$type": "dimension",
+        "small": { "$value": "{space.12}" },
+        "medium": { "$value": "{space.16}" }
+      },
+      "margin": { "$type": "dimension", "$value": "{space.2}", "$description": "Inset of the thumb inside the track, beyond the border." },
+      "background": {
+        "$type": "color",
+        "default": { "$value": "{global.bg.accent.neutral.default}" },
+        "checked": { "$value": "{global.icon.on-accent.brand.default}" },
+        "disabled": { "$value": "{global.icon.state.disabled.default}" }
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.primary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+      }
+    },
+    "description": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.secondary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.xs}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "card",
+  "name": "Card",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "container",
+  "summary": "A surface that groups a title and related content as one unit.",
+  "description": "A card gathers what belongs together, a title and its content, on a raised surface with its own edge, so a page of many things reads as a grid of units: a project in a list of projects, a plan in a pricing page, a setting group. It is a surface, not a control: a card that opens something holds a link or a button; a card is never itself clickable. Its surface level follows the Color foundation.",
+  "tags": [
+    "layout",
+    "container",
+    "surface"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: the surface, with its edge, padding and corners. Carries the surface level; has no role of its own."
+    },
+    {
+      "id": "title",
+      "role": "header",
+      "required": true,
+      "description": "Heading of the card, at the level the page gives it."
+    },
+    {
+      "id": "description",
+      "role": "description",
+      "required": false,
+      "description": "Text under the title (the reference rendering's content; a product puts its own content here)."
+    }
+  ],
+  "properties": [
+    {
+      "id": "surface",
+      "name": "Surface",
+      "type": "enum",
+      "default": "level-1",
+      "description": "Surface level of the Color foundation the card is raised to; it sets the fill and the edge.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "level-1",
+          "description": "On the page (level 0): the default."
+        },
+        {
+          "value": "level-2",
+          "description": "On a level 1 panel, or a card that must read as raised above its neighbours."
+        }
+      ]
+    },
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "string",
+      "required": true,
+      "bindsTo": "title",
+      "description": "What the card is about, as a heading."
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "string",
+      "bindsTo": "description",
+      "description": "Content of the card, as text."
+    },
+    {
+      "id": "headingLevel",
+      "name": "Heading level",
+      "type": "number",
+      "default": 3,
+      "description": "Level of the title in the page's outline, 2 to 6; cards in a list share one level under the list's heading."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: a card has no interaction of its own."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "stretch",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "Title and content stack with container.gap inside the padding; the card fills the width its grid or list gives it.",
+      "Cards in a grid share a surface level and a heading level."
+    ]
+  },
+  "accessibility": {
+    "name": {
+      "text": "A card has no accessible name and no role: it is a generic container. Its title is a heading, which names the unit for people navigating by heading, and its content follows in the reading order.",
+      "refs": [
+        "aria-generic",
+        "html-aria-div",
+        "aria-heading",
+        "html-aria-h1-h6"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "The structure of a card is programmatic: its title is a heading at a level that fits the page's outline, and the content follows it in the reading order; the surface conveys the grouping visually, the heading conveys it to assistive technology.",
+        "refs": [
+          "wcag:1.3.1",
+          "understanding-info-relationships",
+          "wcag-h42",
+          "wai-headings",
+          "aria-heading"
+        ]
+      },
+      {
+        "text": "The title describes what the card is about, so people scanning headings can find it.",
+        "refs": [
+          "wcag:2.4.6",
+          "understanding-headings-labels"
+        ]
+      },
+      {
+        "text": "Render a div with no role and a heading element (h2 to h6) for the title; do not add role=\"article\", \"region\" or \"group\" to a plain card, and never make the whole card a link or a button: put the control inside it.",
+        "refs": [
+          "html-aria-div",
+          "aria-generic",
+          "html-aria-h1-h6",
+          "html-headings"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Title and content contrast 19.07:1 and 12.87:1 (light), 10.32:1 and 8.06:1 (dark) on the level 1 surface, 19.07:1 and 12.87:1 (light), 9.45:1 and 7.38:1 (dark) on level 2; the edge is decoration (1.37:1 and 1.09:1 on level 1).",
+        "refs": [
+          "wcag:1.4.3",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "Mark the title with the heading semantics so services can navigate by heading.",
+        "refs": [
+          "compose-headings"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "aria-generic",
+        "title": "WAI-ARIA 1.2: generic role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#generic"
+      },
+      {
+        "id": "aria-heading",
+        "title": "WAI-ARIA 1.2: heading role (aria-level)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#heading"
+      },
+      {
+        "id": "html-aria-div",
+        "title": "ARIA in HTML: div element (role generic)",
+        "url": "https://www.w3.org/TR/html-aria/#el-div"
+      },
+      {
+        "id": "html-aria-h1-h6",
+        "title": "ARIA in HTML: h1 to h6 elements (role heading, aria-level)",
+        "url": "https://www.w3.org/TR/html-aria/#el-h1-h6"
+      },
+      {
+        "id": "html-headings",
+        "title": "HTML: the h1 to h6 elements (heading level)",
+        "url": "https://html.spec.whatwg.org/multipage/sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements"
+      },
+      {
+        "id": "wai-headings",
+        "title": "WAI tutorials: Headings (nest by level)",
+        "url": "https://www.w3.org/WAI/tutorials/page-structure/headings/"
+      },
+      {
+        "id": "wcag-h42",
+        "title": "WCAG technique H42: h1 to h6 to identify headings",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H42"
+      },
+      {
+        "id": "understanding-headings-labels",
+        "title": "Understanding WCAG 2.4.6 Headings and Labels",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html"
+      },
+      {
+        "id": "understanding-info-relationships",
+        "title": "Understanding WCAG 1.3.1 Info and Relationships",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+      },
+      {
+        "id": "compose-headings",
+        "title": "Jetpack Compose accessibility: headings semantics",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#headings"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The title names the unit as a noun phrase: Quantum Design System, Team plan, Notifications. Sentence case, no trailing punctuation.",
+      "Keep the content short; a card that needs a lot of text is a section, not a card."
+    ]
+  },
+  "examples": [
+    {
+      "id": "level-1",
+      "name": "Level 1",
+      "props": {
+        "surface": "level-1",
+        "title": "Quantum Design System",
+        "description": "Technology-agnostic component specifications, DTCG tokens and a vanilla CSS reference implementation."
+      }
+    },
+    {
+      "id": "level-2",
+      "name": "Level 2",
+      "props": {
+        "surface": "level-2",
+        "title": "Team plan",
+        "description": "Up to 20 members, unlimited projects and priority support."
+      }
+    },
+    {
+      "id": "level-1-title-only",
+      "name": "Level 1, title only",
+      "props": {
+        "surface": "level-1",
+        "title": "Notifications"
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/card.tokens.json",
+    "prefix": "card"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/card/card.css",
+      "template": "packages/components/src/components/card/card.template.mjs",
+      "selector": ".ds-card",
+      "element": "div",
+      "attributes": {
+        "surface": "data-surface"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-card",
+        "title": ".ds-card__title",
+        "description": ".ds-card__description"
+      }
+    }
+  },
+  "related": [
+    "accordion",
+    "divider"
+  ],
+  "decisions": [
+    {
+      "id": "surface-levels",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "A card is a surface of the Color foundation: level 1 by default (fill global.bg.level.1.default, edge global.border.level.edge.level.1) or level 2; it never defines a color of its own. The title is primary text, the content secondary text.",
+      "tokens": [
+        "card.container.background.*",
+        "card.container.border-color.*",
+        "card.title.color",
+        "card.description.color"
+      ]
+    },
+    {
+      "id": "box",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The surface has 16 px of padding, 8 px between title and content, a 0.6 px edge and 8 px corners; the title is the 16 px semi-bold heading style, the content 14 px body.",
+      "tokens": [
+        "card.container.padding",
+        "card.container.gap",
+        "card.container.border-width",
+        "card.container.border-radius",
+        "card.title.typography",
+        "card.description.typography"
+      ]
+    },
+    {
+      "id": "not-a-control",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A card is never clickable as a whole and has no role; actions and links live inside it. Media, footers and actions as parts are open questions.",
+      "refs": [
+        "aria-generic",
+        "html-aria-div"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions surface-levels, box, not-a-control). A plain container on a surface level with a heading title and a text description; no interaction state. Contrast, light / dark: title 19.07 / 10.32 on level 1 and 19.07 / 9.45 on level 2, content 12.87 / 8.06 and 12.87 / 7.38; edge measured only."
+    }
+  ]
+}

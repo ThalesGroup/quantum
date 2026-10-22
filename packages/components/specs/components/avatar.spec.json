@@ -1,0 +1,419 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "avatar",
+  "name": "Avatar",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "presentation",
+  "summary": "Represents a person or an entity with a picture, or their initials when there is none.",
+  "description": "An avatar shows who or what something belongs to: the author of a comment, the members of a project, a workspace. It displays a picture when there is one and the initials of the name otherwise, in a circle or a rounded square. Assistive technology reads it as an image named by the person, unless the name is written right next to it, in which case the avatar is decoration.",
+  "tags": [
+    "data-display",
+    "identity",
+    "image"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: the disc or square, exposed as an image named by the person, or hidden when decorative. Carries the size and the shape."
+    },
+    {
+      "id": "image",
+      "role": "media",
+      "required": false,
+      "description": "The picture, covering the whole shape. Present when a source is given."
+    },
+    {
+      "id": "initials",
+      "role": "label",
+      "required": false,
+      "decorative": true,
+      "description": "Up to two letters derived from the name, shown when there is no picture. Hidden from assistive technology: the container carries the full name."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Diameter of the avatar and size of the initials.",
+      "affects": [
+        "container",
+        "initials"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "In lists and comments (24 px)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (32 px)."
+        },
+        {
+          "value": "large",
+          "description": "Profile headers and cards (40 px)."
+        }
+      ]
+    },
+    {
+      "id": "shape",
+      "name": "Shape",
+      "type": "enum",
+      "default": "circle",
+      "description": "Circle for people, square for entities (workspaces, organizations).",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "circle",
+          "description": "A disc: people."
+        },
+        {
+          "value": "square",
+          "description": "A rounded square: organizations, projects, bots."
+        }
+      ]
+    },
+    {
+      "id": "name",
+      "name": "Name",
+      "type": "string",
+      "required": true,
+      "description": "Full name of the person or entity: the accessible name of the avatar, and the source of the initials."
+    },
+    {
+      "id": "src",
+      "name": "Picture",
+      "type": "string",
+      "bindsTo": "image",
+      "description": "Address of the picture. Without it the initials are shown."
+    },
+    {
+      "id": "decorative",
+      "name": "Decorative",
+      "type": "boolean",
+      "default": false,
+      "description": "The name is written next to the avatar, so the avatar is hidden from assistive technology instead of repeating it."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: an avatar has no interaction. A status or presence indicator would be another part, not specified here."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "center",
+    "justify": "center",
+    "wrap": false,
+    "sizing": "fixed",
+    "notes": [
+      "A fixed square of the size, never stretched; the picture covers it; the initials are centered.",
+      "An avatar sits inline with the name or the item it identifies, aligned on the middle."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "img",
+    "name": {
+      "text": "The avatar is an image named by the full name (aria-label on the container, which has role img); the picture inside has an empty alt and the initials are hidden, so the name is read once. A decorative avatar, next to the written name, is hidden entirely.",
+      "refs": [
+        "aria-img",
+        "mdn-img-role",
+        "html-aria-img-empty-alt",
+        "aria-hidden",
+        "aria-label"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "An avatar is non-text content that identifies someone: it has a text alternative, the full name, as the accessible name of one image, whether it shows a picture or initials; that name is how the relationship to the content (its author, its owner) stays programmatic. Initials alone are not a name.",
+        "refs": [
+          "wcag:1.3.1",
+          "wcag:1.1.1",
+          "understanding-non-text-content",
+          "wai-images-informative",
+          "wcag-h37"
+        ]
+      },
+      {
+        "text": "Render a span with role=\"img\" and aria-label set to the name; the picture inside is an img with an empty alt (the span already carries the name) and the initials carry aria-hidden=\"true\". The img role requires an accessible name.",
+        "refs": [
+          "aria-img",
+          "mdn-img-role",
+          "html-aria-img",
+          "html-aria-img-empty-alt",
+          "html-aam-img",
+          "html-img-alt",
+          "wcag-h67"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "When the name is written next to the avatar (a comment author, a member row), the avatar is pure decoration: hide it so the name is not read twice.",
+        "refs": [
+          "wcag:1.1.1",
+          "understanding-non-text-content",
+          "wai-images-decorative",
+          "aria-hidden"
+        ]
+      },
+      {
+        "text": "Initials contrast 7.34:1 (light) and 13.04:1 (dark) with the brand tint behind them; the picture is the person's and is not subject to a contrast requirement. The hairline border is decoration.",
+        "refs": [
+          "wcag:1.4.3",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "Nothing is conveyed by the avatar's color: the tint is the same for everyone.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Provide alternative text labels for custom interface images and icons so VoiceOver can describe them.",
+        "refs": [
+          "hig-icons"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Describe each element: give the avatar the name as its content description, or null when the name is written next to it.",
+        "refs": [
+          "android-describe-ui-element",
+          "compose-graphic-elements"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "android-describe-ui-element",
+        "title": "Android accessibility: describe each UI element",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#describe-ui-element"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "aria-img",
+        "title": "WAI-ARIA 1.2: img role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#img"
+      },
+      {
+        "id": "aria-label",
+        "title": "WAI-ARIA 1.2: aria-label",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-label"
+      },
+      {
+        "id": "mdn-img-role",
+        "title": "MDN: ARIA img role (a single image from several elements; a name is required)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/img_role"
+      },
+      {
+        "id": "html-aria-img",
+        "title": "ARIA in HTML: img element (img with a name; none with an empty alt)",
+        "url": "https://www.w3.org/TR/html-aria/#el-img"
+      },
+      {
+        "id": "html-aria-img-empty-alt",
+        "title": "ARIA in HTML: img with an empty alt (role none)",
+        "url": "https://www.w3.org/TR/html-aria/#el-img-empty-alt"
+      },
+      {
+        "id": "html-aam-img",
+        "title": "HTML-AAM: img element (img role; none with an empty alt)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-img"
+      },
+      {
+        "id": "html-img-alt",
+        "title": "HTML: requirements for providing text to act as an alternative for images",
+        "url": "https://html.spec.whatwg.org/multipage/images.html#alt"
+      },
+      {
+        "id": "wai-images-decorative",
+        "title": "WAI tutorials: Decorative images (an empty alt)",
+        "url": "https://www.w3.org/WAI/tutorials/images/decorative/"
+      },
+      {
+        "id": "wai-images-informative",
+        "title": "WAI tutorials: Informative images",
+        "url": "https://www.w3.org/WAI/tutorials/images/informative/"
+      },
+      {
+        "id": "wcag-h67",
+        "title": "WCAG technique H67: null alt text for decorative images",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H67"
+      },
+      {
+        "id": "wcag-h37",
+        "title": "WCAG technique H37: alt attributes on img elements",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H37"
+      },
+      {
+        "id": "understanding-non-text-content",
+        "title": "Understanding WCAG 1.1.1 Non-text Content (pure decoration)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      },
+      {
+        "id": "hig-icons",
+        "title": "Apple HIG: Icons (alternative text labels for interface icons)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/icons"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The name is the full name as the person wrote it (Ada Lovelace), or the entity's name (Design team); the initials derive from its first and last words.",
+      "Never put a role or a status in the name; write them next to the avatar."
+    ]
+  },
+  "examples": [
+    {
+      "id": "circle-medium",
+      "name": "Circle, medium",
+      "props": {
+        "shape": "circle",
+        "size": "medium",
+        "name": "Ada Lovelace"
+      }
+    },
+    {
+      "id": "circle-small",
+      "name": "Circle, small",
+      "props": {
+        "shape": "circle",
+        "size": "small",
+        "name": "Grace Hopper"
+      }
+    },
+    {
+      "id": "circle-large",
+      "name": "Circle, large",
+      "props": {
+        "shape": "circle",
+        "size": "large",
+        "name": "Katherine Johnson"
+      }
+    },
+    {
+      "id": "square-medium",
+      "name": "Square, medium",
+      "description": "An entity rather than a person.",
+      "props": {
+        "shape": "square",
+        "size": "medium",
+        "name": "Design team"
+      }
+    },
+    {
+      "id": "circle-medium-decorative",
+      "name": "Circle, medium, decorative",
+      "description": "The name is written next to the avatar, so the avatar is hidden.",
+      "props": {
+        "shape": "circle",
+        "size": "medium",
+        "name": "Ada Lovelace",
+        "decorative": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/avatar.tokens.json",
+    "prefix": "avatar"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/avatar/avatar.css",
+      "template": "packages/components/src/components/avatar/avatar.template.mjs",
+      "selector": ".ds-avatar",
+      "element": "span",
+      "attributes": {
+        "size": "data-size",
+        "shape": "data-shape",
+        "name": "aria-label"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-avatar",
+        "image": ".ds-avatar__image",
+        "initials": ".ds-avatar__initials"
+      }
+    }
+  },
+  "related": [
+    "icon",
+    "badge"
+  ],
+  "decisions": [
+    {
+      "id": "initials-on-brand-tint",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "Without a picture the avatar is the subtle brand fill with initials in the on-subtle brand text color, the same for everyone; a hairline in the level 1 edge color outlines every avatar.",
+      "rationale": "The Figma library has no per-person palette; one tint avoids meaning by color.",
+      "tokens": [
+        "avatar.container.background",
+        "avatar.initials.color",
+        "avatar.container.border-color",
+        "avatar.container.border-width"
+      ]
+    },
+    {
+      "id": "sizes-and-shapes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Three sizes from the size scale, 24, 32 and 40 px (small, medium, large), with initials at 10, 12 and 14 px medium; two shapes, circle (default) and square with 4 px corners.",
+      "tokens": [
+        "avatar.container.size.*",
+        "avatar.initials.typography.*",
+        "avatar.container.border-radius.*"
+      ]
+    },
+    {
+      "id": "named-image-or-decoration",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "An avatar is one image named by the full name, or hidden when the name is written next to it; initials are never the accessible name.",
+      "refs": [
+        "wcag:1.1.1",
+        "aria-img",
+        "aria-hidden"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions initials-on-brand-tint, sizes-and-shapes, named-image-or-decoration). A span exposed as an image named by the person, with a picture or initials; sizes small, medium, large; shapes circle and square; a decorative mode. Initials contrast 7.34 (light) / 13.04 (dark) on the brand tint."
+    }
+  ]
+}

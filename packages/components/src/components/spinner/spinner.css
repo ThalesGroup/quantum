@@ -1,0 +1,82 @@
+/*
+ * Spinner — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/spinner.spec.json
+ * Tokens: packages/tokens/dist/css/components/spinner.css (generated from packages/tokens/src/components/spinner.tokens.json)
+ *
+ * Rules:
+ *  - Only --spinner-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The ring is a bordered circle whose top segment takes the arc color; it rotates at a multiple
+ *    of the motion duration. Under reduced motion it stops turning and pulses its opacity instead,
+ *    so it still says that something is happening.
+ *  - Size is a data attribute; a spinner has no interaction state.
+ */
+
+.ds-spinner {
+  --_size: var(--spinner-ring-size-medium);
+  --_border-width: var(--spinner-ring-border-width-medium);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spinner-container-gap);
+  vertical-align: middle;
+}
+
+.ds-spinner[data-size="small"] {
+  --_size: var(--spinner-ring-size-small);
+  --_border-width: var(--spinner-ring-border-width-small);
+}
+
+.ds-spinner[data-size="large"] {
+  --_size: var(--spinner-ring-size-large);
+  --_border-width: var(--spinner-ring-border-width-large);
+}
+
+.ds-spinner__ring {
+  box-sizing: border-box;
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  border: var(--_border-width) solid var(--spinner-ring-border-color);
+  border-block-start-color: var(--spinner-ring-color);
+  border-radius: 50%;
+  animation: ds-spinner-turn calc(var(--spinner-ring-animation-duration) * 4) linear infinite;
+}
+
+.ds-spinner__label {
+  color: var(--spinner-label-color);
+  font-family: var(--spinner-label-typography-font-family);
+  font-size: var(--spinner-label-typography-font-size);
+  font-weight: var(--spinner-label-typography-font-weight);
+  line-height: var(--spinner-label-typography-line-height);
+  letter-spacing: var(--spinner-label-typography-letter-spacing);
+}
+
+/* A label that is not shown stays in the accessibility tree. */
+.ds-spinner__label[data-hidden] {
+  position: absolute;
+  inline-size: var(--spinner-label-size);
+  block-size: var(--spinner-label-size);
+  margin: calc(-1 * var(--spinner-label-size));
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes ds-spinner-turn {
+  to { rotate: 360deg; }
+}
+
+@keyframes ds-spinner-pulse {
+  from { opacity: 1; }
+  to { opacity: var(--spinner-ring-opacity); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-spinner__ring {
+    animation: ds-spinner-pulse calc(var(--spinner-ring-animation-duration) * 6) var(--spinner-ring-animation-easing) infinite alternate;
+  }
+}

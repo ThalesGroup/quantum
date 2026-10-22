@@ -1,0 +1,113 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import ScreenAttribution from '../../../../components/ScreenAttribution.astro';
+import { getScreens, getSections, getSource, componentsOf } from '../../../../lib/screens';
+import { getModes } from '../../../../lib/tokens';
+import { getTemplate } from '../../../../lib/web';
+import { formatHtml } from '../../../../lib/format-html';
+import { highlight } from '../../../../lib/highlight';
+
+export function getStaticPaths() {
+  return getScreens().map((screen) => ({ params: { source: screen.source, block: screen.block }, props: { screen } }));
+}
+const { screen } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const section = getSections().find((s) => s.id === screen.meta.section);
+const source = getSource(screen.source);
+const html = screen.render();
+const components = await componentsOf(html);
+const { modes, attribute } = getModes();
+const frame = `${base}/screens/${screen.id}/frame`;
+// Frame widths to review a screen at: its container queries follow the frame, not the window.
+const widths = [
+  { label: 'Fit the page', value: '' },
+  { label: 'Desktop (1280 px)', value: '1280' },
+  { label: 'Laptop (1024 px)', value: '1024' },
+  { label: 'Tablet (768 px)', value: '768' },
+  { label: 'Mobile (390 px)', value: '390' },
+];
+const select = getTemplate('select')!;
+---
+<Layout title={screen.meta.name} sidebar="screens" description={screen.meta.description}>
+  <header class="site-page-header">
+    <p class="site-eyebrow"><a href={`${base}/screens`}>Screens</a><span aria-hidden="true">/</span><span>{section?.name}</span></p>
+    <h1>{screen.meta.name}</h1>
+    <p class="site-page-header__desc">{screen.meta.description}</p>
+  </header>
+
+  <ScreenAttribution screen={screen} />
+
+  <section class="site-section site-screen" data-screen-viewer aria-labelledby="site-screen-preview">
+    <h2 id="site-screen-preview" class="site-sr">Preview</h2>
+    <div class="site-screen__bar">
+      <div set:html={select.render({ label: 'Frame width', id: 'site-screen-width', size: 'small', options: widths.map((w, i) => ({ ...w, selected: i === 0 })), attrs: { 'data-screen-width': true } })}></div>
+      {attribute ? (
+        <div set:html={select.render({ label: `Mode context (${attribute})`, id: 'site-screen-mode', size: 'small', options: [{ label: '(page mode)', value: '' }, ...modes.map((m) => ({ label: m.id, value: m.id }))], attrs: { 'data-mode-context': attribute } })}></div>
+      ) : null}
+      <a class="site-screen__open" href={frame} target="_blank" rel="noopener">Open the screen alone<span class="site-sr"> (new tab)</span></a>
+    </div>
+    <div class="site-screen__stage">
+      <iframe class="site-screen__frame" src={frame} title={`${screen.meta.name} (screen)`} data-screen-frame></iframe>
+    </div>
+  </section>
+
+  <section class="site-section" aria-labelledby="site-screen-components">
+    <h2 id="site-screen-components">Built with</h2>
+    <p class="site-muted">The components this screen renders, through their own templates. Changing one of them, or a token they read, changes this screen.</p>
+    <ul class="site-chips">
+      {components.map((c) => <li><a class="site-chip" href={`${base}/components/${c.id}`}>{c.name}</a></li>)}
+    </ul>
+  </section>
+
+  <section class="site-section" aria-labelledby="site-screen-gaps">
+    <h2 id="site-screen-gaps">Design system gaps</h2>
+    <p class="site-muted">What the design system lacks to render the original as it is. The screen fills each gap with native HTML on semantic tokens until a component or a token covers it.</p>
+    {screen.meta.gaps.length ? (
+      <ul>
+        {screen.meta.gaps.map((g) => <li>{g.text}</li>)}
+      </ul>
+    ) : <p>None.</p>}
+  </section>
+
+  <section class="site-section" aria-labelledby="site-screen-changes">
+    <h2 id="site-screen-changes">Changes from the original</h2>
+    <ul>
+      {screen.meta.changes.map((c) => <li>{c}</li>)}
+      {source.changes.map((c) => <li>{c}</li>)}
+    </ul>
+  </section>
+
+  <section class="site-section" aria-labelledby="site-screen-code">
+    <h2 id="site-screen-code">Code</h2>
+    <p class="site-muted">The HTML the screen renders, from <code>apps/docs/screens/{screen.id}.screen.mjs</code>, with the stylesheets of @quantum-ds/tokens, the reference implementation (<code>packages/components/src/</code>) and <code>apps/docs/screens/screens.css</code>.</p>
+    <details class="site-source">
+      <summary>HTML</summary>
+      <pre><code set:html={highlight(formatHtml(html), 'html')}></code></pre>
+    </details>
+  </section>
+</Layout>
+
+<script>
+  // Frame width and mode context of the screen preview. The frame follows the docs mode (header
+  // switch) unless the Mode context select names one.
+  for (const viewer of document.querySelectorAll<HTMLElement>('[data-screen-viewer]')) {
+    const frame = viewer.querySelector<HTMLIFrameElement>('[data-screen-frame]')!;
+    const width = viewer.querySelector<HTMLSelectElement>('[data-screen-width]');
+    const mode = viewer.querySelector<HTMLSelectElement>('[data-mode-context]');
+    const header = document.querySelector<HTMLSelectElement>('[data-mode-switch]');
+    width?.addEventListener('change', () => { frame.style.inlineSize = width.value ? `${width.value}px` : ''; });
+    const applyMode = () => {
+      const doc = frame.contentDocument;
+      if (!doc || !mode) return;
+      const attribute = mode.dataset.modeContext!;
+      const value = mode.value || document.documentElement.getAttribute(attribute);
+      if (mode.value) doc.documentElement.dataset.modeLocked = 'true';
+      else delete doc.documentElement.dataset.modeLocked;
+      if (value) doc.documentElement.setAttribute(attribute, value);
+    };
+    mode?.addEventListener('change', applyMode);
+    header?.addEventListener('change', applyMode);
+    frame.addEventListener('load', applyMode);
+    applyMode();
+  }
+</script>

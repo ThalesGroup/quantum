@@ -1,0 +1,143 @@
+/*
+ * Pagination — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/pagination.spec.json
+ * Tokens: packages/tokens/dist/css/components/pagination.css (generated from packages/tokens/src/components/pagination.tokens.json)
+ *
+ * Rules:
+ *  - Only --pagination-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a nav landmark; the pages are a list of links; the current page is not a link and
+ *    carries aria-current; a previous or next link without a destination is rendered disabled.
+ *  - Size is a data attribute on the root; link states are native pseudo-classes, forced with
+ *    [data-state] on the root (every item) or on one item.
+ */
+
+.ds-pagination {
+  --_size: var(--pagination-link-size-medium);
+  --_padding-inline: var(--pagination-link-padding-inline-medium);
+  --_icon-size: var(--pagination-icon-size-medium);
+  --_font-family: var(--pagination-link-typography-medium-font-family);
+  --_font-size: var(--pagination-link-typography-medium-font-size);
+  --_font-weight: var(--pagination-link-typography-medium-font-weight);
+  --_line-height: var(--pagination-link-typography-medium-line-height);
+  --_letter-spacing: var(--pagination-link-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  min-inline-size: 0;
+}
+
+.ds-pagination[data-size="small"] {
+  --_size: var(--pagination-link-size-small);
+  --_padding-inline: var(--pagination-link-padding-inline-small);
+  --_icon-size: var(--pagination-icon-size-small);
+  --_font-family: var(--pagination-link-typography-small-font-family);
+  --_font-size: var(--pagination-link-typography-small-font-size);
+  --_font-weight: var(--pagination-link-typography-small-font-weight);
+  --_line-height: var(--pagination-link-typography-small-line-height);
+  --_letter-spacing: var(--pagination-link-typography-small-letter-spacing);
+}
+
+.ds-pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pagination-container-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-pagination__item {
+  --_background: var(--pagination-link-background-default);
+  --_color: var(--pagination-link-color-default);
+
+  display: inline-flex;
+}
+
+.ds-pagination__link {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pagination-container-gap);
+  min-inline-size: var(--_size);
+  min-height: var(--_size);
+  padding-block: 0;
+  padding-inline: var(--_padding-inline);
+  border-radius: var(--pagination-link-border-radius);
+  background-color: var(--_background);
+  color: var(--_color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--pagination-link-transition-duration) var(--pagination-link-transition-easing),
+    color var(--pagination-link-transition-duration) var(--pagination-link-transition-easing);
+}
+
+.ds-pagination__icon {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_icon-size);
+  block-size: var(--_icon-size);
+  overflow: hidden;
+  font-family: var(--pagination-icon-font-family);
+  font-size: var(--_icon-size);
+  font-weight: var(--pagination-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--pagination-icon-fill),
+    "GRAD" var(--pagination-icon-grade),
+    "opsz" var(--pagination-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_icon-size);
+  letter-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- States -------------------------------------------------------------- */
+/* Order: hover < active < current < disabled. A current page and a disabled link do not react to hover. */
+
+:where(.ds-pagination[data-state="hover"], .ds-pagination__item[data-state="hover"]) .ds-pagination__link:not([aria-current], [aria-disabled="true"]),
+.ds-pagination__link:hover:not([aria-current], [aria-disabled="true"]) {
+  --_background: var(--pagination-link-background-hover);
+}
+
+:where(.ds-pagination[data-state="active"], .ds-pagination__item[data-state="active"]) .ds-pagination__link:not([aria-current], [aria-disabled="true"]),
+.ds-pagination__link:active:not([aria-current], [aria-disabled="true"]) {
+  --_background: var(--pagination-link-background-active);
+}
+
+:where(.ds-pagination[data-state="current"], .ds-pagination__item[data-state="current"]) .ds-pagination__link,
+.ds-pagination__link[aria-current] {
+  --_background: var(--pagination-link-background-current);
+  --_color: var(--pagination-link-color-current);
+}
+
+:where(.ds-pagination[data-state="disabled"], .ds-pagination__item[data-state="disabled"]) .ds-pagination__link,
+.ds-pagination__link[aria-disabled="true"] {
+  --_background: var(--pagination-link-background-disabled);
+  --_color: var(--pagination-link-color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-pagination__link:focus {
+  outline: none;
+}
+
+:where(.ds-pagination[data-state="focus-visible"], .ds-pagination__item[data-state="focus-visible"]) .ds-pagination__link,
+.ds-pagination__link:focus-visible {
+  outline: var(--pagination-link-outline-width-focus-visible) solid var(--pagination-link-outline-color-focus-visible);
+  outline-offset: var(--pagination-link-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-pagination__link {
+    transition: none;
+  }
+}

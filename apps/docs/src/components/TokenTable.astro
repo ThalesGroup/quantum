@@ -1,0 +1,67 @@
+---
+import type { TokenRow } from '../lib/tokens';
+import { displayValue, getModes } from '../lib/tokens';
+interface Props {
+  rows: TokenRow[];
+  showTier?: boolean;
+}
+const { rows, showTier = false } = Astro.props;
+const swatch = (r: TokenRow, value = r.resolved) => (r.type === 'color' && !value.startsWith('error') ? value : null);
+// Label of the default mode, shown next to the default value when another mode differs.
+const defaultMode = getModes().modes.find((m) => m.default)?.id ?? null;
+// Everything a TokenFilter matches against.
+const search = (r: TokenRow) =>
+  [r.path, r.description, r.type, r.references.length ? r.references.join(' ') : displayValue(r.value), r.resolved, ...r.modes.flatMap((m) => [m.mode, m.resolved]), ...r.css.map(([name]) => name)]
+    .filter(Boolean)
+    .join(' ');
+---
+<div class="site-table-wrap">
+  <table class="site-table site-token-table">
+    <thead>
+      <tr>
+        <th scope="col">Token</th>
+        {showTier ? <th scope="col">Tier</th> : null}
+        <th scope="col">Type</th>
+        <th scope="col">Value</th>
+        <th scope="col">Resolved</th>
+        <th scope="col">CSS</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr data-search={search(r)}>
+          <td>
+            <code>{r.path}</code>
+            {r.description ? <div class="site-muted site-small">{r.description}</div> : null}
+          </td>
+          {showTier ? <td><span class={`site-tier site-tier--${r.tier}`}>{r.tier}</span></td> : null}
+          <td><span class="site-muted">{r.type ?? '—'}</span></td>
+          <td>
+            {r.references.length ? (
+              <span>{r.references.map((ref) => <code class="site-alias">{`{${ref}}`}</code>)}</span>
+            ) : (
+              <code>{displayValue(r.value)}</code>
+            )}
+          </td>
+          <td>
+            <div class="site-mode-value">
+              {r.modes.length && defaultMode ? <span class="site-mode-value__mode">{defaultMode}</span> : null}
+              {swatch(r) ? <span class="site-swatch" style={`--swatch: ${swatch(r)}`}></span> : null}
+              <code class="site-small">{r.resolved}</code>
+            </div>
+            {r.modes.map((m) => (
+              <div class="site-mode-value">
+                <span class="site-mode-value__mode">{m.mode}</span>
+                {swatch(r, m.resolved) ? <span class="site-swatch" style={`--swatch: ${swatch(r, m.resolved)}`}></span> : null}
+                <code class="site-small">{m.resolved}</code>
+              </div>
+            ))}
+          </td>
+          <td>
+            {r.css.map(([name]) => <code class="site-small site-cssvar">{name}</code>)}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

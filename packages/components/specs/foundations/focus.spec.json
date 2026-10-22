@@ -1,0 +1,304 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "focus",
+  "name": "Focus ring",
+  "version": "0.2.0",
+  "status": "draft",
+  "summary": "The one visible focus indicator every focusable component shows on keyboard focus.",
+  "description": "People who move through an interface with a keyboard, a switch or another assistive input need to see which component will receive their next action. The focus ring is the system's single answer: the same solid ring, in the same color, at the same distance, around every focusable component, on every surface and in every mode. Components do not design their own focus indicator; they draw this one from their focus-visible tokens, which alias the tokens below.",
+  "tags": [
+    "accessibility",
+    "interaction",
+    "keyboard"
+  ],
+  "tokens": [
+    "focus.ring.width",
+    "focus.ring.offset",
+    "color.focus.ring"
+  ],
+  "appliesTo": "focusable-components",
+  "rules": [
+    {
+      "id": "trigger",
+      "name": "When it appears",
+      "text": "On keyboard focus only: when a component receives focus from the keyboard. Focus given by a pointer or a finger shows no ring. The ring disappears when focus leaves the component."
+    },
+    {
+      "id": "shape",
+      "name": "Shape",
+      "text": "A continuous solid line around the whole component, following its corner radius. Never dashed, dotted, partial or inside the component."
+    },
+    {
+      "id": "placement",
+      "name": "Placement",
+      "text": "Outside the component, separated from its edge by the focus offset, so the surface shows between the component and the ring. The component's fill, border and label do not change.",
+      "tokens": [
+        "focus.ring.offset"
+      ]
+    },
+    {
+      "id": "width",
+      "name": "Width",
+      "text": "The strong focus width of the stroke scale, at every component size.",
+      "tokens": [
+        "focus.ring.width"
+      ]
+    },
+    {
+      "id": "color",
+      "name": "Color",
+      "text": "The focus color, the brand accent fill of each mode (brand 600 in light mode, brand dark 200 in dark mode). The same on every component whatever its emphasis or intent, so the ring never reads as a variant. The Figma library has no focus color: it is the design system’s addition (tokens/additions/), like the ring width and offset tokens.",
+      "tokens": [
+        "color.focus.ring"
+      ]
+    },
+    {
+      "id": "components",
+      "name": "In components",
+      "text": "Every focusable component draws the ring from its own focus-visible tokens (<component>.<root part>.outline-width / outline-offset / outline-color.focus-visible), which alias the tokens of this foundation. A component never defines another ring or another focus color."
+    },
+    {
+      "id": "web-rendering",
+      "name": "Web rendering",
+      "text": "CSS outline and outline-offset on :focus-visible, with the forced [data-state=\"focus-visible\"] selector for review; :focus alone removes the browser's default outline.",
+      "platforms": [
+        "web"
+      ]
+    }
+  ],
+  "contrast": [
+    {
+      "id": "ring-on-surfaces",
+      "description": "The ring sits outside the component, on the surface around it: every level and sunken.",
+      "foreground": "color.focus.ring",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-focus-contrast"
+      ]
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "Every focusable component shows a visible focus indicator when it receives keyboard focus: this ring.",
+        "refs": [
+          "wcag:2.4.7"
+        ]
+      },
+      {
+        "text": "The ring is drawn outside the component, so it contrasts at least 3:1 with the surface the component sits on, on every surface and in every mode.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-focus-contrast"
+        ]
+      },
+      {
+        "text": "The ring is a solid perimeter of 2.4 px, more than the 2 CSS pixel thick perimeter of the unfocused component, and its pixels contrast at least 3:1 with the same pixels unfocused (the surface), as WCAG 2.4.13 Focus Appearance asks (AAA, adopted as extra quality).",
+        "refs": [
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "A focused component is never entirely hidden by content the product adds, such as sticky headers, footers or banners.",
+        "refs": [
+          "wcag:2.4.11"
+        ]
+      },
+      {
+        "text": "Sticky content reserves its space with scroll-padding, so the browser scrolls a focused component out from under it.",
+        "refs": [
+          "wcag-c43"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The ring is drawn with :focus-visible, so the browser shows it for keyboard focus and not for pointer focus.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The ring is a CSS outline, never a box-shadow: forced colors mode repaints outline colors with system colors but forces box-shadow to none, which would remove the indicator.",
+        "refs": [
+          "mdn-forced-colors"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Native controls rely on the system focus effect (on iPadOS, the halo, also called the focus ring) rather than drawing this ring. A custom view that shows focus uses the halo and refines its shape to the view's corners when needed.",
+        "refs": [
+          "hig-focus-best-practices",
+          "hig-focus-ipados"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "A component reached with the Tab key or an equivalent shows a ring-like keyboard focus indicator in its focused state, as Material's focus state does: this ring.",
+        "refs": [
+          "material-focused-state"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "understanding-focus-contrast",
+        "title": "Understanding 1.4.11 Non-text Contrast: relationship with Focus Visible",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus"
+      },
+      {
+        "id": "wcag-c43",
+        "title": "WCAG technique C43: Using CSS scroll-padding to un-obscure content",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/css/C43"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      },
+      {
+        "id": "hig-focus-best-practices",
+        "title": "Apple HIG: Focus and selection, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#Best-practices"
+      },
+      {
+        "id": "hig-focus-ipados",
+        "title": "Apple HIG: Focus and selection, iPadOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS"
+      },
+      {
+        "id": "material-focused-state",
+        "title": "Material Design 3: States, focused (keyboard focus indicator)",
+        "url": "https://m3.material.io/foundations/interaction/states/applying-states#bc6d6853-48ef-490e-8076-448e89e69f0f"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "button-accent-neutral",
+      "name": "Button, accent neutral",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "label": "Save changes",
+        "state": "focus-visible"
+      }
+    },
+    {
+      "id": "button-subtle-brand",
+      "name": "Button, subtle brand",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "brand",
+        "label": "Share",
+        "state": "focus-visible"
+      }
+    },
+    {
+      "id": "button-ghost-error",
+      "name": "Button, ghost error",
+      "component": "button",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "error",
+        "label": "Delete",
+        "state": "focus-visible"
+      }
+    },
+    {
+      "id": "icon-button-accent-brand",
+      "name": "Icon button, accent brand",
+      "component": "icon-button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "icon": "add",
+        "label": "Add item",
+        "state": "focus-visible"
+      }
+    },
+    {
+      "id": "button-small",
+      "name": "Button, small",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "small",
+        "label": "Edit",
+        "state": "focus-visible"
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "focus-ring-strong",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The focus ring is the strong focus of the stroke scale, 2.4 px, for every component, not the 1.2 px the prototype hints for focus rings.",
+      "rationale": "A 2.4 px ring keeps the 2 CSS px thickness of WCAG 2.4.13 Focus Appearance (AAA); 1.2 px meets WCAG 2.2 AA but not that criterion.",
+      "tokens": [
+        "focus.ring.width"
+      ],
+      "refs": [
+        "wcag:2.4.13"
+      ]
+    },
+    {
+      "id": "focus-ring-shared",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Every focusable component shows the same focus ring on keyboard focus, the one the button defines: a solid ring in the focus color (the brand accent fill of each mode), drawn outside the component at the focus offset and following its shape. Pointer and touch focus show no ring. Components alias the focus tokens and never define their own indicator.",
+      "tokens": [
+        "focus.ring.*",
+        "color.focus.ring"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-10-02",
+      "note": "The surfaces are the Figma library's mapped levels (global.bg.level.0-3 and sunken, Color foundation 3.0.0), dark mode included; the focus tokens are unchanged and stay the design system's additions, now kept apart in tokens/additions/. Ring contrast against every level and sunken, every platform: light 5.46:1 or more, dark 9.61:1 or more (3:1 required, WCAG 1.4.11)."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft. Decisions focus-ring-shared and focus-ring-strong: the focus ring the button and the icon button already draw becomes the system's single focus indicator, specified once (semantic tokens focus.ring.width, focus.ring.offset, color.focus.ring, unchanged). Ring contrast against the surfaces, every platform: light 5.79:1 on surface default, 5.46:1 on surface subtle; dark 12.80:1 and 11.72:1 (3:1 required, WCAG 1.4.11). Button and icon button already alias the tokens: no visual change."
+    }
+  ]
+}

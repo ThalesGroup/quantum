@@ -1,0 +1,51 @@
+{
+  "$description": "Recreated from the Figma library (Typography) by scripts/figma-library.mjs: same paths made valid, same values, same aliases. The system's own tokens live in tokens/additions/.",
+  "heading": {
+    "family": {"$type":"fontFamily","$value":"Inter"},
+    "size": {
+      "3xl": {"$type":"dimension","$value":{"value":64,"unit":"px"}},
+      "2xl": {"$type":"dimension","$value":{"value":64,"unit":"px"}},
+      "xl": {"$type":"dimension","$value":{"value":48,"unit":"px"}},
+      "lg": {"$type":"dimension","$value":{"value":42,"unit":"px"}},
+      "md": {"$type":"dimension","$value":{"value":32,"unit":"px"}},
+      "sm": {"$type":"dimension","$value":{"value":24,"unit":"px"}},
+      "xs": {"$type":"dimension","$value":{"value":20,"unit":"px"}},
+      "2xs": {"$type":"dimension","$value":{"value":16,"unit":"px"}},
+      "3xs": {"$type":"dimension","$value":{"value":14,"unit":"px"}},
+      "4xs": {"$type":"dimension","$value":{"value":12,"unit":"px"}}
+    },
+    "weight": {
+      "medium": {"$type":"fontWeight","$value":500},
+      "semi-bold": {"$type":"fontWeight","$value":600}
+    }
+  },
+  "body": {
+    "family": {"$type":"fontFamily","$value":"Inter"},
+    "size": {
+      "xl": {"$type":"dimension","$value":{"value":24,"unit":"px"}},
+      "lg": {"$type":"dimension","$value":{"value":20,"unit":"px"}},
+      "md": {"$type":"dimension","$value":{"value":16,"unit":"px"}},
+      "sm": {"$type":"dimension","$value":{"value":14,"unit":"px"}},
+      "xs": {"$type":"dimension","$value":{"value":12,"unit":"px"}},
+      "2xs": {"$type":"dimension","$value":{"value":10,"unit":"px"}}
+    },
+    "weight": {
+      "regular": {"$type":"fontWeight","$value":400},
+      "medium": {"$type":"fontWeight","$value":500}
+    }
+  },
+  "mono": {
+    "family": {"$type":"fontFamily","$value":"Fragment Mono"},
+    "size": {
+      "2xl": {"$type":"dimension","$value":{"value":40,"unit":"px"}},
+      "xl": {"$type":"dimension","$value":{"value":24,"unit":"px"}},
+      "lg": {"$type":"dimension","$value":{"value":20,"unit":"px"}},
+      "md": {"$type":"dimension","$value":{"value":16,"unit":"px"}},
+      "sm": {"$type":"dimension","$value":{"value":14,"unit":"px"}},
+      "xs": {"$type":"dimension","$value":{"value":12,"unit":"px"}}
+    },
+    "weight": {
+      "regular": {"$type":"fontWeight","$value":400}
+    }
+  }
+}

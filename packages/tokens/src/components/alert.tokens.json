@@ -1,0 +1,146 @@
+{
+  "$description": "Component tokens for Alert. Path grammar: alert.<part>.<property>[.<intent>]. An alert has no interaction state. Parts and options must exist in packages/components/specs/components/alert.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "alert": {
+    "container": {
+      "background": {
+        "$type": "color",
+        "info": {
+          "$value": "{global.bg.subtle.functional.info.default}"
+        },
+        "success": {
+          "$value": "{global.bg.subtle.functional.success.default}"
+        },
+        "warning": {
+          "$value": "{global.bg.subtle.functional.warning.default}"
+        },
+        "error": {
+          "$value": "{global.bg.subtle.functional.error.default}"
+        }
+      },
+      "border-color": {
+        "$type": "color",
+        "info": {
+          "$value": "{global.border.accent.functional.info.default}"
+        },
+        "success": {
+          "$value": "{global.border.accent.functional.success.default}"
+        },
+        "warning": {
+          "$value": "{global.border.accent.functional.warning.default}"
+        },
+        "error": {
+          "$value": "{global.border.accent.functional.error.default}"
+        }
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{stroke-width.sm}"
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.sm}"
+      },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{space.16}"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.12}",
+        "$description": "Between the icon and the content column."
+      }
+    },
+    "icon": {
+      "$description": "Glyph of the icon font naming the intent (info, check_circle, warning, error). Hidden from assistive technology; the title or message carries the meaning.",
+      "color": {
+        "$type": "color",
+        "info": {
+          "$value": "{global.icon.on-subtle.functional.info.default}"
+        },
+        "success": {
+          "$value": "{global.icon.on-subtle.functional.success.default}"
+        },
+        "warning": {
+          "$value": "{global.icon.on-subtle.functional.warning.default}"
+        },
+        "error": {
+          "$value": "{global.icon.on-subtle.functional.error.default}"
+        }
+      },
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.20}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "{size.4}"
+      }
+    },
+    "content": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.4}",
+        "$description": "Between the title and the message."
+      }
+    },
+    "title": {
+      "color": {
+        "$type": "color",
+        "info": {
+          "$value": "{global.text.on-subtle.functional.info.default}"
+        },
+        "success": {
+          "$value": "{global.text.on-subtle.functional.success.default}"
+        },
+        "warning": {
+          "$value": "{global.text.on-subtle.functional.warning.default}"
+        },
+        "error": {
+          "$value": "{global.text.on-subtle.functional.error.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.md}",
+          "fontWeight": "{body.weight.medium}",
+          "lineHeight": "{font.line-height.tight}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "message": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.text.on-base.neutral.primary}"
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.md}",
+          "fontWeight": "{body.weight.regular}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    }
+  }
+}

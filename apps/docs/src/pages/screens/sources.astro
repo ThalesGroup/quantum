@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getScreens, getSources, licenseText } from '../../lib/screens';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const screens = getScreens();
+const sources = getSources();
+---
+<Layout title="Sources and licences" sidebar="screens" description="Where the screens come from and the licences they are adapted under.">
+  <header class="site-page-header">
+    <p class="site-eyebrow"><a href={`${base}/screens`}>Screens</a></p>
+    <h1>Sources and licences</h1>
+    <p class="site-lede">Every screen is adapted from an open-source project whose licence allows it. Only the structure and content of the originals are rebuilt; their visual design, fonts, icons and images are not reused.</p>
+    <p class="site-page-header__desc">From <code>apps/docs/screens/&lt;source&gt;/source.json</code> and the licence file next to it, copied verbatim from the source repository at the recorded commit.</p>
+  </header>
+  {sources.map((source) => {
+    const own = screens.filter((s) => s.source === source.id);
+    return (
+      <section class="site-section" id={source.id} aria-labelledby={`site-source-${source.id}`}>
+        <h2 id={`site-source-${source.id}`}>{source.name}</h2>
+        <p>{source.description}</p>
+        <dl class="site-facts">
+          <dt>Original</dt><dd><a href={source.url}>{source.url}</a></dd>
+          <dt>Repository</dt><dd><a href={source.repository}>{source.repository}</a> at commit <code>{source.commit}</code>{source.retrieved ? <> (retrieved {source.retrieved})</> : null}</dd>
+          <dt>Licence</dt><dd><a href={source.license.url}>{source.license.name}</a>, {source.license.copyright}</dd>
+          <dt>Screens</dt><dd>{own.length}: {own.map((s, i) => <>{i ? ', ' : ''}<a href={`${base}/screens/${s.id}`}>{s.block}</a></>)}</dd>
+        </dl>
+        <h3>What every screen changes from the original</h3>
+        <ul>{source.changes.map((c) => <li>{c}</li>)}</ul>
+        <h3>Licence text</h3>
+        <pre class="site-license"><code>{licenseText(source)}</code></pre>
+      </section>
+    );
+  })}
+</Layout>

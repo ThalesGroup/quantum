@@ -1,0 +1,49 @@
+---
+// Cited accessibility statements of a spec (component or foundation): guidelines grouped by
+// platform scope (universal first, then registry order), the WCAG criteria they cite and the
+// references, each resolved through the same registry `pnpm check` uses.
+import { cite, criteriaOf, conformanceTarget, publisherName } from '../lib/a11y';
+import { scoped, platforms as allPlatforms } from '../lib/platforms';
+interface Props { spec: any; headingLevel?: 3 | 4 }
+const { spec, headingLevel = 4 } = Astro.props;
+const H = `h${headingLevel}`;
+const a11y = spec.accessibility ?? {};
+const target = conformanceTarget();
+const criteria = criteriaOf(spec);
+const groups = [
+  { label: 'Every platform', items: (a11y.guidelines ?? []).filter((g: any) => !scoped(g)) },
+  ...allPlatforms().map((p) => ({ label: p.name, items: (a11y.guidelines ?? []).filter((g: any) => scoped(g) && g.platforms.includes(p.id)) })),
+].filter((g) => g.items.length);
+---
+{groups.map((group) => (
+  <div>
+    <H>{group.label}</H>
+    <ul>{group.items.map((g: any) => (
+      <li>{g.text} <span class="site-cite">{cite(g.refs, spec).map((c) => <a href={c.url} title={publisherName(c.publisher)}>{c.title}</a>)}</span></li>
+    ))}</ul>
+  </div>
+))}
+
+{criteria.length ? (
+  <div>
+    <H>WCAG success criteria</H>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">Criterion</th><th scope="col">Level</th><th scope="col">Understanding</th></tr></thead>
+        <tbody>{criteria.map((c) => (
+          <tr>
+            <th scope="row">{c.sc} {c.title}</th>
+            <td>{c.level}{c.inTarget ? null : <span class="site-muted site-small"> (beyond the {target.level} target)</span>}</td>
+            <td><a href={c.url}>Understanding {c.sc}</a></td>
+          </tr>
+        ))}</tbody>
+      </table>
+    </div>
+  </div>
+) : null}
+
+<H>References</H>
+<ul>{(a11y.references ?? []).map((r: any) => {
+  const [c] = cite([r.id], spec);
+  return <li><a href={r.url}>{r.title}</a> <span class="site-muted site-small">{publisherName(c?.publisher ?? null)}{c?.kind ? ` · ${c.kind}` : ''}</span></li>;
+})}</ul>

@@ -1,0 +1,430 @@
+{
+  "$description": "Accessibility profile of each component role: the obligations every spec with that role must meet. Every obligation is backed by the cited references (trusted sources only, see sources.json). A spec whose role has no profile fails validation: add the profile, from its APG pattern and the WAI-ARIA role definition, before specifying the component.",
+  "roles": {
+    "button": {
+      "ariaRole": "button",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": ["Enter", "Space"],
+      "requiredCriteria": {
+        "1.4.3": "The label is text; it must contrast with the container in every enabled state.",
+        "1.4.11": "The focus indicator and any boundary needed to identify the control need 3:1 against adjacent colors.",
+        "2.1.1": "The action must be operable with the keyboard (APG: Enter and Space).",
+        "2.4.7": "The control is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The control is a pointer target of at least 24 x 24 CSS pixels.",
+        "4.1.2": "Name and role must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["button"],
+        "note": "The native button element has the implicit role button; adding role=\"button\" to it is not recommended."
+      },
+      "references": [
+        { "title": "APG: Button pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/" },
+        { "title": "WAI-ARIA 1.2: button role", "url": "https://www.w3.org/TR/wai-aria-1.2/#button" },
+        { "title": "ARIA in HTML: button element", "url": "https://www.w3.org/TR/html-aria/#el-button" },
+        { "title": "HTML-AAM: button element", "url": "https://www.w3.org/TR/html-aam-1.0/#el-button" }
+      ]
+    },
+    "disclosure": {
+      "ariaRole": "button",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": ["Enter", "Space"],
+      "requiredCriteria": {
+        "1.4.3": "The control's label and the disclosed content are text; they must contrast with their background in every enabled state.",
+        "1.4.11": "The focus indicator and any boundary needed to identify the control need 3:1 against adjacent colors.",
+        "2.1.1": "Showing, hiding and using the content must be operable with the keyboard (APG: Enter and Space toggle).",
+        "2.4.3": "The disclosed content must come next in the focus order, right after the control that shows it.",
+        "2.4.7": "The control is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The control is a pointer target of at least 24 x 24 CSS pixels.",
+        "4.1.2": "Name, role and the expanded or collapsed state must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["button", "summary"],
+        "stateAttributes": ["popovertarget", "aria-expanded"],
+        "note": "The control is a native button: popovertarget exposes aria-expanded from the state of the popover it shows (HTML-AAM), otherwise aria-expanded is set by script. Or a summary element: it has no WAI-ARIA role of its own (ARIA in HTML, HTML-AAM: \"no corresponding role\"), but user agents expose it as a button-like control whose expanded state comes from its parent details' open attribute (HTML-AAM att-open-details), so nothing is checked on it. When the component root is a wrapper around the control and its content, implementations.web.rolePart names the control's part."
+      },
+      "references": [
+        { "title": "APG: Disclosure (Show/Hide) pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/" },
+        { "title": "WAI-ARIA 1.2: button role", "url": "https://www.w3.org/TR/wai-aria-1.2/#button" },
+        { "title": "WAI-ARIA 1.2: aria-expanded", "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-expanded" },
+        { "title": "HTML-AAM: popovertarget attribute", "url": "https://www.w3.org/TR/html-aam-1.0/#att-popovertarget" },
+        { "title": "HTML: flattened tabindex-ordered focus navigation scope (popover content after its trigger)", "url": "https://html.spec.whatwg.org/multipage/interaction.html#flattened-tabindex-ordered-focus-navigation-scope" },
+        { "title": "HTML-AAM: summary element and the details open attribute (aria-expanded)", "url": "https://www.w3.org/TR/html-aam-1.0/#att-open-details" },
+        { "title": "ARIA in HTML: summary element (no corresponding role)", "url": "https://www.w3.org/TR/html-aria/#el-summary" }
+      ]
+    },
+    "checkbox": {
+      "ariaRole": "checkbox",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": ["Space"],
+      "requiredCriteria": {
+        "1.3.1": "The label is associated with the control programmatically (label element), not by position only.",
+        "1.4.3": "The label is text; it must contrast with its background in every enabled state.",
+        "1.4.11": "The box is the boundary that identifies the control, and shows its state: box, mark and focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Checking and unchecking must be operable with the keyboard (APG: Space).",
+        "2.4.7": "The control is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The control is a pointer target of at least 24 x 24 CSS pixels, label included.",
+        "3.3.2": "A checkbox is user input: it has a visible label.",
+        "4.1.2": "Name, role and the checked state must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["input"],
+        "note": "A native input type=checkbox: implicit role checkbox, state from its checkedness (and indeterminate IDL attribute: mixed). ARIA in HTML forbids aria-checked on it. Named by a label element (for/id)."
+      },
+      "references": [
+        { "title": "APG: Checkbox pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/" },
+        { "title": "WAI-ARIA 1.2: checkbox role", "url": "https://www.w3.org/TR/wai-aria-1.2/#checkbox" },
+        { "title": "ARIA in HTML: input type=checkbox", "url": "https://www.w3.org/TR/html-aria/#el-input-checkbox" },
+        { "title": "HTML-AAM: input type=checkbox", "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-checkbox" },
+        { "title": "WAI tutorials: Labeling controls", "url": "https://www.w3.org/WAI/tutorials/forms/labels/" }
+      ]
+    },
+    "group": {
+      "ariaRole": "group",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": ["Space"],
+      "requiredCriteria": {
+        "1.3.1": "The grouping and the group's name are programmatic (fieldset and legend), not visual only; each option has an associated label.",
+        "1.4.3": "Legend and option labels are text; they must contrast with their background in every enabled state.",
+        "1.4.11": "Each option's control is the boundary that identifies it and shows its state: control, mark and focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Choosing an option must be operable with the keyboard (APG radio group: Space and the arrow keys).",
+        "2.4.7": "The options are keyboard operable, so the focus indicator must be visible.",
+        "2.5.8": "Each option is a pointer target of at least 24 x 24 CSS pixels, label included.",
+        "3.3.2": "A group of options is user input: it has a visible legend and visible option labels.",
+        "4.1.2": "Group name, option names, roles and the checked state must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["fieldset"],
+        "note": "A group of native radio buttons (same name) in a fieldset named by its legend: implicit role group. Radio group and Checkbox group have this role: the radios add the arrow keys of the APG radio group pattern in their own spec, which the native radios provide. When the root is the fieldset and the controls are inside, the component declares the focus-visible state for its option part."
+      },
+      "references": [
+        { "title": "APG: Radio group pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/radio/" },
+        { "title": "WAI-ARIA 1.2: group role", "url": "https://www.w3.org/TR/wai-aria-1.2/#group" },
+        { "title": "WAI-ARIA 1.2: radio role", "url": "https://www.w3.org/TR/wai-aria-1.2/#radio" },
+        { "title": "ARIA in HTML: fieldset element", "url": "https://www.w3.org/TR/html-aria/#el-fieldset" },
+        { "title": "HTML-AAM: fieldset element", "url": "https://www.w3.org/TR/html-aam-1.0/#el-fieldset" },
+        { "title": "WAI tutorials: Grouping controls", "url": "https://www.w3.org/WAI/tutorials/forms/grouping/" }
+      ]
+    },
+    "switch": {
+      "ariaRole": "switch",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": ["Space"],
+      "requiredCriteria": {
+        "1.3.1": "The label is associated with the control programmatically (label element).",
+        "1.4.3": "The label is text; it must contrast with its background in every enabled state.",
+        "1.4.11": "The track is the boundary that identifies the control, and track and thumb show its state: they and the focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Turning the switch on and off must be operable with the keyboard (APG: Space).",
+        "2.4.7": "The control is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The control is a pointer target of at least 24 x 24 CSS pixels, label included.",
+        "3.3.2": "A switch is user input: it has a visible label.",
+        "4.1.2": "Name, role switch and the on/off state must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["input"],
+        "explicitRole": true,
+        "note": "A native input type=checkbox with role=\"switch\" (ARIA in HTML allows the switch role on it; the state comes from its checkedness, never aria-checked). Named by a label element (for/id)."
+      },
+      "references": [
+        { "title": "APG: Switch pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/switch/" },
+        { "title": "WAI-ARIA 1.2: switch role", "url": "https://www.w3.org/TR/wai-aria-1.2/#switch" },
+        { "title": "ARIA in HTML: input type=checkbox (allowed role switch)", "url": "https://www.w3.org/TR/html-aria/#el-input-checkbox" },
+        { "title": "WAI tutorials: Labeling controls", "url": "https://www.w3.org/WAI/tutorials/forms/labels/" }
+      ]
+    },
+    "textbox": {
+      "ariaRole": "textbox",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The label, the description and the error message are associated with the control programmatically (label element, aria-describedby).",
+        "1.4.3": "Label, value, description and error text must contrast with their background in every enabled state.",
+        "1.4.11": "The border is the boundary that identifies the field: it and the focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Reaching and editing the field must be operable with the keyboard.",
+        "2.4.7": "The field is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The field is a pointer target of at least 24 x 24 CSS pixels.",
+        "3.3.1": "When the value is invalid, the field is identified and the error described in text.",
+        "3.3.2": "A field is user input: it has a visible label, and instructions when the expected input is not obvious.",
+        "4.1.2": "Name, role, value and the required, read-only, disabled and invalid states must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["input", "textarea"],
+        "note": "A native input type=text (or email, tel, url) with no list attribute: implicit role textbox. Named by a label element (for/id); described by aria-describedby; invalid with aria-invalid."
+      },
+      "references": [
+        { "title": "WAI-ARIA 1.2: textbox role", "url": "https://www.w3.org/TR/wai-aria-1.2/#textbox" },
+        { "title": "ARIA in HTML: input type=text", "url": "https://www.w3.org/TR/html-aria/#el-input-text" },
+        { "title": "HTML-AAM: input type=text", "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-text" },
+        { "title": "WAI tutorials: Labeling controls", "url": "https://www.w3.org/WAI/tutorials/forms/labels/" },
+        { "title": "WAI tutorials: User notifications (errors)", "url": "https://www.w3.org/WAI/tutorials/forms/notifications/" }
+      ]
+    },
+    "textarea": {
+      "ariaRole": "textbox",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The label, the description and the error message are associated with the control programmatically (label element, aria-describedby).",
+        "1.4.3": "Label, value, description and error text must contrast with their background in every enabled state.",
+        "1.4.11": "The border is the boundary that identifies the field: it and the focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Reaching and editing the field must be operable with the keyboard.",
+        "2.4.7": "The field is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The field is a pointer target of at least 24 x 24 CSS pixels.",
+        "3.3.1": "When the value is invalid, the field is identified and the error described in text.",
+        "3.3.2": "A field is user input: it has a visible label, and instructions when the expected input is not obvious.",
+        "4.1.2": "Name, role, value and the required, read-only, disabled and invalid states must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["textarea"],
+        "note": "A native textarea: implicit role textbox, exposed as multi-line. Named by a label element (for/id); described by aria-describedby; invalid with aria-invalid."
+      },
+      "references": [
+        { "title": "WAI-ARIA 1.2: textbox role", "url": "https://www.w3.org/TR/wai-aria-1.2/#textbox" },
+        { "title": "ARIA in HTML: textarea element", "url": "https://www.w3.org/TR/html-aria/#el-textarea" },
+        { "title": "HTML-AAM: textarea element", "url": "https://www.w3.org/TR/html-aam-1.0/#el-textarea" },
+        { "title": "WAI tutorials: Labeling controls", "url": "https://www.w3.org/WAI/tutorials/forms/labels/" }
+      ]
+    },
+    "combobox": {
+      "ariaRole": "combobox",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The label, the description and the error message are associated with the control programmatically (label element, aria-describedby).",
+        "1.4.3": "Label, chosen option, description and error text must contrast with their background in every enabled state.",
+        "1.4.11": "The border is the boundary that identifies the control: it and the focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Opening the list and choosing an option must be operable with the keyboard, as the platform's native select provides.",
+        "2.4.7": "The control is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The control is a pointer target of at least 24 x 24 CSS pixels.",
+        "3.3.1": "When the choice is invalid, the control is identified and the error described in text.",
+        "3.3.2": "A choice is user input: it has a visible label.",
+        "4.1.2": "Name, role, the chosen value and the required, disabled and invalid states must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["select"],
+        "note": "A native select rendered as a drop-down box (no multiple, no size above one): implicit role combobox; the browser owns the list, its keyboard interaction and its announcements. Named by a label element (for/id)."
+      },
+      "references": [
+        { "title": "WAI-ARIA 1.2: combobox role", "url": "https://www.w3.org/TR/wai-aria-1.2/#combobox" },
+        { "title": "ARIA in HTML: select element", "url": "https://www.w3.org/TR/html-aria/#el-select" },
+        { "title": "HTML-AAM: select element (drop-down box)", "url": "https://www.w3.org/TR/html-aam-1.0/#el-select-combobox" },
+        { "title": "WAI tutorials: Labeling controls", "url": "https://www.w3.org/WAI/tutorials/forms/labels/" }
+      ]
+    },
+    "presentation": {
+      "nameRequired": false,
+      "focusable": false,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "What the element conveys visually (a status, a separation) is available in text or through a native element with the matching role; the spec says which.",
+        "1.4.1": "Color never carries the meaning alone: text, a glyph or structure backs it."
+      },
+      "note": "Purely visual components with no interaction: a badge (a span with no role: generic), a divider (an hr: separator), a skeleton (hidden), an avatar or an icon (an image named by its label, or hidden when decorative). No ARIA role is imposed; each spec states the role its element exposes, if any.",
+      "references": [
+        { "title": "WAI-ARIA 1.2: generic role", "url": "https://www.w3.org/TR/wai-aria-1.2/#generic" },
+        { "title": "WAI-ARIA 1.2: separator role", "url": "https://www.w3.org/TR/wai-aria-1.2/#separator" },
+        { "title": "ARIA in HTML: span element", "url": "https://www.w3.org/TR/html-aria/#el-span" },
+        { "title": "ARIA in HTML: hr element", "url": "https://www.w3.org/TR/html-aria/#el-hr" },
+        { "title": "WAI-ARIA 1.2: img role", "url": "https://www.w3.org/TR/wai-aria-1.2/#img" },
+        { "title": "WAI-ARIA 1.2: aria-hidden", "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden" }
+      ]
+    },
+    "alert": {
+      "ariaRole": "alert",
+      "nameRequired": false,
+      "focusable": false,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The title and the message are text in the reading order; the intent is also conveyed in words.",
+        "1.4.1": "The intent is never conveyed by color alone: an icon and the text back it.",
+        "1.4.3": "Title and message text must contrast with the alert background.",
+        "4.1.3": "A message that appears without moving focus is a status message: the alert role lets assistive technology announce it."
+      },
+      "web": {
+        "elements": [],
+        "note": "A div with role=\"alert\" (an assertive, atomic live region): announced when it is inserted or its content changes; content present at page load is not announced. Never move focus to it."
+      },
+      "references": [
+        { "title": "APG: Alert pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/" },
+        { "title": "WAI-ARIA 1.2: alert role", "url": "https://www.w3.org/TR/wai-aria-1.2/#alert" },
+        { "title": "MDN: ARIA alert role", "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/alert_role" },
+        { "title": "Understanding WCAG 4.1.3 Status Messages", "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html" }
+      ]
+    },
+    "progressbar": {
+      "ariaRole": "progressbar",
+      "nameRequired": true,
+      "focusable": false,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The label names the task programmatically (label element), and the value is exposed as a value, not as a length only.",
+        "1.4.11": "The indicator is a graphical object: it needs 3:1 against the track it fills.",
+        "4.1.2": "Name, role progressbar, value and maximum must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["progress"],
+        "note": "A native progress element: implicit role progressbar, value and maximum from its attributes, indeterminate without a value. A labelable element: named by a label element (for/id)."
+      },
+      "references": [
+        { "title": "WAI-ARIA 1.2: progressbar role", "url": "https://www.w3.org/TR/wai-aria-1.2/#progressbar" },
+        { "title": "ARIA in HTML: progress element", "url": "https://www.w3.org/TR/html-aria/#el-progress" },
+        { "title": "HTML-AAM: progress element", "url": "https://www.w3.org/TR/html-aam-1.0/#el-progress" },
+        { "title": "MDN: the progress element (labeling)", "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/progress" }
+      ]
+    },
+    "spinbutton": {
+      "ariaRole": "spinbutton",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": ["Arrow keys"],
+      "requiredCriteria": {
+        "1.3.1": "The label, the description and the error message are associated with the field programmatically (label element, aria-describedby).",
+        "1.4.3": "Label, value, description and error text must contrast with their background in every enabled state.",
+        "1.4.11": "The border is the boundary that identifies the field: it and the focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Reaching and editing the field must be operable with the keyboard.",
+        "2.4.7": "The field is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The field is a pointer target of at least 24 x 24 CSS pixels.",
+        "3.3.2": "A field is user input: it has a visible label.",
+        "4.1.2": "Name, role, value and the states must be programmatically determinable.",
+        "3.3.1": "When the value is invalid (out of range, not a number), the field is identified and the error described in text."
+      },
+      "web": {
+        "elements": ["input"],
+        "note": "A native input type=number: implicit role spinbutton, value and bounds from value, min and max; the browser provides the arrow keys and its own spin control. Named by a label element (for/id)."
+      },
+      "references": [
+        { "title": "APG: Spinbutton pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/" },
+        { "title": "WAI-ARIA 1.2: spinbutton role", "url": "https://www.w3.org/TR/wai-aria-1.2/#spinbutton" },
+        { "title": "ARIA in HTML: input type=number", "url": "https://www.w3.org/TR/html-aria/#el-input-number" },
+        { "title": "HTML-AAM: input type=number", "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-number" },
+        { "title": "WAI tutorials: Labeling controls", "url": "https://www.w3.org/WAI/tutorials/forms/labels/" }
+      ]
+    },
+    "searchbox": {
+      "ariaRole": "searchbox",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The label, the description and the error message are associated with the field programmatically (label element, aria-describedby).",
+        "1.4.3": "Label, value, description and error text must contrast with their background in every enabled state.",
+        "1.4.11": "The border is the boundary that identifies the field: it and the focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Reaching and editing the field must be operable with the keyboard.",
+        "2.4.7": "The field is keyboard operable, so its focus indicator must be visible.",
+        "2.5.8": "The field is a pointer target of at least 24 x 24 CSS pixels.",
+        "3.3.2": "A field is user input: it has a visible label.",
+        "4.1.2": "Name, role, value and the states must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["input"],
+        "note": "A native input type=search with no list attribute: implicit role searchbox; the browser may add its own clear control. Named by a label element (for/id)."
+      },
+      "references": [
+        { "title": "WAI-ARIA 1.2: searchbox role", "url": "https://www.w3.org/TR/wai-aria-1.2/#searchbox" },
+        { "title": "ARIA in HTML: input type=search", "url": "https://www.w3.org/TR/html-aria/#el-input-search" },
+        { "title": "HTML-AAM: input type=search", "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-search" },
+        { "title": "WAI tutorials: Labeling controls", "url": "https://www.w3.org/WAI/tutorials/forms/labels/" }
+      ]
+    },
+    "slider": {
+      "ariaRole": "slider",
+      "nameRequired": true,
+      "focusable": true,
+      "keyboard": ["Arrow keys", "Home", "End"],
+      "requiredCriteria": {
+        "1.3.1": "The label is associated with the control programmatically (label element), and the value is exposed as a value with its bounds.",
+        "1.4.3": "The label and the shown value are text; they must contrast with their background in every enabled state.",
+        "1.4.11": "The thumb and the track identify the control and show its value: they and the focus indicator need 3:1 against adjacent colors.",
+        "2.1.1": "Changing the value must be operable with the keyboard (APG: arrow keys, Home, End).",
+        "2.4.7": "The control is keyboard operable, so its focus indicator must be visible.",
+        "2.5.7": "Dragging the thumb has a single-pointer alternative: activating a point on the track, or the keyboard is not enough on its own.",
+        "2.5.8": "The control is a pointer target of at least 24 x 24 CSS pixels.",
+        "3.3.2": "A slider is user input: it has a visible label.",
+        "4.1.2": "Name, role slider, value, minimum and maximum must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["input"],
+        "note": "A native input type=range: implicit role slider, value and bounds from value, min and max; the browser provides the arrow keys, Home and End, and lets people click the track. Named by a label element (for/id)."
+      },
+      "references": [
+        { "title": "APG: Slider pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/slider/" },
+        { "title": "WAI-ARIA 1.2: slider role", "url": "https://www.w3.org/TR/wai-aria-1.2/#slider" },
+        { "title": "ARIA in HTML: input type=range", "url": "https://www.w3.org/TR/html-aria/#el-input-range" },
+        { "title": "HTML-AAM: input type=range", "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-range" },
+        { "title": "Understanding WCAG 2.5.7 Dragging Movements (a range slider operated by clicking the track)", "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html" }
+      ]
+    },
+    "navigation": {
+      "ariaRole": "navigation",
+      "nameRequired": true,
+      "focusable": false,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The links form a list inside a navigation landmark, so the structure is programmatic.",
+        "1.4.3": "Link text must contrast with its background in every state.",
+        "2.4.4": "The purpose of each link is clear from its text or its context in the list.",
+        "2.4.7": "Links are keyboard operable, so their focus indicator must be visible.",
+        "2.5.8": "Each link is a pointer target of at least 24 x 24 CSS pixels, or spaced accordingly.",
+        "4.1.2": "The landmark's name, each link's name and the current item must be programmatically determinable."
+      },
+      "web": {
+        "elements": ["nav"],
+        "note": "A nav element: implicit role navigation, named with aria-label (unique when a page has several navigation landmarks); the current page carries aria-current=\"page\". The links inside are native links; a landmark component does not cover every nav of a page (scripts/lib/site-check.mjs COVERING_ROLES)."
+      },
+      "references": [
+        { "title": "WAI-ARIA 1.2: navigation role", "url": "https://www.w3.org/TR/wai-aria-1.2/#navigation" },
+        { "title": "WAI-ARIA 1.2: aria-current", "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-current" },
+        { "title": "ARIA in HTML: nav element", "url": "https://www.w3.org/TR/html-aria/#el-nav" },
+        { "title": "HTML-AAM: nav element", "url": "https://www.w3.org/TR/html-aam-1.0/#el-nav" },
+        { "title": "APG: Navigation landmark (unique labels)", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/landmarks/examples/navigation.html" },
+        { "title": "WCAG technique ARIA6: aria-label to distinguish navigation landmarks", "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA6" }
+      ]
+    },
+    "status": {
+      "ariaRole": "status",
+      "nameRequired": false,
+      "focusable": false,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.1.1": "A visual indicator (ring, animation) has a text alternative: the label, visible or not.",
+        "1.4.11": "The indicator is a graphical object that conveys the waiting state: it needs 3:1 against adjacent colors.",
+        "2.2.2": "A moving indicator that runs more than five seconds next to other content can be paused, stopped or hidden, unless essential; motion is reduced on request.",
+        "4.1.3": "The waiting state is a status message: the status role lets assistive technology announce it without focus."
+      },
+      "web": {
+        "elements": [],
+        "note": "A div with role=\"status\" (a polite, atomic live region) holding the visible or visually hidden text that names what is loading. The ring is decoration (aria-hidden)."
+      },
+      "references": [
+        { "title": "WAI-ARIA 1.2: status role", "url": "https://www.w3.org/TR/wai-aria-1.2/#status" },
+        { "title": "MDN: ARIA status role", "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/status_role" },
+        { "title": "WCAG technique ARIA22: role=status to present status messages", "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA22" },
+        { "title": "Understanding WCAG 4.1.3 Status Messages", "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html" }
+      ]
+    },
+    "container": {
+      "nameRequired": false,
+      "focusable": false,
+      "keyboard": [],
+      "requiredCriteria": {
+        "1.3.1": "The structure inside the container (its heading, its content) is programmatic: a heading element for the title, text in the reading order.",
+        "2.4.6": "The title describes the content of the container."
+      },
+      "note": "Layout containers with no role of their own (a Card is a div, role generic): what they hold carries the semantics, in particular a heading at the level the page needs.",
+      "references": [
+        { "title": "WAI-ARIA 1.2: generic role", "url": "https://www.w3.org/TR/wai-aria-1.2/#generic" },
+        { "title": "WAI-ARIA 1.2: heading role (aria-level)", "url": "https://www.w3.org/TR/wai-aria-1.2/#heading" },
+        { "title": "ARIA in HTML: div element", "url": "https://www.w3.org/TR/html-aria/#el-div" },
+        { "title": "ARIA in HTML: h1 to h6 elements", "url": "https://www.w3.org/TR/html-aria/#el-h1-h6" },
+        { "title": "WAI tutorials: Headings", "url": "https://www.w3.org/WAI/tutorials/page-structure/headings/" }
+      ]
+    }
+  }
+}

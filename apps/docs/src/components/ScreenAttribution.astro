@@ -1,0 +1,20 @@
+---
+// Where a screen comes from and under which licence: shown on every screen and on the overview.
+import type { Screen } from '../lib/screens';
+import { originLinks } from '../lib/screens';
+interface Props { screen: Screen }
+const { screen } = Astro.props;
+const { source, view, code } = originLinks(screen);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<aside class="site-callout site-attribution" aria-label="Source and licence">
+  <p>
+    Adapted from the <a href={source.url}>{source.name}</a> block <code>{screen.block}</code>
+    {view ? <> (<a href={view}>original</a>{code ? <>, <a href={code}>source code</a> at <code>{source.commit.slice(0, 7)}</code></> : null})</> : null}.
+    Rebuilt with this design system's components and tokens: only the structure and content come from the original.
+  </p>
+  <p class="site-small">
+    {source.name} is licensed under the <a href={source.license.url}>{source.license.name}</a>, {source.license.copyright}.
+    <a href={`${base}/screens/sources#${source.id}`}>Full licence text</a>.
+  </p>
+</aside>

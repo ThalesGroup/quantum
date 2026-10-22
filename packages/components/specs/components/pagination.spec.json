@@ -1,0 +1,659 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "pagination",
+  "name": "Pagination",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "navigation",
+  "summary": "Lets people move between the pages of a long list, with the current page marked.",
+  "description": "A pagination splits a long list of results into pages and lets people go to a page by its number, or to the previous and next ones. It shows which page is current. The pages are links: each one has a destination, so the browser handles history and focus. Which page numbers to show (all, a window around the current one) is the application's choice: the component renders the list it is given.",
+  "tags": [
+    "navigation",
+    "data-display"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: a navigation landmark named Pagination. Carries the size and the states forced for review."
+    },
+    {
+      "id": "list",
+      "role": "container",
+      "required": true,
+      "description": "The list of links: previous, the pages, next."
+    },
+    {
+      "id": "item",
+      "role": "container",
+      "required": true,
+      "repeatable": true,
+      "parent": "list",
+      "description": "One page: its link, or the current page. Takes the states of its link.",
+      "properties": [
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "string",
+          "required": true,
+          "bindsTo": "link",
+          "description": "The page number, or an ellipsis for skipped pages."
+        },
+        {
+          "id": "href",
+          "name": "Destination",
+          "type": "string",
+          "description": "Where the page link goes. Ignored for the current page."
+        },
+        {
+          "id": "current",
+          "name": "Current",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether this is the current page: shown filled, not linked, exposed as current."
+        }
+      ]
+    },
+    {
+      "id": "previous",
+      "role": "action",
+      "required": true,
+      "parent": "list",
+      "description": "The link to the previous page, with a chevron and the word Previous; disabled on the first page."
+    },
+    {
+      "id": "next",
+      "role": "action",
+      "required": true,
+      "parent": "list",
+      "description": "The link to the next page, with the word Next and a chevron; disabled on the last page."
+    },
+    {
+      "id": "link",
+      "role": "action",
+      "required": true,
+      "parent": "item",
+      "description": "The link to a page, or the current page as text marked current, or a previous or next link without destination, disabled."
+    },
+    {
+      "id": "icon",
+      "role": "icon",
+      "required": false,
+      "decorative": true,
+      "parent": "link",
+      "description": "Chevron glyph of the previous and next links. Hidden from assistive technology; the words carry the meaning."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Height of the links and text size.",
+      "affects": [
+        "item",
+        "link",
+        "icon"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Under dense tables (32 px)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (40 px)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Landmark label",
+      "type": "string",
+      "default": "Pagination",
+      "description": "Name of the navigation landmark, so it is told apart from the other navigation regions."
+    },
+    {
+      "id": "pages",
+      "name": "Pages",
+      "type": "list",
+      "required": true,
+      "of": [
+        "item"
+      ],
+      "bindsTo": "item",
+      "description": "The page links to show, in order, one of them current."
+    },
+    {
+      "id": "previous",
+      "name": "Previous page",
+      "type": "string",
+      "description": "Destination of the previous link; without one (the first page) the link is disabled."
+    },
+    {
+      "id": "next",
+      "name": "Next page",
+      "type": "string",
+      "description": "Destination of the next link; without one (the last page) the link is disabled."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "parts": [
+        "item"
+      ],
+      "description": "A page link: text on a transparent background."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "parts": [
+        "item"
+      ],
+      "description": "Pointer over a link: the subtle neutral tint. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "active",
+      "trigger": "interaction",
+      "parts": [
+        "item"
+      ],
+      "description": "Pointer, finger or key pressed down on a link: the next tint."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "parts": [
+        "item"
+      ],
+      "description": "Keyboard focus on a link. Shows the shared focus ring around it; pointer focus shows none."
+    },
+    {
+      "id": "current",
+      "trigger": "property",
+      "property": "pages",
+      "parts": [
+        "item"
+      ],
+      "description": "The current page (the entry's current property): filled with the accent neutral color, not a link, exposed as the current page."
+    },
+    {
+      "id": "disabled",
+      "trigger": "system",
+      "parts": [
+        "item"
+      ],
+      "description": "A previous or next link without destination: dimmed, not focusable, exposed as disabled."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "center",
+    "justify": "start",
+    "wrap": true,
+    "sizing": "hug",
+    "notes": [
+      "Previous, the pages and next sit on one row and wrap when the space runs out, separated by container.gap.",
+      "Each link is a square of the size at least, wider when its label is; previous and next show a chevron and a word."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "navigation",
+    "name": {
+      "text": "The landmark is named by its label property (aria-label on the web), Pagination by default. Each link is named by its text (the page number, Previous, Next; the chevrons are hidden); the current page is marked as such.",
+      "refs": [
+        "apg-naming-aria-label",
+        "aria-current",
+        "accname-content",
+        "accname-hidden"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus through the enabled links in order: previous, the pages, next. The current page and a disabled link are skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-aria-a-no-href"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "A pagination is a navigation landmark with a label, holding a list of links, one of them marked as the current page; the previous and next links say so in words.",
+        "refs": [
+          "wcag:1.3.1",
+          "wcag:4.1.2",
+          "aria-navigation",
+          "aria-current",
+          "aria-list"
+        ]
+      },
+      {
+        "text": "Use a nav element with aria-label=\"Pagination\" holding a list; page links are native links, the current page a span with aria-current=\"page\", and a previous or next link without destination a span with role=\"link\" and aria-disabled=\"true\", not focusable.",
+        "refs": [
+          "html-aria-nav",
+          "html-aam-nav",
+          "html-nav",
+          "aria-current",
+          "mdn-aria-current",
+          "html-aria-a-no-href",
+          "aria-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Give each navigation landmark of a page a unique label, so people moving between landmarks can tell the pagination from the main navigation.",
+        "refs": [
+          "apg-navigation-landmark",
+          "mdn-navigation-role",
+          "wcag-aria6",
+          "wcag-aria11",
+          "wcag:2.4.1"
+        ]
+      },
+      {
+        "text": "Each link's purpose is clear from its text in the context of the landmark (page 3 of the results); keep the pagination in the same place on every page of the set.",
+        "refs": [
+          "wcag:2.4.4",
+          "understanding-link-purpose",
+          "wcag:3.2.3",
+          "understanding-consistent-navigation"
+        ]
+      },
+      {
+        "text": "The current page is distinguished by its fill and by not being a link, and exposed as current, never by color alone; a disabled link is dimmed and exposed as disabled.",
+        "refs": [
+          "wcag:1.4.1",
+          "aria-current",
+          "aria-disabled"
+        ]
+      },
+      {
+        "text": "Link text contrasts 19.07:1 (light) and 11.27:1 (dark) with the default surface and 11.71:1 and 9.16:1 on the hover tint; the current page 16.29:1 and 13.84:1 on its fill. Disabled links are inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The chevrons are decorative and hidden with aria-hidden=\"true\": the words Previous and Next name the links.",
+        "refs": [
+          "wcag:1.1.1",
+          "aria-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears around the focused link; the focus ring contrasts 5.79:1 (light) and 12.80:1 (dark) with the surface.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every link is at least 32 x 32 CSS pixels, above the minimum target.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "A page control displays a row of indicators, one per page in a flat list, the current one solid: the iOS counterpart for a few pages; numbered links remain for long lists.",
+        "refs": [
+          "hig-page-controls"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Color transitions of the links are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "accname-content",
+        "title": "AccName 1.2: name from content (step 2F)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_name_from_content"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: hidden nodes are excluded (step 2A)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "html-aria-a-no-href",
+        "title": "ARIA in HTML: a element without href",
+        "url": "https://www.w3.org/TR/html-aria/#el-a-no-href"
+      },
+      {
+        "id": "aria-disabled",
+        "title": "WAI-ARIA 1.2: aria-disabled",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-disabled"
+      },
+      {
+        "id": "apg-navigation-landmark",
+        "title": "APG: Navigation landmark (a unique label for each)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/landmarks/examples/navigation.html"
+      },
+      {
+        "id": "apg-naming-aria-label",
+        "title": "APG: Naming with aria-label (a navigation region)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#naming_with_aria-label"
+      },
+      {
+        "id": "aria-navigation",
+        "title": "WAI-ARIA 1.2: navigation role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#navigation"
+      },
+      {
+        "id": "aria-current",
+        "title": "WAI-ARIA 1.2: aria-current (page)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-current"
+      },
+      {
+        "id": "aria-list",
+        "title": "WAI-ARIA 1.2: list role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#list"
+      },
+      {
+        "id": "html-aria-nav",
+        "title": "ARIA in HTML: nav element (role navigation)",
+        "url": "https://www.w3.org/TR/html-aria/#el-nav"
+      },
+      {
+        "id": "html-aam-nav",
+        "title": "HTML-AAM: nav element (navigation)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-nav"
+      },
+      {
+        "id": "html-nav",
+        "title": "HTML: the nav element",
+        "url": "https://html.spec.whatwg.org/multipage/sections.html#the-nav-element"
+      },
+      {
+        "id": "mdn-aria-current",
+        "title": "MDN: aria-current",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-current"
+      },
+      {
+        "id": "mdn-navigation-role",
+        "title": "MDN: ARIA navigation role (a unique label for each landmark)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/navigation_role"
+      },
+      {
+        "id": "wcag-aria6",
+        "title": "WCAG technique ARIA6: aria-label to distinguish navigation landmarks",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA6"
+      },
+      {
+        "id": "wcag-aria11",
+        "title": "WCAG technique ARIA11: ARIA landmarks to identify regions of a page",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA11"
+      },
+      {
+        "id": "understanding-link-purpose",
+        "title": "Understanding WCAG 2.4.4 Link Purpose (In Context)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html"
+      },
+      {
+        "id": "understanding-consistent-navigation",
+        "title": "Understanding WCAG 3.2.3 Consistent Navigation",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html"
+      },
+      {
+        "id": "hig-page-controls",
+        "title": "Apple HIG: Page controls (the current page in a flat list of pages)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/page-controls"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "Page labels are the page numbers; an ellipsis (…) stands for skipped pages and is not a link.",
+      "Previous and Next are written out next to their chevrons; they never become icon-only.",
+      "Show the total when it helps (Page 3 of 12) next to the pagination, as text."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "previous": "#",
+        "next": "#",
+        "pages": [
+          {
+            "label": "1",
+            "href": "#"
+          },
+          {
+            "label": "2",
+            "href": "#"
+          },
+          {
+            "label": "3",
+            "current": true
+          },
+          {
+            "label": "4",
+            "href": "#"
+          },
+          {
+            "label": "5",
+            "href": "#"
+          }
+        ]
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "previous": "#",
+        "next": "#",
+        "pages": [
+          {
+            "label": "1",
+            "href": "#"
+          },
+          {
+            "label": "2",
+            "current": true
+          },
+          {
+            "label": "3",
+            "href": "#"
+          }
+        ]
+      }
+    },
+    {
+      "id": "medium-first-page",
+      "name": "Medium, first page",
+      "description": "No previous page: the link is disabled.",
+      "props": {
+        "size": "medium",
+        "next": "#",
+        "pages": [
+          {
+            "label": "1",
+            "current": true
+          },
+          {
+            "label": "2",
+            "href": "#"
+          },
+          {
+            "label": "3",
+            "href": "#"
+          },
+          {
+            "label": "…"
+          },
+          {
+            "label": "12",
+            "href": "#"
+          }
+        ]
+      }
+    },
+    {
+      "id": "medium-last-page",
+      "name": "Medium, last page",
+      "description": "No next page: the link is disabled.",
+      "props": {
+        "size": "medium",
+        "previous": "#",
+        "pages": [
+          {
+            "label": "1",
+            "href": "#"
+          },
+          {
+            "label": "…"
+          },
+          {
+            "label": "11",
+            "href": "#"
+          },
+          {
+            "label": "12",
+            "current": true
+          }
+        ]
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/pagination.tokens.json",
+    "prefix": "pagination"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/pagination/pagination.css",
+      "template": "packages/components/src/components/pagination/pagination.template.mjs",
+      "selector": ".ds-pagination",
+      "element": "nav",
+      "attributes": {
+        "size": "data-size",
+        "label": "aria-label"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-pagination",
+        "list": ".ds-pagination__list",
+        "item": ".ds-pagination__item",
+        "previous": ".ds-pagination__item[data-part=\"previous\"]",
+        "next": ".ds-pagination__item[data-part=\"next\"]",
+        "link": ".ds-pagination__link",
+        "icon": ".ds-pagination__icon"
+      }
+    }
+  },
+  "related": [
+    "breadcrumb"
+  ],
+  "decisions": [
+    {
+      "id": "links-not-buttons",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "Pages are links with destinations, in a navigation landmark named Pagination; the current page is not a link and is exposed as current; previous and next are links with a visible word, disabled without destination. The component renders the pages it is given and decides nothing about which numbers to show.",
+      "rationale": "Links give history, focus and announcements for free; a pagination made of buttons needs script.",
+      "refs": [
+        "aria-navigation",
+        "aria-current"
+      ]
+    },
+    {
+      "id": "link-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "Links are primary text on a transparent background, tinted with the subtle neutral fill on hover and its hover step on press (the Button's ghost tints); the current page is the accent neutral fill with its on-accent text; disabled links take the disabled text color.",
+      "tokens": [
+        "pagination.link.background.*",
+        "pagination.link.color.*"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two sizes from the space scale: small (32 px links, 14 px text, 20 px chevrons) and medium (40 px, 16 px, 24 px, the default), with 4 px corners and 4 px between links.",
+      "tokens": [
+        "pagination.link.size.*",
+        "pagination.link.typography.*",
+        "pagination.icon.size.*",
+        "pagination.link.border-radius",
+        "pagination.container.gap"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions links-not-buttons, link-colors, sizes). Nav labelled Pagination with previous, page links, a current page and next; states default, hover, active, focus-visible, current, disabled on the item part; sizes small and medium. Contrast, light / dark, default surface: links 19.07 / 11.27 (11.71 / 9.16 on hover), current page on its fill 16.29 / 13.84, focus ring 5.79 / 12.80."
+    }
+  ]
+}

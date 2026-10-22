@@ -1,0 +1,177 @@
+/*
+ * Switch — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/switch.spec.json
+ * Tokens: packages/tokens/dist/css/components/switch.css (generated from packages/tokens/src/components/switch.tokens.json)
+ *
+ * Rules:
+ *  - Only --switch-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (grid: track, label, description); the native checkbox exposed as a switch
+ *    is the track, drawn by the component (appearance: none); the thumb is its pseudo-element.
+ *  - Size is a data attribute on the root; states are native pseudo-classes of the input, and the
+ *    root's [data-state="<state>"] forces them for review. Precedence follows the spec order:
+ *    default < hover < focus-visible < checked < disabled.
+ *  - Private properties (--_*) are the single place an option or a state writes to.
+ */
+
+.ds-switch {
+  /* Defaults = size "medium", state "default". */
+  --_track-width: var(--switch-control-width-medium);
+  --_track-height: var(--switch-control-height-medium);
+  --_thumb-size: var(--switch-thumb-size-medium);
+  --_track-background: var(--switch-control-background-default);
+  --_track-border-color: var(--switch-control-border-color-default);
+  --_thumb-background: var(--switch-thumb-background-default);
+  --_label-color: var(--switch-label-color-default);
+  --_description-color: var(--switch-description-color-default);
+  --_label-font-family: var(--switch-label-typography-medium-font-family);
+  --_label-font-size: var(--switch-label-typography-medium-font-size);
+  --_label-font-weight: var(--switch-label-typography-medium-font-weight);
+  --_label-line-height: var(--switch-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--switch-label-typography-medium-letter-spacing);
+  --_description-font-family: var(--switch-description-typography-medium-font-family);
+  --_description-font-size: var(--switch-description-typography-medium-font-size);
+  --_description-font-weight: var(--switch-description-typography-medium-font-weight);
+  --_description-line-height: var(--switch-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--switch-description-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--switch-container-column-gap);
+  row-gap: var(--switch-container-row-gap);
+  align-items: start;
+  vertical-align: middle;
+}
+
+.ds-switch[data-size="small"] {
+  --_track-width: var(--switch-control-width-small);
+  --_track-height: var(--switch-control-height-small);
+  --_thumb-size: var(--switch-thumb-size-small);
+  --_label-font-family: var(--switch-label-typography-small-font-family);
+  --_label-font-size: var(--switch-label-typography-small-font-size);
+  --_label-font-weight: var(--switch-label-typography-small-font-weight);
+  --_label-line-height: var(--switch-label-typography-small-line-height);
+  --_label-letter-spacing: var(--switch-label-typography-small-letter-spacing);
+  --_description-font-family: var(--switch-description-typography-small-font-family);
+  --_description-font-size: var(--switch-description-typography-small-font-size);
+  --_description-font-weight: var(--switch-description-typography-small-font-weight);
+  --_description-line-height: var(--switch-description-typography-small-line-height);
+  --_description-letter-spacing: var(--switch-description-typography-small-letter-spacing);
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.ds-switch__control {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  inline-size: var(--_track-width);
+  block-size: var(--_track-height);
+  margin: 0;
+  margin-block-start: calc((var(--_label-line-height) * var(--_label-font-size) - var(--_track-height)) / 2);
+  border: var(--switch-control-border-width) solid var(--_track-border-color);
+  border-radius: var(--switch-control-border-radius);
+  background-color: var(--_track-background);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--switch-control-transition-duration) var(--switch-control-transition-easing),
+    border-color var(--switch-control-transition-duration) var(--switch-control-transition-easing);
+}
+
+/* The thumb: at the start edge when off, moved to the end edge when on. */
+.ds-switch__control::before {
+  content: "";
+  position: absolute;
+  inset-block-start: calc((var(--_track-height) - var(--_thumb-size)) / 2 - var(--switch-control-border-width));
+  inset-inline-start: var(--switch-thumb-margin);
+  display: block;
+  inline-size: var(--_thumb-size);
+  block-size: var(--_thumb-size);
+  border-radius: var(--switch-control-border-radius);
+  background-color: var(--_thumb-background);
+  transition:
+    translate var(--switch-control-transition-duration) var(--switch-control-transition-easing),
+    background-color var(--switch-control-transition-duration) var(--switch-control-transition-easing);
+}
+
+.ds-switch__label {
+  grid-column: 2;
+  color: var(--_label-color);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
+  cursor: pointer;
+}
+
+.ds-switch__description {
+  grid-column: 2;
+  margin: 0;
+  color: var(--_description-color);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
+}
+
+/* ---- States -------------------------------------------------------------- */
+/* Order matters: hover < checked < disabled; hover never repaints a checked or disabled switch. */
+
+.ds-switch:where([data-state="hover"]) .ds-switch__control:not(:checked, :disabled),
+.ds-switch:not([data-state]) .ds-switch__control:hover:not(:checked, :disabled) {
+  --_track-background: var(--switch-control-background-hover);
+  --_track-border-color: var(--switch-control-border-color-hover);
+}
+
+.ds-switch:where([data-state="checked"]) .ds-switch__control,
+.ds-switch__control:checked {
+  --_track-background: var(--switch-control-background-checked);
+  --_track-border-color: var(--switch-control-border-color-checked);
+  --_thumb-background: var(--switch-thumb-background-checked);
+}
+.ds-switch:where([data-state="checked"]) .ds-switch__control::before,
+.ds-switch__control:checked::before {
+  translate: calc(var(--_track-width) - var(--_thumb-size) - 2 * var(--switch-thumb-margin) - 2 * var(--switch-control-border-width)) 0;
+}
+.ds-switch:where([data-state="checked"]) .ds-switch__control:dir(rtl)::before,
+.ds-switch__control:checked:dir(rtl)::before {
+  translate: calc(-1 * (var(--_track-width) - var(--_thumb-size) - 2 * var(--switch-thumb-margin) - 2 * var(--switch-control-border-width))) 0;
+}
+
+.ds-switch:where([data-state="disabled"]),
+.ds-switch:has(.ds-switch__control:disabled) {
+  --_label-color: var(--switch-label-color-disabled);
+  --_description-color: var(--switch-description-color-disabled);
+}
+.ds-switch:where([data-state="disabled"]) .ds-switch__control,
+.ds-switch__control:disabled {
+  --_track-background: var(--switch-control-background-disabled);
+  --_track-border-color: var(--switch-control-border-color-disabled);
+  --_thumb-background: var(--switch-thumb-background-disabled);
+  cursor: not-allowed;
+}
+.ds-switch:where([data-state="disabled"]) .ds-switch__label,
+.ds-switch:has(.ds-switch__control:disabled) .ds-switch__label {
+  cursor: not-allowed;
+}
+
+.ds-switch__control:focus {
+  outline: none;
+}
+
+.ds-switch:where([data-state="focus-visible"]) .ds-switch__control,
+.ds-switch__control:focus-visible {
+  outline: var(--switch-control-outline-width-focus-visible) solid var(--switch-control-outline-color-focus-visible);
+  outline-offset: var(--switch-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-switch__control,
+  .ds-switch__control::before {
+    transition: none;
+  }
+}

@@ -1,0 +1,318 @@
+/*
+ * Button — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/button.spec.json
+ * Tokens: packages/tokens/dist/css/components/button.css (generated from packages/tokens/src/components/button.tokens.json)
+ *
+ * Rules:
+ *  - Only --button-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - Emphasis, intent and size are data attributes; states are native pseudo-classes.
+ *  - Icons are ligatures of the icon font (Material Symbols); the glyph is the icon size square.
+ *  - Every state also matches [data-state="<state>"] so the docs site can force it for review.
+ *  - Private properties (--_*) are the single place an option or a state writes to:
+ *    each emphasis x intent pair sets its ladder (--_<property>-<state>), each emphasis its
+ *    disabled colors, and the state rules pick the rung.
+ */
+
+.ds-button {
+  /* Defaults = emphasis "accent", intent "neutral", size "medium", state "default". */
+  --_background: var(--_background-default);
+  --_border-color: var(--_border-color-default);
+  --_color: var(--_color-default);
+  --_padding-inline: var(--button-container-padding-inline-medium);
+  --_padding-block: var(--button-container-padding-block-medium);
+  --_gap: var(--button-container-gap-medium);
+  --_padding-inline-icon: var(--button-container-padding-inline-icon-side-medium);
+  --_padding-inline-label: var(--button-container-padding-inline-label-side-medium);
+  --_min-height: var(--button-container-min-height-medium);
+  --_border-radius: var(--button-container-border-radius-medium);
+  --_icon-size: var(--button-icon-size-medium);
+  --_font-family: var(--button-label-typography-medium-font-family);
+  --_font-size: var(--button-label-typography-medium-font-size);
+  --_font-weight: var(--button-label-typography-medium-font-weight);
+  --_line-height: var(--button-label-typography-medium-line-height);
+  --_letter-spacing: var(--button-label-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_gap);
+  min-height: var(--_min-height);
+  margin: 0;
+  padding-block: var(--_padding-block);
+  padding-inline: var(--_padding-inline);
+  border: var(--button-container-border-width) solid var(--_border-color);
+  border-radius: var(--_border-radius);
+  background-color: var(--_background);
+  color: var(--_color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--button-container-transition-duration) var(--button-container-transition-easing),
+    border-color var(--button-container-transition-duration) var(--button-container-transition-easing),
+    color var(--button-container-transition-duration) var(--button-container-transition-easing);
+}
+
+/* ---- Parts -------------------------------------------------------------- */
+
+.ds-button__label {
+  display: inline-block;
+}
+
+.ds-button__icon {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_icon-size);
+  block-size: var(--_icon-size);
+  overflow: hidden;
+  font-family: var(--button-icon-font-family);
+  font-size: var(--_icon-size);
+  font-weight: var(--button-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--button-icon-fill),
+    "GRAD" var(--button-icon-grade),
+    "opsz" var(--button-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Padding next to an icon --------------------------------------------- */
+/* With an icon, the label side takes the label-side padding and each icon side the icon-side padding. */
+
+.ds-button:has(> .ds-button__icon) {
+  padding-inline: var(--_padding-inline-label);
+}
+
+.ds-button:has(> .ds-button__icon[data-position="start"]) {
+  padding-inline-start: var(--_padding-inline-icon);
+}
+
+.ds-button:has(> .ds-button__icon[data-position="end"]) {
+  padding-inline-end: var(--_padding-inline-icon);
+}
+
+/* ---- Size ---------------------------------------------------------------- */
+
+.ds-button[data-size="xsmall"] {
+  --_padding-inline: var(--button-container-padding-inline-xsmall);
+  --_padding-block: var(--button-container-padding-block-xsmall);
+  --_gap: var(--button-container-gap-xsmall);
+  --_padding-inline-icon: var(--button-container-padding-inline-icon-side-xsmall);
+  --_padding-inline-label: var(--button-container-padding-inline-label-side-xsmall);
+  --_min-height: var(--button-container-min-height-xsmall);
+  --_border-radius: var(--button-container-border-radius-xsmall);
+  --_icon-size: var(--button-icon-size-xsmall);
+  --_font-family: var(--button-label-typography-xsmall-font-family);
+  --_font-size: var(--button-label-typography-xsmall-font-size);
+  --_font-weight: var(--button-label-typography-xsmall-font-weight);
+  --_line-height: var(--button-label-typography-xsmall-line-height);
+  --_letter-spacing: var(--button-label-typography-xsmall-letter-spacing);
+}
+
+.ds-button[data-size="small"] {
+  --_padding-inline: var(--button-container-padding-inline-small);
+  --_padding-block: var(--button-container-padding-block-small);
+  --_gap: var(--button-container-gap-small);
+  --_padding-inline-icon: var(--button-container-padding-inline-icon-side-small);
+  --_padding-inline-label: var(--button-container-padding-inline-label-side-small);
+  --_min-height: var(--button-container-min-height-small);
+  --_border-radius: var(--button-container-border-radius-small);
+  --_icon-size: var(--button-icon-size-small);
+  --_font-family: var(--button-label-typography-small-font-family);
+  --_font-size: var(--button-label-typography-small-font-size);
+  --_font-weight: var(--button-label-typography-small-font-weight);
+  --_line-height: var(--button-label-typography-small-line-height);
+  --_letter-spacing: var(--button-label-typography-small-letter-spacing);
+}
+
+.ds-button[data-size="large"] {
+  --_padding-inline: var(--button-container-padding-inline-large);
+  --_padding-block: var(--button-container-padding-block-large);
+  --_gap: var(--button-container-gap-large);
+  --_padding-inline-icon: var(--button-container-padding-inline-icon-side-large);
+  --_padding-inline-label: var(--button-container-padding-inline-label-side-large);
+  --_min-height: var(--button-container-min-height-large);
+  --_border-radius: var(--button-container-border-radius-large);
+  --_icon-size: var(--button-icon-size-large);
+  --_font-family: var(--button-label-typography-large-font-family);
+  --_font-size: var(--button-label-typography-large-font-size);
+  --_font-weight: var(--button-label-typography-large-font-weight);
+  --_line-height: var(--button-label-typography-large-line-height);
+  --_letter-spacing: var(--button-label-typography-large-letter-spacing);
+}
+
+/* ---- Emphasis x intent: color ladders ------------------------------------ */
+/* Selectors are wrapped in :where() so every pair has the same specificity as .ds-button. */
+
+/* accent */
+.ds-button:where([data-emphasis="accent"], :not([data-emphasis])):where([data-intent="neutral"], :not([data-intent])) {
+  --_background-default: var(--button-container-background-accent-neutral-default);
+  --_border-color-default: var(--button-container-border-color-accent-neutral-default);
+  --_color-default: var(--button-label-color-accent-neutral-default);
+  --_background-hover: var(--button-container-background-accent-neutral-hover);
+  --_border-color-hover: var(--button-container-border-color-accent-neutral-hover);
+  --_color-hover: var(--button-label-color-accent-neutral-hover);
+  --_background-active: var(--button-container-background-accent-neutral-active);
+  --_border-color-active: var(--button-container-border-color-accent-neutral-active);
+  --_color-active: var(--button-label-color-accent-neutral-active);
+}
+.ds-button:where([data-emphasis="accent"], :not([data-emphasis])):where([data-intent="brand"]) {
+  --_background-default: var(--button-container-background-accent-brand-default);
+  --_border-color-default: var(--button-container-border-color-accent-brand-default);
+  --_color-default: var(--button-label-color-accent-brand-default);
+  --_background-hover: var(--button-container-background-accent-brand-hover);
+  --_border-color-hover: var(--button-container-border-color-accent-brand-hover);
+  --_color-hover: var(--button-label-color-accent-brand-hover);
+  --_background-active: var(--button-container-background-accent-brand-active);
+  --_border-color-active: var(--button-container-border-color-accent-brand-active);
+  --_color-active: var(--button-label-color-accent-brand-active);
+}
+.ds-button:where([data-emphasis="accent"], :not([data-emphasis])):where([data-intent="error"]) {
+  --_background-default: var(--button-container-background-accent-error-default);
+  --_border-color-default: var(--button-container-border-color-accent-error-default);
+  --_color-default: var(--button-label-color-accent-error-default);
+  --_background-hover: var(--button-container-background-accent-error-hover);
+  --_border-color-hover: var(--button-container-border-color-accent-error-hover);
+  --_color-hover: var(--button-label-color-accent-error-hover);
+  --_background-active: var(--button-container-background-accent-error-active);
+  --_border-color-active: var(--button-container-border-color-accent-error-active);
+  --_color-active: var(--button-label-color-accent-error-active);
+}
+.ds-button:where([data-emphasis="accent"], :not([data-emphasis])) {
+  --_background-disabled: var(--button-container-background-accent-disabled);
+  --_border-color-disabled: var(--button-container-border-color-accent-disabled);
+  --_color-disabled: var(--button-label-color-accent-disabled);
+}
+
+/* subtle */
+.ds-button:where([data-emphasis="subtle"]):where([data-intent="neutral"], :not([data-intent])) {
+  --_background-default: var(--button-container-background-subtle-neutral-default);
+  --_border-color-default: var(--button-container-border-color-subtle-neutral-default);
+  --_color-default: var(--button-label-color-subtle-neutral-default);
+  --_background-hover: var(--button-container-background-subtle-neutral-hover);
+  --_border-color-hover: var(--button-container-border-color-subtle-neutral-hover);
+  --_color-hover: var(--button-label-color-subtle-neutral-hover);
+  --_background-active: var(--button-container-background-subtle-neutral-active);
+  --_border-color-active: var(--button-container-border-color-subtle-neutral-active);
+  --_color-active: var(--button-label-color-subtle-neutral-active);
+}
+.ds-button:where([data-emphasis="subtle"]):where([data-intent="brand"]) {
+  --_background-default: var(--button-container-background-subtle-brand-default);
+  --_border-color-default: var(--button-container-border-color-subtle-brand-default);
+  --_color-default: var(--button-label-color-subtle-brand-default);
+  --_background-hover: var(--button-container-background-subtle-brand-hover);
+  --_border-color-hover: var(--button-container-border-color-subtle-brand-hover);
+  --_color-hover: var(--button-label-color-subtle-brand-hover);
+  --_background-active: var(--button-container-background-subtle-brand-active);
+  --_border-color-active: var(--button-container-border-color-subtle-brand-active);
+  --_color-active: var(--button-label-color-subtle-brand-active);
+}
+.ds-button:where([data-emphasis="subtle"]):where([data-intent="error"]) {
+  --_background-default: var(--button-container-background-subtle-error-default);
+  --_border-color-default: var(--button-container-border-color-subtle-error-default);
+  --_color-default: var(--button-label-color-subtle-error-default);
+  --_background-hover: var(--button-container-background-subtle-error-hover);
+  --_border-color-hover: var(--button-container-border-color-subtle-error-hover);
+  --_color-hover: var(--button-label-color-subtle-error-hover);
+  --_background-active: var(--button-container-background-subtle-error-active);
+  --_border-color-active: var(--button-container-border-color-subtle-error-active);
+  --_color-active: var(--button-label-color-subtle-error-active);
+}
+.ds-button:where([data-emphasis="subtle"]) {
+  --_background-disabled: var(--button-container-background-subtle-disabled);
+  --_border-color-disabled: var(--button-container-border-color-subtle-disabled);
+  --_color-disabled: var(--button-label-color-subtle-disabled);
+}
+
+/* ghost */
+.ds-button:where([data-emphasis="ghost"]):where([data-intent="neutral"], :not([data-intent])) {
+  --_background-default: var(--button-container-background-ghost-neutral-default);
+  --_border-color-default: var(--button-container-border-color-ghost-neutral-default);
+  --_color-default: var(--button-label-color-ghost-neutral-default);
+  --_background-hover: var(--button-container-background-ghost-neutral-hover);
+  --_border-color-hover: var(--button-container-border-color-ghost-neutral-hover);
+  --_color-hover: var(--button-label-color-ghost-neutral-hover);
+  --_background-active: var(--button-container-background-ghost-neutral-active);
+  --_border-color-active: var(--button-container-border-color-ghost-neutral-active);
+  --_color-active: var(--button-label-color-ghost-neutral-active);
+}
+.ds-button:where([data-emphasis="ghost"]):where([data-intent="brand"]) {
+  --_background-default: var(--button-container-background-ghost-brand-default);
+  --_border-color-default: var(--button-container-border-color-ghost-brand-default);
+  --_color-default: var(--button-label-color-ghost-brand-default);
+  --_background-hover: var(--button-container-background-ghost-brand-hover);
+  --_border-color-hover: var(--button-container-border-color-ghost-brand-hover);
+  --_color-hover: var(--button-label-color-ghost-brand-hover);
+  --_background-active: var(--button-container-background-ghost-brand-active);
+  --_border-color-active: var(--button-container-border-color-ghost-brand-active);
+  --_color-active: var(--button-label-color-ghost-brand-active);
+}
+.ds-button:where([data-emphasis="ghost"]):where([data-intent="error"]) {
+  --_background-default: var(--button-container-background-ghost-error-default);
+  --_border-color-default: var(--button-container-border-color-ghost-error-default);
+  --_color-default: var(--button-label-color-ghost-error-default);
+  --_background-hover: var(--button-container-background-ghost-error-hover);
+  --_border-color-hover: var(--button-container-border-color-ghost-error-hover);
+  --_color-hover: var(--button-label-color-ghost-error-hover);
+  --_background-active: var(--button-container-background-ghost-error-active);
+  --_border-color-active: var(--button-container-border-color-ghost-error-active);
+  --_color-active: var(--button-label-color-ghost-error-active);
+}
+.ds-button:where([data-emphasis="ghost"]) {
+  --_background-disabled: var(--button-container-background-ghost-disabled);
+  --_border-color-disabled: var(--button-container-border-color-ghost-disabled);
+  --_color-disabled: var(--button-label-color-ghost-disabled);
+}
+
+/* ---- States -------------------------------------------------------------- */
+/* Order matters: default < hover < active < disabled. Guards keep hover/active off disabled buttons. */
+
+.ds-button:where(:hover, [data-state="hover"]):not(:disabled, [data-state="disabled"]) {
+  --_background: var(--_background-hover);
+  --_border-color: var(--_border-color-hover);
+  --_color: var(--_color-hover);
+}
+
+.ds-button:where(:active, [data-state="active"]):not(:disabled, [data-state="disabled"]) {
+  --_background: var(--_background-active);
+  --_border-color: var(--_border-color-active);
+  --_color: var(--_color-active);
+}
+
+.ds-button:where(:disabled, [data-state="disabled"]) {
+  --_background: var(--_background-disabled);
+  --_border-color: var(--_border-color-disabled);
+  --_color: var(--_color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-button:focus {
+  outline: none;
+}
+
+.ds-button:is(:focus-visible, [data-state="focus-visible"]) {
+  outline: var(--button-container-outline-width-focus-visible) solid var(--button-container-outline-color-focus-visible);
+  outline-offset: var(--button-container-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button {
+    transition: none;
+  }
+}

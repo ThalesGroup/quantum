@@ -1,0 +1,179 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "motion",
+  "name": "Motion",
+  "version": "0.2.0",
+  "status": "draft",
+  "summary": "Durations and easing curves, the state transitions of controls, and how motion gives way when people ask for less of it.",
+  "description": "Motion holds two durations and one easing curve, the design system's additions (packages/tokens/src/additions/): the Figma library has none. Components read them directly for one use: the transition of a control between its states. Every transition is a color change, never a movement, and every component switches it off when people ask for reduced motion.",
+  "tags": [
+    "motion",
+    "transition",
+    "reduced motion"
+  ],
+  "tokens": [
+    "duration.*",
+    "easing.*"
+  ],
+  "rules": [
+    {
+      "id": "primitives",
+      "name": "Primitives",
+      "text": "Two durations (fast, normal) and one easing curve (standard)."
+    },
+    {
+      "id": "control-transition",
+      "name": "Control transitions",
+      "text": "Controls transition their colors (fill, border, text) between states over the fast duration, with the standard easing.",
+      "tokens": [
+        "duration.fast",
+        "easing.standard"
+      ]
+    },
+    {
+      "id": "color-only",
+      "name": "Color, not movement",
+      "text": "Transitions change colors only: nothing slides, scales or moves when a control changes state."
+    },
+    {
+      "id": "optional",
+      "name": "Never the only cue",
+      "text": "Motion is feedback, never information: every state is understandable without its transition."
+    },
+    {
+      "id": "reduced-motion",
+      "name": "Reduced motion",
+      "text": "When people ask their system for reduced motion, components drop their transitions and change state instantly."
+    },
+    {
+      "id": "web-rendering",
+      "name": "Web rendering",
+      "text": "CSS transition on the component, reading its transition tokens, and a prefers-reduced-motion: reduce rule setting transition to none. The validator requires that rule whenever a component's CSS transitions or animates.",
+      "platforms": [
+        "web"
+      ]
+    }
+  ],
+  "specimens": [
+    {
+      "id": "durations",
+      "name": "Durations",
+      "display": "duration",
+      "tokens": [
+        "duration.*"
+      ],
+      "description": "Each duration moves a dot across the track at constant speed."
+    },
+    {
+      "id": "easings",
+      "name": "Easing curves",
+      "display": "easing",
+      "tokens": [
+        "easing.*"
+      ],
+      "description": "Each curve, and a dot following it over one second, slowed down so the curve shows."
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "Motion triggered by an interaction can be turned off: every transition of the system stops when people ask for reduced motion (WCAG 2.3.3, AAA, adopted as extra quality).",
+        "refs": [
+          "wcag:2.3.3"
+        ]
+      },
+      {
+        "text": "Motion is optional and never the only way to communicate: a state reads the same without its transition.",
+        "refs": [
+          "hig-motion-best-practices"
+        ]
+      },
+      {
+        "text": "Components read prefers-reduced-motion and set their transitions to none under reduce.",
+        "refs": [
+          "wcag-c39",
+          "mdn-reduced-motion"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "When the Reduce Motion setting is on, automatic and repetitive animations are reduced.",
+        "refs": [
+          "hig-accessibility-cognitive"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "hig-motion-best-practices",
+        "title": "Apple HIG: Motion, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/motion#Best-practices"
+      },
+      {
+        "id": "wcag-c39",
+        "title": "WCAG technique C39: Using the CSS prefers-reduced-motion query to prevent motion",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/css/C39"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "hig-accessibility-cognitive",
+        "title": "Apple HIG: Accessibility, cognitive",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "button-accent-brand",
+      "name": "Button, accent brand",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "label": "Hover me"
+      }
+    },
+    {
+      "id": "button-subtle-neutral",
+      "name": "Button, subtle neutral",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "label": "Hover me"
+      }
+    },
+    {
+      "id": "icon-button-ghost",
+      "name": "Icon button, ghost neutral",
+      "component": "icon-button",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "neutral",
+        "icon": "more_vert",
+        "label": "More actions"
+      }
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-10-02",
+      "note": "Breaking: the semantic motion.control.* tokens, invented by the repository, are removed; components alias duration.fast and easing.standard directly (the design system's additions, unchanged values). No visual change."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft: the motion primitives and the control transition as they are, specified once (no token changes)."
+    }
+  ]
+}

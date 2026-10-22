@@ -1,0 +1,73 @@
+{
+  "$description": "Component tokens for Card. Path grammar: card.<part>.<property>[.<surface>]. Parts, options and states must exist in packages/components/specs/components/card.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "card": {
+    "container": {
+      "background": {
+        "$type": "color",
+        "level-1": {
+          "$value": "{global.bg.level.1.default}"
+        },
+        "level-2": {
+          "$value": "{global.bg.level.2.default}"
+        }
+      },
+      "border-color": {
+        "$type": "color",
+        "level-1": {
+          "$value": "{global.border.level.edge.level.1}"
+        },
+        "level-2": {
+          "$value": "{global.border.level.edge.level.2}"
+        }
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{stroke-width.sm}"
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.sm}"
+      },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{space.16}"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.8}"
+      }
+    },
+    "title": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.text.on-base.neutral.primary}"
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{heading.family}",
+          "fontSize": "{heading.size.2xs}",
+          "fontWeight": "{heading.weight.semi-bold}",
+          "lineHeight": "{font.line-height.tight}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "description": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.text.on-base.neutral.secondary}"
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.regular}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    }
+  }
+}

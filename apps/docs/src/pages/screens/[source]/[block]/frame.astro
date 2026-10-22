@@ -1,0 +1,45 @@
+---
+// A screen alone in a bare page, shown in an iframe by the screen page: the screen is a real page
+// (its own landmarks, headings and ids) and nothing of the docs chrome reaches it. Only the design
+// system (@quantum-ds/tokens and the web reference implementation, packages/components/src/) and the screens layout
+// (apps/docs/screens/screens.css) are loaded.
+import '@quantum-ds/tokens/css/index.css';
+import '../../../../../../../packages/components/src/index.css';
+import '../../../../../screens/screens.css';
+import { getScreens } from '../../../../lib/screens';
+import { getModes } from '../../../../lib/tokens';
+
+export function getStaticPaths() {
+  return getScreens().map((screen) => ({ params: { source: screen.source, block: screen.block }, props: { screen } }));
+}
+const { screen } = Astro.props;
+const { attribute, auto, modes } = getModes();
+const initial = auto ?? modes.find((m) => m.default)?.id ?? null;
+const htmlAttrs = attribute && initial ? { [attribute]: initial } : {};
+const values = [...(auto ? [auto] : []), ...modes.map((m) => m.id)];
+---
+<!doctype html>
+<html lang="en" {...htmlAttrs}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{screen.meta.name}</title>
+    {attribute ? (
+      <script is:inline define:vars={{ attribute, values }}>
+        // The mode of the docs (header switch, remembered per browser) or ?mode=; the screen page
+        // also sets it directly when its Mode context select changes.
+        const apply = (value) => { if (values.includes(value)) document.documentElement.setAttribute(attribute, value); };
+        try { apply(new URLSearchParams(location.search).get('mode') ?? localStorage.getItem('site-mode')); } catch {}
+        addEventListener('storage', (e) => { if (e.key === 'site-mode' && !document.documentElement.dataset.modeLocked) apply(e.newValue); });
+      </script>
+    ) : null}
+    <style>
+      html, body { margin: 0; block-size: 100%; }
+      body { background: var(--global-bg-level-0-default); }
+    </style>
+  </head>
+  <body>
+    <Fragment set:html={screen.render()} />
+  </body>
+</html>

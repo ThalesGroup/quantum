@@ -1,0 +1,15 @@
+{
+  "$description": "Dark mode of the code colors the design system adds (src/additions/semantic/code.tokens.json). The line backgrounds alias the subtle fills, which change by themselves.",
+  "global": {
+    "text": {
+      "code": {
+        "$type": "color",
+        "inserted": { "$value": "{functional.success.300}", "$description": "On-base success (success 400) is 4.57:1 on level 3; success 300 leaves more room." },
+        "deleted": { "$value": "{functional.error.200}", "$description": "The dark step of error text on tinted fills: on-base error (error 400) is 3.73:1 on level 3." },
+        "changed": { "$value": "{functional.severe.300}", "$description": "On-base severe (severe 500) is 3.57:1 on level 3." },
+        "invalid": { "$value": "{functional.error.200}" },
+        "link": { "$value": "{brand.dark.200}", "$description": "The on-base brand text step." }
+      }
+    }
+  }
+}

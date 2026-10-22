@@ -1,0 +1,247 @@
+---
+// One specimen of a foundation (specs/foundations/<id>.spec.json → specimens[]): every token its
+// patterns match, drawn by its display (scripts/lib/specimens.mjs). Values are data, set inline
+// (--_value, --swatch, font declarations), exactly like the swatches of the token tables; the
+// chrome around them reads semantic tokens only.
+import type { SpecimenToken, SpecimenValue } from '../lib/foundations';
+import { DISPLAYS, easingPath } from '../lib/foundations';
+import { getTemplate } from '../lib/web';
+
+interface Props {
+  specimen: { id: string; name: string; description?: string; display: string; tokens: string[]; tier?: string };
+  tokens: SpecimenToken[];
+  /** Platforms taking the base values, for the label next to platform-specific values. */
+  base: string;
+  /** Icons the components use (icon displays). */
+  icons: string[];
+}
+const { specimen, tokens, base, icons } = Astro.props;
+const display = specimen.display;
+const isColor = (v: SpecimenValue) => !v.css.startsWith('error');
+// Ramps (palettes) are the parent groups, in token order.
+const groups = [...tokens.reduce((m, t) => m.set(t.group, [...(m.get(t.group) ?? []), t]), new Map<string, SpecimenToken[]>())];
+const modeIds = tokens[0]?.modes.map((m) => m.mode) ?? [];
+// Motion is played on request: one Button per specimen (the design system's own action control).
+const play = getTemplate('button')?.render({ emphasis: 'subtle', intent: 'neutral', size: 'xsmall', label: 'Play', iconStart: 'play_arrow' }) ?? '';
+const SAMPLE = 'The quick brown fox jumps over the lazy dog';
+const PARAGRAPH = 'Line height sets the distance between the baselines of two lines of text. Running text needs more of it than a label on a single line.';
+const glyph = icons[0] ?? 'star';
+---
+<section class="site-specimen" id={`specimen-${specimen.id}`} aria-labelledby={`specimen-${specimen.id}-title`} data-specimen={display}>
+  <div class="site-specimen__head">
+    <div>
+      <h3 id={`specimen-${specimen.id}-title`}>{specimen.name}</h3>
+      {specimen.description ? <p class="site-specimen__desc">{specimen.description}</p> : null}
+      <p class="site-small site-muted">
+        {specimen.tokens.map((p, i) => <>{i ? ' ' : ''}<code>{p}</code></>)}{specimen.tier ? <> · {specimen.tier} tier</> : null} · {tokens.length} token{tokens.length === 1 ? '' : 's'} · {DISPLAYS[display]?.description}
+      </p>
+    </div>
+    {display === 'duration' || display === 'easing' ? <span class="site-specimen__play" data-specimen-play set:html={play}></span> : null}
+  </div>
+
+  {display === 'palette' ? (
+    <div class="site-palette">
+      {groups.map(([group, items]) => (
+        <div class="site-palette__group">
+          <h4 class="site-palette__name"><code>{group}</code></h4>
+          <ul class="site-palette__ramp">
+            {items.map((t) => (
+              <li class="site-palette__step" title={t.description ?? undefined}>
+                <span class="site-palette__chip" style={isColor(t.value) ? `--swatch: ${t.value.css}` : undefined}></span>
+                <span class="site-palette__label">{t.name}</span>
+                <code class="site-palette__value">{t.value.css}</code>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  ) : null}
+
+  {display === 'color' ? (
+    <div class="site-table-wrap">
+      <table class="site-table site-specimen-table">
+        <thead><tr><th scope="col">Token</th>{modeIds.map((m) => <th scope="col">{m}</th>)}</tr></thead>
+        <tbody>
+          {tokens.map((t) => (
+            <tr>
+              <th scope="row"><code>{t.path}</code>{t.description ? <div class="site-muted site-small">{t.description}</div> : null}</th>
+              {t.modes.map((m) => (
+                <td class="site-small">
+                  <div class="site-mode-value"><span class="site-swatch" style={`--swatch: ${m.value.css}`}></span><code>{m.value.css}</code></div>
+                  {m.value.alias ? <code class="site-alias site-muted">{`{${m.value.alias}}`}</code> : null}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : null}
+
+  {['length', 'size', 'radius', 'stroke', 'blur', 'opacity', 'icon-size'].includes(display) ? (
+    <ul class={`site-scale site-scale--${display}`}>
+      {tokens.map((t) => (
+        <li class="site-scale__row">
+          <div class="site-scale__name">
+            <code>{t.path}</code>
+            {t.description ? <span class="site-muted site-small">{t.description}</span> : null}
+          </div>
+          <div class="site-scale__sample" style={`--_value: ${t.value.css}`}>
+            {display === 'length' ? <span class="site-scale__bar"></span> : null}
+            {display === 'size' ? <span class="site-scale__square"></span> : null}
+            {display === 'radius' ? <span class="site-scale__corner"></span> : null}
+            {display === 'stroke' ? <span class="site-scale__stroke"></span> : null}
+            {display === 'blur' ? <span class="site-scale__blur" aria-hidden="true">Aa</span> : null}
+            {display === 'opacity' ? <span class="site-scale__opacity"></span> : null}
+            {display === 'icon-size' ? <span class="site-icon" style={`font-size: ${t.value.css}`} aria-hidden="true">{glyph}</span> : null}
+          </div>
+          <div class="site-scale__value">
+            <code>{t.value.css}</code>
+            {t.value.alias ? <code class="site-alias site-muted">{`{${t.value.alias}}`}</code> : null}
+            {t.platforms.length ? (
+              <div class="site-specimen__platforms">
+                <span class="site-chip">{base}: {t.value.css}</span>
+                {t.platforms.map((p) => <span class="site-chip">{p.name}: {p.value.css}</span>)}
+              </div>
+            ) : null}
+          </div>
+          {display === 'length' && t.platforms.length ? (
+            <div class="site-scale__platform-bars">
+              {t.platforms.map((p) => (
+                <div class="site-scale__platform-bar" style={`--_value: ${p.value.css}`}><span class="site-scale__bar"></span><span class="site-small site-muted">{p.name}</span></div>
+              ))}
+            </div>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  ) : null}
+
+  {['typography', 'font-family', 'font-size', 'font-weight', 'line-height', 'letter-spacing'].includes(display) ? (
+    <ul class={`site-type site-type--${display}`}>
+      {tokens.map((t) => {
+        const family = t.family ? `font-family: ${t.family}; ` : '';
+        const style =
+          display === 'typography' ? t.value.style
+          : display === 'font-family' ? `font-family: ${t.value.css}`
+          : display === 'font-size' ? `${family}font-size: ${t.value.css}`
+          : display === 'font-weight' ? `${family}font-weight: ${t.value.css}`
+          : display === 'line-height' ? `line-height: ${t.value.css}`
+          : `letter-spacing: ${t.value.css}`;
+        return (
+          <li class="site-type__row">
+            <div class="site-type__meta">
+              <code>{t.path}</code>
+              {display === 'typography' ? (
+                <dl class="site-type__parts">
+                  {t.value.parts.map((p) => <div><dt>{p.property}</dt><dd><code>{p.css}</code></dd></div>)}
+                </dl>
+              ) : <code class="site-muted">{t.value.css}</code>}
+              {t.value.alias ? <code class="site-alias site-muted">{`{${t.value.alias}}`}</code> : null}
+              {t.description ? <span class="site-muted site-small">{t.description}</span> : null}
+              {t.platforms.length ? (
+                <div class="site-specimen__platforms">
+                  {t.platforms.map((p) => <span class="site-chip">{p.name}: {display === 'typography' ? p.value.parts.filter((x) => !t.value.parts.some((y) => y.property === x.property && y.css === x.css)).map((x) => `${x.property} ${x.css}`).join(', ') : p.value.css}</span>)}
+                </div>
+              ) : null}
+            </div>
+            <p class="site-type__sample" style={style}>
+              {display === 'font-family' ? <><span class="site-type__glyphs">Aa</span> {SAMPLE}</> : display === 'line-height' ? PARAGRAPH : SAMPLE}
+            </p>
+          </li>
+        );
+      })}
+    </ul>
+  ) : null}
+
+  {display === 'duration' || display === 'easing' ? (
+    <p class="site-motion__reduced site-callout site-small">Your system asks for reduced motion: the dots jump to the end of their track instead of moving.</p>
+  ) : null}
+  {display === 'duration' || display === 'easing' ? (
+    <ul class="site-motion">
+      {tokens.map((t) => {
+        const bezier = display === 'easing' && Array.isArray(t.value.raw) ? (t.value.raw as number[]) : null;
+        // Durations play linearly at their value; easings play over one second so the curve shows.
+        const style = display === 'duration' ? `--_duration: ${t.value.css}; --_easing: linear` : `--_duration: 1s; --_easing: ${t.value.css}`;
+        return (
+          <li class="site-motion__row">
+            <div class="site-motion__name">
+              <code>{t.path}</code>
+              <code class="site-muted">{t.value.css}</code>
+              {t.value.alias ? <code class="site-alias site-muted">{`{${t.value.alias}}`}</code> : null}
+              {t.description ? <span class="site-muted site-small">{t.description}</span> : null}
+            </div>
+            {bezier ? (
+              <svg class="site-motion__curve" viewBox="-4 -4 108 108" role="img" aria-label={`Easing curve ${t.value.css}`}>
+                <path class="site-motion__axes" d="M 0 0 V 100 H 100" />
+                <path class="site-motion__path" d={easingPath(bezier)} />
+              </svg>
+            ) : null}
+            <div class="site-motion__track" style={style}><span class="site-motion__dot"></span></div>
+          </li>
+        );
+      })}
+    </ul>
+  ) : null}
+
+  {display === 'icon' ? (
+    <>
+      <ul class="site-icons" aria-label="Icons used by the components">
+        {icons.map((name) => <li><span class="site-icon" aria-hidden="true">{name}</span><code class="site-small">{name}</code></li>)}
+      </ul>
+      <div class="site-table-wrap">
+        <table class="site-table site-specimen-table">
+          <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Alias</th></tr></thead>
+          <tbody>
+            {tokens.map((t) => (
+              <tr>
+                <th scope="row"><code>{t.path}</code>{t.description ? <div class="site-muted site-small">{t.description}</div> : null}</th>
+                <td><code>{t.value.css}</code></td>
+                <td>{t.value.alias ? <code class="site-muted">{`{${t.value.alias}}`}</code> : <span class="site-muted">—</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  ) : null}
+
+  {display === 'value' ? (
+    <div class="site-table-wrap">
+      <table class="site-table site-specimen-table">
+        <thead><tr><th scope="col">Token</th><th scope="col">Type</th><th scope="col">Value</th></tr></thead>
+        <tbody>
+          {tokens.map((t) => (
+            <tr>
+              <th scope="row"><code>{t.path}</code>{t.description ? <div class="site-muted site-small">{t.description}</div> : null}</th>
+              <td class="site-muted">{t.type ?? '—'}</td>
+              <td>
+                <code>{t.value.css}</code>
+                {t.varies ? t.modes.filter((m) => m.value.css !== t.value.css).map((m) => <div class="site-small"><span class="site-muted">{m.mode}</span> <code>{m.value.css}</code></div>) : null}
+                {t.platforms.map((p) => <div class="site-small"><span class="site-muted">{p.name}</span> <code>{p.value.css}</code></div>)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : null}
+</section>
+
+<script>
+  // Motion specimens: Play moves every dot of the specimen across its track, at the token's
+  // duration and easing. Pressing it again replays from the start. Under prefers-reduced-motion
+  // the CSS drops the transition: the dots jump to the end.
+  for (const holder of document.querySelectorAll<HTMLElement>('[data-specimen-play]')) {
+    const section = holder.closest<HTMLElement>('[data-specimen]');
+    holder.querySelector('button')?.addEventListener('click', () => {
+      if (!section) return;
+      section.toggleAttribute('data-resetting', true);
+      section.removeAttribute('data-playing');
+      void section.offsetWidth; // apply the reset before playing again
+      section.removeAttribute('data-resetting');
+      section.setAttribute('data-playing', '');
+    });
+  }
+</script>

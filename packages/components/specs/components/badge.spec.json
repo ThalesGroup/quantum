@@ -1,0 +1,403 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "badge",
+  "name": "Badge",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "presentation",
+  "summary": "A short piece of text that qualifies the item next to it: a status, a count, a category.",
+  "description": "A badge is a small, read-only label attached to something else: the status of an order (Shipped), the number of unread messages, a category tag. It is text with a tinted or filled background; its intent gives the tint a meaning (success, warning, error, info), its emphasis how loud it is. A badge is never interactive: a removable tag or a filter is a different component.",
+  "tags": [
+    "status",
+    "label",
+    "data-display"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: a pill with the fill or tint of the emphasis and intent. Carries emphasis, intent and size."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "The text. It is what assistive technology reads, in the flow of the content the badge qualifies."
+    }
+  ],
+  "properties": [
+    {
+      "id": "emphasis",
+      "name": "Emphasis",
+      "type": "enum",
+      "default": "subtle",
+      "description": "How loud the badge is.",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "subtle",
+          "description": "Tinted fill with a light border and colored text: the default, for most statuses and tags."
+        },
+        {
+          "value": "accent",
+          "description": "Strong fill with a contrasting label: counts and the one status that must stand out."
+        }
+      ]
+    },
+    {
+      "id": "intent",
+      "name": "Intent",
+      "type": "enum",
+      "default": "neutral",
+      "description": "Meaning of the color. Every intent exists at every emphasis.",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "neutral",
+          "description": "No status meaning: categories, counts, tags."
+        },
+        {
+          "value": "brand",
+          "description": "Something new or highlighted by the product (New, Beta)."
+        },
+        {
+          "value": "success",
+          "description": "Done, active, passing (Shipped, Online)."
+        },
+        {
+          "value": "warning",
+          "description": "Needs attention soon (Expiring, Pending)."
+        },
+        {
+          "value": "error",
+          "description": "Failed, blocked, overdue (Failed, Overdue)."
+        },
+        {
+          "value": "info",
+          "description": "Informative, in progress (Draft, Scheduled)."
+        }
+      ]
+    },
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Height, inline padding and text size scale together.",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Inline in dense text, table cells (20 px)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (24 px)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "One or two words, or a number, that say the status or the category in text."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: a badge has no interaction."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "center",
+    "justify": "center",
+    "wrap": false,
+    "sizing": "hug",
+    "notes": [
+      "The label is centered in a fully rounded pill whose minimum height and inline padding come from the size.",
+      "A badge sits inline with the text or the item it qualifies, aligned on its middle; it never wraps."
+    ]
+  },
+  "accessibility": {
+    "name": {
+      "text": "A badge has no accessible name of its own: it is text (a span with the generic role, for which naming is prohibited), read in the flow of the content it qualifies. The label is that text.",
+      "refs": [
+        "aria-generic",
+        "html-aria-span"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "A badge is read-only text: it exposes no role, no name and no state of its own; its label is read in place, after or inside the item it qualifies. Place it where that reading order makes sense.",
+        "refs": [
+          "wcag:1.3.1",
+          "aria-generic",
+          "html-aria-span",
+          "understanding-info-relationships"
+        ]
+      },
+      {
+        "text": "Render a span with no ARIA role and no aria-label: the generic role prohibits naming, and the text is the content.",
+        "refs": [
+          "html-aria-span"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The intent color never carries the meaning alone: the label says the status in words (Failed, Shipped), so a badge without its color still reads.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Label text contrasts at least 4.5:1 with the badge fill in every color mode, emphasis and intent, on the default and level 1 surfaces: subtle 5.45:1 or more (light, error) and 9.60:1 or more (dark); accent neutral 16.29:1 and 13.84:1, brand 5.74:1 and 13.04:1, success 5.50:1 and 8.00:1, warning 11.43:1 (both), info 4.91:1 and 8.78:1. Known exception, from the Figma library's error colors: the accent error fill, 4.46:1 in both modes, tracked as a known issue.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The badge border is decoration: the text identifies the badge, so the light border of the subtle emphasis needs no 3:1 contrast.",
+        "refs": [
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "A badge that appears or changes to report the result of an action (a count that increments, a status that flips) is a status message: the surrounding product announces it with a live region; the badge itself does not.",
+        "refs": [
+          "wcag:4.1.3",
+          "understanding-status-messages"
+        ]
+      },
+      {
+        "text": "Avoid relying solely on different colors to communicate meaning.",
+        "refs": [
+          "hig-toggles-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "aria-generic",
+        "title": "WAI-ARIA 1.2: generic role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#generic"
+      },
+      {
+        "id": "html-aria-span",
+        "title": "ARIA in HTML: span element (role generic, naming prohibited)",
+        "url": "https://www.w3.org/TR/html-aria/#el-span"
+      },
+      {
+        "id": "understanding-info-relationships",
+        "title": "Understanding WCAG 1.3.1 Info and Relationships",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+      },
+      {
+        "id": "understanding-status-messages",
+        "title": "Understanding WCAG 4.1.3 Status Messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      },
+      {
+        "id": "hig-toggles-best-practices",
+        "title": "Apple HIG: Toggles, best practices (checkboxes and switches)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "One or two words in sentence case, or a number: Shipped, Needs review, 12.",
+      "Say the status, not the color: Failed, never Red.",
+      "Use the same words for the same status everywhere in a product."
+    ]
+  },
+  "examples": [
+    {
+      "id": "subtle-neutral",
+      "name": "Subtle neutral",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "label": "Draft"
+      }
+    },
+    {
+      "id": "subtle-brand",
+      "name": "Subtle brand",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "brand",
+        "label": "New"
+      }
+    },
+    {
+      "id": "subtle-success",
+      "name": "Subtle success",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "success",
+        "label": "Shipped"
+      }
+    },
+    {
+      "id": "subtle-warning",
+      "name": "Subtle warning",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "warning",
+        "label": "Expiring soon"
+      }
+    },
+    {
+      "id": "subtle-error",
+      "name": "Subtle error",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "error",
+        "label": "Failed"
+      }
+    },
+    {
+      "id": "subtle-info",
+      "name": "Subtle info",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "info",
+        "label": "Scheduled"
+      }
+    },
+    {
+      "id": "accent-neutral",
+      "name": "Accent neutral",
+      "description": "A count.",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "label": "12"
+      }
+    },
+    {
+      "id": "accent-brand",
+      "name": "Accent brand",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "label": "Beta"
+      }
+    },
+    {
+      "id": "accent-error-small",
+      "name": "Accent error, small",
+      "props": {
+        "emphasis": "accent",
+        "intent": "error",
+        "size": "small",
+        "label": "3 overdue"
+      }
+    },
+    {
+      "id": "subtle-success-small",
+      "name": "Subtle success, small",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "success",
+        "size": "small",
+        "label": "Online"
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/badge.tokens.json",
+    "prefix": "badge"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/badge/badge.css",
+      "template": "packages/components/src/components/badge/badge.template.mjs",
+      "selector": ".ds-badge",
+      "element": "span",
+      "attributes": {
+        "emphasis": "data-emphasis",
+        "intent": "data-intent",
+        "size": "data-size"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-badge",
+        "label": ".ds-badge__label"
+      }
+    }
+  },
+  "related": [
+    "alert"
+  ],
+  "decisions": [
+    {
+      "id": "emphasis-and-intent",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "variant",
+      "status": "active",
+      "text": "A badge has two emphases, subtle (default) and accent, and six intents, neutral (default), brand, success, warning, error and info; each pair reads the Figma library's mapped roles for that emphasis and family: fill global.bg.<emphasis>.<family>.default, border global.border.<emphasis>.<family>.default, text global.text.on-<emphasis>.<family>.",
+      "tokens": [
+        "badge.container.background.*",
+        "badge.container.border-color.*",
+        "badge.label.color.*"
+      ]
+    },
+    {
+      "id": "pill-sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "A badge is a fully rounded pill with a 0.6 px border, 20 px high with 6 px inline padding and 12 px medium text (small) or 24 px high with 8 px padding and 14 px text (medium, the default).",
+      "tokens": [
+        "badge.container.min-height.*",
+        "badge.container.padding-inline.*",
+        "badge.container.border-radius",
+        "badge.container.border-width",
+        "badge.label.typography.*"
+      ]
+    },
+    {
+      "id": "read-only-text",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A badge is read-only text with no role of its own and no interaction; a removable tag or a filter chip is another component.",
+      "refs": [
+        "aria-generic",
+        "html-aria-span"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions emphasis-and-intent, pill-sizes, read-only-text). A span with a label; emphases subtle and accent, six intents, sizes small and medium; no interaction state. Label contrast on its fill, light / dark: subtle neutral 12.09 / 11.82, brand 7.34 / 13.04, success 7.18 / 12.31, warning 7.28 / 12.85, error 5.45 / 9.60, info 6.92 / 11.41; accent neutral 16.29 / 13.84, brand 5.74 / 13.04, success 5.50 / 8.00, warning 11.43 / 11.43, error 4.46 / 4.46, info 4.91 / 8.78."
+    }
+  ]
+}

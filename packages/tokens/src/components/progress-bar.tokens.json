@@ -1,0 +1,90 @@
+{
+  "$description": "Component tokens for Progress bar. Path grammar: progress-bar.<part>.<property>[.<size>]. The indicator is drawn by the track (a pseudo-element on the web), so it has tokens but no element. Parts and options must exist in packages/components/specs/components/progress-bar.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "progress-bar": {
+    "container": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.4}",
+        "$description": "Between the label row and the track."
+      },
+      "column-gap": {
+        "$type": "dimension",
+        "$value": "{space.8}",
+        "$description": "Between the label and the value."
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.text.on-base.neutral.primary}"
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.medium}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "value": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.text.on-base.neutral.secondary}"
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.regular}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "track": {
+      "$description": "The native progress element drawn by the component: the full length of the bar.",
+      "height": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.4}"
+        },
+        "medium": {
+          "$value": "{space.8}"
+        }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.full}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{global.bg.base.neutral.3}"
+      }
+    },
+    "indicator": {
+      "$description": "The filled part of the track, as long as the value; a moving segment when the value is unknown (indeterminate). Drawn by the track (a pseudo-element on the web).",
+      "background": {
+        "$type": "color",
+        "$value": "{global.bg.accent.brand.default}"
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.full}"
+      },
+      "transition": {
+        "duration": {
+          "$type": "duration",
+          "$value": "{duration.normal}"
+        },
+        "easing": {
+          "$type": "cubicBezier",
+          "$value": "{easing.standard}"
+        }
+      }
+    }
+  }
+}

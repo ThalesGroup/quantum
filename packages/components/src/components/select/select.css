@@ -1,0 +1,200 @@
+/*
+ * Select — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/select.spec.json
+ * Tokens: packages/tokens/dist/css/components/select.css (generated from packages/tokens/src/components/select.tokens.json)
+ *
+ * Rules:
+ *  - Only --select-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (label, control, description, error message, stacked); the native
+ *    select is the control, drawn by the component.
+ *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
+ *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
+ *    spec order: default < hover < focus-visible < invalid < disabled: hover only tints the
+ *    background, invalid only recolors the border, so they combine as the token rule combines them.
+ *  - Private properties (--_*) are the single place an option or a state writes to.
+ */
+
+.ds-select {
+  /* Defaults = size "medium", state "default". */
+  --_control-background: var(--select-control-background-default);
+  --_control-border-color: var(--select-control-border-color-default);
+  --_control-color: var(--select-control-color-default);
+  --_label-color: var(--select-label-color-default);
+  --_description-color: var(--select-description-color-default);
+  --_min-height: var(--select-control-min-height-medium);
+  --_padding-inline: var(--select-control-padding-inline-medium);
+  --_font-family: var(--select-control-typography-medium-font-family);
+  --_font-size: var(--select-control-typography-medium-font-size);
+  --_font-weight: var(--select-control-typography-medium-font-weight);
+  --_line-height: var(--select-control-typography-medium-line-height);
+  --_letter-spacing: var(--select-control-typography-medium-letter-spacing);
+  --_padding-inline-end: var(--select-control-padding-inline-end-medium);
+  --_indicator-size: var(--select-indicator-size-medium);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--select-container-gap);
+  min-inline-size: 0;
+  vertical-align: middle;
+}
+
+/* ---- Size ---------------------------------------------------------------- */
+
+.ds-select[data-size="small"] {
+  --_min-height: var(--select-control-min-height-small);
+  --_padding-inline: var(--select-control-padding-inline-small);
+  --_font-family: var(--select-control-typography-small-font-family);
+  --_font-size: var(--select-control-typography-small-font-size);
+  --_font-weight: var(--select-control-typography-small-font-weight);
+  --_line-height: var(--select-control-typography-small-line-height);
+  --_letter-spacing: var(--select-control-typography-small-letter-spacing);
+  --_padding-inline-end: var(--select-control-padding-inline-end-small);
+  --_indicator-size: var(--select-indicator-size-small);
+}
+
+.ds-select[data-size="large"] {
+  --_min-height: var(--select-control-min-height-large);
+  --_padding-inline: var(--select-control-padding-inline-large);
+  --_font-family: var(--select-control-typography-large-font-family);
+  --_font-size: var(--select-control-typography-large-font-size);
+  --_font-weight: var(--select-control-typography-large-font-weight);
+  --_line-height: var(--select-control-typography-large-line-height);
+  --_letter-spacing: var(--select-control-typography-large-letter-spacing);
+  --_padding-inline-end: var(--select-control-padding-inline-end-large);
+  --_indicator-size: var(--select-indicator-size-large);
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.ds-select__label {
+  color: var(--_label-color);
+  font-family: var(--select-label-typography-font-family);
+  font-size: var(--select-label-typography-font-size);
+  font-weight: var(--select-label-typography-font-weight);
+  line-height: var(--select-label-typography-line-height);
+  letter-spacing: var(--select-label-typography-letter-spacing);
+}
+
+.ds-select__control {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-height: var(--_min-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--_padding-inline);
+  border: var(--select-control-border-width) solid var(--_control-border-color);
+  border-radius: var(--select-control-border-radius);
+  background-color: var(--_control-background);
+  color: var(--_control-color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--select-control-transition-duration) var(--select-control-transition-easing),
+    border-color var(--select-control-transition-duration) var(--select-control-transition-easing);
+}
+
+.ds-select__description {
+  margin: 0;
+  color: var(--_description-color);
+  font-family: var(--select-description-typography-font-family);
+  font-size: var(--select-description-typography-font-size);
+  font-weight: var(--select-description-typography-font-weight);
+  line-height: var(--select-description-typography-line-height);
+  letter-spacing: var(--select-description-typography-letter-spacing);
+}
+
+.ds-select__error-message {
+  margin: 0;
+  color: var(--select-error-message-color);
+  font-family: var(--select-error-message-typography-font-family);
+  font-size: var(--select-error-message-typography-font-size);
+  font-weight: var(--select-error-message-typography-font-weight);
+  line-height: var(--select-error-message-typography-line-height);
+  letter-spacing: var(--select-error-message-typography-letter-spacing);
+}
+
+/* The field wraps the select and the chevron drawn over its end edge. */
+.ds-select__field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.ds-select__control {
+  padding-inline-end: var(--_padding-inline-end);
+  cursor: pointer;
+}
+
+.ds-select__indicator {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--select-indicator-margin-inline);
+  display: inline-grid;
+  place-content: center;
+  inline-size: var(--_indicator-size);
+  color: var(--_control-color);
+  font-family: var(--select-indicator-font-family);
+  font-size: var(--_indicator-size);
+  font-weight: var(--select-indicator-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--select-indicator-fill),
+    "GRAD" var(--select-indicator-grade),
+    "opsz" var(--select-indicator-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_indicator-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+.ds-select:where([data-state="hover"]) .ds-select__control:not(:disabled),
+.ds-select:not([data-state]) .ds-select__control:hover:not(:disabled) {
+  --_control-background: var(--select-control-background-hover);
+}
+
+.ds-select:where([data-state="invalid"]) .ds-select__control,
+.ds-select__control[aria-invalid="true"] {
+  --_control-border-color: var(--select-control-border-color-invalid);
+}
+
+.ds-select:where([data-state="disabled"]),
+.ds-select:has(.ds-select__control:disabled) {
+  --_label-color: var(--select-label-color-disabled);
+  --_description-color: var(--select-description-color-disabled);
+}
+.ds-select:where([data-state="disabled"]) .ds-select__control,
+.ds-select__control:disabled {
+  --_control-background: var(--select-control-background-disabled);
+  --_control-border-color: var(--select-control-border-color-disabled);
+  --_control-color: var(--select-control-color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-select__control:focus {
+  outline: none;
+}
+
+.ds-select:where([data-state="focus-visible"]) .ds-select__control,
+.ds-select__control:focus-visible {
+  outline: var(--select-control-outline-width-focus-visible) solid var(--select-control-outline-color-focus-visible);
+  outline-offset: var(--select-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-select__control {
+    transition: none;
+  }
+}

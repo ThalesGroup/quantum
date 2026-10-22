@@ -1,0 +1,409 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "alert",
+  "name": "Alert",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "alert",
+  "summary": "A brief, important message that draws attention without interrupting the task.",
+  "description": "An alert tells people something important about the page or what they just did: a saved change, a failed payment, a maintenance window, a quota about to run out. It sits in the content, tinted by its intent with an icon and a title, and is announced by assistive technology when it appears. It never moves focus and never blocks the page: a message that needs a decision is a dialog, a short transient confirmation is a toast.",
+  "tags": [
+    "feedback",
+    "status",
+    "message"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: the tinted box, announced as an alert when it appears. Carries the intent."
+    },
+    {
+      "id": "icon",
+      "role": "icon",
+      "required": true,
+      "decorative": true,
+      "description": "Glyph of the icon font naming the intent (info, check_circle, warning, error). Hidden from assistive technology; the text carries the meaning."
+    },
+    {
+      "id": "content",
+      "role": "container",
+      "required": true,
+      "description": "Column holding the title and the message."
+    },
+    {
+      "id": "title",
+      "role": "header",
+      "required": false,
+      "parent": "content",
+      "description": "Optional short heading of the message, in the intent color."
+    },
+    {
+      "id": "message",
+      "role": "description",
+      "required": true,
+      "parent": "content",
+      "description": "The message: what happened and what to do, in one or two sentences."
+    }
+  ],
+  "properties": [
+    {
+      "id": "intent",
+      "name": "Intent",
+      "type": "enum",
+      "default": "info",
+      "description": "What kind of message it is; sets the tint, the border, the icon and the title color.",
+      "affects": [
+        "container",
+        "icon",
+        "title"
+      ],
+      "options": [
+        {
+          "value": "info",
+          "description": "Neutral information worth noticing (a maintenance window, a tip)."
+        },
+        {
+          "value": "success",
+          "description": "Something completed as expected (changes saved, payment received)."
+        },
+        {
+          "value": "warning",
+          "description": "Something needs attention before it becomes a problem (quota almost reached, unsaved changes)."
+        },
+        {
+          "value": "error",
+          "description": "Something failed or is blocked, with what to do about it."
+        }
+      ]
+    },
+    {
+      "id": "title",
+      "name": "Title",
+      "type": "string",
+      "bindsTo": "title",
+      "description": "Short heading stating the point of the message (Payment failed). Optional when the message is one sentence."
+    },
+    {
+      "id": "message",
+      "name": "Message",
+      "type": "string",
+      "required": true,
+      "bindsTo": "message",
+      "description": "What happened and what to do, in plain words."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: an alert has no interaction of its own."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "start",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "The icon sits before the content, aligned with the first line of text; title and message stack in the content column.",
+      "The alert fills the width of its container and grows with its text; it never floats over the content."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "alert",
+    "name": {
+      "text": "An alert has no accessible name requirement: its content is announced as a whole when it appears. The title and the message are that content; the icon is hidden.",
+      "refs": [
+        "apg-alert-roles",
+        "aria-alert",
+        "aria-hidden"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "An alert displays a brief, important message in a way that attracts attention without interrupting the task; it never receives or moves focus, so the person's place in the page is kept.",
+        "refs": [
+          "apg-alert",
+          "apg-alert-roles",
+          "aria-alert"
+        ]
+      },
+      {
+        "text": "An alert is a status message: assistive technology announces it when it appears without focus moving to it. Insert the alert in the page when the event happens; content that is already there at page load is not announced.",
+        "refs": [
+          "wcag:4.1.3",
+          "understanding-status-messages",
+          "apg-alert",
+          "mdn-alert-role"
+        ]
+      },
+      {
+        "text": "Render a div with role=\"alert\", an assertive and atomic live region, and insert it (or set its content) at the moment of the event; do not render it empty and fill it later unnoticed, and do not use it for content present at page load.",
+        "refs": [
+          "mdn-alert-role",
+          "wcag-aria19"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Mark alert-like components with the liveRegion semantics so accessibility services announce them; use the assertive mode sparingly.",
+        "refs": [
+          "compose-live-region"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "The intent is never conveyed by color alone: the icon and, above all, the title and the message say what kind of message it is (Payment failed), so an alert without its tint still reads.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "The icon is decorative and hidden from assistive technology with aria-hidden=\"true\"; an icon-font glyph is written as its ligature name, which would otherwise be read before the message.",
+        "refs": [
+          "wcag:1.1.1",
+          "aria-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Title and message are text in the reading order; the title is the first thing announced, so it states the point.",
+        "refs": [
+          "wcag:1.3.1",
+          "understanding-info-relationships"
+        ]
+      },
+      {
+        "text": "Title and message text contrast at least 4.5:1 with the alert fill in every color mode and intent: the title 6.92:1 (info), 7.18:1 (success), 7.28:1 (warning) and 5.45:1 (error) in light mode, 11.41:1 or more in dark mode; the message 17.59:1 or more (light) and 9.51:1 or more (dark). The icon contrasts at least 3:1 with the fill: 5.45:1 or more (light), 8.28:1 or more (dark).",
+        "refs": [
+          "wcag:1.4.3",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "The border is decoration: the text identifies the alert, so it needs no 3:1 contrast (the warning border is 2.13:1 in light mode).",
+        "refs": [
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "An alert that reports an error of a form names the fields in error and what to do; the fields themselves also carry their error.",
+        "refs": [
+          "wcag:3.3.1",
+          "wai-notifications",
+          "wcag-aria19"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-alert",
+        "title": "APG: Alert pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/"
+      },
+      {
+        "id": "apg-alert-roles",
+        "title": "APG: Alert pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/#roles_states_properties"
+      },
+      {
+        "id": "aria-alert",
+        "title": "WAI-ARIA 1.2: alert role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#alert"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "mdn-alert-role",
+        "title": "MDN: ARIA alert role (assertive live region, dynamic content only)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/alert_role"
+      },
+      {
+        "id": "understanding-status-messages",
+        "title": "Understanding WCAG 4.1.3 Status Messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      },
+      {
+        "id": "understanding-info-relationships",
+        "title": "Understanding WCAG 1.3.1 Info and Relationships",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+      },
+      {
+        "id": "wcag-aria19",
+        "title": "WCAG technique ARIA19: role=alert or live regions to identify errors",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA19"
+      },
+      {
+        "id": "wai-notifications",
+        "title": "WAI tutorials: User notifications (error messages)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
+      },
+      {
+        "id": "compose-live-region",
+        "title": "Jetpack Compose accessibility: alerts and pop-ups (liveRegion semantics)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#alerts-pop-ups"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The title states the point in a few words: Payment failed, Changes saved, Scheduled maintenance.",
+      "The message says what happened and what to do, in one or two plain sentences; with the error intent, how to recover.",
+      "Sentence case; the message ends with a period, the title does not.",
+      "Say the status in words, never through the color: Your card was declined, not Something went wrong."
+    ]
+  },
+  "examples": [
+    {
+      "id": "info",
+      "name": "Info",
+      "props": {
+        "intent": "info",
+        "title": "Scheduled maintenance",
+        "message": "The service will be unavailable on Sunday from 02:00 to 04:00 UTC."
+      }
+    },
+    {
+      "id": "success",
+      "name": "Success",
+      "props": {
+        "intent": "success",
+        "title": "Changes saved",
+        "message": "Your profile has been updated."
+      }
+    },
+    {
+      "id": "warning",
+      "name": "Warning",
+      "props": {
+        "intent": "warning",
+        "title": "Storage almost full",
+        "message": "You have used 95% of your storage. Delete files or upgrade your plan to keep uploading."
+      }
+    },
+    {
+      "id": "error",
+      "name": "Error",
+      "props": {
+        "intent": "error",
+        "title": "Payment failed",
+        "message": "Your card was declined. Check the card details or try another payment method."
+      }
+    },
+    {
+      "id": "info-message-only",
+      "name": "Info, message only",
+      "props": {
+        "intent": "info",
+        "message": "You can change the language of the interface in Settings."
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/alert.tokens.json",
+    "prefix": "alert"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/alert/alert.css",
+      "template": "packages/components/src/components/alert/alert.template.mjs",
+      "selector": ".ds-alert",
+      "element": "div",
+      "attributes": {
+        "intent": "data-intent"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-alert",
+        "icon": ".ds-alert__icon",
+        "content": ".ds-alert__content",
+        "title": ".ds-alert__title",
+        "message": ".ds-alert__message"
+      }
+    }
+  },
+  "related": [
+    "badge"
+  ],
+  "decisions": [
+    {
+      "id": "intents",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "variant",
+      "status": "active",
+      "text": "An alert has four intents, info (default), success, warning and error, each reading the Figma library's functional family: subtle fill global.bg.subtle.functional.<family>.default, border global.border.accent.functional.<family>.default, icon global.icon.on-subtle.functional.<family>.default, title global.text.on-subtle.functional.<family>.default; the message stays in the primary text color.",
+      "tokens": [
+        "alert.container.background.*",
+        "alert.container.border-color.*",
+        "alert.icon.color.*",
+        "alert.title.color.*",
+        "alert.message.color"
+      ]
+    },
+    {
+      "id": "intent-icons",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "Each intent has a fixed icon of the icon font: info, check_circle, warning, error, drawn at 24 px before the text; it cannot be changed or removed.",
+      "tokens": [
+        "alert.icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.1.1",
+        "aria-hidden"
+      ]
+    },
+    {
+      "id": "box",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The box has 16 px of padding, 12 px between the icon and the text, 4 px between title and message, a 0.6 px border and 8 px corners; the title is 16 px medium, the message 16 px regular.",
+      "tokens": [
+        "alert.container.padding",
+        "alert.container.gap",
+        "alert.content.gap",
+        "alert.container.border-width",
+        "alert.container.border-radius",
+        "alert.title.typography",
+        "alert.message.typography"
+      ]
+    },
+    {
+      "id": "no-dismiss-no-actions",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "The alert has no close button and no actions in this version: dismissing needs script, and actions in a live region are read before people can reach them. Both are open questions.",
+      "refs": [
+        "apg-alert"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions intents, intent-icons, box, no-dismiss-no-actions). A div with role alert, an intent icon, a title and a message; intents info, success, warning, error; no interaction state. Contrast on the fill, light / dark: title info 6.92 / 11.41, success 7.18 / 12.31, warning 7.28 / 12.85, error 5.45 / 9.60; message 17.59 or more / 9.51 or more; icon 5.45 or more / 8.28 or more; border measured only (warning 2.13 in light mode)."
+    }
+  ]
+}

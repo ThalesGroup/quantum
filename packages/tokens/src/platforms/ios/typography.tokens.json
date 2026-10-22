@@ -1,0 +1,23 @@
+{
+  "$description": "PLACEHOLDER iOS overlay of the Figma library's Typography families: the system font family for heading and body text. Not in the Figma library: added by the design system.",
+  "heading": {
+    "family": {
+      "$type": "fontFamily",
+      "$value": [
+        "SF Pro",
+        "system-ui",
+        "sans-serif"
+      ]
+    }
+  },
+  "body": {
+    "family": {
+      "$type": "fontFamily",
+      "$value": [
+        "SF Pro",
+        "system-ui",
+        "sans-serif"
+      ]
+    }
+  }
+}

@@ -1,0 +1,191 @@
+/*
+ * Dropdown — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/dropdown.spec.json
+ * Tokens: packages/tokens/dist/css/components/dropdown.css (generated from packages/tokens/src/components/dropdown.tokens.json)
+ *
+ * Rules:
+ *  - Only --dropdown-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The trigger is a Button (.ds-button, styled by button.css); this file styles the menu only.
+ *  - No script: the menu is a native popover opened by the trigger's popovertarget. It sits in
+ *    the top layer and is placed under the trigger with CSS anchor positioning, the trigger being
+ *    its implicit anchor; without anchor positioning the browser's default popover placement
+ *    (centered in the viewport) applies.
+ *  - Item intent is a data attribute; states are native pseudo-classes.
+ *  - Every state also matches [data-state="<state>"] so the docs site can force it for review;
+ *    [data-state="expanded"] on the root shows the menu in the flow, below the trigger.
+ *  - Private properties (--_*) are the single place an option or a state writes to: each intent
+ *    sets its ladder (--_<property>-<state>), and the state rules pick the rung.
+ */
+
+.ds-dropdown {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  vertical-align: middle;
+}
+
+/* ---- Menu ------------------------------------------------------------------ */
+
+.ds-dropdown__menu {
+  box-sizing: border-box;
+  padding: var(--dropdown-menu-padding);
+  border: var(--dropdown-menu-border-width) solid var(--dropdown-menu-border-color);
+  border-radius: var(--dropdown-menu-border-radius);
+  background-color: var(--dropdown-menu-background);
+  color: inherit;
+  overflow: auto;
+}
+
+/* Open: under the trigger, aligned with its start edge, at least as wide; flips when it does not fit.
+   The trigger is the menu's implicit anchor (popovertarget): no anchor-name to keep unique. */
+@supports (position-area: block-end) {
+  .ds-dropdown__menu:popover-open {
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    inset: auto;
+    margin: 0;
+    margin-block-start: var(--dropdown-menu-offset);
+    min-inline-size: anchor-size(inline);
+  }
+}
+
+/* Forced expanded state (review): the menu shows in the flow, below the trigger. */
+.ds-dropdown:where([data-state="expanded"]) > .ds-dropdown__menu:not(:popover-open) {
+  display: block;
+  position: static;
+  margin: 0;
+  margin-block-start: var(--dropdown-menu-offset);
+}
+
+.ds-dropdown__group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-dropdown__separator {
+  margin-block: var(--dropdown-separator-margin-block);
+  margin-inline: 0;
+  border: none;
+  border-block-start: var(--dropdown-separator-width) solid var(--dropdown-separator-color);
+}
+
+/* ---- Item ------------------------------------------------------------------ */
+
+.ds-dropdown__item {
+  /* Defaults = intent "neutral", state "default". */
+  --_background: var(--_background-default);
+  --_color: var(--_color-default);
+
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--dropdown-item-gap);
+  inline-size: 100%;
+  min-height: var(--dropdown-item-min-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--dropdown-item-padding-inline);
+  border: none;
+  border-radius: var(--dropdown-item-border-radius);
+  background-color: var(--_background);
+  color: var(--_color);
+  font-family: var(--dropdown-item-label-typography-font-family);
+  font-size: var(--dropdown-item-label-typography-font-size);
+  font-weight: var(--dropdown-item-label-typography-font-weight);
+  line-height: var(--dropdown-item-label-typography-line-height);
+  letter-spacing: var(--dropdown-item-label-typography-letter-spacing);
+  text-align: start;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--dropdown-item-transition-duration) var(--dropdown-item-transition-easing),
+    color var(--dropdown-item-transition-duration) var(--dropdown-item-transition-easing);
+}
+
+.ds-dropdown__item-label {
+  flex: 1 1 auto;
+}
+
+.ds-dropdown__item-icon {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--dropdown-item-icon-size);
+  block-size: var(--dropdown-item-icon-size);
+  overflow: hidden;
+  font-family: var(--dropdown-item-icon-font-family);
+  font-size: var(--dropdown-item-icon-size);
+  font-weight: var(--dropdown-item-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--dropdown-item-icon-fill),
+    "GRAD" var(--dropdown-item-icon-grade),
+    "opsz" var(--dropdown-item-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--dropdown-item-icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Item intent: color ladders --------------------------------------------- */
+/* Selectors are wrapped in :where() so every intent has the same specificity as .ds-dropdown__item. */
+
+.ds-dropdown__item:where([data-intent="neutral"], :not([data-intent])) {
+  --_background-default: var(--dropdown-item-background-neutral-default);
+  --_color-default: var(--dropdown-item-label-color-neutral-default);
+  --_background-hover: var(--dropdown-item-background-neutral-hover);
+  --_color-hover: var(--dropdown-item-label-color-neutral-hover);
+  --_background-active: var(--dropdown-item-background-neutral-active);
+  --_color-active: var(--dropdown-item-label-color-neutral-active);
+}
+.ds-dropdown__item:where([data-intent="error"]) {
+  --_background-default: var(--dropdown-item-background-error-default);
+  --_color-default: var(--dropdown-item-label-color-error-default);
+  --_background-hover: var(--dropdown-item-background-error-hover);
+  --_color-hover: var(--dropdown-item-label-color-error-hover);
+  --_background-active: var(--dropdown-item-background-error-active);
+  --_color-active: var(--dropdown-item-label-color-error-active);
+}
+
+/* ---- Item states ------------------------------------------------------------ */
+/* Order matters: default < hover < active < disabled. Guards keep hover/active off disabled items.
+   A disabled link item has no href and carries aria-disabled="true" instead of :disabled. */
+
+.ds-dropdown__item:where(:hover, [data-state="hover"]):not(:disabled, [aria-disabled="true"], [data-state="disabled"]) {
+  --_background: var(--_background-hover);
+  --_color: var(--_color-hover);
+}
+
+.ds-dropdown__item:where(:active, [data-state="active"]):not(:disabled, [aria-disabled="true"], [data-state="disabled"]) {
+  --_background: var(--_background-active);
+  --_color: var(--_color-active);
+}
+
+.ds-dropdown__item:where(:disabled, [aria-disabled="true"], [data-state="disabled"]) {
+  --_background: var(--dropdown-item-background-disabled);
+  --_color: var(--dropdown-item-label-color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-dropdown__item:focus {
+  outline: none;
+}
+
+.ds-dropdown__item:is(:focus-visible, [data-state="focus-visible"]) {
+  outline: var(--dropdown-item-outline-width-focus-visible) solid var(--dropdown-item-outline-color-focus-visible);
+  outline-offset: var(--dropdown-item-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-dropdown__item {
+    transition: none;
+  }
+}

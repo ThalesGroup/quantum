@@ -1,0 +1,20 @@
+{
+  "name": "docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Quantum documentation site: an Astro viewer of the component specs, the Markdown guidelines, the tokens, the vanilla CSS reference implementation and the screens.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@component-anatomy/core": "^0.1.0",
+    "@quantum-ds/tokens": "workspace:*",
+    "@shikijs/transformers": "^4.4.3",
+    "astro": "^7.3.5",
+    "marked": "^18.0.14",
+    "shiki": "^4.4.3"
+  }
+}

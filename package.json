@@ -1,7 +1,7 @@
 {
   "name": "quantum",
   "private": true,
-  "description": "Quantum Design System",
+  "description": "Quantum Design System: technology-agnostic component specifications, DTCG design tokens, a vanilla CSS reference implementation and their documentation.",
   "license": "MIT",
   "homepage": "https://github.com/ThalesGroup/quantum#readme",
   "repository": {
@@ -11,8 +11,34 @@
   "bugs": {
     "url": "https://github.com/ThalesGroup/quantum/issues"
   },
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10"
+  },
   "scripts": {
-    "build": "pnpm --recursive run build"
+    "tokens:build": "pnpm --filter @quantum-ds/tokens build",
+    "tokens:figma-library": "node scripts/figma-library.mjs",
+    "components:build": "node scripts/build-components.mjs",
+    "validate": "node scripts/validate.mjs",
+    "specs:check": "node scripts/specs-bridge.mjs check",
+    "specs:export": "node scripts/specs-bridge.mjs export",
+    "specs:import": "node scripts/specs-bridge.mjs import",
+    "test": "node --test \"scripts/test/**/*.test.mjs\"",
+    "check": "pnpm run tokens:build && pnpm run validate && pnpm run specs:check && pnpm run test",
+    "impact": "node scripts/impact.mjs",
+    "commits:check": "node scripts/commit-lint.mjs",
+    "a11y:wcag": "node scripts/a11y-wcag.mjs",
+    "new:component": "node scripts/new-component.mjs",
+    "dev": "pnpm run tokens:build && pnpm --filter docs dev",
+    "build": "pnpm run tokens:build && pnpm run components:build && pnpm --filter docs build",
+    "preview": "pnpm --filter docs preview",
+    "prepare": "git config core.hooksPath .githooks 2>/dev/null || true"
+  },
+  "devDependencies": {
+    "@directededges/specs-schema": "0.34.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
   },
   "packageManager": "pnpm@12.10.1"
 }

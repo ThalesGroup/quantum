@@ -1,0 +1,36 @@
+{
+  "$description": "Component tokens for Divider. Path grammar: divider.<part>.<property>[.<orientation>]. A divider has no interaction state. Parts and options must exist in packages/components/specs/components/divider.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "divider": {
+    "container": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.border.base.neutral.4}"
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{stroke-width.sm}"
+      },
+      "margin-block": {
+        "$type": "dimension",
+        "$description": "Space above and below a horizontal divider.",
+        "horizontal": {
+          "$value": "{space.16}"
+        }
+      },
+      "margin-inline": {
+        "$type": "dimension",
+        "$description": "Space before and after a vertical divider.",
+        "vertical": {
+          "$value": "{space.16}"
+        }
+      },
+      "min-height": {
+        "$type": "dimension",
+        "$description": "Height of a vertical divider when its container does not stretch it.",
+        "vertical": {
+          "$value": "{space.24}"
+        }
+      }
+    }
+  }
+}

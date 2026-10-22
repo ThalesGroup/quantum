@@ -1,0 +1,25 @@
+{
+  "id": "shadcn-ui",
+  "name": "shadcn/ui",
+  "description": "Blocks of shadcn/ui: application shells, authentication pages and a dashboard, built with React, Radix and Tailwind. Only their structure and content are rebuilt here, with the design system's components and tokens.",
+  "url": "https://ui.shadcn.com/blocks",
+  "repository": "https://github.com/shadcn-ui/ui",
+  "commit": "0132174664c07d41262fb51012d0cc782e458e6c",
+  "retrieved": "2026-10-08",
+  "license": {
+    "id": "MIT",
+    "name": "MIT License",
+    "url": "https://github.com/shadcn-ui/ui/blob/main/LICENSE.md",
+    "copyright": "Copyright (c) 2023 shadcn",
+    "file": "LICENSE.md"
+  },
+  "screenUrl": "https://ui.shadcn.com/view/new-york-v4/{block}",
+  "codeUrl": "https://github.com/shadcn-ui/ui/tree/0132174664c07d41262fb51012d0cc782e458e6c/apps/v4/registry/new-york-v4/blocks/{block}",
+  "changes": [
+    "Rebuilt as static HTML with the design system's component templates; every color, type style, radius, border and spacing comes from its tokens.",
+    "The original visual design (Tailwind classes, the Geist font) is not reused.",
+    "Lucide and Tabler icons are remapped to Material Symbols; brand logos (Apple, Google, GitHub, Meta) are dropped, the buttons keep their text.",
+    "Placeholder images are drawn with semantic tokens.",
+    "No script: behaviour that needs JavaScript (collapsing the sidebar, toasts, drag and drop, client-side tables) is dropped or simplified, and each screen says so."
+  ]
+}

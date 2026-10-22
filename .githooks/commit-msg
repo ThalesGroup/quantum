@@ -1,0 +1,3 @@
+#!/bin/sh
+# Conventional Commits (agents/git.md). Installed by "pnpm install" (core.hooksPath).
+exec node "$(git rev-parse --show-toplevel)/scripts/commit-lint.mjs" --file "$1"

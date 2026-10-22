@@ -1,0 +1,942 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design-system.local/schemas/component.schema.json",
+  "title": "Component specification",
+  "description": "Technology-agnostic definition of a component: what it is (role), what it is made of (anatomy parts with roles), how it can be configured (properties), which states it takes, and where its tokens and reference implementations live. Vocabulary is inspired by Nathan Curtis' component/part roles and the Specs Figma plugin.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "status",
+    "role",
+    "summary",
+    "anatomy",
+    "properties",
+    "states",
+    "accessibility",
+    "tokens",
+    "implementations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "$ref": "#/$defs/kebab",
+      "description": "Machine id. Also the token root group, the docs file name and the web class suffix (ds-<id>)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human display name."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "review",
+        "stable",
+        "deprecated"
+      ]
+    },
+    "role": {
+      "$ref": "#/$defs/componentRole"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "One sentence shown in listings."
+    },
+    "description": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/kebab"
+      },
+      "uniqueItems": true
+    },
+    "anatomy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/part"
+      },
+      "description": "Ordered list of parts. The first part is the root and must have role \"container\"."
+    },
+    "properties": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/property"
+      }
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/state"
+      }
+    },
+    "slots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/slot"
+      }
+    },
+    "layout": {
+      "$ref": "#/$defs/layout"
+    },
+    "accessibility": {
+      "$ref": "#/$defs/accessibility",
+      "description": "Accessibility contract. Every statement cites trusted sources through refs (see specs/AGENTS.md and specs/a11y/)."
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "guidelines": {
+          "type": "array",
+          "description": "Writing rules for the labels. A string applies everywhere; an object scopes a rule to some platforms.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "required": [
+                  "text",
+                  "platforms"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "platforms": {
+                    "$ref": "#/$defs/platforms"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/example"
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "required": [
+        "source",
+        "prefix"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Repo-relative path to the DTCG component token file."
+        },
+        "prefix": {
+          "$ref": "#/$defs/kebab",
+          "description": "Root group of the token file. Must equal id."
+        }
+      }
+    },
+    "implementations": {
+      "type": "object",
+      "required": [
+        "web"
+      ],
+      "properties": {
+        "web": {
+          "$ref": "#/$defs/webImplementation"
+        },
+        "ios": {
+          "$ref": "#/$defs/nativeImplementation"
+        },
+        "android": {
+          "$ref": "#/$defs/nativeImplementation"
+        },
+        "desktop": {
+          "$ref": "#/$defs/nativeImplementation"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Per-platform implementation metadata, keyed by platform id. `web` is required: it is the reference rendering. Other platforms are optional and typed (nativeImplementation)."
+    },
+    "related": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/kebab"
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "description": "Decision log, newest first. One entry per decision the team stated about the component (\"the border uses the primary color\"), in the words of a rule. A decision stays active until a later one supersedes it; superseded entries stay for history. The spec, tokens, CSS, template and docs must implement every active decision.",
+      "items": {
+        "$ref": "#/$defs/decision"
+      }
+    },
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "version",
+          "date",
+          "note"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Newest first. Must contain an entry for the current version."
+    }
+  },
+  "$defs": {
+    "kebab": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "camel": {
+      "type": "string",
+      "pattern": "^[a-z][a-zA-Z0-9]*$"
+    },
+    "componentRole": {
+      "description": "What the component IS. A role is a composite: it implies semantics, keyboard behaviour and ARIA obligations for every platform. Extend this list deliberately (edit the schema, then AGENTS.md).",
+      "enum": [
+        "button",
+        "togglebutton",
+        "link",
+        "checkbox",
+        "radio",
+        "switch",
+        "textbox",
+        "textarea",
+        "password",
+        "searchbox",
+        "combobox",
+        "listbox",
+        "option",
+        "slider",
+        "spinbutton",
+        "disclosure",
+        "dialog",
+        "tooltip",
+        "menu",
+        "menuitem",
+        "tab",
+        "tablist",
+        "tabpanel",
+        "group",
+        "container",
+        "list",
+        "navigation",
+        "table",
+        "alert",
+        "status",
+        "progressbar",
+        "presentation"
+      ]
+    },
+    "partRole": {
+      "description": "What a part DOES for its component.",
+      "enum": [
+        "container",
+        "label",
+        "description",
+        "errormessage",
+        "value",
+        "placeholder",
+        "indicator",
+        "icon",
+        "panel",
+        "increment",
+        "decrement",
+        "handle",
+        "track",
+        "header",
+        "footer",
+        "media",
+        "action",
+        "separator",
+        "overlay",
+        "slot"
+      ]
+    },
+    "part": {
+      "type": "object",
+      "required": [
+        "id",
+        "role",
+        "required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab",
+          "description": "Unique within the component. Second segment of every component token path."
+        },
+        "role": {
+          "$ref": "#/$defs/partRole"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "repeatable": {
+          "type": "boolean",
+          "default": false
+        },
+        "parent": {
+          "$ref": "#/$defs/kebab",
+          "description": "Id of the containing part when the anatomy is nested. Defaults to the root part."
+        },
+        "decorative": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pure decoration: hidden from assistive technology and ignored by the accessible name (WCAG 1.1.1; aria-hidden on the web)."
+        },
+        "component": {
+          "$ref": "#/$defs/kebab",
+          "description": "When this part is an instance of another component (a subcomponent), its id."
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/property"
+          },
+          "description": "Instance properties of a repeatable part: set on each instance through a list property (a menu item's label, icon, intent). Their option values are token path segments of this part and its children, like component options."
+        },
+        "visibleIn": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/state/properties/id"
+          },
+          "description": "States in which the part is shown (a menu shown when expanded). Omit when the part is always shown. The site forces one of them to render the part."
+        }
+      }
+    },
+    "property": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/camel"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "enum",
+            "boolean",
+            "string",
+            "number",
+            "icon",
+            "node",
+            "list"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/kebab",
+                "description": "Option id. Used verbatim as a token path segment and as a data-attribute value."
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "default": {},
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "description": {
+          "type": "string"
+        },
+        "bindsTo": {
+          "$ref": "#/$defs/kebab",
+          "description": "Part id whose content this property drives (Specs plugin: prop binding)."
+        },
+        "affects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/kebab"
+          },
+          "description": "Part ids whose styling changes with this property."
+        },
+        "of": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/kebab"
+          },
+          "description": "For type = list: the repeatable parts the list holds. Each entry is an instance of the first part, or of the part its `part` field names, and takes that part's instance properties."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "enum"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "options"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "list"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "of"
+            ]
+          }
+        }
+      ]
+    },
+    "state": {
+      "type": "object",
+      "required": [
+        "id",
+        "trigger"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            "default",
+            "hover",
+            "active",
+            "focus-visible",
+            "disabled",
+            "selected",
+            "checked",
+            "unchecked",
+            "indeterminate",
+            "pressed",
+            "expanded",
+            "collapsed",
+            "invalid",
+            "readonly",
+            "loading",
+            "dragging",
+            "visited",
+            "current"
+          ],
+          "description": "Controlled vocabulary. A state id used as a token path segment must be declared here."
+        },
+        "trigger": {
+          "enum": [
+            "interaction",
+            "property",
+            "system"
+          ],
+          "description": "interaction = pointer/keyboard; property = set through a property (disabled, selected); system = environment (loading, invalid)."
+        },
+        "description": {
+          "type": "string"
+        },
+        "property": {
+          "$ref": "#/$defs/camel",
+          "description": "For trigger = property: the property id that sets this state."
+        },
+        "platforms": {
+          "$ref": "#/$defs/platforms"
+        },
+        "inputs": {
+          "$ref": "#/$defs/inputs"
+        },
+        "parts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/kebab"
+          },
+          "description": "Parts that take this state. Omit when the state belongs to the component as a whole (its root part). A part instantiated through a list takes the state per instance."
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab"
+        },
+        "description": {
+          "type": "string"
+        },
+        "accepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Component ids or 'text', 'any'."
+        },
+        "part": {
+          "$ref": "#/$defs/kebab",
+          "description": "Part that hosts the slot."
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "enum": [
+            "horizontal",
+            "vertical",
+            "stack",
+            "none"
+          ]
+        },
+        "align": {
+          "enum": [
+            "start",
+            "center",
+            "end",
+            "stretch",
+            "baseline"
+          ]
+        },
+        "justify": {
+          "enum": [
+            "start",
+            "center",
+            "end",
+            "space-between"
+          ]
+        },
+        "wrap": {
+          "type": "boolean"
+        },
+        "sizing": {
+          "enum": [
+            "hug",
+            "fill",
+            "fixed"
+          ],
+          "description": "How the root sizes on its main axis."
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "guidelines",
+        "references"
+      ],
+      "properties": {
+        "ariaRole": {
+          "type": "string",
+          "description": "WAI-ARIA role exposed to assistive technology. Must match the role profile in specs/a11y/roles.json."
+        },
+        "name": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "text",
+            "refs"
+          ],
+          "description": "How the accessible name is computed.",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "refs": {
+              "$ref": "#/$defs/refs"
+            }
+          }
+        },
+        "keyboard": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "key",
+              "action",
+              "refs"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "action": {
+                "type": "string"
+              },
+              "refs": {
+                "$ref": "#/$defs/refs"
+              },
+              "platforms": {
+                "$ref": "#/$defs/platforms"
+              }
+            }
+          }
+        },
+        "guidelines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "refs"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "refs": {
+                "$ref": "#/$defs/refs"
+              },
+              "platforms": {
+                "$ref": "#/$defs/platforms"
+              }
+            }
+          }
+        },
+        "references": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Trusted sources cited by refs. URLs must match a publisher prefix in specs/a11y/sources.json.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "url"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/kebab"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https://"
+              }
+            }
+          }
+        }
+      }
+    },
+    "example": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "props"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "props": {
+          "type": "object",
+          "description": "Property id -> value. Rendered by implementations.web.template in the site."
+        },
+        "platforms": {
+          "$ref": "#/$defs/platforms",
+          "description": "Examples excluding web are listed by the site with their props but not rendered."
+        }
+      }
+    },
+    "webImplementation": {
+      "type": "object",
+      "required": [
+        "css",
+        "template",
+        "selector",
+        "element"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "css": {
+          "type": "string",
+          "description": "Repo-relative path to the hand-written vanilla CSS file."
+        },
+        "template": {
+          "type": "string",
+          "description": "Repo-relative path to the ESM template exporting render(props)."
+        },
+        "selector": {
+          "type": "string",
+          "description": "Root class selector, e.g. .ds-button"
+        },
+        "element": {
+          "type": "string",
+          "description": "Native element used for the root, e.g. button"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Property id -> HTML attribute carrying it (data-variant, disabled, ...)."
+        },
+        "stateAttribute": {
+          "type": "string",
+          "default": "data-state",
+          "description": "Attribute the docs site uses to force a state for review."
+        },
+        "partSelectors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Part id -> CSS selector inside the root."
+        },
+        "rolePart": {
+          "$ref": "#/$defs/kebab",
+          "description": "Part whose element carries the component role when the root is a wrapper (a trigger and its popup). Defaults to the root part."
+        }
+      }
+    },
+    "refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Sources backing a statement: \"wcag:<sc>\" (a WCAG 2.2 success criterion, e.g. wcag:2.5.8) or the id of an entry in accessibility.references.",
+      "items": {
+        "type": "string",
+        "pattern": "^(wcag:[1-4]\\.[0-9]+\\.[0-9]+|[a-z][a-z0-9]*(-[a-z0-9]+)*)$"
+      }
+    },
+    "platform": {
+      "description": "Platform id (specs/platforms.json). A statement, state or example without `platforms` applies to every platform.",
+      "enum": [
+        "web",
+        "ios",
+        "android",
+        "desktop"
+      ]
+    },
+    "platforms": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/platform"
+      },
+      "description": "Platforms this item applies to. Omit for every platform."
+    },
+    "input": {
+      "description": "Input modality (specs/platforms.json).",
+      "enum": [
+        "pointer",
+        "touch",
+        "keyboard"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/input"
+      },
+      "description": "Input modalities that can produce this state (hover needs a pointer, focus-visible a keyboard). Omit when any input can."
+    },
+    "nativeImplementation": {
+      "type": "object",
+      "required": [
+        "control"
+      ],
+      "additionalProperties": false,
+      "description": "Metadata of a native implementation. Recorded when a team builds the component on that platform; nothing in the repository is generated from it.",
+      "properties": {
+        "control": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Native control carrying the component role, e.g. \"UIButton / SwiftUI Button\"."
+        },
+        "framework": {
+          "type": "string",
+          "description": "Technology used, e.g. \"SwiftUI\", \"Jetpack Compose\"."
+        },
+        "source": {
+          "type": "string",
+          "description": "Repo-relative path or URL of the implementation."
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "required": [
+        "id",
+        "date",
+        "version",
+        "area",
+        "status",
+        "text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab",
+          "description": "Stable id, unique in the spec. Never reused."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Day the decision was taken."
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Spec version that implements it. Must have a changelog entry."
+        },
+        "area": {
+          "enum": [
+            "anatomy",
+            "variant",
+            "size",
+            "state",
+            "color",
+            "typography",
+            "dimension",
+            "layout",
+            "motion",
+            "content",
+            "behaviour",
+            "accessibility",
+            "platform"
+          ],
+          "description": "What the decision is about; the site groups the log by area."
+        },
+        "status": {
+          "enum": [
+            "active",
+            "superseded"
+          ],
+          "description": "active: implemented by the artifacts. superseded: replaced by the decision whose `supersedes` names it."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The decision as a rule, present tense: \"Every variant has a border in the primary color.\""
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Why, when it was given. Never invented."
+        },
+        "supersedes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/kebab"
+          },
+          "description": "Ids of earlier decisions this one replaces. They must be superseded."
+        },
+        "tokens": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+|\\.\\*)*$"
+          },
+          "description": "Token paths (component or semantic) that carry the decision; a trailing .* matches a group. Each must match at least one token."
+        },
+        "platforms": {
+          "$ref": "#/$defs/platforms"
+        },
+        "refs": {
+          "$ref": "#/$defs/refs"
+        }
+      }
+    }
+  }
+}

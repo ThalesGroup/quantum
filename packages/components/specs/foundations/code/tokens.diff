@@ -1,0 +1,25 @@
+*** tokens/semantic/colors-mapped.tokens.json	2026-10-02 10:12:04
+--- tokens/semantic/colors-mapped.tokens.json	2026-10-02 15:47:31
+***************
+*** 566,572 ****
+          "keyword": {"$type":"color","$value":"{extended.lavender.700}"},
+          "variable": {"$type":"color","$value":"{extended.orchid.700}"},
+          "function": {"$type":"color","$value":"{extended.azure.700}"},
+!         "class-and-type": {"$type":"color","$value":"{extended.amber.500}"},
+!         "string": {"$type":"color","$value":"{extended.forest.600}"},
+          "comment": {"$type":"color","$value":"{light-switch.base.700}"}
+        },
+--- 566,573 ----
+          "keyword": {"$type":"color","$value":"{extended.lavender.700}"},
+          "variable": {"$type":"color","$value":"{extended.orchid.700}"},
+          "function": {"$type":"color","$value":"{extended.azure.700}"},
+!         "class-and-type": {"$type":"color","$value":"{extended.amber.700}"},
+!         "string": {"$type":"color","$value":"{extended.forest.700}"},
++         "number": {"$type":"color","$value":"{extended.coral.700}"},
+          "comment": {"$type":"color","$value":"{light-switch.base.700}"}
+        },
+***************
+*** 601,604 ****
+-       "skeleton": {"$type":"color","$value":"{light-switch.base.300}"},
+        "disabled": {"$type":"color","$value":"{light-switch.base.500}"}
+--- 602,604 ----

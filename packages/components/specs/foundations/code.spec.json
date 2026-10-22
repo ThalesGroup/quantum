@@ -1,0 +1,607 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "code",
+  "name": "Code",
+  "version": "0.1.1",
+  "status": "draft",
+  "summary": "The syntax highlighting colors of code, one per category, and the states of marked lines, readable on every surface in every mode.",
+  "description": "Code samples, token paths and snippets are set in the mono family (Typography foundation); this foundation colors them. Each syntax category (keyword, variable, function, class and type, string, number, comment) has a semantic color from the Figma library's code colors, global.text.code; the design system adds colors for diffs, invalid code and links, and backgrounds for marked lines, all picked from colors it already has. Everything else in code (plain identifiers, operators, punctuation) keeps the primary on-base text color. A highlighter maps the categories of its grammars to these colors: on the web, a Shiki theme generated from the tokens does it once for every mode, and a style sheet draws the marked lines.",
+  "tags": [
+    "code",
+    "color",
+    "modes",
+    "contrast"
+  ],
+  "tokens": [
+    "global.text.code.*",
+    "global.bg.code.*"
+  ],
+  "rules": [
+    {
+      "id": "categories",
+      "name": "Categories",
+      "text": "Seven categories are colored: keyword (language keywords and storage modifiers, markup tag names, CSS at-rules and pseudo-classes), variable (variables, parameters, properties and object keys, CSS properties and custom properties, markup attribute names, YAML keys), function (function and method names, CSS functions), class and type (class, type and built-in object names, CSS class and id selectors), string (strings, regular expressions, markup attribute values), number (numbers and language constants such as true, null, CSS units and keywords) and comment.",
+      "tokens": [
+        "global.text.code.keyword",
+        "global.text.code.variable",
+        "global.text.code.function",
+        "global.text.code.class-and-type",
+        "global.text.code.string",
+        "global.text.code.number",
+        "global.text.code.comment"
+      ]
+    },
+    {
+      "id": "more-categories",
+      "name": "Diffs, invalid code and links",
+      "text": "Five more text colors cover what is not syntax: inserted, deleted and changed for the lines of a diff (green, red and orange, the success, error and severe hues), invalid for code a grammar marks invalid or deprecated (the error hue), link for URLs and links (the brand hue). They are the design system's additions to the Figma library, picked from colors it already has: the steps of the matching text roles, moved to a passing step where a role fails on a surface.",
+      "tokens": [
+        "global.text.code.inserted",
+        "global.text.code.deleted",
+        "global.text.code.changed",
+        "global.text.code.invalid",
+        "global.text.code.link"
+      ]
+    },
+    {
+      "id": "plain",
+      "name": "Plain code",
+      "text": "What belongs to no category keeps the primary on-base text color (global.text.on-base.neutral.primary): plain identifiers a grammar does not classify, operators and punctuation. Highlighting only adds color to the structure; the code reads the same without it."
+    },
+    {
+      "id": "markup",
+      "name": "Markup",
+      "text": "Markup languages reuse the categories: a heading or a list marker is a keyword, a quote a comment, inline code a string, a URL a link. Bold and italic keep the plain text color: their markers already show them."
+    },
+    {
+      "id": "surface",
+      "name": "Code surfaces",
+      "text": "A block of code is a surface like any other: level 1 by default, raised on the page, or the level of the area it sits in. The colors are checked against every level and sunken, so a block can sit on any of them."
+    },
+    {
+      "id": "line-states",
+      "name": "Marked lines",
+      "text": "An example can mark whole lines: highlighted (a line the author points out), inserted and deleted (lines an example adds or removes), error and warning. Each takes a background from the subtle fills (brand, success, error, warning) and a marker that does not rest on color: a bar for a highlighted line, + and - for inserted and deleted lines, x and ! for errors and warnings. Every code color stays readable on every line background.",
+      "tokens": [
+        "global.bg.code.*"
+      ]
+    },
+    {
+      "id": "line-meaning",
+      "name": "Say why a line is marked",
+      "text": "A marker shows that a line is marked; the text around the example says why (what changed, what the error is). Markers are a visual aid, not the only place the information lives."
+    },
+    {
+      "id": "inline-and-numbers",
+      "name": "Inline code and line numbers",
+      "text": "Code inside running text sits on the neutral subtle fill (global.bg.subtle.neutral.default) and keeps the syntax colors' contrast rules. Line numbers, when a block shows them, use the tertiary on-base text color (global.text.on-base.neutral.tertiary). Neither needs a code token."
+    },
+    {
+      "id": "typography",
+      "name": "Typography",
+      "text": "Code is set in the mono family (Typography foundation). Highlighting changes the color only: the text style stays the same for every category."
+    },
+    {
+      "id": "modes",
+      "name": "Modes",
+      "text": "Every color has a value in every mode: the syntax categories take step 700 of each hue in light mode and the light steps (200 to 400) in dark mode; the line backgrounds follow the subtle fills. One highlighting definition serves every mode: it names the categories, the mode picks the values.",
+      "tokens": [
+        "global.text.code.*",
+        "global.bg.code.*"
+      ]
+    },
+    {
+      "id": "languages",
+      "name": "Languages",
+      "text": "The categories hold for any language. The mapping is written and checked for CSS, HTML, JavaScript, JSON, shell, YAML, diff and Markdown, the languages the documentation shows; a new language may need new scopes in the mapping, never a new color."
+    },
+    {
+      "id": "web-theme",
+      "name": "Shiki theme",
+      "text": "pnpm tokens:build writes packages/tokens/dist/shiki-theme.json (@quantum-ds/tokens/shiki-theme.json) from the code tokens and the scope mapping in tokens.config.json (syntax): one theme in the TextMate format Shiki reads, whose colors are the CSS variables of the tokens. It follows the mode of every data-theme context without a light and dark pair, and needs the design system's token CSS on the page. Marked lines come from Shiki's notation transformers ([!code highlight], [!code ++], [!code --], [!code error], [!code warning]); web/foundations/code.css, imported by web/index.css, draws them from the global.bg.code.* tokens with their default class names.",
+      "platforms": [
+        "web"
+      ]
+    },
+    {
+      "id": "platform-trees",
+      "name": "Other platforms",
+      "text": "The code colors are semantic tokens: iOS and Android get them in their resolved trees for every mode, for a highlighter of their own to map its categories to.",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    }
+  ],
+  "specimens": [
+    {
+      "id": "code-roles",
+      "name": "Syntax colors",
+      "display": "color",
+      "tokens": [
+        "global.text.code.*"
+      ],
+      "description": "One color per syntax category, and the additions for diffs, invalid code and links, with the palette step each aliases in every mode."
+    },
+    {
+      "id": "line-backgrounds",
+      "name": "Line backgrounds",
+      "display": "color",
+      "tokens": [
+        "global.bg.code.*"
+      ],
+      "description": "Backgrounds of marked lines, aliasing the subtle fills."
+    }
+  ],
+  "contrast": [
+    {
+      "id": "keyword",
+      "description": "Keywords are text: on every surface level and sunken, and on every line background.",
+      "foreground": "global.text.code.keyword",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "variable",
+      "description": "Variables and properties, on every surface and every line background.",
+      "foreground": "global.text.code.variable",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "function",
+      "description": "Function names, on every surface and every line background.",
+      "foreground": "global.text.code.function",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "class-and-type",
+      "description": "Class and type names, on every surface and every line background.",
+      "foreground": "global.text.code.class-and-type",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "string",
+      "description": "Strings, on every surface and every line background.",
+      "foreground": "global.text.code.string",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "number",
+      "description": "Numbers and constants, on every surface and every line background.",
+      "foreground": "global.text.code.number",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "comment",
+      "description": "Comments are text people read, not decoration: same minimum as the rest of the code.",
+      "foreground": "global.text.code.comment",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "inserted",
+      "description": "Lines a diff adds. Text: on every surface and every line background.",
+      "foreground": "global.text.code.inserted",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "deleted",
+      "description": "Lines a diff removes. Text: on every surface and every line background.",
+      "foreground": "global.text.code.deleted",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "changed",
+      "description": "Lines a context diff changes. Text: on every surface and every line background.",
+      "foreground": "global.text.code.changed",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "invalid",
+      "description": "Invalid or deprecated code. Text: on every surface and every line background.",
+      "foreground": "global.text.code.invalid",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "link",
+      "description": "URLs and links in code and markup. Text: on every surface and every line background.",
+      "foreground": "global.text.code.link",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default",
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "plain-on-lines",
+      "description": "Plain code (identifiers, operators, punctuation) and the markers on every line background.",
+      "foreground": "global.text.on-base.neutral.primary",
+      "backgrounds": [
+        "global.bg.code.*"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "line-highlighted-tint",
+      "description": "The highlighted line background against the default code block (level 1). Measured only: the marker, not the tint, shows the state.",
+      "foreground": "global.bg.code.highlighted",
+      "backgrounds": [
+        "global.bg.level.1.default"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "line-inserted-tint",
+      "description": "The inserted line background against the default code block (level 1). Measured only: the marker, not the tint, shows the state.",
+      "foreground": "global.bg.code.inserted",
+      "backgrounds": [
+        "global.bg.level.1.default"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "line-deleted-tint",
+      "description": "The deleted line background against the default code block (level 1). Measured only: the marker, not the tint, shows the state.",
+      "foreground": "global.bg.code.deleted",
+      "backgrounds": [
+        "global.bg.level.1.default"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "line-error-tint",
+      "description": "The error line background against the default code block (level 1). Measured only: the marker, not the tint, shows the state.",
+      "foreground": "global.bg.code.error",
+      "backgrounds": [
+        "global.bg.level.1.default"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "line-warning-tint",
+      "description": "The warning line background against the default code block (level 1). Measured only: the marker, not the tint, shows the state.",
+      "foreground": "global.bg.code.warning",
+      "backgrounds": [
+        "global.bg.level.1.default"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "Every code color, comments, diff and link colors included, contrasts at least 4.5:1 with every surface level and sunken and with every line background, in every mode: code is text, whatever its category.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Color is not the only way to tell the categories apart: highlighting adds no information that the code text does not already carry, so a reader who cannot see the colors misses nothing.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "A marked line never shows its state by color alone: a bar, + and -, x and ! mark it, and they survive forced colors mode, where the line backgrounds disappear.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Markers are generated content, which some assistive technologies do not announce. They carry alternative text (Added, Removed, Error, Warning) for those that do, and the text around an example says what its marked lines mean, so the information does not depend on the presentation.",
+        "refs": [
+          "wcag:1.3.1",
+          "mdn-content-alt",
+          "mdn-content-a11y"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "In forced colors mode the browser replaces the color of every syntax category, and the background of the block, with system colors: the code stays readable, without highlighting. Nothing may depend on a syntax color surviving there.",
+        "refs": [
+          "mdn-forced-colors"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      },
+      {
+        "id": "mdn-content-alt",
+        "title": "MDN: content, alternative text",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/content#alternative_text_string_counter_attr"
+      },
+      {
+        "id": "mdn-content-a11y",
+        "title": "MDN: content, accessibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/content#accessibility"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "javascript",
+      "name": "JavaScript",
+      "description": "A module with a class, private fields, a getter, regular expressions, template literals and async functions.",
+      "source": "packages/components/specs/foundations/code/contrast.js"
+    },
+    {
+      "id": "css",
+      "name": "CSS",
+      "description": "A product stylesheet: cascade layers, custom properties, functions, selectors, units and a media query.",
+      "source": "packages/components/specs/foundations/code/cards.css"
+    },
+    {
+      "id": "html",
+      "name": "HTML",
+      "description": "A page using the Dropdown markup, with an embedded style sheet, a comment, an entity and a module script.",
+      "source": "packages/components/specs/foundations/code/dropdown.html"
+    },
+    {
+      "id": "json",
+      "name": "JSON",
+      "description": "A DTCG token file: keys, strings, numbers, booleans and null.",
+      "source": "packages/components/specs/foundations/code/tokens.json"
+    },
+    {
+      "id": "shell",
+      "name": "Shell",
+      "description": "A release script: variables, expansions, functions, conditions and loops.",
+      "source": "packages/components/specs/foundations/code/release.sh"
+    },
+    {
+      "id": "yaml",
+      "name": "YAML",
+      "description": "A CI configuration: anchors, aliases, flow collections and multi-line lists.",
+      "source": "packages/components/specs/foundations/code/ci.yml"
+    },
+    {
+      "id": "notation",
+      "name": "Marked lines",
+      "description": "A JavaScript module whose lines are marked: the old themes option is removed and replaced (- and +), the render call is highlighted, a call with an unknown language is an error, a call without a language a warning.",
+      "source": "packages/components/specs/foundations/code/notation.js"
+    },
+    {
+      "id": "diff",
+      "name": "Diff",
+      "description": "A context diff of the code colors: changed lines (!), an added line (+), a removed line (-), headers and ranges.",
+      "source": "packages/components/specs/foundations/code/tokens.diff"
+    },
+    {
+      "id": "markdown",
+      "name": "Markdown",
+      "description": "A README: heading, quote, bold and italic, list, inline code, a link and a fenced JavaScript block.",
+      "source": "packages/components/specs/foundations/code/readme.md"
+    },
+    {
+      "id": "invalid",
+      "name": "Invalid JSON",
+      "description": "A token file with two errors: a missing comma after keyword and an unquoted comment key, both marked invalid.",
+      "source": "packages/components/specs/foundations/code/broken.json"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "code-additions",
+      "date": "2026-10-02",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The design system adds, from colors it already has: text colors global.text.code.inserted (light success 700, dark success 300), deleted and invalid (light error 600, dark error 200), changed (light severe 700, dark severe 300) and link (light brand 600, dark brand dark 200), mapped to diffs, invalid code and URLs; line backgrounds global.bg.code.highlighted, inserted, deleted, error and warning, aliasing the subtle brand, success, error, error and warning fills. Markup reuses the syntax categories. Marked lines also carry a marker (bar, +, -, x, !).",
+      "tokens": [
+        "global.text.code.inserted",
+        "global.text.code.deleted",
+        "global.text.code.changed",
+        "global.text.code.invalid",
+        "global.text.code.link",
+        "global.bg.code.*"
+      ]
+    },
+    {
+      "id": "shiki-theme",
+      "date": "2026-10-02",
+      "version": "0.1.0",
+      "area": "platform",
+      "status": "active",
+      "text": "On the web, code is highlighted with Shiki, through one theme generated from the tokens (web/shiki-theme.json) whose colors are the CSS variables of the code tokens (var(--global-text-code-keyword)…). The same theme serves every mode; the documentation site uses it for every code block.",
+      "tokens": [
+        "global.text.code.*"
+      ],
+      "platforms": [
+        "web"
+      ]
+    },
+    {
+      "id": "code-colors-contrast",
+      "date": "2026-10-02",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Every syntax color reaches 4.5:1 on every surface level and sunken, in every mode. Where the Figma library's step does not, the color takes the nearest step of the same hue that does: light class and type amber 700 (the Figma library 500), string forest 700 (600), number coral 700 (500); dark string forest 400 (500), comment dark-switch base 300 (400). Light mode is then step 700 of every hue and light-switch base 700 for comments; dark mode step 400 and dark-switch base 300.",
+      "tokens": [
+        "global.text.code.class-and-type",
+        "global.text.code.string",
+        "global.text.code.number",
+        "global.text.code.comment"
+      ],
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "code-colors",
+      "date": "2026-10-02",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "Code syntax highlighting has seven semantic colors, the Figma library's code colors global.text.code: keyword (lavender), variable (orchid), function (azure), class and type (amber), string (forest), number (coral) and comment (neutral). Anything else in code keeps the primary on-base text color, global.text.on-base.neutral.primary.",
+      "tokens": [
+        "global.text.code.*"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-10-22",
+      "note": "Fix, no decision changed: the CSS and HTML samples (cards.css, dropdown.html) no longer load the component styles from @quantum-ds/components, which publishes the specs only; they load the component styles the product implemented from the specs."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-02",
+      "note": "Initial draft, decisions code-colors, code-colors-contrast, code-additions and shiki-theme. Owns the Figma library's global.text.code.* (keyword, variable, function, class-and-type, string, number, comment); five of them move to a passing step (light class-and-type, string, number; dark string, comment), the only divergences from the Figma library (pnpm tokens:figma-library). Adds, in tokens/additions/: global.text.code.inserted, deleted, changed, invalid, link, and the line backgrounds global.bg.code.highlighted, inserted, deleted, error, warning. New outputs web/shiki-theme.json (generated) and web/foundations/code.css (marked lines). Contrast, lowest over every surface level, sunken and line background, every platform (4.5:1 required, WCAG 1.4.3): light keyword 6.51:1, variable 5.82:1, function 5.85:1, class and type 4.90:1, string 6.43:1, number 5.67:1, comment 7.71:1, inserted 7.01:1, deleted and invalid 5.45:1, changed 7.31:1, link 5.16:1, plain code 17.00:1 (all lowest on the error line background); dark keyword 4.51:1, variable 5.59:1, function 5.94:1, class and type 7.25:1, string 5.78:1, number 5.73:1, comment 4.77:1, inserted 5.92:1, deleted and invalid 6.96:1, changed 5.35:1, link 9.61:1 (level 3), plain code 11.42:1. Measured only: line backgrounds against the level 1 block, light 1.03 to 1.05:1, dark 1.10 to 1.12:1 (the markers carry the state, WCAG 1.4.1)."
+    }
+  ]
+}

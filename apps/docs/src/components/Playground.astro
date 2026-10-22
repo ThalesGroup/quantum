@@ -1,0 +1,211 @@
+---
+/**
+ * Interactive controls generated from the spec properties. Re-renders with the web template
+ * client-side and, after each render, dispatches `playground:render` ({ props, state }) on its
+ * root, which the token inspector listens to. The rendered HTML is shown formatted, under the
+ * whole playground, with a Copy button (the design system's Button). Two simulations apply to the stage only:
+ * a vision deficiency (SVG filters) and a larger text size (text-only zoom).
+ */
+import { getTemplate, type Template } from '../lib/web';
+import TokenInspector from './TokenInspector.astro';
+import { highlight } from '../lib/highlight';
+import { formatHtml } from '../lib/format-html';
+import { getModes } from '../lib/tokens';
+interface Props {
+  spec: any;
+  template: Template;
+  initial: Record<string, unknown>;
+}
+const { spec, template, initial } = Astro.props;
+const icons = template.meta?.icons ?? [];
+const props = spec.properties.filter((p: any) => p.type !== 'node');
+// Mode context of the stage: the page's (header switch), or one mode set on the stage itself.
+const { modes, attribute, auto } = getModes();
+const modeChoices = [...modes.map((m) => m.id), ...(auto ? [auto] : [])];
+const inspectorId = `inspector-${spec.id}`;
+const copyButton = getTemplate('button')?.render({ emphasis: 'subtle', intent: 'neutral', size: 'xsmall', label: 'Copy', iconStart: 'content_copy' }) ?? '';
+// The form is built with the design system's form controls (apps/docs/AGENTS.md "Built with the design system"):
+// Select, Checkbox, Textarea, Text field and Number field render their own label; the script reads them by name.
+const field = (id: string, props: Record<string, unknown>) => getTemplate(id)?.render(props) ?? '';
+// Vision simulation of the stage: Chromium's own "Emulate vision deficiencies" filters, copied as they are
+// (third_party/blink/renderer/core/css/vision_deficiency.cc): the color matrices of Machado, Oliveira and
+// Fernandes (2009), derived for linear light, so color-interpolation-filters keeps its linearRGB default.
+const visions = [
+  { id: 'blurred-vision', label: 'Blurred vision', filter: '<feGaussianBlur stdDeviation="2"/>' },
+  { id: 'reduced-contrast', label: 'Reduced contrast', filter: '<feComponentTransfer><feFuncR type="gamma" offset="0.5"/><feFuncG type="gamma" offset="0.5"/><feFuncB type="gamma" offset="0.5"/></feComponentTransfer>' },
+  { id: 'protanopia', label: 'Protanopia (no red)', filter: '<feColorMatrix values="0.152 1.053 -0.205 0 0 0.115 0.786 0.099 0 0 -0.004 -0.048 1.052 0 0 0 0 0 1 0"/>' },
+  { id: 'deuteranopia', label: 'Deuteranopia (no green)', filter: '<feColorMatrix values="0.367 0.861 -0.228 0 0 0.280 0.673 0.047 0 0 -0.012 0.043 0.969 0 0 0 0 0 1 0"/>' },
+  { id: 'tritanopia', label: 'Tritanopia (no blue)', filter: '<feColorMatrix values="1.256 -0.077 -0.179 0 0 -0.078 0.931 0.148 0 0 0.005 0.691 0.304 0 0 0 0 0 1 0"/>' },
+  { id: 'achromatopsia', label: 'Achromatopsia (no color)', filter: '<feColorMatrix values="0.213 0.715 0.072 0 0 0.213 0.715 0.072 0 0 0.213 0.715 0.072 0 0 0 0 0 1 0"/>' },
+];
+// Text size of the stage, like a browser's text-only zoom: WCAG 1.4.4 asks for 200% without loss of content.
+const textSizes = [
+  { label: '100%', value: '1' },
+  { label: '150%', value: '1.5' },
+  { label: '200% (WCAG 1.4.4)', value: '2' },
+];
+---
+<div class="site-playground" data-playground={spec.id}>
+  <form class="site-playground__form" autocomplete="off">
+    {props.map((p: any) => {
+      const label = `${p.name ?? p.id} (${p.id})`;
+      const id = `${spec.id}-prop-${p.id}`;
+      if (p.type === 'enum') return <div class="site-playground__field" set:html={field('select', { label, id, size: 'small', options: p.options.map((o: any) => ({ label: o.value, value: o.value, selected: initial[p.id] === o.value })), attrs: { name: p.id } })}></div>;
+      if (p.type === 'boolean') return <div class="site-playground__field" set:html={field('checkbox', { label, id, size: 'small', checked: initial[p.id] === true, attrs: { name: p.id } })}></div>;
+      if (p.type === 'icon') return <div class="site-playground__field" set:html={field('select', { label, id, size: 'small', options: [...(!p.required ? [{ label: '(none)', value: '' }] : []), ...icons.map((i) => ({ label: i, value: i, selected: initial[p.id] === i }))], attrs: { name: p.id } })}></div>;
+      if (p.type === 'list') return <div class="site-playground__field" set:html={field('textarea', { label, id, size: 'small', rows: 8, value: JSON.stringify(initial[p.id] ?? [], null, 2), description: `JSON array of ${p.of.join(' or ')} entries ("part": "${p.of.at(-1)}" for a ${p.of.at(-1)}).`, attrs: { name: p.id, 'data-json': true, spellcheck: 'false' } })}></div>;
+      if (p.type === 'number') return <div class="site-playground__field" set:html={field('number-field', { label, id, size: 'small', value: initial[p.id] ?? '', attrs: { name: p.id } })}></div>;
+      return <div class="site-playground__field" set:html={field('text-field', { label, id, size: 'small', value: String(initial[p.id] ?? ''), attrs: { name: p.id } })}></div>;
+    })}
+    <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: 'Forced state (data-state)', id: `${spec.id}-sandbox-state`, size: 'small', options: spec.states.map((s: any) => ({ label: s.id, value: s.id })), attrs: { name: 'state' } })}></div>
+    {attribute && modeChoices.length > 1 ? (
+      <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: `Mode context (${attribute})`, id: `${spec.id}-sandbox-mode`, size: 'small', options: [{ label: '(page mode)', value: '' }, ...modeChoices.map((m) => ({ label: m, value: m }))], attrs: { [`data-mode-context`]: attribute } })}></div>
+    ) : null}
+  </form>
+  <svg class="site-playground__filters" width="0" height="0" aria-hidden="true" focusable="false">
+    {visions.map((v) => <filter id={`site-vision-${v.id}`} set:html={v.filter}></filter>)}
+  </svg>
+  <div class="site-playground__result">
+    <div class="site-playground__toolbar">
+      <!-- Simulations of the stage, next to it rather than among the props: they are not props of the component. -->
+      <div class="site-playground__simulations">
+        <Fragment set:html={field('select', { label: 'Vision simulation', id: `${spec.id}-sandbox-vision`, size: 'small', options: [{ label: 'Typical', value: '' }, ...visions.map((v) => ({ label: v.label, value: v.id }))], attrs: { 'data-vision': true } })} />
+        <Fragment set:html={field('select', { label: 'Text size', id: `${spec.id}-sandbox-text-size`, size: 'small', options: textSizes, attrs: { 'data-text-size': true } })} />
+      </div>
+      <button type="button" class="ds-button" data-emphasis="subtle" data-intent="neutral" data-size="small" aria-expanded="false" aria-controls={inspectorId}>
+        <span class="ds-button__label">Inspect tokens</span>
+      </button>
+    </div>
+    <div class="site-preview__stage" data-stage set:html={template.render(initial)}></div>
+  </div>
+  <TokenInspector spec={spec} id={inspectorId} />
+  <div class="site-playground__code">
+    <div class="site-playground__code-bar">
+      <span class="site-muted site-small">HTML</span>
+      <span class="site-playground__copy-status site-small" role="status" data-copy-status></span>
+      <span data-copy set:html={copyButton}></span>
+    </div>
+    <pre role="region" aria-label="HTML of the rendering" tabindex="0"><code data-code set:html={highlight(formatHtml(template.render(initial)), 'html')}></code></pre>
+  </div>
+</div>
+
+<script>
+  const modules = import.meta.glob<{ render: (p: Record<string, unknown>) => string }>('../../../../packages/components/src/components/*/*.template.mjs');
+
+  for (const el of document.querySelectorAll<HTMLElement>('[data-playground]')) {
+    const id = el.dataset.playground!;
+    const key = Object.keys(modules).find((k) => k.endsWith(`/${id}/${id}.template.mjs`));
+    if (!key) continue;
+    const form = el.querySelector('form')!;
+    const stage = el.querySelector<HTMLElement>('[data-stage]')!;
+    const code = el.querySelector<HTMLElement>('[data-code]')!;
+    // Copy: the text of the highlighted code is the formatted HTML. The Clipboard API first; where
+    // it is refused (permissions, embedded browsers) the legacy copy command; failing both, the
+    // code is selected so the keyboard shortcut copies it. The status says what happened.
+    const copy = el.querySelector<HTMLButtonElement>('[data-copy] button');
+    const status = el.querySelector<HTMLElement>('[data-copy-status]');
+    const legacyCopy = (text: string) => {
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.append(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      copy?.focus();
+      return ok;
+    };
+    let clear: number | undefined;
+    copy?.addEventListener('click', async () => {
+      const text = code.textContent ?? '';
+      let message = 'Copied to the clipboard';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        if (!legacyCopy(text)) {
+          getSelection()?.selectAllChildren(code);
+          message = 'Copy blocked: the code is selected, press Ctrl+C or ⌘C';
+        }
+      }
+      if (status) status.textContent = message;
+      clearTimeout(clear);
+      clear = window.setTimeout(() => status && (status.textContent = ''), 4000);
+    });
+    // The mode context is an attribute of the stage, not a prop of the component.
+    const mode = el.querySelector<HTMLSelectElement>('[data-mode-context]');
+    if (mode) {
+      const apply = () => (mode.value ? stage.setAttribute(mode.dataset.modeContext!, mode.value) : stage.removeAttribute(mode.dataset.modeContext!));
+      mode.addEventListener('change', apply);
+      apply();
+    }
+    // Vision simulation: an attribute of the stage, filtered by site.css (open popovers too: the top layer
+    // escapes the filter of the stage).
+    const vision = el.querySelector<HTMLSelectElement>('[data-vision]');
+    if (vision) {
+      const apply = () => (vision.value ? stage.setAttribute('data-vision', vision.value) : stage.removeAttribute('data-vision'));
+      vision.addEventListener('change', apply);
+      apply();
+    }
+    // Text size: after each render, every element of the stage gets its computed font size times the
+    // factor, read for all of them before any is set. Only the text grows, like a browser's text-only
+    // zoom: lengths in px stay, lengths in em follow the text. Icons keep their size: they are glyphs of the
+    // icon font (--font-icon-family) sized by dimension tokens, not text. The code shows the template's HTML, untouched.
+    const textSize = el.querySelector<HTMLSelectElement>('[data-text-size]');
+    const family = (value: string) => value.replace(/["']/g, '').trim();
+    const scaleText = () => {
+      const factor = Number(textSize?.value ?? 1);
+      if (!(factor > 1)) return;
+      const iconFamily = family(getComputedStyle(stage).getPropertyValue('--font-icon-family'));
+      const elements = [...stage.querySelectorAll<HTMLElement | SVGElement>('*')]
+        .map((e) => ({ e, style: getComputedStyle(e) }))
+        .filter(({ style }) => family(style.fontFamily) !== iconFamily)
+        .map(({ e, style }) => ({ e, size: parseFloat(style.fontSize) }));
+      for (const { e, size } of elements) e.style.setProperty('font-size', `${size * factor}px`);
+    };
+    // The highlighter (grammars included) is only fetched on pages with a playground.
+    Promise.all([modules[key](), import('../lib/highlight'), import('../lib/format-html')]).then(([mod, { highlight }, { formatHtml }]) => {
+      const lastValid: Record<string, unknown> = {};
+      const update = () => {
+        const props: Record<string, unknown> = {};
+        for (const field of form.elements) {
+          if (field instanceof HTMLTextAreaElement && field.dataset.json !== undefined) {
+            // A list property is edited as JSON; while it does not parse, the last valid value stays.
+            try {
+              props[field.name] = JSON.parse(field.value);
+              field.removeAttribute('aria-invalid');
+            } catch {
+              field.setAttribute('aria-invalid', 'true');
+              props[field.name] = lastValid[field.name];
+            }
+            lastValid[field.name] = props[field.name];
+            continue;
+          }
+          if (!(field instanceof HTMLInputElement || field instanceof HTMLSelectElement) || !field.name) continue;
+          if (field instanceof HTMLInputElement && field.type === 'checkbox') props[field.name] = field.checked;
+          else if (field instanceof HTMLInputElement && field.type === 'number') props[field.name] = field.value === '' ? undefined : Number(field.value);
+          else if (field.value !== '') props[field.name] = field.value;
+        }
+        const html = mod.render(props);
+        stage.innerHTML = html;
+        scaleText();
+        code.innerHTML = highlight(formatHtml(html), 'html');
+        el.dispatchEvent(new CustomEvent('playground:render', { detail: { props, state: String(props.state ?? 'default') } }));
+      };
+      // Props passed in the query string (e.g. from "Open in playground" on an example) preset the form.
+      const params = new URLSearchParams(location.search);
+      for (const field of form.elements) {
+        if (!(field instanceof HTMLInputElement || field instanceof HTMLSelectElement || field instanceof HTMLTextAreaElement) || !params.has(field.name)) continue;
+        if (field instanceof HTMLInputElement && field.type === 'checkbox') field.checked = params.get(field.name) === 'true';
+        else if (field instanceof HTMLTextAreaElement) field.value = JSON.stringify(JSON.parse(params.get(field.name)!), null, 2);
+        else field.value = params.get(field.name)!;
+      }
+      form.addEventListener('input', update);
+      form.addEventListener('change', update);
+      // The text size sits in the toolbar, out of the form: a new size renders again, then scales.
+      textSize?.addEventListener('change', update);
+      update();
+    });
+  }
+</script>

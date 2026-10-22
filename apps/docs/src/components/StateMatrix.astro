@@ -1,0 +1,50 @@
+---
+/**
+ * Options of one enum property (rows) x the states of one part (columns).
+ * States are forced through the template's `state` prop -> data-state attribute; a part repeated
+ * through a list property gets the state on its single entry (lib/matrix.ts cellProps).
+ * Only states that apply to the web can be rendered; the others are listed under the table.
+ * Each column says which inputs or platforms the state belongs to (from the spec).
+ */
+import type { Template } from '../lib/web';
+import { onWeb, scopeLabel } from '../lib/platforms';
+import { cellProps, type PartMatrix } from '../lib/matrix';
+interface Props {
+  spec: any;
+  template: Template;
+  matrix: PartMatrix;
+  property: any;
+  fixed: { property: any; value: string }[];
+  baseProps: Record<string, unknown>;
+}
+const { spec, template, matrix, property, fixed, baseProps } = Astro.props;
+const all = matrix.states as { id: string; inputs?: string[]; platforms?: string[] }[];
+const states = all.filter(onWeb);
+const elsewhere = all.filter((s) => !onWeb(s));
+const scope = (s: { inputs?: string[]; platforms?: string[] }) => [s.inputs?.length ? s.inputs.join(', ') : '', scopeLabel(s)].filter(Boolean).join(' · ');
+---
+<div class="site-matrix-wrap">
+  <table class="site-matrix">
+    <thead>
+      <tr>
+        <th scope="col">{property.name ?? property.id}</th>
+        {states.map((s) => <th scope="col">{s.id}{scope(s) ? <span class="site-matrix__scope">{scope(s)}</span> : null}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {property.options.map((o: any) => (
+        <tr>
+          <th scope="row"><code>{o.value}</code></th>
+          {states.map((s) => (
+            <td>
+              <div class="site-matrix__cell" set:html={template.render(cellProps(spec, matrix, baseProps, { property, value: o.value }, fixed, s.id))}></div>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+{elsewhere.length ? (
+  <p class="site-muted site-small">Not rendered here (no web rendering): {elsewhere.map((s) => <span class="site-chip"><code>{s.id}</code> <span class="site-muted">{scopeLabel(s)}</span></span>)}</p>
+) : null}

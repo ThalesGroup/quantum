@@ -1,0 +1,195 @@
+/*
+ * Search field — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/search-field.spec.json
+ * Tokens: packages/tokens/dist/css/components/search-field.css (generated from packages/tokens/src/components/search-field.tokens.json)
+ *
+ * Rules:
+ *  - Only --search-field-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (label, control with its search glyph, description, stacked); the native
+ *    search input is the control, drawn by the component.
+ *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
+ *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
+ *    spec order: default < hover < focus-visible < disabled.
+ *  - Private properties (--_*) are the single place an option or a state writes to.
+ */
+
+.ds-search-field {
+  /* Defaults = size "medium", state "default". */
+  --_control-background: var(--search-field-control-background-default);
+  --_control-border-color: var(--search-field-control-border-color-default);
+  --_control-color: var(--search-field-control-color-default);
+  --_placeholder-color: var(--search-field-control-placeholder-color-default);
+  --_label-color: var(--search-field-label-color-default);
+  --_description-color: var(--search-field-description-color-default);
+  --_min-height: var(--search-field-control-min-height-medium);
+  --_padding-inline: var(--search-field-control-padding-inline-medium);
+  --_padding-inline-start: var(--search-field-control-padding-inline-start-medium);
+  --_icon-size: var(--search-field-icon-size-medium);
+  --_icon-color: var(--search-field-icon-color-default);
+  --_font-family: var(--search-field-control-typography-medium-font-family);
+  --_font-size: var(--search-field-control-typography-medium-font-size);
+  --_font-weight: var(--search-field-control-typography-medium-font-weight);
+  --_line-height: var(--search-field-control-typography-medium-line-height);
+  --_letter-spacing: var(--search-field-control-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--search-field-container-gap);
+  min-inline-size: 0;
+  vertical-align: middle;
+}
+
+/* ---- Size ---------------------------------------------------------------- */
+
+.ds-search-field[data-size="small"] {
+  --_min-height: var(--search-field-control-min-height-small);
+  --_padding-inline: var(--search-field-control-padding-inline-small);
+  --_padding-inline-start: var(--search-field-control-padding-inline-start-small);
+  --_icon-size: var(--search-field-icon-size-small);
+  --_font-family: var(--search-field-control-typography-small-font-family);
+  --_font-size: var(--search-field-control-typography-small-font-size);
+  --_font-weight: var(--search-field-control-typography-small-font-weight);
+  --_line-height: var(--search-field-control-typography-small-line-height);
+  --_letter-spacing: var(--search-field-control-typography-small-letter-spacing);
+}
+
+.ds-search-field[data-size="large"] {
+  --_min-height: var(--search-field-control-min-height-large);
+  --_padding-inline: var(--search-field-control-padding-inline-large);
+  --_padding-inline-start: var(--search-field-control-padding-inline-start-large);
+  --_icon-size: var(--search-field-icon-size-large);
+  --_font-family: var(--search-field-control-typography-large-font-family);
+  --_font-size: var(--search-field-control-typography-large-font-size);
+  --_font-weight: var(--search-field-control-typography-large-font-weight);
+  --_line-height: var(--search-field-control-typography-large-line-height);
+  --_letter-spacing: var(--search-field-control-typography-large-letter-spacing);
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.ds-search-field__label {
+  color: var(--_label-color);
+  font-family: var(--search-field-label-typography-font-family);
+  font-size: var(--search-field-label-typography-font-size);
+  font-weight: var(--search-field-label-typography-font-weight);
+  line-height: var(--search-field-label-typography-line-height);
+  letter-spacing: var(--search-field-label-typography-letter-spacing);
+}
+
+/* The field wraps the input and the search glyph drawn over its start edge. */
+.ds-search-field__field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.ds-search-field__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--search-field-icon-margin-inline);
+  display: inline-grid;
+  place-content: center;
+  inline-size: var(--_icon-size);
+  color: var(--_icon-color);
+  font-family: var(--search-field-icon-font-family);
+  font-size: var(--_icon-size);
+  font-weight: var(--search-field-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--search-field-icon-fill),
+    "GRAD" var(--search-field-icon-grade),
+    "opsz" var(--search-field-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-search-field__control {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-height: var(--_min-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--_padding-inline);
+  padding-inline-start: var(--_padding-inline-start);
+  border: var(--search-field-control-border-width) solid var(--_control-border-color);
+  border-radius: var(--search-field-control-border-radius);
+  background-color: var(--_control-background);
+  color: var(--_control-color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--search-field-control-transition-duration) var(--search-field-control-transition-easing),
+    border-color var(--search-field-control-transition-duration) var(--search-field-control-transition-easing);
+}
+
+.ds-search-field__control::placeholder {
+  color: var(--_placeholder-color);
+  opacity: 1;
+}
+
+.ds-search-field__description {
+  margin: 0;
+  color: var(--_description-color);
+  font-family: var(--search-field-description-typography-font-family);
+  font-size: var(--search-field-description-typography-font-size);
+  font-weight: var(--search-field-description-typography-font-weight);
+  line-height: var(--search-field-description-typography-line-height);
+  letter-spacing: var(--search-field-description-typography-letter-spacing);
+}
+
+
+/* ---- States -------------------------------------------------------------- */
+
+.ds-search-field:where([data-state="hover"]) .ds-search-field__control:not(:disabled),
+.ds-search-field:not([data-state]) .ds-search-field__control:hover:not(:disabled) {
+  --_control-background: var(--search-field-control-background-hover);
+}
+
+
+
+.ds-search-field:where([data-state="disabled"]),
+.ds-search-field:has(.ds-search-field__control:disabled) {
+  --_label-color: var(--search-field-label-color-disabled);
+  --_description-color: var(--search-field-description-color-disabled);
+}
+.ds-search-field:where([data-state="disabled"]) .ds-search-field__control,
+.ds-search-field__control:disabled {
+  --_control-background: var(--search-field-control-background-disabled);
+  --_control-border-color: var(--search-field-control-border-color-disabled);
+  --_control-color: var(--search-field-control-color-disabled);
+  --_placeholder-color: var(--search-field-control-placeholder-color-disabled);
+  cursor: not-allowed;
+}
+.ds-search-field:where([data-state="disabled"]),
+.ds-search-field:has(.ds-search-field__control:disabled) {
+  --_icon-color: var(--search-field-icon-color-disabled);
+}
+
+.ds-search-field__control:focus {
+  outline: none;
+}
+
+.ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control,
+.ds-search-field__control:focus-visible {
+  outline: var(--search-field-control-outline-width-focus-visible) solid var(--search-field-control-outline-color-focus-visible);
+  outline-offset: var(--search-field-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-search-field__control {
+    transition: none;
+  }
+}

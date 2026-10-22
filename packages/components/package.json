@@ -1,0 +1,44 @@
+{
+  "name": "@quantum-ds/components",
+  "version": "0.1.0-alpha.0",
+  "description": "Quantum components: technology-agnostic specifications (anatomy, properties, states, accessibility contract, decision log) as JSON, with the schemas they validate against, built on @quantum-ds/tokens",
+  "author": "Quantum Core Team",
+  "license": "MIT",
+  "homepage": "https://github.com/ThalesGroup/quantum/tree/main/packages/components#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThalesGroup/quantum.git",
+    "directory": "packages/components"
+  },
+  "bugs": {
+    "url": "https://github.com/ThalesGroup/quantum/issues"
+  },
+  "keywords": [
+    "design-system",
+    "components",
+    "specifications",
+    "json-schema",
+    "accessibility"
+  ],
+  "type": "module",
+  "exports": {
+    "./components/*": "./dist/components/*",
+    "./foundations/*": "./dist/foundations/*",
+    "./schema/*": "./dist/schema/*",
+    "./a11y/*": "./dist/a11y/*",
+    "./platforms.json": "./dist/platforms.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "CHANGELOG.md",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-components.mjs",
+    "prepack": "node ../../scripts/build-components.mjs",
+    "check": "node ../../scripts/validate.mjs"
+  }
+}

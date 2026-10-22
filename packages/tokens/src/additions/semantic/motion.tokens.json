@@ -1,0 +1,29 @@
+{
+  "$description": "Motion: durations and easing curves. Not in the Figma library: added by the design system.",
+  "duration": {
+    "$type": "duration",
+    "fast": {
+      "$value": {
+        "value": 150,
+        "unit": "ms"
+      }
+    },
+    "normal": {
+      "$value": {
+        "value": 250,
+        "unit": "ms"
+      }
+    }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "standard": {
+      "$value": [
+        0.2,
+        0,
+        0,
+        1
+      ]
+    }
+  }
+}

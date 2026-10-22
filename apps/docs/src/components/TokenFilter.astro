@@ -1,0 +1,83 @@
+---
+// Filters the TokenTable rows of the enclosing <section>: every space-separated term must appear
+// in the row's path, description, type, value, resolved value or CSS variable. "." and "-" are
+// interchangeable, so a token path matches its CSS variable and the other way round. Groups
+// (.site-subsection) without a match are hidden, and the .site-toc links pointing to them are
+// disabled in place (not hidden, so the layout does not move); a [data-token-count] inside a group
+// shows shown/total.
+// The query is kept in ?q= so a filtered view can be linked.
+interface Props {
+  total: number;
+}
+import { getTemplate } from '../lib/web';
+const { total } = Astro.props;
+const noun = (n: number) => (n === 1 ? 'token' : 'tokens');
+---
+<div class="site-filter-bar" data-token-filter data-total={total}>
+  <div class="site-filter" set:html={getTemplate('search-field')?.render({ label: 'Filter tokens', id: `token-filter-${total}`, size: 'small', placeholder: 'Filter by path, value or CSS variable', attrs: { autocomplete: 'off', spellcheck: 'false' } })}></div>
+  <span class="site-muted site-small" role="status" data-token-filter-status>{total} {noun(total)}</span>
+</div>
+<p class="site-filter-empty" hidden data-token-filter-empty>No token matches.</p>
+
+<script>
+  const normalize = (s: string) => s.toLowerCase().replaceAll('.', '-');
+  const noun = (n: number) => (n === 1 ? 'token' : 'tokens');
+
+  for (const bar of document.querySelectorAll<HTMLElement>('[data-token-filter]')) {
+    const scope = bar.closest('section') ?? document.body;
+    const input = bar.querySelector<HTMLInputElement>('input')!;
+    const status = bar.querySelector<HTMLElement>('[data-token-filter-status]')!;
+    const empty = scope.querySelector<HTMLElement>('[data-token-filter-empty]');
+    const total = Number(bar.dataset.total);
+    const groups = [...scope.querySelectorAll<HTMLElement>('.site-subsection')].map((el) => ({
+      el,
+      count: el.querySelector<HTMLElement>('[data-token-count]'),
+      rows: [...el.querySelectorAll<HTMLElement>('tr[data-search]')].map((tr) => ({ tr, text: normalize(tr.dataset.search!) })),
+    }));
+    const tocLinks = [...scope.querySelectorAll<HTMLAnchorElement>('.site-toc a[href^="#"]')].map((a) => ({
+      a,
+      target: scope.querySelector<HTMLElement>(`[id="${a.hash.slice(1)}"]`),
+    }));
+
+    const apply = () => {
+      const terms = normalize(input.value).split(/\s+/).filter(Boolean);
+      let shown = 0;
+      for (const g of groups) {
+        let inGroup = 0;
+        for (const r of g.rows) {
+          const match = terms.every((t) => r.text.includes(t));
+          r.tr.hidden = !match;
+          if (match) inGroup++;
+        }
+        g.el.hidden = inGroup === 0;
+        if (g.count) g.count.textContent = terms.length ? `(${inGroup}/${g.rows.length})` : `(${g.rows.length})`;
+        shown += inGroup;
+      }
+      for (const l of tocLinks) {
+        if (l.target?.hidden) {
+          l.a.setAttribute('aria-disabled', 'true');
+          l.a.tabIndex = -1;
+        } else {
+          l.a.removeAttribute('aria-disabled');
+          l.a.removeAttribute('tabindex');
+        }
+      }
+      status.textContent = terms.length ? `${shown} of ${total} ${noun(total)}` : `${total} ${noun(total)}`;
+      if (empty) empty.hidden = shown > 0;
+    };
+
+    input.addEventListener('input', () => {
+      apply();
+      const url = new URL(location.href);
+      if (input.value.trim()) url.searchParams.set('q', input.value.trim());
+      else url.searchParams.delete('q');
+      history.replaceState(history.state, '', url);
+    });
+
+    const initial = new URLSearchParams(location.search).get('q');
+    if (initial) {
+      input.value = initial;
+      apply();
+    }
+  }
+</script>

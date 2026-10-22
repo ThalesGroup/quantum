@@ -1,0 +1,120 @@
+{
+  "$description": "Component tokens for Breadcrumb. Path grammar: breadcrumb.<part>.<property>[.<size>][.<state>]. Parts, options and states must exist in packages/components/specs/components/breadcrumb.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "breadcrumb": {
+    "container": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.4}",
+        "$description": "Between an item, the separator and the next item."
+      }
+    },
+    "link": {
+      "$description": "A link to an ancestor page, or the current page (not a link).",
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.secondary}"
+        },
+        "hover": {
+          "$value": "{global.text.on-base.neutral.primary}"
+        },
+        "current": {
+          "$value": "{global.text.on-base.neutral.primary}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.2xs}"
+      },
+      "min-height": {
+        "$type": "dimension",
+        "$value": "{space.24}"
+      },
+      "outline-width": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.width}"
+        }
+      },
+      "outline-offset": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.offset}"
+        }
+      },
+      "outline-color": {
+        "$type": "color",
+        "focus-visible": {
+          "$value": "{color.focus.ring}"
+        }
+      },
+      "transition": {
+        "duration": {
+          "$type": "duration",
+          "$value": "{duration.fast}"
+        },
+        "easing": {
+          "$type": "cubicBezier",
+          "$value": "{easing.standard}"
+        }
+      }
+    },
+    "separator": {
+      "$description": "Chevron glyph of the icon font between two items.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.20}"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{global.icon.on-base.neutral.tertiary}"
+      },
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.2}"
+        },
+        "medium": {
+          "$value": "{size.3}"
+        }
+      }
+    }
+  }
+}

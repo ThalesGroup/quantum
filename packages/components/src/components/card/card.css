@@ -1,0 +1,51 @@
+/*
+ * Card — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/card.spec.json
+ * Tokens: packages/tokens/dist/css/components/card.css (generated from packages/tokens/src/components/card.tokens.json)
+ *
+ * Rules:
+ *  - Only --card-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a plain container on a surface level of the Color foundation; the surface is a
+ *    data attribute; a card has no interaction state of its own.
+ */
+
+.ds-card {
+  --_background: var(--card-container-background-level-1);
+  --_border-color: var(--card-container-border-color-level-1);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-container-gap);
+  min-inline-size: 0;
+  padding: var(--card-container-padding);
+  border: var(--card-container-border-width) solid var(--_border-color);
+  border-radius: var(--card-container-border-radius);
+  background-color: var(--_background);
+  color: var(--card-description-color);
+}
+
+.ds-card[data-surface="level-2"] {
+  --_background: var(--card-container-background-level-2);
+  --_border-color: var(--card-container-border-color-level-2);
+}
+
+.ds-card__title {
+  margin: 0;
+  color: var(--card-title-color);
+  font-family: var(--card-title-typography-font-family);
+  font-size: var(--card-title-typography-font-size);
+  font-weight: var(--card-title-typography-font-weight);
+  line-height: var(--card-title-typography-line-height);
+  letter-spacing: var(--card-title-typography-letter-spacing);
+}
+
+.ds-card__description {
+  margin: 0;
+  color: var(--card-description-color);
+  font-family: var(--card-description-typography-font-family);
+  font-size: var(--card-description-typography-font-size);
+  font-weight: var(--card-description-typography-font-weight);
+  line-height: var(--card-description-typography-line-height);
+  letter-spacing: var(--card-description-typography-letter-spacing);
+}

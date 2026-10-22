@@ -1,0 +1,120 @@
+/*
+ * Breadcrumb — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/breadcrumb.spec.json
+ * Tokens: packages/tokens/dist/css/components/breadcrumb.css (generated from packages/tokens/src/components/breadcrumb.tokens.json)
+ *
+ * Rules:
+ *  - Only --breadcrumb-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a nav landmark; items are an ordered list of links, separated by a chevron; the
+ *    last item is the current page.
+ *  - Size is a data attribute on the root; link states are native pseudo-classes, forced with
+ *    [data-state] on the root (every item) or on one item.
+ */
+
+.ds-breadcrumb {
+  --_font-family: var(--breadcrumb-link-typography-medium-font-family);
+  --_font-size: var(--breadcrumb-link-typography-medium-font-size);
+  --_font-weight: var(--breadcrumb-link-typography-medium-font-weight);
+  --_line-height: var(--breadcrumb-link-typography-medium-line-height);
+  --_letter-spacing: var(--breadcrumb-link-typography-medium-letter-spacing);
+  --_separator-size: var(--breadcrumb-separator-size-medium);
+
+  box-sizing: border-box;
+  min-inline-size: 0;
+}
+
+.ds-breadcrumb[data-size="small"] {
+  --_font-family: var(--breadcrumb-link-typography-small-font-family);
+  --_font-size: var(--breadcrumb-link-typography-small-font-size);
+  --_font-weight: var(--breadcrumb-link-typography-small-font-weight);
+  --_line-height: var(--breadcrumb-link-typography-small-line-height);
+  --_letter-spacing: var(--breadcrumb-link-typography-small-letter-spacing);
+  --_separator-size: var(--breadcrumb-separator-size-small);
+}
+
+.ds-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--breadcrumb-container-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-breadcrumb__item {
+  --_color: var(--breadcrumb-link-color-default);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--breadcrumb-container-gap);
+}
+
+.ds-breadcrumb__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--breadcrumb-link-min-height);
+  border-radius: var(--breadcrumb-link-border-radius);
+  color: var(--_color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  text-decoration: underline;
+  text-underline-offset: calc(var(--_font-size) * 0.15);
+  transition: color var(--breadcrumb-link-transition-duration) var(--breadcrumb-link-transition-easing);
+}
+
+.ds-breadcrumb__separator {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_separator-size);
+  block-size: var(--_separator-size);
+  overflow: hidden;
+  color: var(--breadcrumb-separator-color);
+  font-family: var(--breadcrumb-separator-font-family);
+  font-size: var(--_separator-size);
+  font-weight: var(--breadcrumb-separator-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--breadcrumb-separator-fill),
+    "GRAD" var(--breadcrumb-separator-grade),
+    "opsz" var(--breadcrumb-separator-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_separator-size);
+  letter-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+:where(.ds-breadcrumb[data-state="hover"], .ds-breadcrumb__item[data-state="hover"]) .ds-breadcrumb__link,
+.ds-breadcrumb__link:hover {
+  --_color: var(--breadcrumb-link-color-hover);
+}
+
+/* The current page: no link, no underline, stronger color. */
+:where(.ds-breadcrumb[data-state="current"], .ds-breadcrumb__item[data-state="current"]) .ds-breadcrumb__link,
+.ds-breadcrumb__link[aria-current] {
+  --_color: var(--breadcrumb-link-color-current);
+  text-decoration: none;
+}
+
+.ds-breadcrumb__link:focus {
+  outline: none;
+}
+
+:where(.ds-breadcrumb[data-state="focus-visible"], .ds-breadcrumb__item[data-state="focus-visible"]) .ds-breadcrumb__link,
+.ds-breadcrumb__link:focus-visible {
+  outline: var(--breadcrumb-link-outline-width-focus-visible) solid var(--breadcrumb-link-outline-color-focus-visible);
+  outline-offset: var(--breadcrumb-link-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-breadcrumb__link {
+    transition: none;
+  }
+}

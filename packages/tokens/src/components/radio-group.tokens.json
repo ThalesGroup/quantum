@@ -1,0 +1,100 @@
+{
+  "$description": "Component tokens for Radio group. Path grammar: radio-group.<part>.<property>[.<orientation>|.<size>][.<state>]: colors vary by state only, the gap between options by orientation, control dimensions and type by size. Parts, options and states must exist in packages/components/specs/components/radio-group.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "radio-group": {
+    "container": {
+      "row-gap": { "$type": "dimension", "$value": "{space.8}", "$description": "Between the legend, the description, the options and the error message." },
+      "gap": {
+        "$type": "dimension",
+        "$description": "Between two options.",
+        "vertical": { "$value": "{space.8}" },
+        "horizontal": { "$value": "{space.16}" }
+      }
+    },
+    "legend": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.primary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": { "$type": "typography", "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+    },
+    "description": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.secondary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": { "$type": "typography", "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+    },
+    "error-message": {
+      "color": { "$type": "color", "$value": "{global.text.on-base.functional.error.default}" },
+      "typography": { "$type": "typography", "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+    },
+    "option": {
+      "column-gap": { "$type": "dimension", "$value": "{space.8}", "$description": "Between the radio and its label column." },
+      "row-gap": { "$type": "dimension", "$value": "{space.2}", "$description": "Between an option's label and its description." }
+    },
+    "control": {
+      "$description": "The radio: a native radio button drawn by the component. The dot is drawn in its color token.",
+      "size": {
+        "$type": "dimension",
+        "small": { "$value": "{size.2}" },
+        "medium": { "$value": "{size.3}" }
+      },
+      "border-radius": { "$type": "dimension", "$value": "{corner-radius.full}" },
+      "border-width": { "$type": "dimension", "$value": "{stroke-width.md}" },
+      "background": {
+        "$type": "color",
+        "default": { "$value": "{global.bg.level.0.default}" },
+        "hover": { "$value": "{global.bg.level.0.hover}" },
+        "checked": { "$value": "{global.bg.accent.brand.default}" },
+        "disabled": { "$value": "{global.bg.state.disabled.default}" }
+      },
+      "border-color": {
+        "$type": "color",
+        "default": { "$value": "{global.border.accent.neutral.default}" },
+        "hover": { "$value": "{global.border.accent.neutral.default}" },
+        "checked": { "$value": "{global.border.accent.brand.default}" },
+        "invalid": { "$value": "{global.border.base.functional.error.default}" },
+        "disabled": { "$value": "{global.border.state.disabled.default}" }
+      },
+      "color": {
+        "$type": "color",
+        "$description": "Color of the dot shown when checked.",
+        "checked": { "$value": "{global.icon.on-accent.brand.default}" },
+        "disabled": { "$value": "{global.icon.state.disabled.default}" }
+      },
+      "outline-width": { "$type": "dimension", "focus-visible": { "$value": "{focus.ring.width}" } },
+      "outline-offset": { "$type": "dimension", "focus-visible": { "$value": "{focus.ring.offset}" } },
+      "outline-color": { "$type": "color", "focus-visible": { "$value": "{color.focus.ring}" } },
+      "transition": {
+        "duration": { "$type": "duration", "$value": "{duration.fast}" },
+        "easing": { "$type": "cubicBezier", "$value": "{easing.standard}" }
+      }
+    },
+    "option-label": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.primary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+      }
+    },
+    "option-description": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.secondary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.xs}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+      }
+    }
+  }
+}

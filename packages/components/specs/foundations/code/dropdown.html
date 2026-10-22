@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+  <head>
+    <meta charset="utf-8">
+    <title>Dropdown &middot; without script</title>
+    <link rel="stylesheet" href="node_modules/@quantum-ds/tokens/dist/css/index.css">
+    <!-- The component styles, implemented from the specs. -->
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+      .stage { padding: 2rem; background: var(--global-bg-level-0-default); }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <!-- The trigger opens the menu natively: no script ships with it. -->
+      <div class="ds-dropdown">
+        <button
+          type="button"
+          class="ds-button ds-dropdown__trigger"
+          data-emphasis="subtle"
+          id="actions-trigger"
+          popovertarget="actions"
+        >
+          <span class="ds-button__label">Actions</span>
+          <span class="ds-button__icon" aria-hidden="true">expand_more</span>
+        </button>
+        <div class="ds-dropdown__menu" id="actions" popover
+             aria-labelledby="actions-trigger">
+          <ul class="ds-dropdown__group">
+            <li>
+              <button type="button" class="ds-dropdown__item"
+                      popovertarget="actions" popovertargetaction="hide">
+                Duplicate
+              </button>
+            </li>
+            <li>
+              <button type="button" class="ds-dropdown__item"
+                      data-intent="error" disabled>Delete project</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      // The page, not the component, remembers the mode the reader picked.
+      const saved = localStorage.getItem('theme');
+      const modes = ['light', 'dark', 'auto'];
+      if (modes.includes(saved)) document.documentElement.dataset.theme = saved;
+    </script>
+  </body>
+</html>

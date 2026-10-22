@@ -1,0 +1,101 @@
+/*
+ * Alert — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/alert.spec.json
+ * Tokens: packages/tokens/dist/css/components/alert.css (generated from packages/tokens/src/components/alert.tokens.json)
+ *
+ * Rules:
+ *  - Only --alert-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - Intent is a data attribute; an alert has no interaction state.
+ *  - Each intent sets the private colors, wrapped in :where() so every intent shares one specificity.
+ */
+
+.ds-alert {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--alert-container-gap);
+  padding: var(--alert-container-padding);
+  border: var(--alert-container-border-width) solid var(--_border-color);
+  border-radius: var(--alert-container-border-radius);
+  background-color: var(--_background);
+  color: var(--alert-message-color);
+}
+
+.ds-alert__icon {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--alert-icon-size);
+  block-size: var(--alert-icon-size);
+  overflow: hidden;
+  color: var(--_icon-color);
+  font-family: var(--alert-icon-font-family);
+  font-size: var(--alert-icon-size);
+  font-weight: var(--alert-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--alert-icon-fill),
+    "GRAD" var(--alert-icon-grade),
+    "opsz" var(--alert-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--alert-icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-alert__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--alert-content-gap);
+  min-inline-size: 0;
+}
+
+.ds-alert__title {
+  margin: 0;
+  color: var(--_title-color);
+  font-family: var(--alert-title-typography-font-family);
+  font-size: var(--alert-title-typography-font-size);
+  font-weight: var(--alert-title-typography-font-weight);
+  line-height: var(--alert-title-typography-line-height);
+  letter-spacing: var(--alert-title-typography-letter-spacing);
+}
+
+.ds-alert__message {
+  margin: 0;
+  color: var(--alert-message-color);
+  font-family: var(--alert-message-typography-font-family);
+  font-size: var(--alert-message-typography-font-size);
+  font-weight: var(--alert-message-typography-font-weight);
+  line-height: var(--alert-message-typography-line-height);
+  letter-spacing: var(--alert-message-typography-letter-spacing);
+}
+
+/* ---- Intent ---------------------------------------------------------------- */
+
+.ds-alert:where([data-intent="info"], :not([data-intent])) {
+  --_background: var(--alert-container-background-info);
+  --_border-color: var(--alert-container-border-color-info);
+  --_icon-color: var(--alert-icon-color-info);
+  --_title-color: var(--alert-title-color-info);
+}
+.ds-alert:where([data-intent="success"]) {
+  --_background: var(--alert-container-background-success);
+  --_border-color: var(--alert-container-border-color-success);
+  --_icon-color: var(--alert-icon-color-success);
+  --_title-color: var(--alert-title-color-success);
+}
+.ds-alert:where([data-intent="warning"]) {
+  --_background: var(--alert-container-background-warning);
+  --_border-color: var(--alert-container-border-color-warning);
+  --_icon-color: var(--alert-icon-color-warning);
+  --_title-color: var(--alert-title-color-warning);
+}
+.ds-alert:where([data-intent="error"]) {
+  --_background: var(--alert-container-background-error);
+  --_border-color: var(--alert-container-border-color-error);
+  --_icon-color: var(--alert-icon-color-error);
+  --_title-color: var(--alert-title-color-error);
+}

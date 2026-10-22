@@ -1,0 +1,875 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "icon-button",
+  "name": "Icon button",
+  "version": "0.5.1",
+  "status": "draft",
+  "role": "button",
+  "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
+  "description": "An icon button performs an action, like a button, but shows only an icon: it saves room in toolbars, table rows and headers where the action is familiar enough to be recognized from its symbol. It has no visible text, so it always carries a label that assistive technology announces as its name. Like every button, it never navigates.",
+  "tags": [
+    "action",
+    "toolbar"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Interactive, square root. Receives focus, carries background, border, size, the state styling and the accessible name."
+    },
+    {
+      "id": "icon",
+      "role": "icon",
+      "required": true,
+      "decorative": true,
+      "description": "Glyph of the icon font, the only visible content. Takes the color a label would take. Hidden from assistive technology: the container's name says what it means."
+    }
+  ],
+  "properties": [
+    {
+      "id": "emphasis",
+      "name": "Emphasis",
+      "type": "enum",
+      "default": "accent",
+      "description": "Visual weight of the icon button, from strongest to weakest.",
+      "affects": [
+        "container",
+        "icon"
+      ],
+      "options": [
+        {
+          "value": "accent",
+          "description": "Highest emphasis: strong fill in the intent color, contrasting glyph."
+        },
+        {
+          "value": "subtle",
+          "description": "Medium emphasis: tinted fill and light border in the intent color."
+        },
+        {
+          "value": "ghost",
+          "description": "Lowest emphasis: glyph only at rest; a tinted fill and a light border appear on hover and press."
+        }
+      ]
+    },
+    {
+      "id": "intent",
+      "name": "Intent",
+      "type": "enum",
+      "default": "neutral",
+      "description": "Kind of action, independent of emphasis. Every intent exists at every emphasis.",
+      "affects": [
+        "container",
+        "icon"
+      ],
+      "options": [
+        {
+          "value": "neutral",
+          "description": "Generic actions that carry no brand or status meaning."
+        },
+        {
+          "value": "brand",
+          "description": "Actions that carry the brand color: the main path through a flow."
+        },
+        {
+          "value": "error",
+          "description": "Destructive or irreversible actions (delete, remove, revoke)."
+        }
+      ]
+    },
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Square side (minimum width and height), corner radius and glyph size scale together: the side is the height of the button of the same size, the glyph the size of its icon.",
+      "affects": [
+        "container",
+        "icon"
+      ],
+      "options": [
+        {
+          "value": "xsmall",
+          "description": "Very dense UIs: inline in table cells, compact lists. Exactly the 24 x 24 px minimum target on the web."
+        },
+        {
+          "value": "small",
+          "description": "Dense UIs, toolbars, table rows."
+        },
+        {
+          "value": "medium",
+          "description": "Default."
+        },
+        {
+          "value": "large",
+          "description": "Marketing surfaces, primary call to action on a page."
+        }
+      ]
+    },
+    {
+      "id": "icon",
+      "name": "Icon",
+      "type": "icon",
+      "required": true,
+      "bindsTo": "icon",
+      "description": "Material Symbols name of the glyph (add, delete, more_vert). Choose a symbol people already associate with the action."
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "description": "Accessible name of the button, never shown: names the action, not the symbol (Delete row, not Trash)."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Prevents activation; hover and active feedback no longer apply. Prefer keeping actions enabled and validating on activation."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "Resting state."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "description": "Pointer over the container. Needs a pointing device: touch has no hover. Fill and border move one step along the intent ramp; the glyph keeps its color, except a ghost brand glyph, which takes the tinted fill's brand color."
+    },
+    {
+      "id": "active",
+      "trigger": "interaction",
+      "description": "Pointer, finger or key pressed down: the press state. Fill and border move a second step along the intent ramp."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "description": "Keyboard focus. Shows the shared focus ring outside the border; pointer focus shows none."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "description": "Non-interactive. Colors drop to the shared disabled palette whatever the emphasis and intent; hover and active do not apply."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "center",
+    "justify": "center",
+    "wrap": false,
+    "sizing": "fixed",
+    "notes": [
+      "The container is a square: minimum width and minimum height both come from the size option, so the container stays square at every size. Its side is the height of the button of the same size.",
+      "No padding: the glyph sits centered in the square.",
+      "The glyph box is the icon size of the size option, the size of the button's icon."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "button",
+    "name": {
+      "text": "Computed from the label property, which the container carries as its accessible label (aria-label on the web). The glyph is hidden from assistive technology and adds nothing to the name.",
+      "refs": [
+        "apg-button-roles",
+        "accname-label",
+        "accname-hidden"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to the button. A disabled button is not focusable and is skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "Activates the button.",
+        "refs": [
+          "apg-button-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Space",
+        "action": "Activates the button.",
+        "refs": [
+          "apg-button-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Expose the button role, its name and its disabled state through the platform's native button control rather than a custom view, so assistive technology receives them without extra work.",
+        "refs": [
+          "wcag:4.1.2",
+          "hig-buttons-style",
+          "compose-interactive-elements"
+        ]
+      },
+      {
+        "text": "Use the native button element: it exposes the role and the disabled state without ARIA. Do not add role=\"button\" to it.",
+        "refs": [
+          "html-aria-button",
+          "html-aam-button"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Use an icon button for actions and a link for navigation: the role must match the function the control provides.",
+        "refs": [
+          "apg-button",
+          "hig-buttons"
+        ]
+      },
+      {
+        "text": "Every icon button has a name that describes its purpose: the label property is required, because the icon is the only visible content and a control made of non-text content needs a name.",
+        "refs": [
+          "wcag:1.1.1",
+          "wcag:4.1.2",
+          "apg-button-roles"
+        ]
+      },
+      {
+        "text": "The label is set as aria-label on the button, which takes precedence over its content in the accessible name computation.",
+        "refs": [
+          "wcag-aria6",
+          "accname-label"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Hide the glyph with aria-hidden=\"true\": an icon-font glyph is written as its ligature name (delete, more_vert), which would otherwise be read.",
+        "refs": [
+          "aria-hidden",
+          "accname-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Give the button an alternative label for VoiceOver: the icon alone does not describe the action.",
+        "refs": [
+          "hig-voiceover-descriptions"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Pass the label as the contentDescription of the icon inside the IconButton: the framework cannot describe a graphic element on its own.",
+        "refs": [
+          "compose-graphic-elements"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "With no visible text, WCAG 2.5.3 Label in Name does not apply; the name describes the function, not the symbol.",
+        "refs": [
+          "wcag:2.5.3"
+        ]
+      },
+      {
+        "text": "Never rely on color alone to convey emphasis or intent: an error-intent icon button names the consequence in its label and uses a symbol that shows it.",
+        "refs": [
+          "wcag:1.4.1",
+          "hig-accessibility-vision"
+        ]
+      },
+      {
+        "text": "The glyph is non-text content (a symbol), so it needs 3:1 against the container background in every color mode, emphasis, intent and enabled state; it takes the icon colors of the mapped roles, which equal the button's label colors (decision same-rendering-as-button). They clear 3:1 everywhere; with the Figma library's error colors they no longer reach the 4.5:1 of text in every state. Disabled icon buttons are inactive and exempt.",
+        "refs": [
+          "wcag:1.4.11",
+          "wcag:1.4.3",
+          "understanding-ntc-symbols"
+        ]
+      },
+      {
+        "text": "The glyph, not the border, identifies the control: the light borders of the subtle and ghost emphases, and the absent border of a ghost icon button at rest, need no 3:1 boundary contrast.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-ntc-boundaries"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the icon button receives keyboard focus, and contrasts at least 3:1 with the adjacent colors in every color mode.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "The focus ring is 2.4 px thick and drawn outside the border, so it covers at least the area of a 2 CSS pixel thick perimeter of the button at 3:1 or more, as WCAG 2.4.13 Focus Appearance asks (AAA, adopted as extra quality).",
+        "refs": [
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels: the container is a square whose side is the minimum height; extra small sits exactly at that minimum.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "Apple recommends a hit region of at least 44 x 44 pt. The extra small, small and medium icon buttons (24, 28 and 36 pt square) fall under it on iOS today: the Figma library has no platform heights.",
+        "refs": [
+          "hig-buttons-best-practices",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp. Every size (24, 28, 36 and 44 dp square) falls under it on Android today: the Figma library has no platform heights.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "The native disabled attribute removes the button from the focus order. When people need to discover why an action is unavailable, keep the button enabled and explain on activation, or keep it focusable with aria-disabled.",
+        "refs": [
+          "html-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Always include a press state: without one a custom button feels unresponsive. The active state is that press state.",
+        "refs": [
+          "hig-buttons-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Color transitions are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3"
+        ]
+      },
+      {
+        "text": "The transition is switched off under prefers-reduced-motion: reduce.",
+        "refs": [
+          "mdn-reduced-motion"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "When the Reduce Motion setting is on, reduce automatic and repetitive animations.",
+        "refs": [
+          "hig-accessibility-cognitive"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-button",
+        "title": "APG: Button pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+        "id": "apg-button-keyboard",
+        "title": "APG: Button pattern, keyboard interaction",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/#keyboardinteraction"
+      },
+      {
+        "id": "apg-button-roles",
+        "title": "APG: Button pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/#roles_states_properties"
+      },
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "html-aria-button",
+        "title": "ARIA in HTML: button element",
+        "url": "https://www.w3.org/TR/html-aria/#el-button"
+      },
+      {
+        "id": "html-aam-button",
+        "title": "HTML-AAM: button element",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-button"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "accname-label",
+        "title": "AccName 1.2: aria-label (step 2C)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_label"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: hidden nodes are excluded (step 2A)",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "wcag-aria6",
+        "title": "WCAG 2.2 Technique ARIA6: Using aria-label to provide labels for objects",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA6"
+      },
+      {
+        "id": "understanding-ntc-symbols",
+        "title": "Understanding WCAG 1.4.11: symbolic or graphical text characters",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#symbolic-or-graphical-text-characters"
+      },
+      {
+        "id": "understanding-ntc-boundaries",
+        "title": "Understanding WCAG 1.4.11: boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "hig-buttons",
+        "title": "Apple HIG: Buttons",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/buttons"
+      },
+      {
+        "id": "hig-buttons-best-practices",
+        "title": "Apple HIG: Buttons, best practices (hit region, press state)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices"
+      },
+      {
+        "id": "hig-buttons-style",
+        "title": "Apple HIG: Buttons, style (system buttons carry accessibility support)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/buttons#Style"
+      },
+      {
+        "id": "hig-accessibility-vision",
+        "title": "Apple HIG: Accessibility, vision (contrast, color alone)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Vision"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "hig-accessibility-cognitive",
+        "title": "Apple HIG: Accessibility, cognitive (Reduce Motion)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive"
+      },
+      {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (alternative labels)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-interactive-elements",
+        "title": "Jetpack Compose accessibility: interactive elements (Button semantics)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The label names the action, starting with a verb: Delete row, Close dialog, More actions. Never the name of the symbol (Trash, X, Dots).",
+      "Sentence case, no trailing punctuation.",
+      "Keep labels short: one to three words, like a button label.",
+      "Use an icon button only when the symbol is familiar for the action; otherwise use a button with a text label.",
+      "With the error intent, the label names the consequence: Delete project, Remove member."
+    ]
+  },
+  "examples": [
+    {
+      "id": "accent-neutral",
+      "name": "Accent neutral",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "icon": "add",
+        "label": "Add item"
+      }
+    },
+    {
+      "id": "subtle-neutral",
+      "name": "Subtle neutral",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "icon": "edit",
+        "label": "Edit"
+      }
+    },
+    {
+      "id": "ghost-neutral",
+      "name": "Ghost neutral",
+      "description": "Overflow menu of a card or a row.",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "neutral",
+        "icon": "more_vert",
+        "label": "More actions"
+      }
+    },
+    {
+      "id": "accent-brand",
+      "name": "Accent brand",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "icon": "arrow_forward",
+        "label": "Next step"
+      }
+    },
+    {
+      "id": "subtle-brand",
+      "name": "Subtle brand",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "brand",
+        "icon": "share",
+        "label": "Share"
+      }
+    },
+    {
+      "id": "ghost-error-small",
+      "name": "Ghost error, small",
+      "description": "Destructive action repeated in a list: the label names what is deleted.",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "error",
+        "size": "small",
+        "icon": "delete",
+        "label": "Delete row"
+      }
+    },
+    {
+      "id": "ghost-neutral-xsmall",
+      "name": "Ghost neutral, extra small",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "neutral",
+        "size": "xsmall",
+        "icon": "close",
+        "label": "Remove filter"
+      }
+    },
+    {
+      "id": "accent-brand-large",
+      "name": "Accent brand, large",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "size": "large",
+        "icon": "add",
+        "label": "Create project"
+      }
+    },
+    {
+      "id": "subtle-neutral-disabled",
+      "name": "Subtle neutral, disabled",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "icon": "download",
+        "label": "Download",
+        "disabled": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/icon-button.tokens.json",
+    "prefix": "icon-button"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/icon-button/icon-button.css",
+      "template": "packages/components/src/components/icon-button/icon-button.template.mjs",
+      "selector": ".ds-icon-button",
+      "element": "button",
+      "attributes": {
+        "emphasis": "data-emphasis",
+        "intent": "data-intent",
+        "size": "data-size",
+        "label": "aria-label",
+        "disabled": "disabled"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-icon-button",
+        "icon": ".ds-icon-button__icon"
+      }
+    }
+  },
+  "related": [
+    "button"
+  ],
+  "decisions": [
+    {
+      "id": "default-size-medium",
+      "date": "2026-10-15",
+      "version": "0.5.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Without a size, an icon button is medium (36 px), like the button (Button decision default-size-medium). The icon=only variant of the Figma prototype's Button set defaults to xsmall.",
+      "rationale": "Every component with sizes in the system defaults to medium (text field, select, search field, number field, textarea, dropdown, icon button), so controls placed together without a size get the same size step; the prototype's xsmall default is also the top-left variant of its Button set and may come from the set's layout rather than from a choice.",
+      "tokens": [
+        "icon-button.container.min-height.medium",
+        "icon-button.container.min-width.medium"
+      ]
+    },
+    {
+      "id": "same-rendering-as-button",
+      "date": "2026-10-15",
+      "version": "0.4.0",
+      "area": "variant",
+      "status": "active",
+      "text": "The icon button always renders the same as the button of the same emphasis, intent, size and state, as the icon=only variant of the Button in the Figma prototype does: its square side is the button's height, its glyph is the button's icon (size, font and optical size), and its fills, borders and glyph colors are the button's fills, borders and label colors, through the icon role of the same name (global.icon.* aliases global.text.*). Corners, border width, focus ring and transitions are the button's too. A button decision on any of these applies to the icon button in the same change: pnpm validate fails when an icon button token differs from the button token at the same place.",
+      "tokens": [
+        "icon-button.container.*",
+        "icon-button.icon.*",
+        "button.container.*",
+        "button.label.color.*",
+        "button.icon.*"
+      ]
+    },
+    {
+      "id": "sizes-from-button",
+      "date": "2026-10-15",
+      "version": "0.4.0",
+      "area": "size",
+      "status": "active",
+      "text": "The square side is the button's height, space.24 / 28 / 36 / 44 from extra small to large, with the same 24 px floor at extra small so that every size meets WCAG 2.2 2.5.8 by its own size; the Figma prototype's icon=only square is 20 px at extra small. The glyph is the button's icon, size.2 / 3 / 4 / 4 (16 / 20 / 24 / 24 px), as in Figma, in Material Symbols Outlined (font.icon.*: fill off, weight 300, grade 0, optical size 20 at every size). The glyph sits centered in the square: Figma's padding (2 / 4 / 6 / 10 px) is the side minus the glyph, halved, and needs no token. Corners corner-radius.2xs / 2xs / xs / xs, border stroke-width.sm, transitions duration.fast and easing.standard, as before.",
+      "tokens": [
+        "icon-button.container.min-height.*",
+        "icon-button.container.min-width.*",
+        "icon-button.icon.size.*",
+        "icon-button.icon.*",
+        "icon-button.container.border-radius.*",
+        "space.*",
+        "size.*",
+        "font.icon.*"
+      ],
+      "refs": [
+        "wcag:2.5.8"
+      ],
+      "supersedes": [
+        "figma-library-scales"
+      ]
+    },
+    {
+      "id": "colors-from-button",
+      "date": "2026-10-15",
+      "version": "0.4.0",
+      "area": "color",
+      "status": "active",
+      "text": "The icon button takes the button's color decisions of 0.19.0 and 0.20.0. Subtle and ghost neutral glyphs are global.icon.on-base.neutral.primary in every state and both modes (button decision neutral-label-primary); a ghost brand glyph at rest is global.icon.on-base.brand.default (ghost-brand-label-on-base); a ghost icon button takes the subtle border one step behind on hover and press, global.border.subtle.<family>.default / hover (ghost-border-one-step-behind), and the shared disabled fill and border when disabled (ghost-disabled-shared). Error glyphs keep the Figma library's error colors (error-label-figma-library).",
+      "tokens": [
+        "icon-button.icon.color.subtle.neutral.*",
+        "icon-button.icon.color.ghost.*",
+        "icon-button.container.border-color.ghost.*",
+        "icon-button.container.background.ghost.disabled",
+        "global.icon.on-base.neutral.primary",
+        "global.icon.on-base.brand.default",
+        "global.border.subtle.*",
+        "global.bg.state.disabled.default",
+        "global.border.state.disabled.default"
+      ]
+    },
+    {
+      "id": "figma-library-colors",
+      "date": "2026-10-02",
+      "version": "0.3.0",
+      "area": "color",
+      "status": "active",
+      "text": "The icon button exists in every color mode of the system, light and dark, and takes the colors of the mode of its context. Every color aliases the Figma library's mapped roles as they are, in both modes: fills global.bg.<emphasis>.<family>.<state>, borders global.border.<emphasis>.<family>.<state>, glyph global.icon.on-<emphasis>.<family>, disabled global.*.state.disabled.default; a ghost icon button reads the subtle text and icon colors. Where the Figma library's error colors fall under WCAG 2.2 AA, the gap is kept and tracked, not corrected in the icon button.",
+      "rationale": "The Figma library as it is, errors and limitations included, is the starting point the system evolves from.",
+      "tokens": [
+        "icon-button.container.background.*",
+        "icon-button.container.border-color.*",
+        "icon-button.icon.color.*",
+        "global.bg.*",
+        "global.border.*",
+        "global.icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.3"
+      ],
+      "supersedes": [
+        "color-modes"
+      ]
+    },
+    {
+      "id": "figma-library-scales",
+      "date": "2026-10-02",
+      "version": "0.3.0",
+      "area": "dimension",
+      "status": "superseded",
+      "text": "Sizes, spacing, radii, borders, type, icons and motion come straight from the Figma library's scales and the design system's additions, with the same values as before and no semantic layer in between: icons are Material Symbols Outlined glyphs (font.icon.*: fill off, weight 300, grade 0, optical size 20) at size.2 / 2 / 3 / 4, extra small to large; minimum width and height space.24 / 32 / 40 / 48; corners corner-radius.2xs / 2xs / xs / xs; border stroke-width.sm; transitions duration.fast and easing.standard.",
+      "tokens": [
+        "icon-button.container.*",
+        "icon-button.icon.*",
+        "corner-radius.*",
+        "stroke-width.sm",
+        "space.*",
+        "size.*",
+        "font.icon.*"
+      ],
+      "supersedes": [
+        "icons-material-symbols"
+      ]
+    },
+    {
+      "id": "color-modes",
+      "date": "2026-10-01",
+      "version": "0.2.0",
+      "area": "color",
+      "status": "superseded",
+      "text": "The icon button exists in every color mode of the system, light and dark, and takes the colors of the mode of its context. Its color decisions (emphasis, intent, state) are the same in every mode; only the semantic colors they alias change. Dark colors follow the prototype's dark mapping, with the error fill and border kept one step darker than the prototype, as in light mode.",
+      "tokens": [
+        "color.*",
+        "icon-button.container.background.*",
+        "icon-button.container.border-color.*",
+        "icon-button.container.outline-color.*",
+        "icon-button.icon.color.*"
+      ]
+    },
+    {
+      "id": "name-from-label",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Every icon button has a required label that is its accessible name, given to the button itself (aria-label on the web); the glyph is hidden from assistive technology.",
+      "refs": [
+        "wcag:1.1.1",
+        "wcag:4.1.2",
+        "apg-button-roles",
+        "accname-label"
+      ]
+    },
+    {
+      "id": "icons-material-symbols",
+      "date": "2026-10-01",
+      "version": "0.1.0",
+      "area": "typography",
+      "status": "superseded",
+      "text": "Icons are glyphs of Material Symbols, latest version, for every component: Outlined family with fill off, weight 300, grade 0 and optical size 20 px.",
+      "tokens": [
+        "icon.*",
+        "icon-button.icon.*"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.5.1",
+      "date": "2026-10-15",
+      "note": "Fix: the focus ring shows on keyboard focus, as Button 0.22.1. The ring rule was wrapped in :where(), so the :focus reset (outline: none) outranked it; it now uses :is() and wins by source order. No token or decision changes."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-10-15",
+      "note": "Decision default-size-medium: an icon button without a size stays medium, like the button (Button 0.22.0), rather than the Figma prototype's xsmall default. No token or rendering change."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-10-15",
+      "note": "Decisions same-rendering-as-button, sizes-from-button (supersedes figma-library-scales) and colors-from-button: the icon button renders like the button since Button 0.21.0, as the Figma prototype's icon=only variant of the Button does. Square side 24 / 28 / 36 / 44 px (was 24 / 32 / 40 / 48), glyph 16 / 20 / 24 / 24 px (was 16 / 16 / 20 / 24): an icon button now lines up with a button of the same size. Subtle and ghost neutral glyphs are the primary text color, a ghost brand glyph at rest the surface brand color, a ghost icon button gains the subtle border one step behind on hover and press and the shared disabled fill and border. Glyph contrast over the level 0 and level 1 surfaces, every emphasis x intent x enabled state: light 3.29:1 or more (subtle error, pressed; neutral glyphs 15.99:1 or more, were 10.80), dark 4.48:1 or more (accent error, rest; neutral glyphs 5.55:1 or more, were 6.46); 3:1 required (WCAG 1.4.11). The error intent still misses 4.5:1 in places. Focus ring unchanged. iOS: the large icon button reaches 44 pt; Android: every size is under 48 dp. CSS and template unchanged."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-10-02",
+      "note": "Decisions figma-library-colors and figma-library-scales: the tokens are recreated from the Figma library (Color foundation 3.0.0). Component tokens keep their paths and the CSS is unchanged; the glyph now aliases the Figma library's icon roles (global.icon.on-<emphasis>.<family>, the same values as the text roles) and fills and borders its global.bg / global.border roles. Visible changes: the error colors follow the Figma library (accent error fill error 500 / 600 / 700, border 600 / 700 / 800, glyph on tinted error fills error 600), and dark mode is the Figma library's dark mapping. Glyph contrast over the level 0 and level 1 surfaces, every platform: light 3.28:1 or more, dark 4.46:1 or more (3:1 required, WCAG 1.4.11); the error intent no longer reaches 4.5:1 everywhere. Focus ring light 5.46:1 or more, dark 9.61:1 or more. Sizes, radii, border, icons and motion alias the Figma library's scales and the icon font and motion additions directly instead of the repository's invented semantic tokens: same values, no visual change. iOS and Android lose the overlays that raised the extra small, small and medium sizes to 44 pt and 48 dp."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-10-01",
+      "note": "Decision color-modes. The system gains a dark mode (tokens/modes/dark/, the prototype's Colors / Mapped dark) next to the default light mode. Component tokens, CSS and template unchanged: the icon button reads the same variables, which resolve again in every data-theme context (light, dark, auto) on the web and in the per-mode trees of the other platforms. Dark contrast, every emphasis x intent x enabled state on both surfaces: glyph 6.05:1 minimum (accent error, rest), 3:1 required (WCAG 1.4.11); focus ring 11.73:1 or more against the surfaces. Light unchanged: glyph 4.75:1 minimum, focus ring 5.45:1 or more."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft. Decisions icons-material-symbols and name-from-label. Emphasis (accent, subtle, ghost), intent (neutral, brand, error), sizes (xsmall to large), states and color tokens mirror Button 0.8.0 (provisional until decided for the icon button); the container is square (min-width = min-height, 24 to 48 px; 44 pt on iOS, 48 dp on Android). Glyph contrast against the container, every emphasis x intent x enabled state on both surfaces: 4.75:1 minimum (subtle error, pressed), 3:1 required (WCAG 1.4.11). Focus ring 5.45:1 or more against the surfaces."
+    }
+  ]
+}

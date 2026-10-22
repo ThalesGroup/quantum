@@ -1,0 +1,576 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "switch",
+  "name": "Switch",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "switch",
+  "summary": "Turns a setting on or off, with immediate effect.",
+  "description": "A switch is a binary control for a setting that applies as soon as it is flipped: notifications on or off, dark mode, airplane mode. It has two values only, on and off, shown by the position of its thumb and the fill of its track. A choice that is saved later with a form, or that may be partially on, is a Checkbox.",
+  "tags": [
+    "form",
+    "input",
+    "selection",
+    "setting"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Lays out the track, the label and the description on a grid; carries the size and the forced state."
+    },
+    {
+      "id": "control",
+      "role": "track",
+      "required": true,
+      "description": "The track: the native control exposed as a switch, drawn by the component. Receives focus, holds the on/off state and shows it: outlined when off, filled when on."
+    },
+    {
+      "id": "thumb",
+      "role": "handle",
+      "required": true,
+      "decorative": true,
+      "parent": "control",
+      "description": "The knob inside the track, at the start edge when off and the end edge when on. Drawn by the track (a pseudo-element on the web): it has tokens but no element of its own."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "Text naming the setting. Provides the accessible name; activating it flips the switch."
+    },
+    {
+      "id": "description",
+      "role": "description",
+      "required": false,
+      "description": "Optional help text under the label, associated with the control as its description."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Track, thumb, label and description scale together.",
+      "affects": [
+        "control",
+        "thumb",
+        "label",
+        "description"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Dense lists and table rows."
+        },
+        {
+          "value": "medium",
+          "description": "Default."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "The setting, named as what is on when the switch is on (Email notifications)."
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "string",
+      "bindsTo": "description",
+      "description": "Help text: what the setting does, when the label is not enough."
+    },
+    {
+      "id": "checked",
+      "name": "On",
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the setting is on."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Prevents flipping the switch; the current value stays visible."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "Resting, off: an outlined track with the thumb at the start edge."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "description": "Pointer over the switch or its label. The off track takes a light tint; an on switch does not change. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "description": "Keyboard focus on the track. Shows the shared focus ring outside it; pointer focus shows none."
+    },
+    {
+      "id": "checked",
+      "trigger": "property",
+      "property": "checked",
+      "description": "On: the track fills with the brand color and the thumb moves to the end edge in the on-accent color."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "description": "Non-interactive. Track, thumb, label and description drop to the shared disabled colors, on or off; hover and focus do not apply."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "start",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "hug",
+    "notes": [
+      "The track sits before the label, centered on the label's first line; the description sits under the label.",
+      "The thumb is inset by thumb.margin inside the track border; on, it travels to the symmetric position at the end edge.",
+      "The whole row (track and label) flips the switch: the label is part of the target."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "switch",
+    "name": {
+      "text": "Computed from the label, associated with the control as its label element on the web. The description is exposed as the accessible description, not as part of the name.",
+      "refs": [
+        "apg-switch-roles",
+        "wai-labels",
+        "html-aam-name-input",
+        "apg-describing"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to the switch. A disabled switch is not focusable and is skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Space",
+        "action": "Turns the switch on or off.",
+        "refs": [
+          "apg-switch-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Expose the switch role, its name and its on/off state through the platform's native switch control, so assistive technology announces it as a switch (on, off) rather than as a checkbox.",
+        "refs": [
+          "wcag:4.1.2",
+          "apg-switch",
+          "apg-switch-roles",
+          "aria-switch",
+          "compose-interactive-elements"
+        ]
+      },
+      {
+        "text": "Use a native input type=checkbox with role=\"switch\": ARIA in HTML allows the switch role on it, and the state comes from its checkedness, so aria-checked is never set. The switch has no partially checked state.",
+        "refs": [
+          "html-aria-input-checkbox",
+          "apg-switch-roles",
+          "mdn-switch-role"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every switch has a visible label associated with the control programmatically; it names the setting and activating it flips the switch.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.3.1",
+          "wai-labels",
+          "html-label"
+        ]
+      },
+      {
+        "text": "Associate the label with a label element whose for attribute names the input's id, and the help text with aria-describedby.",
+        "refs": [
+          "wcag-h44",
+          "wcag-aria1",
+          "apg-describing"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never rely on color alone: the thumb position shows the state as well as the fill.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Label and description contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.07:1 and 12.87:1 in light mode, 11.27:1 and 8.80:1 in dark mode on the default surface. Disabled text is inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The track is what identifies the control and, with the thumb, shows its state, so both contrast at least 3:1 with adjacent colors in every color mode: off, the track border 12.87:1 (light) and 8.80:1 (dark) on the default surface and the thumb 16.29:1 and 13.84:1; on, the track fill 5.79:1 and 12.80:1 against the surface and the thumb 5.74:1 and 13.04:1 against the fill. The focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-boundaries"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the switch receives keyboard focus, drawn outside the track.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The medium track is 40 x 24 CSS pixels, at the 24 pixel minimum; the small track (32 x 20) is under it and relies on its label being part of the target.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The native disabled attribute removes the switch from the focus order. When people need to know a setting exists, keep it enabled and explain why it cannot change.",
+        "refs": [
+          "html-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Use a toggle for two opposing values that affect the state of content or a view, and identify clearly what it affects; in a list row the row content provides the context, so the switch style needs no label of its own there. Avoid relying solely on different colors to communicate the state. The row must reach the 44 x 44 pt hit region.",
+        "refs": [
+          "hig-toggles",
+          "hig-toggles-best-practices",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's Switch sets that minimum itself when it can receive actions. Lift the toggle to the row with the toggleable modifier and the Switch role, so the label and the switch form one element whose state is announced.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes",
+          "compose-interactive-elements",
+          "compose-state-description"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "The thumb movement and the color transitions are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-switch",
+        "title": "APG: Switch pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/switch/"
+      },
+      {
+        "id": "apg-switch-keyboard",
+        "title": "APG: Switch pattern, keyboard interaction",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/switch/#keyboardinteraction"
+      },
+      {
+        "id": "apg-switch-roles",
+        "title": "APG: Switch pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/switch/#roles_states_properties"
+      },
+      {
+        "id": "aria-switch",
+        "title": "WAI-ARIA 1.2: switch role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#switch"
+      },
+      {
+        "id": "apg-describing",
+        "title": "APG: Describing with aria-describedby",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby"
+      },
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "html-aria-input-checkbox",
+        "title": "ARIA in HTML: input type=checkbox",
+        "url": "https://www.w3.org/TR/html-aria/#el-input-checkbox"
+      },
+      {
+        "id": "html-aam-name-input",
+        "title": "HTML-AAM: accessible name computation of input elements (associated label element)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
+      },
+      {
+        "id": "html-label",
+        "title": "HTML: the label element (for attribute, labeled control)",
+        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-switch-role",
+        "title": "MDN: ARIA switch role",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/switch_role"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "wai-labels",
+        "title": "WAI tutorials: Labeling controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wcag-h44",
+        "title": "WCAG technique H44: label elements to associate text labels with form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
+      },
+      {
+        "id": "wcag-aria1",
+        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
+      },
+      {
+        "id": "understanding-non-text-contrast-boundaries",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: user interface components and boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "hig-toggles",
+        "title": "Apple HIG: Toggles",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles"
+      },
+      {
+        "id": "hig-toggles-best-practices",
+        "title": "Apple HIG: Toggles, best practices (checkboxes and switches)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "compose-interactive-elements",
+        "title": "Jetpack Compose accessibility: interactive elements (toggleable, selection controls)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements"
+      },
+      {
+        "id": "compose-state-description",
+        "title": "Jetpack Compose accessibility: state description",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "Name the setting as what is on when the switch is on: Email notifications, Dark mode; never a question or an action (Enable notifications?).",
+      "Sentence case, no trailing punctuation; one line when possible.",
+      "Do not write On or Off next to the switch: the state is announced and shown by the thumb; put consequences in the description."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "label": "Email notifications"
+      }
+    },
+    {
+      "id": "medium-on",
+      "name": "Medium, on",
+      "props": {
+        "size": "medium",
+        "label": "Dark mode",
+        "checked": true
+      }
+    },
+    {
+      "id": "medium-description",
+      "name": "Medium, with description",
+      "props": {
+        "size": "medium",
+        "label": "Two-factor authentication",
+        "description": "Ask for a code from your authenticator app at sign-in.",
+        "checked": true
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "label": "Show hidden files"
+      }
+    },
+    {
+      "id": "medium-disabled",
+      "name": "Medium, disabled",
+      "props": {
+        "size": "medium",
+        "label": "Location services",
+        "description": "Managed by your organization.",
+        "checked": true,
+        "disabled": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/switch.tokens.json",
+    "prefix": "switch"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/switch/switch.css",
+      "template": "packages/components/src/components/switch/switch.template.mjs",
+      "selector": ".ds-switch",
+      "element": "div",
+      "attributes": {
+        "size": "data-size",
+        "disabled": "data-disabled"
+      },
+      "stateAttribute": "data-state",
+      "rolePart": "control",
+      "partSelectors": {
+        "container": ".ds-switch",
+        "control": ".ds-switch__control",
+        "label": ".ds-switch__label",
+        "description": ".ds-switch__description"
+      }
+    }
+  },
+  "related": [
+    "checkbox",
+    "radio-group"
+  ],
+  "decisions": [
+    {
+      "id": "outlined-off-filled-on",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "Off, the track is outlined in the accent neutral border color on the default surface with a thumb in the accent neutral fill; on, the track fills with the accent brand color and the thumb takes the on-accent brand icon color. Hover tints the off track with the surface hover color; disabled takes the shared disabled colors. The same families as the Checkbox's selection control colors.",
+      "rationale": "The Figma library maps no color to form controls, and its light neutral fills stay under 3:1 against the surface: an outlined off track keeps the control identifiable in both modes (WCAG 1.4.11).",
+      "tokens": [
+        "switch.control.background.*",
+        "switch.control.border-color.*",
+        "switch.thumb.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two sizes from the Figma library's space scale: small (32 x 20 track, 12 px thumb, 14 px label) and medium (40 x 24 track, 16 px thumb, 16 px label, the default); the track border is 1.2 px and fully round, the thumb inset 2 px.",
+      "tokens": [
+        "switch.control.width.*",
+        "switch.control.height.*",
+        "switch.thumb.size.*",
+        "switch.thumb.margin",
+        "switch.control.border-width",
+        "switch.control.border-radius",
+        "switch.label.typography.*"
+      ]
+    },
+    {
+      "id": "binary-only",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A switch is on or off and applies immediately; it has no partially checked state and is never used for a value saved later with a form.",
+      "refs": [
+        "apg-switch",
+        "aria-switch"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions outlined-off-filled-on, sizes, binary-only). Native checkbox exposed as a switch in a wrapper with a label element and an optional description; states default, hover, focus-visible, checked, disabled; sizes small and medium. Contrast on the default surface, light / dark: label 19.07 / 11.27, description 12.87 / 8.80, off track border 12.87 / 8.80, off thumb 16.29 / 13.84, on track fill 5.79 / 12.80, on thumb on fill 5.74 / 13.04, focus ring 5.79 / 12.80."
+    }
+  ]
+}

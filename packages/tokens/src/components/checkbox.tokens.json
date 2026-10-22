@@ -1,0 +1,78 @@
+{
+  "$description": "Component tokens for Checkbox. Path grammar: checkbox.<part>.<property>[.<size>][.<state>]: colors vary by state only, dimensions and type by size. Parts, options and states must exist in packages/components/specs/components/checkbox.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "checkbox": {
+    "container": {
+      "column-gap": { "$type": "dimension", "$value": "{space.8}", "$description": "Between the control and the label column." },
+      "row-gap": { "$type": "dimension", "$value": "{space.2}", "$description": "Between the label and its description." }
+    },
+    "control": {
+      "$description": "The box: a native checkbox drawn by the component. The mark (check or bar) is drawn in its color token.",
+      "size": {
+        "$type": "dimension",
+        "small": { "$value": "{size.2}" },
+        "medium": { "$value": "{size.3}" }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "small": { "$value": "{corner-radius.2xs}" },
+        "medium": { "$value": "{corner-radius.xs}" }
+      },
+      "border-width": { "$type": "dimension", "$value": "{stroke-width.md}" },
+      "background": {
+        "$type": "color",
+        "default": { "$value": "{global.bg.level.0.default}" },
+        "hover": { "$value": "{global.bg.level.0.hover}" },
+        "checked": { "$value": "{global.bg.accent.brand.default}" },
+        "indeterminate": { "$value": "{global.bg.accent.brand.default}" },
+        "disabled": { "$value": "{global.bg.state.disabled.default}" }
+      },
+      "border-color": {
+        "$type": "color",
+        "default": { "$value": "{global.border.accent.neutral.default}" },
+        "hover": { "$value": "{global.border.accent.neutral.default}" },
+        "checked": { "$value": "{global.border.accent.brand.default}" },
+        "indeterminate": { "$value": "{global.border.accent.brand.default}" },
+        "invalid": { "$value": "{global.border.base.functional.error.default}" },
+        "disabled": { "$value": "{global.border.state.disabled.default}" }
+      },
+      "color": {
+        "$type": "color",
+        "$description": "Color of the mark: the check when checked, the bar when indeterminate.",
+        "checked": { "$value": "{global.icon.on-accent.brand.default}" },
+        "indeterminate": { "$value": "{global.icon.on-accent.brand.default}" },
+        "disabled": { "$value": "{global.icon.state.disabled.default}" }
+      },
+      "outline-width": { "$type": "dimension", "focus-visible": { "$value": "{focus.ring.width}" } },
+      "outline-offset": { "$type": "dimension", "focus-visible": { "$value": "{focus.ring.offset}" } },
+      "outline-color": { "$type": "color", "focus-visible": { "$value": "{color.focus.ring}" } },
+      "transition": {
+        "duration": { "$type": "duration", "$value": "{duration.fast}" },
+        "easing": { "$type": "cubicBezier", "$value": "{easing.standard}" }
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.primary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+      }
+    },
+    "description": {
+      "color": {
+        "$type": "color",
+        "default": { "$value": "{global.text.on-base.neutral.secondary}" },
+        "disabled": { "$value": "{global.text.state.disabled.default}" }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.xs}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+      }
+    }
+  }
+}

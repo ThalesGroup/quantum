@@ -1,0 +1,160 @@
+/*
+ * Slider — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/slider.spec.json
+ * Tokens: packages/tokens/dist/css/components/slider.css (generated from packages/tokens/src/components/slider.tokens.json)
+ *
+ * Rules:
+ *  - Only --slider-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (label row, then the control); the native range input is the control,
+ *    drawn by the component (appearance: none): its track is the input's own box, its thumb the
+ *    vendor pseudo-elements (::-webkit-slider-thumb, ::-moz-range-thumb). Each vendor rule is
+ *    written on its own: a selector list with an unknown pseudo-element is dropped as a whole.
+ *  - Size is a data attribute on the root; states are native pseudo-classes of the input, and the
+ *    root's [data-state="<state>"] forces them for review. Order: default < hover < active < disabled.
+ */
+
+.ds-slider {
+  --_track-height: var(--slider-control-height-medium);
+  --_thumb-size: var(--slider-thumb-size-medium);
+  --_track-background: var(--slider-control-background-default);
+  --_thumb-background: var(--slider-thumb-background-default);
+  --_thumb-border-color: var(--slider-thumb-border-color-default);
+  --_label-color: var(--slider-label-color-default);
+  --_value-color: var(--slider-value-color-default);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--slider-container-gap);
+  min-inline-size: 0;
+}
+
+.ds-slider[data-size="small"] {
+  --_track-height: var(--slider-control-height-small);
+  --_thumb-size: var(--slider-thumb-size-small);
+}
+
+.ds-slider__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: var(--slider-container-column-gap);
+}
+
+.ds-slider__label {
+  color: var(--_label-color);
+  font-family: var(--slider-label-typography-font-family);
+  font-size: var(--slider-label-typography-font-size);
+  font-weight: var(--slider-label-typography-font-weight);
+  line-height: var(--slider-label-typography-line-height);
+  letter-spacing: var(--slider-label-typography-letter-spacing);
+}
+
+.ds-slider__value {
+  color: var(--_value-color);
+  font-family: var(--slider-value-typography-font-family);
+  font-size: var(--slider-value-typography-font-size);
+  font-weight: var(--slider-value-typography-font-weight);
+  line-height: var(--slider-value-typography-line-height);
+  letter-spacing: var(--slider-value-typography-letter-spacing);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Control: the track is the input, the thumb its pseudo-element ------------ */
+
+.ds-slider__control {
+  box-sizing: border-box;
+  display: block;
+  inline-size: 100%;
+  block-size: var(--_track-height);
+  min-block-size: 0;
+  margin-block: calc((var(--slider-control-min-height) - var(--_track-height)) / 2);
+  margin-inline: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--slider-control-border-radius);
+  background-color: var(--_track-background);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color var(--slider-control-transition-duration) var(--slider-control-transition-easing);
+}
+
+.ds-slider__control::-webkit-slider-runnable-track {
+  block-size: var(--_track-height);
+  border-radius: var(--slider-control-border-radius);
+  background-color: var(--_track-background);
+}
+.ds-slider__control::-moz-range-track {
+  block-size: var(--_track-height);
+  border-radius: var(--slider-control-border-radius);
+  background-color: var(--_track-background);
+}
+
+.ds-slider__control::-webkit-slider-thumb {
+  box-sizing: border-box;
+  inline-size: var(--_thumb-size);
+  block-size: var(--_thumb-size);
+  margin-block-start: calc((var(--_track-height) - var(--_thumb-size)) / 2);
+  border: var(--slider-thumb-border-width) solid var(--_thumb-border-color);
+  border-radius: var(--slider-thumb-border-radius);
+  background-color: var(--_thumb-background);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color var(--slider-control-transition-duration) var(--slider-control-transition-easing);
+}
+.ds-slider__control::-moz-range-thumb {
+  box-sizing: border-box;
+  inline-size: var(--_thumb-size);
+  block-size: var(--_thumb-size);
+  border: var(--slider-thumb-border-width) solid var(--_thumb-border-color);
+  border-radius: var(--slider-thumb-border-radius);
+  background-color: var(--_thumb-background);
+  transition: background-color var(--slider-control-transition-duration) var(--slider-control-transition-easing);
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+.ds-slider:where([data-state="hover"]) .ds-slider__control:not(:disabled),
+.ds-slider:not([data-state]) .ds-slider__control:hover:not(:disabled, :active) {
+  --_thumb-background: var(--slider-thumb-background-hover);
+}
+
+.ds-slider:where([data-state="active"]) .ds-slider__control:not(:disabled),
+.ds-slider__control:active:not(:disabled) {
+  --_thumb-background: var(--slider-thumb-background-active);
+}
+
+.ds-slider:where([data-state="disabled"]),
+.ds-slider:has(.ds-slider__control:disabled) {
+  --_label-color: var(--slider-label-color-disabled);
+  --_value-color: var(--slider-value-color-disabled);
+}
+.ds-slider:where([data-state="disabled"]) .ds-slider__control,
+.ds-slider__control:disabled {
+  --_track-background: var(--slider-control-background-disabled);
+  --_thumb-background: var(--slider-thumb-background-disabled);
+  --_thumb-border-color: var(--slider-thumb-border-color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-slider__control:focus {
+  outline: none;
+}
+
+/* The ring is drawn around the whole track (the thumb cannot carry an outline in every browser). */
+.ds-slider:where([data-state="focus-visible"]) .ds-slider__control,
+.ds-slider__control:focus-visible {
+  outline: var(--slider-control-outline-width-focus-visible) solid var(--slider-control-outline-color-focus-visible);
+  outline-offset: var(--slider-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-slider__control,
+  .ds-slider__control::-webkit-slider-thumb {
+    transition: none;
+  }
+  .ds-slider__control::-moz-range-thumb {
+    transition: none;
+  }
+}

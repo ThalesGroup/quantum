@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { platforms, inputs } from '../lib/platforms';
+import { platformTokens } from '../lib/tokens';
+import { publisherName } from '../lib/a11y';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const registry = platforms();
+const inputNames = inputs();
+const overlays = platformTokens();
+---
+<Layout title="Platforms" description="The platforms every artifact can scope to, and the token values that differ per platform.">
+  <header class="site-page-header">
+    <h1>Platforms</h1>
+    <p class="site-lede">Specifications, guidelines and tokens are written once for every platform. A state, an example, an accessibility statement or a token value is scoped only when a platform genuinely differs.</p>
+    <p class="site-page-header__desc">A platform is the runtime whose conventions and accessibility sources apply. A technology (Flutter, React Native, Qt, JavaFX, a web framework) targets one or several platforms and consumes that platform's resolved tokens. From <code>packages/components/specs/platforms.json</code> and <code>packages/tokens/tokens.config.json</code>.</p>
+  </header>
+
+  <section class="site-section">
+    <h2>Vocabulary</h2>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">Platform</th><th scope="col">Inputs</th><th scope="col">Technologies</th><th scope="col">Trusted sources</th><th scope="col">Tokens</th></tr></thead>
+        <tbody>
+          {registry.map((p) => {
+            const overlay = overlays.find((o) => o.id === p.id);
+            return (
+              <tr>
+                <th scope="row">{p.name} <code class="site-small">{p.id}</code><div class="site-muted site-small">{p.description}</div></th>
+                <td>{p.inputs.map((i) => <span class="site-chip" title={inputNames[i]}>{i}</span>)}</td>
+                <td>{p.technologies.join(', ')}</td>
+                <td>{p.sources.map((s) => <code class="site-chip" title={publisherName(s)}>{s}</code>)}</td>
+                <td class="site-small">{p.id === 'web' ? <code>packages/tokens/dist/css/*.css</code> : overlay?.outputs.length ? overlay.outputs.map((o) => <code class="site-chip">{o}</code>) : <span class="site-muted">base values</span>}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <h3>Inputs</h3>
+    <ul>{Object.entries(inputNames).map(([id, text]) => <li><code>{id}</code> — {text}</li>)}</ul>
+  </section>
+
+  <section class="site-section">
+    <h2>Token overlays</h2>
+    <p class="site-muted">An overlay overrides raw or semantic tokens for one platform. Component tokens never change: the same decisions resolve to platform values. Each platform output is a resolved DTCG tree, one per <a href={`${base}/modes`}>mode</a>, that any token tooling can transform.</p>
+    {overlays.length === 0 ? <p class="site-callout">No platform overlay yet.</p> : null}
+    {overlays.map((o) => (
+      <div class="site-subsection">
+        <h3>{registry.find((p) => p.id === o.id)?.name ?? o.id} <span class="site-muted site-small">{o.overrides.length} overridden · {o.outputs.map((out) => <code>{out}</code>)}</span></h3>
+        <p class="site-muted site-small">Sources: {o.files.map((f) => <code>packages/tokens/{f}</code>)}</p>
+        <div class="site-table-wrap">
+          <table class="site-table">
+            <thead><tr><th scope="col">Token</th><th scope="col">Tier</th><th scope="col">Web (base)</th><th scope="col">{registry.find((p) => p.id === o.id)?.name ?? o.id}</th><th scope="col">Component tokens affected</th></tr></thead>
+            <tbody>
+              {o.overrides.map((t) => (
+                <tr>
+                  <th scope="row"><code>{t.path}</code>{t.description ? <div class="site-muted site-small">{t.description}</div> : null}</th>
+                  <td>{t.tier}</td>
+                  <td><code>{t.base}</code></td>
+                  <td><code>{t.platform}</code></td>
+                  <td class="site-small">{t.affects.length ? t.affects.map((a) => <code class="site-chip">{a}</code>) : <span class="site-muted">none</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ))}
+    <p class="site-muted site-small">Lengths stay in the DTCG unit (<code>px</code>): read them as pt on iOS and dp on Android; a technology transform does the conversion. Tokens are listed per tier under <a href={`${base}/tokens`}>Tokens</a>.</p>
+  </section>
+</Layout>

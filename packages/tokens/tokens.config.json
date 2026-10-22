@@ -1,0 +1,228 @@
+{
+  "$comment": "Token pipeline configuration read by scripts/build-tokens.mjs and scripts/validate.mjs. Paths are relative to this package directory (packages/tokens): sources under src/, outputs under dist/.",
+  "tiers": [
+    {
+      "name": "raw",
+      "description": "Hidden primitives, recreated from the Figma library (scripts/figma-library.mjs): the color palettes (Colors / Base) and the palette switch (Colors / Palette Switch, ash). Only semantic tokens reference them, never a component or the site.",
+      "sources": [
+        "src/raw"
+      ],
+      "output": "dist/css/raw.css",
+      "mayReference": [],
+      "overridable": true
+    },
+    {
+      "name": "semantic",
+      "description": "The tokens components and the site read. semantic/ is recreated from the Figma library: the mapped colors (Colors / Mapped, light) and the Dimension, Effect and Typography scales, which the Figma library applies directly. additions/semantic/ holds what the design system adds (line heights, letter spacing, motion, the icon font, transparent, the focus ring). References raw tokens and other semantic tokens. Platform overlays may override them; modes give them other values (modal).",
+      "sources": [
+        "src/semantic",
+        "src/additions/semantic"
+      ],
+      "output": "dist/css/semantic.css",
+      "mayReference": [
+        "raw"
+      ],
+      "overridable": true,
+      "modal": true
+    },
+    {
+      "name": "component",
+      "description": "Component tokens. One file per component, root group = component id, second level = anatomy part. Reference semantic tokens only. Never overridden per platform: the component's decisions are the same everywhere.",
+      "sources": [
+        "src/components"
+      ],
+      "output": "dist/css/components/{component}.css",
+      "splitByTopLevelGroup": true,
+      "mayReference": [
+        "semantic"
+      ],
+      "overridable": false
+    }
+  ],
+  "css": {
+    "selector": ":root",
+    "prefix": "",
+    "preserveAliases": true,
+    "modes": {
+      "$comment": "Web contexts of the modes. The default mode applies to the selector above and to every element carrying the attribute; [data-theme=\"<mode>\"] switches a subtree to a mode; [data-theme=\"auto\"] follows the user's prefers-color-scheme through each mode's scheme. Tiers reading a modal tier are declared on every [data-theme] element so their aliases resolve again inside it.",
+      "attribute": "data-theme",
+      "auto": "auto"
+    },
+    "index": "dist/css/index.css",
+    "$comment": "index: a generated entry point importing every tier file (raw, semantic, then one file per component) in cascade order, relative to itself."
+  },
+  "syntax": {
+    "$comment": "Syntax highlighting theme (Code foundation): TextMate scopes mapped to semantic color tokens, written by scripts/lib/syntax-theme.mjs as one theme in the TextMate / VS Code format that Shiki reads, its colors being the CSS variables of the tokens, so it follows every mode through the css.modes attribute. TextMate applies the most specific matching scope: keyword.operator (plain text) overrides keyword. covers: every token of this group must have a rule. Scopes cover the grammars the site guarantees (CSS, HTML, JavaScript, JSON, shell, YAML, diff, Markdown). Line states (highlighted, inserted, deleted, error, warning lines) are not scopes: packages/components/src/foundations/code.css draws them from the global.bg.code.* tokens.",
+    "output": "dist/shiki-theme.json",
+    "name": "quantum",
+    "displayName": "Quantum",
+    "foreground": "global.text.on-base.neutral.primary",
+    "background": "global.bg.level.1.default",
+    "covers": "global.text.code.*",
+    "rules": [
+      {
+        "token": "global.text.code.comment",
+        "scopes": [
+          "comment",
+          "punctuation.definition.comment",
+          "string.comment",
+          "markup.quote",
+          "meta.diff.header"
+        ]
+      },
+      {
+        "token": "global.text.code.keyword",
+        "scopes": [
+          "keyword",
+          "storage",
+          "storage.type",
+          "storage.modifier",
+          "keyword.operator.new",
+          "keyword.operator.expression",
+          "keyword.operator.logical.shell",
+          "variable.language",
+          "entity.name.tag",
+          "entity.other.attribute-name.pseudo-class",
+          "entity.other.attribute-name.pseudo-element",
+          "markup.heading",
+          "entity.name.section",
+          "punctuation.definition.heading",
+          "punctuation.definition.list.begin",
+          "meta.diff.range"
+        ]
+      },
+      {
+        "token": "global.text.code.variable",
+        "scopes": [
+          "variable",
+          "variable.parameter",
+          "variable.other.property",
+          "meta.object-literal.key",
+          "support.type.property-name",
+          "support.variable",
+          "entity.other.attribute-name",
+          "entity.name.tag.yaml",
+          "variable.other.normal.shell",
+          "punctuation.definition.variable"
+        ]
+      },
+      {
+        "token": "global.text.code.function",
+        "scopes": [
+          "entity.name.function",
+          "support.function",
+          "meta.function-call entity.name.function"
+        ]
+      },
+      {
+        "token": "global.text.code.class-and-type",
+        "scopes": [
+          "entity.name.type",
+          "entity.name.class",
+          "entity.other.inherited-class",
+          "support.class",
+          "support.type",
+          "entity.other.attribute-name.class",
+          "entity.other.attribute-name.id"
+        ]
+      },
+      {
+        "token": "global.text.code.string",
+        "scopes": [
+          "string",
+          "string.regexp",
+          "punctuation.definition.string",
+          "constant.character.escape",
+          "string.unquoted.plain.out.yaml",
+          "markup.inline.raw",
+          "markup.raw"
+        ]
+      },
+      {
+        "token": "global.text.code.number",
+        "scopes": [
+          "constant",
+          "constant.numeric",
+          "constant.language",
+          "constant.other.color",
+          "keyword.other.unit",
+          "support.constant"
+        ]
+      },
+      {
+        "token": "global.text.code.inserted",
+        "scopes": [
+          "markup.inserted"
+        ]
+      },
+      {
+        "token": "global.text.code.deleted",
+        "scopes": [
+          "markup.deleted"
+        ]
+      },
+      {
+        "token": "global.text.code.changed",
+        "scopes": [
+          "markup.changed"
+        ]
+      },
+      {
+        "token": "global.text.code.invalid",
+        "scopes": [
+          "invalid",
+          "invalid.illegal",
+          "invalid.deprecated"
+        ]
+      },
+      {
+        "token": "global.text.code.link",
+        "scopes": [
+          "markup.underline.link"
+        ]
+      },
+      {
+        "token": "global.text.on-base.neutral.primary",
+        "scopes": [
+          "keyword.operator",
+          "punctuation",
+          "meta.brace",
+          "punctuation.definition.tag",
+          "punctuation.separator",
+          "punctuation.terminator"
+        ]
+      }
+    ]
+  },
+  "modes": {
+    "$comment": "Modes: contexts in which the same token paths take other values (color schemes today). Exactly one is the default: its values are the base tiers, so it has no sources. Every other mode is an overlay (src/modes/<id>/**/*.json) of the tiers marked modal: same paths, same reference rules, no new token, never a component token (a component's decisions hold in every mode; only the semantic values they alias change). scheme (light or dark) tells each technology which system appearance selects the mode.",
+    "light": {
+      "default": true,
+      "scheme": "light",
+      "description": "Light surfaces, dark text."
+    },
+    "dark": {
+      "scheme": "dark",
+      "description": "Dark surfaces, light text.",
+      "sources": [
+        "src/modes/dark",
+        "src/additions/modes/dark"
+      ]
+    }
+  },
+  "platforms": {
+    "$comment": "Per-platform overlays (src/platforms/<id>/**/*.json): DTCG trees that override tokens of the overridable tiers, same paths, same reference rules. An overlay cannot add a token or touch a component token, so every platform resolves the same set of paths. Output: one resolved DTCG tree per platform and mode ({mode} in the output path; aliases followed, io.quantum extensions record the alias and the tier) for any technology to transform. Web needs no overlay: the CSS in dist/css/ is its output. Ids come from specs/platforms.json.",
+    "ios": {
+      "sources": [
+        "src/platforms/ios"
+      ],
+      "output": "dist/platforms/ios/{mode}.tokens.json"
+    },
+    "android": {
+      "sources": [
+        "src/platforms/android"
+      ],
+      "output": "dist/platforms/android/{mode}.tokens.json"
+    }
+  }
+}

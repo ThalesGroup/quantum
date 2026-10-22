@@ -1,0 +1,73 @@
+/*
+ * Avatar — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/avatar.spec.json
+ * Tokens: packages/tokens/dist/css/components/avatar.css (generated from packages/tokens/src/components/avatar.tokens.json)
+ *
+ * Rules:
+ *  - Only --avatar-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a span exposed as an image named by the person; it holds the picture (which
+ *    covers the whole shape) or the initials. Size and shape are data attributes; no interaction state.
+ */
+
+.ds-avatar {
+  --_size: var(--avatar-container-size-medium);
+  --_radius: var(--avatar-container-border-radius-circle);
+  --_font-family: var(--avatar-initials-typography-medium-font-family);
+  --_font-size: var(--avatar-initials-typography-medium-font-size);
+  --_font-weight: var(--avatar-initials-typography-medium-font-weight);
+  --_line-height: var(--avatar-initials-typography-medium-line-height);
+  --_letter-spacing: var(--avatar-initials-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  overflow: hidden;
+  border: var(--avatar-container-border-width) solid var(--avatar-container-border-color);
+  border-radius: var(--_radius);
+  background-color: var(--avatar-container-background);
+  color: var(--avatar-initials-color);
+  vertical-align: middle;
+  user-select: none;
+}
+
+.ds-avatar[data-size="small"] {
+  --_size: var(--avatar-container-size-small);
+  --_font-family: var(--avatar-initials-typography-small-font-family);
+  --_font-size: var(--avatar-initials-typography-small-font-size);
+  --_font-weight: var(--avatar-initials-typography-small-font-weight);
+  --_line-height: var(--avatar-initials-typography-small-line-height);
+  --_letter-spacing: var(--avatar-initials-typography-small-letter-spacing);
+}
+
+.ds-avatar[data-size="large"] {
+  --_size: var(--avatar-container-size-large);
+  --_font-family: var(--avatar-initials-typography-large-font-family);
+  --_font-size: var(--avatar-initials-typography-large-font-size);
+  --_font-weight: var(--avatar-initials-typography-large-font-weight);
+  --_line-height: var(--avatar-initials-typography-large-line-height);
+  --_letter-spacing: var(--avatar-initials-typography-large-letter-spacing);
+}
+
+.ds-avatar[data-shape="square"] {
+  --_radius: var(--avatar-container-border-radius-square);
+}
+
+.ds-avatar__image {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.ds-avatar__initials {
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  text-transform: uppercase;
+}

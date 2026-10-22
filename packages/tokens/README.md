@@ -2,93 +2,79 @@
 
 [![npm version](https://img.shields.io/npm/v/@quantum-ds/tokens)](https://www.npmjs.com/package/@quantum-ds/tokens)
 
-Quantum tokens defined via the [Design Tokens Format (DTCG) specification](https://www.designtokens.org/).
+> [!WARNING]
+> **Experimental: Quantum NextGen.** This version of the package belongs to Quantum NextGen, the next major version of the Quantum Design System, developed on the [`nextgen`](https://github.com/ThalesGroup/quantum/tree/nextgen) branch. It is experimental: the tokens, their names and the outputs may change or break in any release, without notice. Do not use it in production.
 
-## Description
+The design tokens of the [Quantum Design System](https://github.com/ThalesGroup/quantum), defined in the [Design Tokens Format (DTCG)](https://www.designtokens.org/) and transformed into formats that products, design tools and other platforms consume.
 
-Quantum tokens are the single source of truth for design tokens within Quantum’s ecosystem. By adhering to the [Design Tokens Format (DTCG) specification](https://www.designtokens.org/), this package provides consistent, interoperable token definitions across platforms and tools.
-
-This package transforms these canonical tokens into formats that are consumable by various design tools and programming languages.
+> [!IMPORTANT]
+> Version 2 is a rewrite of the tokens. They are organised in three tiers (raw, semantic, component) with per-platform and per-mode overlays, and every token path changes. The package still ships the formats of version 1, generated from the new tokens, plus CSS with mode contexts, one resolved DTCG tree per platform and mode, and a syntax highlighting theme. See the [changelog](CHANGELOG.md).
 
 ## Usage
 
-The tokens are published on npm as the [`@quantum-ds/tokens`](https://www.npmjs.com/package/@quantum-ds/tokens) package. Install it in your project:
-
 ```sh
-pnpm add @quantum-ds/tokens
+pnpm add @quantum-ds/tokens@alpha
 ```
 
-Versions after 1.10.0 are published from the [Quantum repository](https://github.com/ThalesGroup/quantum) by a GitHub Actions workflow using [npm trusted publishing](https://docs.npmjs.com/trusted-publishers), and come with a [provenance attestation](https://docs.npmjs.com/generating-provenance-statements) that you can check with `npm audit signatures`.
+The DTCG tokens are the source of truth. Everything else under `node_modules/@quantum-ds/tokens/dist/` is built from them:
 
-The compiled artifacts are available under `node_modules/@quantum-ds/tokens/dist`:
-
-- **Design token definitions (source of truth):** `dist/dtcg/` – standardized DTCG JSON files
+- **Design token definitions (source of truth):** `dist/dtcg/`, the DTCG files of every tier and overlay, with `dist/dtcg/quantum.resolver.json`, a [DTCG resolver](https://www.designtokens.org/) listing them by set (`raw`, `semantic`, `component`) and modifier (`platform`, `mode`)
 - **Generated outputs:**
   - **Android:** `dist/resources*.xml`
-  - **CSS:** `dist/tokens*.css`
+  - **CSS:** `dist/tokens*.css`, and `dist/css/` (one file per tier and component, with mode contexts)
   - **Figma:** `dist/figma/*.json` (not yet packaged)
   - **JavaScript CSS variables:** `dist/variables-css.js`
   - **JavaScript/TypeScript ES modules:** `dist/tokens-es6*.js`, `dist/tokens-es6*.d.ts`
   - **Penpot:** `dist/penpot/tokens.json`
-  - **Sass:** `dist/tokens.scss`
+  - **Sass:** `dist/tokens*.scss`
   - **Tokens Studio:** `dist/tokens_studio/*.json` (not yet packaged)
+  - **Other platforms:** `dist/platforms/<platform>/<mode>.tokens.json`
+  - **Syntax highlighting:** `dist/shiki-theme.json`
 
-> [!WARNING]
-> The previous source of truth was the tokens defined in Figma artboards. Two outputs still come from them and are included in the package to avoid breaking changes, but **they are deprecated, must not be used for new work, and will be removed in a future major version**:
->
-> - `dist/json/`, the original JSON tokens exported from Figma
-> - `dist/tokens.js`, the JavaScript module generated from `dist/json/`, which is also the package entry point (`main`)
->
-> For new integrations, use the DTCG tokens in `dist/dtcg/` or one of the formats generated from them. In JavaScript, `dist/tokens-es6.js` exposes one named export per token, for example `BorderRadiusMedium`. It is not a drop-in replacement for the nested object of `dist/tokens.js`.
+A file ending in `-dark` (`tokens-dark.css`, `tokens-es6-dark.js`, `resources-dark.xml`, `figma/global-dark.tokens.json`…) holds the tokens whose value differs in the dark mode: load it after the default file (`tokens.css`, then `tokens-dark.css` for `.dark`), or put the dark Android resources in `values-night/`. Penpot gets one token set per mode and one theme per mode in a single file.
 
-## Comparing built files with a branch, tag, or commit
+Names follow the token path: `global.bg.level.1.default` is `--global-bg-level-1-default` in CSS, `$global-bg-level-1-default` in Sass, `GlobalBgLevel1Default` in JavaScript and `global_bg_level_1_default` on Android. A typography token is split into one value per property (`…-font-family`, `…-font-size`, `…-font-weight`, `…-line-height`, `…-letter-spacing`). The Android resources keep the DTCG units (`px`) and apply the `android` platform overlay (Roboto); the design tools read lengths as pixels.
 
-To generate a recursive diff of the built `dist/` output between your current working tree and `main`, run from the `packages/tokens` directory:
+The package entry point (`@quantum-ds/tokens`) is `dist/tokens-es6.js`, with its types:
 
-```sh
-pnpm run diff:build
+```js
+import { GlobalBgLevel1Default } from '@quantum-ds/tokens';
 ```
 
-This command:
+### CSS custom properties
 
-- builds your current working tree
-- builds the reference (`main` by default) in a temporary worktree
-- compares both generated `dist/` directories with the equivalent of `diff -r`
-- writes the result to `build-diff.diff` in the `packages/tokens` directory
+`@quantum-ds/tokens/css/index.css` declares every token as a CSS custom property, in cascade order: the raw tier, the semantic tier, then one file per component. Load it before any stylesheet reading the tokens:
 
-You can also compare against another branch, tag, or commit SHA-1, and choose a custom output file name as long as it ends with `.diff`:
-
-```sh
-bash ./scripts/diff-built-files.sh origin/main my-custom-build.diff
+```html
+<link rel="stylesheet" href="node_modules/@quantum-ds/tokens/dist/css/index.css">
 ```
 
-Example with a specific commit:
-
-```sh
-bash ./scripts/diff-built-files.sh <commit-sha> my-custom-build.diff
+```css
+@import "@quantum-ds/tokens/css/index.css";
 ```
 
-## Working with DTCG Tokens
+The files are also available one by one: `css/raw.css`, `css/semantic.css` and `css/components/<component>.css`. A variable is the token path joined with `-`: `global.bg.level.1.default` is `--global-bg-level-1-default`, `button.container.background.accent.brand.hover` is `--button-container-background-accent-brand-hover`. Component CSS reads only its own component tokens; products read semantic tokens.
 
-The canonical tokens under `dist/dtcg/` follow the DTCG JSON schema and can be consumed directly or transformed into many other formats:
+Color modes are contexts of the same variables. The default (light) values apply everywhere; `data-theme="dark"` on any element switches its subtree, `data-theme="auto"` follows `prefers-color-scheme`:
 
-- **Direct usage in tools that support DTCG**
-  Many design and dev tools can read DTCG JSON natively or via plugins (see the [community overview of supporting tools](https://github.com/design-tokens/community-group/discussions/312)). You can:
-  - Import the DTCG tokens into compatible design tools to drive color, typography, spacing, etc.
-  - Use them in code generation or handoff tools as the shared contract between design and engineering.
-  - Feed them to AI-powered tools to generate themes, component libraries, or application UIs that stay aligned with Quantum’s design language.
+```html
+<html data-theme="auto">
+  <section data-theme="dark">…</section>
+</html>
+```
 
-- **Transforming DTCG tokens to platform‑specific formats**
-  DTCG is an exchange format: you can use it as input to token build tools to generate additional artifacts beyond what this package ships:
-  - **[Style Dictionary](https://styledictionary.com/)** – configure a build that points at `dist/dtcg/` and outputs tokens for platforms or technologies you need (iOS, Android, web, design tools, etc.). This is what we use in this package to generate some outputs; please check our [`config.js`](https://github.com/ThalesGroup/quantum/blob/main/packages/tokens/config.js).
-  - **[Terrazzo](https://terrazzo.app/)** – use the DTCG files as the source to produce custom token bundles and integrations.
+### Other platforms
 
-Because the DTCG definitions are the single source of truth, any downstream format or platform can be regenerated from them, keeping all outputs consistent and in sync. The published DTCG artifacts include both foundation and component tokens, including Dataviz tokens for light and dark themes.
+`@quantum-ds/tokens/platforms/<platform>/<mode>.tokens.json` (`ios`, `android`; `light`, `dark`) is a resolved DTCG tree: every tier, with the platform's overrides applied, every alias followed, and `$extensions["io.quantum"]` recording the tier and the alias of each token. Any technology (Flutter, SwiftUI, Jetpack Compose, Qt, React Native) transforms the tree of the platform it targets, one per mode, selected by the system appearance named by the mode's `scheme`.
 
-## Contributing
+### Syntax highlighting
 
-If you are interested in contributing to this package, start by reading the [Contributing guide](https://github.com/ThalesGroup/quantum/blob/main/packages/tokens/CONTRIBUTING.md).
+`@quantum-ds/tokens/shiki-theme.json` is a [Shiki](https://shiki.style) (TextMate) theme whose colors are the CSS variables of the code tokens, so highlighted code follows the page's mode as long as the token CSS is loaded. Pass the JSON to Shiki (`themes: [theme]`, then `theme: theme.name`) or to any tool built on it.
+
+## Development
+
+`dist/` is built, not committed. From the repository root, `pnpm tokens:build` runs both builds of the package: the monorepo's zero-dependency token pipeline, `scripts/build-tokens.mjs`, which checks the tiers, overlays and modes and writes `dist/css/`, `dist/platforms/` and `dist/shiki-theme.json` for the docs site and the reference implementation, then [Style Dictionary](https://styledictionary.com/) with [`style-dictionary.config.mjs`](style-dictionary.config.mjs) for every other format. `pnpm dev`, `pnpm build`, `pnpm check` and packing run it too. [AGENTS.md](AGENTS.md) describes the tiers, the overlays, the modes and the rules; [`agents/token-sources.md`](../../agents/token-sources.md) says where the tokens come from.
 
 ## License
 
-The code in this package is licensed under the [MIT License](https://github.com/ThalesGroup/quantum/blob/main/packages/tokens/LICENSE). The documentation is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+[MIT](LICENSE).

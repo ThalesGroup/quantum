@@ -1,0 +1,48 @@
+/*
+ * Icon — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/icon.spec.json
+ * Tokens: packages/tokens/dist/css/components/icon.css (generated from packages/tokens/src/components/icon.tokens.json)
+ *
+ * Rules:
+ *  - Only --icon-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - A glyph of the icon font. Size and color are data attributes; the default color, current,
+ *    inherits the surrounding text color (currentColor: a token cannot say inherit).
+ */
+
+.ds-icon {
+  --_size: var(--icon-container-size-medium);
+  --_color: currentColor;
+
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  overflow: hidden;
+  color: var(--_color);
+  font-family: var(--icon-container-font-family);
+  font-size: var(--_size);
+  font-weight: var(--icon-container-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--icon-container-fill),
+    "GRAD" var(--icon-container-grade),
+    "opsz" var(--icon-container-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-icon[data-size="small"] { --_size: var(--icon-container-size-small); }
+.ds-icon[data-size="large"] { --_size: var(--icon-container-size-large); }
+
+.ds-icon[data-color="neutral"] { --_color: var(--icon-container-color-neutral); }
+.ds-icon[data-color="brand"] { --_color: var(--icon-container-color-brand); }
+.ds-icon[data-color="success"] { --_color: var(--icon-container-color-success); }
+.ds-icon[data-color="warning"] { --_color: var(--icon-container-color-warning); }
+.ds-icon[data-color="error"] { --_color: var(--icon-container-color-error); }
+.ds-icon[data-color="info"] { --_color: var(--icon-container-color-info); }

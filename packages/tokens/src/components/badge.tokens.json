@@ -1,0 +1,185 @@
+{
+  "$description": "Component tokens for Badge. Path grammar: badge.<part>.<property>[.<emphasis>][.<intent>] for colors, badge.<part>.<property>.<size> for dimensions and type. A badge has no interaction state. Parts and options must exist in packages/components/specs/components/badge.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "badge": {
+    "container": {
+      "background": {
+        "$type": "color",
+        "accent": {
+          "neutral": {
+            "$value": "{global.bg.accent.neutral.default}"
+          },
+          "brand": {
+            "$value": "{global.bg.accent.brand.default}"
+          },
+          "success": {
+            "$value": "{global.bg.accent.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.bg.accent.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.bg.accent.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.bg.accent.functional.info.default}"
+          }
+        },
+        "subtle": {
+          "neutral": {
+            "$value": "{global.bg.subtle.neutral.default}"
+          },
+          "brand": {
+            "$value": "{global.bg.subtle.brand.default}"
+          },
+          "success": {
+            "$value": "{global.bg.subtle.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.bg.subtle.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.bg.subtle.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.bg.subtle.functional.info.default}"
+          }
+        }
+      },
+      "border-color": {
+        "$type": "color",
+        "accent": {
+          "neutral": {
+            "$value": "{global.border.accent.neutral.default}"
+          },
+          "brand": {
+            "$value": "{global.border.accent.brand.default}"
+          },
+          "success": {
+            "$value": "{global.border.accent.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.border.accent.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.border.accent.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.border.accent.functional.info.default}"
+          }
+        },
+        "subtle": {
+          "neutral": {
+            "$value": "{global.border.subtle.neutral.default}"
+          },
+          "brand": {
+            "$value": "{global.border.subtle.brand.default}"
+          },
+          "success": {
+            "$value": "{global.border.subtle.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.border.subtle.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.border.subtle.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.border.subtle.functional.info.default}"
+          }
+        }
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{stroke-width.sm}"
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.full}"
+      },
+      "min-height": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.20}"
+        },
+        "medium": {
+          "$value": "{space.24}"
+        }
+      },
+      "padding-inline": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.6}"
+        },
+        "medium": {
+          "$value": "{space.8}"
+        }
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "accent": {
+          "neutral": {
+            "$value": "{global.text.on-accent.neutral.primary}"
+          },
+          "brand": {
+            "$value": "{global.text.on-accent.brand.default}"
+          },
+          "success": {
+            "$value": "{global.text.on-accent.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.text.on-accent.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.text.on-accent.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.text.on-accent.functional.info.default}"
+          }
+        },
+        "subtle": {
+          "neutral": {
+            "$value": "{global.text.on-subtle.neutral.default}"
+          },
+          "brand": {
+            "$value": "{global.text.on-subtle.brand.default}"
+          },
+          "success": {
+            "$value": "{global.text.on-subtle.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.text.on-subtle.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.text.on-subtle.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.text.on-subtle.functional.info.default}"
+          }
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$description": "Component tokens for Avatar. Path grammar: avatar.<part>.<property>[.<size>|.<shape>]. Parts, options and states must exist in packages/components/specs/components/avatar.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "avatar": {
+    "container": {
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.4}"
+        },
+        "medium": {
+          "$value": "{size.5}"
+        },
+        "large": {
+          "$value": "{size.6}"
+        }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "circle": {
+          "$value": "{corner-radius.full}"
+        },
+        "square": {
+          "$value": "{corner-radius.xs}"
+        }
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{global.bg.subtle.brand.default}"
+      },
+      "border-color": {
+        "$type": "color",
+        "$value": "{global.border.level.edge.level.1}"
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{stroke-width.sm}"
+      }
+    },
+    "initials": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.text.on-subtle.brand.default}"
+      },
+      "typography": {
+        "$type": "typography",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.2xs}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      }
+    }
+  }
+}

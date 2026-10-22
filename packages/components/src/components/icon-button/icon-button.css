@@ -1,0 +1,258 @@
+/*
+ * Icon button — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/icon-button.spec.json
+ * Tokens: packages/tokens/dist/css/components/icon-button.css (generated from packages/tokens/src/components/icon-button.tokens.json)
+ *
+ * Rules:
+ *  - Only --icon-button-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - Emphasis, intent and size are data attributes; states are native pseudo-classes.
+ *  - Every state also matches [data-state="<state>"] so the docs site can force it for review.
+ *  - The container is square: min-width equals min-height at every size and on every platform.
+ *  - The icon is a ligature of the icon font (Material Symbols); the accessible name is the
+ *    aria-label of the button, the glyph is aria-hidden.
+ *  - Private properties (--_*) are the single place an option or a state writes to:
+ *    each emphasis x intent pair sets its ladder (--_<property>-<state>), each emphasis its
+ *    disabled colors, and the state rules pick the rung.
+ */
+
+.ds-icon-button {
+  /* Defaults = emphasis "accent", intent "neutral", size "medium", state "default". */
+  --_background: var(--_background-default);
+  --_border-color: var(--_border-color-default);
+  --_color: var(--_color-default);
+  --_min-height: var(--icon-button-container-min-height-medium);
+  --_min-width: var(--icon-button-container-min-width-medium);
+  --_border-radius: var(--icon-button-container-border-radius-medium);
+  --_icon-size: var(--icon-button-icon-size-medium);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--_min-width);
+  min-height: var(--_min-height);
+  margin: 0;
+  padding: 0;
+  border: var(--icon-button-container-border-width) solid var(--_border-color);
+  border-radius: var(--_border-radius);
+  background-color: var(--_background);
+  color: var(--_color);
+  cursor: pointer;
+  user-select: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--icon-button-container-transition-duration) var(--icon-button-container-transition-easing),
+    border-color var(--icon-button-container-transition-duration) var(--icon-button-container-transition-easing),
+    color var(--icon-button-container-transition-duration) var(--icon-button-container-transition-easing);
+}
+
+/* ---- Parts -------------------------------------------------------------- */
+
+.ds-icon-button__icon {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_icon-size);
+  block-size: var(--_icon-size);
+  overflow: hidden;
+  font-family: var(--icon-button-icon-font-family);
+  font-size: var(--_icon-size);
+  font-weight: var(--icon-button-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--icon-button-icon-fill),
+    "GRAD" var(--icon-button-icon-grade),
+    "opsz" var(--icon-button-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Size ---------------------------------------------------------------- */
+
+.ds-icon-button[data-size="xsmall"] {
+  --_min-height: var(--icon-button-container-min-height-xsmall);
+  --_min-width: var(--icon-button-container-min-width-xsmall);
+  --_border-radius: var(--icon-button-container-border-radius-xsmall);
+  --_icon-size: var(--icon-button-icon-size-xsmall);
+}
+
+.ds-icon-button[data-size="small"] {
+  --_min-height: var(--icon-button-container-min-height-small);
+  --_min-width: var(--icon-button-container-min-width-small);
+  --_border-radius: var(--icon-button-container-border-radius-small);
+  --_icon-size: var(--icon-button-icon-size-small);
+}
+
+.ds-icon-button[data-size="large"] {
+  --_min-height: var(--icon-button-container-min-height-large);
+  --_min-width: var(--icon-button-container-min-width-large);
+  --_border-radius: var(--icon-button-container-border-radius-large);
+  --_icon-size: var(--icon-button-icon-size-large);
+}
+
+/* ---- Emphasis x intent: color ladders ------------------------------------ */
+/* Selectors are wrapped in :where() so every pair has the same specificity as .ds-icon-button. */
+
+/* accent */
+.ds-icon-button:where([data-emphasis="accent"], :not([data-emphasis])):where([data-intent="neutral"], :not([data-intent])) {
+  --_background-default: var(--icon-button-container-background-accent-neutral-default);
+  --_border-color-default: var(--icon-button-container-border-color-accent-neutral-default);
+  --_color-default: var(--icon-button-icon-color-accent-neutral-default);
+  --_background-hover: var(--icon-button-container-background-accent-neutral-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-accent-neutral-hover);
+  --_color-hover: var(--icon-button-icon-color-accent-neutral-hover);
+  --_background-active: var(--icon-button-container-background-accent-neutral-active);
+  --_border-color-active: var(--icon-button-container-border-color-accent-neutral-active);
+  --_color-active: var(--icon-button-icon-color-accent-neutral-active);
+}
+.ds-icon-button:where([data-emphasis="accent"], :not([data-emphasis])):where([data-intent="brand"]) {
+  --_background-default: var(--icon-button-container-background-accent-brand-default);
+  --_border-color-default: var(--icon-button-container-border-color-accent-brand-default);
+  --_color-default: var(--icon-button-icon-color-accent-brand-default);
+  --_background-hover: var(--icon-button-container-background-accent-brand-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-accent-brand-hover);
+  --_color-hover: var(--icon-button-icon-color-accent-brand-hover);
+  --_background-active: var(--icon-button-container-background-accent-brand-active);
+  --_border-color-active: var(--icon-button-container-border-color-accent-brand-active);
+  --_color-active: var(--icon-button-icon-color-accent-brand-active);
+}
+.ds-icon-button:where([data-emphasis="accent"], :not([data-emphasis])):where([data-intent="error"]) {
+  --_background-default: var(--icon-button-container-background-accent-error-default);
+  --_border-color-default: var(--icon-button-container-border-color-accent-error-default);
+  --_color-default: var(--icon-button-icon-color-accent-error-default);
+  --_background-hover: var(--icon-button-container-background-accent-error-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-accent-error-hover);
+  --_color-hover: var(--icon-button-icon-color-accent-error-hover);
+  --_background-active: var(--icon-button-container-background-accent-error-active);
+  --_border-color-active: var(--icon-button-container-border-color-accent-error-active);
+  --_color-active: var(--icon-button-icon-color-accent-error-active);
+}
+.ds-icon-button:where([data-emphasis="accent"], :not([data-emphasis])) {
+  --_background-disabled: var(--icon-button-container-background-accent-disabled);
+  --_border-color-disabled: var(--icon-button-container-border-color-accent-disabled);
+  --_color-disabled: var(--icon-button-icon-color-accent-disabled);
+}
+
+/* subtle */
+.ds-icon-button:where([data-emphasis="subtle"]):where([data-intent="neutral"], :not([data-intent])) {
+  --_background-default: var(--icon-button-container-background-subtle-neutral-default);
+  --_border-color-default: var(--icon-button-container-border-color-subtle-neutral-default);
+  --_color-default: var(--icon-button-icon-color-subtle-neutral-default);
+  --_background-hover: var(--icon-button-container-background-subtle-neutral-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-subtle-neutral-hover);
+  --_color-hover: var(--icon-button-icon-color-subtle-neutral-hover);
+  --_background-active: var(--icon-button-container-background-subtle-neutral-active);
+  --_border-color-active: var(--icon-button-container-border-color-subtle-neutral-active);
+  --_color-active: var(--icon-button-icon-color-subtle-neutral-active);
+}
+.ds-icon-button:where([data-emphasis="subtle"]):where([data-intent="brand"]) {
+  --_background-default: var(--icon-button-container-background-subtle-brand-default);
+  --_border-color-default: var(--icon-button-container-border-color-subtle-brand-default);
+  --_color-default: var(--icon-button-icon-color-subtle-brand-default);
+  --_background-hover: var(--icon-button-container-background-subtle-brand-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-subtle-brand-hover);
+  --_color-hover: var(--icon-button-icon-color-subtle-brand-hover);
+  --_background-active: var(--icon-button-container-background-subtle-brand-active);
+  --_border-color-active: var(--icon-button-container-border-color-subtle-brand-active);
+  --_color-active: var(--icon-button-icon-color-subtle-brand-active);
+}
+.ds-icon-button:where([data-emphasis="subtle"]):where([data-intent="error"]) {
+  --_background-default: var(--icon-button-container-background-subtle-error-default);
+  --_border-color-default: var(--icon-button-container-border-color-subtle-error-default);
+  --_color-default: var(--icon-button-icon-color-subtle-error-default);
+  --_background-hover: var(--icon-button-container-background-subtle-error-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-subtle-error-hover);
+  --_color-hover: var(--icon-button-icon-color-subtle-error-hover);
+  --_background-active: var(--icon-button-container-background-subtle-error-active);
+  --_border-color-active: var(--icon-button-container-border-color-subtle-error-active);
+  --_color-active: var(--icon-button-icon-color-subtle-error-active);
+}
+.ds-icon-button:where([data-emphasis="subtle"]) {
+  --_background-disabled: var(--icon-button-container-background-subtle-disabled);
+  --_border-color-disabled: var(--icon-button-container-border-color-subtle-disabled);
+  --_color-disabled: var(--icon-button-icon-color-subtle-disabled);
+}
+
+/* ghost */
+.ds-icon-button:where([data-emphasis="ghost"]):where([data-intent="neutral"], :not([data-intent])) {
+  --_background-default: var(--icon-button-container-background-ghost-neutral-default);
+  --_border-color-default: var(--icon-button-container-border-color-ghost-neutral-default);
+  --_color-default: var(--icon-button-icon-color-ghost-neutral-default);
+  --_background-hover: var(--icon-button-container-background-ghost-neutral-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-ghost-neutral-hover);
+  --_color-hover: var(--icon-button-icon-color-ghost-neutral-hover);
+  --_background-active: var(--icon-button-container-background-ghost-neutral-active);
+  --_border-color-active: var(--icon-button-container-border-color-ghost-neutral-active);
+  --_color-active: var(--icon-button-icon-color-ghost-neutral-active);
+}
+.ds-icon-button:where([data-emphasis="ghost"]):where([data-intent="brand"]) {
+  --_background-default: var(--icon-button-container-background-ghost-brand-default);
+  --_border-color-default: var(--icon-button-container-border-color-ghost-brand-default);
+  --_color-default: var(--icon-button-icon-color-ghost-brand-default);
+  --_background-hover: var(--icon-button-container-background-ghost-brand-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-ghost-brand-hover);
+  --_color-hover: var(--icon-button-icon-color-ghost-brand-hover);
+  --_background-active: var(--icon-button-container-background-ghost-brand-active);
+  --_border-color-active: var(--icon-button-container-border-color-ghost-brand-active);
+  --_color-active: var(--icon-button-icon-color-ghost-brand-active);
+}
+.ds-icon-button:where([data-emphasis="ghost"]):where([data-intent="error"]) {
+  --_background-default: var(--icon-button-container-background-ghost-error-default);
+  --_border-color-default: var(--icon-button-container-border-color-ghost-error-default);
+  --_color-default: var(--icon-button-icon-color-ghost-error-default);
+  --_background-hover: var(--icon-button-container-background-ghost-error-hover);
+  --_border-color-hover: var(--icon-button-container-border-color-ghost-error-hover);
+  --_color-hover: var(--icon-button-icon-color-ghost-error-hover);
+  --_background-active: var(--icon-button-container-background-ghost-error-active);
+  --_border-color-active: var(--icon-button-container-border-color-ghost-error-active);
+  --_color-active: var(--icon-button-icon-color-ghost-error-active);
+}
+.ds-icon-button:where([data-emphasis="ghost"]) {
+  --_background-disabled: var(--icon-button-container-background-ghost-disabled);
+  --_border-color-disabled: var(--icon-button-container-border-color-ghost-disabled);
+  --_color-disabled: var(--icon-button-icon-color-ghost-disabled);
+}
+
+/* ---- States -------------------------------------------------------------- */
+/* Order matters: default < hover < active < disabled. Guards keep hover/active off disabled buttons. */
+
+.ds-icon-button:where(:hover, [data-state="hover"]):not(:disabled, [data-state="disabled"]) {
+  --_background: var(--_background-hover);
+  --_border-color: var(--_border-color-hover);
+  --_color: var(--_color-hover);
+}
+
+.ds-icon-button:where(:active, [data-state="active"]):not(:disabled, [data-state="disabled"]) {
+  --_background: var(--_background-active);
+  --_border-color: var(--_border-color-active);
+  --_color: var(--_color-active);
+}
+
+.ds-icon-button:where(:disabled, [data-state="disabled"]) {
+  --_background: var(--_background-disabled);
+  --_border-color: var(--_border-color-disabled);
+  --_color: var(--_color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-icon-button:focus {
+  outline: none;
+}
+
+.ds-icon-button:is(:focus-visible, [data-state="focus-visible"]) {
+  outline: var(--icon-button-container-outline-width-focus-visible) solid var(--icon-button-container-outline-color-focus-visible);
+  outline-offset: var(--icon-button-container-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-icon-button {
+    transition: none;
+  }
+}

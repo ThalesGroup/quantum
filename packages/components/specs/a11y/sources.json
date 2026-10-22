@@ -1,0 +1,103 @@
+{
+  "$description": "Trusted accessibility sources. Every URL cited in a spec's accessibility section, in a role profile or in a docs Accessibility section must start with one of these prefixes. Adding a publisher is a deliberate act: explain it in specs/AGENTS.md.",
+  "conformanceTarget": {
+    "standard": "WCAG",
+    "version": "2.2",
+    "level": "AA"
+  },
+  "kinds": {
+    "standard": "Normative W3C or WHATWG specification.",
+    "guidance": "Informative W3C/WAI guidance (Understanding, Techniques, APG, tutorials).",
+    "reference": "Developer reference documentation.",
+    "regulation": "Legal or harmonised standard built on WCAG.",
+    "platform": "Native platform accessibility guidelines (non-web implementations).",
+    "organisation": "Organisation guidelines adopted by the team."
+  },
+  "publishers": {
+    "wcag": {
+      "name": "W3C Web Content Accessibility Guidelines (WCAG) 2.2",
+      "kind": "standard",
+      "prefixes": ["https://www.w3.org/TR/WCAG22/"]
+    },
+    "wcag-guidance": {
+      "name": "W3C WAI Understanding and Techniques for WCAG 2.2",
+      "kind": "guidance",
+      "prefixes": ["https://www.w3.org/WAI/WCAG22/"]
+    },
+    "wai-aria": {
+      "name": "W3C Accessible Rich Internet Applications (WAI-ARIA)",
+      "kind": "standard",
+      "prefixes": ["https://www.w3.org/TR/wai-aria-1.2/", "https://www.w3.org/TR/wai-aria-1.3/", "https://www.w3.org/TR/wai-aria/"]
+    },
+    "apg": {
+      "name": "W3C WAI-ARIA Authoring Practices Guide (APG)",
+      "kind": "guidance",
+      "prefixes": ["https://www.w3.org/WAI/ARIA/apg/"]
+    },
+    "accname": {
+      "name": "W3C Accessible Name and Description Computation (AccName)",
+      "kind": "standard",
+      "prefixes": ["https://www.w3.org/TR/accname-1.2/", "https://www.w3.org/TR/accname/"]
+    },
+    "html-aam": {
+      "name": "W3C HTML Accessibility API Mappings (HTML-AAM)",
+      "kind": "standard",
+      "prefixes": ["https://www.w3.org/TR/html-aam-1.0/"]
+    },
+    "core-aam": {
+      "name": "W3C Core Accessibility API Mappings (Core-AAM)",
+      "kind": "standard",
+      "prefixes": ["https://www.w3.org/TR/core-aam-1.2/"]
+    },
+    "html-aria": {
+      "name": "W3C ARIA in HTML",
+      "kind": "standard",
+      "prefixes": ["https://www.w3.org/TR/html-aria/"]
+    },
+    "wai-tutorials": {
+      "name": "W3C WAI tutorials",
+      "kind": "guidance",
+      "prefixes": ["https://www.w3.org/WAI/tutorials/"]
+    },
+    "whatwg-html": {
+      "name": "WHATWG HTML Living Standard",
+      "kind": "standard",
+      "prefixes": ["https://html.spec.whatwg.org/"]
+    },
+    "mdn": {
+      "name": "MDN Web Docs",
+      "kind": "reference",
+      "prefixes": ["https://developer.mozilla.org/en-US/docs/"]
+    },
+    "rgaa": {
+      "name": "RGAA (Référentiel général d'amélioration de l'accessibilité)",
+      "kind": "regulation",
+      "prefixes": ["https://accessibilite.numerique.gouv.fr/"]
+    },
+    "en-301-549": {
+      "name": "ETSI EN 301 549",
+      "kind": "regulation",
+      "prefixes": ["https://www.etsi.org/"]
+    },
+    "apple-hig": {
+      "name": "Apple Human Interface Guidelines and accessibility documentation",
+      "kind": "platform",
+      "prefixes": ["https://developer.apple.com/design/human-interface-guidelines/", "https://developer.apple.com/documentation/accessibility/"]
+    },
+    "android": {
+      "name": "Android accessibility documentation",
+      "kind": "platform",
+      "prefixes": ["https://developer.android.com/guide/topics/ui/accessibility", "https://developer.android.com/develop/ui/compose/accessibility"]
+    },
+    "material": {
+      "name": "Material Design 3 foundations",
+      "kind": "platform",
+      "prefixes": ["https://m3.material.io/foundations/"]
+    },
+    "orange": {
+      "name": "Orange accessibility guidelines",
+      "kind": "organisation",
+      "prefixes": ["https://a11y-guidelines.orange.com/"]
+    }
+  }
+}

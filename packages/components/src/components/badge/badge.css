@@ -1,0 +1,70 @@
+/*
+ * Badge — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/badge.spec.json
+ * Tokens: packages/tokens/dist/css/components/badge.css (generated from packages/tokens/src/components/badge.tokens.json)
+ *
+ * Rules:
+ *  - Only --badge-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - Emphasis, intent and size are data attributes; a badge has no interaction state.
+ *  - Each emphasis x intent pair sets the private colors, wrapped in :where() so every pair shares one specificity.
+ */
+
+.ds-badge {
+  /* Defaults = emphasis "subtle", intent "neutral", size "medium". */
+  --_min-height: var(--badge-container-min-height-medium);
+  --_padding-inline: var(--badge-container-padding-inline-medium);
+  --_font-family: var(--badge-label-typography-medium-font-family);
+  --_font-size: var(--badge-label-typography-medium-font-size);
+  --_font-weight: var(--badge-label-typography-medium-font-weight);
+  --_line-height: var(--badge-label-typography-medium-line-height);
+  --_letter-spacing: var(--badge-label-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--_min-height);
+  padding-block: 0;
+  padding-inline: var(--_padding-inline);
+  border: var(--badge-container-border-width) solid var(--_border-color);
+  border-radius: var(--badge-container-border-radius);
+  background-color: var(--_background);
+  color: var(--_color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ds-badge__label {
+  display: inline-block;
+}
+
+.ds-badge[data-size="small"] {
+  --_min-height: var(--badge-container-min-height-small);
+  --_padding-inline: var(--badge-container-padding-inline-small);
+  --_font-family: var(--badge-label-typography-small-font-family);
+  --_font-size: var(--badge-label-typography-small-font-size);
+  --_font-weight: var(--badge-label-typography-small-font-weight);
+  --_line-height: var(--badge-label-typography-small-line-height);
+  --_letter-spacing: var(--badge-label-typography-small-letter-spacing);
+}
+
+/* ---- Emphasis x intent ----------------------------------------------------- */
+
+.ds-badge:where([data-emphasis="subtle"], :not([data-emphasis])):where([data-intent="neutral"], :not([data-intent])) { --_background: var(--badge-container-background-subtle-neutral); --_border-color: var(--badge-container-border-color-subtle-neutral); --_color: var(--badge-label-color-subtle-neutral); }
+.ds-badge:where([data-emphasis="subtle"], :not([data-emphasis])):where([data-intent="brand"]) { --_background: var(--badge-container-background-subtle-brand); --_border-color: var(--badge-container-border-color-subtle-brand); --_color: var(--badge-label-color-subtle-brand); }
+.ds-badge:where([data-emphasis="subtle"], :not([data-emphasis])):where([data-intent="success"]) { --_background: var(--badge-container-background-subtle-success); --_border-color: var(--badge-container-border-color-subtle-success); --_color: var(--badge-label-color-subtle-success); }
+.ds-badge:where([data-emphasis="subtle"], :not([data-emphasis])):where([data-intent="warning"]) { --_background: var(--badge-container-background-subtle-warning); --_border-color: var(--badge-container-border-color-subtle-warning); --_color: var(--badge-label-color-subtle-warning); }
+.ds-badge:where([data-emphasis="subtle"], :not([data-emphasis])):where([data-intent="error"]) { --_background: var(--badge-container-background-subtle-error); --_border-color: var(--badge-container-border-color-subtle-error); --_color: var(--badge-label-color-subtle-error); }
+.ds-badge:where([data-emphasis="subtle"], :not([data-emphasis])):where([data-intent="info"]) { --_background: var(--badge-container-background-subtle-info); --_border-color: var(--badge-container-border-color-subtle-info); --_color: var(--badge-label-color-subtle-info); }
+
+.ds-badge:where([data-emphasis="accent"]):where([data-intent="neutral"], :not([data-intent])) { --_background: var(--badge-container-background-accent-neutral); --_border-color: var(--badge-container-border-color-accent-neutral); --_color: var(--badge-label-color-accent-neutral); }
+.ds-badge:where([data-emphasis="accent"]):where([data-intent="brand"]) { --_background: var(--badge-container-background-accent-brand); --_border-color: var(--badge-container-border-color-accent-brand); --_color: var(--badge-label-color-accent-brand); }
+.ds-badge:where([data-emphasis="accent"]):where([data-intent="success"]) { --_background: var(--badge-container-background-accent-success); --_border-color: var(--badge-container-border-color-accent-success); --_color: var(--badge-label-color-accent-success); }
+.ds-badge:where([data-emphasis="accent"]):where([data-intent="warning"]) { --_background: var(--badge-container-background-accent-warning); --_border-color: var(--badge-container-border-color-accent-warning); --_color: var(--badge-label-color-accent-warning); }
+.ds-badge:where([data-emphasis="accent"]):where([data-intent="error"]) { --_background: var(--badge-container-background-accent-error); --_border-color: var(--badge-container-border-color-accent-error); --_color: var(--badge-label-color-accent-error); }
+.ds-badge:where([data-emphasis="accent"]):where([data-intent="info"]) { --_background: var(--badge-container-background-accent-info); --_border-color: var(--badge-container-border-color-accent-info); --_color: var(--badge-label-color-accent-info); }

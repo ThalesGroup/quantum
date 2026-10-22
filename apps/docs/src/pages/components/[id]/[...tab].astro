@@ -1,0 +1,336 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import { artifacts } from '../../../../../../scripts/lib/paths.mjs';
+import Status from '../../../components/Status.astro';
+import ExampleExplorer from '../../../components/ExampleExplorer.astro';
+import StateMatrix from '../../../components/StateMatrix.astro';
+import Playground from '../../../components/Playground.astro';
+import TokenTable from '../../../components/TokenTable.astro';
+import TokenFilter from '../../../components/TokenFilter.astro';
+import Anatomy from '../../../components/Anatomy.astro';
+import DecisionLog from '../../../components/DecisionLog.astro';
+import A11yStatements from '../../../components/A11yStatements.astro';
+import { getTemplate, defaultProps } from '../../../lib/web';
+import { componentTokens } from '../../../lib/tokens';
+import { partMatrices } from '../../../lib/matrix';
+import { readRepoFile } from '../../../lib/repo';
+import { highlight, langOfFile } from '../../../lib/highlight';
+import { cite, conformanceTarget, publisherName } from '../../../lib/a11y';
+import { COMPONENT_TABS } from '../../../lib/tabs';
+import { followersOf } from '../../../lib/foundations';
+import { platformName, scopeLabel, scoped } from '../../../lib/platforms';
+
+export async function getStaticPaths() {
+  const specs = await getCollection('specs');
+  const docs = new Set((await getCollection('docs')).map((d) => d.id));
+  return specs.flatMap((s) =>
+    COMPONENT_TABS.filter((t) => t.slug !== 'guidelines' || docs.has(s.id)).map((t) => ({
+      params: { id: s.id, tab: t.slug },
+      props: { entry: s },
+    })),
+  );
+}
+
+const { entry } = Astro.props;
+const { tab } = Astro.params;
+const spec = entry.data;
+const template = getTemplate(spec.id);
+const doc = await getEntry('docs', spec.id);
+const Content = doc ? (await render(doc)).Content : null;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const tabs = COMPONENT_TABS.filter((t) => t.slug !== 'guidelines' || Content).map((t) => ({
+  ...t,
+  href: `${base}/components/${spec.id}${t.slug ? `/${t.slug}` : ''}`,
+}));
+const current = tabs.find((t) => t.slug === tab)!;
+
+const initial = defaultProps(spec);
+const tokens = componentTokens(spec.id);
+const matrices = partMatrices(spec, tokens);
+const parts = spec.anatomy.map((p) => p.id);
+const tokensByPart = parts.map((part) => ({ part, rows: tokens.filter((t) => t.segments[1] === part) }));
+const web = spec.implementations.web;
+const cssSource = readRepoFile(web.css);
+const templateSource = readRepoFile(web.template);
+const specFile = artifacts(spec.id).spec;
+const specSource = readRepoFile(specFile);
+const a11y = spec.accessibility as any;
+const target = conformanceTarget();
+const others = Object.entries(spec.implementations as Record<string, any>).filter(([k]) => k !== 'web');
+const decisions = spec.decisions ?? [];
+// Foundations this component follows: those whose tokens its own tokens alias (derived, never declared).
+const followed = (await getCollection('foundations'))
+  .map((f) => ({ foundation: f.data, tokens: followersOf(f.data).find((x) => x.component === spec.id)?.tokens ?? [] }))
+  .filter((f) => f.tokens.length);
+const partProps = spec.anatomy.flatMap((part: any) => (part.properties ?? []).map((p: any) => ({ part: part.id, p })));
+const partStates = spec.states.some((s: any) => s.parts?.length);
+const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')}` : '', scopeLabel(s)].filter(Boolean).join(' · ') || 'every platform and input';
+---
+<Layout title={tab ? `${current.label} · ${spec.name}` : spec.name} description={spec.summary}>
+  <header class="site-page-header">
+    <p class="site-eyebrow"><a href={`${base}/`}>Components</a> <span aria-hidden="true">/</span> role <code>{spec.role}</code></p>
+    <h1>{spec.name} <Status status={spec.status} /> <span class="site-version">v{spec.version}</span></h1>
+    <p class="site-lede">{spec.summary}</p>
+    {spec.description ? <p class="site-page-header__desc">{spec.description}</p> : null}
+    <nav class="site-tabs" aria-label={`${spec.name} sections`}>
+      {tabs.map((t) => (
+        <a href={t.href} aria-current={t === current ? 'page' : undefined}>{t.label}</a>
+      ))}
+    </nav>
+  </header>
+
+  {!tab ? (
+  <section class="site-section" id="examples">
+    <h2 class="site-sr">Examples</h2>
+    {template ? (
+      <ExampleExplorer spec={spec} template={template} playgroundHref={tabs.find((t) => t.slug === 'playground')!.href} />
+    ) : (
+      <p class="site-callout site-callout--error">No web template found at <code>{web.template}</code>.</p>
+    )}
+  </section>
+  ) : null}
+
+  {tab === 'states' ? (
+  <section class="site-section" id="states">
+    <h2>States matrix</h2>
+    <p class="site-muted">Every option of each styling property against every declared state, per part when states belong to parts. Properties whose options combine in one component token path are crossed: one table per combination of the others. States are forced with <code>{web.stateAttribute ?? 'data-state'}</code>, so what you see is exactly what the CSS defines, independent of the pointer. A column header names the inputs or platforms a state belongs to; states without a web rendering are listed under the table.</p>
+    {template ? matrices.map((m) => (
+      <div class="site-subsection">
+        {m.part ? <h3>Part <code>{m.part.id}</code>{m.part.component ? <span class="site-muted"> ({m.part.component})</span> : null}</h3> : null}
+        {m.part?.description ? <p class="site-muted site-small">{m.part.description}</p> : null}
+        {m.groups.map((g) => (
+          <>
+            {m.part ? <h4>By {g.properties.map((p, i) => <>{i ? ' × ' : ''}<code>{p.id}</code></>)}</h4> : <h3>By {g.properties.map((p, i) => <>{i ? ' × ' : ''}<code>{p.id}</code></>)}</h3>}
+            {g.tables.map((t) => (
+              <>
+                {t.fixed.length ? <h4>{t.fixed.map((f, i) => <>{i ? ', ' : ''}<code>{f.property.id}</code> = <code>{f.value}</code></>)}</h4> : null}
+                <StateMatrix spec={spec} template={template} matrix={m} property={t.property} fixed={t.fixed} baseProps={initial} />
+              </>
+            ))}
+          </>
+        ))}
+      </div>
+    )) : null}
+  </section>
+  ) : null}
+
+  {tab === 'playground' ? (
+  <section class="site-section" id="playground">
+    <h2>Playground</h2>
+    {template ? <Playground spec={spec} template={template} initial={initial} /> : null}
+  </section>
+  ) : null}
+
+  {tab === 'guidelines' && Content ? (
+    <section class="site-section" id="guidelines">
+      <h2>Guidelines</h2>
+      <p class="site-muted site-small">From <code>apps/docs/content/components/{spec.id}.md</code></p>
+      <article class="site-prose">
+        <Content />
+      </article>
+    </section>
+  ) : null}
+
+  {tab === 'spec' ? (
+  <section class="site-section" id="spec">
+    <h2>Specification</h2>
+    <p class="site-muted site-small">From <code>{specFile}</code></p>
+    <details class="site-source">
+      <summary>Raw file <code>{specFile}</code></summary>
+      <pre><code set:html={highlight(specSource, 'json')}></code></pre>
+    </details>
+
+    {followed.length ? (
+      <p>Follows {followed.map((f, i) => <>{i ? ', ' : ''}the <a href={`${base}/foundations/${f.foundation.id}`}>{f.foundation.name}</a> foundation <span class="site-muted site-small">({f.tokens.length} token{f.tokens.length === 1 ? "" : "s"})</span></>)}.</p>
+    ) : null}
+
+    <h3>Anatomy</h3>
+    <Anatomy spec={spec} template={template} initial={initial} />
+
+    <h3>Properties</h3>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">Property</th><th scope="col">Type</th><th scope="col">Options / default</th><th scope="col">Binds to / affects</th><th scope="col">Description</th></tr></thead>
+        <tbody>
+          {spec.properties.map((p) => (
+            <tr>
+              <th scope="row"><code>{p.id}</code>{p.required ? <span class="site-muted site-small"> required</span> : null}</th>
+              <td>{p.type}</td>
+              <td>
+                {p.options ? (
+                  <ul class="site-plain-list">
+                    {p.options.map((o) => <li><code>{o.value}</code>{o.value === p.default ? <span class="site-muted site-small"> (default)</span> : null}{o.description ? <span class="site-muted"> — {o.description}</span> : null}</li>)}
+                  </ul>
+                ) : p.of ? <span>entries: {p.of.map((o: string) => <code>{o}</code>)}</span> : p.default !== undefined ? <code>{String(p.default)}</code> : <span class="site-muted">—</span>}
+              </td>
+              <td>
+                {p.bindsTo ? <div>binds <code>{p.bindsTo}</code></div> : null}
+                {p.affects?.length ? <div>affects {p.affects.map((a) => <code>{a}</code>)}</div> : null}
+                {web.attributes?.[p.id] ? <div class="site-small site-muted">web: <code>{web.attributes[p.id]}</code></div> : null}
+              </td>
+              <td>{p.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {partProps.length ? (
+      <div>
+        <h3>Part properties</h3>
+        <p class="site-muted site-small">Set on each instance of a repeated part, through the list property holding it.</p>
+        <div class="site-table-wrap">
+          <table class="site-table">
+            <thead><tr><th scope="col">Property</th><th scope="col">Type</th><th scope="col">Options / default</th><th scope="col">Binds to / affects</th><th scope="col">Description</th></tr></thead>
+            <tbody>
+              {partProps.map(({ part, p }) => (
+                <tr>
+                  <th scope="row"><code>{part}.{p.id}</code>{p.required ? <span class="site-muted site-small"> required</span> : null}</th>
+                  <td>{p.type}</td>
+                  <td>
+                    {p.options ? (
+                      <ul class="site-plain-list">
+                        {p.options.map((o: any) => <li><code>{o.value}</code>{o.value === p.default ? <span class="site-muted site-small"> (default)</span> : null}{o.description ? <span class="site-muted"> — {o.description}</span> : null}</li>)}
+                      </ul>
+                    ) : p.default !== undefined ? <code>{String(p.default)}</code> : <span class="site-muted">—</span>}
+                  </td>
+                  <td>
+                    {p.bindsTo ? <div>binds <code>{p.bindsTo}</code></div> : null}
+                    {p.affects?.length ? <div>affects {p.affects.map((a: string) => <code>{a}</code>)}</div> : null}
+                  </td>
+                  <td>{p.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ) : null}
+
+    <h3>States</h3>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">State</th><th scope="col">Trigger</th>{partStates ? <th scope="col">Parts</th> : null}<th scope="col">Applies to</th><th scope="col">Description</th></tr></thead>
+        <tbody>
+          {spec.states.map((s) => (
+            <tr>
+              <th scope="row"><code>{s.id}</code></th>
+              <td>{s.trigger}{s.property ? <span> (<code>{s.property}</code>)</span> : null}</td>
+              {partStates ? <td>{s.parts?.length ? s.parts.map((x: string) => <code>{x}</code>) : <span class="site-muted">component</span>}</td> : null}
+              <td class={scoped(s) || s.inputs?.length ? '' : 'site-muted'}>{stateScope(s)}</td>
+              <td>{s.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {spec.layout ? (
+      <div>
+        <h3>Layout</h3>
+        <p>
+          {Object.entries(spec.layout).filter(([k]) => k !== 'notes').map(([k, v]) => <span class="site-chip"><span class="site-muted">{k}</span> {String(v)}</span>)}
+        </p>
+        {spec.layout.notes ? <ul>{(spec.layout.notes as string[]).map((n) => <li>{n}</li>)}</ul> : null}
+      </div>
+    ) : null}
+
+    {a11y ? (
+      <div>
+        <h3>Accessibility</h3>
+        <p class="site-muted site-small">Target: {target.standard} {target.version} level {target.level}. Every statement cites the trusted source it comes from.</p>
+        {a11y.ariaRole ? <p>ARIA role <code>{a11y.ariaRole}</code>.</p> : null}
+        {a11y.name ? (
+          <p>Accessible name: {a11y.name.text} <span class="site-cite">{cite(a11y.name.refs, spec).map((c) => <a href={c.url} title={publisherName(c.publisher)}>{c.title}</a>)}</span></p>
+        ) : null}
+        {a11y.keyboard?.length ? (
+          <div class="site-table-wrap">
+            <table class="site-table">
+              <thead><tr><th scope="col">Key</th><th scope="col">Action</th><th scope="col">Platforms</th><th scope="col">Sources</th></tr></thead>
+              <tbody>{a11y.keyboard.map((k: any) => (
+                <tr>
+                  <th scope="row"><kbd>{k.key}</kbd></th>
+                  <td>{k.action}</td>
+                  <td class={scoped(k) ? '' : 'site-muted'}>{scopeLabel(k) || 'every platform'}</td>
+                  <td class="site-cite">{cite(k.refs, spec).map((c) => <a href={c.url} title={publisherName(c.publisher)}>{c.title}</a>)}</td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        ) : null}
+        <A11yStatements spec={spec} />
+      </div>
+    ) : null}
+
+    {spec.content?.guidelines ? (
+      <div>
+        <h3>Content</h3>
+        <ul>{spec.content.guidelines.map((g) => (typeof g === 'string' ? <li>{g}</li> : <li>{g.text} <span class="site-chip">{scopeLabel(g)}</span></li>))}</ul>
+      </div>
+    ) : null}
+
+    {spec.changelog?.length ? (
+      <div>
+        <h3>Changelog</h3>
+        <ul>{spec.changelog.map((c) => <li><code>{c.version}</code> <span class="site-muted">{c.date}</span> — {c.note}</li>)}</ul>
+      </div>
+    ) : null}
+  </section>
+  ) : null}
+
+  {tab === 'decisions' ? (
+  <section class="site-section" id="decisions">
+    <h2>Decisions</h2>
+    <p class="site-muted site-small">From <code>decisions</code> in <code>{specFile}</code>, newest first. Every active decision is implemented by the spec, the tokens, the web implementation and the guidelines.</p>
+    {decisions.length === 0 ? <p class="site-muted">No decision recorded yet. What this component shows today is provisional until a decision confirms it.</p> : null}
+    <DecisionLog spec={spec} />
+  </section>
+  ) : null}
+
+  {tab === 'tokens' ? (
+  <section class="site-section" id="tokens">
+    <h2>Tokens</h2>
+    <p class="site-muted site-small">From <code>{spec.tokens.source}</code>. Path grammar: <code>{spec.id}.&lt;part&gt;.&lt;property&gt;[.&lt;option&gt;][.&lt;state&gt;]</code>. Every value aliases a semantic token.</p>
+    <TokenFilter total={tokens.length} />
+    {tokensByPart.filter((g) => g.rows.length).map((g) => (
+      <div class="site-subsection">
+        <h3>Part <code>{g.part}</code> <span class="site-muted site-small" data-token-count>({g.rows.length})</span></h3>
+        <TokenTable rows={g.rows} />
+      </div>
+    ))}
+    {tokensByPart.filter((g) => !g.rows.length).length ? (
+      <p class="site-muted site-small">Parts without tokens: {tokensByPart.filter((g) => !g.rows.length).map((g) => <code>{g.part}</code>)} (they inherit from their parent).</p>
+    ) : null}
+  </section>
+  ) : null}
+
+  {tab === 'implementation' ? (
+  <section class="site-section" id="implementation">
+    <h2>Web implementation</h2>
+    <p class="site-muted">Root <code>{web.selector}</code> on a <code>&lt;{web.element}&gt;</code>. Properties map to attributes: {Object.entries(web.attributes ?? {}).map(([p, a]) => <span class="site-chip"><code>{p}</code> → <code>{a}</code></span>)}</p>
+    <details class="site-source" open>
+      <summary><code>{web.css}</code></summary>
+      <pre><code set:html={highlight(cssSource, langOfFile(web.css))}></code></pre>
+    </details>
+    <details class="site-source">
+      <summary><code>{web.template}</code></summary>
+      <pre><code set:html={highlight(templateSource, langOfFile(web.template))}></code></pre>
+    </details>
+    {others.length ? (
+      <div>
+        <h3>Other platforms</h3>
+        <p class="site-muted site-small">Recorded in <code>implementations</code>; nothing here is generated from them.</p>
+        <ul>{others.map(([id, impl]) => (
+          <li><strong>{platformName(id)}</strong>: <code>{impl.control}</code>{impl.framework ? <span> ({impl.framework})</span> : null}{impl.source ? <span> — <a href={impl.source}>{impl.source}</a></span> : null}
+            {impl.notes?.length ? <ul>{impl.notes.map((n: string) => <li>{n}</li>)}</ul> : null}
+          </li>
+        ))}</ul>
+      </div>
+    ) : (
+      <p class="site-muted site-small">No other platform implementation recorded yet. Platform token outputs live under <a href={`${base}/platforms`}>Platforms</a>.</p>
+    )}
+  </section>
+  ) : null}
+</Layout>

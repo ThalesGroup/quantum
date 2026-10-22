@@ -1,0 +1,215 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "spacing",
+  "name": "Spacing and sizing",
+  "version": "0.2.0",
+  "status": "draft",
+  "summary": "The spacing scale and the element sizes from the Figma library, which components pick their paddings, gaps, heights and icon sizes from.",
+  "description": "Two scales from the Figma library (Dimension), as they are, measure everything: space, the room inside and between elements, on a 4 px grid; and size, the dimensions of elements such as icons and avatars. Components and the docs site read them directly: each component picks its padding, gaps, heights and icon sizes from them in its own tokens. There is no semantic spacing layer in between.",
+  "tags": [
+    "spacing",
+    "dimension",
+    "target size",
+    "platforms"
+  ],
+  "tokens": [
+    "space.*",
+    "size.*"
+  ],
+  "rules": [
+    {
+      "id": "space-scale",
+      "name": "Spacing scale",
+      "text": "Spacing comes from one scale on a 4 px grid, with a few smaller and in-between steps (1, 2, 3, 5, 6, 7, 10 and 14 px) for fine adjustments. Each key is its value in px."
+    },
+    {
+      "id": "size-scale",
+      "name": "Element sizes",
+      "text": "Element sizes (icons, avatars, app icons) have their own scale, numbered from 1 (8 px) to 10 (128 px). Spaces measure the room inside and between elements; sizes measure the elements."
+    },
+    {
+      "id": "components",
+      "name": "Components pick from the scales",
+      "text": "A component chooses its inner padding, the gap between its parts, its minimum height and its icon size from these scales, per size, in its own component tokens (the Button: padding 6, 8, 12, 16; height 24, 32, 40, 48; icon 16, 16, 20, 24 px, extra small to large). Two components sharing a value share it through the same scale step, not through a shared semantic token."
+    },
+    {
+      "id": "control-height",
+      "name": "Control height",
+      "text": "Controls take a minimum height per size, never a fixed height, so they grow with their content. The smallest control height is space.24, the minimum target size. The Figma library has no platform values, so iOS and Android use the same heights today."
+    },
+    {
+      "id": "units",
+      "name": "Units",
+      "text": "Lengths are written in px, the DTCG unit: iOS reads them as points, Android as density-independent pixels."
+    },
+    {
+      "id": "layout",
+      "name": "Layout",
+      "text": "There are no page layout tokens (page margins, section spacing): layouts pick from the spacing scale until a decision names them."
+    }
+  ],
+  "specimens": [
+    {
+      "id": "space",
+      "name": "Spacing scale",
+      "display": "length",
+      "tokens": [
+        "space.*"
+      ],
+      "description": "Every spacing step, drawn at its length."
+    },
+    {
+      "id": "size",
+      "name": "Element sizes",
+      "display": "size",
+      "tokens": [
+        "size.*"
+      ],
+      "description": "Squares at each element size."
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "Every control is a pointer target of at least 24 by 24 CSS pixels: the extra small control height is exactly that minimum (space.24), and no control goes below it.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "Controls take a minimum height, never a fixed one, so text enlarged up to 200% makes them taller instead of being clipped.",
+        "refs": [
+          "wcag:1.4.4"
+        ]
+      },
+      {
+        "text": "Apple recommends a hit region of at least 44 by 44 pt. The extra small, small and medium controls (24, 32 and 40 pt high) fall under it on iOS today: the Figma library has no platform heights.",
+        "refs": [
+          "hig-buttons-best-practices",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 by 48 dp. The extra small, small and medium controls (24, 32 and 40 dp high) fall under it on Android today: the Figma library has no platform heights.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "hig-buttons-best-practices",
+        "title": "Apple HIG: Buttons, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android: Make apps more accessible, use large simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Compose accessibility API defaults: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "button-xsmall",
+      "name": "Button, extra small",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "xsmall",
+        "label": "Edit",
+        "iconStart": "edit"
+      }
+    },
+    {
+      "id": "button-small",
+      "name": "Button, small",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "small",
+        "label": "Edit",
+        "iconStart": "edit"
+      }
+    },
+    {
+      "id": "button-medium",
+      "name": "Button, medium",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "medium",
+        "label": "Edit",
+        "iconStart": "edit"
+      }
+    },
+    {
+      "id": "button-large",
+      "name": "Button, large",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "large",
+        "label": "Edit",
+        "iconStart": "edit"
+      }
+    },
+    {
+      "id": "icon-button-xsmall",
+      "name": "Icon button, extra small",
+      "component": "icon-button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "xsmall",
+        "icon": "edit",
+        "label": "Edit"
+      }
+    },
+    {
+      "id": "icon-button-large",
+      "name": "Icon button, large",
+      "component": "icon-button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "large",
+        "icon": "edit",
+        "label": "Edit"
+      }
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-10-02",
+      "note": "Breaking: the semantic spacing layer, invented by the repository and not in the Figma library, is removed: space.inset.*, space.gap.*, control.min-height.*, control.icon-size.*. Components alias the Figma library's scales directly, with the same values (padding space.6 / 8 / 12 / 16, gap space.4 / 8, heights space.24 / 32 / 40 / 48, icons size.2 / 2 / 3 / 4). space.* and size.* are now the tokens components read. The iOS and Android overlays raising control heights to 44 pt and 48 dp are removed with control.min-height: those platforms now fall under their recommended target sizes for the extra small, small and medium controls; WCAG 2.5.8 (24 px) is still met."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft: the spacing and size scales and the semantic control dimensions as they are, specified once (no token changes). Target sizes unchanged: 24 px extra small control height (WCAG 2.5.8), 44 pt on iOS, 48 dp on Android."
+    }
+  ]
+}

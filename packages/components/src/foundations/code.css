@@ -1,0 +1,30 @@
+/*
+ * Code foundation: the line states of highlighted code.
+ *
+ * The Shiki theme (web/shiki-theme.json) colors the syntax; a theme cannot paint a whole line, so
+ * this file draws the lines marked by Shiki's notation transformers (@shikijs/transformers:
+ * transformerNotationHighlight, transformerNotationDiff, transformerNotationErrorLevel), with
+ * their default class names. It reads semantic tokens only (global.bg.code.*), so it follows every
+ * data-theme context like the theme.
+ *
+ * Every marked line also carries a marker: + or - in a gutter for added and removed lines, x or !
+ * for errors and warnings (with alternative text for assistive technologies), a border for
+ * highlighted lines. Its state never rests on color alone, and it survives forced colors mode,
+ * where backgrounds are replaced.
+ */
+
+/* A block with marked lines: every line spans the block and keeps a gutter for the markers. */
+:where(pre:has(.line.highlighted, .line.diff)) code { display: block; inline-size: max-content; min-inline-size: 100%; }
+:where(pre:has(.line.highlighted, .line.diff)) .line { display: inline-block; position: relative; box-sizing: border-box; inline-size: 100%; padding-inline-start: 2ch; }
+:where(pre:has(.line.highlighted, .line.diff)) .line::before { position: absolute; inset-inline-start: 0; inline-size: 2ch; text-align: center; }
+
+:where(pre) .line.highlighted { background-color: var(--global-bg-code-highlighted); }
+:where(pre) .line.highlighted:not(.error, .warning) { border-inline-start: var(--stroke-width-lg) solid currentColor; }
+:where(pre) .line.diff.add { background-color: var(--global-bg-code-inserted); }
+:where(pre) .line.diff.add::before { content: "+"; content: "+" / "Added"; }
+:where(pre) .line.diff.remove { background-color: var(--global-bg-code-deleted); }
+:where(pre) .line.diff.remove::before { content: "-"; content: "-" / "Removed"; }
+:where(pre) .line.highlighted.error { background-color: var(--global-bg-code-error); }
+:where(pre) .line.highlighted.error::before { content: "\00D7"; content: "\00D7" / "Error"; }
+:where(pre) .line.highlighted.warning { background-color: var(--global-bg-code-warning); }
+:where(pre) .line.highlighted.warning::before { content: "!"; content: "!" / "Warning"; }

@@ -1,0 +1,40 @@
+---
+import fs from 'node:fs';
+import Layout from '../layouts/Layout.astro';
+import { readRepoFile, repoPath } from '../lib/repo';
+// The root AGENTS.md and its guides in agents/ are the single source of truth for the workflow; render them here so humans read the same text as agents.
+import { Marked, type Tokens } from 'marked';
+import { highlight } from '../lib/highlight';
+const root = readRepoFile('AGENTS.md');
+// Guides in the order the root file first links them, then any guide it does not link.
+const linked = [...root.matchAll(/\(agents\/([a-z0-9-]+)\.md\)/g)].map((m) => m[1]);
+const all = fs.readdirSync(repoPath('agents')).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)).sort();
+const guides = [...new Set([...linked, ...all])].filter((id) => all.includes(id));
+// One page: a link to a guide jumps to its section, and a guide's headings sit one level below the root file's title.
+const anchor = (href: string) => href.match(/^(?:\.?\/?agents\/|\.\/)?([a-z0-9-]+)\.md$/)?.[1];
+const marked = (demote: boolean) => new Marked({
+  walkTokens: (token) => {
+    if (token.type === 'link') {
+      const id = anchor((token as Tokens.Link).href);
+      if (id && guides.includes(id)) (token as Tokens.Link).href = `#guide-${id}`;
+      else if ((token as Tokens.Link).href === 'agents/') (token as Tokens.Link).href = '#guides';
+    }
+    if (demote && token.type === 'heading') (token as Tokens.Heading).depth = Math.min(6, (token as Tokens.Heading).depth + 1);
+  },
+  // Fenced code blocks go through the same Shiki highlighter as the rest of the site.
+  renderer: {
+    code: ({ text, lang }) => `<pre><code>${highlight(text, lang)}</code></pre>\n`,
+  },
+});
+const html = await marked(false).parse(root);
+const sections = await Promise.all(guides.map(async (id) => ({ id, html: await marked(true).parse(readRepoFile(`agents/${id}.md`)) })));
+---
+<Layout title="How it works" description="How the design system is built and maintained (rendered from AGENTS.md and its guides in agents/).">
+  <article class="site-prose">
+    <p class="site-callout">This page renders <code>AGENTS.md</code> from the repository root, then each guide of <code>agents/</code>, so people and agents read the same rules.</p>
+    <Fragment set:html={html} />
+    <div id="guides">
+      {sections.map((s) => <section id={`guide-${s.id}`}><Fragment set:html={s.html} /></section>)}
+    </div>
+  </article>
+</Layout>

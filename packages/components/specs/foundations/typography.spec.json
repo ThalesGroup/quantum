@@ -1,0 +1,271 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "typography",
+  "name": "Typography",
+  "version": "0.3.1",
+  "status": "draft",
+  "summary": "The font families and their size and weight scales from the Figma library, plus the line heights and letter spacing components set their text with.",
+  "description": "The families (heading, body, mono) and their size and weight scales are the Figma library's Typography, as they are; line heights and letter spacing, which the Figma library lacks, are the design system's additions (tokens/additions/). Components and the docs site read them directly: a component's typography token is a composite of a family, a size and a weight from the Figma library and a line height and letter spacing from the additions. There are no semantic text styles in between.",
+  "tags": [
+    "typography",
+    "text",
+    "platforms"
+  ],
+  "tokens": [
+    "heading.*",
+    "body.*",
+    "mono.*",
+    "font.line-height.*",
+    "font.letter-spacing.*"
+  ],
+  "rules": [
+    {
+      "id": "families",
+      "name": "Families",
+      "text": "Three families from the Figma library: heading, body (also used by the controls) and mono, for code. Each family has its own size and weight scales. A family is one font name, as the Figma library writes it, without a generic fallback. The icon font is not a text family: it belongs to the Iconography foundation."
+    },
+    {
+      "id": "styles",
+      "name": "Composing text",
+      "text": "A component sets its text with a typography composite in its own tokens: family, size and weight from one family's scales, a line height and a letter spacing. It never mixes two families."
+    },
+    {
+      "id": "control",
+      "name": "Control text",
+      "text": "Labels inside controls use the body family at medium weight, one body size per control size (xs to lg), with the tight line height and the normal letter spacing. The Button label follows its Figma prototype instead: the compact line height (1) and the tight letter spacing, and body.size.md at its large size."
+    },
+    {
+      "id": "scales",
+      "name": "Scales",
+      "text": "Sizes and weights come from each family's raw scale (the Figma library); line heights are multipliers of the font size (compact, 1, for the Button label; tight for single lines; normal for running text) and letter spacing is normal (0) everywhere except the Button label, which takes the tight steps (-2 % of body.size.xs and sm, -3 % of body.size.md, in px); both are added by the design system."
+    },
+    {
+      "id": "units",
+      "name": "Units",
+      "text": "Sizes are written in px, the DTCG unit. iOS reads them as points and Android as density-independent pixels; the consuming technology converts."
+    },
+    {
+      "id": "platform-families",
+      "name": "Platform families",
+      "text": "iOS and Android set heading and body text in their system font through their token overlays (tokens/platforms/, the design system's additions); sizes, weights, line heights and the mono family stay the same.",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "web-fonts",
+      "name": "Web fonts",
+      "text": "A web implementation loads every family the tokens name: the reference implementation does it in its fonts.css, and the validator fails when a family is not loaded.",
+      "platforms": [
+        "web"
+      ]
+    }
+  ],
+  "specimens": [
+    {
+      "id": "families",
+      "name": "Families",
+      "display": "font-family",
+      "tokens": [
+        "heading.family",
+        "body.family",
+        "mono.family"
+      ],
+      "description": "The three text families, with the system font that replaces heading and body on iOS and Android."
+    },
+    {
+      "id": "heading-sizes",
+      "name": "Heading sizes",
+      "display": "font-size",
+      "tokens": [
+        "heading.size.*"
+      ],
+      "description": "The raw size scale of the heading family. The text styles use 3xs to sm today."
+    },
+    {
+      "id": "body-sizes",
+      "name": "Body sizes",
+      "display": "font-size",
+      "tokens": [
+        "body.size.*"
+      ],
+      "description": "The raw size scale of the body family."
+    },
+    {
+      "id": "mono-sizes",
+      "name": "Mono sizes",
+      "display": "font-size",
+      "tokens": [
+        "mono.size.*"
+      ],
+      "description": "The raw size scale of the mono family."
+    },
+    {
+      "id": "weights",
+      "name": "Weights",
+      "display": "font-weight",
+      "tokens": [
+        "heading.weight.*",
+        "body.weight.*",
+        "mono.weight.*"
+      ],
+      "description": "The weights each family offers, drawn in that family."
+    },
+    {
+      "id": "line-heights",
+      "name": "Line heights",
+      "display": "line-height",
+      "tokens": [
+        "font.line-height.*"
+      ],
+      "description": "Multipliers of the font size: compact for the Button label, tight for labels and headings, normal for running text. Added by the design system: the Figma library has none."
+    },
+    {
+      "id": "letter-spacing",
+      "name": "Letter spacing",
+      "display": "letter-spacing",
+      "tokens": [
+        "font.letter-spacing.*"
+      ],
+      "description": "Tracking added between letters: normal (0) everywhere, tight for the Button label, one step per body size it uses. Added by the design system: the Figma library has none."
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "Text can be resized up to 200% without loss of content or functionality: components take a minimum height, never a fixed one, so a larger label makes the component taller instead of clipping it.",
+        "refs": [
+          "wcag:1.4.4"
+        ]
+      },
+      {
+        "text": "Line heights and letter spacing are defaults people can override: when they set the line height to 1.5 times the font size, paragraph spacing to 2 times, letter spacing to 0.12 times and word spacing to 0.16 times, no text is clipped or overlaps. Running text already uses a line height of 1.5.",
+        "refs": [
+          "wcag:1.4.12"
+        ]
+      },
+      {
+        "text": "No family offers a light weight for text: the lightest is regular, since thin weights are hard to read, especially at small sizes.",
+        "refs": [
+          "hig-typography-legibility"
+        ]
+      },
+      {
+        "text": "Contrast is checked on the colors alone: every text color must reach 4.5:1 whatever its size (Color foundation; the Figma library's error colors fall short in a few states).",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Heading and body text use the system font, which supports Dynamic Type; layouts adapt to every text size, including the larger accessibility sizes, and stay readable.",
+        "refs": [
+          "hig-typography-dynamic-type",
+          "hig-accessibility-vision"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "A custom font that replaces the system font implements the same behaviours: it scales with Dynamic Type and responds to Bold Text.",
+        "refs": [
+          "hig-typography-custom-fonts"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "hig-typography-legibility",
+        "title": "Apple HIG: Typography, ensuring legibility",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Ensuring-legibility"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-custom-fonts",
+        "title": "Apple HIG: Typography, using custom fonts",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Using-custom-fonts"
+      },
+      {
+        "id": "hig-accessibility-vision",
+        "title": "Apple HIG: Accessibility, vision",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Vision"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "button-xsmall",
+      "name": "Button, extra small",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "xsmall",
+        "label": "Extra small"
+      }
+    },
+    {
+      "id": "button-small",
+      "name": "Button, small",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "small",
+        "label": "Small"
+      }
+    },
+    {
+      "id": "button-medium",
+      "name": "Button, medium",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "medium",
+        "label": "Medium"
+      }
+    },
+    {
+      "id": "button-large",
+      "name": "Button, large",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "size": "large",
+        "label": "Large"
+      }
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.3.1",
+      "date": "2026-10-22",
+      "note": "Fix, no decision changed: the web-fonts statement names the fonts.css of the web reference implementation, no longer published in @quantum-ds/components (the package ships the specs only)."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-10-08",
+      "note": "New additions for the Button label, decided in the Button's decisions label-line-height-1 and label-letter-spacing-tight (Figma prototype): font.line-height.compact (1) and font.letter-spacing.tight.xs / sm / md (-0.24 / -0.28 / -0.48 px: -2 % of body.size.xs and sm, -3 % of body.size.md). Every other component keeps the tight line height and the normal letter spacing."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-10-02",
+      "note": "The Figma library's Typography as it is: paths lose the font. prefix (font.heading.size.sm becomes heading.size.sm, font.body.weight.medium becomes body.weight.medium) and the families lose the generic fallback the repository had added. Breaking: the semantic text styles, invented by the repository and not in the Figma library, are removed: text.control.*, text.heading.*, text.body.*, text.code.*. Components write their typography composite from the scales (the Button label: body.family, body.size.<size>, body.weight.medium, font.line-height.tight, font.letter-spacing.normal, the same values as before); the docs site reads the scales too. Line heights and letter spacing stay, as the design system's additions."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft: the families, scales and text styles as they are, specified once (no token changes)."
+    }
+  ]
+}

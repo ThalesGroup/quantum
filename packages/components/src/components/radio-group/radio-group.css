@@ -1,0 +1,244 @@
+/*
+ * Radio group — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/radio-group.spec.json
+ * Tokens: packages/tokens/dist/css/components/radio-group.css (generated from packages/tokens/src/components/radio-group.tokens.json)
+ *
+ * Rules:
+ *  - Only --radio-group-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a fieldset (legend, description, options, error message); each option is a grid of
+ *    a native radio (the control, drawn by the component), its label and its description. The dot is
+ *    a pseudo-element of the input.
+ *  - Orientation and size are data attributes on the root; states are native pseudo-classes of the
+ *    radio. A state is forced for review with [data-state="<state>"] on the root (every option) or on
+ *    one option (the states matrix forces one entry). Precedence follows the spec order:
+ *    default < hover < focus-visible < checked < invalid < disabled.
+ *  - Private properties (--_*) are the single place an option or a state writes to.
+ */
+
+.ds-radio-group {
+  /* Defaults = orientation "vertical", size "medium", state "default". */
+  --_options-gap: var(--radio-group-container-gap-vertical);
+  --_control-size: var(--radio-group-control-size-medium);
+  --_legend-color: var(--radio-group-legend-color-default);
+  --_description-color: var(--radio-group-description-color-default);
+  --_label-font-family: var(--radio-group-option-label-typography-medium-font-family);
+  --_label-font-size: var(--radio-group-option-label-typography-medium-font-size);
+  --_label-font-weight: var(--radio-group-option-label-typography-medium-font-weight);
+  --_label-line-height: var(--radio-group-option-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--radio-group-option-label-typography-medium-letter-spacing);
+  --_option-description-font-family: var(--radio-group-option-description-typography-medium-font-family);
+  --_option-description-font-size: var(--radio-group-option-description-typography-medium-font-size);
+  --_option-description-font-weight: var(--radio-group-option-description-typography-medium-font-weight);
+  --_option-description-line-height: var(--radio-group-option-description-typography-medium-line-height);
+  --_option-description-letter-spacing: var(--radio-group-option-description-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--radio-group-container-row-gap);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.ds-radio-group[data-size="small"] {
+  --_control-size: var(--radio-group-control-size-small);
+  --_label-font-family: var(--radio-group-option-label-typography-small-font-family);
+  --_label-font-size: var(--radio-group-option-label-typography-small-font-size);
+  --_label-font-weight: var(--radio-group-option-label-typography-small-font-weight);
+  --_label-line-height: var(--radio-group-option-label-typography-small-line-height);
+  --_label-letter-spacing: var(--radio-group-option-label-typography-small-letter-spacing);
+  --_option-description-font-family: var(--radio-group-option-description-typography-small-font-family);
+  --_option-description-font-size: var(--radio-group-option-description-typography-small-font-size);
+  --_option-description-font-weight: var(--radio-group-option-description-typography-small-font-weight);
+  --_option-description-line-height: var(--radio-group-option-description-typography-small-line-height);
+  --_option-description-letter-spacing: var(--radio-group-option-description-typography-small-letter-spacing);
+}
+
+.ds-radio-group[data-orientation="horizontal"] {
+  --_options-gap: var(--radio-group-container-gap-horizontal);
+}
+
+/* ---- Group parts --------------------------------------------------------- */
+
+.ds-radio-group__legend {
+  padding: 0;
+  color: var(--_legend-color);
+  font-family: var(--radio-group-legend-typography-font-family);
+  font-size: var(--radio-group-legend-typography-font-size);
+  font-weight: var(--radio-group-legend-typography-font-weight);
+  line-height: var(--radio-group-legend-typography-line-height);
+  letter-spacing: var(--radio-group-legend-typography-letter-spacing);
+}
+/* A legend sits outside the flex flow of its fieldset: the gap is written as a margin. */
+.ds-radio-group__legend + * {
+  margin-block-start: 0;
+}
+
+.ds-radio-group__description {
+  margin: 0;
+  color: var(--_description-color);
+  font-family: var(--radio-group-description-typography-font-family);
+  font-size: var(--radio-group-description-typography-font-size);
+  font-weight: var(--radio-group-description-typography-font-weight);
+  line-height: var(--radio-group-description-typography-line-height);
+  letter-spacing: var(--radio-group-description-typography-letter-spacing);
+}
+
+.ds-radio-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_options-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-radio-group[data-orientation="horizontal"] .ds-radio-group__options {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.ds-radio-group__error-message {
+  margin: 0;
+  color: var(--radio-group-error-message-color);
+  font-family: var(--radio-group-error-message-typography-font-family);
+  font-size: var(--radio-group-error-message-typography-font-size);
+  font-weight: var(--radio-group-error-message-typography-font-weight);
+  line-height: var(--radio-group-error-message-typography-line-height);
+  letter-spacing: var(--radio-group-error-message-typography-letter-spacing);
+}
+
+/* ---- Option ------------------------------------------------------------- */
+
+.ds-radio-group__option {
+  --_control-background: var(--radio-group-control-background-default);
+  --_control-border-color: var(--radio-group-control-border-color-default);
+  --_control-color: var(--radio-group-control-color-checked);
+  --_label-color: var(--radio-group-option-label-color-default);
+  --_option-description-color: var(--radio-group-option-description-color-default);
+
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--radio-group-option-column-gap);
+  row-gap: var(--radio-group-option-row-gap);
+  align-items: start;
+}
+
+.ds-radio-group__control {
+  box-sizing: border-box;
+  display: inline-grid;
+  place-content: center;
+  inline-size: var(--_control-size);
+  block-size: var(--_control-size);
+  margin: 0;
+  margin-block-start: calc((var(--_label-line-height) * var(--_label-font-size) - var(--_control-size)) / 2);
+  border: var(--radio-group-control-border-width) solid var(--_control-border-color);
+  border-radius: var(--radio-group-control-border-radius);
+  background-color: var(--_control-background);
+  color: var(--_control-color);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--radio-group-control-transition-duration) var(--radio-group-control-transition-easing),
+    border-color var(--radio-group-control-transition-duration) var(--radio-group-control-transition-easing);
+}
+
+/* The dot, in currentColor from the control's color token; a fraction of the control size. */
+.ds-radio-group__control::after {
+  content: "";
+  display: block;
+  inline-size: calc(var(--_control-size) * 0.4);
+  block-size: calc(var(--_control-size) * 0.4);
+  border-radius: var(--radio-group-control-border-radius);
+  background-color: currentColor;
+  opacity: 0;
+}
+
+.ds-radio-group__option-label {
+  grid-column: 2;
+  color: var(--_label-color);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
+  cursor: pointer;
+}
+
+.ds-radio-group__option-description {
+  grid-column: 2;
+  margin: 0;
+  color: var(--_option-description-color);
+  font-family: var(--_option-description-font-family);
+  font-size: var(--_option-description-font-size);
+  font-weight: var(--_option-description-font-weight);
+  line-height: var(--_option-description-line-height);
+  letter-spacing: var(--_option-description-letter-spacing);
+}
+
+/* ---- States -------------------------------------------------------------- */
+/* Forced on the root (every option) or on one option; native pseudo-classes on the radio.
+   Order matters: hover < checked < invalid < disabled; hover never repaints a checked or disabled radio. */
+
+:where(.ds-radio-group[data-state="hover"], .ds-radio-group__option[data-state="hover"]) .ds-radio-group__control:not(:checked, :disabled),
+.ds-radio-group:not([data-state]) .ds-radio-group__option:not([data-state]) .ds-radio-group__control:hover:not(:checked, :disabled) {
+  --_control-background: var(--radio-group-control-background-hover);
+  --_control-border-color: var(--radio-group-control-border-color-hover);
+}
+
+:where(.ds-radio-group[data-state="checked"], .ds-radio-group__option[data-state="checked"]) .ds-radio-group__control,
+.ds-radio-group__control:checked {
+  --_control-background: var(--radio-group-control-background-checked);
+  --_control-border-color: var(--radio-group-control-border-color-checked);
+  --_control-color: var(--radio-group-control-color-checked);
+}
+:where(.ds-radio-group[data-state="checked"], .ds-radio-group__option[data-state="checked"]) .ds-radio-group__control::after,
+.ds-radio-group__control:checked::after {
+  opacity: 1;
+}
+
+:where(.ds-radio-group[data-state="invalid"], .ds-radio-group__option[data-state="invalid"]) .ds-radio-group__control,
+.ds-radio-group__control[aria-invalid="true"] {
+  --_control-border-color: var(--radio-group-control-border-color-invalid);
+}
+
+.ds-radio-group:where([data-state="disabled"]),
+.ds-radio-group:disabled {
+  --_legend-color: var(--radio-group-legend-color-disabled);
+  --_description-color: var(--radio-group-description-color-disabled);
+}
+:where(.ds-radio-group[data-state="disabled"], .ds-radio-group__option[data-state="disabled"]) .ds-radio-group__option,
+:where(.ds-radio-group[data-state="disabled"], .ds-radio-group__option[data-state="disabled"]),
+.ds-radio-group__option:has(.ds-radio-group__control:disabled) {
+  --_label-color: var(--radio-group-option-label-color-disabled);
+  --_option-description-color: var(--radio-group-option-description-color-disabled);
+}
+:where(.ds-radio-group[data-state="disabled"], .ds-radio-group__option[data-state="disabled"]) .ds-radio-group__control,
+.ds-radio-group__control:disabled {
+  --_control-background: var(--radio-group-control-background-disabled);
+  --_control-border-color: var(--radio-group-control-border-color-disabled);
+  --_control-color: var(--radio-group-control-color-disabled);
+  cursor: not-allowed;
+}
+:where(.ds-radio-group[data-state="disabled"], .ds-radio-group__option[data-state="disabled"]) .ds-radio-group__option-label,
+.ds-radio-group__option:has(.ds-radio-group__control:disabled) .ds-radio-group__option-label {
+  cursor: not-allowed;
+}
+
+.ds-radio-group__control:focus {
+  outline: none;
+}
+
+:where(.ds-radio-group[data-state="focus-visible"], .ds-radio-group__option[data-state="focus-visible"]) .ds-radio-group__control,
+.ds-radio-group__control:focus-visible {
+  outline: var(--radio-group-control-outline-width-focus-visible) solid var(--radio-group-control-outline-color-focus-visible);
+  outline-offset: var(--radio-group-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-radio-group__control {
+    transition: none;
+  }
+}

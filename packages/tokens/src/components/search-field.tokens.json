@@ -1,0 +1,248 @@
+{
+  "$description": "Component tokens for Search field. Path grammar: search-field.<part>.<property>[.<size>][.<state>]: colors vary by state only, control dimensions and type by size. Parts, options and states must exist in packages/components/specs/components/search-field.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "search-field": {
+    "container": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.4}",
+        "$description": "Between the label, the control, the description and the error message."
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.medium}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "control": {
+      "$description": "The editable box: the native search input, drawn by the component, with the search glyph drawn over its start edge.",
+      "min-height": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.32}"
+        },
+        "medium": {
+          "$value": "{space.40}"
+        },
+        "large": {
+          "$value": "{space.48}"
+        }
+      },
+      "padding-inline": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.8}"
+        },
+        "medium": {
+          "$value": "{space.12}"
+        },
+        "large": {
+          "$value": "{space.16}"
+        }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.xs}"
+      },
+      "border-width": {
+        "$type": "dimension",
+        "$value": "{stroke-width.sm}"
+      },
+      "background": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.bg.level.0.default}"
+        },
+        "hover": {
+          "$value": "{global.bg.level.0.hover}"
+        },
+        "disabled": {
+          "$value": "{global.bg.state.disabled.default}"
+        }
+      },
+      "border-color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.border.accent.neutral.default}"
+        },
+        "disabled": {
+          "$value": "{global.border.state.disabled.default}"
+        }
+      },
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "placeholder-color": {
+        "$type": "color",
+        "$description": "Color of the placeholder hint, lighter than the value.",
+        "default": {
+          "$value": "{global.text.on-base.neutral.tertiary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.lg}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      },
+      "outline-width": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.width}"
+        }
+      },
+      "outline-offset": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.offset}"
+        }
+      },
+      "outline-color": {
+        "$type": "color",
+        "focus-visible": {
+          "$value": "{color.focus.ring}"
+        }
+      },
+      "transition": {
+        "duration": {
+          "$type": "duration",
+          "$value": "{duration.fast}"
+        },
+        "easing": {
+          "$type": "cubicBezier",
+          "$value": "{easing.standard}"
+        }
+      },
+      "padding-inline-start": {
+        "$type": "dimension",
+        "$description": "Room for the search glyph at the start edge, in place of the inline padding.",
+        "small": {
+          "$value": "{space.28}"
+        },
+        "medium": {
+          "$value": "{space.36}"
+        },
+        "large": {
+          "$value": "{space.40}"
+        }
+      }
+    },
+    "description": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.secondary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.regular}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      }
+    },
+    "icon": {
+      "$description": "Search glyph of the icon font over the start edge of the control. Follows the control's placeholder color; only the font and its size are tokenized.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.20}"
+      },
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.2}"
+        },
+        "medium": {
+          "$value": "{size.3}"
+        },
+        "large": {
+          "$value": "{size.4}"
+        }
+      },
+      "margin-inline": {
+        "$type": "dimension",
+        "$value": "{space.8}"
+      },
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.icon.on-base.neutral.tertiary}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
+        }
+      }
+    }
+  }
+}

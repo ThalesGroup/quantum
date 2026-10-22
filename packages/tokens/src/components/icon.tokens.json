@@ -1,0 +1,61 @@
+{
+  "$description": "Component tokens for Icon. Path grammar: icon.<part>.<property>[.<size>|.<color>]. Parts, options and states must exist in packages/components/specs/components/icon.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "icon": {
+    "container": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.20}"
+      },
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.2}"
+        },
+        "medium": {
+          "$value": "{size.3}"
+        },
+        "large": {
+          "$value": "{size.4}"
+        }
+      },
+      "color": {
+        "$type": "color",
+        "$description": "The on-base icon roles. The current option (the default) has no token: the glyph inherits the surrounding text color through currentColor.",
+        "neutral": {
+          "$value": "{global.icon.on-base.neutral.secondary}"
+        },
+        "brand": {
+          "$value": "{global.icon.on-base.brand.default}"
+        },
+        "success": {
+          "$value": "{global.icon.on-base.functional.success.default}"
+        },
+        "warning": {
+          "$value": "{global.icon.on-base.functional.warning.default}"
+        },
+        "error": {
+          "$value": "{global.icon.on-base.functional.error.default}"
+        },
+        "info": {
+          "$value": "{global.icon.on-base.functional.info.default}"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+/*
+ * Skeleton — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/skeleton.spec.json
+ * Tokens: packages/tokens/dist/css/components/skeleton.css (generated from packages/tokens/src/components/skeleton.tokens.json)
+ *
+ * Rules:
+ *  - Only --skeleton-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - Shape is a data attribute; a skeleton has no interaction state. It pulses between the
+ *    opacity token and fully opaque, at a multiple of the motion duration; still under reduced motion.
+ *  - Width and height come from the template's inline style (consumer content), the shape's
+ *    default height from its token.
+ */
+
+.ds-skeleton {
+  --_radius: var(--skeleton-container-border-radius-text);
+  --_height: var(--skeleton-container-height-text);
+
+  box-sizing: border-box;
+  display: block;
+  inline-size: var(--_width, 100%);
+  block-size: var(--_height);
+  border-radius: var(--_radius);
+  background-color: var(--skeleton-container-background);
+  animation: ds-skeleton-pulse calc(var(--skeleton-container-animation-duration) * 6) var(--skeleton-container-animation-easing) infinite alternate;
+}
+
+.ds-skeleton[data-shape="rectangle"] {
+  --_radius: var(--skeleton-container-border-radius-rectangle);
+  --_height: var(--skeleton-container-height-rectangle);
+}
+
+.ds-skeleton[data-shape="circle"] {
+  --_radius: var(--skeleton-container-border-radius-circle);
+  --_height: var(--skeleton-container-height-circle);
+
+  inline-size: var(--_width, var(--_height));
+  flex: none;
+}
+
+@keyframes ds-skeleton-pulse {
+  from { opacity: 1; }
+  to { opacity: var(--skeleton-container-opacity); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-skeleton {
+    animation: none;
+  }
+}

@@ -1,2 +1,13 @@
-node_modules
+node_modules/
 .DS_Store
+*.log
+build/
+# Built from packages/tokens/src/ by pnpm tokens:build (pnpm dev, pnpm build, pnpm check, prepack)
+packages/tokens/dist/
+apps/docs/dist/
+# Built from packages/components/specs/ by pnpm components:build (pnpm build, prepack)
+packages/components/dist/
+apps/docs/.astro/
+
+# Local Figma export (private library): never committed
+/raw_content/

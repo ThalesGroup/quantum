@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TokenTable from '../../components/TokenTable.astro';
+import TokenFilter from '../../components/TokenFilter.astro';
+import { getTokens } from '../../lib/tokens';
+
+type Tier = { name: string; description: string; mayReference: string[] };
+
+// One static page per tier, like the component tabs: /tokens is the first tier, /tokens/<tier> the others.
+export function getStaticPaths() {
+  const tiers = getTokens().config.tiers as Tier[];
+  return tiers.map((t, i) => ({ params: { tier: i === 0 ? undefined : t.name }, props: { name: t.name } }));
+}
+
+const { name } = Astro.props;
+const { rows, config } = getTokens();
+const tiers = config.tiers as Tier[];
+const tier = tiers.find((t) => t.name === name)!;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const hrefOf = (t: Tier) => `${base}/tokens${t === tiers[0] ? '' : `/${t.name}`}`;
+const tierRows = rows.filter((r) => r.tier === name);
+// Group by the first path segment: a category (color, space…) or, in the component tier, the component id.
+const groups = [...new Set(tierRows.map((r) => r.segments[0]))].map((g) => ({ id: g, rows: tierRows.filter((r) => r.segments[0] === g) }));
+const isComponentTier = name === 'component';
+---
+<Layout title={`${tier.name} tokens`} description="Every DTCG token, its aliases and the CSS custom property it becomes.">
+  <header class="site-page-header">
+    <h1>Tokens</h1>
+    <p class="site-lede">
+      Three tiers, one direction of references: <strong>component → semantic → raw</strong>.
+      Generated CSS keeps aliases as <code>var()</code> chains so themes can override any layer.
+    </p>
+    <nav class="site-tabs" aria-label="Token tiers">
+      {tiers.map((t) => (
+        <a href={hrefOf(t)} aria-current={t === tier ? 'page' : undefined}>
+          {t.name} <span class="site-tabs__count">{rows.filter((r) => r.tier === t.name).length}</span>
+        </a>
+      ))}
+    </nav>
+  </header>
+
+  <section class="site-section">
+    <h2 class="site-sr">{tier.name} tokens</h2>
+    <p class="site-muted">
+      {tier.description}
+      {tier.mayReference.length ? <span> May reference: {tier.mayReference.join(', ')}.</span> : <span> Leaf values only.</span>}
+    </p>
+    {groups.length > 1 ? (
+      <nav class="site-toc" aria-label={`${tier.name} token groups`}>
+        {groups.map((g) => <a href={`#${g.id}`}>{g.id} <span class="site-muted">{g.rows.length}</span></a>)}
+      </nav>
+    ) : null}
+    <TokenFilter total={tierRows.length} />
+    {groups.map((g) => (
+      <div class="site-subsection" id={g.id}>
+        <h3>
+          {isComponentTier ? <a href={`${base}/components/${g.id}/tokens`}><code>{g.id}</code></a> : <code>{g.id}</code>}
+          <span class="site-muted site-small" data-token-count>({g.rows.length})</span>
+        </h3>
+        <TokenTable rows={g.rows} />
+      </div>
+    ))}
+  </section>
+</Layout>

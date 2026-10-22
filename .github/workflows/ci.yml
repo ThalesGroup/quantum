@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - nextgen
   pull_request:
 
 permissions:
@@ -14,8 +15,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  # DTCG validation job
-  check-dtcg:
+  # Generated token outputs are fresh, the artifacts agree (validate), the Specs export round-trips, the unit tests pass
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -25,12 +26,44 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @quantum-ds/tokens run check:dtcg
+      - run: pnpm check
 
-  # Packages build job
+  # Every commit message of the pull request follows Conventional Commits (agents/git.md "Commits")
+  commits:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm commits:check --base "origin/${{ github.base_ref }}"
+
+  # Every changed artifact is propagated to what is linked to it (agents/impact.md); fails on a component change without a version bump
+  impact:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm impact --base "origin/${{ github.base_ref }}"
+
+  # The tokens, the npm packages and the docs site build; the site is kept as an artifact for review (it is not deployed)
   build:
     runs-on: ubuntu-latest
-    needs: check-dtcg
+    needs: check
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
@@ -40,8 +73,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      # What the release workflow publishes: every package packs (prepack included)
+      - run: pnpm --filter "./packages/*" pack --dry-run
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: tokens-dist
-          path: packages/tokens/dist
-
+          name: docs-site
+          path: apps/docs/dist

@@ -1,0 +1,84 @@
+{
+  "$description": "Component tokens for Spinner. Path grammar: spinner.<part>.<property>[.<size>]. The ring is the control itself (its border); its moving arc is the colored part of that border. Parts, options and states must exist in packages/components/specs/components/spinner.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "spinner": {
+    "container": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.8}",
+        "$description": "Between the ring and a visible label."
+      }
+    },
+    "ring": {
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.2}"
+        },
+        "medium": {
+          "$value": "{size.4}"
+        },
+        "large": {
+          "$value": "{size.5}"
+        }
+      },
+      "border-width": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{stroke-width.md}"
+        },
+        "medium": {
+          "$value": "{stroke-width.lg}"
+        },
+        "large": {
+          "$value": "{stroke-width.lg}"
+        }
+      },
+      "border-color": {
+        "$type": "color",
+        "$description": "The still part of the ring.",
+        "$value": "{global.bg.base.neutral.3}"
+      },
+      "color": {
+        "$type": "color",
+        "$description": "The moving arc.",
+        "$value": "{global.bg.accent.brand.default}"
+      },
+      "animation": {
+        "duration": {
+          "$type": "duration",
+          "$value": "{duration.normal}"
+        },
+        "easing": {
+          "$type": "cubicBezier",
+          "$value": "{easing.standard}"
+        }
+      },
+      "opacity": {
+        "$type": "number",
+        "$description": "Low point of the opacity pulse shown under reduced motion.",
+        "$value": "{opacity.40}"
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "$value": "{global.text.on-base.neutral.secondary}"
+      },
+      "typography": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{body.family}",
+          "fontSize": "{body.size.sm}",
+          "fontWeight": "{body.weight.regular}",
+          "lineHeight": "{font.line-height.normal}",
+          "letterSpacing": "{font.letter-spacing.normal}"
+        }
+      },
+      "size": {
+        "$type": "dimension",
+        "$description": "Box of the visually hidden label: one pixel, clipped, so the text stays in the accessibility tree.",
+        "$value": "{space.1}"
+      }
+    }
+  }
+}

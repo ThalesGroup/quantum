@@ -1,0 +1,632 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "slider",
+  "name": "Slider",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "slider",
+  "summary": "Lets people pick a value in a range by moving a thumb along a track.",
+  "description": "A slider sets a value whose position in a range matters more than its exact figure: a volume, a brightness, a price ceiling. A thumb slides along a track between a minimum and a maximum, by steps; the value can be shown next to the label. When the exact number matters, a Number field is better, alone or next to the slider.",
+  "tags": [
+    "form",
+    "input",
+    "range"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Stacks the label row (label and value) and the control; carries the size and the forced state."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "Text naming the quantity. Provides the accessible name of the slider."
+    },
+    {
+      "id": "value",
+      "role": "value",
+      "required": false,
+      "description": "The current value shown at the end of the label row (an output bound to the control on the web)."
+    },
+    {
+      "id": "control",
+      "role": "track",
+      "required": true,
+      "description": "The track: the native range input, drawn by the component. Receives focus, holds the value and its bounds; the thumb slides along it."
+    },
+    {
+      "id": "thumb",
+      "role": "handle",
+      "required": true,
+      "decorative": true,
+      "parent": "control",
+      "description": "The knob people drag or move with the keyboard. Drawn by the control (vendor pseudo-elements on the web): it has tokens but no element of its own."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Thickness of the track and size of the thumb.",
+      "affects": [
+        "control",
+        "thumb"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Compact: inline in panels and toolbars (4 px track, 16 px thumb)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (8 px track, 20 px thumb)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "The quantity being set (Volume, Maximum price)."
+    },
+    {
+      "id": "value",
+      "name": "Value",
+      "type": "number",
+      "default": 50,
+      "bindsTo": "control",
+      "description": "Current value."
+    },
+    {
+      "id": "min",
+      "name": "Minimum",
+      "type": "number",
+      "default": 0,
+      "description": "Lowest value."
+    },
+    {
+      "id": "max",
+      "name": "Maximum",
+      "type": "number",
+      "default": 100,
+      "description": "Highest value."
+    },
+    {
+      "id": "step",
+      "name": "Step",
+      "type": "number",
+      "default": 1,
+      "description": "Increment of a key press and granularity of the values."
+    },
+    {
+      "id": "showValue",
+      "name": "Show value",
+      "type": "boolean",
+      "default": false,
+      "description": "Shows the current value at the end of the label row."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Prevents changing the value; the current value stays visible."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "Resting: a neutral track with the brand thumb at the value's position."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "description": "Pointer over the control. The thumb takes the brand hover color. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "active",
+      "trigger": "interaction",
+      "description": "The thumb is being dragged, or a key is held: it takes the brand press color."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "description": "Keyboard focus on the control. Shows the shared focus ring around the whole track; pointer focus shows none."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "description": "Non-interactive. Track, thumb, label and value drop to the shared disabled colors."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "stretch",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "The label row comes first: the label at the start, the value at the end; the track fills the width below it.",
+      "The control is 24 px high whatever the track thickness, so the pointer target is kept; the thumb is centered on the track."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "slider",
+    "name": {
+      "text": "Computed from the label, associated with the control as its label element on the web. The value, the minimum and the maximum are exposed as the slider's value and bounds; when the number is not meaningful by itself (a day of the week), the application adds a text value through the template's extra attributes.",
+      "refs": [
+        "wai-labels",
+        "html-aam-name-input",
+        "apg-slider-roles",
+        "aria-valuetext"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to the control. A disabled slider is not focusable and is skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Arrow keys",
+        "action": "Right or Up increases the value by one step, Left or Down decreases it.",
+        "refs": [
+          "apg-slider-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Home",
+        "action": "Sets the value to the minimum.",
+        "refs": [
+          "apg-slider-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "End",
+        "action": "Sets the value to the maximum.",
+        "refs": [
+          "apg-slider-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Expose the slider role, the name, the value and its bounds through the platform's native slider, so assistive technology reports the value as a number and lets people change it.",
+        "refs": [
+          "wcag:4.1.2",
+          "aria-slider",
+          "apg-slider",
+          "compose-progress"
+        ]
+      },
+      {
+        "text": "Use the native input type=range: it exposes the slider role, the value, min and max without ARIA, and provides the arrow keys, Home and End. Do not add aria-valuemin or aria-valuemax to it.",
+        "refs": [
+          "html-aria-input-range",
+          "html-aam-input-range",
+          "html-input-range"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every slider has a visible label associated with the control programmatically; show the value when the figure helps people choose.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.3.1",
+          "wai-labels",
+          "html-label",
+          "wcag-h44"
+        ]
+      },
+      {
+        "text": "The shown value is an output element bound to the control; without script it shows the initial value, and the application updates it as the value changes.",
+        "refs": [
+          "html-output"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "When the number alone is not meaningful (Monday rather than 1), give the control a text value with aria-valuetext.",
+        "refs": [
+          "apg-slider-roles",
+          "aria-valuetext"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Dragging the thumb is never the only pointer way: people can activate a point of the track to move the thumb there, and the keyboard changes the value by steps (the keyboard alone does not satisfy the dragging criterion).",
+        "refs": [
+          "wcag:2.5.7",
+          "understanding-dragging"
+        ]
+      },
+      {
+        "text": "The thumb and the track are what identify the control and show its value: the thumb contrasts at least 3:1 with the track and the surface in every color mode (brand fill 4.85:1 on the track in light mode and 10.73:1 in dark mode, 5.79:1 and 12.80:1 on the default surface; its light rim separates it from the track), and the focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-boundaries"
+        ]
+      },
+      {
+        "text": "Label and value text contrast at least 4.5:1 with the surface: 19.07:1 and 12.87:1 (light), 11.27:1 and 8.80:1 (dark) on the default surface. Disabled text is inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The value is shown by the position of the thumb and, when asked for, by the figure in text, never by color alone.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the control receives keyboard focus, drawn around the whole track so it is seen whatever the thumb position.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring; the thumb is styled through the vendor pseudo-elements, one rule per vendor.",
+        "refs": [
+          "mdn-focus-visible",
+          "mdn-webkit-slider-thumb",
+          "mdn-moz-range-thumb"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The control is 24 CSS pixels high at every size, so the whole track is a pointer target at the minimum, whatever the track thickness.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The native disabled attribute removes the slider from the focus order.",
+        "refs": [
+          "html-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A slider is a horizontal track with a thumb that people adjust between a minimum and a maximum value: consider a label to introduce it and live feedback as the value changes. The 24 pt control falls under the 44 x 44 pt hit region on iOS today.",
+        "refs": [
+          "hig-sliders",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's Slider sets that minimum itself when it can receive actions. A custom slider exposes its value, range and step with the progress range semantics.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes",
+          "compose-progress"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Color transitions of the thumb are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "html-aam-name-input",
+        "title": "HTML-AAM: accessible name computation of input elements (associated label element)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
+      },
+      {
+        "id": "html-label",
+        "title": "HTML: the label element (for attribute, labeled control)",
+        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "wai-labels",
+        "title": "WAI tutorials: Labeling controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wcag-h44",
+        "title": "WCAG technique H44: label elements to associate text labels with form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
+      },
+      {
+        "id": "understanding-non-text-contrast-boundaries",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: user interface components and boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "apg-slider",
+        "title": "APG: Slider pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/slider/"
+      },
+      {
+        "id": "apg-slider-keyboard",
+        "title": "APG: Slider pattern, keyboard interaction",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/slider/#keyboardinteraction"
+      },
+      {
+        "id": "apg-slider-roles",
+        "title": "APG: Slider pattern, roles, states and properties (aria-valuetext)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/slider/#roles_states_properties"
+      },
+      {
+        "id": "aria-slider",
+        "title": "WAI-ARIA 1.2: slider role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#slider"
+      },
+      {
+        "id": "aria-valuetext",
+        "title": "WAI-ARIA 1.2: aria-valuetext",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-valuetext"
+      },
+      {
+        "id": "html-aria-input-range",
+        "title": "ARIA in HTML: input type=range (role slider; no aria-valuemin or aria-valuemax)",
+        "url": "https://www.w3.org/TR/html-aria/#el-input-range"
+      },
+      {
+        "id": "html-aam-input-range",
+        "title": "HTML-AAM: input type=range (slider)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-range"
+      },
+      {
+        "id": "html-input-range",
+        "title": "HTML: input type=range (the Range state: an imprecise control)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#range-state-(type=range)"
+      },
+      {
+        "id": "html-output",
+        "title": "HTML: the output element (the result of a user action)",
+        "url": "https://html.spec.whatwg.org/multipage/form-elements.html#the-output-element"
+      },
+      {
+        "id": "mdn-webkit-slider-thumb",
+        "title": "MDN: ::-webkit-slider-thumb (non-standard)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::-webkit-slider-thumb"
+      },
+      {
+        "id": "mdn-moz-range-thumb",
+        "title": "MDN: ::-moz-range-thumb (Mozilla extension)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::-moz-range-thumb"
+      },
+      {
+        "id": "understanding-dragging",
+        "title": "Understanding WCAG 2.5.7 Dragging Movements (clicking the track of a range slider)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      },
+      {
+        "id": "hig-sliders",
+        "title": "Apple HIG: Sliders (a label to introduce it, live feedback of the value)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/sliders"
+      },
+      {
+        "id": "compose-progress",
+        "title": "Jetpack Compose accessibility: progress tracking semantics (progressBarRangeInfo)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#progress-tracking"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The label names the quantity, with its unit when the value is shown: Volume, Maximum price (€).",
+      "Show the value when the figure helps; hide it when the position says enough (a volume).",
+      "Choose a step people can reason about: 1, 5, 10, 0.5."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "label": "Volume",
+        "value": 40
+      }
+    },
+    {
+      "id": "medium-value",
+      "name": "Medium, with value",
+      "props": {
+        "size": "medium",
+        "label": "Maximum price (€)",
+        "value": 250,
+        "min": 0,
+        "max": 1000,
+        "step": 10,
+        "showValue": true
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "label": "Opacity",
+        "value": 80,
+        "showValue": true
+      }
+    },
+    {
+      "id": "medium-disabled",
+      "name": "Medium, disabled",
+      "props": {
+        "size": "medium",
+        "label": "Brightness",
+        "value": 60,
+        "showValue": true,
+        "disabled": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/slider.tokens.json",
+    "prefix": "slider"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/slider/slider.css",
+      "template": "packages/components/src/components/slider/slider.template.mjs",
+      "selector": ".ds-slider",
+      "element": "div",
+      "attributes": {
+        "size": "data-size",
+        "disabled": "data-disabled"
+      },
+      "stateAttribute": "data-state",
+      "rolePart": "control",
+      "partSelectors": {
+        "container": ".ds-slider",
+        "label": ".ds-slider__label",
+        "value": ".ds-slider__value",
+        "control": ".ds-slider__control"
+      }
+    }
+  },
+  "related": [
+    "number-field",
+    "progress-bar"
+  ],
+  "decisions": [
+    {
+      "id": "track-and-thumb-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The track is the third neutral base fill (as the Progress bar's) and the thumb the accent brand fill, going to its hover and press steps, with a rim in the default surface color; disabled takes the shared disabled colors. The track has no filled portion before the thumb.",
+      "rationale": "The Figma library maps no color to sliders; the brand thumb keeps 3:1 against the track in both modes. A filled portion is not available in every browser without script.",
+      "tokens": [
+        "slider.control.background.*",
+        "slider.thumb.background.*",
+        "slider.thumb.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two sizes from the space scale: small (4 px track, 16 px thumb) and medium (8 px track, 20 px thumb, the default); the control is 24 px high at both, the thumb has a 1.2 px rim.",
+      "tokens": [
+        "slider.control.height.*",
+        "slider.thumb.size.*",
+        "slider.control.min-height",
+        "slider.thumb.border-width"
+      ]
+    },
+    {
+      "id": "native-range",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "The slider is the native range input: one thumb, horizontal; the keyboard, the track activation and the value exposure are the browser's. Two thumbs (a range of values), vertical sliders and tick marks are not specified.",
+      "refs": [
+        "html-input-range",
+        "html-aria-input-range"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions track-and-thumb-colors, sizes, native-range). Native range input named by a label element, with an optional output value; states default, hover, active, focus-visible, disabled; sizes small and medium. Contrast, light / dark: thumb on track 4.85 / 10.73, thumb on the default surface 5.79 / 12.80, label 19.07 / 11.27, value 12.87 / 8.80, focus ring 5.79 / 12.80."
+    }
+  ]
+}

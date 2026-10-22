@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Status from '../../components/Status.astro';
+import { followersOf, tokensOf, contrastOf } from '../../lib/foundations';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const order = new Map((await getCollection('foundationDocs')).map((d) => [d.data.foundation, d.data.order ?? Infinity]));
+const foundations = (await getCollection('foundations')).map((f) => f.data).sort((a, b) => (order.get(a.id) ?? Infinity) - (order.get(b.id) ?? Infinity) || a.name.localeCompare(b.name));
+const specs = new Map((await getCollection('specs')).map((s) => [s.id, s.data.name]));
+---
+<Layout title="Foundations" description="Global specifications shared by every component: what they are, their tokens, their accessibility requirements and the components following them.">
+  <header class="site-page-header">
+    <h1>Foundations</h1>
+    <p class="site-lede">The building blocks of the system and the decisions that belong to no single component but hold for all of them. Each foundation is specified once, owns semantic tokens, carries its own accessibility contract and decision log, and every component following it aliases its tokens instead of describing it again.</p>
+    <p class="site-page-header__desc">From <code>packages/components/specs/foundations/&lt;id&gt;.spec.json</code> and <code>apps/docs/content/foundations/&lt;id&gt;.md</code>. Each page draws the tokens the foundation is built from (palettes, scales, text styles) straight from <code>tokens/</code>, in every mode and platform; the components listed under each foundation are derived from the component tokens; contrast is computed from the resolved tokens in every platform and mode.</p>
+  </header>
+
+  <section aria-labelledby="site-foundations-title">
+    <h2 id="site-foundations-title" class="site-sr">All foundations</h2>
+    {foundations.length === 0 ? <p class="site-muted">No foundation specified yet.</p> : null}
+    <ul class="site-list">
+      {foundations.map((f) => {
+        const followers = followersOf(f);
+        const contrast = contrastOf(f);
+        const lowest = contrast.filter((r) => !r.error && r.minimum !== null).sort((a, b) => parseFloat(a.ratio) - parseFloat(b.ratio))[0];
+        const tokenCount = tokensOf(f.tokens).length;
+        return (
+          <li class="site-list__item site-list__item--text">
+            <div>
+              <h3 class="site-list__title"><a class="site-list__link" href={`${base}/foundations/${f.id}`}>{f.name}</a> <Status status={f.status} /></h3>
+              <p class="site-list__summary">{f.summary}</p>
+              <p class="site-list__meta">
+                <span>v{f.version}</span>
+                <span>{tokenCount ? `${tokenCount} tokens owned` : 'no semantic token yet'}</span>
+                {f.specimens?.length ? <span>{f.specimens.length} specimens</span> : null}
+                <span>{f.rules.length} rules</span>
+                {lowest ? <span>contrast {lowest.ratio} minimum</span> : null}
+                <span>{followers.length ? <>followed by {followers.map((x) => specs.get(x.component) ?? x.component).join(', ')}</> : 'no component follows it yet'}</span>
+              </p>
+            </div>
+            <span class="site-list__arrow" aria-hidden="true">→</span>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+</Layout>

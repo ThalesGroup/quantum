@@ -1,0 +1,616 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "search-field",
+  "name": "Search field",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "searchbox",
+  "summary": "Lets people type what they are looking for.",
+  "description": "A search field collects a search term: a query for a whole site, a filter for a list. It is a Text field with a search glyph at its start, exposed to assistive technology as a search box, and whose clear control the platform provides. It has a visible label, which may be the only word next to it (Search), and an optional description; it has no error state: a search that finds nothing is reported by the results, not by the field.",
+  "tags": [
+    "form",
+    "input",
+    "text",
+    "search"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Stacks the label, the control, the description and the error message; carries the size and the forced state."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
+    },
+    {
+      "id": "field",
+      "role": "container",
+      "required": true,
+      "description": "Box holding the control and the search glyph drawn over its start edge."
+    },
+    {
+      "id": "control",
+      "role": "value",
+      "required": true,
+      "description": "The editable box: the native search input, drawn by the component with the search glyph over its start edge. Receives focus, holds the term and shows the placeholder while empty.",
+      "parent": "field"
+    },
+    {
+      "id": "icon",
+      "role": "icon",
+      "required": true,
+      "decorative": true,
+      "parent": "field",
+      "description": "Search glyph of the icon font at the start of the control, saying what the field is for. Hidden from assistive technology, which learns it from the role."
+    },
+    {
+      "id": "description",
+      "role": "description",
+      "required": false,
+      "description": "Optional help text under the control (format, example, consequence), associated with it as its description."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Control height, inline padding and text size scale together; label, description and error keep their size.",
+      "affects": [
+        "control",
+        "icon"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Dense forms, toolbars, table rows (32 px high)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (40 px)."
+        },
+        {
+          "value": "large",
+          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "What the field asks for, as a noun phrase (Email address). Always visible."
+    },
+    {
+      "id": "value",
+      "name": "Value",
+      "type": "string",
+      "bindsTo": "control",
+      "description": "Current text of the field."
+    },
+    {
+      "id": "placeholder",
+      "name": "Placeholder",
+      "type": "string",
+      "description": "Short hint shown while the field is empty (what can be searched: Search projects). Never the label."
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "string",
+      "bindsTo": "description",
+      "description": "Help text: expected format, example, or what the value is used for."
+    },
+    {
+      "id": "required",
+      "name": "Required",
+      "type": "boolean",
+      "default": false,
+      "description": "The field must be filled to submit the form."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Non-interactive and skipped by the keyboard; the value stays visible. Prefer read-only when people may need to read or copy the value."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "Resting: an outlined box on the default surface."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "description": "Pointer over the control. The box takes the surface hover tint; the border does not change. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "description": "Non-interactive. Box, value, label and description drop to the shared disabled colors; hover and focus do not apply."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "stretch",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "Label, control, description and error message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
+      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change.",
+      "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "searchbox",
+    "name": {
+      "text": "Computed from the label, associated with the control as its label element on the web. The description is exposed as the accessible description; the placeholder is exposed as a placeholder, not as the name.",
+      "refs": [
+        "wai-labels",
+        "html-aam-name-input",
+        "apg-describing",
+        "html-aam-placeholder"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to the control. A disabled control is not focusable and is skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Escape",
+        "action": "In browsers that provide a clear control, clears the term.",
+        "refs": [
+          "mdn-input-search"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Expose the searchbox role, the name, the value and the disabled state through the platform's native search control, so assistive technology announces it as a search field.",
+        "refs": [
+          "wcag:4.1.2",
+          "aria-searchbox"
+        ]
+      },
+      {
+        "text": "Use the native input type=search without a list attribute: it exposes the searchbox role and may take the platform's look and clear control. The clear control is the browser's: the component neither styles nor removes it.",
+        "refs": [
+          "html-aria-input-search",
+          "html-aam-input-search",
+          "html-input-search",
+          "mdn-input-search"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every search field has a visible label associated with the control programmatically, even when it is just Search; the glyph alone is not a label.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.3.1",
+          "wai-labels",
+          "html-label"
+        ]
+      },
+      {
+        "text": "Associate the label with a label element whose for attribute names the control's id, and the description with aria-describedby.",
+        "refs": [
+          "wcag-h44",
+          "wcag-aria1",
+          "apg-describing"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The placeholder is a short hint of what can be searched, never the label: it disappears as soon as people type, and is not exposed as the name when a label exists.",
+        "refs": [
+          "html-placeholder",
+          "wai-instructions-placeholder",
+          "html-aam-placeholder"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The search glyph is decorative and hidden from assistive technology with aria-hidden=\"true\": an icon-font glyph is written as its ligature name, which would otherwise be read with the value.",
+        "refs": [
+          "wcag:1.1.1",
+          "aria-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Label, value and description contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.07:1 (light) and 11.27:1 (dark) on the default surface, description 12.87:1 and 8.80:1, placeholder 6.08:1 and 6.36:1. The glyph is decoration and needs no contrast of its own (6.08:1 and 6.36:1 anyway). Disabled text is inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.87:1 (light) and 8.80:1 (dark) on the default surface at rest, 12.14:1 and 8.06:1 on the hover tint; the focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-boundaries"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "A disabled field leaves the focus order.",
+        "refs": [
+          "html-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A search field is an editable text field that displays a search icon, a clear button and placeholder text; use placeholder text to help people know what they can search for. The small and medium sizes (32 and 40 pt) fall under the 44 x 44 pt hit region on iOS today.",
+        "refs": [
+          "hig-search-fields",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Color transitions of the control are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-describing",
+        "title": "APG: Describing with aria-describedby",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby"
+      },
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "html-aam-name-input",
+        "title": "HTML-AAM: accessible name computation of input elements (associated label element)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
+      },
+      {
+        "id": "html-aam-placeholder",
+        "title": "HTML-AAM: placeholder attribute (aria-placeholder, a last-resort name)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#att-placeholder"
+      },
+      {
+        "id": "html-label",
+        "title": "HTML: the label element (for attribute, labeled control)",
+        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
+      },
+      {
+        "id": "html-placeholder",
+        "title": "HTML: the placeholder attribute (not an alternative to a label)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "wai-labels",
+        "title": "WAI tutorials: Labeling controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wai-instructions-placeholder",
+        "title": "WAI tutorials: Form instructions, placeholder text",
+        "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text"
+      },
+      {
+        "id": "wcag-h44",
+        "title": "WCAG technique H44: label elements to associate text labels with form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
+      },
+      {
+        "id": "wcag-aria1",
+        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
+      },
+      {
+        "id": "understanding-non-text-contrast-boundaries",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: user interface components and boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "hig-search-fields",
+        "title": "Apple HIG: Search fields (search icon, clear button, placeholder text)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/search-fields"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "aria-searchbox",
+        "title": "WAI-ARIA 1.2: searchbox role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#searchbox"
+      },
+      {
+        "id": "html-aria-input-search",
+        "title": "ARIA in HTML: input type=search (role searchbox)",
+        "url": "https://www.w3.org/TR/html-aria/#el-input-search"
+      },
+      {
+        "id": "html-aam-input-search",
+        "title": "HTML-AAM: input type=search (searchbox)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-search"
+      },
+      {
+        "id": "html-input-search",
+        "title": "HTML: input type=search (the Search state)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)"
+      },
+      {
+        "id": "mdn-input-search",
+        "title": "MDN: input type=search, labels and accessibility (the browser's clear control)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#search_form_labels_and_accessibility"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The label says what is searched: Search, Search projects, Filter by name. Sentence case, no colon.",
+      "The placeholder gives an example of a query or the scope (Name, email or role), never the label.",
+      "A search field has no error message: an empty result is reported next to the results, with what to try next."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "label": "Search",
+        "placeholder": "Search projects"
+      }
+    },
+    {
+      "id": "medium-description",
+      "name": "Medium, with a value and description",
+      "props": {
+        "size": "medium",
+        "label": "Filter members",
+        "value": "ada",
+        "description": "Name, email or role."
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "label": "Filter tokens",
+        "placeholder": "Path, value or CSS variable"
+      }
+    },
+    {
+      "id": "large",
+      "name": "Large",
+      "props": {
+        "size": "large",
+        "label": "Search the documentation",
+        "placeholder": "What are you looking for?"
+      }
+    },
+    {
+      "id": "medium-disabled",
+      "name": "Medium, disabled",
+      "props": {
+        "size": "medium",
+        "label": "Search",
+        "placeholder": "Search projects",
+        "disabled": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/search-field.tokens.json",
+    "prefix": "search-field"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/search-field/search-field.css",
+      "template": "packages/components/src/components/search-field/search-field.template.mjs",
+      "selector": ".ds-search-field",
+      "element": "div",
+      "attributes": {
+        "size": "data-size",
+        "disabled": "data-disabled"
+      },
+      "stateAttribute": "data-state",
+      "rolePart": "control",
+      "partSelectors": {
+        "container": ".ds-search-field",
+        "label": ".ds-search-field__label",
+        "field": ".ds-search-field__field",
+        "icon": ".ds-search-field__icon",
+        "control": ".ds-search-field__control",
+        "description": ".ds-search-field__description"
+      }
+    }
+  },
+  "related": [
+    "text-field",
+    "select"
+  ],
+  "decisions": [
+    {
+      "id": "field-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The control follows the Text field's colors: a box on the default surface outlined in the accent neutral border color; hover tints it with the surface hover color and keeps the border; disabled takes the shared disabled colors. Value text is primary, the placeholder tertiary, the description secondary, the glyph the tertiary icon color.",
+      "rationale": "The Figma library maps no color to form controls. The accent neutral border is the lightest neutral border that keeps 3:1 against the surface in both modes (WCAG 1.4.11); the hover tint reuses the surface's own hover step.",
+      "tokens": [
+        "search-field.control.background.*",
+        "search-field.control.border-color.*",
+        "search-field.control.color.*",
+        "search-field.icon.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
+      "tokens": [
+        "search-field.control.min-height.*",
+        "search-field.control.padding-inline.*",
+        "search-field.control.typography.*",
+        "search-field.control.border-width",
+        "search-field.control.border-radius"
+      ]
+    },
+    {
+      "id": "search-glyph",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "A search glyph (the icon font) sits over the start edge of the control at 16, 20 or 24 px by size, 8 px from the edge; the control reserves 28, 36 or 40 px of start padding for it. It is hidden from assistive technology; the role says what the field is for.",
+      "tokens": [
+        "search-field.icon.*",
+        "search-field.control.padding-inline-start.*"
+      ],
+      "refs": [
+        "wcag:1.1.1",
+        "aria-hidden"
+      ]
+    },
+    {
+      "id": "no-error-state",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "state",
+      "status": "active",
+      "text": "A search field has no invalid or read-only state and no error message: an empty result is reported by the results. The clear control is the browser's.",
+      "refs": [
+        "mdn-input-search"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions field-colors, sizes, search-glyph, no-error-state). Native search input in a wrapper with a label element, a search glyph and a description; states default, hover, focus-visible, disabled; sizes small, medium, large. Contrast on the default surface, light / dark: label and value 19.07 / 11.27, description 12.87 / 8.80, placeholder and glyph 6.08 / 6.36, border 12.87 / 8.80 (12.14 / 8.06 on hover), focus ring 5.79 / 12.80."
+    }
+  ]
+}

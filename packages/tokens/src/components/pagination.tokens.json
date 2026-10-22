@@ -1,0 +1,147 @@
+{
+  "$description": "Component tokens for Pagination. Path grammar: pagination.<part>.<property>[.<size>][.<state>]. Parts, options and states must exist in packages/components/specs/components/pagination.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "pagination": {
+    "container": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.4}"
+      }
+    },
+    "link": {
+      "$description": "A page link, the current page, or the previous and next links.",
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.32}"
+        },
+        "medium": {
+          "$value": "{space.40}"
+        }
+      },
+      "padding-inline": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{space.6}"
+        },
+        "medium": {
+          "$value": "{space.8}"
+        }
+      },
+      "border-radius": {
+        "$type": "dimension",
+        "$value": "{corner-radius.xs}"
+      },
+      "background": {
+        "$type": "color",
+        "default": {
+          "$value": "{color.transparent}"
+        },
+        "hover": {
+          "$value": "{global.bg.subtle.neutral.default}"
+        },
+        "active": {
+          "$value": "{global.bg.subtle.neutral.hover}"
+        },
+        "current": {
+          "$value": "{global.bg.accent.neutral.default}"
+        },
+        "disabled": {
+          "$value": "{color.transparent}"
+        }
+      },
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.primary}"
+        },
+        "current": {
+          "$value": "{global.text.on-accent.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      },
+      "outline-width": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.width}"
+        }
+      },
+      "outline-offset": {
+        "$type": "dimension",
+        "focus-visible": {
+          "$value": "{focus.ring.offset}"
+        }
+      },
+      "outline-color": {
+        "$type": "color",
+        "focus-visible": {
+          "$value": "{color.focus.ring}"
+        }
+      },
+      "transition": {
+        "duration": {
+          "$type": "duration",
+          "$value": "{duration.fast}"
+        },
+        "easing": {
+          "$type": "cubicBezier",
+          "$value": "{easing.standard}"
+        }
+      }
+    },
+    "icon": {
+      "$description": "Chevron glyphs of the previous and next links. Inherit the link color.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.20}"
+      },
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.3}"
+        },
+        "medium": {
+          "$value": "{size.4}"
+        }
+      }
+    }
+  }
+}

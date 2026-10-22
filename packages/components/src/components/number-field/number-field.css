@@ -1,0 +1,173 @@
+/*
+ * Number field — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/number-field.spec.json
+ * Tokens: packages/tokens/dist/css/components/number-field.css (generated from packages/tokens/src/components/number-field.tokens.json)
+ *
+ * Rules:
+ *  - Only --number-field-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (label, control, description, error message, stacked); the native
+ *    number input is the control, drawn by the component.
+ *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
+ *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
+ *    spec order: default < hover < focus-visible < invalid < readonly < disabled: hover only tints the
+ *    background, invalid only recolors the border, so they combine as the token rule combines them.
+ *  - Private properties (--_*) are the single place an option or a state writes to.
+ */
+
+.ds-number-field {
+  /* Defaults = size "medium", state "default". */
+  --_control-background: var(--number-field-control-background-default);
+  --_control-border-color: var(--number-field-control-border-color-default);
+  --_control-color: var(--number-field-control-color-default);
+  --_placeholder-color: var(--number-field-control-placeholder-color-default);
+  --_label-color: var(--number-field-label-color-default);
+  --_description-color: var(--number-field-description-color-default);
+  --_min-height: var(--number-field-control-min-height-medium);
+  --_padding-inline: var(--number-field-control-padding-inline-medium);
+  --_font-family: var(--number-field-control-typography-medium-font-family);
+  --_font-size: var(--number-field-control-typography-medium-font-size);
+  --_font-weight: var(--number-field-control-typography-medium-font-weight);
+  --_line-height: var(--number-field-control-typography-medium-line-height);
+  --_letter-spacing: var(--number-field-control-typography-medium-letter-spacing);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--number-field-container-gap);
+  min-inline-size: 0;
+  vertical-align: middle;
+}
+
+/* ---- Size ---------------------------------------------------------------- */
+
+.ds-number-field[data-size="small"] {
+  --_min-height: var(--number-field-control-min-height-small);
+  --_padding-inline: var(--number-field-control-padding-inline-small);
+  --_font-family: var(--number-field-control-typography-small-font-family);
+  --_font-size: var(--number-field-control-typography-small-font-size);
+  --_font-weight: var(--number-field-control-typography-small-font-weight);
+  --_line-height: var(--number-field-control-typography-small-line-height);
+  --_letter-spacing: var(--number-field-control-typography-small-letter-spacing);
+}
+
+.ds-number-field[data-size="large"] {
+  --_min-height: var(--number-field-control-min-height-large);
+  --_padding-inline: var(--number-field-control-padding-inline-large);
+  --_font-family: var(--number-field-control-typography-large-font-family);
+  --_font-size: var(--number-field-control-typography-large-font-size);
+  --_font-weight: var(--number-field-control-typography-large-font-weight);
+  --_line-height: var(--number-field-control-typography-large-line-height);
+  --_letter-spacing: var(--number-field-control-typography-large-letter-spacing);
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.ds-number-field__label {
+  color: var(--_label-color);
+  font-family: var(--number-field-label-typography-font-family);
+  font-size: var(--number-field-label-typography-font-size);
+  font-weight: var(--number-field-label-typography-font-weight);
+  line-height: var(--number-field-label-typography-line-height);
+  letter-spacing: var(--number-field-label-typography-letter-spacing);
+}
+
+.ds-number-field__control {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-height: var(--_min-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--_padding-inline);
+  border: var(--number-field-control-border-width) solid var(--_control-border-color);
+  border-radius: var(--number-field-control-border-radius);
+  background-color: var(--_control-background);
+  color: var(--_control-color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--number-field-control-transition-duration) var(--number-field-control-transition-easing),
+    border-color var(--number-field-control-transition-duration) var(--number-field-control-transition-easing);
+}
+
+.ds-number-field__control::placeholder {
+  color: var(--_placeholder-color);
+  opacity: 1;
+}
+
+.ds-number-field__description {
+  margin: 0;
+  color: var(--_description-color);
+  font-family: var(--number-field-description-typography-font-family);
+  font-size: var(--number-field-description-typography-font-size);
+  font-weight: var(--number-field-description-typography-font-weight);
+  line-height: var(--number-field-description-typography-line-height);
+  letter-spacing: var(--number-field-description-typography-letter-spacing);
+}
+
+.ds-number-field__error-message {
+  margin: 0;
+  color: var(--number-field-error-message-color);
+  font-family: var(--number-field-error-message-typography-font-family);
+  font-size: var(--number-field-error-message-typography-font-size);
+  font-weight: var(--number-field-error-message-typography-font-weight);
+  line-height: var(--number-field-error-message-typography-line-height);
+  letter-spacing: var(--number-field-error-message-typography-letter-spacing);
+}
+
+/* The browser's spin buttons keep their native look (no portable way to draw them from tokens). */
+.ds-number-field__control {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+.ds-number-field:where([data-state="hover"]) .ds-number-field__control:not(:disabled, [readonly]),
+.ds-number-field:not([data-state]) .ds-number-field__control:hover:not(:disabled, [readonly]) {
+  --_control-background: var(--number-field-control-background-hover);
+}
+
+.ds-number-field:where([data-state="invalid"]) .ds-number-field__control,
+.ds-number-field__control[aria-invalid="true"] {
+  --_control-border-color: var(--number-field-control-border-color-invalid);
+}
+
+.ds-number-field:where([data-state="readonly"]) .ds-number-field__control,
+.ds-number-field__control[readonly] {
+  --_control-background: var(--number-field-control-background-readonly);
+}
+
+.ds-number-field:where([data-state="disabled"]),
+.ds-number-field:has(.ds-number-field__control:disabled) {
+  --_label-color: var(--number-field-label-color-disabled);
+  --_description-color: var(--number-field-description-color-disabled);
+}
+.ds-number-field:where([data-state="disabled"]) .ds-number-field__control,
+.ds-number-field__control:disabled {
+  --_control-background: var(--number-field-control-background-disabled);
+  --_control-border-color: var(--number-field-control-border-color-disabled);
+  --_control-color: var(--number-field-control-color-disabled);
+  --_placeholder-color: var(--number-field-control-placeholder-color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-number-field__control:focus {
+  outline: none;
+}
+
+.ds-number-field:where([data-state="focus-visible"]) .ds-number-field__control,
+.ds-number-field__control:focus-visible {
+  outline: var(--number-field-control-outline-width-focus-visible) solid var(--number-field-control-outline-color-focus-visible);
+  outline-offset: var(--number-field-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-number-field__control {
+    transition: none;
+  }
+}

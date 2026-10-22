@@ -1,0 +1,230 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "iconography",
+  "name": "Iconography",
+  "version": "0.2.1",
+  "status": "draft",
+  "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
+  "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
+  "tags": [
+    "icons",
+    "symbols"
+  ],
+  "tokens": [
+    "font.icon.*"
+  ],
+  "rules": [
+    {
+      "id": "font",
+      "name": "Icon font",
+      "text": "Icons are glyphs of Material Symbols Outlined. A component names an icon by its ligature name (arrow_forward, delete), and the font draws it.",
+      "tokens": [
+        "font.icon.family"
+      ]
+    },
+    {
+      "id": "style",
+      "name": "One style",
+      "text": "Every icon is drawn in one style: outlined (fill off), light weight, normal grade, optical size 20. The axes are fixed for the whole system, never chosen per component.",
+      "tokens": [
+        "font.icon.weight.light",
+        "font.icon.fill.off",
+        "font.icon.grade.normal",
+        "font.icon.optical-size.20"
+      ]
+    },
+    {
+      "id": "size",
+      "name": "Size",
+      "text": "An icon in a control takes a size from the size scale (Spacing and sizing foundation), per control size: size.2 (16 px) at extra small and small, size.3 (20 px) at medium, size.4 (24 px) at large. The glyph fills a square of that size."
+    },
+    {
+      "id": "color",
+      "name": "Color",
+      "text": "An icon takes the color of the text next to it, or the icon role of its context (global.icon.*, which aliases that text color), so it follows every emphasis, intent, state and mode."
+    },
+    {
+      "id": "decorative",
+      "name": "Decorative or named",
+      "text": "Next to a visible label, an icon repeats the label and is hidden from assistive technology. Alone in a control (icon button), the icon is the only visible content and the control carries a name describing its action."
+    },
+    {
+      "id": "web-font-loading",
+      "name": "Web font loading",
+      "text": "The fonts.css of the web reference implementation requests only the instance with the fixed axes. The font is loaded with display=block, so the ligature names do not flash as text while it loads.",
+      "platforms": [
+        "web"
+      ]
+    }
+  ],
+  "specimens": [
+    {
+      "id": "icons",
+      "name": "Icon style",
+      "display": "icon",
+      "tokens": [
+        "font.icon.*"
+      ],
+      "description": "Every icon the component examples use, drawn in the system style, and the axis values."
+    },
+    {
+      "id": "icon-sizes",
+      "name": "Icon sizes",
+      "display": "icon-size",
+      "tokens": [
+        "size.2",
+        "size.3",
+        "size.4"
+      ],
+      "description": "An icon at each size the controls use."
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "An icon next to a visible label is decorative and hidden from assistive technology; an icon alone in a control is non-text content, so the control has a name that describes its purpose.",
+        "refs": [
+          "wcag:1.1.1",
+          "wcag:4.1.2"
+        ]
+      },
+      {
+        "text": "An icon that carries meaning on its own contrasts at least 3:1 with its background; icons take the color of their text (a known issue lists the error states where that text falls under 4.5:1; the icons still reach 3:1).",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-ntc-symbols"
+        ]
+      },
+      {
+        "text": "Icons complement color: when color shows an intent or a state, a label or a distinct icon shows it too.",
+        "refs": [
+          "wcag:1.4.1",
+          "hig-accessibility-vision"
+        ]
+      },
+      {
+        "text": "Hide the glyph with aria-hidden=\"true\": an icon-font glyph is written as its ligature name, which would otherwise be read.",
+        "refs": [
+          "aria-hidden",
+          "accname-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Icons that convey meaning grow with the text when people raise the text size.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "A decorative icon gets a null content description; an icon that is the only content of an action gets a description naming the action.",
+        "refs": [
+          "compose-graphic-elements"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "understanding-ntc-symbols",
+        "title": "Understanding 1.4.11 Non-text Contrast: symbolic or graphical text characters",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#symbolic-or-graphical-text-characters"
+      },
+      {
+        "id": "hig-accessibility-vision",
+        "title": "Apple HIG: Accessibility, vision",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Vision"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: hidden, not referenced",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Compose accessibility API defaults: graphic elements",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "button-icon-start",
+      "name": "Button, icon before the label",
+      "component": "button",
+      "props": {
+        "emphasis": "subtle",
+        "intent": "neutral",
+        "label": "Download",
+        "iconStart": "download"
+      }
+    },
+    {
+      "id": "button-icon-end",
+      "name": "Button, icon after the label",
+      "component": "button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "brand",
+        "label": "Continue",
+        "iconEnd": "arrow_forward"
+      }
+    },
+    {
+      "id": "icon-button-accent",
+      "name": "Icon button, accent neutral",
+      "component": "icon-button",
+      "props": {
+        "emphasis": "accent",
+        "intent": "neutral",
+        "icon": "add",
+        "label": "Add item"
+      }
+    },
+    {
+      "id": "icon-button-ghost-error",
+      "name": "Icon button, ghost error",
+      "component": "icon-button",
+      "props": {
+        "emphasis": "ghost",
+        "intent": "error",
+        "icon": "delete",
+        "label": "Delete"
+      }
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.2.1",
+      "date": "2026-10-22",
+      "note": "Fix, no decision changed: the web-font-loading statement names the fonts.css of the web reference implementation, no longer published in @quantum-ds/components (the package ships the specs only)."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-10-02",
+      "note": "Breaking: the semantic icon group icon.*, invented by the repository, is removed; components alias the icon font tokens font.icon.* directly (the design system's additions, unchanged values), and icon sizes come from size.2 / 3 / 4 instead of control.icon-size.*. No visual change."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft: the icon font and its fixed style as they are, specified once (no token changes)."
+    }
+  ]
+}

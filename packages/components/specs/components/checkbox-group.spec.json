@@ -1,0 +1,898 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "checkbox-group",
+  "name": "Checkbox group",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "group",
+  "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
+  "description": "A checkbox group shows every option at once, with a legend naming the choice, and lets people check any number of them, including none. It is the grouped form of the Checkbox: the group carries the legend, the shared help text and the error message, and each option its own label, description, value and checked state. Exactly one choice is a Radio group; a long list is a Select.",
+  "tags": [
+    "form",
+    "input",
+    "selection"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: the group of options (a fieldset on the web). Carries the orientation, the size and the states forced for review."
+    },
+    {
+      "id": "legend",
+      "role": "label",
+      "required": true,
+      "description": "Text naming the choice. Provides the group's accessible name."
+    },
+    {
+      "id": "description",
+      "role": "description",
+      "required": false,
+      "description": "Optional help text under the legend, associated with every option as its description."
+    },
+    {
+      "id": "option",
+      "role": "container",
+      "required": true,
+      "repeatable": true,
+      "description": "One option: its checkbox, label and description on a grid. Takes the states of the control it holds.",
+      "properties": [
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "string",
+          "required": true,
+          "bindsTo": "option-label",
+          "description": "Name of the option. Provides the radio's accessible name."
+        },
+        {
+          "id": "value",
+          "name": "Value",
+          "type": "string",
+          "description": "Value submitted when the option is checked. Defaults to the option's position."
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "string",
+          "bindsTo": "option-description",
+          "description": "Help text under the option's label, exposed as the radio's description."
+        },
+        {
+          "id": "checked",
+          "name": "Checked",
+          "type": "boolean",
+          "default": false,
+          "description": "Whether this option is on. Any number of options may be checked."
+        },
+        {
+          "id": "disabled",
+          "name": "Disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "The option stays visible, dimmed, and cannot be chosen."
+        }
+      ]
+    },
+    {
+      "id": "control",
+      "role": "indicator",
+      "required": true,
+      "parent": "option",
+      "description": "The box of the option: the native checkbox, drawn by the component as the Checkbox's. Receives focus, holds the checked state and shows it with a check mark."
+    },
+    {
+      "id": "option-label",
+      "role": "label",
+      "required": true,
+      "parent": "option",
+      "description": "Text naming the option; activating it toggles the box."
+    },
+    {
+      "id": "option-description",
+      "role": "description",
+      "required": false,
+      "parent": "option",
+      "description": "Optional help text under the option's label."
+    },
+    {
+      "id": "error-message",
+      "role": "errormessage",
+      "required": false,
+      "visibleIn": [
+        "invalid"
+      ],
+      "description": "Text describing the error when the group is invalid (no option checked in a required group, too many options). Associated with every option as a description."
+    }
+  ],
+  "properties": [
+    {
+      "id": "orientation",
+      "name": "Orientation",
+      "type": "enum",
+      "default": "vertical",
+      "description": "How the options flow.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "vertical",
+          "description": "One option per line, the default: easiest to scan and leaves room for descriptions."
+        },
+        {
+          "value": "horizontal",
+          "description": "Options on one line, wrapping when needed: two or three short options (Yes / No)."
+        }
+      ]
+    },
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Radio size, option label and description text size scale together.",
+      "affects": [
+        "option",
+        "control",
+        "option-label",
+        "option-description"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Dense lists and tables."
+        },
+        {
+          "value": "medium",
+          "description": "Default."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Legend",
+      "type": "string",
+      "required": true,
+      "bindsTo": "legend",
+      "description": "The question or the set of options (Notifications)."
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "string",
+      "bindsTo": "description",
+      "description": "Help text for the whole choice."
+    },
+    {
+      "id": "name",
+      "name": "Name",
+      "type": "string",
+      "description": "Form field name shared by every option (each checked option submits its value under it). Defaults to the group's id."
+    },
+    {
+      "id": "options",
+      "name": "Options",
+      "type": "list",
+      "required": true,
+      "of": [
+        "option"
+      ],
+      "bindsTo": "option",
+      "description": "The options, in order."
+    },
+    {
+      "id": "errorMessage",
+      "name": "Error message",
+      "type": "string",
+      "bindsTo": "error-message",
+      "description": "What is wrong and what to do, shown when the group is invalid."
+    },
+    {
+      "id": "required",
+      "name": "Required",
+      "type": "boolean",
+      "default": false,
+      "description": "At least one option must be checked to submit the form (the first box carries the native requirement)."
+    },
+    {
+      "id": "invalid",
+      "name": "Invalid",
+      "type": "boolean",
+      "default": false,
+      "description": "Validation failed: every box takes the error border and the error message is shown."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Disables the whole group; the chosen option stays visible."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "parts": [
+        "option"
+      ],
+      "description": "Resting, unchecked: an outlined empty box."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "parts": [
+        "option"
+      ],
+      "description": "Pointer over a box or its label. The empty box takes a light tint; a checked box does not change. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "parts": [
+        "option"
+      ],
+      "description": "Keyboard focus on a radio. Shows the shared focus ring outside it; pointer focus shows none."
+    },
+    {
+      "id": "checked",
+      "trigger": "property",
+      "property": "options",
+      "parts": [
+        "option"
+      ],
+      "description": "A checked option (the entry's checked property): the box fills with the brand color and shows a check mark."
+    },
+    {
+      "id": "invalid",
+      "trigger": "property",
+      "property": "invalid",
+      "parts": [
+        "option"
+      ],
+      "description": "Validation failed on the group: every box border takes the error color and the error message is shown."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "parts": [
+        "option"
+      ],
+      "description": "Non-interactive, for the whole group or for one option: box, label and description drop to the shared disabled colors."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "start",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "The legend comes first, then the description, the options and the error message, separated by container.row-gap.",
+      "Options stack vertically, or flow on one line and wrap in the horizontal orientation, separated by container.gap for the orientation.",
+      "Within an option, the box sits before the label, centered on its first line; the option's description sits under its label."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "group",
+    "name": {
+      "text": "The group is named by its legend (the fieldset's first legend element on the web). Each option is named by its own label, associated as its label element; descriptions and the error message are exposed as descriptions of the checkboxes, not as part of their names.",
+      "refs": [
+        "html-aam-fieldset-name",
+        "apg-naming-legends",
+        "wai-labels",
+        "html-aam-name-input",
+        "apg-describing"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to each enabled option in turn: unlike radios, every checkbox is a tab stop. Disabled options are skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Space",
+        "action": "Checks or unchecks the focused option.",
+        "refs": [
+          "apg-checkbox-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Expose the group, its name, each option's name and checked state through the platform's native checkboxes and grouping, so assistive technology receives them without extra work.",
+        "refs": [
+          "wcag:4.1.2",
+          "apg-checkbox",
+          "apg-checkbox-roles",
+          "compose-interactive-elements"
+        ]
+      },
+      {
+        "text": "Use native input type=checkbox elements inside a fieldset whose legend names the set: the fieldset exposes the group role and its name, each checkbox its role and checked state. Never add aria-checked to a native checkbox.",
+        "refs": [
+          "html-aria-fieldset",
+          "html-aria-input-checkbox",
+          "html-aam-input-checkbox",
+          "wai-grouping"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The legend is visible and names the choice; each option has a visible label associated with its radio. Together they are the labels or instructions the group needs.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.3.1",
+          "wai-grouping",
+          "wcag-h71",
+          "wai-labels",
+          "wcag-h44"
+        ]
+      },
+      {
+        "text": "Help text and the error message are referenced by aria-describedby from every box, so they are read as descriptions after an option's name.",
+        "refs": [
+          "wcag-aria1",
+          "apg-describing"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never rely on color alone: each checked option is shown by its check mark, an error is stated in text, not only by the red borders.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag-f81"
+        ]
+      },
+      {
+        "text": "Legend, option labels and descriptions contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.07:1 (primary text) and 12.87:1 (descriptions) in light mode, 11.27:1 and 8.80:1 in dark mode on the default surface; the error message 4.52:1 (light) and 4.97:1 (dark). Disabled text is inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Each box is what identifies its option and shows its state, so its border, its fill and its dot contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.87:1 (light) and 8.80:1 (dark) on the default surface; checked fill 5.79:1 and 12.80:1; the dot on the fill 5.74:1 and 13.04:1; the error border 6.12:1 and 3.82:1; the focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-boundaries"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears on the focused box, drawn outside it.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A box alone is 16 or 20 CSS pixels, under the 24 pixel minimum; its label is part of the target and brings the option above it, and the spacing exception applies when options are 24 pixels apart.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "When no option is chosen in a required group, say so with aria-invalid on the boxes and describe the error in text; the required attribute on the boxes lets the browser enforce it.",
+        "refs": [
+          "wcag:3.3.1",
+          "wcag-aria21",
+          "wai-notifications",
+          "wcag-g83",
+          "wai-validation"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Disabling the group with the fieldset's disabled attribute disables every box and removes them from the focus order; a disabled option uses its own disabled attribute. When people need to know an option exists, keep it enabled and explain.",
+        "refs": [
+          "html-fieldset-disabled",
+          "html-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Apple recommends a hit region of at least 44 x 44 pt; each option (radio and label) must reach it on iOS. Avoid relying solely on different colors to communicate the state.",
+        "refs": [
+          "hig-toggles-best-practices",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's Checkbox sets that minimum itself when it can receive actions. Lift the selection to the row with the toggleable modifier and the Checkbox role, so label and radio form one element whose state is announced.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes",
+          "compose-interactive-elements",
+          "compose-state-description"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Color transitions of the boxes are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-naming-legends",
+        "title": "APG: Naming fieldsets with legends",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#naming_with_legends"
+      },
+      {
+        "id": "apg-describing",
+        "title": "APG: Describing with aria-describedby",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby"
+      },
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "html-aria-fieldset",
+        "title": "ARIA in HTML: fieldset element (role group)",
+        "url": "https://www.w3.org/TR/html-aria/#el-fieldset"
+      },
+      {
+        "id": "html-aam-fieldset-name",
+        "title": "HTML-AAM: fieldset accessible name computation (the legend)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#fieldset-element-accessible-name-computation"
+      },
+      {
+        "id": "html-aam-name-input",
+        "title": "HTML-AAM: accessible name computation of input elements (associated label element)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
+      },
+      {
+        "id": "html-fieldset-disabled",
+        "title": "HTML: the fieldset disabled attribute",
+        "url": "https://html.spec.whatwg.org/multipage/form-elements.html#attr-fieldset-disabled"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "wai-labels",
+        "title": "WAI tutorials: Labeling controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wai-grouping",
+        "title": "WAI tutorials: Grouping controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/grouping/"
+      },
+      {
+        "id": "wai-validation",
+        "title": "WAI tutorials: Validating input (the required attribute)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
+      },
+      {
+        "id": "wai-notifications",
+        "title": "WAI tutorials: User notifications (error messages)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
+      },
+      {
+        "id": "wcag-h44",
+        "title": "WCAG technique H44: label elements to associate text labels with form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
+      },
+      {
+        "id": "wcag-h71",
+        "title": "WCAG technique H71: fieldset and legend for groups of form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
+      },
+      {
+        "id": "wcag-g83",
+        "title": "WCAG technique G83: text descriptions for required fields not completed",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G83"
+      },
+      {
+        "id": "wcag-aria1",
+        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
+      },
+      {
+        "id": "wcag-aria21",
+        "title": "WCAG technique ARIA21: aria-invalid to indicate an error field",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21"
+      },
+      {
+        "id": "wcag-f81",
+        "title": "WCAG failure F81: required or error fields identified by color only",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
+      },
+      {
+        "id": "understanding-non-text-contrast-boundaries",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: user interface components and boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "hig-toggles-best-practices",
+        "title": "Apple HIG: Toggles, best practices (checkboxes and switches)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "compose-interactive-elements",
+        "title": "Jetpack Compose accessibility: interactive elements (toggleable, selection controls)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements"
+      },
+      {
+        "id": "compose-state-description",
+        "title": "Jetpack Compose accessibility: state description",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description"
+      },
+      {
+        "id": "apg-checkbox",
+        "title": "APG: Checkbox pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/"
+      },
+      {
+        "id": "apg-checkbox-keyboard",
+        "title": "APG: Checkbox pattern, keyboard interaction",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/#keyboardinteraction"
+      },
+      {
+        "id": "apg-checkbox-roles",
+        "title": "APG: Checkbox pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/#roles_states_properties"
+      },
+      {
+        "id": "html-aria-input-checkbox",
+        "title": "ARIA in HTML: input type=checkbox",
+        "url": "https://www.w3.org/TR/html-aria/#el-input-checkbox"
+      },
+      {
+        "id": "html-aam-input-checkbox",
+        "title": "HTML-AAM: input type=checkbox (checked, mixed from indeterminate)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-checkbox"
+      },
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The legend names the set of options: Notifications, Toppings, Which days suit you?",
+      "Option labels are short, parallel and positive: Email, Push, Text message. Sentence case, no trailing punctuation.",
+      "Put consequences in an option's description, not in its label.",
+      "Say when a choice is required or limited in the description: Choose at least one; Choose up to three.",
+      "The error message says what to do: Choose at least one channel."
+    ]
+  },
+  "examples": [
+    {
+      "id": "vertical-medium",
+      "name": "Vertical, medium",
+      "props": {
+        "orientation": "vertical",
+        "size": "medium",
+        "label": "Notifications",
+        "name": "notifications",
+        "options": [
+          {
+            "label": "Email",
+            "value": "email",
+            "description": "A daily digest",
+            "checked": true
+          },
+          {
+            "label": "Push",
+            "value": "push",
+            "checked": true
+          },
+          {
+            "label": "Text message",
+            "value": "sms",
+            "description": "Carrier rates may apply"
+          }
+        ]
+      }
+    },
+    {
+      "id": "horizontal-medium",
+      "name": "Horizontal, medium",
+      "props": {
+        "orientation": "horizontal",
+        "size": "medium",
+        "label": "Which days suit you?",
+        "name": "days",
+        "options": [
+          {
+            "label": "Monday",
+            "value": "mon",
+            "checked": true
+          },
+          {
+            "label": "Wednesday",
+            "value": "wed"
+          },
+          {
+            "label": "Friday",
+            "value": "fri",
+            "checked": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "vertical-small",
+      "name": "Vertical, small",
+      "props": {
+        "orientation": "vertical",
+        "size": "small",
+        "label": "Columns",
+        "name": "columns",
+        "options": [
+          {
+            "label": "Name",
+            "value": "name",
+            "checked": true
+          },
+          {
+            "label": "Status",
+            "value": "status",
+            "checked": true
+          },
+          {
+            "label": "Owner",
+            "value": "owner"
+          },
+          {
+            "label": "Updated",
+            "value": "updated"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vertical-medium-description",
+      "name": "Vertical, medium, with description and a disabled option",
+      "props": {
+        "orientation": "vertical",
+        "size": "medium",
+        "label": "Export",
+        "description": "Choose what to include in the archive.",
+        "name": "export",
+        "options": [
+          {
+            "label": "Projects",
+            "value": "projects",
+            "checked": true
+          },
+          {
+            "label": "Comments",
+            "value": "comments"
+          },
+          {
+            "label": "Attachments",
+            "value": "attachments",
+            "description": "Not available on the free plan",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "vertical-medium-invalid",
+      "name": "Vertical, medium, required and invalid",
+      "description": "No option checked in a required group; the error message says what to do.",
+      "props": {
+        "orientation": "vertical",
+        "size": "medium",
+        "label": "Notifications",
+        "name": "notifications-invalid",
+        "required": true,
+        "invalid": true,
+        "errorMessage": "Choose at least one channel.",
+        "options": [
+          {
+            "label": "Email",
+            "value": "email"
+          },
+          {
+            "label": "Push",
+            "value": "push"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vertical-medium-disabled",
+      "name": "Vertical, medium, disabled",
+      "props": {
+        "orientation": "vertical",
+        "size": "medium",
+        "label": "Permissions",
+        "description": "Managed by your organization.",
+        "name": "permissions",
+        "disabled": true,
+        "options": [
+          {
+            "label": "Read",
+            "value": "read",
+            "checked": true
+          },
+          {
+            "label": "Write",
+            "value": "write",
+            "checked": true
+          },
+          {
+            "label": "Admin",
+            "value": "admin"
+          }
+        ]
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/checkbox-group.tokens.json",
+    "prefix": "checkbox-group"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/checkbox-group/checkbox-group.css",
+      "template": "packages/components/src/components/checkbox-group/checkbox-group.template.mjs",
+      "selector": ".ds-checkbox-group",
+      "element": "fieldset",
+      "attributes": {
+        "orientation": "data-orientation",
+        "size": "data-size",
+        "disabled": "disabled",
+        "invalid": "data-invalid"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-checkbox-group",
+        "legend": ".ds-checkbox-group__legend",
+        "description": ".ds-checkbox-group__description",
+        "option": ".ds-checkbox-group__option",
+        "control": ".ds-checkbox-group__control",
+        "option-label": ".ds-checkbox-group__option-label",
+        "option-description": ".ds-checkbox-group__option-description",
+        "error-message": ".ds-checkbox-group__error-message"
+      }
+    }
+  },
+  "related": [
+    "checkbox",
+    "radio-group"
+  ],
+  "decisions": [
+    {
+      "id": "group-of-native-checkboxes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The component is the whole group: a legend, optional help text, the options as a repeated part (label, value, description, checked, disabled) and an error message, on the model of the Radio group. On the web it is a fieldset of native checkboxes sharing one name; a single option stays the Checkbox.",
+      "refs": [
+        "apg-checkbox",
+        "wai-grouping"
+      ]
+    },
+    {
+      "id": "selection-control-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The boxes follow the Checkbox's selection control colors.",
+      "tokens": [
+        "checkbox-group.control.background.*",
+        "checkbox-group.control.border-color.*",
+        "checkbox-group.control.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "orientations",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "layout",
+      "status": "active",
+      "text": "Options stack vertically by default, 8 px apart; the horizontal orientation puts them on one wrapping line, 16 px apart, as the Radio group.",
+      "tokens": [
+        "checkbox-group.container.gap.*"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two sizes as the Checkbox: small (16 px box, 2 px corners, 14 px label) and medium (20 px box, 4 px corners, 16 px label, the default); the box border is 1.2 px.",
+      "tokens": [
+        "checkbox-group.control.size.*",
+        "checkbox-group.control.border-radius.*",
+        "checkbox-group.control.border-width",
+        "checkbox-group.option-label.typography.*"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions group-of-native-checkboxes, selection-control-colors, orientations, sizes). Fieldset of native checkboxes with legend, description, option descriptions and error message; states default, hover, focus-visible, checked, invalid, disabled on the option part; orientations vertical and horizontal; sizes small and medium. Contrast as the Checkbox and the Radio group (light / dark, default surface): labels 19.07 / 11.27, descriptions 12.87 / 8.80, error text 4.52 / 4.97, unchecked border 12.87 / 8.80, checked fill 5.79 / 12.80, mark 5.74 / 13.04, error border 6.12 / 3.82, focus ring 5.79 / 12.80."
+    }
+  ]
+}

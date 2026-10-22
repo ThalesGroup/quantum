@@ -1,0 +1,8 @@
+{
+  "sections": [
+    { "id": "dashboard", "name": "Dashboards", "description": "Application home pages that summarise data: KPI cards, charts and tables inside an application shell." },
+    { "id": "application-shell", "name": "Application shells", "description": "The frame of an application: a sidebar navigation, a header with a breadcrumb, and the content area." },
+    { "id": "login", "name": "Login", "description": "Pages to sign in to an existing account." },
+    { "id": "signup", "name": "Sign up", "description": "Pages to create an account." }
+  ]
+}

@@ -1,0 +1,39 @@
+---
+// Decision log of a spec (component or foundation): active decisions grouped by area (first
+// appearance order), superseded ones kept apart. Rendered from `decisions`, newest first.
+import { cite, publisherName } from '../lib/a11y';
+import { scoped, scopeLabel } from '../lib/platforms';
+interface Props { spec: any; headingLevel?: 3 | 4 }
+const { spec, headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}`;
+const decisions: any[] = spec.decisions ?? [];
+const active = decisions.filter((d) => d.status === 'active');
+const areas = [...new Set(active.map((d) => d.area))].map((area) => ({ area, items: active.filter((d) => d.area === area) }));
+const superseded = decisions.filter((d) => d.status === 'superseded');
+const supersededBy = (id: string) => decisions.find((d) => d.supersedes?.includes(id))?.id;
+---
+{areas.map((group) => (
+  <div class="site-subsection">
+    <H>{group.area.charAt(0).toUpperCase() + group.area.slice(1)}</H>
+    <ul class="site-decisions">{group.items.map((d) => (
+      <li id={`decision-${d.id}`}>
+        <p><strong>{d.text}</strong>{scoped(d) ? <span class="site-chip">{scopeLabel(d)}</span> : null}</p>
+        {d.rationale ? <p class="site-small">{d.rationale}</p> : null}
+        <p class="site-muted site-small"><code>{d.id}</code> · {d.date} · v{d.version}{d.supersedes?.length ? <span> · replaces {d.supersedes.map((x: string) => <a href={`#decision-${x}`}><code>{x}</code></a>)}</span> : null}</p>
+        {d.tokens?.length ? <p class="site-small">{d.tokens.map((t: string) => <span class="site-chip"><code>{t}</code></span>)}</p> : null}
+        {d.refs?.length ? <p class="site-cite site-small">{cite(d.refs, spec).map((c) => <a href={c.url} title={publisherName(c.publisher)}>{c.title}</a>)}</p> : null}
+      </li>
+    ))}</ul>
+  </div>
+))}
+{superseded.length ? (
+  <details class="site-subsection">
+    <summary>Superseded ({superseded.length})</summary>
+    <ul class="site-decisions">{superseded.map((d) => (
+      <li id={`decision-${d.id}`}>
+        <p><s>{d.text}</s></p>
+        <p class="site-muted site-small"><code>{d.id}</code> · {d.date} · v{d.version} · replaced by <a href={`#decision-${supersededBy(d.id)}`}><code>{supersededBy(d.id)}</code></a></p>
+      </li>
+    ))}</ul>
+  </details>
+) : null}

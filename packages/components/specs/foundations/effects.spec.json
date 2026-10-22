@@ -1,0 +1,155 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "effects",
+  "name": "Elevation and effects",
+  "version": "0.2.0",
+  "status": "draft",
+  "summary": "Opacity, blur, drop shadow and shadow colors from the Figma library, and why no component uses them yet.",
+  "description": "The Figma library brings opacity steps, blur radii, a drop-shadow number and five shadow colors (effect.shadow.1 to 5, a neutral step at 1 to 5 % opacity, in Colors / Mapped), all recreated as they are. No component uses an effect yet: translucency comes from color tokens, and surfaces stand apart by their color and border, not by elevation. This foundation owns the shadow colors, presents the primitives and states the rules any future effect follows.",
+  "tags": [
+    "elevation",
+    "opacity",
+    "blur",
+    "shadow"
+  ],
+  "tokens": [
+    "opacity.*",
+    "blur.*",
+    "drop-shadow.*",
+    "effect.shadow.*"
+  ],
+  "rules": [
+    {
+      "id": "no-decision-yet",
+      "name": "No semantic effect yet",
+      "text": "No component uses an effect yet. The opacity, blur and drop-shadow scales of the Figma library are read directly, like the other scales, by the first component that needs one."
+    },
+    {
+      "id": "opacity",
+      "name": "Opacity",
+      "text": "Opacity steps from 0 to 90 %, stored as fractions. The Figma library uses them to compose translucent colors (Color foundation), which are color tokens, not opacity: they tint a fill without fading the content on it."
+    },
+    {
+      "id": "blur",
+      "name": "Blur",
+      "text": "Blur radii from none to lg (16 px), for backdrops and overlays."
+    },
+    {
+      "id": "shadow",
+      "name": "Drop shadow",
+      "text": "The Figma library gives five shadow colors (effect.shadow.1 to 5: neutral 900 in light mode at 1 to 5 % opacity) and a single drop-shadow number (0), but no shadow geometry: no shadow is drawn yet.",
+      "tokens": [
+        "effect.shadow.*"
+      ]
+    },
+    {
+      "id": "elevation",
+      "name": "Elevation",
+      "text": "Without shadows, a raised or recessed area stands apart by its surface level (Color foundation) and its border."
+    },
+    {
+      "id": "no-faded-text",
+      "name": "No faded text",
+      "text": "Opacity never makes text or icons look secondary or disabled: muted and disabled text are color roles, whose contrast is computed."
+    }
+  ],
+  "specimens": [
+    {
+      "id": "opacity",
+      "name": "Opacity",
+      "display": "opacity",
+      "tokens": [
+        "opacity.*"
+      ],
+      "description": "A square in the default text color at each opacity step, on the stage."
+    },
+    {
+      "id": "blur",
+      "name": "Blur",
+      "display": "blur",
+      "tokens": [
+        "blur.*"
+      ],
+      "description": "The same sample blurred by each radius."
+    },
+    {
+      "id": "drop-shadow",
+      "name": "Drop shadow",
+      "display": "value",
+      "tokens": [
+        "drop-shadow.*"
+      ],
+      "description": "The drop-shadow number the Figma library exports."
+    },
+    {
+      "id": "shadow-colors",
+      "name": "Shadow colors",
+      "display": "color",
+      "tokens": [
+        "effect.shadow.*"
+      ],
+      "description": "The five shadow colors of the Figma library, in every mode."
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "A shadow is not an edge: WCAG treats a drop shadow as part of the adjacent color closest in brightness. A surface or component that needs a visible boundary gets a border that contrasts 3:1.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-ntc-adjacent"
+        ]
+      },
+      {
+        "text": "Forced colors mode removes box shadows: nothing may depend on a shadow being visible.",
+        "refs": [
+          "mdn-forced-colors"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Text over a translucent or blurred layer is measured against the color people see: the layer composited over what lies behind it.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Opacity is not applied to text or icons to make them secondary or disabled: those are color roles whose contrast is checked.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "understanding-ntc-adjacent",
+        "title": "Understanding 1.4.11 Non-text Contrast: adjacent colors",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#adjacent-colors"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      }
+    ]
+  },
+  "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-10-02",
+      "note": "The Figma library's effects as they are, now the tokens components may read directly: the opacity, blur and drop-shadow scales (unchanged values) and, new, the five shadow colors effect.shadow.1-5 of Colors / Mapped. This foundation owns them. No component uses them yet."
+    },
+    {
+      "version": "0.1.1",
+      "date": "2026-10-01",
+      "note": "The elevation rule names surface levels, which replace the default and subtle surfaces (Color foundation 1.0.0). No decision changes."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01",
+      "note": "Initial draft: the effect primitives as they are, and the rules a future effect follows. Owns no semantic token yet (no token changes)."
+    }
+  ]
+}

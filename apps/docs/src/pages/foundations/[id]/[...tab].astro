@@ -1,0 +1,262 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import { foundationArtifacts } from '../../../../../../scripts/lib/paths.mjs';
+import Status from '../../../components/Status.astro';
+import TokenTable from '../../../components/TokenTable.astro';
+import DecisionLog from '../../../components/DecisionLog.astro';
+import A11yStatements from '../../../components/A11yStatements.astro';
+import Specimen from '../../../components/Specimen.astro';
+import ExampleExplorer from '../../../components/ExampleExplorer.astro';
+import { getTemplate } from '../../../lib/web';
+import { getModes } from '../../../lib/tokens';
+import { tokensOf, contrastOf, followersOf, specimenOf, basePlatformNames, iconNamesOf } from '../../../lib/foundations';
+import { cite, conformanceTarget, publisherName } from '../../../lib/a11y';
+import { onWeb, scoped, scopeLabel, platforms as allPlatforms } from '../../../lib/platforms';
+import { readRepoFile } from '../../../lib/repo';
+import { highlight, langOfFile } from '../../../lib/highlight';
+import { FOUNDATION_TABS } from '../../../lib/tabs';
+
+export async function getStaticPaths() {
+  const foundations = await getCollection('foundations');
+  const docs = new Set((await getCollection('foundationDocs')).map((d) => d.id));
+  return foundations.flatMap((f) =>
+    FOUNDATION_TABS.filter((t) => t.slug !== 'guidelines' || docs.has(f.id)).map((t) => ({
+      params: { id: f.id, tab: t.slug },
+      props: { entry: f },
+    })),
+  );
+}
+
+const { entry } = Astro.props;
+const { tab } = Astro.params;
+const spec = entry.data;
+const doc = await getEntry('foundationDocs', spec.id);
+const Content = doc ? (await render(doc)).Content : null;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const tabs = FOUNDATION_TABS.filter((t) => t.slug !== 'guidelines' || Content).map((t) => ({
+  ...t,
+  href: `${base}/foundations/${spec.id}${t.slug ? `/${t.slug}` : ''}`,
+}));
+const current = tabs.find((t) => t.slug === tab)!;
+const specFile = foundationArtifacts(spec.id).spec;
+const specSource = readRepoFile(specFile);
+const target = conformanceTarget();
+const { modes, attribute } = getModes();
+
+const tokens = tokensOf(spec.tokens);
+const swatch = (type: string | null, value: string) => (type === 'color' && !value.startsWith('error') ? value : null);
+const ruleTokens = (r: { tokens?: string[] }) => tokensOf(r.tokens ?? []);
+
+// Examples, once per mode context: components rendered by their template, and code samples
+// (`source`) highlighted with the design system's Shiki theme.
+const specs = new Map((await getCollection('specs')).map((s) => [s.id, s.data]));
+const allExamples: any[] = spec.examples ?? [];
+const examples = allExamples.filter((ex) => ex.component && onWeb(ex)).map((ex) => ({ ...ex, html: getTemplate(ex.component)?.render(ex.props) ?? '' })).filter((ex) => ex.html);
+const codeExamples = allExamples.filter((ex) => ex.source && onWeb(ex)).map((ex) => ({ ...ex, html: highlight(readRepoFile(ex.source), langOfFile(ex.source)) }));
+const offWeb = allExamples.filter((ex) => !onWeb(ex));
+
+// Specimens: the tokens the foundation is built from, drawn from tokens/ (raw tier included).
+const specimens = (spec.specimens ?? []).map((sp) => ({ specimen: sp, tokens: specimenOf(sp) }));
+const icons = iconNamesOf([...specs.values()]);
+const basePlatforms = basePlatformNames();
+
+// Contrast: the same pair often resolves identically on several platforms; show each distinct
+// result once with the platforms it holds on. `null` is the base tiers: every platform without
+// a token overlay.
+const rows = contrastOf(spec);
+const overlays = new Set(rows.map((r) => r.platform).filter(Boolean));
+const platformLabel = (id: string | null) => (id ? allPlatforms().find((p) => p.id === id)?.name ?? id : allPlatforms().filter((p) => !overlays.has(p.id)).map((p) => p.name).join(', '));
+const contrast = [...rows.reduce((groups, r) => {
+  const key = [r.requirement, r.mode, r.background, r.surface ?? '', r.fg, r.bg, r.error ?? ''].join('|');
+  const g = groups.get(key) ?? { ...r, platforms: [] as string[] };
+  g.platforms.push(platformLabel(r.platform));
+  return groups.set(key, g);
+}, new Map<string, any>()).values()];
+const failing = contrast.filter((r) => !r.pass);
+const knownIssues = [...new Set((spec.contrast ?? []).map((c) => c.knownIssue).filter(Boolean))];
+const issueUrl = (ref) => { const [repo, n] = ref.split('#'); return `https://github.com/${repo}/issues/${n}`; };
+
+const followers = followersOf(spec).map((f) => ({ ...f, name: specs.get(f.component)?.name ?? f.component }));
+---
+<Layout title={tab ? `${current.label} · ${spec.name}` : spec.name} description={spec.summary}>
+  <header class="site-page-header">
+    <p class="site-eyebrow"><a href={`${base}/foundations`}>Foundations</a></p>
+    <h1>{spec.name} <Status status={spec.status} /> <span class="site-version">v{spec.version}</span></h1>
+    <p class="site-lede">{spec.summary}</p>
+    {spec.description ? <p class="site-page-header__desc">{spec.description}</p> : null}
+    <nav class="site-tabs" aria-label={`${spec.name} sections`}>
+      {tabs.map((t) => (
+        <a href={t.href} aria-current={t === current ? 'page' : undefined}>{t.label}</a>
+      ))}
+    </nav>
+  </header>
+
+  {!tab && specimens.length ? (
+  <section class="site-section" id="specimens">
+    <h2 class="site-sr">Specimens</h2>
+    <p class="site-muted">The tokens this foundation is built from, drawn from <code>packages/tokens/src/</code>: raw primitives and the semantic decisions on top of them. A token added to one of these groups appears here with no site change; values that differ per mode or per platform are shown next to each other.</p>
+    <nav class="site-toc" aria-label={`${spec.name} specimens`}>
+      {specimens.map(({ specimen }) => <a href={`#specimen-${specimen.id}`}>{specimen.name}</a>)}
+    </nav>
+    {specimens.map(({ specimen, tokens: rows }) => <Specimen specimen={specimen} tokens={rows} base={basePlatforms} icons={icons} />)}
+  </section>
+  ) : null}
+
+  {!tab && (examples.length || codeExamples.length || !specimens.length) ? (
+  <section class="site-section" id="examples">
+    <h2 class={specimens.length ? undefined : 'site-sr'}>Examples</h2>
+    {codeExamples.length ? (
+      <>
+        <p class="site-muted">Code samples from <code>packages/components/specs/foundations/{spec.id}/</code>, highlighted with the design system's Shiki theme, generated from the tokens. A sample follows the page mode; set another mode context to compare, as in a component's playground.</p>
+        <ExampleExplorer spec={spec} samples={codeExamples} />
+      </>
+    ) : null}
+    {examples.length || !codeExamples.length ? <p class="site-muted">Components following this foundation, rendered by their web templates{attribute && modes.length > 1 ? ', once per mode' : ''}. States are forced with <code>data-state</code>, so what you see is exactly what the CSS defines, without a keyboard.</p> : null}
+    {examples.length ? (
+      <div class="site-mode-grid">
+        {(attribute ? modes : [null]).map((m) => (
+          <figure class="site-mode-grid__item">
+            {m ? <figcaption class="site-small site-muted">{m.id}</figcaption> : null}
+            <div class="site-preview__stage site-preview__stage--spaced" {...(m && attribute ? { [attribute]: m.id } : {})} set:html={examples.map((ex) => ex.html).join('\n')}></div>
+          </figure>
+        ))}
+      </div>
+    ) : codeExamples.length ? null : <p class="site-muted">No web example.</p>}
+    <ul class="site-plain-list site-small site-muted">
+      {examples.map((ex) => <li><a href={`${base}/components/${ex.component}`}>{specs.get(ex.component)?.name ?? ex.component}</a>: {ex.name}{ex.description ? ` — ${ex.description}` : ''}</li>)}
+    </ul>
+    {offWeb.length ? <p class="site-muted site-small">Not rendered (no web): {offWeb.map((ex) => <span class="site-chip">{ex.name} · {scopeLabel(ex)}</span>)}</p> : null}
+  </section>
+  ) : null}
+
+  {tab === 'guidelines' && Content ? (
+    <section class="site-section" id="guidelines">
+      <h2>Guidelines</h2>
+      <p class="site-muted site-small">From <code>apps/docs/content/foundations/{spec.id}.md</code></p>
+      <article class="site-prose">
+        <Content />
+      </article>
+    </section>
+  ) : null}
+
+  {tab === 'spec' ? (
+  <section class="site-section" id="spec">
+    <h2>Specification</h2>
+    <p class="site-muted site-small">From <code>{specFile}</code></p>
+    <details class="site-source">
+      <summary>Raw file <code>{specFile}</code></summary>
+      <pre><code set:html={highlight(specSource, 'json')}></code></pre>
+    </details>
+
+    <h3>Rules</h3>
+    <p class="site-muted site-small">What the foundation is, one aspect per rule. The values come from the tokens, shown in every mode where they differ.</p>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">Aspect</th><th scope="col">Rule</th><th scope="col">Tokens</th></tr></thead>
+        <tbody>
+          {spec.rules.map((r) => (
+            <tr>
+              <th scope="row">{r.name}{scoped(r) ? <div><span class="site-chip">{scopeLabel(r)}</span></div> : null}</th>
+              <td>{r.text}</td>
+              <td class="site-small">
+                {ruleTokens(r).length ? ruleTokens(r).map((t) => (
+                  <div>
+                    <code>{t.path}</code>
+                    <div class="site-mode-value">
+                      {t.modes.length ? <span class="site-mode-value__mode">{modes.find((m) => m.default)?.id}</span> : null}
+                      {swatch(t.type, t.resolved) ? <span class="site-swatch" style={`--swatch: ${t.resolved}`}></span> : null}
+                      <code>{t.resolved}</code>
+                    </div>
+                    {t.modes.map((m) => (
+                      <div class="site-mode-value">
+                        <span class="site-mode-value__mode">{m.mode}</span>
+                        {swatch(t.type, m.resolved) ? <span class="site-swatch" style={`--swatch: ${m.resolved}`}></span> : null}
+                        <code>{m.resolved}</code>
+                      </div>
+                    ))}
+                  </div>
+                )) : <span class="site-muted">—</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Contrast</h3>
+    <p class="site-muted site-small">Computed from the resolved tokens in every platform and mode, as <code>pnpm validate</code> does; a pair under its minimum fails the check, a pair without minimum is measured only. Translucent colors are composited first: a translucent background over each surface it sits on.</p>
+    {(spec.contrast ?? []).map((req) => (
+      <div class="site-subsection">
+        <h4><code>{req.foreground}</code> on <code>{req.backgrounds.join(', ')}</code>{req.on ? <> over <code>{req.on.join(', ')}</code></> : null}</h4>
+        <p>{req.description} {req.minimum ? `Minimum ${req.minimum}:1.` : 'Measured, no minimum.'} {req.knownIssue ? <>Known failures, tracked in <a href={issueUrl(req.knownIssue)}>{req.knownIssue}</a>.</> : null} <span class="site-cite">{cite(req.refs, spec).map((c) => <a href={c.url} title={publisherName(c.publisher)}>{c.title}</a>)}</span></p>
+        <div class="site-table-wrap">
+          <table class="site-table">
+            <thead><tr><th scope="col">Mode</th><th scope="col">Background</th><th scope="col">Colors</th><th scope="col">Ratio</th><th scope="col">Platforms</th></tr></thead>
+            <tbody>
+              {contrast.filter((r) => r.requirement === req.id).map((r) => (
+                <tr>
+                  <th scope="row">{r.mode ?? '—'}</th>
+                  <td><code>{r.background}</code>{r.surface ? <div class="site-small site-muted">over <code>{r.surface}</code></div> : null}</td>
+                  <td class="site-small">{r.error ? <span>{r.error}</span> : (
+                    <span><span class="site-swatch" style={`--swatch: ${r.fg}`}></span><code>{r.fg}</code> on <span class="site-swatch" style={`--swatch: ${r.bg}`}></span><code>{r.bg}</code></span>
+                  )}</td>
+                  <td><strong>{r.error ? '—' : r.ratio}</strong> {!r.pass ? <span class="site-status site-status--deprecated">fails</span> : r.minimum === null ? <span class="site-muted site-small">measured</span> : <span class="site-muted site-small">passes</span>}</td>
+                  <td class="site-small">{r.platforms.join(' · ')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ))}
+    {(spec.contrast ?? []).length === 0 ? <p class="site-muted">No contrast requirement.</p> : null}
+    {failing.length ? <p class="site-callout site-callout--error">{failing.length} pair(s) under the minimum{knownIssues.length ? <>, tracked in {knownIssues.map((i, n) => <>{n ? ', ' : ''}<a href={issueUrl(i)}>{i}</a></>)}</> : null}.</p> : null}
+
+    <h3>Accessibility</h3>
+    <p class="site-muted site-small">Target: {target.standard} {target.version} level {target.level}. Every statement cites the trusted source it comes from; criteria beyond the target are adopted as extra quality.</p>
+    <A11yStatements spec={spec} />
+
+    <h3>Changelog</h3>
+    <ul>{spec.changelog.map((c) => <li><code>{c.version}</code> <span class="site-muted">{c.date}</span> — {c.note}</li>)}</ul>
+  </section>
+  ) : null}
+
+  {tab === 'decisions' ? (
+  <section class="site-section" id="decisions">
+    <h2>Decisions</h2>
+    <p class="site-muted site-small">From <code>decisions</code> in <code>{specFile}</code>, newest first. Every active decision is implemented by the spec, the semantic tokens and the components following the foundation.</p>
+    {(spec.decisions ?? []).length === 0 ? <p class="site-muted">No decision recorded yet.</p> : null}
+    <DecisionLog spec={spec} />
+  </section>
+  ) : null}
+
+  {tab === 'tokens' ? (
+  <section class="site-section" id="tokens">
+    <h2>Tokens</h2>
+    <p class="site-muted site-small">Semantic tokens owned by the foundation (<code>tokens</code> in <code>{specFile}</code>). They live in <code>packages/tokens/src/semantic/</code> (recreated from the Figma library) or <code>tokens/additions/semantic/</code> (added by the design system), with their other values in <code>tokens/modes/</code>, <code>tokens/additions/modes/</code> and <code>tokens/platforms/</code>.</p>
+    <TokenTable rows={tokens} />
+
+    <h3>Components following it</h3>
+    <p class="site-muted site-small">
+      Derived from the component tokens aliasing the foundation's tokens.
+      {spec.appliesTo === 'focusable-components' ? ' Every component with a focusable role must follow it (pnpm validate).' : spec.appliesTo === 'every-component' ? ' Every component must follow it (pnpm validate).' : ''}
+    </p>
+    {followers.length ? (
+      <div class="site-table-wrap">
+        <table class="site-table">
+          <thead><tr><th scope="col">Component</th><th scope="col">Component tokens aliasing the foundation</th></tr></thead>
+          <tbody>
+            {followers.map((f) => (
+              <tr>
+                <th scope="row"><a href={`${base}/components/${f.component}`}>{f.name}</a></th>
+                <td><ul class="site-plain-list site-small">{f.aliases.map((a) => <li><code>{a.path}</code> <span class="site-muted">→</span> {a.owned.map((o) => <code class="site-alias">{`{${o}}`}</code>)}</li>)}</ul></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : <p class="site-muted">No component follows it yet.</p>}
+  </section>
+  ) : null}
+</Layout>

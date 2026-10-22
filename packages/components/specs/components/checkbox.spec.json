@@ -1,0 +1,699 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "checkbox",
+  "name": "Checkbox",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "checkbox",
+  "summary": "Lets people turn one option on or off, or pick any number of options from a list.",
+  "description": "A checkbox is a binary choice with a visible label: checked or unchecked, and a third, partially checked look when it stands for a group whose members disagree. Several checkboxes side by side let people pick any number of options; one checkbox alone confirms a statement (accepting terms, remembering a session). A setting that takes effect immediately is a Switch; a choice of exactly one option is a Radio group.",
+  "tags": [
+    "form",
+    "input",
+    "selection"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Lays out the control, the label and the description on a grid; carries the size and the forced state."
+    },
+    {
+      "id": "control",
+      "role": "indicator",
+      "required": true,
+      "description": "The box: the native checkbox, drawn by the component. Receives focus, holds the checked state and shows it with a mark (a check when checked, a bar when indeterminate)."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "Text naming the option. Provides the accessible name; activating it toggles the control."
+    },
+    {
+      "id": "description",
+      "role": "description",
+      "required": false,
+      "description": "Optional help text under the label, associated with the control as its description."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Box size, label and description text size scale together.",
+      "affects": [
+        "control",
+        "label",
+        "description"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Dense lists and tables."
+        },
+        {
+          "value": "medium",
+          "description": "Default."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "What checking the box means, stated positively (Send me a weekly summary), without trailing punctuation."
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "string",
+      "bindsTo": "description",
+      "description": "Help text: what happens when the box is checked, when it is not obvious from the label."
+    },
+    {
+      "id": "checked",
+      "name": "Checked",
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the option is on."
+    },
+    {
+      "id": "required",
+      "name": "Required",
+      "type": "boolean",
+      "default": false,
+      "description": "The box must be checked to submit the form (accepting terms)."
+    },
+    {
+      "id": "invalid",
+      "name": "Invalid",
+      "type": "boolean",
+      "default": false,
+      "description": "The value failed validation (a required box left unchecked). The form explains the error in text next to the box or at the top of the form."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Prevents changing the value; the current value stays visible. Prefer keeping the option enabled and explaining why it cannot change."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "Resting, unchecked: an outlined empty box."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "description": "Pointer over the box or its label. The empty box takes a light tint; a checked box does not change. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "description": "Keyboard focus on the box. Shows the shared focus ring outside the box; pointer focus shows none."
+    },
+    {
+      "id": "checked",
+      "trigger": "property",
+      "property": "checked",
+      "description": "The option is on: the box fills with the brand color and shows a check mark."
+    },
+    {
+      "id": "indeterminate",
+      "trigger": "system",
+      "description": "Partially checked: the box stands for a group of options of which some are on. Set by the application through the platform's API (there is no attribute for it on the web); the box fills and shows a bar instead of a check. Toggling it checks or unchecks the whole group."
+    },
+    {
+      "id": "invalid",
+      "trigger": "property",
+      "property": "invalid",
+      "description": "Validation failed: the box border takes the error color. The error is also stated in text by the form."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "description": "Non-interactive. Box, label and description drop to the shared disabled colors, checked or not; hover and focus do not apply."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "start",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "hug",
+    "notes": [
+      "The box sits before the label, centered on the label's first line; the description sits under the label, aligned with it.",
+      "A list of checkboxes stacks them vertically; the layout owns the spacing between them.",
+      "The whole row (box and label) toggles the value: the label is part of the target."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "checkbox",
+    "name": {
+      "text": "Computed from the label, associated with the control as its label element on the web. The description is exposed as the accessible description, not as part of the name.",
+      "refs": [
+        "apg-checkbox-roles",
+        "wai-labels",
+        "html-aam-name-input",
+        "apg-describing"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to the box. A disabled checkbox is not focusable and is skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Space",
+        "action": "Checks or unchecks the box. A partially checked box becomes checked.",
+        "refs": [
+          "apg-checkbox-keyboard"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Expose the checkbox role, its name and its checked state through the platform's native checkbox control, so assistive technology receives them without extra work.",
+        "refs": [
+          "wcag:4.1.2",
+          "apg-checkbox",
+          "apg-checkbox-roles",
+          "compose-interactive-elements"
+        ]
+      },
+      {
+        "text": "Use the native input type=checkbox: it exposes the checkbox role and its checked, mixed and disabled states without ARIA. Never add aria-checked to it.",
+        "refs": [
+          "html-aria-input-checkbox",
+          "html-aam-input-checkbox"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every checkbox has a visible label, associated with the control programmatically: the label is what names the control and activating it toggles the box.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.3.1",
+          "wai-labels",
+          "html-label"
+        ]
+      },
+      {
+        "text": "Associate the label with a label element whose for attribute names the input's id. Put help text in a separate element referenced by aria-describedby, so it is read as a description and does not lengthen the name.",
+        "refs": [
+          "wcag-h44",
+          "wcag-aria1",
+          "apg-describing"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Group related checkboxes under a visible group name, so people know what the set of options is about.",
+        "refs": [
+          "wai-grouping",
+          "wcag-h71"
+        ]
+      },
+      {
+        "text": "The partially checked state exists only through the platform's API: on the web it is the indeterminate IDL attribute, set by script, which the browser exposes as the mixed checked state. The reference implementation styles it; it cannot set it.",
+        "refs": [
+          "html-indeterminate",
+          "mdn-checkbox-indeterminate",
+          "html-aam-input-checkbox",
+          "aria-checked"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never rely on color alone: the state is shown by the mark (check or bar), not only by the fill; an error is stated in text, not only by the red border.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag-f81"
+        ]
+      },
+      {
+        "text": "Label and description contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.07:1 and 12.87:1 in light mode, 11.27:1 and 8.80:1 in dark mode on the default surface. Disabled text is inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The box is what identifies the control and shows its state, so its border, its fill and its mark contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.87:1 (light) and 8.80:1 (dark) on the default surface; checked fill 5.79:1 and 12.80:1; the mark on the fill 5.74:1 and 13.04:1. The focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-boundaries"
+        ]
+      },
+      {
+        "text": "The error border contrasts 6.12:1 (light) and 3.82:1 (dark) with the default surface.",
+        "refs": [
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the box receives keyboard focus, drawn outside the box.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The box alone is 16 or 20 CSS pixels, under the 24 pixel minimum; the label is part of the target and brings the row above it, and the spacing exception applies when a list leaves 24 pixels between rows.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "When the value is invalid, say so with aria-invalid on the input and describe the error in text associated with it or listed at the top of the form.",
+        "refs": [
+          "wcag:3.3.1",
+          "wcag-aria21",
+          "wai-notifications"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A required box uses the required attribute; the label or the description says that it must be checked.",
+        "refs": [
+          "wai-validation",
+          "wcag-h90"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The native disabled attribute removes the box from the focus order. When people need to know an option exists, keep it enabled and explain why it cannot change.",
+        "refs": [
+          "html-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Apple recommends a hit region of at least 44 x 44 pt; the row (box and label) must reach it on iOS. Avoid relying solely on different colors to communicate the state.",
+        "refs": [
+          "hig-toggles-best-practices",
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's Checkbox sets that minimum itself when it can receive actions. Lift the toggle to the row with the toggleable modifier and the Checkbox role, so the label and the box form one element whose state is announced.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes",
+          "compose-interactive-elements",
+          "compose-state-description"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Color transitions of the box are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "apg-checkbox",
+        "title": "APG: Checkbox pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/"
+      },
+      {
+        "id": "apg-checkbox-keyboard",
+        "title": "APG: Checkbox pattern, keyboard interaction",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/#keyboardinteraction"
+      },
+      {
+        "id": "apg-checkbox-roles",
+        "title": "APG: Checkbox pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/#roles_states_properties"
+      },
+      {
+        "id": "apg-describing",
+        "title": "APG: Describing with aria-describedby",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby"
+      },
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "aria-checked",
+        "title": "WAI-ARIA 1.2: aria-checked (the mixed value)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-checked"
+      },
+      {
+        "id": "html-aria-input-checkbox",
+        "title": "ARIA in HTML: input type=checkbox",
+        "url": "https://www.w3.org/TR/html-aria/#el-input-checkbox"
+      },
+      {
+        "id": "html-aam-input-checkbox",
+        "title": "HTML-AAM: input type=checkbox (checked, mixed from indeterminate)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-checkbox"
+      },
+      {
+        "id": "html-aam-name-input",
+        "title": "HTML-AAM: accessible name computation of input elements (associated label element)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
+      },
+      {
+        "id": "html-label",
+        "title": "HTML: the label element (for attribute, labeled control)",
+        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
+      },
+      {
+        "id": "html-indeterminate",
+        "title": "HTML: the indeterminate IDL attribute",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#dom-input-indeterminate"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-checkbox-indeterminate",
+        "title": "MDN: input type=checkbox, indeterminate state (set via JavaScript only)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/checkbox#indeterminate_state_checkboxes"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "wai-labels",
+        "title": "WAI tutorials: Labeling controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wai-grouping",
+        "title": "WAI tutorials: Grouping controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/grouping/"
+      },
+      {
+        "id": "wai-validation",
+        "title": "WAI tutorials: Validating input (the required attribute)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
+      },
+      {
+        "id": "wai-notifications",
+        "title": "WAI tutorials: User notifications (error messages)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
+      },
+      {
+        "id": "wcag-h44",
+        "title": "WCAG technique H44: label elements to associate text labels with form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
+      },
+      {
+        "id": "wcag-h71",
+        "title": "WCAG technique H71: fieldset and legend for groups of form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
+      },
+      {
+        "id": "wcag-h90",
+        "title": "WCAG technique H90: indicating required form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
+      },
+      {
+        "id": "wcag-aria1",
+        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
+      },
+      {
+        "id": "wcag-aria21",
+        "title": "WCAG technique ARIA21: aria-invalid to indicate an error field",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21"
+      },
+      {
+        "id": "wcag-f81",
+        "title": "WCAG failure F81: required or error fields identified by color only",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
+      },
+      {
+        "id": "understanding-non-text-contrast-boundaries",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: user interface components and boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "hig-toggles-best-practices",
+        "title": "Apple HIG: Toggles, best practices (checkboxes and switches)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "compose-interactive-elements",
+        "title": "Jetpack Compose accessibility: interactive elements (toggleable, selection controls)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements"
+      },
+      {
+        "id": "compose-state-description",
+        "title": "Jetpack Compose accessibility: state description",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "State the option positively, as what happens when the box is checked: Send me a weekly summary, never Do not send.",
+      "Sentence case, no trailing punctuation; one line when possible.",
+      "Put consequences and conditions in the description, not in the label.",
+      "A required checkbox (terms, consent) says what is agreed to in its label; the error message says what to do: Check the box to continue."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "label": "Send me a weekly summary"
+      }
+    },
+    {
+      "id": "medium-checked",
+      "name": "Medium, checked",
+      "props": {
+        "size": "medium",
+        "label": "Remember this device",
+        "checked": true
+      }
+    },
+    {
+      "id": "medium-description",
+      "name": "Medium, with description",
+      "props": {
+        "size": "medium",
+        "label": "Enable notifications",
+        "description": "You can change this at any time in Settings."
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "label": "Show archived projects"
+      }
+    },
+    {
+      "id": "medium-required-invalid",
+      "name": "Medium, required and invalid",
+      "description": "A required consent left unchecked; the form states the error in text.",
+      "props": {
+        "size": "medium",
+        "label": "I accept the terms of service",
+        "description": "Check the box to continue.",
+        "required": true,
+        "invalid": true
+      }
+    },
+    {
+      "id": "medium-disabled",
+      "name": "Medium, disabled",
+      "props": {
+        "size": "medium",
+        "label": "Two-factor authentication",
+        "description": "Managed by your organization.",
+        "checked": true,
+        "disabled": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/checkbox.tokens.json",
+    "prefix": "checkbox"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/checkbox/checkbox.css",
+      "template": "packages/components/src/components/checkbox/checkbox.template.mjs",
+      "selector": ".ds-checkbox",
+      "element": "div",
+      "attributes": {
+        "size": "data-size",
+        "disabled": "data-disabled",
+        "invalid": "data-invalid"
+      },
+      "stateAttribute": "data-state",
+      "rolePart": "control",
+      "partSelectors": {
+        "container": ".ds-checkbox",
+        "control": ".ds-checkbox__control",
+        "label": ".ds-checkbox__label",
+        "description": ".ds-checkbox__description"
+      }
+    }
+  },
+  "related": [
+    "switch",
+    "radio-group"
+  ],
+  "decisions": [
+    {
+      "id": "selection-control-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The box is outlined in the accent neutral border color on the default surface when unchecked, and filled with the accent brand color with a mark in the on-accent brand icon color when checked or partially checked; hover tints the empty box with the surface hover color; an invalid box takes the base error border; disabled takes the shared disabled colors. The same colors hold for the Radio group and the Switch.",
+      "rationale": "The Figma library maps no color to form controls. The accent neutral border is the lightest neutral border that keeps 3:1 against the surface in both modes (WCAG 1.4.11); the brand fill makes the on state the same as the brand action color.",
+      "tokens": [
+        "checkbox.control.background.*",
+        "checkbox.control.border-color.*",
+        "checkbox.control.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "checked-wins-over-hover",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "state",
+      "status": "active",
+      "text": "A state is one token path segment: hover changes the empty box only; a checked, partially checked or disabled box does not change on hover.",
+      "tokens": [
+        "checkbox.control.background.hover",
+        "checkbox.control.border-color.hover"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two sizes: small (16 px box, 14 px label) and medium (20 px box, 16 px label, the default), from the Figma library's size and body scales; the box border is 1.2 px (stroke-width.md) and its corners 2 px (small) or 4 px (medium).",
+      "tokens": [
+        "checkbox.control.size.*",
+        "checkbox.control.border-radius.*",
+        "checkbox.control.border-width",
+        "checkbox.label.typography.*",
+        "checkbox.description.typography.*"
+      ]
+    },
+    {
+      "id": "label-and-description",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "A checkbox always has a visible label, which names it, and may have a description under the label, which is exposed as its accessible description.",
+      "refs": [
+        "wcag:3.3.2",
+        "wai-labels",
+        "apg-describing"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions selection-control-colors, checked-wins-over-hover, sizes, label-and-description). Native checkbox in a wrapper with a label element and an optional description; states default, hover, focus-visible, checked, indeterminate, invalid, disabled; sizes small and medium. Contrast on the default surface, light / dark: label 19.07 / 11.27, description 12.87 / 8.80, unchecked border 12.87 / 8.80, checked fill 5.79 / 12.80, mark on fill 5.74 / 13.04, error border 6.12 / 3.82, focus ring 5.79 / 12.80."
+    }
+  ]
+}

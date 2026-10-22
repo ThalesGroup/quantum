@@ -1,0 +1,749 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "text-field",
+  "name": "Text field",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "textbox",
+  "summary": "Lets people enter or edit a single line of text.",
+  "description": "A text field collects one line of free text: a name, an email address, a search term, a quantity typed as text. It has a visible label above, an optional description and, when its value fails validation, an error message under it. Several lines of text are a Textarea; a choice among known values is a Select.",
+  "tags": [
+    "form",
+    "input",
+    "text"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root. Stacks the label, the control, the description and the error message; carries the size and the forced state."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
+    },
+    {
+      "id": "control",
+      "role": "value",
+      "required": true,
+      "description": "The editable box: the native single-line text input, drawn by the component. Receives focus, holds the value and shows the placeholder while empty."
+    },
+    {
+      "id": "description",
+      "role": "description",
+      "required": false,
+      "description": "Optional help text under the control (format, example, consequence), associated with it as its description."
+    },
+    {
+      "id": "error-message",
+      "role": "errormessage",
+      "required": false,
+      "visibleIn": [
+        "invalid"
+      ],
+      "description": "Text describing the error when the field is invalid, associated with the control as a description. Shown only while invalid."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Control height, inline padding and text size scale together; label, description and error keep their size.",
+      "affects": [
+        "control"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Dense forms, toolbars, table rows (32 px high)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (40 px)."
+        },
+        {
+          "value": "large",
+          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "What the field asks for, as a noun phrase (Email address). Always visible."
+    },
+    {
+      "id": "value",
+      "name": "Value",
+      "type": "string",
+      "bindsTo": "control",
+      "description": "Current text of the field."
+    },
+    {
+      "id": "placeholder",
+      "name": "Placeholder",
+      "type": "string",
+      "description": "Short hint shown while the field is empty, in a lighter color. It disappears when people type: never the label, never an instruction people must remember."
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "string",
+      "bindsTo": "description",
+      "description": "Help text: expected format, example, or what the value is used for."
+    },
+    {
+      "id": "errorMessage",
+      "name": "Error message",
+      "type": "string",
+      "bindsTo": "error-message",
+      "description": "What is wrong and how to fix it, shown when the field is invalid."
+    },
+    {
+      "id": "required",
+      "name": "Required",
+      "type": "boolean",
+      "default": false,
+      "description": "The field must be filled to submit the form."
+    },
+    {
+      "id": "readonly",
+      "name": "Read-only",
+      "type": "boolean",
+      "default": false,
+      "description": "The value can be read, focused and copied but not edited (a generated identifier)."
+    },
+    {
+      "id": "invalid",
+      "name": "Invalid",
+      "type": "boolean",
+      "default": false,
+      "description": "The value failed validation: the border takes the error color and the error message is shown."
+    },
+    {
+      "id": "disabled",
+      "name": "Disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Non-interactive and skipped by the keyboard; the value stays visible. Prefer read-only when people may need to read or copy the value."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "Resting: an outlined box on the default surface."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "description": "Pointer over the control. The box takes the surface hover tint; the border does not change. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+    },
+    {
+      "id": "invalid",
+      "trigger": "property",
+      "property": "invalid",
+      "description": "Validation failed: the border takes the error color and the error message is shown under the control."
+    },
+    {
+      "id": "readonly",
+      "trigger": "property",
+      "property": "readonly",
+      "description": "Not editable: the box takes the level 1 surface; the value stays focusable and selectable."
+    },
+    {
+      "id": "disabled",
+      "trigger": "property",
+      "property": "disabled",
+      "description": "Non-interactive. Box, value, label and description drop to the shared disabled colors; hover and focus do not apply."
+    }
+  ],
+  "layout": {
+    "direction": "vertical",
+    "align": "stretch",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "fill",
+    "notes": [
+      "Label, control, description and error message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
+      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "textbox",
+    "name": {
+      "text": "Computed from the label, associated with the control as its label element on the web. The description and the error message are exposed as the accessible description, not as part of the name. The placeholder is exposed as a placeholder and used as a name only when nothing else names the control, which never happens here.",
+      "refs": [
+        "wai-labels",
+        "html-aam-name-input",
+        "apg-describing",
+        "html-aam-placeholder"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus to the control. A disabled control is not focusable and is skipped.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area",
+          "html-disabled"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "Expose the textbox role, the name, the value and the required, read-only, disabled and invalid states through the platform's native text input, so assistive technology receives them without extra work.",
+        "refs": [
+          "wcag:4.1.2",
+          "aria-textbox"
+        ]
+      },
+      {
+        "text": "Use the native input type=text (or email, tel, url for those purposes) without a list attribute: it exposes the textbox role, its value and states without ARIA.",
+        "refs": [
+          "html-aria-input-text",
+          "html-aam-input-text"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every field has a visible label associated with the control programmatically; help text that people need to fill the field (format, example) is visible too, as the description.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.3.1",
+          "wai-labels",
+          "wai-instructions",
+          "html-label"
+        ]
+      },
+      {
+        "text": "Associate the label with a label element whose for attribute names the control's id; reference the description and the error message with aria-describedby, so they are read after the name.",
+        "refs": [
+          "wcag-h44",
+          "wcag-aria1",
+          "apg-describing"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The placeholder is a short hint, never the label and never an instruction: it disappears as soon as people type, and is not exposed as the name when a label exists.",
+        "refs": [
+          "html-placeholder",
+          "wai-instructions-placeholder",
+          "html-aam-placeholder"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Show a hint in a text field to help communicate its purpose; because placeholder text disappears when people start typing, include a separate label describing the field.",
+        "refs": [
+          "hig-text-fields"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "When the value is invalid, identify the field and describe the error in text next to it: the error message names what is wrong and how to fix it, and is associated with the control.",
+        "refs": [
+          "wcag:3.3.1",
+          "wai-notifications",
+          "wcag-g83"
+        ]
+      },
+      {
+        "text": "Say that the value is invalid with aria-invalid on the control, and that a field is required with the required attribute, which the browser exposes as required.",
+        "refs": [
+          "wcag-aria21",
+          "aria-invalid",
+          "html-required",
+          "html-aam-required",
+          "wai-validation"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Mark required fields in the label or the description, never by the error color alone.",
+        "refs": [
+          "wcag-h90",
+          "wcag-f81",
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Label, value, description and error text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.07:1 (light) and 11.27:1 (dark) on the default surface, description 12.87:1 and 8.80:1, placeholder 6.08:1 and 6.36:1, error text 4.52:1 and 4.97:1 (4.26:1 on a level 1 surface in light mode, a Figma library limit tracked as a known issue). Disabled text is inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.87:1 (light) and 8.80:1 (dark) on the default surface at rest, 12.14:1 and 8.06:1 on the hover tint; the error border 6.12:1 and 3.82:1; the focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-boundaries"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "Fields that collect information about the person (name, email, phone, address) carry the matching autocomplete token, so browsers and assistive technology can identify their purpose. The template passes it through its extra attributes.",
+        "refs": [
+          "wcag:1.3.5",
+          "wcag-h98"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A read-only field keeps its value focusable and selectable and is exposed as read-only; a disabled field leaves the focus order. Prefer read-only when people may need to read or copy the value.",
+        "refs": [
+          "html-readonly",
+          "html-aam-readonly",
+          "html-disabled",
+          "apg-disabled-focus"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (32 and 40 pt) fall under it on iOS today: the Figma library has no platform heights.",
+        "refs": [
+          "hig-accessibility-mobility"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today. Expose an invalid value with the error semantics so the message is announced with the field.",
+        "refs": [
+          "android-large-controls",
+          "compose-target-sizes",
+          "compose-error-components"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Color transitions of the control are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "aria-textbox",
+        "title": "WAI-ARIA 1.2: textbox role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#textbox"
+      },
+      {
+        "id": "aria-invalid",
+        "title": "WAI-ARIA 1.2: aria-invalid",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-invalid"
+      },
+      {
+        "id": "apg-describing",
+        "title": "APG: Describing with aria-describedby",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby"
+      },
+      {
+        "id": "apg-disabled-focus",
+        "title": "APG: Focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls"
+      },
+      {
+        "id": "html-aria-input-text",
+        "title": "ARIA in HTML: input type=text (role textbox)",
+        "url": "https://www.w3.org/TR/html-aria/#el-input-text"
+      },
+      {
+        "id": "html-aam-input-text",
+        "title": "HTML-AAM: input type=text (role textbox)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-input-text"
+      },
+      {
+        "id": "html-aam-name-input",
+        "title": "HTML-AAM: accessible name computation of input elements (associated label element)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
+      },
+      {
+        "id": "html-aam-placeholder",
+        "title": "HTML-AAM: placeholder attribute (aria-placeholder, a last-resort name)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#att-placeholder"
+      },
+      {
+        "id": "html-aam-readonly",
+        "title": "HTML-AAM: readonly attribute (aria-readonly)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#att-readonly"
+      },
+      {
+        "id": "html-aam-required",
+        "title": "HTML-AAM: required attribute (aria-required)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#att-required"
+      },
+      {
+        "id": "html-label",
+        "title": "HTML: the label element (for attribute, labeled control)",
+        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
+      },
+      {
+        "id": "html-placeholder",
+        "title": "HTML: the placeholder attribute (not an alternative to a label)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder"
+      },
+      {
+        "id": "html-readonly",
+        "title": "HTML: the readonly attribute",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-readonly"
+      },
+      {
+        "id": "html-required",
+        "title": "HTML: the required attribute",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-required"
+      },
+      {
+        "id": "html-disabled",
+        "title": "HTML: disabled form controls",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-disabled"
+      },
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "wai-labels",
+        "title": "WAI tutorials: Labeling controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wai-instructions",
+        "title": "WAI tutorials: Form instructions (required fields, placeholder text, aria-describedby)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/instructions/"
+      },
+      {
+        "id": "wai-instructions-placeholder",
+        "title": "WAI tutorials: Form instructions, placeholder text",
+        "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text"
+      },
+      {
+        "id": "wai-validation",
+        "title": "WAI tutorials: Validating input (the required attribute)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
+      },
+      {
+        "id": "wai-notifications",
+        "title": "WAI tutorials: User notifications (error messages)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
+      },
+      {
+        "id": "wcag-h44",
+        "title": "WCAG technique H44: label elements to associate text labels with form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
+      },
+      {
+        "id": "wcag-h90",
+        "title": "WCAG technique H90: indicating required form controls",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
+      },
+      {
+        "id": "wcag-h98",
+        "title": "WCAG technique H98: HTML autocomplete attributes to identify the purpose of input fields",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H98"
+      },
+      {
+        "id": "wcag-g83",
+        "title": "WCAG technique G83: text descriptions for required fields not completed",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G83"
+      },
+      {
+        "id": "wcag-aria1",
+        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
+      },
+      {
+        "id": "wcag-aria21",
+        "title": "WCAG technique ARIA21: aria-invalid to indicate an error field",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21"
+      },
+      {
+        "id": "wcag-f81",
+        "title": "WCAG failure F81: required or error fields identified by color only",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
+      },
+      {
+        "id": "understanding-non-text-contrast-boundaries",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: user interface components and boundaries",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
+      },
+      {
+        "id": "hig-text-fields",
+        "title": "Apple HIG: Text fields, best practices (hints and labels)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility (control sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "android-large-controls",
+        "title": "Android accessibility: use large, simple controls",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Jetpack Compose accessibility: minimum touch target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "compose-error-components",
+        "title": "Jetpack Compose accessibility: error semantics of components",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The label is a noun phrase naming the information asked for: Email address, Company name. Sentence case, no colon, no trailing punctuation.",
+      "The description gives the format or an example when it is not obvious: We will only use it to send your receipt.",
+      "The placeholder, when any, is a short example of a valid value (name@example.com), never an instruction and never the label.",
+      "The error message says what is wrong and how to fix it: Enter an email address with an @."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "label": "Full name",
+        "value": "Ada Lovelace"
+      }
+    },
+    {
+      "id": "medium-description",
+      "name": "Medium, with description and placeholder",
+      "props": {
+        "size": "medium",
+        "label": "Email address",
+        "placeholder": "name@example.com",
+        "description": "We will only use it to send your receipt.",
+        "required": true
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "label": "Search",
+        "placeholder": "Filter by name"
+      }
+    },
+    {
+      "id": "large",
+      "name": "Large",
+      "props": {
+        "size": "large",
+        "label": "Project name",
+        "value": "Quantum Design System"
+      }
+    },
+    {
+      "id": "medium-invalid",
+      "name": "Medium, invalid",
+      "description": "Validation failed: the error message says how to fix it.",
+      "props": {
+        "size": "medium",
+        "label": "Email address",
+        "value": "ada.example.com",
+        "invalid": true,
+        "errorMessage": "Enter an email address with an @.",
+        "required": true
+      }
+    },
+    {
+      "id": "medium-readonly",
+      "name": "Medium, read-only",
+      "props": {
+        "size": "medium",
+        "label": "Workspace identifier",
+        "value": "ws_8f3a2c",
+        "description": "Generated when the workspace was created.",
+        "readonly": true
+      }
+    },
+    {
+      "id": "medium-disabled",
+      "name": "Medium, disabled",
+      "props": {
+        "size": "medium",
+        "label": "Billing email",
+        "value": "billing@example.com",
+        "disabled": true
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/text-field.tokens.json",
+    "prefix": "text-field"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/text-field/text-field.css",
+      "template": "packages/components/src/components/text-field/text-field.template.mjs",
+      "selector": ".ds-text-field",
+      "element": "div",
+      "attributes": {
+        "size": "data-size",
+        "disabled": "data-disabled",
+        "invalid": "data-invalid",
+        "readonly": "data-readonly"
+      },
+      "stateAttribute": "data-state",
+      "rolePart": "control",
+      "partSelectors": {
+        "container": ".ds-text-field",
+        "label": ".ds-text-field__label",
+        "control": ".ds-text-field__control",
+        "description": ".ds-text-field__description",
+        "error-message": ".ds-text-field__error-message"
+      }
+    }
+  },
+  "related": [
+    "textarea",
+    "select"
+  ],
+  "decisions": [
+    {
+      "id": "field-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The control is a box on the default surface outlined in the accent neutral border color; hover tints it with the surface hover color and keeps the border; invalid takes the base error border; read-only takes the level 1 surface; disabled takes the shared disabled colors. Value text is primary, the placeholder tertiary, the description secondary, the error message the error text color.",
+      "rationale": "The Figma library maps no color to form controls. The accent neutral border is the lightest neutral border that keeps 3:1 against the surface in both modes (WCAG 1.4.11); the hover tint reuses the surface's own hover step.",
+      "tokens": [
+        "text-field.control.background.*",
+        "text-field.control.border-color.*",
+        "text-field.control.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
+      "tokens": [
+        "text-field.control.min-height.*",
+        "text-field.control.padding-inline.*",
+        "text-field.control.typography.*",
+        "text-field.control.border-width",
+        "text-field.control.border-radius"
+      ]
+    },
+    {
+      "id": "label-description-error",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "A field always has a visible label above the control; help text goes under the control as the description, and the error message under it while the field is invalid. Both are exposed as the control's description.",
+      "refs": [
+        "wcag:3.3.2",
+        "wai-labels",
+        "wai-instructions",
+        "apg-describing"
+      ]
+    },
+    {
+      "id": "single-line-text-only",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "The text field is a single-line text input; the input type (text, email, tel, url) and the autocomplete token are passed as extra attributes of the web template and do not change its look. Search, password and number fields are separate decisions.",
+      "refs": [
+        "html-aria-input-text",
+        "wcag-h98"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions field-colors, sizes, label-description-error, single-line-text-only). Native text input in a wrapper with a label element, a description and an error message; states default, hover, focus-visible, invalid, readonly, disabled; sizes small, medium, large. Contrast on the default surface, light / dark: label and value 19.07 / 11.27, description 12.87 / 8.80, placeholder 6.08 / 6.36, error text 4.52 / 4.97 (4.26 on level 1 in light mode), border at rest 12.87 / 8.80 and 12.14 / 8.06 on hover, error border 6.12 / 3.82, focus ring 5.79 / 12.80."
+    }
+  ]
+}

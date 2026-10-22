@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "docs",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "pnpm tokens:build && pnpm --filter docs dev --port 4321"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "docs-preview",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "pnpm build && pnpm --filter docs preview --port 4322"
+      ],
+      "port": 4322
+    },
+    {
+      "name": "docs-dist",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "--filter",
+        "docs",
+        "preview",
+        "--port",
+        "4331"
+      ],
+      "port": 4331
+    }
+  ]
+}

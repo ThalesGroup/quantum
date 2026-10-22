@@ -1,0 +1,401 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "icon",
+  "name": "Icon",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "presentation",
+  "summary": "A glyph of the system's icon set, decorative or named.",
+  "description": "An icon draws one glyph of the icon set (Material Symbols, the Iconography foundation) at a size and in a color of the system. Next to text it is decoration and says nothing to assistive technology; alone, it must be named by what it means, and is then exposed as an image. Icons inside the other components (buttons, alerts, selects) are those components' parts, styled by their tokens; this component is for icons placed by a product in its own content.",
+  "tags": [
+    "iconography",
+    "data-display"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: the glyph itself, hidden or exposed as an image named by its label. Carries the size and the color."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Side of the square the glyph fills.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Inline with small text (16 px)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (20 px)."
+        },
+        {
+          "value": "large",
+          "description": "Headings and empty states (24 px)."
+        }
+      ]
+    },
+    {
+      "id": "color",
+      "name": "Color",
+      "type": "enum",
+      "default": "current",
+      "description": "Color of the glyph: the surrounding text color, or one of the system's icon roles.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "current",
+          "description": "Inherits the color of the text around it. The default."
+        },
+        {
+          "value": "neutral",
+          "description": "The secondary icon color: quieter than the text."
+        },
+        {
+          "value": "brand",
+          "description": "The brand icon color."
+        },
+        {
+          "value": "success",
+          "description": "Done, positive."
+        },
+        {
+          "value": "warning",
+          "description": "Needs attention."
+        },
+        {
+          "value": "error",
+          "description": "Failed, blocked."
+        },
+        {
+          "value": "info",
+          "description": "Informative."
+        }
+      ]
+    },
+    {
+      "id": "name",
+      "name": "Glyph",
+      "type": "icon",
+      "required": true,
+      "description": "Name of the glyph in the icon set (its Material Symbols name)."
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "description": "What the icon means, when it stands alone (Warning, Verified account). Without it the icon is decorative and hidden."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: an icon has no interaction."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "center",
+    "justify": "center",
+    "wrap": false,
+    "sizing": "fixed",
+    "notes": [
+      "A square of the size, aligned on the middle of the surrounding text.",
+      "An icon never stretches; the glyph fills the square as the icon font draws it."
+    ]
+  },
+  "accessibility": {
+    "name": {
+      "text": "Without a label the icon is decoration, hidden from assistive technology. With a label it is an image named by that label (role img and aria-label on the web): the label says what the icon means, not what it looks like.",
+      "refs": [
+        "aria-hidden",
+        "aria-img",
+        "mdn-img-role",
+        "aria-label",
+        "wai-images-functional"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "An icon next to text that says the same thing is pure decoration: it is implemented so assistive technology ignores it, and the text carries the structure. An icon that stands for something by itself has a text alternative naming its meaning.",
+        "refs": [
+          "wcag:1.3.1",
+          "wcag:1.1.1",
+          "understanding-non-text-content",
+          "wai-images-decorative",
+          "wai-images-informative"
+        ]
+      },
+      {
+        "text": "Render the glyph as its ligature name in a span: with aria-hidden=\"true\" when decorative (the ligature name would otherwise be read as text), with role=\"img\" and aria-label when named.",
+        "refs": [
+          "aria-hidden",
+          "aria-img",
+          "mdn-img-role",
+          "aria-label"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.87:1 (neutral, light) and 8.80:1 (dark), 5.79:1 and 12.80:1 (brand), 7.87:1 and 6.08:1 (success), 4.52:1 and 4.97:1 (error), 4.96:1 and 8.58:1 (info); the warning icon color is 13.01:1 in light mode but 2.14:1 in dark mode, a Figma library limit. A decorative icon has no contrast requirement.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-graphics"
+        ]
+      },
+      {
+        "text": "The color of an icon never carries its meaning alone: a status icon is paired with text or named by its label.",
+        "refs": [
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "Provide alternative text labels for custom interface icons; they let VoiceOver describe what is on screen.",
+        "refs": [
+          "hig-icons"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Pass null as the contentDescription of a decorative icon; describe a meaningful one by its purpose.",
+        "refs": [
+          "compose-graphic-elements",
+          "android-describe-ui-element"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "android-describe-ui-element",
+        "title": "Android accessibility: describe each UI element",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#describe-ui-element"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "aria-img",
+        "title": "WAI-ARIA 1.2: img role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#img"
+      },
+      {
+        "id": "aria-label",
+        "title": "WAI-ARIA 1.2: aria-label",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-label"
+      },
+      {
+        "id": "mdn-img-role",
+        "title": "MDN: ARIA img role (a single image from several elements; a name is required)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/img_role"
+      },
+      {
+        "id": "wai-images-decorative",
+        "title": "WAI tutorials: Decorative images (an empty alt)",
+        "url": "https://www.w3.org/WAI/tutorials/images/decorative/"
+      },
+      {
+        "id": "wai-images-informative",
+        "title": "WAI tutorials: Informative images",
+        "url": "https://www.w3.org/WAI/tutorials/images/informative/"
+      },
+      {
+        "id": "wai-images-functional",
+        "title": "WAI tutorials: Functional images (described by their function)",
+        "url": "https://www.w3.org/WAI/tutorials/images/functional/"
+      },
+      {
+        "id": "understanding-non-text-content",
+        "title": "Understanding WCAG 1.1.1 Non-text Content (pure decoration)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      },
+      {
+        "id": "understanding-non-text-contrast-graphics",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: graphical objects",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects"
+      },
+      {
+        "id": "hig-icons",
+        "title": "Apple HIG: Icons (alternative text labels for interface icons)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/icons"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The label of a named icon says its meaning, as a noun or a short phrase: Warning, Verified, Locked; never the glyph's name.",
+      "Use the same glyph for the same meaning everywhere in a product."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium-current",
+      "name": "Medium, current color",
+      "description": "Decorative, next to text.",
+      "props": {
+        "size": "medium",
+        "color": "current",
+        "name": "settings"
+      }
+    },
+    {
+      "id": "medium-brand-named",
+      "name": "Medium, brand, named",
+      "description": "Stands alone: exposed as an image named by its label.",
+      "props": {
+        "size": "medium",
+        "color": "brand",
+        "name": "verified",
+        "label": "Verified account"
+      }
+    },
+    {
+      "id": "small-neutral",
+      "name": "Small, neutral",
+      "props": {
+        "size": "small",
+        "color": "neutral",
+        "name": "schedule"
+      }
+    },
+    {
+      "id": "large-success",
+      "name": "Large, success, named",
+      "props": {
+        "size": "large",
+        "color": "success",
+        "name": "check_circle",
+        "label": "Completed"
+      }
+    },
+    {
+      "id": "medium-warning",
+      "name": "Medium, warning, named",
+      "props": {
+        "size": "medium",
+        "color": "warning",
+        "name": "warning",
+        "label": "Warning"
+      }
+    },
+    {
+      "id": "medium-error",
+      "name": "Medium, error, named",
+      "props": {
+        "size": "medium",
+        "color": "error",
+        "name": "error",
+        "label": "Error"
+      }
+    },
+    {
+      "id": "medium-info",
+      "name": "Medium, info",
+      "props": {
+        "size": "medium",
+        "color": "info",
+        "name": "info"
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/icon.tokens.json",
+    "prefix": "icon"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/icon/icon.css",
+      "template": "packages/components/src/components/icon/icon.template.mjs",
+      "selector": ".ds-icon",
+      "element": "span",
+      "attributes": {
+        "size": "data-size",
+        "color": "data-color",
+        "label": "aria-label"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-icon"
+      }
+    }
+  },
+  "related": [
+    "icon-button",
+    "avatar"
+  ],
+  "decisions": [
+    {
+      "id": "icon-font-glyph",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "typography",
+      "status": "active",
+      "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 20) at 16, 20 or 24 px (small, medium, large).",
+      "tokens": [
+        "icon.container.font-family",
+        "icon.container.font-weight",
+        "icon.container.fill",
+        "icon.container.grade",
+        "icon.container.optical-size",
+        "icon.container.size.*"
+      ]
+    },
+    {
+      "id": "colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "By default an icon inherits the surrounding text color (no token: currentColor); the other options read the Figma library's on-base icon roles: neutral (secondary), brand, success, warning, error, info.",
+      "tokens": [
+        "icon.container.color.*"
+      ]
+    },
+    {
+      "id": "decorative-unless-named",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "An icon is decorative and hidden unless it is given a label, which then names it as an image.",
+      "refs": [
+        "wcag:1.1.1",
+        "aria-hidden",
+        "aria-img"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions icon-font-glyph, colors, decorative-unless-named). A span holding one glyph, hidden or named; sizes small, medium, large; seven colors. Named icon contrast on the default surface, light / dark: neutral 12.87 / 8.80, brand 5.79 / 12.80, success 7.87 / 6.08, warning 13.01 / 2.14, error 4.52 / 4.97, info 4.96 / 8.58."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+# Continuous integration: check the artifacts on every merge request.
+stages: [check, build]
+
+variables:
+  NODE_VERSION: "22"
+  PNPM_HOME: /cache/pnpm
+  CI_DEBUG: false
+
+.pnpm: &pnpm
+  image: node:${NODE_VERSION}-slim
+  before_script:
+    - corepack enable
+    - pnpm install --frozen-lockfile
+  cache:
+    key: { files: [pnpm-lock.yaml] }
+    paths: [.pnpm-store/]
+
+check:
+  <<: *pnpm
+  stage: check
+  script:
+    - pnpm check
+    - pnpm impact --base "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+site:
+  <<: *pnpm
+  stage: build
+  needs: [check]
+  script: pnpm build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - apps/docs/dist/
+  retry: 2
+  timeout: 15m

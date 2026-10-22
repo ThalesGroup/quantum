@@ -1,0 +1,362 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "spinner",
+  "name": "Spinner",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "status",
+  "summary": "Says that something is loading when its length is unknown, as a turning ring with a label.",
+  "description": "A spinner is the indeterminate loading indicator: a ring turns while a request, a page or a part of it loads, and a label names what loads, shown or kept for assistive technology. Use it for short waits in a small area (a button, a panel); for a long or measurable wait, a Progress bar; for content whose layout is known, Skeletons. Other systems call it an activity indicator, a loading indicator or a progress circle.",
+  "tags": [
+    "feedback",
+    "loading",
+    "status"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: a status live region holding the ring and the label. Carries the size."
+    },
+    {
+      "id": "ring",
+      "role": "indicator",
+      "required": true,
+      "decorative": true,
+      "description": "The turning ring: a neutral circle with a brand arc. Hidden from assistive technology; the label carries the meaning."
+    },
+    {
+      "id": "label",
+      "role": "label",
+      "required": true,
+      "description": "Text naming what loads (Loading projects). Shown next to the ring, or visually hidden but still announced."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Diameter and stroke of the ring.",
+      "affects": [
+        "ring"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Inline, in a button or a table cell (16 px)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (24 px)."
+        },
+        {
+          "value": "large",
+          "description": "Centered in an empty panel or page (32 px)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "type": "string",
+      "required": true,
+      "bindsTo": "label",
+      "description": "What loads, as a short phrase (Loading projects). Announced when the spinner appears."
+    },
+    {
+      "id": "showLabel",
+      "name": "Show label",
+      "type": "boolean",
+      "default": false,
+      "description": "Shows the label next to the ring. Hidden, it stays available to assistive technology."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "description": "The only state: the ring turns while the spinner is shown."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "center",
+    "justify": "start",
+    "wrap": false,
+    "sizing": "hug",
+    "notes": [
+      "The ring sits before the label, both centered on one row, separated by container.gap.",
+      "A spinner sits inline with what it replaces, or centered in the empty area it waits for."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "status",
+    "name": {
+      "text": "A spinner is a status message, not a named control: its label is the text of the live region, announced when the spinner appears, whether the label is shown or visually hidden. The ring is hidden.",
+      "refs": [
+        "aria-status",
+        "mdn-status-role",
+        "wcag-aria22",
+        "aria-hidden"
+      ]
+    },
+    "keyboard": [],
+    "guidelines": [
+      {
+        "text": "A spinner reports a waiting state without taking focus: a polite status message that assistive technology announces when it appears, and whose text names what loads.",
+        "refs": [
+          "wcag:4.1.3",
+          "understanding-status-messages",
+          "aria-status",
+          "wcag-aria22"
+        ]
+      },
+      {
+        "text": "Render a div with role=\"status\" (a polite, atomic live region) holding the label; insert it when the wait starts and remove or replace it when the content arrives. Keep the label visually hidden rather than absent: the ring alone says nothing to assistive technology.",
+        "refs": [
+          "mdn-status-role",
+          "wcag-aria22",
+          "wcag:1.1.1",
+          "wcag-aria10"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The ring is a graphical object conveying the waiting state: its arc contrasts at least 3:1 with the surface in every color mode (5.79:1 light, 12.80:1 dark on the default surface) and with the still part of the ring (4.85:1 and 10.73:1).",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-graphics"
+        ]
+      },
+      {
+        "text": "The waiting state is conveyed by the movement and by the label, never by color alone. A shown label contrasts 12.87:1 (light) and 8.80:1 (dark) with the default surface.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "A spinner turns for as long as the wait lasts. Shown alone while nothing else is usable, it is the preloader case that WCAG 2.2.2 describes; next to usable content, keep it short and prefer a determinate indicator when the length is known. Under reduced motion the ring stops turning and pulses its opacity instead.",
+        "refs": [
+          "wcag:2.2.2",
+          "understanding-pause-stop-hide",
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "An indeterminate progress indicator, also called an activity indicator, uses an animated image to indicate progress; people generally prefer a determinate indicator; keep indicators moving so people know something continues to happen, and remove them when the operation completes. Reduce automatic animations when Reduce Motion is on.",
+        "refs": [
+          "hig-progress-indicators",
+          "hig-accessibility-cognitive"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Mark the waiting message with the live region semantics so accessibility services announce it; describe the indicator's purpose.",
+        "refs": [
+          "compose-live-region",
+          "android-describe-ui-element"
+        ],
+        "platforms": [
+          "android"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "hig-accessibility-cognitive",
+        "title": "Apple HIG: Accessibility, cognitive (Reduce Motion)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive"
+      },
+      {
+        "id": "android-describe-ui-element",
+        "title": "Android accessibility: describe each UI element",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#describe-ui-element"
+      },
+      {
+        "id": "aria-status",
+        "title": "WAI-ARIA 1.2: status role (polite, atomic)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#status"
+      },
+      {
+        "id": "mdn-status-role",
+        "title": "MDN: ARIA status role (advisory information; polite and atomic by default)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/status_role"
+      },
+      {
+        "id": "wcag-aria22",
+        "title": "WCAG technique ARIA22: role=status to present status messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA22"
+      },
+      {
+        "id": "wcag-aria10",
+        "title": "WCAG technique ARIA10: aria-labelledby for a text alternative of non-text content",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA10"
+      },
+      {
+        "id": "understanding-status-messages",
+        "title": "Understanding WCAG 4.1.3 Status Messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      },
+      {
+        "id": "understanding-pause-stop-hide",
+        "title": "Understanding WCAG 2.2.2 Pause, Stop, Hide (a preloader animation example)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      },
+      {
+        "id": "understanding-non-text-contrast-graphics",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: graphical objects",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects"
+      },
+      {
+        "id": "hig-progress-indicators",
+        "title": "Apple HIG: Progress indicators (an indeterminate indicator, also called an activity indicator)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/progress-indicators"
+      },
+      {
+        "id": "compose-live-region",
+        "title": "Jetpack Compose accessibility: alerts and pop-ups (liveRegion semantics)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#alerts-pop-ups"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "The label says what loads, in a short phrase: Loading projects, Saving, Signing in. Sentence case, no trailing punctuation.",
+      "Prefer a specific label to a generic Loading when the area has a name."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "label": "Loading projects"
+      }
+    },
+    {
+      "id": "medium-label",
+      "name": "Medium, with label shown",
+      "props": {
+        "size": "medium",
+        "label": "Loading projects",
+        "showLabel": true
+      }
+    },
+    {
+      "id": "small-label",
+      "name": "Small, with label shown",
+      "props": {
+        "size": "small",
+        "label": "Saving",
+        "showLabel": true
+      }
+    },
+    {
+      "id": "large",
+      "name": "Large",
+      "props": {
+        "size": "large",
+        "label": "Loading your workspace"
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/spinner.tokens.json",
+    "prefix": "spinner"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/spinner/spinner.css",
+      "template": "packages/components/src/components/spinner/spinner.template.mjs",
+      "selector": ".ds-spinner",
+      "element": "div",
+      "attributes": {
+        "size": "data-size"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-spinner",
+        "ring": ".ds-spinner__ring",
+        "label": ".ds-spinner__label"
+      }
+    }
+  },
+  "related": [
+    "progress-bar",
+    "skeleton"
+  ],
+  "decisions": [
+    {
+      "id": "ring-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The still part of the ring is the third neutral base fill and the arc the accent brand fill (the Progress bar's track and indicator); a shown label is secondary text.",
+      "tokens": [
+        "spinner.ring.border-color",
+        "spinner.ring.color",
+        "spinner.label.color"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Three sizes from the size scale: small (16 px, 1.2 px stroke), medium (24 px, 2.4 px, the default) and large (32 px, 2.4 px).",
+      "tokens": [
+        "spinner.ring.size.*",
+        "spinner.ring.border-width.*"
+      ]
+    },
+    {
+      "id": "status-message",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A spinner is a polite status message whose text is its label, always present and visually hidden by default; the ring is hidden. One full turn takes four times the normal duration (1 s); under reduced motion the ring pulses between full and 40 % opacity instead of turning.",
+      "tokens": [
+        "spinner.ring.animation.*",
+        "spinner.ring.opacity"
+      ],
+      "refs": [
+        "wcag:4.1.3",
+        "aria-status",
+        "wcag:2.3.3"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions ring-colors, sizes, status-message). A status live region with a turning ring and a visible or visually hidden label; sizes small, medium, large; no interaction state. Contrast, light / dark: arc on the default surface 5.79 / 12.80, arc on the ring 4.85 / 10.73, label 12.87 / 8.80."
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+---
+/**
+ * Token inspector of the playground: the component tokens active for the current props and forced
+ * state, grouped by part, filterable by kind, linked both ways with the stage through
+ * @component-anatomy/core (hover or focus a part group to outline the part; hover the stage to
+ * mark the group). Every token is rendered here; the client script decides which ones are active
+ * with scripts/lib/token-map.mjs, the same rule `pnpm validate` checks, from the
+ * `playground:render` event of the enclosing Playground. Nothing here knows a component.
+ */
+import { inspectorTokens, inspectorSpec, KINDS } from '../lib/inspector';
+
+interface Props {
+  spec: any;
+  /** id of the panel, named by the toggle's aria-controls. */
+  id: string;
+}
+const { spec, id } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const tokens = inspectorTokens(spec);
+const tokensHref = `${base}/components/${spec.id}/tokens`;
+const decisionsHref = `${base}/components/${spec.id}/decisions`;
+const kinds = KINDS.filter((k: any) => tokens.some((t) => t.kind === k.id));
+const groups = spec.anatomy.map((p: any) => ({ part: p, tokens: tokens.filter((t) => t.part === p.id) }));
+const data = {
+  spec: inspectorSpec(spec),
+  selectors: spec.implementations.web.partSelectors ?? {},
+  tokens: tokens.map((t) => ({ path: t.path, segments: t.segments })),
+};
+// Typography composites resolve to JSON: show them as a type specimen line.
+const display = (t: (typeof tokens)[number], value: string) => {
+  if (t.type !== 'typography') return value;
+  try {
+    const v = JSON.parse(value);
+    return [v.fontFamily, `${v.fontSize}/${v.lineHeight}`, v.fontWeight, v.letterSpacing].filter(Boolean).join(' ');
+  } catch {
+    return value;
+  }
+};
+---
+<section class="site-inspector" id={id} aria-labelledby={`${id}-title`} data-inspector={JSON.stringify(data)} hidden>
+  <div class="site-inspector__header">
+    <h3 class="site-inspector__title" id={`${id}-title`}>Token inspector</h3>
+    <p class="site-inspector__config" data-inspector-config></p>
+    <p class="site-muted site-small" role="status" data-inspector-count></p>
+  </div>
+
+  <div class="site-inspector__kinds" role="group" aria-label="Show tokens of kind">
+    <button type="button" class="ds-button" data-emphasis="accent" data-intent="neutral" data-size="xsmall" aria-pressed="true" data-kind="">
+      <span class="ds-button__label">All</span>
+    </button>
+    {kinds.map((k: any) => (
+      <button type="button" class="ds-button" data-emphasis="subtle" data-intent="neutral" data-size="xsmall" aria-pressed="false" data-kind={k.id}>
+        <span class="ds-button__label">{k.label} <span class="site-inspector__kind-count" data-kind-count></span></span>
+      </button>
+    ))}
+  </div>
+
+  {groups.map((g: any) => (
+    <section class="site-inspector__part" data-anatomy-item={g.part.id} data-part-group={g.part.id} aria-labelledby={`${id}-${g.part.id}`}>
+      <h4 class="site-inspector__part-title" id={`${id}-${g.part.id}`}>Part <code>{g.part.id}</code> <span class="site-muted site-small" data-part-count></span></h4>
+      <p class="site-muted site-small" data-part-absent hidden>Not rendered in this configuration.</p>
+      {g.tokens.length ? (
+        <ul class="site-inspector__tokens">
+          {g.tokens.map((t) => (
+            <li class="site-inspector__token" data-token={t.path} data-kind={t.kind} hidden>
+              <div class="site-inspector__name">
+                {t.type === 'color' && t.cssVar ? <span class="site-swatch" style={`--swatch: var(${t.cssVar})`}></span> : null}
+                <span class="site-inspector__property">{[t.property, ...t.keys].join('.')}</span>
+                {t.variant ? <code class="site-small">{t.variant}</code> : null}
+                <span class="site-inspector__fallback site-small" data-fallback hidden>from default</span>
+              </div>
+              {t.semantic ? <code class="site-inspector__alias site-small">{`{${t.semantic}}`}</code> : null}
+              <details class="site-inspector__more">
+                <summary class="site-small">Details</summary>
+                <dl class="site-inspector__facts site-small">
+                  {t.below.length ? (
+                    <>
+                      <dt>Resolves through</dt>
+                      <dd>{t.below.map((l) => <code class="site-alias">{l.path} <span class={`site-tier site-tier--${l.tier}`}>{l.tier}</span></code>)}</dd>
+                    </>
+                  ) : null}
+                  <dt>Value</dt>
+                  <dd>
+                    <code>{display(t, t.resolved)}</code>
+                    {t.modes.map((m) => <div><span class="site-muted">{m.mode}:</span> <code>{display(t, m.resolved)}</code></div>)}
+                  </dd>
+                  {t.cssVar ? (
+                    <>
+                      <dt>CSS</dt>
+                      <dd><code class="site-cssvar">{t.cssVar}</code></dd>
+                    </>
+                  ) : null}
+                  <dt>Token</dt>
+                  <dd><a href={`${tokensHref}?q=${encodeURIComponent(t.path)}`}><code>{t.path}</code></a></dd>
+                  {t.decisions.length ? (
+                    <>
+                      <dt>Decisions</dt>
+                      <dd>
+                        <ul class="site-inspector__why">
+                          {t.decisions.map((d) => <li><a href={`${decisionsHref}#decision-${d.id}`}>{d.text}</a></li>)}
+                        </ul>
+                      </dd>
+                    </>
+                  ) : null}
+                </dl>
+              </details>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="site-muted site-small">No tokens of its own: it inherits from its parent.</p>
+      )}
+    </section>
+  ))}
+</section>
+
+<script>
+  import { createAnatomy, type AnatomyController } from '@component-anatomy/core';
+  // @ts-ignore - plain ESM without types
+  import { activeTokens, effectiveStates } from '../../../../scripts/lib/token-map.mjs';
+
+  type Data = { spec: any; selectors: Record<string, string>; tokens: { path: string; segments: string[] }[] };
+  type Render = { props: Record<string, unknown>; state: string };
+
+  const params = () => new URL(location.href).searchParams;
+  const setParam = (name: string, value: string | null) => {
+    const url = new URL(location.href);
+    if (value) url.searchParams.set(name, value);
+    else url.searchParams.delete(name);
+    history.replaceState(history.state, '', url);
+  };
+
+  for (const panel of document.querySelectorAll<HTMLElement>('[data-inspector]')) {
+    const data: Data = JSON.parse(panel.dataset.inspector!);
+    const playground = panel.closest<HTMLElement>('[data-playground]');
+    const stage = playground?.querySelector<HTMLElement>('[data-stage]');
+    const toggle = document.querySelector<HTMLButtonElement>(`[aria-controls="${panel.id}"]`);
+    if (!playground || !stage || !toggle) continue;
+
+    const config = panel.querySelector<HTMLElement>('[data-inspector-config]')!;
+    const count = panel.querySelector<HTMLElement>('[data-inspector-count]')!;
+    const chips = [...panel.querySelectorAll<HTMLButtonElement>('[data-kind]')].filter((b) => b.tagName === 'BUTTON');
+    const groups = [...panel.querySelectorAll<HTMLElement>('[data-part-group]')].map((el) => ({
+      el,
+      part: el.dataset.partGroup!,
+      count: el.querySelector<HTMLElement>('[data-part-count]')!,
+      absent: el.querySelector<HTMLElement>('[data-part-absent]')!,
+      rows: [...el.querySelectorAll<HTMLElement>('[data-token]')],
+    }));
+    const parts = groups.map((g) => ({ id: g.part, name: g.part }));
+
+    let current: Render = { props: {}, state: 'default' };
+    let kinds = new Set((params().get('kinds') ?? '').split(',').filter((k) => k && chips.some((c) => c.dataset.kind === k)));
+    let controller: AnatomyController | null = null;
+
+    // Marks the stage elements of every part with data-part, which is what the anatomy library reads.
+    const tag = () => {
+      const root = stage.firstElementChild;
+      if (!root) return;
+      for (const [part, selector] of Object.entries(data.selectors)) {
+        for (const el of [...(root.matches(selector) ? [root] : []), ...root.querySelectorAll(selector)]) (el as HTMLElement).dataset.part = part;
+      }
+    };
+
+    const describe = () => {
+      const words: string[] = [];
+      for (const p of data.spec.properties) {
+        const v = current.props[p.id] ?? p.default;
+        if (p.type === 'enum') words.push(`${p.id} ${v}`);
+        else if (v === true) words.push(p.id);
+      }
+      if (current.state && current.state !== 'default') words.push(`state ${current.state}`);
+      return words.join(' · ');
+    };
+
+    const update = () => {
+      const active = new Map<string, any>(activeTokens(data.spec, data.tokens, current.props, current.state).map((a: any) => [a.token.path, a]));
+      const stateful = effectiveStates(data.spec, current.props, current.state).length > 0;
+      const perKind = new Map<string, number>();
+      let shown = 0;
+      for (const g of groups) {
+        let inGroup = 0;
+        let activeInGroup = 0;
+        for (const row of g.rows) {
+          const a = active.get(row.dataset.token!);
+          if (a) {
+            activeInGroup++;
+            perKind.set(row.dataset.kind!, (perKind.get(row.dataset.kind!) ?? 0) + 1);
+          }
+          const visible = !!a && (kinds.size === 0 || kinds.has(row.dataset.kind!));
+          row.hidden = !visible;
+          row.querySelector<HTMLElement>('[data-fallback]')!.hidden = !(a && stateful && a.via === 'default');
+          if (visible) inGroup++;
+        }
+        const rendered = !!data.selectors[g.part] && !!stage.querySelector(`[data-part="${g.part}"]`);
+        g.absent.hidden = rendered || !data.selectors[g.part];
+        g.el.toggleAttribute('data-absent', !rendered);
+        g.count.textContent = kinds.size ? `(${inGroup}/${activeInGroup})` : `(${activeInGroup})`;
+        // A part without tokens of its own only shows unfiltered, to say it inherits.
+        g.el.hidden = g.rows.length ? inGroup === 0 : kinds.size > 0;
+        shown += inGroup;
+      }
+      const total = active.size;
+      config.textContent = describe();
+      count.textContent = kinds.size ? `${shown} of ${total} active tokens (${data.tokens.length} in all)` : `${total} active tokens (${data.tokens.length} in all)`;
+      for (const chip of chips) {
+        const kind = chip.dataset.kind!;
+        const pressed = kind ? kinds.has(kind) : kinds.size === 0;
+        chip.setAttribute('aria-pressed', String(pressed));
+        chip.dataset.emphasis = pressed ? 'accent' : 'subtle';
+        const n = chip.querySelector<HTMLElement>('[data-kind-count]');
+        if (n) n.textContent = String(perKind.get(kind) ?? 0);
+        chip.disabled = !!kind && !pressed && !perKind.get(kind);
+      }
+    };
+
+    const open = (on: boolean) => {
+      panel.hidden = !on;
+      toggle.setAttribute('aria-expanded', String(on));
+      playground.classList.toggle('site-playground--inspecting', on);
+      setParam('inspect', on ? '1' : null);
+      if (on) {
+        tag();
+        controller ??= createAnatomy({ root: stage, panel, parts, overlay: { padding: 2 } });
+        controller.refresh();
+        update();
+      } else {
+        controller?.destroy();
+        controller = null;
+      }
+    };
+
+    playground.addEventListener('playground:render', (e) => {
+      current = (e as CustomEvent<Render>).detail;
+      if (panel.hidden) return;
+      tag();
+      controller?.refresh();
+      update();
+    });
+
+    toggle.addEventListener('click', () => open(panel.hidden));
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        const kind = chip.dataset.kind!;
+        if (!kind) kinds = new Set();
+        else if (kinds.has(kind)) kinds.delete(kind);
+        else kinds.add(kind);
+        setParam('kinds', [...kinds].join(',') || null);
+        update();
+      });
+    }
+
+    // Keyboard: focusing anything inside a part group outlines the part, as hovering it does.
+    for (const g of groups) {
+      g.el.addEventListener('focusin', () => controller?.highlight(g.part));
+      g.el.addEventListener('focusout', (e) => {
+        if (!g.el.contains(e.relatedTarget as Node | null)) controller?.unhighlight();
+      });
+    }
+
+    if (params().get('inspect') === '1') open(true);
+  }
+</script>

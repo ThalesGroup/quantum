@@ -1,17 +1,23 @@
 name: Release
 
+# Quantum NextGen only releases alpha versions for now, without a GitHub release: pushing a tag
+# @quantum-ds/<package>@<version>-alpha.<n> on a commit of the nextgen branch publishes that package
+# on npm under the dist-tag alpha, and the Releases page keeps showing the stable versions only.
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - '@quantum-ds/*@*-alpha.*'
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  # Publishes @quantum-ds/tokens to npm with trusted publishing (OIDC) when a release tagged @quantum-ds/tokens@<version> is published
-  publish-tokens:
-    if: startsWith(github.event.release.tag_name, '@quantum-ds/tokens@')
+  # Publishes a workspace package to npm with trusted publishing (OIDC)
+  publish:
     runs-on: ubuntu-latest
     environment: npm
     permissions:
@@ -20,37 +26,54 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0 # To check that the tagged commit is on nextgen
           persist-credentials: false
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
-      - name: Check that the release tag matches the package version
+      - name: Find the package named by the tag and check its version
         id: version
-        working-directory: packages/tokens
         env:
-          TAG: ${{ github.event.release.tag_name }}
+          TAG: ${{ github.ref_name }}
         run: |
-          version=$(node -p "require('./package.json').version")
-          if [ "$TAG" != "@quantum-ds/tokens@$version" ]; then
-            echo "::error::Release tag $TAG does not match the package version @quantum-ds/tokens@$version"
+          name="${TAG%@*}"
+          version="${TAG##*@}"
+          dir="packages/${name#@quantum-ds/}"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+-alpha\.[0-9]+$ ]]; then
+            echo "::error::Tag $TAG is not an alpha version (<major>.<minor>.<patch>-alpha.<n>): Quantum NextGen only releases alpha versions for now"
             exit 1
           fi
-          if [ -n "$(npm view "@quantum-ds/tokens@$version" version 2>/dev/null)" ]; then
-            echo "::notice::@quantum-ds/tokens@$version is already on npm, skipping the publication"
+          if [ ! -f "$dir/package.json" ] || [ "$(node -p "require('./$dir/package.json').name")" != "$name" ]; then
+            echo "::error::Tag $TAG names no workspace package (expected @quantum-ds/<package>@<version> with packages/<package>)"
+            exit 1
+          fi
+          actual=$(node -p "require('./$dir/package.json').version")
+          if [ "$version" != "$actual" ]; then
+            echo "::error::Tag $TAG does not match the package version $name@$actual"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/nextgen; then
+            echo "::error::Tag $TAG is not on the nextgen branch: tag a commit of nextgen once the version bump is merged"
+            exit 1
+          fi
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+          if [ -n "$(npm view "$name@$version" version 2>/dev/null)" ]; then
+            echo "::notice::$name@$version is already on npm, skipping the publication"
             echo "published=true" >> "$GITHUB_OUTPUT"
           fi
       - if: steps.version.outputs.published != 'true'
         run: pnpm install --frozen-lockfile
       - if: steps.version.outputs.published != 'true'
-        run: pnpm --filter @quantum-ds/tokens run check:dtcg
-      - if: steps.version.outputs.published != 'true'
-        run: pnpm --filter @quantum-ds/tokens run build
+        run: pnpm check
       - if: steps.version.outputs.published != 'true'
         id: publish
-        working-directory: packages/tokens
-        run: pnpm publish --provenance --no-git-checks
+        working-directory: ${{ steps.version.outputs.dir }}
+        run: pnpm publish --provenance --no-git-checks --tag alpha
       - name: Explain how to fix a failed publication
         if: failure() && steps.publish.outcome == 'failure'
+        env:
+          NAME: ${{ steps.version.outputs.name }}
         run: |
-          echo "::error title=npm publication failed::A 404 from npm usually means that the trusted publisher of @quantum-ds/tokens on npmjs.com has lapsed or no longer matches the repository ThalesGroup/quantum, the workflow release.yml and the environment npm. Re-create it as described in CONTRIBUTING.md, then re-run the failed job."
+          echo "::error title=npm publication failed::A 404 from npm usually means that the trusted publisher of $NAME on npmjs.com has lapsed or no longer matches the repository ThalesGroup/quantum, the workflow release.yml and the environment npm. Re-create it as described in CONTRIBUTING.md, then re-run the failed job."

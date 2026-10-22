@@ -1,0 +1,560 @@
+{
+  "$schema": "../schema/component.schema.json",
+  "id": "breadcrumb",
+  "name": "Breadcrumb",
+  "version": "0.1.0",
+  "status": "draft",
+  "role": "navigation",
+  "summary": "Shows where the current page sits in a hierarchy, with a link to each level above it.",
+  "description": "A breadcrumb lists the pages above the current one, from the top of the hierarchy down, each as a link, and ends with the current page, which is not a link. It tells people where they are and lets them go up one or several levels in one activation. It is a navigation landmark of its own, separate from the main navigation.",
+  "tags": [
+    "navigation",
+    "wayfinding"
+  ],
+  "anatomy": [
+    {
+      "id": "container",
+      "role": "container",
+      "required": true,
+      "description": "Root: a navigation landmark named Breadcrumb. Carries the size and the states forced for review."
+    },
+    {
+      "id": "list",
+      "role": "container",
+      "required": true,
+      "description": "The ordered list of levels."
+    },
+    {
+      "id": "item",
+      "role": "container",
+      "required": true,
+      "repeatable": true,
+      "parent": "list",
+      "description": "One level: its link (or the current page) and, except for the last, a separator. Takes the states of its link.",
+      "properties": [
+        {
+          "id": "label",
+          "name": "Label",
+          "type": "string",
+          "required": true,
+          "bindsTo": "link",
+          "description": "Name of the page, as its title."
+        },
+        {
+          "id": "href",
+          "name": "Destination",
+          "type": "string",
+          "description": "Where the level links to. Ignored for the last item, which is the current page."
+        }
+      ]
+    },
+    {
+      "id": "link",
+      "role": "action",
+      "required": true,
+      "parent": "item",
+      "description": "The link to a level above, or the current page as plain text marked current."
+    },
+    {
+      "id": "separator",
+      "role": "separator",
+      "required": false,
+      "decorative": true,
+      "parent": "item",
+      "description": "Chevron glyph of the icon font between two levels. Hidden from assistive technology; the list conveys the order."
+    }
+  ],
+  "properties": [
+    {
+      "id": "size",
+      "name": "Size",
+      "type": "enum",
+      "default": "medium",
+      "description": "Text and separator size.",
+      "affects": [
+        "item",
+        "link",
+        "separator"
+      ],
+      "options": [
+        {
+          "value": "small",
+          "description": "Above dense content (12 px)."
+        },
+        {
+          "value": "medium",
+          "description": "Default (14 px)."
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "name": "Landmark label",
+      "type": "string",
+      "default": "Breadcrumb",
+      "description": "Name of the navigation landmark, so it is told apart from the other navigation regions of the page."
+    },
+    {
+      "id": "items",
+      "name": "Items",
+      "type": "list",
+      "required": true,
+      "of": [
+        "item"
+      ],
+      "bindsTo": "item",
+      "description": "The levels from the top of the hierarchy to the current page, last."
+    }
+  ],
+  "states": [
+    {
+      "id": "default",
+      "trigger": "interaction",
+      "parts": [
+        "item"
+      ],
+      "description": "A link to a level above: underlined, in the secondary text color."
+    },
+    {
+      "id": "hover",
+      "trigger": "interaction",
+      "inputs": [
+        "pointer"
+      ],
+      "parts": [
+        "item"
+      ],
+      "description": "Pointer over a link: the primary text color. Needs a pointing device: touch has no hover."
+    },
+    {
+      "id": "focus-visible",
+      "trigger": "interaction",
+      "inputs": [
+        "keyboard"
+      ],
+      "parts": [
+        "item"
+      ],
+      "description": "Keyboard focus on a link. Shows the shared focus ring around it; pointer focus shows none."
+    },
+    {
+      "id": "current",
+      "trigger": "system",
+      "parts": [
+        "item"
+      ],
+      "description": "The last item, the current page: plain text in the primary color, not underlined, exposed as the current page."
+    }
+  ],
+  "layout": {
+    "direction": "horizontal",
+    "align": "center",
+    "justify": "start",
+    "wrap": true,
+    "sizing": "hug",
+    "notes": [
+      "Levels flow on one line and wrap when the space runs out; a separator follows every level but the last.",
+      "Each link is at least 24 px high; the gap between a link, its separator and the next link comes from container.gap."
+    ]
+  },
+  "accessibility": {
+    "ariaRole": "navigation",
+    "name": {
+      "text": "The landmark is named by its label property (aria-label on the web), Breadcrumb by default, which tells it apart from the other navigation regions. Each link is named by its text; the current page is marked as such.",
+      "refs": [
+        "apg-breadcrumb-roles",
+        "apg-breadcrumb-example",
+        "apg-naming-aria-label",
+        "aria-current"
+      ]
+    },
+    "keyboard": [
+      {
+        "key": "Tab",
+        "action": "Moves focus through the links in order; the current page is not focusable.",
+        "refs": [
+          "wcag:2.1.1",
+          "html-focusable-area"
+        ],
+        "platforms": [
+          "web"
+        ]
+      }
+    ],
+    "guidelines": [
+      {
+        "text": "A breadcrumb trail is a list of links to the parent pages of the current page in hierarchical order, contained in a navigation landmark with a label, and the current page is marked current.",
+        "refs": [
+          "wcag:4.1.2",
+          "wcag:1.3.1",
+          "apg-breadcrumb",
+          "apg-breadcrumb-roles",
+          "wcag-g65"
+        ]
+      },
+      {
+        "text": "Use a nav element with aria-label=\"Breadcrumb\" holding an ordered list; each level is a list item with a link, and the last one carries aria-current=\"page\".",
+        "refs": [
+          "html-aria-nav",
+          "html-aam-nav",
+          "html-nav",
+          "html-ol",
+          "html-aria-ol",
+          "html-aam-li",
+          "aria-current",
+          "mdn-aria-current",
+          "apg-breadcrumb-example"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Give each navigation landmark of a page a unique label, so people moving between landmarks can tell the breadcrumb from the main navigation.",
+        "refs": [
+          "apg-navigation-landmark",
+          "mdn-navigation-role",
+          "wcag-aria6",
+          "wcag-aria11",
+          "wcag:2.4.1"
+        ]
+      },
+      {
+        "text": "A breadcrumb tells people where they are within the set of pages, beyond what the page title says.",
+        "refs": [
+          "wcag:2.4.8",
+          "understanding-location",
+          "wcag-g65"
+        ]
+      },
+      {
+        "text": "Each link is named by the page it leads to, so its purpose is clear from its text; keep the breadcrumb in the same place and order on every page.",
+        "refs": [
+          "wcag:2.4.4",
+          "understanding-link-purpose",
+          "wcag:3.2.3",
+          "understanding-consistent-navigation"
+        ]
+      },
+      {
+        "text": "The current page is plain text, not a link to itself; it is distinguished by weight and color and by its position, never by color alone.",
+        "refs": [
+          "wcag:1.4.1",
+          "apg-breadcrumb-roles"
+        ]
+      },
+      {
+        "text": "Link text contrasts 12.87:1 (light) and 8.80:1 (dark) with the default surface, the current page 19.07:1 and 11.27:1; the separators are decoration (6.08:1 and 6.36:1 anyway).",
+        "refs": [
+          "wcag:1.4.3",
+          "wcag:1.4.11"
+        ]
+      },
+      {
+        "text": "The separators are decorative and hidden from assistive technology with aria-hidden=\"true\": an icon-font glyph is written as its ligature name, which would otherwise be read between the links.",
+        "refs": [
+          "wcag:1.1.1",
+          "aria-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears around the focused link; links are underlined so they are identified without color.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13",
+          "wcag:1.4.1"
+        ]
+      },
+      {
+        "text": "The focus ring is drawn with :focus-visible, so pointer focus shows no ring.",
+        "refs": [
+          "mdn-focus-visible"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Links are at least 24 CSS pixels high; in a wrapped trail the inline spacing keeps them apart.",
+        "refs": [
+          "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "Color transitions of the links are removed when the user asks for reduced motion.",
+        "refs": [
+          "wcag:2.3.3",
+          "mdn-reduced-motion"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "html-focusable-area",
+        "title": "HTML: focusable area",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "mdn-focus-visible",
+        "title": "MDN: :focus-visible",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      },
+      {
+        "id": "mdn-reduced-motion",
+        "title": "MDN: prefers-reduced-motion",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "apg-breadcrumb",
+        "title": "APG: Breadcrumb pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/"
+      },
+      {
+        "id": "apg-breadcrumb-roles",
+        "title": "APG: Breadcrumb pattern, roles, states and properties",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/#roles_states_properties"
+      },
+      {
+        "id": "apg-breadcrumb-example",
+        "title": "APG: Breadcrumb example (nav labelled Breadcrumb)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/examples/breadcrumb/"
+      },
+      {
+        "id": "apg-navigation-landmark",
+        "title": "APG: Navigation landmark (a unique label for each)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/landmarks/examples/navigation.html"
+      },
+      {
+        "id": "apg-naming-aria-label",
+        "title": "APG: Naming with aria-label (a navigation region)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#naming_with_aria-label"
+      },
+      {
+        "id": "aria-current",
+        "title": "WAI-ARIA 1.2: aria-current (page)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-current"
+      },
+      {
+        "id": "html-aria-nav",
+        "title": "ARIA in HTML: nav element (role navigation)",
+        "url": "https://www.w3.org/TR/html-aria/#el-nav"
+      },
+      {
+        "id": "html-aria-ol",
+        "title": "ARIA in HTML: ol element (role list)",
+        "url": "https://www.w3.org/TR/html-aria/#el-ol"
+      },
+      {
+        "id": "html-aam-nav",
+        "title": "HTML-AAM: nav element (navigation)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-nav"
+      },
+      {
+        "id": "html-aam-li",
+        "title": "HTML-AAM: li element (listitem with position and set size)",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-li"
+      },
+      {
+        "id": "html-nav",
+        "title": "HTML: the nav element",
+        "url": "https://html.spec.whatwg.org/multipage/sections.html#the-nav-element"
+      },
+      {
+        "id": "html-ol",
+        "title": "HTML: the ol element (an intentionally ordered list)",
+        "url": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element"
+      },
+      {
+        "id": "mdn-aria-current",
+        "title": "MDN: aria-current",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-current"
+      },
+      {
+        "id": "mdn-navigation-role",
+        "title": "MDN: ARIA navigation role (a unique label for each landmark)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/navigation_role"
+      },
+      {
+        "id": "wcag-g65",
+        "title": "WCAG technique G65: providing a breadcrumb trail",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G65"
+      },
+      {
+        "id": "wcag-aria6",
+        "title": "WCAG technique ARIA6: aria-label to distinguish navigation landmarks",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA6"
+      },
+      {
+        "id": "wcag-aria11",
+        "title": "WCAG technique ARIA11: ARIA landmarks to identify regions of a page",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA11"
+      },
+      {
+        "id": "understanding-location",
+        "title": "Understanding WCAG 2.4.8 Location (a breadcrumb trail)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/location.html"
+      },
+      {
+        "id": "understanding-link-purpose",
+        "title": "Understanding WCAG 2.4.4 Link Purpose (In Context)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html"
+      },
+      {
+        "id": "understanding-consistent-navigation",
+        "title": "Understanding WCAG 3.2.3 Consistent Navigation",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html"
+      }
+    ]
+  },
+  "content": {
+    "guidelines": [
+      "Each level is the title of its page, as short as the page allows: Settings, Members, Ada Lovelace.",
+      "The first level is the root of the hierarchy (Home, Projects), the last the current page.",
+      "Never truncate the current page; shorten intermediate levels if the trail is too long."
+    ]
+  },
+  "examples": [
+    {
+      "id": "medium",
+      "name": "Medium",
+      "props": {
+        "size": "medium",
+        "items": [
+          {
+            "label": "Home",
+            "href": "#"
+          },
+          {
+            "label": "Projects",
+            "href": "#"
+          },
+          {
+            "label": "Quantum Design System",
+            "href": "#"
+          },
+          {
+            "label": "Settings"
+          }
+        ]
+      }
+    },
+    {
+      "id": "small",
+      "name": "Small",
+      "props": {
+        "size": "small",
+        "items": [
+          {
+            "label": "Docs",
+            "href": "#"
+          },
+          {
+            "label": "Components",
+            "href": "#"
+          },
+          {
+            "label": "Breadcrumb"
+          }
+        ]
+      }
+    },
+    {
+      "id": "medium-two-levels",
+      "name": "Medium, two levels",
+      "props": {
+        "size": "medium",
+        "items": [
+          {
+            "label": "Orders",
+            "href": "#"
+          },
+          {
+            "label": "Order 10482"
+          }
+        ]
+      }
+    }
+  ],
+  "tokens": {
+    "source": "packages/tokens/src/components/breadcrumb.tokens.json",
+    "prefix": "breadcrumb"
+  },
+  "implementations": {
+    "web": {
+      "css": "packages/components/src/components/breadcrumb/breadcrumb.css",
+      "template": "packages/components/src/components/breadcrumb/breadcrumb.template.mjs",
+      "selector": ".ds-breadcrumb",
+      "element": "nav",
+      "attributes": {
+        "size": "data-size",
+        "label": "aria-label"
+      },
+      "stateAttribute": "data-state",
+      "partSelectors": {
+        "container": ".ds-breadcrumb",
+        "list": ".ds-breadcrumb__list",
+        "item": ".ds-breadcrumb__item",
+        "link": ".ds-breadcrumb__link",
+        "separator": ".ds-breadcrumb__separator"
+      }
+    }
+  },
+  "related": [
+    "pagination"
+  ],
+  "decisions": [
+    {
+      "id": "landmark-and-list",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "A breadcrumb is a navigation landmark named Breadcrumb holding an ordered list; the last item is the current page, marked current and not linked; a chevron separates the levels.",
+      "refs": [
+        "apg-breadcrumb-roles",
+        "aria-current"
+      ]
+    },
+    {
+      "id": "link-colors",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "Links are underlined in the secondary text color and turn primary on hover; the current page is primary text without underline; separators take the tertiary icon color.",
+      "tokens": [
+        "breadcrumb.link.color.*",
+        "breadcrumb.separator.color"
+      ]
+    },
+    {
+      "id": "sizes",
+      "date": "2026-10-03",
+      "version": "0.1.0",
+      "area": "size",
+      "status": "active",
+      "text": "Two sizes: small (12 px text, 16 px separator) and medium (14 px, 20 px, the default); links are at least 24 px high, 4 px apart from their separators.",
+      "tokens": [
+        "breadcrumb.link.typography.*",
+        "breadcrumb.separator.size.*",
+        "breadcrumb.link.min-height",
+        "breadcrumb.container.gap"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-03",
+      "note": "Initial draft (decisions landmark-and-list, link-colors, sizes). Nav labelled Breadcrumb with an ordered list of links and a current page; states default, hover, focus-visible, current on the item part; sizes small and medium. Contrast, light / dark, default surface: links 12.87 / 8.80, current page 19.07 / 11.27, separators 6.08 / 6.36, focus ring 5.79 / 12.80."
+    }
+  ]
+}

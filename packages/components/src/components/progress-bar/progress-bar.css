@@ -1,0 +1,120 @@
+/*
+ * Progress bar — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/progress-bar.spec.json
+ * Tokens: packages/tokens/dist/css/components/progress-bar.css (generated from packages/tokens/src/components/progress-bar.tokens.json)
+ *
+ * Rules:
+ *  - Only --progress-bar-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (label row, then the track); the native progress element is the track,
+ *    drawn by the component; the indicator is the browser's value pseudo-element (WebKit, Gecko).
+ *  - Size is a data attribute on the root. The indeterminate state is the native one (a progress
+ *    without value); [data-state="indeterminate"] on the root forces its look for review. Both animate
+ *    a segment along the track, at a multiple of the motion token's duration, and stop under
+ *    prefers-reduced-motion: the segment then rests at the start of the track.
+ */
+
+.ds-progress-bar {
+  --_track-height: var(--progress-bar-track-height-medium);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--progress-bar-container-gap);
+  min-inline-size: 0;
+}
+
+.ds-progress-bar[data-size="small"] {
+  --_track-height: var(--progress-bar-track-height-small);
+}
+
+.ds-progress-bar__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: var(--progress-bar-container-column-gap);
+}
+
+.ds-progress-bar__label {
+  color: var(--progress-bar-label-color);
+  font-family: var(--progress-bar-label-typography-font-family);
+  font-size: var(--progress-bar-label-typography-font-size);
+  font-weight: var(--progress-bar-label-typography-font-weight);
+  line-height: var(--progress-bar-label-typography-line-height);
+  letter-spacing: var(--progress-bar-label-typography-letter-spacing);
+}
+
+.ds-progress-bar__value {
+  color: var(--progress-bar-value-color);
+  font-family: var(--progress-bar-value-typography-font-family);
+  font-size: var(--progress-bar-value-typography-font-size);
+  font-weight: var(--progress-bar-value-typography-font-weight);
+  line-height: var(--progress-bar-value-typography-line-height);
+  letter-spacing: var(--progress-bar-value-typography-letter-spacing);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Track and indicator ---------------------------------------------------- */
+
+.ds-progress-bar__track {
+  box-sizing: border-box;
+  display: block;
+  inline-size: 100%;
+  block-size: var(--_track-height);
+  margin: 0;
+  border: none;
+  border-radius: var(--progress-bar-track-border-radius);
+  background-color: var(--progress-bar-track-background);
+  color: var(--progress-bar-indicator-background);
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.ds-progress-bar__track::-webkit-progress-bar {
+  background-color: var(--progress-bar-track-background);
+  border-radius: var(--progress-bar-track-border-radius);
+}
+.ds-progress-bar__track::-webkit-progress-value {
+  background-color: var(--progress-bar-indicator-background);
+  border-radius: var(--progress-bar-indicator-border-radius);
+  transition: inline-size var(--progress-bar-indicator-transition-duration) var(--progress-bar-indicator-transition-easing);
+}
+.ds-progress-bar__track::-moz-progress-bar {
+  background-color: var(--progress-bar-indicator-background);
+  border-radius: var(--progress-bar-indicator-border-radius);
+}
+
+/* Indeterminate: no value bar; a segment a third of the track sweeps from start to end. The duration is
+   a multiple of the normal motion duration (there is no long duration token yet, see the spec).
+   WebKit paints the track in ::-webkit-progress-bar over the element, so the segment is drawn there too. */
+.ds-progress-bar__track:where(:indeterminate)::-webkit-progress-value,
+.ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track::-webkit-progress-value {
+  opacity: 0;
+}
+.ds-progress-bar__track:where(:indeterminate)::-moz-progress-bar,
+.ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track::-moz-progress-bar {
+  background-color: transparent;
+}
+.ds-progress-bar__track:where(:indeterminate),
+.ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track,
+.ds-progress-bar__track:where(:indeterminate)::-webkit-progress-bar,
+.ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track::-webkit-progress-bar {
+  background-image: linear-gradient(to right, transparent 0%, transparent 33%, currentColor 33%, currentColor 66%, transparent 66%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  animation: ds-progress-bar-indeterminate calc(var(--progress-bar-indicator-transition-duration) * 6) var(--progress-bar-indicator-transition-easing) infinite;
+}
+
+@keyframes ds-progress-bar-indeterminate {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-progress-bar__track,
+  .ds-progress-bar__track::-webkit-progress-bar,
+  .ds-progress-bar__track::-webkit-progress-value {
+    animation: none;
+    transition: none;
+    background-position: 100% 0;
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "$description": "Component tokens for Button. Path grammar: button.<part>.<property>[.<emphasis>][.<intent>][.<state>] for colors (disabled depends on emphasis only), button.<part>.<property>.<size> for dimensions and type. Parts, options and states must exist in packages/components/specs/components/button.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
+  "button": {
+    "container": {
+      "background": {
+        "$type": "color",
+        "accent": {
+          "neutral": {
+            "default": { "$value": "{global.bg.accent.neutral.default}" },
+            "hover": { "$value": "{global.bg.accent.neutral.hover}" },
+            "active": { "$value": "{global.bg.accent.neutral.active}" }
+          },
+          "brand": {
+            "default": { "$value": "{global.bg.accent.brand.default}" },
+            "hover": { "$value": "{global.bg.accent.brand.hover}" },
+            "active": { "$value": "{global.bg.accent.brand.active}" }
+          },
+          "error": {
+            "default": { "$value": "{global.bg.accent.functional.error.default}" },
+            "hover": { "$value": "{global.bg.accent.functional.error.hover}" },
+            "active": { "$value": "{global.bg.accent.functional.error.active}" }
+          },
+          "disabled": { "$value": "{global.bg.state.disabled.default}" }
+        },
+        "subtle": {
+          "neutral": {
+            "default": { "$value": "{global.bg.subtle.neutral.default}" },
+            "hover": { "$value": "{global.bg.subtle.neutral.hover}" },
+            "active": { "$value": "{global.bg.subtle.neutral.active}" }
+          },
+          "brand": {
+            "default": { "$value": "{global.bg.subtle.brand.default}" },
+            "hover": { "$value": "{global.bg.subtle.brand.hover}" },
+            "active": { "$value": "{global.bg.subtle.brand.active}" }
+          },
+          "error": {
+            "default": { "$value": "{global.bg.subtle.functional.error.default}" },
+            "hover": { "$value": "{global.bg.subtle.functional.error.hover}" },
+            "active": { "$value": "{global.bg.subtle.functional.error.active}" }
+          },
+          "disabled": { "$value": "{global.bg.state.disabled.default}" }
+        },
+        "ghost": {
+          "neutral": {
+            "default": { "$value": "{color.transparent}" },
+            "hover": { "$value": "{global.bg.subtle.neutral.default}" },
+            "active": { "$value": "{global.bg.subtle.neutral.hover}" }
+          },
+          "brand": {
+            "default": { "$value": "{color.transparent}" },
+            "hover": { "$value": "{global.bg.subtle.brand.default}" },
+            "active": { "$value": "{global.bg.subtle.brand.hover}" }
+          },
+          "error": {
+            "default": { "$value": "{color.transparent}" },
+            "hover": { "$value": "{global.bg.subtle.functional.error.default}" },
+            "active": { "$value": "{global.bg.subtle.functional.error.hover}" }
+          },
+          "disabled": { "$value": "{global.bg.state.disabled.default}" }
+        }
+      },
+      "border-color": {
+        "$type": "color",
+        "accent": {
+          "neutral": {
+            "default": { "$value": "{global.border.accent.neutral.default}" },
+            "hover": { "$value": "{global.border.accent.neutral.hover}" },
+            "active": { "$value": "{global.border.accent.neutral.active}" }
+          },
+          "brand": {
+            "default": { "$value": "{global.border.accent.brand.default}" },
+            "hover": { "$value": "{global.border.accent.brand.hover}" },
+            "active": { "$value": "{global.border.accent.brand.active}" }
+          },
+          "error": {
+            "default": { "$value": "{global.border.accent.functional.error.default}" },
+            "hover": { "$value": "{global.border.accent.functional.error.hover}" },
+            "active": { "$value": "{global.border.accent.functional.error.active}" }
+          },
+          "disabled": { "$value": "{global.border.state.disabled.default}" }
+        },
+        "subtle": {
+          "neutral": {
+            "default": { "$value": "{global.border.subtle.neutral.default}" },
+            "hover": { "$value": "{global.border.subtle.neutral.hover}" },
+            "active": { "$value": "{global.border.subtle.neutral.active}" }
+          },
+          "brand": {
+            "default": { "$value": "{global.border.subtle.brand.default}" },
+            "hover": { "$value": "{global.border.subtle.brand.hover}" },
+            "active": { "$value": "{global.border.subtle.brand.active}" }
+          },
+          "error": {
+            "default": { "$value": "{global.border.subtle.functional.error.default}" },
+            "hover": { "$value": "{global.border.subtle.functional.error.hover}" },
+            "active": { "$value": "{global.border.subtle.functional.error.active}" }
+          },
+          "disabled": { "$value": "{global.border.state.disabled.default}" }
+        },
+        "ghost": {
+          "neutral": {
+            "default": { "$value": "{color.transparent}" },
+            "hover": { "$value": "{global.border.subtle.neutral.default}" },
+            "active": { "$value": "{global.border.subtle.neutral.hover}" }
+          },
+          "brand": {
+            "default": { "$value": "{color.transparent}" },
+            "hover": { "$value": "{global.border.subtle.brand.default}" },
+            "active": { "$value": "{global.border.subtle.brand.hover}" }
+          },
+          "error": {
+            "default": { "$value": "{color.transparent}" },
+            "hover": { "$value": "{global.border.subtle.functional.error.default}" },
+            "active": { "$value": "{global.border.subtle.functional.error.hover}" }
+          },
+          "disabled": { "$value": "{global.border.state.disabled.default}" }
+        }
+      },
+      "border-width": { "$type": "dimension", "$value": "{stroke-width.sm}" },
+      "border-radius": {
+        "$type": "dimension",
+        "xsmall": { "$value": "{corner-radius.2xs}" },
+        "small": { "$value": "{corner-radius.2xs}" },
+        "medium": { "$value": "{corner-radius.xs}" },
+        "large": { "$value": "{corner-radius.xs}" }
+      },
+      "padding-inline": {
+        "$type": "dimension",
+        "xsmall": { "$value": "{space.6}" },
+        "small": { "$value": "{space.8}" },
+        "medium": { "$value": "{space.12}" },
+        "large": { "$value": "{space.16}" },
+        "icon-side": {
+          "$description": "With an icon: inline padding on the side that holds it, between the border and the icon.",
+          "xsmall": { "$value": "{space.2}" },
+          "small": { "$value": "{space.6}" },
+          "medium": { "$value": "{space.6}" },
+          "large": { "$value": "{space.8}" }
+        },
+        "label-side": {
+          "$description": "With an icon on the other side only: inline padding between the label and the border.",
+          "xsmall": { "$value": "{space.6}" },
+          "small": { "$value": "{space.8}" },
+          "medium": { "$value": "{space.8}" },
+          "large": { "$value": "{space.10}" }
+        }
+      },
+      "min-height": {
+        "$type": "dimension",
+        "xsmall": { "$value": "{space.24}" },
+        "small": { "$value": "{space.28}" },
+        "medium": { "$value": "{space.36}" },
+        "large": { "$value": "{space.44}" }
+      },
+      "padding-block": {
+        "$type": "dimension",
+        "$description": "Minimum space above and below the content. At the default text size the minimum height sets the height; this padding shows when the content outgrows it.",
+        "xsmall": { "$value": "{space.2}" },
+        "small": { "$value": "{space.3}" },
+        "medium": { "$value": "{space.5}" },
+        "large": { "$value": "{space.8}" }
+      },
+      "gap": {
+        "$type": "dimension",
+        "xsmall": { "$value": "{space.2}" },
+        "small": { "$value": "{space.2}" },
+        "medium": { "$value": "{space.4}" },
+        "large": { "$value": "{space.4}" }
+      },
+      "outline-width": {
+        "$type": "dimension",
+        "focus-visible": { "$value": "{focus.ring.width}" }
+      },
+      "outline-offset": {
+        "$type": "dimension",
+        "focus-visible": { "$value": "{focus.ring.offset}" }
+      },
+      "outline-color": {
+        "$type": "color",
+        "focus-visible": { "$value": "{color.focus.ring}" }
+      },
+      "transition": {
+        "duration": { "$type": "duration", "$value": "{duration.fast}" },
+        "easing": { "$type": "cubicBezier", "$value": "{easing.standard}" }
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "accent": {
+          "neutral": {
+            "default": { "$value": "{global.text.on-accent.neutral.primary}" },
+            "hover": { "$value": "{global.text.on-accent.neutral.primary}" },
+            "active": { "$value": "{global.text.on-accent.neutral.primary}" }
+          },
+          "brand": {
+            "default": { "$value": "{global.text.on-accent.brand.default}" },
+            "hover": { "$value": "{global.text.on-accent.brand.default}" },
+            "active": { "$value": "{global.text.on-accent.brand.default}" }
+          },
+          "error": {
+            "default": { "$value": "{global.text.on-accent.functional.error.default}" },
+            "hover": { "$value": "{global.text.on-accent.functional.error.default}" },
+            "active": { "$value": "{global.text.on-accent.functional.error.default}" }
+          },
+          "disabled": { "$value": "{global.text.state.disabled.default}" }
+        },
+        "subtle": {
+          "neutral": {
+            "default": { "$value": "{global.text.on-base.neutral.primary}" },
+            "hover": { "$value": "{global.text.on-base.neutral.primary}" },
+            "active": { "$value": "{global.text.on-base.neutral.primary}" }
+          },
+          "brand": {
+            "default": { "$value": "{global.text.on-subtle.brand.default}" },
+            "hover": { "$value": "{global.text.on-subtle.brand.default}" },
+            "active": { "$value": "{global.text.on-subtle.brand.default}" }
+          },
+          "error": {
+            "default": { "$value": "{global.text.on-subtle.functional.error.default}" },
+            "hover": { "$value": "{global.text.on-subtle.functional.error.default}" },
+            "active": { "$value": "{global.text.on-subtle.functional.error.default}" }
+          },
+          "disabled": { "$value": "{global.text.state.disabled.default}" }
+        },
+        "ghost": {
+          "neutral": {
+            "default": { "$value": "{global.text.on-base.neutral.primary}" },
+            "hover": { "$value": "{global.text.on-base.neutral.primary}" },
+            "active": { "$value": "{global.text.on-base.neutral.primary}" }
+          },
+          "brand": {
+            "default": { "$value": "{global.text.on-base.brand.default}" },
+            "hover": { "$value": "{global.text.on-subtle.brand.default}" },
+            "active": { "$value": "{global.text.on-subtle.brand.default}" }
+          },
+          "error": {
+            "default": { "$value": "{global.text.on-subtle.functional.error.default}" },
+            "hover": { "$value": "{global.text.on-subtle.functional.error.default}" },
+            "active": { "$value": "{global.text.on-subtle.functional.error.default}" }
+          },
+          "disabled": { "$value": "{global.text.state.disabled.default}" }
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "xsmall": { "$value": {"fontFamily": "{body.family}", "fontSize": "{body.size.xs}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.compact}", "letterSpacing": "{font.letter-spacing.tight.xs}"} },
+        "small": { "$value": {"fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.compact}", "letterSpacing": "{font.letter-spacing.tight.sm}"} },
+        "medium": { "$value": {"fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.compact}", "letterSpacing": "{font.letter-spacing.tight.md}"} },
+        "large": { "$value": {"fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.compact}", "letterSpacing": "{font.letter-spacing.tight.md}"} }
+      }
+    },
+    "icon": {
+      "$description": "Glyphs of the icon font. They inherit the label color through currentColor, so only the font and its size are tokenized.",
+      "font-family": { "$type": "fontFamily", "$value": "{font.icon.family}" },
+      "font-weight": { "$type": "fontWeight", "$value": "{font.icon.weight.light}" },
+      "fill": { "$type": "number", "$value": "{font.icon.fill.off}" },
+      "grade": { "$type": "number", "$value": "{font.icon.grade.normal}" },
+      "optical-size": { "$type": "number", "$value": "{font.icon.optical-size.20}" },
+      "size": {
+        "$type": "dimension",
+        "xsmall": { "$value": "{size.2}" },
+        "small": { "$value": "{size.3}" },
+        "medium": { "$value": "{size.4}" },
+        "large": { "$value": "{size.4}" }
+      }
+    }
+  }
+}

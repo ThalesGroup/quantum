@@ -1,0 +1,177 @@
+/*
+ * Textarea — vanilla CSS reference implementation.
+ * Spec:   packages/components/specs/components/textarea.spec.json
+ * Tokens: packages/tokens/dist/css/components/textarea.css (generated from packages/tokens/src/components/textarea.tokens.json)
+ *
+ * Rules:
+ *  - Only --textarea-* custom properties may appear here. No raw values, no semantic tokens.
+ *  - The root is a wrapper (label, control, description, error message, stacked); the native
+ *    textarea is the control, drawn by the component.
+ *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
+ *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
+ *    spec order: default < hover < focus-visible < invalid < readonly < disabled: hover only tints the
+ *    background, invalid only recolors the border, so they combine as the token rule combines them.
+ *  - Private properties (--_*) are the single place an option or a state writes to.
+ */
+
+.ds-textarea {
+  /* Defaults = size "medium", state "default". */
+  --_control-background: var(--textarea-control-background-default);
+  --_control-border-color: var(--textarea-control-border-color-default);
+  --_control-color: var(--textarea-control-color-default);
+  --_placeholder-color: var(--textarea-control-placeholder-color-default);
+  --_label-color: var(--textarea-label-color-default);
+  --_description-color: var(--textarea-description-color-default);
+  --_min-height: var(--textarea-control-min-height-medium);
+  --_padding-inline: var(--textarea-control-padding-inline-medium);
+  --_font-family: var(--textarea-control-typography-medium-font-family);
+  --_font-size: var(--textarea-control-typography-medium-font-size);
+  --_font-weight: var(--textarea-control-typography-medium-font-weight);
+  --_line-height: var(--textarea-control-typography-medium-line-height);
+  --_letter-spacing: var(--textarea-control-typography-medium-letter-spacing);
+  --_padding-block: var(--textarea-control-padding-block-medium);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--textarea-container-gap);
+  min-inline-size: 0;
+  vertical-align: middle;
+}
+
+/* ---- Size ---------------------------------------------------------------- */
+
+.ds-textarea[data-size="small"] {
+  --_min-height: var(--textarea-control-min-height-small);
+  --_padding-inline: var(--textarea-control-padding-inline-small);
+  --_font-family: var(--textarea-control-typography-small-font-family);
+  --_font-size: var(--textarea-control-typography-small-font-size);
+  --_font-weight: var(--textarea-control-typography-small-font-weight);
+  --_line-height: var(--textarea-control-typography-small-line-height);
+  --_letter-spacing: var(--textarea-control-typography-small-letter-spacing);
+  --_padding-block: var(--textarea-control-padding-block-small);
+}
+
+.ds-textarea[data-size="large"] {
+  --_min-height: var(--textarea-control-min-height-large);
+  --_padding-inline: var(--textarea-control-padding-inline-large);
+  --_font-family: var(--textarea-control-typography-large-font-family);
+  --_font-size: var(--textarea-control-typography-large-font-size);
+  --_font-weight: var(--textarea-control-typography-large-font-weight);
+  --_line-height: var(--textarea-control-typography-large-line-height);
+  --_letter-spacing: var(--textarea-control-typography-large-letter-spacing);
+  --_padding-block: var(--textarea-control-padding-block-large);
+}
+
+/* ---- Parts --------------------------------------------------------------- */
+
+.ds-textarea__label {
+  color: var(--_label-color);
+  font-family: var(--textarea-label-typography-font-family);
+  font-size: var(--textarea-label-typography-font-size);
+  font-weight: var(--textarea-label-typography-font-weight);
+  line-height: var(--textarea-label-typography-line-height);
+  letter-spacing: var(--textarea-label-typography-letter-spacing);
+}
+
+.ds-textarea__control {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-height: var(--_min-height);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--_padding-inline);
+  border: var(--textarea-control-border-width) solid var(--_control-border-color);
+  border-radius: var(--textarea-control-border-radius);
+  background-color: var(--_control-background);
+  color: var(--_control-color);
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: var(--_letter-spacing);
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background-color var(--textarea-control-transition-duration) var(--textarea-control-transition-easing),
+    border-color var(--textarea-control-transition-duration) var(--textarea-control-transition-easing);
+}
+
+.ds-textarea__control::placeholder {
+  color: var(--_placeholder-color);
+  opacity: 1;
+}
+
+.ds-textarea__description {
+  margin: 0;
+  color: var(--_description-color);
+  font-family: var(--textarea-description-typography-font-family);
+  font-size: var(--textarea-description-typography-font-size);
+  font-weight: var(--textarea-description-typography-font-weight);
+  line-height: var(--textarea-description-typography-line-height);
+  letter-spacing: var(--textarea-description-typography-letter-spacing);
+}
+
+.ds-textarea__error-message {
+  margin: 0;
+  color: var(--textarea-error-message-color);
+  font-family: var(--textarea-error-message-typography-font-family);
+  font-size: var(--textarea-error-message-typography-font-size);
+  font-weight: var(--textarea-error-message-typography-font-weight);
+  line-height: var(--textarea-error-message-typography-line-height);
+  letter-spacing: var(--textarea-error-message-typography-letter-spacing);
+}
+
+/* Multi-line: the block padding sets the inset of the first and last line; the control can be resized vertically. */
+.ds-textarea__control {
+  padding-block: var(--_padding-block);
+  resize: vertical;
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+.ds-textarea:where([data-state="hover"]) .ds-textarea__control:not(:disabled, [readonly]),
+.ds-textarea:not([data-state]) .ds-textarea__control:hover:not(:disabled, [readonly]) {
+  --_control-background: var(--textarea-control-background-hover);
+}
+
+.ds-textarea:where([data-state="invalid"]) .ds-textarea__control,
+.ds-textarea__control[aria-invalid="true"] {
+  --_control-border-color: var(--textarea-control-border-color-invalid);
+}
+
+.ds-textarea:where([data-state="readonly"]) .ds-textarea__control,
+.ds-textarea__control[readonly] {
+  --_control-background: var(--textarea-control-background-readonly);
+}
+
+.ds-textarea:where([data-state="disabled"]),
+.ds-textarea:has(.ds-textarea__control:disabled) {
+  --_label-color: var(--textarea-label-color-disabled);
+  --_description-color: var(--textarea-description-color-disabled);
+}
+.ds-textarea:where([data-state="disabled"]) .ds-textarea__control,
+.ds-textarea__control:disabled {
+  --_control-background: var(--textarea-control-background-disabled);
+  --_control-border-color: var(--textarea-control-border-color-disabled);
+  --_control-color: var(--textarea-control-color-disabled);
+  --_placeholder-color: var(--textarea-control-placeholder-color-disabled);
+  cursor: not-allowed;
+}
+
+.ds-textarea__control:focus {
+  outline: none;
+}
+
+.ds-textarea:where([data-state="focus-visible"]) .ds-textarea__control,
+.ds-textarea__control:focus-visible {
+  outline: var(--textarea-control-outline-width-focus-visible) solid var(--textarea-control-outline-color-focus-visible);
+  outline-offset: var(--textarea-control-outline-offset-focus-visible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-textarea__control {
+    transition: none;
+  }
+}
