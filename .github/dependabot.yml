@@ -54,3 +54,60 @@ updates:
       github-actions:
         patterns:
           - '*'
+
+  # The same updates for the nextgen branch (Quantum NextGen). Dependabot reads this file from the
+  # default branch only, so these entries must be on main to take effect.
+  - package-ecosystem: 'npm'
+    target-branch: 'nextgen'
+    directories:
+      - '/'
+      - '/packages/*'
+      - '/apps/*'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '05:00'
+      timezone: 'Europe/Paris'
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 20
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    labels:
+      - 'dependencies'
+    groups:
+      nextgen-npm-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - 'minor'
+          - 'patch'
+      nextgen-npm-major:
+        applies-to: version-updates
+        update-types:
+          - 'major'
+      nextgen-npm-security:
+        applies-to: security-updates
+        patterns:
+          - '*'
+
+  - package-ecosystem: 'github-actions'
+    target-branch: 'nextgen'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '05:00'
+      timezone: 'Europe/Paris'
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 20
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    labels:
+      - 'dependencies'
+    groups:
+      nextgen-github-actions:
+        patterns:
+          - '*'
