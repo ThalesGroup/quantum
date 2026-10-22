@@ -35,7 +35,7 @@
     "check:dtcg": "tz check"
   },
   "devDependencies": {
-    "@terrazzo/cli": "^2.7.1",
+    "@terrazzo/cli": "^2.9.0",
     "@types/node": "^26.6.5",
     "fs-extra": "^11.4.1",
     "glob": "^13.0.6",
