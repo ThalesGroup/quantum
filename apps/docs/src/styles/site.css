@@ -202,8 +202,10 @@ td.site-cite a { margin-inline-end: 0.75em; }
 .site-filter-bar .site-filter { width: min(360px, 100%); }
 .site-filter-empty { color: var(--global-text-on-base-neutral-tertiary); }
 .site-list { list-style: none; margin: 0; padding: 0; border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-0); border-radius: var(--corner-radius-sm); overflow: hidden; background: var(--global-bg-level-0-default); }
-.site-list > li + li { border-top: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }
+/* Rows hidden by a filter are skipped: no separator above the first row still shown. */
+.site-list > li:not([hidden]) ~ li { border-top: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }
 .site-list__item { position: relative; display: grid; grid-template-columns: 168px minmax(0, 1fr) auto; align-items: center; gap: 1.25rem; padding: 0.75rem 1rem 0.75rem 0.75rem; }
+.site-list__item[hidden] { display: none; }
 .site-list__item--text { grid-template-columns: minmax(0, 1fr) auto; padding-left: 1rem; }
 .site-list__item:hover { background: var(--global-bg-level-1-default); }
 .site-list__item:hover .site-list__arrow { color: var(--global-text-on-base-neutral-primary); transform: translateX(2px); }
