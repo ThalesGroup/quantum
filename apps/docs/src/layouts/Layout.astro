@@ -3,7 +3,7 @@ import { getTemplate } from '../lib/web';
 import { getCollection } from 'astro:content';
 import '../styles/site.css';
 import Status from '../components/Status.astro';
-import { getModes } from '../lib/tokens';
+import { getModes, getTokens } from '../lib/tokens';
 import { getScreens, getSections } from '../lib/screens';
 // The design system itself: the tokens package, then the web reference implementation (packages/components/src/,
 // not published: @quantum-ds/components ships only the specs).
@@ -13,28 +13,45 @@ import '../../../../packages/components/src/index.css';
 interface Props {
   title: string;
   description?: string;
-  /** Which sidebar the page shows: foundations and components (default), or the screens by section. */
-  sidebar?: 'catalog' | 'screens';
 }
-const { title, description, sidebar = 'catalog' } = Astro.props;
-// Screens sidebar: the sections of screens/sections.json, each with its screens.
-const screens = getScreens();
-const screenSections = getSections().map((s) => ({ ...s, screens: screens.filter((x) => x.meta.section === s.id) })).filter((s) => s.screens.length);
-const specs = (await getCollection('specs')).sort((a, b) => a.data.name.localeCompare(b.data.name));
-// Foundations in the order their docs give (frontmatter `order`), then by name.
-const foundationOrder = new Map((await getCollection('foundationDocs')).map((d) => [d.data.foundation, d.data.order ?? Infinity]));
-const foundations = (await getCollection('foundations')).sort((a, b) => (foundationOrder.get(a.id) ?? Infinity) - (foundationOrder.get(b.id) ?? Infinity) || a.data.name.localeCompare(b.data.name));
+const { title, description } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const current = Astro.url.pathname.replace(/\/$/, '');
 const isActive = (href: string) => current === `${base}${href}`.replace(/\/$/, '');
-// A component stays highlighted in the sidebar on every one of its tab pages.
+// A page stays highlighted in the sidebar on every one of its sub-pages (tabs).
 const isWithin = (href: string) => isActive(href) || current.startsWith(`${base}${href}/`);
+
+// The top-level areas of the site (the first list of the sidebar), then the pages of the current area.
+const areas = [
+  { id: 'components', label: 'Components', href: '/', within: isActive('/') || isWithin('/components') },
+  { id: 'foundations', label: 'Foundations', href: '/foundations', within: isWithin('/foundations') },
+  { id: 'screens', label: 'Screens', href: '/screens', within: isWithin('/screens') },
+  { id: 'tokens', label: 'Tokens', href: '/tokens', within: isWithin('/tokens') },
+  { id: 'platforms', label: 'Platforms', href: '/platforms', within: isActive('/platforms') },
+  { id: 'modes', label: 'Modes', href: '/modes', within: isActive('/modes') },
+  { id: 'about', label: 'How it works', href: '/about', within: isActive('/about') },
+];
+const area = areas.find((a) => a.within)?.id;
+const specs = area === 'components' ? (await getCollection('specs')).sort((a, b) => a.data.name.localeCompare(b.data.name)) : [];
+// Foundations in the order their docs give (frontmatter `order`), then by name.
+const foundationOrder = new Map((await getCollection('foundationDocs')).map((d) => [d.data.foundation, d.data.order ?? Infinity]));
+const foundations = area === 'foundations' ? (await getCollection('foundations')).sort((a, b) => (foundationOrder.get(a.id) ?? Infinity) - (foundationOrder.get(b.id) ?? Infinity) || a.data.name.localeCompare(b.data.name)) : [];
+// Screens: the sections of screens/sections.json, each with its screens.
+const screens = area === 'screens' ? getScreens() : [];
+const screenSections = getSections().map((s) => ({ ...s, screens: screens.filter((x) => x.meta.section === s.id) })).filter((s) => s.screens.length);
+const tiers = area === 'tokens' ? (getTokens().config.tiers as { name: string }[]).map((t, i) => ({ name: t.name, href: `/tokens${i === 0 ? '' : `/${t.name}`}` })) : [];
+
 // Color mode switch: the modes of tokens.config.json plus "auto" (follows the system), applied
 // through the design system's own web context attribute on <html>. Remembered per browser.
 const { modes, attribute, auto } = getModes();
 const choices = [...(auto ? [{ value: auto, label: 'Auto' }] : []), ...modes.map((m) => ({ value: m.id, label: m.id[0].toUpperCase() + m.id.slice(1) }))];
 const initial = auto ?? modes.find((m) => m.default)?.id ?? null;
 const htmlAttrs = attribute && initial ? { [attribute]: initial } : {};
+
+// The chrome's controls are the design system's components, rendered by their templates.
+const modeSwitch = attribute && choices.length > 1 ? getTemplate('select')?.render({ label: 'Mode', id: 'site-mode-switch', size: 'small', options: choices.map((c) => ({ label: c.label, value: c.value, selected: c.value === initial })), attrs: { 'data-mode-switch': attribute } }) : null;
+const banner = getTemplate('alert')?.render({ intent: 'warning', message: 'Experimental: Quantum NextGen, the future Quantum Design System. These docs will be part of the next version of quantum.thalesdigital.io.' });
+const year = new Date().getFullYear();
 ---
 <!doctype html>
 <html lang="en" {...htmlAttrs}>
@@ -43,71 +60,30 @@ const htmlAttrs = attribute && initial ? { [attribute]: initial } : {};
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} · Quantum Design System</title>
     {description ? <meta name="description" content={description} /> : null}
-    {attribute && choices.length > 1 ? (
-      <script is:inline define:vars={{ attribute, values: choices.map((c) => c.value) }}>
-        // Before first paint: restore the mode chosen on a previous visit.
-        try {
-          const saved = localStorage.getItem('site-mode');
-          if (values.includes(saved)) document.documentElement.setAttribute(attribute, saved);
-        } catch {}
-      </script>
-    ) : null}
+    <script is:inline define:vars={{ attribute, values: choices.map((c) => c.value) }}>
+      // Before first paint: restore the mode chosen on a previous visit.
+      try {
+        const saved = localStorage.getItem('site-mode');
+        if (attribute && values.includes(saved)) document.documentElement.setAttribute(attribute, saved);
+      } catch {}
+    </script>
   </head>
   <body class="site">
     <a class="site-skip" href="#main">Skip to content</a>
-    <header class="site-header">
-      <a class="site-brand" href={`${base}/`}><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__text">Quantum</span></a>
-      <nav class="site-header__nav" aria-label="Primary">
-        <a href={`${base}/`} aria-current={isActive('/') ? 'page' : undefined}>Components</a>
-        <a href={`${base}/screens`} aria-current={isActive('/screens') ? 'page' : isWithin('/screens') ? 'true' : undefined}>Screens</a>
-        <a href={`${base}/foundations`} aria-current={isActive('/foundations') ? 'page' : isWithin('/foundations') ? 'true' : undefined}>Foundations</a>
-        <a href={`${base}/tokens`} aria-current={isActive('/tokens') ? 'page' : isWithin('/tokens') ? 'true' : undefined}>Tokens</a>
-        <a href={`${base}/platforms`} aria-current={isActive('/platforms') ? 'page' : undefined}>Platforms</a>
-        <a href={`${base}/modes`} aria-current={isActive('/modes') ? 'page' : undefined}>Modes</a>
-        <a href={`${base}/about`} aria-current={isActive('/about') ? 'page' : undefined}>How it works</a>
-      </nav>
-      {attribute && choices.length > 1 ? (
-        <div class="site-mode-switch" set:html={getTemplate('select')?.render({ label: 'Mode', id: 'site-mode-switch', size: 'small', options: choices.map((c) => ({ label: c.label, value: c.value, selected: c.value === initial })), attrs: { 'data-mode-switch': attribute } })}></div>
-      ) : null}
-    </header>
+    {/* A strip across the whole width on top of every page says the design system shown here is Quantum NextGen, still experimental: the design system's Alert. */}
+    <div class="site-banner" set:html={banner}></div>
     <div class="site-shell">
-      <aside class="site-sidebar" aria-label={sidebar === 'screens' ? 'Screens' : 'Components and foundations'}>
+      {/* The navigation of this site only: the host site brings its own header, breadcrumb and footer. */}
+      <aside class="site-sidebar" aria-label="Documentation">
         <div class="site-sidebar__inner">
-          {sidebar === 'screens' ? (
-            <>
-              <ul class="site-sidebar__list site-sidebar__list--group">
-                <li><a href={`${base}/screens`} aria-current={isActive('/screens') ? 'page' : undefined}>Overview</a></li>
-                <li><a href={`${base}/screens/sources`} aria-current={isActive('/screens/sources') ? 'page' : undefined}>Sources and licences</a></li>
-              </ul>
-              {screenSections.map((section) => (
-                <>
-                  <p class="site-sidebar__title">{section.name}</p>
-                  <ul class="site-sidebar__list site-sidebar__list--group">
-                    {section.screens.map((s) => (
-                      <li><a href={`${base}/screens/${s.id}`} aria-current={isActive(`/screens/${s.id}`) ? 'page' : undefined}>{s.meta.name}</a></li>
-                    ))}
-                  </ul>
-                </>
-              ))}
-            </>
-          ) : null}
-          {sidebar === 'catalog' && foundations.length ? (
-            <>
-              <p class="site-sidebar__title">Foundations</p>
-              <ul class="site-sidebar__list site-sidebar__list--group">
-                {foundations.map((f) => (
-                  <li>
-                    <a href={`${base}/foundations/${f.id}`} aria-current={isActive(`/foundations/${f.id}`) ? 'page' : isWithin(`/foundations/${f.id}`) ? 'true' : undefined}>
-                      {f.data.name}
-                      <Status status={f.data.status} compact />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : null}
-          {sidebar === 'catalog' ? (
-            <>
+          {modeSwitch ? <div class="site-mode-switch" set:html={modeSwitch}></div> : null}
+          <ul class="site-sidebar__areas">
+            {areas.map((a) => (
+              <li><a href={`${base}${a.href}`} aria-current={isActive(a.href) ? 'page' : a.within ? 'true' : undefined}>{a.label}</a></li>
+            ))}
+          </ul>
+          {specs.length ? (
+            <div class="site-sidebar__section">
               <p class="site-sidebar__title">Components</p>
               <ul class="site-sidebar__list">
                 {specs.map((s) => (
@@ -119,16 +95,77 @@ const htmlAttrs = attribute && initial ? { [attribute]: initial } : {};
                   </li>
                 ))}
               </ul>
+            </div>
+          ) : null}
+          {foundations.length ? (
+            <div class="site-sidebar__section">
+              <p class="site-sidebar__title">Foundations</p>
+              <ul class="site-sidebar__list">
+                {foundations.map((f) => (
+                  <li>
+                    <a href={`${base}/foundations/${f.id}`} aria-current={isActive(`/foundations/${f.id}`) ? 'page' : isWithin(`/foundations/${f.id}`) ? 'true' : undefined}>
+                      {f.data.name}
+                      <Status status={f.data.status} compact />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {area === 'screens' ? (
+            <>
+              <div class="site-sidebar__section">
+                <p class="site-sidebar__title">Screens</p>
+                <ul class="site-sidebar__list">
+                  <li><a href={`${base}/screens`} aria-current={isActive('/screens') ? 'page' : undefined}>Overview</a></li>
+                  <li><a href={`${base}/screens/sources`} aria-current={isActive('/screens/sources') ? 'page' : undefined}>Sources and licences</a></li>
+                </ul>
+              </div>
+              {screenSections.map((section) => (
+                <div class="site-sidebar__section">
+                  <p class="site-sidebar__title">{section.name}</p>
+                  <ul class="site-sidebar__list">
+                    {section.screens.map((s) => (
+                      <li><a href={`${base}/screens/${s.id}`} aria-current={isActive(`/screens/${s.id}`) ? 'page' : undefined}>{s.meta.name}</a></li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </>
+          ) : null}
+          {tiers.length ? (
+            <div class="site-sidebar__section">
+              <p class="site-sidebar__title">Tiers</p>
+              <ul class="site-sidebar__list">
+                {tiers.map((t) => (
+                  <li><a href={`${base}${t.href}`} aria-current={isActive(t.href) ? 'page' : undefined}>{t.name}</a></li>
+                ))}
+              </ul>
+            </div>
           ) : null}
         </div>
       </aside>
-      <main id="main" class="site-main">
-        {/* Every page says the design system shown here is Quantum NextGen, still experimental: the design system's Alert. */}
-        <div class="site-banner" set:html={getTemplate('alert')?.render({ intent: 'warning', title: 'Experimental: Quantum NextGen', message: 'This site documents Quantum NextGen, the next major version of the Quantum Design System. Its components, tokens and packages are experimental and may change or break at any time without notice: do not use them in production yet.' })}></div>
-        <slot />
-      </main>
+      <div class="site-content">
+        <main id="main" class="site-main">
+          <slot />
+        </main>
+        {/* "On this page": the headings of the main content, listed by the script below. */}
+        <aside class="site-outline" aria-label="On this page" hidden>
+          <p class="site-outline__title">On this page</p>
+          <ul class="site-outline__list" data-outline></ul>
+        </aside>
+      </div>
     </div>
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p class="site-footer__text">Quantum Design System · Thales {year}. Code under the <a href="https://github.com/ThalesGroup/quantum/blob/main/LICENSE">MIT License</a>, documentation under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+        <nav class="site-footer__nav" aria-label="Elsewhere">
+          <a href="https://github.com/ThalesGroup/quantum">GitHub</a>
+          <a href="https://www.npmjs.com/org/quantum-ds">npm</a>
+          <a href="https://quantum.thalesdigital.io/">quantum.thalesdigital.io</a>
+        </nav>
+      </div>
+    </footer>
     <script>
       // Header mode switch: set the context attribute on <html> and remember the choice.
       const select = document.querySelector<HTMLSelectElement>('[data-mode-switch]');
@@ -139,6 +176,56 @@ const htmlAttrs = attribute && initial ? { [attribute]: initial } : {};
           document.documentElement.setAttribute(attribute, select.value);
           try { localStorage.setItem('site-mode', select.value); } catch {}
         });
+      }
+
+      // "On this page": the h2 and h3 of the main content (not the visually hidden ones), with the
+      // one in view marked as the current location.
+      const outline = document.querySelector<HTMLElement>('.site-outline');
+      const list = outline?.querySelector<HTMLElement>('[data-outline]');
+      const main = document.getElementById('main');
+      if (outline && list && main) {
+        const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const seen = new Set<string>();
+        const headings = [...main.querySelectorAll<HTMLElement>('h2, h3')].filter((h) => !h.classList.contains('site-sr') && !h.closest('.site-banner, .site-list, .site-screen-grid, .site-preview__stage, .site-playground, .site-explorer, .site-screen__stage'));
+        for (const h of headings) {
+          if (!h.id) {
+            let id = slug(h.textContent ?? '') || 'section';
+            let n = 1;
+            while (seen.has(id) || document.getElementById(id)) id = `${slug(h.textContent ?? '')}-${++n}`;
+            h.id = id;
+          }
+          seen.add(h.id);
+        }
+        if (headings.length >= 2) {
+          const links = new Map<Element, HTMLAnchorElement>();
+          for (const h of headings) {
+            const li = document.createElement('li');
+            li.className = `site-outline__item site-outline__item--${h.tagName.toLowerCase()}`;
+            const a = document.createElement('a');
+            a.href = `#${h.id}`;
+            a.textContent = h.textContent?.trim() ?? '';
+            li.append(a);
+            list.append(li);
+            links.set(h, a);
+          }
+          outline.hidden = false;
+          // The current heading: the last one scrolled past the top of the content area.
+          let currentHeading: Element | null = null;
+          const mark = () => {
+            const top = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+            let active: Element | null = headings[0];
+            for (const h of headings) if (h.getBoundingClientRect().top - top <= 1) active = h;
+            if (active === currentHeading) return;
+            currentHeading = active;
+            for (const [h, a] of links) {
+              if (h === active) a.setAttribute('aria-current', 'location');
+              else a.removeAttribute('aria-current');
+            }
+          };
+          mark();
+          addEventListener('scroll', mark, { passive: true });
+          addEventListener('resize', mark);
+        }
       }
     </script>
   </body>

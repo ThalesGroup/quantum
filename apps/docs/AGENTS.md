@@ -27,7 +27,7 @@ src/lib/highlight.ts           Shiki (sync core, JS regex engine, fixed grammars
 src/lib/tabs.ts                component and foundation page tabs (slug + label), one static route each; FOUNDATION_TABS reuses the component slugs and labels that apply, the index being Overview (specimens, then examples)
 src/lib/screens.ts             screens (screens/, i.e. apps/docs/screens): modules through import.meta.glob of ../../screens/*/*.screen.mjs, sections, sources and licence texts through fs (memo), originLinks (original and code at the recorded commit), componentsOf (through scripts/lib/screens.mjs)
 src/lib/foundations.ts         foundation tokens (tokensOf), contrast in every platform x mode through scripts/lib/contrast.mjs (contrastOf), components aliasing its tokens (followersOf), specimens (specimenOf: each token's value, alias and inline style in every mode and on every platform overlay, through scripts/lib/specimens.mjs), icon names the component examples use (iconNamesOf)
-src/layouts/Layout.astro       chrome + experimental banner (Alert, top of main) + sidebar (`sidebar` prop: `catalog` = foundations in their docs `order`, then components; `screens` = Overview, Sources and licences, then the sections of screens/sections.json with their screens) + Mode switch (sets the design system's data-theme on <html>, remembered in localStorage, applied before paint); imports src/styles/site.css AND the design system: @quantum-ds/tokens/css/index.css first, then packages/components/src/index.css (relative import)
+src/layouts/Layout.astro       chrome, laid out like the docs of quantum.thalesdigital.io minus what that site brings itself (header, breadcrumb): a top strip across the whole width (experimental banner: Alert) + a static sidebar (Mode switch: sets the design system's data-theme on <html>, remembered in localStorage, applied before paint; the areas of the site; then the pages of the current area: components, foundations in their docs `order`, screen sections of screens/sections.json, token tiers) + main (the page) + outline ("On this page": the h2/h3 of main listed by a client script, current one marked aria-current="location"; hidden under 1200 px) + footer (licences, links); imports src/styles/site.css AND the design system: @quantum-ds/tokens/css/index.css first, then packages/components/src/index.css (relative import)
 src/pages/index.astro          summary strip + component list (filter appears past 6 components)
 src/pages/components/[id]/[...tab].astro  one static page per tab: examples (index), states, playground, guidelines, spec (incl. cited accessibility contract), decisions (the spec's decision log), tokens, implementation
 src/pages/tokens/[...tier].astro  one static page per tier (/tokens = first tier), tokens grouped by first path segment, filtered by TokenFilter
@@ -38,10 +38,10 @@ src/pages/foundations/[id]/[...tab].astro  one static page per tab, like compone
 src/pages/screens/index.astro  screens overview: per section, a card per screen with a scaled-down, inert preview (iframe of its frame page)
 src/pages/screens/sources.astro  every source: links, commit, licence, shared changes, the full licence text (anchor = source id)
 src/pages/screens/[source]/[block]/index.astro  one screen: attribution (ScreenAttribution), preview iframe with Frame width and Mode context selects and a link to open it alone, components it renders, gaps (issue links when the gap names issues), changes, formatted HTML
-src/pages/screens/[source]/[block]/frame.astro  the screen alone in a bare page: only @quantum-ds/tokens/css/index.css, packages/components/src/index.css (relative import) and ../../../../../screens/screens.css, mode from ?mode= or the remembered docs mode (follows the header switch through the storage event)
+src/pages/screens/[source]/[block]/frame.astro  the screen alone in a bare page: only @quantum-ds/tokens/css/index.css, packages/components/src/index.css (relative import) and ../../../../../screens/screens.css, mode from ?mode= or the remembered docs mode (follows the Mode switch through the storage event)
 src/pages/about.astro          renders the root AGENTS.md, then each guide of agents/ (links to a guide jump to its section)
 src/components/*.astro         ScreenAttribution (source, original, code at the commit, licence and copyright of a screen), DecisionLog and A11yStatements (shared by component and foundation pages), Specimen (one foundation specimen drawn by its display; Play button for motion, see below), Anatomy (spec tab: live rendering linked to the parts table by @component-anatomy/core), ExampleExplorer (examples tab: tabs + stage + props + playground link; with `samples`, a foundation's code examples: tabs + highlighted block + source, and the playground's Mode context select, shared by every block of the explorer), StateMatrix, Playground (client script, presets props from the query string; a mode context select sets data-theme on the stage; vision and text size simulations of the stage (see Rules); dispatches `playground:render` { props, state } after each render; the formatted HTML spans the bottom of the playground, scrolls inside 400px and has a Copy button), TokenInspector (playground panel, see below), TokenTable, TokenFilter (client script filtering the TokenTables of its section; ?q= keeps the query), Status (badge or compact dot)
-src/styles/site.css            chrome only; every class is site-*; reads semantic tokens only (no literal color or font value); --site-* = layout constants
+src/styles/site.css            chrome only; every class is site-*; reads semantic tokens only (no literal color or font value), spacing from --space-* where the chrome is laid out; --site-* = layout constants (--site-top: the offset of sticky elements, 0 until a host header sits above the pages; sidebar and outline widths, content width)
 ```
 
 ## Built with the design system
@@ -76,22 +76,28 @@ rules (`scripts/lib/site-check.mjs`):
 | Menus of actions | Dropdown | None in the chrome yet: use it for any button opening a list of actions |
 | Example list (`role="tab"`) | No Tabs component yet | `site-explorer__tab` |
 | Disclosures of the chrome (`<details>`: token inspector details, superseded decisions, raw source files) | Accordion exists, but a single disclosure is not an accordion, and `summary` has no role the check can match: left native | `site-source`, `site-inspector__more` |
-| Navigation landmarks (`<nav>`: header, tabs, tables of contents) | Breadcrumb and Pagination are navigation landmarks, but a landmark component does not cover every `nav` (`COVERING_ROLES` in `scripts/lib/site-check.mjs`) | `site-header__nav`, `site-tabs`, `site-toc` |
-| Mode switch (header), mode context selects (explorer, playground), playground enum, icon, forced-state, vision and text size selects | Select | Rendered by the Select template (`size: "small"`, its own label; `attrs` carries `name`, `data-mode-switch`, `data-mode-context`) |
+| Navigation landmarks (`<nav>`: tabs, tables of contents, the outline, the footer links) | Breadcrumb and Pagination are navigation landmarks, but a landmark component does not cover every `nav` (`COVERING_ROLES` in `scripts/lib/site-check.mjs`) | `site-tabs`, `site-toc`, `site-outline`, `site-footer__nav` |
+| Mode switch (top of the sidebar), mode context selects (explorer, playground), playground enum, icon, forced-state, vision and text size selects | Select | Rendered by the Select template (`size: "small"`, its own label; `attrs` carries `name`, `data-mode-switch`, `data-mode-context`) |
 | Playground boolean props | Checkbox | Rendered by the Checkbox template (`attrs.name` = the prop) |
 | Playground string props | Text field | Rendered by the Text field template |
 | Playground list props (JSON) | Textarea | Rendered by the Textarea template (`attrs['data-json']`; the hint is its description; invalid JSON sets `aria-invalid` on the control, which the component's CSS shows) |
 | Playground number props | Number field | Rendered by the Number field template (`attrs.name` = the prop) |
 | Token filter, component filter (`type="search"`) | Search field | Rendered by the Search field template (`size: "small"`, its own label; `attrs` carries `data-filter`, `autocomplete`); the scripts find the input inside the bar |
-| Experimental banner (top of every page's `main`) | Alert | Rendered by the Alert template in `Layout.astro` (`intent: "warning"`), in `site-banner`. It is in the page at load, so it is not announced as a live region (see the Alert docs); it stays until Quantum NextGen is no longer experimental |
+| Experimental banner (a strip across the whole width on top of every page, above the sidebar and the content) | Alert | Rendered by the Alert template in `Layout.astro` (`intent: "warning"`), in `site-banner`. It is in the page at load, so it is not announced as a live region (see the Alert docs); it stays until Quantum NextGen is no longer experimental |
 | Status and tier badges | Semantic intents, no Badge in the chrome yet (the Badge component exists; the chrome's `site-status` and `site-tier` are spans with no role, so the rule does not force the switch) | `site-status`, `site-tier` |
-| Links ("Open in playground", navigation) | No Link yet | Native `<a>`, semantic tokens |
+| Links ("Open in playground", navigation, footer) | No Link yet | Native `<a>`, semantic tokens |
 | Code highlighting | Code foundation (`global.text.code.*`) | Shiki with the generated theme `@quantum-ds/tokens/shiki-theme.json`, in `src/lib/highlight.ts` and the Markdown docs |
 
 ## Rules
 
+- The chrome mirrors the docs of the public Quantum site (https://quantum.thalesdigital.io/docs/)
+  without what that site brings itself when it embeds these pages (its header, search, breadcrumb):
+  a static 260 px sidebar whose first list is the areas of the site and whose second is the pages
+  of the current area, a centred content column and a sticky "On this page" outline on the right.
+  The look comes from the design system (semantic tokens, components), never from the public
+  site's own stylesheet: the goal is for that site to take these pages as they are (`README.md`).
 - Color modes: the chrome follows the design system's mode without knowing the mode ids. The
-  header switch sets `data-theme` on `<html>`, the semantic tokens take that mode's values, and
+  Mode switch sets `data-theme` on `<html>`, the semantic tokens take that mode's values, and
   the chrome reads them. Stages read `--color-surface-level-0` directly (a `--site-*` variable
   holding it would resolve on the root, not in a nested mode context); the anatomy's `--ca-*`
   variables are declared on `:root, [data-theme]` for the same reason. Code blocks use the
