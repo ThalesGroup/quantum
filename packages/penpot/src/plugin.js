@@ -6,11 +6,12 @@
  * 1. Tokens: finds or creates the token sets (Foundation, Component, one per mode) and every token
  *    the components reach, references kept, then the themes (one per mode) and activates the
  *    default one. Running it again updates the values in place.
- * 2. Components: on a page named after each component, draws every variant's shape tree, sets each
- *    value from the plan and applies its token, lays the variants out in a grid, makes each one a
- *    component and combines them into a component with variants, whose properties it names and
- *    sets. One that already exists is kept as it is (delete it to draw it again), so the copies of
- *    a file never lose their main component; the components drawn after it still use it.
+ * 2. Components: on a page named after each component, draws every variant's shape tree and applies
+ *    its tokens, which set their values, each token once for all the shapes that take it; lays the
+ *    variants out in a grid, makes each one a component and combines them into a component with
+ *    variants, whose properties it names and sets. One that already exists is kept as it is
+ *    (delete it to draw it again), so the copies of a file never lose their main component; the
+ *    components drawn after it still use it.
  *
  * Penpot applies layouts and tokens a moment after a call returns: the plugin draws, waits for them
  * to settle, then places what depends on a laid out size (absolute positions, focus rings, paths).
@@ -138,29 +139,95 @@ async function syncTokens(plan, progress) {
 /** Property names Penpot read otherwise before 2.19: `fontFamilies` was `fontFamily`. */
 const FORMER_PROPERTIES = { fontFamilies: 'fontFamily' };
 
+/** Calls `apply` with the token properties, then with their former names where Penpot refuses them. */
+function withFormer(properties, apply) {
+  try {
+    apply(properties);
+  } catch (e) {
+    const former = properties.map((p) => FORMER_PROPERTIES[p] || p);
+    if (former.join() === properties.join()) throw e;
+    try {
+      apply(former);
+    } catch (again) {
+      throw e;
+    }
+  }
+}
+
+/** Whether a shape has a token on one of the properties: applying it again would take it off. */
+function carries(shape, name, properties) {
+  let applied;
+  try {
+    applied = shape.tokens || {};
+  } catch (e) {
+    return false;
+  }
+  return properties.some((p) => applied[p] === name || applied[FORMER_PROPERTIES[p]] === name);
+}
+
 /**
- * Applies a token to properties of a shape, which sets their values too. Where Penpot refuses it,
- * `fallback` sets the values without the token.
+ * Token applications waiting for `applyTokens`, by token and properties. Penpot resolves every
+ * token of the active sets before each application, whatever the number of shapes it is applied
+ * to: a token is applied once to all the shapes of a component that take it, not once per shape.
+ */
+const queue = new Map();
+
+/**
+ * Queues a token for properties of a shape: applied by `applyTokens`, it sets their values too.
+ * Where Penpot refuses it, `fallback` sets the values without the token.
  */
 function bindToken(shape, name, properties, fallback) {
-  const token = tokens.get(name);
+  const key = `${name}\n${properties.join()}`;
+  if (!queue.has(key)) queue.set(key, { name, properties, shapes: [], fallbacks: [] });
+  queue.get(key).shapes.push(shape);
+  queue.get(key).fallbacks.push(fallback);
+}
+
+/** Applies a token to properties of one shape, now. */
+function applyToken(shape, name, properties, fallback) {
   try {
+    const token = tokens.get(name);
     if (!token) throw new Error('no such token');
-    try {
-      shape.applyToken(token, properties);
-    } catch (e) {
-      const former = properties.map((p) => FORMER_PROPERTIES[p] || p);
-      if (former.join() === properties.join()) throw e;
-      try {
-        shape.applyToken(token, former);
-      } catch (again) {
-        throw e;
-      }
-    }
+    withFormer(properties, (props) => shape.applyToken(token, props));
   } catch (e) {
     warn(`Could not apply "${name}" to ${properties.join(', ')} of ${shape.name}: ${e.message}`);
     if (fallback) fallback();
   }
+}
+
+/** How long the queued tokens may take to show without one more of them showing. */
+const TOKENS_QUIET = 2000;
+
+/**
+ * Applies the queued tokens, each one in one call to its shapes, except those that have it already
+ * (Penpot would take it off all of them), then waits until Penpot shows them: it applies a token
+ * once it has resolved the others, after the call returns.
+ */
+async function applyTokens() {
+  const applied = [];
+  for (const { name, properties, shapes, fallbacks } of queue.values()) {
+    const targets = shapes.map((shape, i) => ({ shape, fallback: fallbacks[i] })).filter(({ shape }) => !carries(shape, name, properties));
+    if (!targets.length) continue;
+    try {
+      const token = tokens.get(name);
+      if (!token) throw new Error('no such token');
+      withFormer(properties, (props) => token.applyToShapes(targets.map((t) => t.shape), props));
+      applied.push({ name, properties, last: targets[targets.length - 1].shape });
+    } catch (e) {
+      // A shape refuses it: one at a time, each refusal said and its values set.
+      targets.forEach(({ shape, fallback }) => applyToken(shape, name, properties, fallback));
+    }
+  }
+  queue.clear();
+  let pending = applied;
+  for (let quiet = 0; pending.length && quiet < TOKENS_QUIET;) {
+    const left = pending.filter(({ name, properties, last }) => !carries(last, name, properties));
+    quiet = left.length < pending.length ? 0 : quiet + 50;
+    pending = left;
+    if (pending.length) await tick(50);
+  }
+  pending.forEach(({ name, properties, last }) => warn(`Penpot did not show "${name}" on ${properties.join(', ')} of ${last.name}.`));
+  await settle();
 }
 
 // ---------------------------------------------------------------------------
@@ -200,7 +267,7 @@ function applyFont(text, family, weight) {
 }
 
 // ---------------------------------------------------------------------------
-// Drawing: a binding is a token name; set its value (PLAN.values), then apply the token
+// Drawing: a binding is a token name, queued and applied with the others (applyTokens)
 // ---------------------------------------------------------------------------
 
 /** A flex layout's padding, by token property. */
@@ -277,10 +344,11 @@ function applyFields(shape, spec, parent, prev) {
   const sized = (property) => spec.type !== 'path' || (property !== 'width' && property !== 'height');
   const inStroke = (property) => property === 'strokeWidth' && spec.stroke;
   Object.keys(set).filter(sized).filter((p) => !inStroke(p) && differs('set', p)).forEach((property) => setProperty(shape, property, set[property]));
-  // One application per token, for every property it drives (a radius, its four corners).
+  // One application per token, for every property it drives (a radius, its four corners). A clone's
+  // bound sizes are fixed already: its source binds the same properties.
   const groups = new Map();
   Object.keys(bind).filter(sized).filter((p) => differs('bind', p) || (restroke && inStroke(p))).forEach((property) => {
-    if (SIZINGS[property]) fix(shape, property, parent);
+    if (SIZINGS[property] && !prev) fix(shape, property, parent);
     groups.set(bind[property], (groups.get(bind[property]) || []).concat(property));
   });
   groups.forEach((properties, name) => bindToken(shape, name, properties, () => {
@@ -435,18 +503,21 @@ function drawNode(spec, parent, out) {
 }
 
 // ---------------------------------------------------------------------------
-// Clones: variants of the same structure differ in values only. The first one is drawn, the
-// others are clones of it (one change) on which only what differs is written.
+// Clones: variants of the same structure differ in values only. The first one is drawn, its tokens
+// applied, the others are clones of it (one change) on which only what differs is written.
 // ---------------------------------------------------------------------------
 
-/** What a node tree is made of, without its values: two trees of the same structure match shape for shape. */
+/**
+ * What a node tree is made of, without its values: two trees of the same structure match shape for
+ * shape. A copy is of a component, whichever its variant and texts: a clone swaps it (`update`).
+ */
 function structure(spec) {
   spec = drawnSpec(spec);
   const keys = (o) => Object.keys(o || {}).sort();
   return [
     spec.type, spec.name, spec.layout || '', typeof spec.width, typeof spec.height, keys(spec.bind), keys(spec.set),
     !!spec.fill, !!spec.stroke, !!spec.typography, !!spec.focusRing, spec.border ? spec.border.side : '', spec.arc ? 'arc' : '',
-    spec.type === 'instance' ? [spec.component, spec.variant, spec.texts] : '',
+    spec.type === 'instance' ? spec.component : '',
     (spec.children || []).map(structure),
   ];
 }
@@ -478,7 +549,12 @@ function pairs(clone, spec, source) {
 }
 
 /** Writes on a cloned shape what its node changes from the node of the shape it is a clone of. */
-function update({ shape, spec, prev, parent }) {
+function update(pair) {
+  const { shape, spec, prev, parent } = pair;
+  if (spec.type === 'instance' && JSON.stringify([spec.variant, spec.texts]) !== JSON.stringify([prev.variant, prev.texts])) {
+    pair.shape = swap(shape, spec, parent);
+    return;
+  }
   if (spec.layout && (spec.justify !== prev.justify || spec.align !== prev.align)) {
     shape.flex.justifyContent = spec.justify;
     shape.flex.alignItems = spec.align;
@@ -486,10 +562,23 @@ function update({ shape, spec, prev, parent }) {
   if (spec.width !== prev.width || spec.height !== prev.height) applySizing(shape, spec, parent);
   const characters = spec.type === 'icon' ? [spec.glyph, prev.glyph] : [spec.text, prev.text];
   if (characters[0] !== undefined && characters[0] !== characters[1]) shape.characters = characters[0];
-  if (spec.textDecoration !== prev.textDecoration) shape.textDecoration = spec.textDecoration || null;
+  // Penpot takes 'none', not null, for no decoration.
+  if (spec.textDecoration !== prev.textDecoration) shape.textDecoration = spec.textDecoration || 'none';
   if (spec.type !== 'instance') applyFields(shape, spec, parent, prev);
   if (spec.typography && spec.typography !== prev.typography) bindToken(shape, spec.typography, ['typography'], () => typeset(shape, spec.typography));
   if (!!spec.hidden !== !!prev.hidden) shape.hidden = !!spec.hidden;
+}
+
+/** A copy of another variant in place of a cloned copy: fewer changes than switching its properties one by one. */
+function swap(old, spec, parent) {
+  const copy = drawInstance(spec);
+  if (copy) {
+    parent.insertChild(parent.children.findIndex((c) => c.id === old.id), copy);
+    applySizing(copy, spec, parent);
+    if (spec.hidden) copy.hidden = true;
+  }
+  old.remove();
+  return copy;
 }
 
 /** The box of a path: its size and its position in its parent, as for any shape. */
@@ -638,6 +727,8 @@ function offsets(sizes, gutter, gap) {
 const isContainer = (shape) => shape.type === 'board' && typeof shape.isVariantContainer === 'function' && shape.isVariantContainer();
 
 async function drawComponent(plan, progress) {
+  // What a component that failed left queued is on its page.
+  queue.clear();
   const page = await findPage(plan.page);
   const existing = page.findShapes({ name: plan.name, type: 'board' }).find(isContainer);
   if (existing) {
@@ -646,8 +737,9 @@ async function drawComponent(plan, progress) {
     return null;
   }
 
-  // The first variant of each structure is drawn, then settled (its tokens applied), then cloned
-  // for the others, on which only what differs is written.
+  // The first variant of each structure is drawn and its tokens applied, then cloned for the
+  // others, on which only what differs is written. The tokens wait in `queue`: each one is applied
+  // once for all the variants (applyTokens).
   const drawn = [];
   const firsts = new Map();
   let count = 0;
@@ -661,7 +753,8 @@ async function drawComponent(plan, progress) {
   const draw = (variant) => {
     const shapes = [];
     const root = drawNode(variant.root, null, shapes);
-    root.name = variant.name;
+    // Penpot names a component after its board, and its variants after their common name.
+    root.name = plan.name;
     return { root, shapes, variant };
   };
   for (let i = 0; i < plan.variants.length; i++) {
@@ -671,7 +764,7 @@ async function drawComponent(plan, progress) {
     drawn[i] = draw(plan.variants[i]);
     await counted();
   }
-  await settle();
+  await applyTokens();
   for (let i = 0; i < plan.variants.length; i++) {
     if (drawn[i]) continue;
     const variant = plan.variants[i];
@@ -680,24 +773,23 @@ async function drawComponent(plan, progress) {
     const root = source.root.clone();
     const matched = pairs(root, variant.root, source);
     if (matched) {
-      root.name = variant.name;
+      // Named when its properties are (nameProperties).
       matched.forEach((pair) => update(pair));
-      drawn[i] = { root, shapes: matched.map(({ shape, spec, parent }) => ({ shape, spec, parent })), variant };
-      firsts.set(key, i);
+      drawn[i] = { root, shapes: matched.filter((pair) => pair.shape).map(({ shape, spec, parent }) => ({ shape, spec, parent })), variant };
     } else {
       root.remove();
       drawn[i] = draw(variant);
     }
     await counted();
   }
-  await settle();
+  await applyTokens();
   drawn.forEach((d) => place(d.shapes));
   await settle();
   drawn.forEach((d) => {
     decorate(d.shapes);
     applyMinimum(d.root, d.variant.root);
   });
-  await settle();
+  await applyTokens();
 
   const widths = [];
   const heights = [];
@@ -717,7 +809,6 @@ async function drawComponent(plan, progress) {
   progress('combining', plan.variants.length);
   const mains = drawn.map((d) => {
     d.component = penpot.library.local.createComponent([d.root]);
-    d.component.name = plan.name;
     return d.component.mainInstance();
   });
   await settle();
