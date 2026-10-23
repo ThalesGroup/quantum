@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { loadAll } from '../../../scripts/lib/dtcg.mjs';
 import { figmaComponent } from '../../figma/src/plan.mjs';
 import { BLUEPRINTS } from '../../figma/src/blueprints/index.mjs';
-import { penpotPlan, penpotTokens, penpotComponent, tokensOf, referencesOf, hexColor, APPLIES, UNBOUND, APPROXIMATIONS, MANIFEST } from '../src/plan.mjs';
+import { penpotPlan, penpotTokens, penpotComponent, tokensOf, referencesOf, hexColor, pluginValue, APPLIES, UNBOUND, APPROXIMATIONS, MANIFEST } from '../src/plan.mjs';
 import { renderUi } from '../src/ui/ui.mjs';
 import { PATHS, FILES, artifacts } from '../../../scripts/lib/paths.mjs';
 
@@ -53,6 +53,22 @@ test('penpotTokens keeps what the names reach, references first, in every set, w
   assert.deepEqual(themes.map((t) => [t.group, t.name, t.sets]), [['Mode', 'Light', ['Foundation', 'Component', 'Mode/Light']], ['Mode', 'Dark', ['Foundation', 'Component', 'Mode/Dark']]]);
   assert.deepEqual(active, ['Mode/Light']);
   assert.throws(() => penpotTokens(file, ['chip.border']), /"chip.border", which the Penpot token file does not hold/);
+});
+
+test('penpotTokens gives a number as text where Penpot\'s plugin API takes only text', () => {
+  assert.equal(pluginValue('number', 1.5), '1.5');
+  assert.equal(pluginValue('opacity', 0), '0');
+  assert.equal(pluginValue('fontWeights', 500), 500);
+  assert.equal(pluginValue('number', '{font.line-height.normal}'), '{font.line-height.normal}');
+  const plan = planOf(Object.keys(BLUEPRINTS));
+  const numbers = tokensOf(tokenFile).filter((t) => typeof t.value === 'number');
+  assert.deepEqual([...new Set(numbers.map((t) => t.type))].sort(), ['fontWeights', 'number', 'opacity']);
+  for (const t of plan.tokens.tokens) {
+    if (t.type === 'fontWeights') continue;
+    assert.ok(typeof t.value !== 'number', `${t.set}:${t.name} is ${t.value}, a number`);
+  }
+  const lineHeight = plan.tokens.tokens.find((t) => t.name === 'font.line-height.normal');
+  assert.equal(lineHeight.value, String(tokensOf(tokenFile).find((t) => t.name === 'font.line-height.normal').value));
 });
 
 test('every component plan binds tokens Penpot holds, to properties their type can drive', () => {
@@ -432,6 +448,29 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
     return copy;
   };
 
+  // Penpot's plugin API checks a value with `make-token-value-schema` (Penpot 2.18): text for every
+  // scalar but a font weight, which may be a number; a map, an array or a reference for composites.
+  const checkValue = (type, value) => {
+    const composite = ['typography', 'fontFamilies', 'shadow'].includes(type) && value && typeof value === 'object';
+    if (!(typeof value === 'string' || composite || (type === 'fontWeights' && typeof value === 'number'))) throw new Error('[PENPOT PLUGIN] Value not valid. Code: :error');
+  };
+  const tokenOf = (type, tokenName, value) => {
+    let held = value;
+    const token = {
+      id: id(),
+      name: tokenName,
+      type,
+      description: '',
+      get value() { return held; },
+      set value(v) {
+        checkValue(type, v);
+        held = v;
+      },
+      applyToShapes: (shapes, properties) => applyTokenTo(shapes, token, properties),
+    };
+    return token;
+  };
+
   const catalog = {
     sets: [],
     themes: [],
@@ -445,9 +484,16 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
           if (!DRIVES[type]) throw new Error(`unknown token type ${type}`);
           if (!/^[a-zA-Z0-9_-][a-zA-Z0-9$_-]*(\.[a-zA-Z0-9$_-]+)*$/.test(tokenName)) throw new Error(`invalid token name ${tokenName}`);
           if (this.tokens.some((t) => t.name === tokenName)) throw new Error(`duplicate token ${tokenName}`);
+          checkValue(type, value);
           // Penpot resolves a new token against every set: a reference to a missing token fails.
           if (referencesOf(value).some((r) => !catalog.sets.some((s) => s.tokens.some((t) => t.name === r)))) return null;
-          const token = { id: id(), name: tokenName, type, value, description: '', applyToShapes: (shapes, properties) => applyTokenTo(shapes, token, properties) };
+          const token = tokenOf(type, tokenName, value);
+          this.tokens.push(token);
+          return token;
+        },
+        /** What Penpot's Tokens panel import makes of a token of the file: its value as it is. */
+        imported({ type, name: tokenName, value }) {
+          const token = tokenOf(type, tokenName, value);
           this.tokens.push(token);
           return token;
         },
@@ -686,6 +732,21 @@ test('the plugin updates the tokens in place and leaves an existing component al
   assert.match(summary, /no component drawn, 1 kept/);
   assert.match(logs[0], /"Button" already exists on the page "Button": kept as it is/);
   assert.equal(containersOf(fake, 'Button').length, 1);
+});
+
+test('the plugin keeps the tokens Penpot\'s Tokens panel imported from the token file', async () => {
+  const fake = fakePenpot({ fonts: FONTS });
+  // The import keeps a value as the file has it, a JSON number included, which the plugin API refuses.
+  const imported = tokensOf(tokenFile);
+  for (const name of new Set(imported.map((t) => t.set))) {
+    const set = fake.catalog.addSet({ name });
+    imported.filter((t) => t.set === name).forEach((t) => set.imported(t));
+  }
+  const { logs } = await runPlugin(fake);
+  assert.deepEqual(logs, []);
+  assert.equal(fake.catalog.sets.reduce((n, s) => n + s.tokens.length, 0), imported.length);
+  const lineHeight = fake.catalog.sets[0].tokens.find((t) => t.name === 'font.line-height.normal');
+  assert.equal(typeof lineHeight.value, 'number');
 });
 
 test('without the icon font, the plugin draws placeholder icons and says so', async () => {
