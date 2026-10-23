@@ -143,8 +143,11 @@ component; with ids, those and the components their copies use.
   active. It keeps the tokens the drawn components reach and every token they reference; a token is
   named after its path (`button.container.gap.medium`), keeps its Penpot type (`spacing`, `sizing`,
   `borderRadius`… from the property its path names) and its references, so switching the theme
-  switches every component. Running it again updates the values in place; a token of another type
-  under the same name is left alone, with a warning.
+  switches every component. A `number` or `opacity` value (`1.5`) is written as text (`"1.5"`): the
+  token file keeps DTCG numbers, which Penpot's Tokens panel imports, but its plugin API takes only
+  text for them. Running it again updates the values in place (a number the Tokens panel imported
+  equals its text and is left as it is); a token of another type under the same name is left
+  alone, with a warning.
 - **Blueprints.** Penpot draws the Figma blueprints (`packages/figma/src/blueprints/`), expanded by
   the same engine: the same variants, bound to the same tokens. The plan then translates each Figma
   field to the Penpot token property that drives it (a padding, a gap along the layout direction,

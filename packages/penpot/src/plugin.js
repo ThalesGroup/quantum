@@ -77,6 +77,9 @@ function valueOf(name) {
 /** Token name -> the token, for applyToken (Penpot applies a token by its name). */
 const tokens = new Map();
 
+/** Whether a token holds the plan's value: a number imported from the Tokens panel equals its text. */
+const sameValue = (held, value) => JSON.stringify(held) === JSON.stringify(value) || (typeof held === 'number' && String(held) === value);
+
 async function syncTokens(plan, progress) {
   const catalog = penpot.library.local.tokens;
   const sets = {};
@@ -101,7 +104,7 @@ async function syncTokens(plan, progress) {
             token = sets[spec.set].addToken({ type: spec.type, name: spec.name, value: spec.value });
             if (!token) throw new Error('Penpot could not resolve its value');
             existing[spec.set].set(spec.name, token);
-          } else if (JSON.stringify(token.value) !== JSON.stringify(spec.value)) {
+          } else if (!sameValue(token.value, spec.value)) {
             token.value = spec.value;
           }
           if (token.description !== spec.description) token.description = spec.description;

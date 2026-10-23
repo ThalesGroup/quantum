@@ -7,6 +7,7 @@
  * components reach and to every token they reference, in every set. A token keeps its name (its
  * path), its Penpot type and its value, references included, so the chain component -> semantic ->
  * raw survives in Penpot; the plugin creates them in an order where a reference always exists first.
+ * A number becomes text where the plugin API takes only text (`pluginValue`).
  *
  * Components are drawn from the blueprints of @quantum-ds/figma (packages/figma/src/blueprints/,
  * format in packages/figma/src/plan.mjs), expanded by the same engine over every configuration of
@@ -95,6 +96,18 @@ export function hexColor(value) {
   return { color: `#${hex(r)}${hex(g)}${hex(b)}`, opacity: +a.toFixed(4) };
 }
 
+/**
+ * The token types whose value Penpot's plugin API takes as a number (`addToken`, a token's `value`:
+ * `make-token-value-schema` in Penpot 2.18 checks every other scalar value as text). Penpot's Tokens
+ * panel imports a JSON number of any type, as the token file has it: only the plugin is stricter.
+ */
+const NUMBER_VALUES = new Set(['fontWeights']);
+
+/** A token value as Penpot's plugin API takes it: a number as text, unless its type takes a number. */
+export function pluginValue(type, value) {
+  return typeof value === 'number' && !NUMBER_VALUES.has(type) ? String(value) : value;
+}
+
 /** Every token of a Penpot token file: [set name, token name] -> { type, value, description }. */
 export function tokensOf(file) {
   const out = [];
@@ -122,7 +135,8 @@ export function referencesOf(value) {
  * The Penpot tokens a set of token names needs: those tokens and every token they reference, in
  * every set, ordered so that a referenced name exists before a token reading it (Penpot resolves a
  * token when it is created). Returns { sets, tokens, themes, active }: `sets` the set names in
- * order, `tokens` `{ set, name, type, value, description }`, `themes` `{ group, name, description,
+ * order, `tokens` `{ set, name, type, value, description }` (the value as the plugin API takes it,
+ * `pluginValue`), `themes` `{ group, name, description,
  * sets }` and `active` the themes active by default.
  */
 export function penpotTokens(file, names) {
@@ -139,7 +153,7 @@ export function penpotTokens(file, names) {
     state.set(name, 'visiting');
     for (const t of entries) for (const ref of referencesOf(t.value)) visit(ref, [...trail, name]);
     state.set(name, 'done');
-    ordered.push(...entries);
+    ordered.push(...entries.map((t) => ({ ...t, value: pluginValue(t.type, t.value) })));
   };
   [...names].sort().forEach((n) => visit(n));
   const used = new Set(ordered.map((t) => t.set));
