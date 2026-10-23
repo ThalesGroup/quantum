@@ -73,7 +73,8 @@ are the platforms and modes).
 - Design tools: Figma reads lengths as pixel numbers; Tokens Studio and Penpot get their own types,
   taken from the DTCG type and the property the path names (`designToolType`: `corner-radius` and
   `border-radius` are `borderRadius`, `space`, `gap`, `padding` are `spacing`, `size`, `width`,
-  `height` are `sizing`, `body.size` is `fontSizes`…). A duration or an easing, which they have no type
+  `height` are `sizing`, `body.size` is `fontSizes`, `line-height` is `lineHeights` for Tokens Studio
+  and `number` for Penpot, which skips a `lineHeights` token outside a typography…). A duration or an easing, which they have no type
   for, is left out, with every alias to it.
 - `package.json` → `files` leaves out `dist/figma/` and `dist/tokens_studio/` (not yet packaged, as in 1.x).
 - A new DTCG type needs a branch in `scalar` (and `designToolToken` for the design tools); a new
