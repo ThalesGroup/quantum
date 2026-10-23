@@ -296,7 +296,8 @@ function designToolType(segments, type, { penpot = false } = {}) {
     case 'fontWeight': return penpot ? 'fontWeight' : 'fontWeights';
     case 'number':
       if (has(/^opacity$/)) return 'opacity';
-      if (has(/^line-height$/)) return 'lineHeights';
+      // Penpot takes `lineHeights` only inside a typography token: a line height alone is a number.
+      if (has(/^line-height$/)) return penpot ? 'number' : 'lineHeights';
       return 'number';
     case 'dimension':
       if (has(/radius$/)) return 'borderRadius';
