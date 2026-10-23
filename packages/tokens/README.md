@@ -22,7 +22,7 @@ The DTCG tokens are the source of truth. Everything else under `node_modules/@qu
 - **Generated outputs:**
   - **Android:** `dist/resources*.xml`
   - **CSS:** `dist/tokens*.css`, and `dist/css/` (one file per tier and component, with mode contexts)
-  - **Figma:** `dist/figma/*.json` (not yet packaged)
+  - **Figma:** `dist/figma/*.json` (not yet packaged). To get the tokens in Figma as variables, with the components drawn on them, see [`@quantum-ds/figma`](../figma)
   - **JavaScript CSS variables:** `dist/variables-css.js`
   - **JavaScript/TypeScript ES modules:** `dist/tokens-es6*.js`, `dist/tokens-es6*.d.ts`
   - **Penpot:** `dist/penpot/tokens.json`

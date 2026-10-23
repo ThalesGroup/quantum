@@ -6,7 +6,7 @@ documentation** and a **vanilla CSS reference implementation**, plus an **Astro 
 renders all of it so people can review a component before it is built in any technology, and a
 **Figma plugin** that draws every component in Figma, bound to variables recreated from the
 tokens. The packages are published on npm under `@quantum-ds` (`@quantum-ds/tokens`,
-`@quantum-ds/components`; `@quantum-ds/figma` is private).
+`@quantum-ds/components`, `@quantum-ds/figma`).
 
 You (an agent or a human) turn natural-language requests such as *"a button must have a blue
 border using the primary color, in three variants"* into coordinated updates across every
@@ -39,7 +39,9 @@ component tokens, a pure HTML template). A **foundation** (`packages/components/
 `apps/docs/content/foundations/`) is a rule every component follows, such as color or the focus
 ring. A **screen** (`apps/docs/screens/`) is a real-world page rebuilt only with the components
 and tokens. The site in `apps/docs/` is a viewer built with the design system: it never encodes
-design knowledge of its own.
+design knowledge of its own. A **Figma blueprint** (`packages/figma/src/blueprints/<id>.mjs`)
+redraws each component in Figma: its layer tree, read from the web implementation, naming the
+token slot of each field, bound to Figma variables recreated from the tokens (`packages/figma/AGENTS.md`).
 
 ```
 raw (hidden primitives)        <-  semantic (what components read)        <-  component (per part)
@@ -102,7 +104,7 @@ Claude Code lists them by itself and invokes them by name; another agent reads
 | `pnpm impact [--base <ref>] [--files …]` | Every artifact linked to what changed (screens included), and whether it changed too. Fails when a component changed without a version bump ([agents/impact.md](agents/impact.md)). |
 | `pnpm commits:check [--base <ref>] [--message "<text>"]` | Check commit messages against Conventional Commits ([agents/git.md](agents/git.md)). |
 | `pnpm a11y:wcag` | Regenerate `packages/components/specs/a11y/wcag.json` from the W3C's machine-readable WCAG 2.2 (network). |
-| `pnpm new:component <id> --name "Name" --role <role>` | Scaffold the four artifacts for a new component, build the tokens, register it in `packages/components/src/index.css`. |
+| `pnpm new:component <id> --name "Name" --role <role>` | Scaffold the four artifacts for a new component, build the tokens, register it in `packages/components/src/index.css`. Its Figma blueprint is written by hand (`pnpm test` fails until it exists). |
 | `pnpm dev` | Build tokens, then start the Astro docs site (`apps/docs/`) at http://localhost:4321. |
 | `pnpm build` | Build tokens, the components package (`packages/components/dist/`), the Figma plugin (`packages/figma/dist/`) and the static docs site into `apps/docs/dist/`. |
 | `pnpm preview` | Serve the built docs site locally. |
@@ -110,8 +112,8 @@ Claude Code lists them by itself and invokes them by name; another agent reads
 ## Rules that always hold
 
 - A change is the whole set of artifacts linked to it, screens included: spec → component
-  tokens → `pnpm tokens:build` → CSS/template → docs → screens, then `pnpm check` and
-  `pnpm impact` ([agents/workflow.md](agents/workflow.md), [agents/impact.md](agents/impact.md)).
+  tokens → `pnpm tokens:build` → CSS/template → Figma blueprint → docs → screens, then
+  `pnpm check` and `pnpm impact` ([agents/workflow.md](agents/workflow.md), [agents/impact.md](agents/impact.md)).
 - Every stated decision goes through the decision loop in full and is recorded in the spec's
   `decisions[]`, one decision per commit ([agents/workflow.md](agents/workflow.md) "Decisions").
 - Accessibility targets WCAG 2.2 AA; every accessibility statement cites a trusted source you

@@ -44,6 +44,10 @@ The repository is the GitHub repository
     templates), `docs` (README, CONTRIBUTING, the agent guides in `agents/` and the skills; the
     same label as the commit type, there is no `documentation` label). Scripts and workflows take
     no area label: the kind says it (`build`, `ci`).
+  - **Design tool**, every one the change or the issue concerns: `figma` (the Figma library, its
+    export, the Figma token format, and `@quantum-ds/figma` in `packages/figma/`), `penpot` (the
+    Penpot token format and its import), `tokens-studio` (the Tokens Studio token format). A change
+    to `packages/figma/` takes `figma` on top of its kind.
   - **Quantum NextGen.** Every issue and pull request that concerns it (a pull request against
     `nextgen`, an issue about its packages, specs, docs site, guides or skills) always takes
     `nextgen`.

@@ -27,11 +27,11 @@
 <hr>
 
 > [!WARNING]
-> **Experimental: Quantum NextGen.** This branch holds Quantum NextGen, the next major version of the Quantum Design System, and everything in it is experimental: the packages (`@quantum-ds/tokens` 2.0.0 alpha, `@quantum-ds/components` 0.1.0 alpha), the specifications and the docs site may change or break at any time without notice. Do not use them in production.
+> **Experimental: Quantum NextGen.** This branch holds Quantum NextGen, the next major version of the Quantum Design System, and everything in it is experimental: the packages (`@quantum-ds/tokens` 2.0.0 alpha, `@quantum-ds/components` 0.1.0 alpha, `@quantum-ds/figma` 0.1.0 alpha), the specifications and the docs site may change or break at any time without notice. Do not use them in production.
 
 ## Get started
 
-Quantum is the Thales Design System. This repository is its monorepo: technology-agnostic component specifications, design tokens in the [Design Tokens Format (DTCG)](https://www.designtokens.org/), a vanilla CSS and HTML reference implementation, and the documentation that explains them.
+Quantum is the Thales Design System. This repository is its monorepo: technology-agnostic component specifications, design tokens in the [Design Tokens Format (DTCG)](https://www.designtokens.org/), a vanilla CSS and HTML reference implementation, a Figma plugin that draws the components from them, and the documentation that explains them.
 
 The npm packages live under [`packages/`](packages/) and are published under the [`@quantum-ds`](https://www.npmjs.com/org/quantum-ds) scope:
 
@@ -39,6 +39,7 @@ The npm packages live under [`packages/`](packages/) and are published under the
 | ------- | ----------- |
 | [`@quantum-ds/tokens`](packages/tokens) | The design tokens: DTCG sources in three tiers (raw, semantic, component), with the CSS custom properties, the resolved per-platform trees and the syntax highlighting theme generated from them |
 | [`@quantum-ds/components`](packages/components) | The components: technology-agnostic specifications (anatomy, properties, states, accessibility contract, decision log) in JSON. Their vanilla CSS and HTML reference implementation stays in the repository, where it renders the docs |
+| [`@quantum-ds/figma`](packages/figma) | The components in Figma: a Figma plugin, built from the specifications and the tokens, that recreates the tokens as Figma variables and draws every component as a component set bound to them, in Light and Dark |
 
 Themes will join them later. See the README of each package for its usage.
 
@@ -48,7 +49,8 @@ The documentation site lives in [`apps/docs/`](apps/docs/): the Markdown guideli
 pnpm install
 pnpm dev        # build the tokens and serve the docs site at http://localhost:4321
 pnpm check      # tokens fresh + specs valid + artifacts consistent + accessibility cited + Specs export + tests
-pnpm build      # build the tokens and the static site into apps/docs/dist/
+pnpm figma:export  # build the Figma plugin into packages/figma/dist/ (see its README)
+pnpm build      # build the tokens, the packages, the Figma plugin and the static site into apps/docs/dist/
 ```
 
 The model behind the repository (four artifacts per component that must always agree, foundations, screens, token tiers, platforms and modes) and the way to change it are described in [AGENTS.md](AGENTS.md) and the guides in [`agents/`](agents/), written for agents and humans alike and rendered on the site's "How it works" page.
