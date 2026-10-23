@@ -3,10 +3,11 @@
 This repository is the monorepo of the Quantum Design System (Thales). It holds
 **technology-agnostic component specifications**, **DTCG design tokens**, **Markdown
 documentation** and a **vanilla CSS reference implementation**, plus an **Astro docs site** that
-renders all of it so people can review a component before it is built in any technology, and a
+renders all of it so people can review a component before it is built in any technology, a
 **Figma plugin** that draws every component in Figma, bound to variables recreated from the
-tokens. The packages are published on npm under `@quantum-ds` (`@quantum-ds/tokens`,
-`@quantum-ds/components`, `@quantum-ds/figma`).
+tokens, and a **Penpot plugin** that draws them in Penpot, bound to Penpot tokens. The packages
+are published on npm under `@quantum-ds` (`@quantum-ds/tokens`, `@quantum-ds/components`,
+`@quantum-ds/figma`, `@quantum-ds/penpot`).
 
 You (an agent or a human) turn natural-language requests such as *"a button must have a blue
 border using the primary color, in three variants"* into coordinated updates across every
@@ -21,7 +22,7 @@ artifact.
   table "Read before acting" names for the task, in full. They are the source of truth for how
   to work; this file only summarises them.
 - **Directory `AGENTS.md` files** (`packages/components/specs/`, `packages/tokens/`,
-  `packages/components/`, `packages/figma/`, `apps/docs/content/`, `apps/docs/screens/`, `apps/docs/`, `scripts/`)
+  `packages/components/`, `packages/figma/`, `packages/penpot/`, `apps/docs/content/`, `apps/docs/screens/`, `apps/docs/`, `scripts/`)
   add local rules. Read the one of every directory you are about to edit.
 - **Skills** in `.claude/skills/` run recurring workflows step by step (see "Skills").
 - Changing these instructions: a rule goes in this file only when every session needs it and
@@ -67,6 +68,7 @@ published CSS, Sass, JavaScript, Android, Figma, Penpot and Tokens Studio format
 | Anything touching accessibility: a role, keyboard, naming, contrast, a cited statement | [agents/accessibility.md](agents/accessibility.md), `packages/components/specs/a11y/` |
 | The Figma library and its local export, a Figma export, plugging tokens, where a token comes from | [agents/token-sources.md](agents/token-sources.md), `packages/tokens/AGENTS.md` |
 | Drawing the components in Figma, a Figma blueprint, the Figma plugin | [agents/token-sources.md](agents/token-sources.md) "Drawing a component in Figma", `packages/figma/AGENTS.md` |
+| Drawing the components in Penpot, the Penpot plugin | [agents/token-sources.md](agents/token-sources.md) "Drawing a component in Penpot", `packages/penpot/AGENTS.md`, `packages/figma/AGENTS.md` (the blueprints) |
 | Specs format export or import | [agents/specs-interop.md](agents/specs-interop.md) |
 | A screen | `apps/docs/screens/AGENTS.md`, [agents/impact.md](agents/impact.md) |
 | The docs site | `apps/docs/AGENTS.md` |
@@ -95,18 +97,20 @@ Claude Code lists them by itself and invokes them by name; another agent reads
 | `pnpm components:build` | Copy the specs (JSON and the foundations' code samples) to `packages/components/dist/`, what `@quantum-ds/components` publishes; not committed, also run by `pnpm build` and before packing. |
 | `pnpm tokens:figma-library` | Report every token recreated from the Figma library that has since been added, removed or changed; needs the local export ([agents/token-sources.md](agents/token-sources.md)). |
 | `pnpm figma:export [id…]` | Build the Figma plugin into `packages/figma/dist/` (not committed): it draws the components (all, or the given ones and those their instances use) as component sets bound to Figma variables recreated from the tokens (`packages/figma/AGENTS.md`). |
+| `pnpm penpot:export [id…]` | Build the Penpot plugin into `packages/penpot/dist/` (not committed): it writes the Penpot tokens and draws the components (all, or the given ones and those their copies use) as components with variants bound to them, from the Figma blueprints (`packages/penpot/AGENTS.md`). |
+| `pnpm penpot:serve` | Serve `packages/penpot/dist/` at http://localhost:4400, where Penpot's plugin manager installs `manifest.json` (Penpot loads plugins over HTTP). |
 | `pnpm validate` | Schema-validate specs and cross-check spec ↔ tokens ↔ docs ↔ web; check mirrored components render the same; check the docs site and the screens are built with the design system. |
 | `pnpm specs:check` | Export every component to the Specs format and require a valid, lossless round trip ([agents/specs-interop.md](agents/specs-interop.md)). |
 | `pnpm specs:export [id…]` | Write `<id>.specs.json` + `<id>.quantum.json` sidecar to `build/specs/`. |
 | `pnpm specs:import <file> [--sidecar <file>]` | Turn a Specs document into a draft spec + component tokens in `build/specs-import/`. Never writes into `packages/components/specs/` or `packages/tokens/src/`. |
-| `pnpm test` | Unit tests of the scripts' libraries (`scripts/test/`) and of the Figma plugin (`packages/figma/test/`). |
+| `pnpm test` | Unit tests of the scripts' libraries (`scripts/test/`) and of the Figma and Penpot plugins (`packages/figma/test/`, `packages/penpot/test/`). |
 | `pnpm check` | `tokens:build` + `validate` + `specs:check` + `test`. **Must pass before any change is considered done.** |
 | `pnpm impact [--base <ref>] [--files …]` | Every artifact linked to what changed (screens included), and whether it changed too. Fails when a component changed without a version bump ([agents/impact.md](agents/impact.md)). |
 | `pnpm commits:check [--base <ref>] [--message "<text>"]` | Check commit messages against Conventional Commits ([agents/git.md](agents/git.md)). |
 | `pnpm a11y:wcag` | Regenerate `packages/components/specs/a11y/wcag.json` from the W3C's machine-readable WCAG 2.2 (network). |
 | `pnpm new:component <id> --name "Name" --role <role>` | Scaffold the four artifacts for a new component and a starter Figma blueprint (to rewrite from the real CSS and template), build the tokens, register it in `packages/components/src/index.css`. |
 | `pnpm dev` | Build tokens, then start the Astro docs site (`apps/docs/`) at http://localhost:4321. |
-| `pnpm build` | Build tokens, the components package (`packages/components/dist/`), the Figma plugin (`packages/figma/dist/`) and the static docs site into `apps/docs/dist/`. |
+| `pnpm build` | Build tokens, the components package (`packages/components/dist/`), the Figma and Penpot plugins (`packages/figma/dist/`, `packages/penpot/dist/`) and the static docs site into `apps/docs/dist/`. |
 | `pnpm preview` | Serve the built docs site locally. |
 
 ## Rules that always hold

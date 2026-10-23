@@ -30,6 +30,15 @@
         "4331"
       ],
       "port": 4331
+    },
+    {
+      "name": "penpot",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "pnpm penpot:export && pnpm penpot:serve"
+      ],
+      "port": 4400
     }
   ]
 }

@@ -30,6 +30,10 @@ The repository also holds a web reference implementation of every component in `
 
 [`@quantum-ds/figma`](../figma) draws every component in Figma from these specifications and the tokens: one component set per component, with a variant per option and state, bound to Figma variables recreated from `@quantum-ds/tokens`.
 
+### In Penpot
+
+[`@quantum-ds/penpot`](../penpot) draws the same components in Penpot from the same blueprints: one component with variants per component, bound to Penpot tokens written from `@quantum-ds/tokens`, with a theme per mode.
+
 ## Development
 
 The sources are in `specs/`; `pnpm components:build` (run by `pnpm build` and before packing) copies them to `dist/`, which is what the package publishes. From the root of the monorepo, `pnpm check` validates every specification against its schema and against the tokens, the docs and the web implementation, and `pnpm new:component <id> --name "Name" --role <role>` scaffolds a new component. [AGENTS.md](AGENTS.md) holds the rules of the web implementation, [specs/AGENTS.md](specs/AGENTS.md) those of the specifications; the change workflow is in the root [AGENTS.md](../../AGENTS.md) and [`agents/`](../../agents/).

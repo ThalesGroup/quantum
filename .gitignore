@@ -7,8 +7,9 @@ packages/tokens/dist/
 apps/docs/dist/
 # Built from packages/components/specs/ by pnpm components:build (pnpm build, prepack)
 packages/components/dist/
-# Built from the specs, tokens and blueprints by pnpm build or pnpm figma:export
+# Built from the specs, tokens and blueprints by pnpm build, pnpm figma:export or pnpm penpot:export
 packages/figma/dist/
+packages/penpot/dist/
 apps/docs/.astro/
 
 # Local Figma export (private library): never committed

@@ -80,6 +80,9 @@ are the platforms and modes).
 - `dist/figma/` is a token export for Figma's own import. The Figma plugin of `@quantum-ds/figma`
   (`packages/figma/`) does not read it: it creates the variables from the DTCG sources through
   `scripts/lib/dtcg.mjs`, one collection per tier with aliases kept, and draws the components on them.
+- `dist/penpot/tokens.json` is what the Penpot plugin of `@quantum-ds/penpot` (`packages/penpot/`)
+  writes into a Penpot file, kept to the tokens the components reach: a change of its sets, themes,
+  types or values changes what the plugin draws (`pnpm test` runs it against that file).
 - A new DTCG type needs a branch in `scalar` (and `designToolToken` for the design tools); a new
   property name may need a rule in `designToolType`.
 
