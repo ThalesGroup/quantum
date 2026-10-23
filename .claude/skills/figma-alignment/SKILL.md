@@ -78,3 +78,9 @@ sheet per question (skill `review-sheet`). Reference run: an earlier step-by-ste
    - the export noise to ignore;
    - variants the repository models as another component.
 3. Link it under Follow-ups, then close the pull request as in `stepwise-pr` §4.
+
+The repository can also draw the aligned component in Figma: its Figma blueprint
+(`packages/figma/src/blueprints/<id>.mjs`) follows the CSS, so update it with every decision
+that changes the structure, and `pnpm figma:export <id>` gives the Figma designer the result,
+bound to variables named after the token paths of the issue (`agents/token-sources.md`
+"Drawing a component in Figma").

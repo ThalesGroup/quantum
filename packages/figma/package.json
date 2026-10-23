@@ -1,7 +1,6 @@
 {
   "name": "@quantum-ds/figma",
   "version": "0.1.0-alpha.0",
-  "private": true,
   "description": "Quantum in Figma: a Figma plugin that draws every component as a component set bound to Figma variables recreated from @quantum-ds/tokens, following the specifications of @quantum-ds/components",
   "author": "Quantum Core Team",
   "license": "MIT",
@@ -23,9 +22,16 @@
   ],
   "type": "module",
   "files": [
-    "dist"
+    "CHANGELOG.md",
+    "dist/manifest.json",
+    "dist/code.js",
+    "dist/ui.html"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "prepack": "node build.mjs"
   }
 }

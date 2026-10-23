@@ -8,6 +8,7 @@ This repository is a monorepo managed with [pnpm workspaces](https://pnpm.io/wor
 | --------- | ------- | ----- |
 | [`packages/tokens`](packages/tokens) | `@quantum-ds/tokens`: the DTCG token sources, their configuration and the generated outputs | [packages/tokens/AGENTS.md](packages/tokens/AGENTS.md) |
 | [`packages/components`](packages/components) | `@quantum-ds/components`: the component and foundation specifications (published) and the vanilla CSS reference implementation (not published, used by the docs) | [packages/components/AGENTS.md](packages/components/AGENTS.md), [packages/components/specs/AGENTS.md](packages/components/specs/AGENTS.md) |
+| [`packages/figma`](packages/figma) | `@quantum-ds/figma`: the Figma plugin that draws every component from the specifications and the tokens, one blueprint per component | [packages/figma/AGENTS.md](packages/figma/AGENTS.md) |
 | [`apps/docs`](apps/docs) | The documentation site: the Markdown guidelines, the screens and the Astro viewer | [apps/docs/AGENTS.md](apps/docs/AGENTS.md), [apps/docs/content/AGENTS.md](apps/docs/content/AGENTS.md), [apps/docs/screens/AGENTS.md](apps/docs/screens/AGENTS.md) |
 | [`scripts`](scripts) | The token build, the validator, the change impact report, the Specs bridge, the scaffolder and their tests | [scripts/AGENTS.md](scripts/AGENTS.md) |
 
@@ -24,7 +25,8 @@ From the repository root:
 - `pnpm tokens:build` regenerates the token outputs after any token change
 - `pnpm check` runs every check: generated outputs fresh, specifications valid and consistent with the tokens, the docs and the web implementation, Specs export round trip, unit tests. It must pass before a change is considered done
 - `pnpm impact` lists every artifact linked to what you changed and fails when a component changed without a version bump
-- `pnpm build` builds the tokens and the static docs site into `apps/docs/dist/`
+- `pnpm figma:export` builds the Figma plugin into `packages/figma/dist/`, to import in the Figma desktop app ([packages/figma/README.md](packages/figma/README.md))
+- `pnpm build` builds the tokens, the components package, the Figma plugin and the static docs site into `apps/docs/dist/`
 - `pnpm --filter <package> <command>` runs a command of a single package, for example `pnpm --filter docs build`
 
 The full list, with what each command does, is in the "Commands" table of [AGENTS.md](AGENTS.md).

@@ -77,6 +77,9 @@ are the platforms and modes).
   and `number` for Penpot, which skips a `lineHeights` token outside a typography…). A duration or an easing, which they have no type
   for, is left out, with every alias to it.
 - `package.json` → `files` leaves out `dist/figma/` and `dist/tokens_studio/` (not yet packaged, as in 1.x).
+- `dist/figma/` is a token export for Figma's own import. The Figma plugin of `@quantum-ds/figma`
+  (`packages/figma/`) does not read it: it creates the variables from the DTCG sources through
+  `scripts/lib/dtcg.mjs`, one collection per tier with aliases kept, and draws the components on them.
 - A new DTCG type needs a branch in `scalar` (and `designToolToken` for the design tools); a new
   property name may need a rule in `designToolType`.
 

@@ -53,6 +53,18 @@ lacks (each screen's gaps, with their issues when some track them), and show the
 Screens are **consumers** of the design system, like the docs site: **every change to a component
 or a token updates the screens that use it in the same change** (`agents/workflow.md`, `agents/impact.md`, `apps/docs/screens/AGENTS.md`).
 
+### In Figma
+
+`@quantum-ds/figma` (`packages/figma/`) draws the components in Figma. Each component has
+a **Figma blueprint** (`packages/figma/src/blueprints/<id>.mjs`): its Figma layer tree, read from
+the web implementation, naming the token slot behind each field and holding no value. The
+plugin recreates the tokens as Figma variables (one collection per tier, the modes on the
+semantic one, aliases kept) and expands each blueprint over every configuration of the spec,
+binding in each variant the token the active-token rule picks, the one the CSS reads. Like the
+screens, a blueprint is a **consumer** kept in step with its component: `pnpm impact` lists it,
+`pnpm test` fails when a token slot is neither bound nor explained (`packages/figma/AGENTS.md`,
+`agents/token-sources.md` "Drawing a component in Figma").
+
 Tokens form three tiers with a strict reference direction:
 
 ```
@@ -149,7 +161,7 @@ packages/components/           @quantum-ds/components (publishes specs/ only) ->
   src/foundations/             global CSS of a foundation (code.css)
   src/components/<id>/         hand-written CSS + HTML template
   src/lib/template-utils.mjs   escaping helpers + icon ligatures
-packages/figma/                @quantum-ds/figma (private): the Figma plugin drawing every component -> packages/figma/AGENTS.md
+packages/figma/                @quantum-ds/figma: the Figma plugin drawing every component (publishes dist/) -> packages/figma/AGENTS.md
   build.mjs                    pnpm figma:export and the package build: writes dist/ (GENERATED, not committed)
   src/plan.mjs, src/plugin.js  the plan (variables, variants) and the plugin that draws it in Figma
   src/blueprints/<id>.mjs      the Figma layer tree of each component, read from its CSS and template
