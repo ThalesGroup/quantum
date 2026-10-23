@@ -105,8 +105,9 @@ Without ids it draws every component; with ids, those and the components their i
   field (format in `packages/figma/src/plan.mjs`). A blueprint holds no value: in each variant,
   the engine binds the token the slot makes active for that configuration (`activeTokens`,
   `scripts/lib/token-map.mjs`), the one the CSS reads. A new component needs a blueprint
-  (`pnpm test` fails without one), and every token slot of a component is bound by its blueprint
-  or listed in its `notDrawn` with the reason; a changed CSS structure changes the blueprint.
+  (`pnpm test` fails without one; `pnpm new:component` writes a starter one, rewritten from the
+  real CSS and template), and every token slot of a component is bound by its blueprint or listed
+  in its `notDrawn` with the reason; a changed CSS structure changes the blueprint.
 - **The component set.** On a page named after the component: one variant per option of every
   enum property and per state (a state a property sets, such as `disabled` or `checked`, is a
   value of State, as in the spec's state list), plus the axes a blueprint adds when the layout

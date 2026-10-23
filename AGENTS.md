@@ -104,7 +104,7 @@ Claude Code lists them by itself and invokes them by name; another agent reads
 | `pnpm impact [--base <ref>] [--files …]` | Every artifact linked to what changed (screens included), and whether it changed too. Fails when a component changed without a version bump ([agents/impact.md](agents/impact.md)). |
 | `pnpm commits:check [--base <ref>] [--message "<text>"]` | Check commit messages against Conventional Commits ([agents/git.md](agents/git.md)). |
 | `pnpm a11y:wcag` | Regenerate `packages/components/specs/a11y/wcag.json` from the W3C's machine-readable WCAG 2.2 (network). |
-| `pnpm new:component <id> --name "Name" --role <role>` | Scaffold the four artifacts for a new component, build the tokens, register it in `packages/components/src/index.css`. Its Figma blueprint is written by hand (`pnpm test` fails until it exists). |
+| `pnpm new:component <id> --name "Name" --role <role>` | Scaffold the four artifacts for a new component and a starter Figma blueprint (to rewrite from the real CSS and template), build the tokens, register it in `packages/components/src/index.css`. |
 | `pnpm dev` | Build tokens, then start the Astro docs site (`apps/docs/`) at http://localhost:4321. |
 | `pnpm build` | Build tokens, the components package (`packages/components/dist/`), the Figma plugin (`packages/figma/dist/`) and the static docs site into `apps/docs/dist/`. |
 | `pnpm preview` | Serve the built docs site locally. |
