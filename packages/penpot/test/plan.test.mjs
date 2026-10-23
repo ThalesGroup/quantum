@@ -162,8 +162,12 @@ const TAKES = (shape) => [
   ...(shape.type === 'text' ? ['fontFamilies', 'fontSize', 'fontWeight', 'letterSpacing', 'typography', 'rotation'] : []),
 ];
 
-/** Changes the stand-in received: every one is a commit in Penpot, what makes a run slow. */
-const changes = { count: 0, quiet: 0 };
+/**
+ * Changes the stand-in received: every one is a commit in Penpot, what makes a run slow. Every token
+ * application also resolves every token of the active sets first (a Style Dictionary build in
+ * Penpot 2.18), whatever the number of shapes it is applied to: `resolutions` counts them.
+ */
+const changes = { count: 0, quiet: 0, resolutions: 0 };
 /** Runs the stand-in's own bookkeeping: what Penpot does inside one change is not another one. */
 const quietly = (fn) => {
   changes.quiet += 1;
@@ -267,21 +271,20 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
         }); });
         return this.flex;
       },
-      applyToken(token, properties) {
+      applyToken(token, properties) { applyTokenTo([this], token, properties); },
+      insertChild(index, child) {
         changes.count += 1;
-        onCurrentPage(this, 'applyToken');
-        if (!token || !catalog.sets.some((set) => set.tokens.includes(token))) throw new Error('not a token of the catalog');
-        for (let p of properties) {
-          // Before Penpot 2.19, a font family token was applied to `fontFamily`, and `fontFamilies` refused.
-          if (before219 && p === 'fontFamilies') throw new Error('unknown token property fontFamilies');
-          if (before219 && p === 'fontFamily') p = 'fontFamilies';
-          if (!DRIVES[token.type].includes(p)) throw new Error(`a ${token.type} token cannot be applied to ${p}`);
-          if (!TAKES(this).includes(p)) throw new Error(`a ${this.type}${this.flex ? ' with a layout' : ''} takes no ${p} token`);
-          if ((p === 'strokeColor' || p === 'strokeWidth') && !this.strokes.length) throw new Error(`${p} without a stroke`);
-          this.tokens[p] = token.name;
-          // Penpot writes the token's value, resolved in the active sets, into the property.
-          quietly(() => applyValue(this, p, resolve(token.name)));
-        }
+        if (this.type !== 'board') throw new Error(`insertChild on a ${this.type}`);
+        if (!flags.naturalChildOrdering) throw new Error('the plugin relies on naturalChildOrdering');
+        if (!Number.isInteger(index) || index < 0 || index > this.children.length) throw new Error(`invalid index ${index}`);
+        onCurrentPage(this, 'insertChild');
+        onCurrentPage(child, 'insertChild');
+        quietly(() => {
+          if (child.parent) child.parent.children.splice(child.parent.children.indexOf(child), 1);
+          this.children.splice(index, 0, child);
+          child.parent = this;
+          child.layoutChild = this.flex ? checked({ absolute: false, minWidth: null, minHeight: null, maxWidth: null }, { horizontalSizing: oneOf('auto', 'fill', 'fix'), verticalSizing: oneOf('auto', 'fill', 'fix'), absolute: (v) => typeof v === 'boolean' }) : undefined;
+        });
       },
       setSharedPluginData(namespace, key, value) { this.pluginData[`${namespace}/${key}`] = value; },
       /** A copy of the tree, values and applied tokens included, in one change, at the top of the page. */
@@ -309,6 +312,8 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
         return c;
       },
       remove() {
+        changes.count += 1;
+        onCurrentPage(this, 'remove');
         if (this.parent) this.parent.children.splice(this.parent.children.indexOf(this), 1);
         current.shapes.splice(current.shapes.indexOf(this), 1);
       },
@@ -324,7 +329,8 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
       fontSize: numeric,
       lineHeight: numeric,
       letterSpacing: numeric,
-      textDecoration: oneOf('underline', 'line-through', null),
+      // Penpot 2.18 refuses null, which its types allow.
+      textDecoration: oneOf('underline', 'line-through', 'none'),
       align: oneOf('left', 'center', 'right', 'justify'),
       verticalAlign: oneOf('top', 'center', 'bottom'),
       constraintsHorizontal: oneOf('left', 'right', 'leftright', 'center', 'scale'),
@@ -335,6 +341,41 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
     current.shapes.push(s);
     changes.count += 1;
     return s;
+  };
+
+  /**
+   * `shape.applyToken` and `token.applyToShapes`: one change and one resolution, whatever the number
+   * of shapes. As in Penpot 2.18, a token one of the shapes has on one of the properties is taken off
+   * all of them.
+   */
+  const applyTokenTo = (shapes, token, properties) => {
+    changes.count += 1;
+    changes.resolutions += 1;
+    shapes.forEach((s) => onCurrentPage(s, 'applyToken'));
+    if (!token || !catalog.sets.some((set) => set.tokens.includes(token))) throw new Error('not a token of the catalog');
+    const props = properties.map((p) => {
+      // Before Penpot 2.19, a font family token was applied to `fontFamily`, and `fontFamilies` refused.
+      if (before219 && p === 'fontFamilies') throw new Error('unknown token property fontFamilies');
+      return before219 && p === 'fontFamily' ? 'fontFamilies' : p;
+    });
+    for (const s of shapes) {
+      for (const p of props) {
+        if (!DRIVES[token.type].includes(p)) throw new Error(`a ${token.type} token cannot be applied to ${p}`);
+        if (!TAKES(s).includes(p)) throw new Error(`a ${s.type}${s.flex ? ' with a layout' : ''} takes no ${p} token`);
+        if ((p === 'strokeColor' || p === 'strokeWidth') && !s.strokes.length) throw new Error(`${p} without a stroke`);
+      }
+    }
+    if (shapes.some((s) => props.some((p) => s.tokens[p] === token.name))) {
+      shapes.forEach((s) => props.forEach((p) => { if (s.tokens[p] === token.name) delete s.tokens[p]; }));
+      return;
+    }
+    for (const s of shapes) {
+      for (const p of props) {
+        s.tokens[p] = token.name;
+        // Penpot writes the token's value, resolved in the active sets, into the property.
+        quietly(() => applyValue(s, p, resolve(token.name)));
+      }
+    }
   };
 
   /** A token's value in the active sets (the later set wins), its references followed. */
@@ -406,7 +447,7 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
           if (this.tokens.some((t) => t.name === tokenName)) throw new Error(`duplicate token ${tokenName}`);
           // Penpot resolves a new token against every set: a reference to a missing token fails.
           if (referencesOf(value).some((r) => !catalog.sets.some((s) => s.tokens.some((t) => t.name === r)))) return null;
-          const token = { id: id(), name: tokenName, type, value, description: '' };
+          const token = { id: id(), name: tokenName, type, value, description: '', applyToShapes: (shapes, properties) => applyTokenTo(shapes, token, properties) };
           this.tokens.push(token);
           return token;
         },
@@ -491,13 +532,20 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
         createComponent(shapes) {
           if (shapes.length !== 1 || shapes[0].type !== 'board' || shapes[0].parent) throw new Error('a component from one top-level board');
           const main = shapes[0];
-          const component = {
+          // A component is named after its board; renaming it is a change.
+          const component = checked({
             id: id(),
-            name: '',
+            name: main.name,
             variantProps: {},
             variants: null,
             mainInstance: () => main,
-            instance: () => copyOf(main),
+            /** A copy of the main's tree, in one change. */
+            instance: () => {
+              const count = changes.count;
+              const copy = quietly(() => copyOf(main));
+              changes.count = count + 1;
+              return copy;
+            },
             isVariant() { return !!this.variants; },
             setVariantProperty(pos, value) {
               changes.count += 1;
@@ -506,7 +554,7 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
               if (typeof value !== 'string') throw new Error('a variant value is a string');
               this.variantProps[this.variants.properties[pos]] = value;
             },
-          };
+          }, {});
           changes.count += 1;
           quietly(() => {
             main.isMain = true;
@@ -557,10 +605,10 @@ function fakePenpot({ fonts, before219 = false, formula = true }) {
           });
         },
       };
-      list.forEach((c) => {
+      quietly(() => list.forEach((c) => {
         c.variants = variants;
         c.variantProps = { 'Property 1': '' };
-      });
+      }));
       const container = shape('board', { variants, isVariantContainer: () => true });
       quietly(() => mains.forEach((m) => {
         container.children.push(m);
@@ -666,7 +714,11 @@ test('the plugin draws every component, copies of the components they use includ
   // Every variant, drawn or a clone of another one, has the tokens, texts and visibility of its plan.
   const check = (id, shape, spec) => {
     const where = `${id}: ${shape.name}`;
-    if (spec.type === 'instance') return;
+    if (spec.type === 'instance') {
+      // A copy of the variant its node names, even in a clone of a variant copying another one.
+      assert.deepEqual(Object.fromEntries(Object.keys(spec.variant).map((k) => [k, shape.component.variantProps[k]])), spec.variant, where);
+      return;
+    }
     if (spec.fill) assert.equal(shape.tokens.fill, spec.fill, where);
     if (spec.stroke) assert.equal(shape.tokens.strokeColor, spec.stroke, where);
     for (const [property, name] of Object.entries(spec.bind ?? {})) {
@@ -674,6 +726,7 @@ test('the plugin draws every component, copies of the components they use includ
     }
     if (spec.typography) assert.equal(shape.tokens.typography, spec.typography, where);
     if (spec.text ?? spec.glyph) assert.equal(shape.characters, spec.text ?? spec.glyph, where);
+    if (spec.type === 'text') assert.equal(shape.textDecoration ?? 'none', spec.textDecoration ?? 'none', where);
     assert.equal(shape.hidden, !!spec.hidden, where);
     (spec.children ?? []).forEach((child, i) => check(id, shape.children[i], child));
   };
@@ -747,16 +800,26 @@ test('penpotComponent refuses a token the Penpot file does not hold', () => {
 });
 
 test('the plugin draws a variant as a clone of the first one of its structure, writing what differs', async () => {
-  const counts = {};
-  for (const id of ['badge', 'button']) {
+  const runs = {};
+  // The Dropdown draws the Button first, for its trigger: its own cost is what it adds.
+  for (const ids of [['badge'], ['button'], ['dropdown', 'button']]) {
     const fake = fakePenpot({ fonts: FONTS });
-    const before = changes.count;
-    const { plan } = await runPlugin(fake, [id]);
-    counts[id] = (changes.count - before) / plan.components[0].variants.length;
+    const before = { ...changes };
+    const { plan } = await runPlugin(fake, ids);
+    runs[ids[0]] = { changes: changes.count - before.count, resolutions: changes.resolutions - before.resolutions, variants: plan.components.at(-1).variants.length };
   }
-  // About 95 changes per Button variant when every variant was drawn from scratch.
-  assert.ok(counts.button < 20, `${counts.button} changes per Button variant`);
-  assert.ok(counts.badge < 30, `${counts.badge} changes per Badge variant`);
+  runs.dropdown.changes -= runs.button.changes;
+  runs.dropdown.resolutions -= runs.button.resolutions;
+  const per = (id, what) => runs[id][what] / runs[id].variants;
+  // About 95 changes per Button variant when every variant was drawn from scratch, 19 when a clone
+  // was given every token it applies (4,920 applications for the Button).
+  assert.ok(per('button', 'changes') < 12, `${per('button', 'changes')} changes per Button variant`);
+  assert.ok(per('badge', 'changes') < 10, `${per('badge', 'changes')} changes per Badge variant`);
+  // A Dropdown variant is a clone whose copy of a Button variant is swapped.
+  assert.ok(per('dropdown', 'changes') < 15, `${per('dropdown', 'changes')} changes per Dropdown variant`);
+  // Each application resolves every token: a token is applied once to all the shapes that take it.
+  for (const id of ['badge', 'button', 'dropdown']) assert.ok(per(id, 'resolutions') < 2, `${per(id, 'resolutions')} token applications per ${id} variant`);
+  assert.ok(runs.button.resolutions < 200, `${runs.button.resolutions} token applications for the Button`);
 });
 
 test('where Penpot does not read properties from a name, the plugin sets each one', async () => {
