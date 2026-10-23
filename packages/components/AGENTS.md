@@ -147,11 +147,12 @@ example that exists only on another platform never needs CSS or template code.
 
 ## Adding a component
 
-`pnpm new:component <id> --name "Name" --role <role>` creates the files, builds the tokens (which
-regenerates the tokens entry point `packages/tokens/dist/css/index.css` with the component's
-token file) and only then adds the one `@import` line of the component's CSS to `src/index.css`,
-so a running dev server never imports a generated file that does not exist yet. Keep the import
-order: `fonts.css`, then the foundation files, then the component files.
+`pnpm new:component <id> --name "Name" --role <role>` creates the files (and a starter Figma
+blueprint, `packages/figma/AGENTS.md`), builds the tokens (which regenerates the tokens entry
+point `packages/tokens/dist/css/index.css` with the component's token file) and only then adds
+the one `@import` line of the component's CSS to `src/index.css`, so a running dev server never
+imports a generated file that does not exist yet. Keep the import order: `fonts.css`, then the
+foundation files, then the component files.
 
 The docs site is built with these components (`apps/docs/AGENTS.md` "Built with the design
 system"): once the component's `implementations.web` is final, `pnpm validate` lists every
