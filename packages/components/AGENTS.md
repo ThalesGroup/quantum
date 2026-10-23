@@ -53,7 +53,7 @@ order) first, then `src/index.css`.
   `@media (prefers-reduced-motion: reduce)` override (validated).
 - Parts: `.ds-<id>__<part>` with `data-part="<part>"` on the element.
 - The component's Figma blueprint (`packages/figma/src/blueprints/<id>.mjs`) is its layer tree
-  in Figma, read from this CSS and the template: a new part, a changed layout or a new token slot
+  in Figma and in Penpot (`@quantum-ds/penpot`), read from this CSS and the template: a new part, a changed layout or a new token slot
   changes it in the same change (`packages/figma/AGENTS.md`; `pnpm impact` lists it).
 
 ## Color modes

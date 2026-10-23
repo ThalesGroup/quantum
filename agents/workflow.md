@@ -16,8 +16,8 @@ touches the spec but not the tokens, CSS, or docs leaves the repository inconsis
    highest layer that expresses the intent: a change that should apply to every control
    belongs in semantic tokens, not in a component's tokens.
 4. **Edit in order:** spec → component tokens → `pnpm tokens:build` → CSS/template → Figma
-   blueprint (`packages/figma/src/blueprints/<id>.mjs`: a new part, layout or token slot changes
-   its layer tree; every slot is bound or listed in `notDrawn`) → docs.
+   blueprint (`packages/figma/src/blueprints/<id>.mjs`, drawn in Figma and in Penpot: a new part,
+   layout or token slot changes its layer tree; every slot is bound or listed in `notDrawn`) → docs.
    Bump `version` in the spec and add a `changelog` entry (newest first) for anything visible.
    A stated design decision is also recorded in `decisions[]` (see "Decisions" below).
    Anything touching accessibility follows `agents/accessibility.md`: verify the source, then cite it.
@@ -54,6 +54,7 @@ touches the spec but not the tokens, CSS, or docs leaves the repository inconsis
 | "Change how the site looks" | `apps/docs/` only, with semantic tokens and the design system's components. A meaning the semantic tier lacks becomes a semantic token (`packages/tokens/src/additions/semantic/`), never a site literal. Never solve a component styling problem in the site CSS. |
 | "Plug the real tokens" / "Where does this token come from?" | See `agents/token-sources.md`. |
 | "Draw the components in Figma" / "Update the Figma file" | `pnpm figma:export` (or `pnpm figma:export <id>…`) builds the plugin into `packages/figma/dist/`; run it in the Figma desktop app (`agents/token-sources.md` "Drawing a component in Figma"). A component that renders wrong in Figma is fixed in its blueprint, never in the Figma file: the next run would redraw it. |
+| "Draw the components in Penpot" / "Update the Penpot file" | `pnpm penpot:export` (or `pnpm penpot:export <id>…`) builds the plugin into `packages/penpot/dist/`, `pnpm penpot:serve` serves it; install and run it in Penpot (`agents/token-sources.md` "Drawing a component in Penpot"). It draws the Figma blueprints: a component that renders wrong in Penpot is fixed in its blueprint or in the Penpot translation (`packages/penpot/src/plan.mjs`), never in the Penpot file. |
 | "Compare a component with its Figma export" / "Align the button with Figma" | The local export in `raw_content/components/` (`agents/token-sources.md`) is the candidate rendering; the repository stays the reference for the variants (axes and option names). List every difference in the pull request, then take them **one at a time**: show before and after on the site, the team decides, then the decision loop (below) and one commit. Map every raw value of the export to the semantic token that carries it (values a couple of RGB units apart are export noise); change only the component's tokens, never raw or semantic tokens, and ask before any addition. Keep the running list of departures from Figma in the pull request; when the last difference is decided, open one issue labelled `upstream-figma-ds` listing each departure with its values, the Figma variable to bind and the decision id, so the Figma library converges. |
 
 ### Decisions: defining a component one statement at a time
@@ -110,7 +111,7 @@ decision may replace provisional content without superseding anything.
 - [ ] Component tokens cover every affected part × option × state; aliases point to semantic tokens.
 - [ ] `pnpm tokens:build` run (its outputs are not committed).
 - [ ] CSS has a rule for every option and every state; template renders every example.
-- [ ] The Figma blueprint follows the CSS structure and binds or lists every token slot (`pnpm test`).
+- [ ] The Figma blueprint follows the CSS structure and binds or lists every token slot (`pnpm test`, which draws it in Figma and in Penpot).
 - [ ] Docs updated (variants/sizes/states tables, content, accessibility).
 - [ ] Contrast of every affected color pair computed from the resolved tokens, in every mode, and recorded. A foundation's pairs are declared in its `contrast[]` and computed by `pnpm validate`.
 - [ ] A rule shared by every component lives in a foundation (`packages/components/specs/foundations/`), not in each component; components following it alias its tokens.

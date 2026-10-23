@@ -25,7 +25,7 @@ The DTCG tokens are the source of truth. Everything else under `node_modules/@qu
   - **Figma:** `dist/figma/*.json` (not yet packaged). To get the tokens in Figma as variables, with the components drawn on them, see [`@quantum-ds/figma`](../figma)
   - **JavaScript CSS variables:** `dist/variables-css.js`
   - **JavaScript/TypeScript ES modules:** `dist/tokens-es6*.js`, `dist/tokens-es6*.d.ts`
-  - **Penpot:** `dist/penpot/tokens.json`
+  - **Penpot:** `dist/penpot/tokens.json`. To get the tokens in a Penpot file with the components drawn on them, see [`@quantum-ds/penpot`](../penpot)
   - **Sass:** `dist/tokens*.scss`
   - **Tokens Studio:** `dist/tokens_studio/*.json` (not yet packaged)
   - **Other platforms:** `dist/platforms/<platform>/<mode>.tokens.json`

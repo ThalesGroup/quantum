@@ -3,7 +3,9 @@
 `@quantum-ds/figma` builds, and publishes, a Figma development plugin that draws every
 component as a Figma component set bound to Figma variables recreated from the tokens. Part of
 the agent guide: start from the root `AGENTS.md`; how to run it and what it draws is
-`agents/token-sources.md` "Drawing a component in Figma".
+`agents/token-sources.md` "Drawing a component in Figma". The blueprints and the engine of
+`src/plan.mjs` also draw the components in Penpot: `@quantum-ds/penpot` (`packages/penpot/`)
+translates the Figma plan, so a change here is a change of both drawings.
 
 | Path | Role |
 | --- | --- |
@@ -31,6 +33,9 @@ the agent guide: start from the root `AGENTS.md`; how to run it and what it draw
   CSS for every control it shows, semantic tokens only in `ui.css`. A change to the progress bar,
   badge or button is a change to the window: look at it (open `dist/ui.html` in a browser and
   post it `{ pluginMessage }` messages).
+- A blueprint or plan change keeps the Penpot plugin's tests passing too (`packages/penpot/test/`,
+  `pnpm test`): a new node type or Figma field needs its Penpot translation
+  (`packages/penpot/AGENTS.md`).
 - A new node type, bind key or plugin step comes with a test, and with the stand-in API taught
   the Figma behaviour it relies on. What the stand-in cannot prove (how Figma renders) is checked
   in the Figma desktop app before it is relied on.

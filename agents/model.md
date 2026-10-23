@@ -65,6 +65,17 @@ screens, a blueprint is a **consumer** kept in step with its component: `pnpm im
 `pnpm test` fails when a token slot is neither bound nor explained (`packages/figma/AGENTS.md`,
 `agents/token-sources.md` "Drawing a component in Figma").
 
+### In Penpot
+
+`@quantum-ds/penpot` (`packages/penpot/`) draws the components in Penpot from the Figma
+blueprints of `@quantum-ds/figma` (`packages/figma/src/blueprints/<id>.mjs`) and the same engine:
+nothing about a component is written for Penpot. It writes the Penpot token file the token build
+publishes (`packages/tokens/dist/penpot/tokens.json`: one set per tier group and per mode, one
+theme per mode, references kept) into the file's tokens, and translates each variant's Figma
+fields to the Penpot token properties that drive them. What Penpot cannot bind is set to the
+token's value and listed with the reason (`packages/penpot/AGENTS.md`, `agents/token-sources.md`
+"Drawing a component in Penpot").
+
 Tokens form three tiers with a strict reference direction:
 
 ```
@@ -164,7 +175,10 @@ packages/components/           @quantum-ds/components (publishes specs/ only) ->
 packages/figma/                @quantum-ds/figma: the Figma plugin drawing every component (publishes dist/) -> packages/figma/AGENTS.md
   build.mjs                    pnpm figma:export and the package build: writes dist/ (GENERATED, not committed)
   src/plan.mjs, src/plugin.js  the plan (variables, variants) and the plugin that draws it in Figma
-  src/blueprints/<id>.mjs      the Figma layer tree of each component, read from its CSS and template
+  src/blueprints/<id>.mjs      the Figma layer tree of each component, read from its CSS and template (Penpot draws it too)
+packages/penpot/               @quantum-ds/penpot: the Penpot plugin drawing every component -> packages/penpot/AGENTS.md
+  build.mjs, serve.mjs         pnpm penpot:export (writes dist/, GENERATED, not committed) and pnpm penpot:serve
+  src/plan.mjs, src/plugin.js  the plan (tokens, variants translated from the Figma plan) and the plugin that draws it in Penpot
 apps/docs/                     the docs site (Astro) -> apps/docs/AGENTS.md
   content/components/, content/foundations/   one Markdown page per component and foundation -> apps/docs/content/AGENTS.md
   screens/                     real-world screens built with the design system, their sources and licences -> apps/docs/screens/AGENTS.md

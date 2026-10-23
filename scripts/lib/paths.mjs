@@ -22,6 +22,9 @@ export const PATHS = {
   /** The @quantum-ds/figma package: the Figma plugin drawing the components, its blueprints, and the plugin it builds (dist/, not committed). */
   figma: 'packages/figma',
   figmaDist: 'packages/figma/dist',
+  /** The @quantum-ds/penpot package: the Penpot plugin drawing the components from the Figma blueprints, and the plugin it builds (dist/, not committed). */
+  penpot: 'packages/penpot',
+  penpotDist: 'packages/penpot/dist',
   /** The docs app (apps/docs): the Astro site, the Markdown guidelines and the screens. */
   docs: 'apps/docs',
   docsSrc: 'apps/docs/src',
@@ -54,6 +57,8 @@ export const foundationArtifacts = (id) => ({
 export const FILES = {
   tokensConfig: `${PATHS.tokens}/tokens.config.json`,
   styleDictionaryConfig: `${PATHS.tokens}/style-dictionary.config.mjs`,
+  /** The Penpot token file (sets and themes) the token build publishes; the Penpot plugin writes its tokens from it. */
+  penpotTokens: `${PATHS.tokensDist}/penpot/tokens.json`,
   componentSchema: `${PATHS.specs}/schema/component.schema.json`,
   foundationSchema: `${PATHS.specs}/schema/foundation.schema.json`,
   platformsRegistry: `${PATHS.specs}/platforms.json`,

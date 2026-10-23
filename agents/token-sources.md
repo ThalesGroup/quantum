@@ -125,3 +125,47 @@ Without ids it draws every component; with ids, those and the components their i
 - **Fonts.** The plugin loads every family the tokens name. The icon font, Material Symbols
   Outlined, is not among Figma's fonts: install it on the machine (the variable font of
   google/material-design-icons) or icons are drawn as empty squares.
+
+## Drawing a component in Penpot
+
+`pnpm penpot:export [id…]` does the same for Penpot. It builds the plugin of `@quantum-ds/penpot`
+into `packages/penpot/dist/` (not committed; `pnpm build` builds it too) and `pnpm penpot:serve`
+serves it at http://localhost:4400, since Penpot loads a plugin over HTTP. In Penpot (2.18 or
+later: the plugin API of tokens and variants), open a file, open the plugin manager (Ctrl + Alt + P),
+install `http://localhost:4400/manifest.json` and run **Quantum components**: its window, the Figma
+plugin's window with Penpot's theme, shows the progress and the warnings and stays open until
+closed. The package's own rules are in `packages/penpot/AGENTS.md`. Without ids it draws every
+component; with ids, those and the components their copies use.
+
+- **Tokens.** The plugin writes `packages/tokens/dist/penpot/tokens.json`, the Penpot token file
+  the token build publishes, into the file's tokens: the sets `Foundation`, `Component`,
+  `Mode/Light` and `Mode/Dark`, and the themes `Mode / Light` and `Mode / Dark`, the default one
+  active. It keeps the tokens the drawn components reach and every token they reference; a token is
+  named after its path (`button.container.gap.medium`), keeps its Penpot type (`spacing`, `sizing`,
+  `borderRadius`… from the property its path names) and its references, so switching the theme
+  switches every component. Running it again updates the values in place; a token of another type
+  under the same name is left alone, with a warning.
+- **Blueprints.** Penpot draws the Figma blueprints (`packages/figma/src/blueprints/`), expanded by
+  the same engine: the same variants, bound to the same tokens. The plan then translates each Figma
+  field to the Penpot token property that drives it (a padding, a gap along the layout direction,
+  each corner radius, the stroke width, a minimum size of a layout child, the typography token of a
+  text). A blueprint change is a change of both drawings; nothing is written for Penpot alone.
+- **The component.** On a page named after the component: every variant drawn as a board with a
+  flex layout, laid out in the Figma grid, made a component, then all of them combined into one
+  component with variants whose properties are the Figma variant properties. Penpot components have
+  no text or boolean properties: a copy overrides its texts and icon glyphs directly, and an
+  optional part is shown or hidden as the boolean's default says, which a copy changes. Focus rings
+  are rectangles outside the border in `focus-visible` only, and a part that is another component
+  (the dropdown's trigger) is a copy of it. A component that already exists is kept as it is.
+- **What Penpot cannot hold** is set to the token's value, and `dist/plan.json` lists it per
+  component (`unbound`, with the tokens, and `approximations`): an icon's font size (its size is a
+  `sizing` token, which cannot drive a font size), the divider's thickness (a border width as a
+  size), the minimum size of a component itself (Penpot honours it inside a layout only: the
+  component is given that size when its content is smaller), a border on one side (a line along it,
+  until the plugin API has per-side strokes), a baseline alignment (aligned to the end) and an arc
+  (an open path). What Figma cannot hold either (durations, easings, the icon font's axes) is left
+  out as in Figma (`notDrawn`).
+- **Fonts.** Penpot's fonts are its own catalog (Google Fonts, where Inter comes from) and the
+  team's fonts: the plugin finds each family by name, and a text whose family is missing keeps
+  Penpot's default font. The icon font, Material Symbols Outlined, must be found too (upload it as a
+  team font if needed), or icons are drawn as empty squares; a warning says so in both cases.
