@@ -116,7 +116,8 @@ The repository is the GitHub repository
 - **Scope** names what changed: the component id (`button`, `icon-button`) for a component
   change, the foundation id (`focus`) for a foundation change, several comma-separated when one decision spans components
   (`feat(button,icon-button): color modes`), otherwise an area: `tokens`, `modes`,
-  `platforms`, `foundations`, `specs`, `a11y`, `components` (the components package), `web`
+  `platforms`, `foundations`, `specs`, `a11y`, `components` (the components package), `figma`
+  (the Figma package), `web`
   (the web reference implementation), `docs` (the docs app and the guidelines), `screens`,
   `scripts`, `agents`, `ci`, `deps`, `release`. A
   component scope that does not exist fails the check; the list lives in

@@ -137,6 +137,7 @@ const LINKS = [
       [a.css, 'a rule for every option and state; native element and ARIA as specified'],
       [a.template, 'renders every property, part and example'],
       [a.docs, 'variants, sizes, states, content and accessibility sections'],
+      [a.figma, isNewFile(a.spec) ? 'new component: its Figma blueprint (pnpm test fails without one)' : 'Figma blueprint: a new part, property or state changes its layer tree'],
       ...specs.filter((s) => s.related?.includes(id)).map((s) => [artifacts(s.id).docs, `lists ${id} as related`]),
       ...mirrored(id, 'spec'),
       ...(isNewFile(a.spec) ? [[`${PATHS.docsSrc}/`, 'new component: the docs chrome renders it wherever it shows a control it covers (pnpm validate flags native look-alikes); apps/docs/AGENTS.md "Built with the design system" table']] : []),
@@ -146,11 +147,11 @@ const LINKS = [
   }],
   [under(PATHS.tokensSrc, 'components/([a-z0-9-]+)\\.tokens\\.json$'), ([, id]) => {
     const a = artifacts(id);
-    return [[a.css, 'consumes the generated variables'], [a.spec, 'visible change: bump version + changelog'], [a.docs, 'if the meaning of a variant or state changed'], ...mirrored(id, 'tokens', 'spec'), ...screensUsing([id], () => `renders ${id}: look at it on the site (Screens) in every mode`)];
+    return [[a.css, 'consumes the generated variables'], [a.figma, 'Figma blueprint: binds every slot or lists it in notDrawn (pnpm test)'], [a.spec, 'visible change: bump version + changelog'], [a.docs, 'if the meaning of a variant or state changed'], ...mirrored(id, 'tokens', 'spec'), ...screensUsing([id], () => `renders ${id}: look at it on the site (Screens) in every mode`)];
   }],
   [under(PATHS.web, 'components/([a-z0-9-]+)/\\1\\.(css|template\\.mjs)$'), ([, id]) => {
     const a = artifacts(id);
-    return [[a.spec, 'visible change: bump version + changelog; implementations.web must still describe it'], [a.docs, 'if behaviour or rendering guidance changed'], ...mirrored(id, 'css', 'spec'), ...screensUsing([id], () => `renders ${id}: apply any template API change, look at it on the site (Screens)`)];
+    return [[a.spec, 'visible change: bump version + changelog; implementations.web must still describe it'], [a.docs, 'if behaviour or rendering guidance changed'], [a.figma, 'Figma blueprint: its layer tree follows the CSS structure'], ...mirrored(id, 'css', 'spec'), ...screensUsing([id], () => `renders ${id}: apply any template API change, look at it on the site (Screens)`)];
   }],
   [under(PATHS.content, 'components/([a-z0-9-]+)\\.md$'), ([, id]) => [[artifacts(id).spec, 'guidance must not contradict the spec; WCAG links must be cited by the spec']]],
   [under(PATHS.specs, 'foundations/([a-z0-9-]+)\\.spec\\.json$'), ([, id]) => {
@@ -172,6 +173,7 @@ const LINKS = [
   ]],
   [/^scripts\/lib\/specimens\.mjs$/, () => [['scripts/test/specimens.test.mjs', 'a test per display or check'], [FILES.foundationSchema, 'the display enum equals DISPLAYS'], [`${PATHS.docsSrc}/components/Specimen.astro`, 'one branch per display'], ['scripts/AGENTS.md', 'library description']]],
   [/^scripts\/figma-library\.mjs$/, () => [['scripts/test/figma-library.test.mjs', 'a test per name or value rule'], [`${PATHS.tokensSrc}/raw/`, 'recreated from the Figma library: run it to see what diverges'], [`${PATHS.tokens}/AGENTS.md`, '"Origin: the Figma library and additions"'], ['scripts/AGENTS.md', 'script description']]],
+  [under(PATHS.figma, 'src/(plan\\.mjs|plugin\\.js|ui/.+)$'), () => [[`${PATHS.figma}/test/plan.test.mjs`, 'a test per node type, bind key, plugin step or window message'], [`${PATHS.figma}/AGENTS.md`, 'blueprint format and plugin'], ['agents/token-sources.md', '"Drawing a component in Figma"']]],
   [/^scripts\/lib\/syntax-theme\.mjs$/, () => [['scripts/test/syntax-theme.test.mjs', 'a test per check or output field'], [`${PATHS.tokens}/AGENTS.md`, 'syntax highlighting theme section'], ['scripts/AGENTS.md', 'library description']]],
   [/^scripts\/lib\/contrast\.mjs$/, () => [['scripts/test/contrast.test.mjs', 'a test per color shape or rule'], [`${PATHS.docsSrc}/lib/foundations.ts`, 'site renders the ratios through it'], ['scripts/AGENTS.md', 'library description']]],
   [under(PATHS.tokensSrc, '(?:additions/)?(raw|semantic)/.+\\.json$'), ([file, tier]) => [

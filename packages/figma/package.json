@@ -1,0 +1,31 @@
+{
+  "name": "@quantum-ds/figma",
+  "version": "0.1.0-alpha.0",
+  "private": true,
+  "description": "Quantum in Figma: a Figma plugin that draws every component as a component set bound to Figma variables recreated from @quantum-ds/tokens, following the specifications of @quantum-ds/components",
+  "author": "Quantum Core Team",
+  "license": "MIT",
+  "homepage": "https://github.com/ThalesGroup/quantum/tree/main/packages/figma#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThalesGroup/quantum.git",
+    "directory": "packages/figma"
+  },
+  "bugs": {
+    "url": "https://github.com/ThalesGroup/quantum/issues"
+  },
+  "keywords": [
+    "design-system",
+    "figma",
+    "figma-plugin",
+    "figma-variables",
+    "design-tokens"
+  ],
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}
