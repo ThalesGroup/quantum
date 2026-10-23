@@ -149,6 +149,10 @@ packages/components/           @quantum-ds/components (publishes specs/ only) ->
   src/foundations/             global CSS of a foundation (code.css)
   src/components/<id>/         hand-written CSS + HTML template
   src/lib/template-utils.mjs   escaping helpers + icon ligatures
+packages/figma/                @quantum-ds/figma (private): the Figma plugin drawing every component -> packages/figma/AGENTS.md
+  build.mjs                    pnpm figma:export and the package build: writes dist/ (GENERATED, not committed)
+  src/plan.mjs, src/plugin.js  the plan (variables, variants) and the plugin that draws it in Figma
+  src/blueprints/<id>.mjs      the Figma layer tree of each component, read from its CSS and template
 apps/docs/                     the docs site (Astro) -> apps/docs/AGENTS.md
   content/components/, content/foundations/   one Markdown page per component and foundation -> apps/docs/content/AGENTS.md
   screens/                     real-world screens built with the design system, their sources and licences -> apps/docs/screens/AGENTS.md

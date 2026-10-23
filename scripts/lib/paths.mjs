@@ -19,6 +19,9 @@ export const PATHS = {
   /** What @quantum-ds/components publishes: the specs, built by scripts/build-components.mjs (not committed). */
   componentsDist: 'packages/components/dist',
   web: 'packages/components/src',
+  /** The @quantum-ds/figma package: the Figma plugin drawing the components, its blueprints, and the plugin it builds (dist/, not committed). */
+  figma: 'packages/figma',
+  figmaDist: 'packages/figma/dist',
   /** The docs app (apps/docs): the Astro site, the Markdown guidelines and the screens. */
   docs: 'apps/docs',
   docsSrc: 'apps/docs/src',
@@ -36,6 +39,8 @@ export const artifacts = (id) => ({
   css: `${PATHS.web}/components/${id}/${id}.css`,
   template: `${PATHS.web}/components/${id}/${id}.template.mjs`,
   docs: `${PATHS.content}/components/${id}.md`,
+  /** The Figma layer tree of the component (@quantum-ds/figma), read from its CSS and template. */
+  figma: `${PATHS.figma}/src/blueprints/${id}.mjs`,
 });
 
 /** The artifacts of a foundation. */

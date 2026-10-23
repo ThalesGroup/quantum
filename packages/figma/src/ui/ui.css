@@ -1,0 +1,99 @@
+/*
+ * The plugin window's own layout, around the design system's components (badge, button, progress
+ * bar). Semantic tokens only, as the docs site: no literal color, font, radius or border width.
+ */
+html,
+body {
+  margin: 0;
+  background: var(--global-bg-level-1-default);
+  color: var(--global-text-on-base-neutral-primary);
+  font-family: var(--body-family);
+  font-size: var(--body-size-sm);
+  line-height: var(--font-line-height-normal);
+}
+
+.qf {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  box-sizing: border-box;
+  height: 100vh;
+  padding: var(--space-16);
+}
+
+.qf-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.qf-title {
+  margin: 0;
+  font-family: var(--heading-family);
+  font-size: var(--heading-size-xs);
+  font-weight: var(--heading-weight-semi-bold);
+  line-height: var(--font-line-height-tight);
+}
+
+.qf-summary {
+  margin: 0;
+  color: var(--global-text-on-base-neutral-secondary);
+}
+
+.qf-list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  border: var(--stroke-width-sm) solid var(--global-border-subtle-neutral-default);
+  border-radius: var(--corner-radius-xs);
+}
+
+.qf-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-6) var(--space-10);
+}
+
+.qf-row + .qf-row {
+  border-top: var(--stroke-width-sm) solid var(--global-border-subtle-neutral-default);
+}
+
+.qf-row[data-status="running"] {
+  background: var(--global-bg-level-2-default);
+}
+
+.qf-name {
+  flex: 1;
+  font-weight: var(--body-weight-medium);
+}
+
+.qf-detail {
+  color: var(--global-text-on-base-neutral-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.qf-warnings {
+  max-height: 25vh;
+  overflow-y: auto;
+}
+
+.qf-warnings h2 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--body-size-sm);
+  font-weight: var(--body-weight-medium);
+}
+
+.qf-warnings ul {
+  margin: 0;
+  padding-inline-start: var(--space-16);
+  color: var(--global-text-on-base-neutral-secondary);
+}
+
+.qf-footer {
+  display: flex;
+  justify-content: flex-end;
+}

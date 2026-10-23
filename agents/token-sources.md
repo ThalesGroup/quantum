@@ -1,7 +1,7 @@
 # Where the tokens come from
 
-The Figma library, its local export, the additions, the Figma component exports, and how to
-plug another export. Part of the agent guide: start from the root `AGENTS.md`.
+The Figma library, its local export, the additions, the Figma component exports, how to
+plug another export, and how to draw a component in Figma. Part of the agent guide: start from the root `AGENTS.md`.
 
 ## The local export
 
@@ -79,3 +79,48 @@ been added, removed or changed; `--write` would undo that evolution, so it is no
    Keep only the semantic tokens whose value differs from the default mode; the build refuses a
    mode that adds a path, overrides a raw or component token, or overrides a token a platform
    overlay also overrides.
+
+## Drawing a component in Figma
+
+`pnpm figma:export [id…]` goes the other way: from the repository to a Figma file. It builds the
+Figma development plugin of `@quantum-ds/figma` into `packages/figma/dist/` (not committed; `pnpm
+build` builds it too; run it again after any change to a spec or a token). In the Figma desktop
+app, **Plugins > Development > Import plugin from manifest…** with
+`packages/figma/dist/manifest.json`, then run **Quantum components** in a design file: its window
+(built with the design system) shows the progress of each component and the warnings, and stays
+open until closed. The package's own rules are in `packages/figma/AGENTS.md`.
+Without ids it draws every component; with ids, those and the components their instances use.
+
+- **Variables.** One collection per token tier: `Quantum / Raw` (hidden from publishing, no
+  scope), `Quantum / Semantic` (a `Light` and a `Dark` mode, from the token modes; a second mode
+  needs a paid Figma plan) and `Quantum / Components`, holding only the tokens the drawn
+  components reach. A variable is named after its token path (`button/container/gap/medium`), a
+  typography token gives one variable per member (`button/label/typography/medium/font-size`),
+  aliases stay aliases, and the web code syntax is the token's CSS variable. These are the
+  repository's tokens, not the Figma library's own collections: the plugin never edits those.
+  Running it again updates the values in place. The web values are exported: platform overlays
+  are not.
+- **Blueprints.** A component is drawn from its blueprint, `packages/figma/src/blueprints/<id>.mjs`:
+  its Figma layer tree, read from the web implementation, naming the token slot that drives each
+  field (format in `packages/figma/src/plan.mjs`). A blueprint holds no value: in each variant,
+  the engine binds the token the slot makes active for that configuration (`activeTokens`,
+  `scripts/lib/token-map.mjs`), the one the CSS reads. A new component needs a blueprint
+  (`pnpm test` fails without one), and every token slot of a component is bound by its blueprint
+  or listed in its `notDrawn` with the reason; a changed CSS structure changes the blueprint.
+- **The component set.** On a page named after the component: one variant per option of every
+  enum property and per state (a state a property sets, such as `disabled` or `checked`, is a
+  value of State, as in the spec's state list), plus the axes a blueprint adds when the layout
+  depends on something else (the button's icon slots, whose padding differs). The default
+  variant is the top-left one. Text properties carry the texts and icon glyphs (ligatures of the
+  icon font, as on the web), BOOLEAN properties show the optional parts, focus rings are frames
+  outside the border in `focus-visible` only, and a part that is another component (the
+  dropdown's trigger) is an instance of it. A component set that already exists is kept as it
+  is: delete it to draw it again, so that no instance loses its main component unnoticed.
+- **What Figma cannot hold** is set without a variable or left out, and listed in each
+  blueprint's `notDrawn`: durations and easings (no variable type), a unitless line height
+  (Figma reads a number variable as pixels, so it is set as a percentage), the icon font's fill,
+  grade and optical size axes, values computed from a token (the outline radius, a check mark's
+  size), and the widths the web takes from its container (a literal width).
+- **Fonts.** The plugin loads every family the tokens name. The icon font, Material Symbols
+  Outlined, is not among Figma's fonts: install it on the machine (the variable font of
+  google/material-design-icons) or icons are drawn as empty squares.
