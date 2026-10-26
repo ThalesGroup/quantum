@@ -39,7 +39,7 @@
     "@types/node": "^26.6.5",
     "fs-extra": "^11.4.1",
     "glob": "^13.0.6",
-    "style-dictionary": "^5.6.1",
+    "style-dictionary": "^5.7.0",
     "typescript": "~7.0.2"
   },
   "packageManager": "pnpm@12.10.1"
