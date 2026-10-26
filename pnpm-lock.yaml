@@ -181,8 +181,8 @@ importers:
         specifier: ^13.0.6
         version: 13.0.6
       style-dictionary:
-        specifier: ^5.6.1
-        version: 5.6.1(tslib@2.8.1)
+        specifier: ^5.7.0
+        version: 5.7.0(tslib@2.8.1)
       typescript:
         specifier: ~7.0.2
         version: 7.0.2
@@ -1253,8 +1253,8 @@ packages:
     resolution: {integrity: sha512-BrpvfNAE3dcvq7ll3xVumzjKjZQ5tI1sEUIKr3Uoks0XUl45St3FlatVqef9prk4jRDzhW6WZg+3bk93y6pLjA==}
     engines: {node: '>=6'}
 
-  style-dictionary@5.6.1:
-    resolution: {integrity: sha512-aDYbNr38jKIGTWHAJl5yZLWLftEopmR7RNT035Wjenshr3VnPfXO2ns/E1kPdNDi7Akl1h1iXSeQ+o8IN60+ew==}
+  style-dictionary@5.7.0:
+    resolution: {integrity: sha512-imy4PuzqWTCpPE9YMcDSlqtb9zV4wj8I06hRDpt+/HTJVH88KKuMx0X++/PMDjQAGptSxqIkYiulOSwSL5r6Kw==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -2364,7 +2364,7 @@ snapshots:
 
   strip-final-newline@2.0.0: {}
 
-  style-dictionary@5.6.1(tslib@2.8.1):
+  style-dictionary@5.7.0(tslib@2.8.1):
     dependencies:
       '@bundled-es-modules/deepmerge': 4.3.2
       '@bundled-es-modules/glob': 13.0.6
