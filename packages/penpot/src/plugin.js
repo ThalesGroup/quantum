@@ -139,7 +139,10 @@ async function syncTokens(plan, progress) {
   return written;
 }
 
-/** Property names Penpot read otherwise before 2.19: `fontFamilies` was `fontFamily`. */
+/**
+ * Property names Penpot read otherwise before 2.19: `fontFamilies` was `fontFamily`.
+ * upstream(penpot): `fontFamilies` is refused before 2.19; this goes once 2.19 is the minimum.
+ */
 const FORMER_PROPERTIES = { fontFamilies: 'fontFamily' };
 
 /** Calls `apply` with the token properties, then with their former names where Penpot refuses them. */
@@ -157,7 +160,10 @@ function withFormer(properties, apply) {
   }
 }
 
-/** Whether a shape has a token on one of the properties: applying it again would take it off. */
+/**
+ * Whether a shape has a token on one of the properties: applying it again would take it off.
+ * upstream(penpot): applying a token toggles it, off all the shapes of the call when one has it.
+ */
 function carries(shape, name, properties) {
   let applied;
   try {
@@ -205,6 +211,7 @@ const TOKENS_QUIET = 2000;
  * Applies the queued tokens, each one in one call to its shapes, except those that have it already
  * (Penpot would take it off all of them), then waits until Penpot shows them: it applies a token
  * once it has resolved the others, after the call returns.
+ * upstream(penpot): each application resolves every token of the active sets; there is no bulk API.
  */
 async function applyTokens() {
   const applied = [];
@@ -565,7 +572,7 @@ function update(pair) {
   if (spec.width !== prev.width || spec.height !== prev.height) applySizing(shape, spec, parent);
   const characters = spec.type === 'icon' ? [spec.glyph, prev.glyph] : [spec.text, prev.text];
   if (characters[0] !== undefined && characters[0] !== characters[1]) shape.characters = characters[0];
-  // Penpot takes 'none', not null, for no decoration.
+  // upstream(penpot): textDecoration takes 'none', not null (its types say null).
   if (spec.textDecoration !== prev.textDecoration) shape.textDecoration = spec.textDecoration || 'none';
   if (spec.type !== 'instance') applyFields(shape, spec, parent, prev);
   if (spec.typography && spec.typography !== prev.typography) bindToken(shape, spec.typography, ['typography'], () => typeset(shape, spec.typography));

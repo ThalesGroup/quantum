@@ -75,7 +75,8 @@ are the platforms and modes).
   `border-radius` are `borderRadius`, `space`, `gap`, `padding` are `spacing`, `size`, `width`,
   `height` are `sizing`, `body.size` is `fontSizes`, `line-height` is `lineHeights` for Tokens Studio
   and `number` for Penpot, which skips a `lineHeights` token outside a typography…). A duration or an easing, which they have no type
-  for, is left out, with every alias to it.
+  for, is left out, with every alias to it. A rule that works around a tool's limit carries an
+  `upstream(<tool>): …` marker, read by the review of the tools' releases (`agents/design-tools.md`).
 - `package.json` → `files` leaves out `dist/figma/` and `dist/tokens_studio/` (not yet packaged, as in 1.x).
 - `dist/figma/` is a token export for Figma's own import. The Figma plugin of `@quantum-ds/figma`
   (`packages/figma/`) does not read it: it creates the variables from the DTCG sources through

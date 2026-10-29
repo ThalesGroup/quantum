@@ -69,17 +69,24 @@ const SIDES = { strokeTopWeight: 'top', strokeRightWeight: 'right', strokeBottom
 
 const NODE_TYPES = { frame: 'board', text: 'text', icon: 'icon', ellipse: 'ellipse', vector: 'path', instance: 'instance' };
 const DIRECTIONS = { HORIZONTAL: 'row', VERTICAL: 'column' };
-// Penpot has no baseline alignment: the end of the cross axis comes closest for one-line texts.
+// upstream(penpot): no baseline alignment; the end of the cross axis comes closest for one-line texts.
 const ALIGN = { MIN: 'start', CENTER: 'center', MAX: 'end', SPACE_BETWEEN: 'space-between', BASELINE: 'end' };
 const SIZING = { HUG: 'auto', FILL: 'fill' };
 
-/** Why a field is set to its token's value rather than bound to the token, by kind. */
+/**
+ * Why a field is set to its token's value rather than bound to the token, by kind.
+ * upstream(penpot): a token type drives only its own properties (a sizing token never a font size), and a
+ * minimum size holds inside a layout only.
+ */
 export const UNBOUND = {
   type: (type, property) => `a ${type} token cannot drive ${property} in Penpot: set to its value`,
   rootMin: 'Penpot honours a minimum size inside a layout only: the component itself is given that size when its content is smaller',
 };
 
-/** Why a part is drawn otherwise than in Figma, by kind. */
+/**
+ * Why a part is drawn otherwise than in Figma, by kind.
+ * upstream(penpot): no per-side stroke (plugin API 1.5), no partial ellipse; the baseline: `ALIGN`.
+ */
 export const APPROXIMATIONS = {
   baseline: 'Penpot has no baseline alignment: aligned to the end of the row',
   side: 'Penpot strokes every side (plugin API 1.5): a border on one side is a line along that side, bound to the border color and width',
@@ -100,6 +107,7 @@ export function hexColor(value) {
  * The token types whose value Penpot's plugin API takes as a number (`addToken`, a token's `value`:
  * `make-token-value-schema` in Penpot 2.18 checks every other scalar value as text). Penpot's Tokens
  * panel imports a JSON number of any type, as the token file has it: only the plugin is stricter.
+ * upstream(penpot): the plugin API takes number and opacity values as text only.
  */
 const NUMBER_VALUES = new Set(['fontWeights']);
 

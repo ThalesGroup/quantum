@@ -63,6 +63,7 @@ async function syncVariables(plan) {
       try {
         modeIds[modeName] = collection.addMode(modeName);
       } catch (e) {
+        // upstream(figma): one mode per collection on the Starter (formerly Free) plan; the Dark values are left out there.
         warn('Collection "' + spec.name + '" could not get the mode "' + modeName + '" (' + e.message + '): its values are left out.');
       }
     });
@@ -444,6 +445,7 @@ function drawFocusRing(node, ring) {
   setField(frame, 'strokeWeight', valueOf(ring.strokeWeight));
   bindVariable(frame, 'strokeWeight', ring.strokeWeight);
   // The outline follows the border radius, pushed out by the offset: a sum Figma cannot bind.
+  // upstream(figma): no expression in a variable binding.
   frame.cornerRadius = radius + offset;
   frame.locked = true;
 }

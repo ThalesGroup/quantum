@@ -62,6 +62,8 @@ export const FILES = {
   componentSchema: `${PATHS.specs}/schema/component.schema.json`,
   foundationSchema: `${PATHS.specs}/schema/foundation.schema.json`,
   platformsRegistry: `${PATHS.specs}/platforms.json`,
+  /** The design tools the exports target and how far their releases have been reviewed (agents/design-tools.md). */
+  designTools: `${PATHS.agents}/design-tools.json`,
   a11y: `${PATHS.specs}/a11y`,
   tokensIndexCss: `${PATHS.tokensCss}/index.css`,
   webIndexCss: `${PATHS.web}/index.css`,
