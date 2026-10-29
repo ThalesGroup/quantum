@@ -1,0 +1,167 @@
+{
+  "$description": "The design tools the packages export to, what the exports rely on in each, where each tool publishes its changes, and how far those changes have been reviewed (agents/design-tools.md). The skill design-tools-watch reads it and moves `reviewed` forward after each review. A `reviewed` of null means never reviewed: the next review covers the last twelve months.",
+  "tools": {
+    "figma": {
+      "name": "Figma",
+      "label": "figma",
+      "exports": [
+        "@quantum-ds/tokens dist/figma/: variables to import (style-dictionary.config.mjs, format quantum/figma)",
+        "@quantum-ds/figma: the plugin drawing the components (packages/figma/, manifest api 1.0.0, documentAccess dynamic-page)"
+      ],
+      "reliesOn": [
+        "Variables: collections, modes (one per collection on the Starter plan, formerly Free), scopes, web code syntax, aliases between collections, hiddenFromPublishing",
+        "Variable types COLOR, FLOAT and STRING; EASING and TIMING exist since plugin API 1.133 but are not used yet; no type for a shadow",
+        "Binding variables to fields: padding, gap, corner radius, stroke weight (all sides and per side), width and height, min size, opacity (a FLOAT read as 0-100), typography members; fill and stroke colors through setBoundVariableForPaint",
+        "A number variable bound to a line height is read as pixels: a unitless line height is set as a percentage instead",
+        "No expression in a binding: a value computed from tokens (the focus ring's radius) is set without a variable",
+        "Component sets with VARIANT, TEXT and BOOLEAN properties, instances",
+        "Auto layout (sizing, alignment, baseline) with inside strokes included in layout, as the web's border-box; focus rings as absolutely positioned frames with an outside stroke; the layout version a new frame gets (updated auto layout since July 2026)",
+        "Font loading by family and style (the icon font, Material Symbols Outlined, is not among Figma's fonts); no variable binds a font's variation axes",
+        "The plugin window (figma.showUI, theme colors, networkAccess)",
+        "Figma's own variable import of dist/figma/: DTCG JSON, one file per mode, color objects, number, fontFamily and string values, aliases written without $type"
+      ],
+      "sources": [
+        {
+          "url": "https://www.figma.com/release-notes/",
+          "covers": "Product releases of the last six months"
+        },
+        {
+          "url": "https://www.figma.com/release-notes/archive/",
+          "covers": "Older product releases"
+        },
+        {
+          "url": "https://developers.figma.com/docs/plugins/updates/",
+          "covers": "Plugin API changes (feed: rss.xml under the same path)"
+        },
+        {
+          "url": "https://www.npmjs.com/package/@figma/plugin-typings?activeTab=versions",
+          "covers": "Plugin API typings, one version per API change (no GitHub releases)"
+        }
+      ],
+      "reviewed": {
+        "through": "plugin-typings 1.142.0, release notes of 2026-10-27",
+        "on": "2026-10-29"
+      }
+    },
+    "penpot": {
+      "name": "Penpot",
+      "label": "penpot",
+      "minimum": "2.18",
+      "exports": [
+        "@quantum-ds/tokens dist/penpot/tokens.json: token sets and themes for the Tokens panel import (format quantum/penpot)",
+        "@quantum-ds/penpot: the plugin drawing the components and writing the tokens (packages/penpot/, manifest version 2)"
+      ],
+      "reliesOn": [
+        "The Tokens panel import: sets, themes, token types (spacing, sizing, borderRadius, borderWidth, fontSizes, number, opacity, typography…), references, $description, $metadata (tokenSetOrder, activeThemes, activeSets) and $themes",
+        "A line height alone is a number token: lineHeights is taken only inside a typography token, where a lineHeight needs a fontSize",
+        "The plugin tokens API on the file's own tokens (not a connected library's): addToken (number and opacity values as text, font weights as numbers), token sets, themes and their activation, applyToken and applyToShapes, a token's property names (fontFamilies since 2.19, fontFamily before)",
+        "Applying a token toggles it, off every shape of the call when one already has it",
+        "Each token application resolves every token of the active sets (one Style Dictionary build): applications are batched",
+        "Components with variants: combining boards as variants, variant properties set through the main's name (names and values up to 60 characters)",
+        "Flex layout: padding, gap, sizing, alignment (no baseline), min size honoured inside a layout only",
+        "Strokes on every side only (no per-side stroke), no partial ellipse, textDecoration takes 'none' and not null",
+        "Writes on the active page only (openPage first), penpot.waitForLayoutUpdate, a clone keeping its values and applied tokens, shared plugin data marking a drawn component",
+        "Fonts by family name from Penpot's catalog and the team's fonts",
+        "The plugin manifest version 2 and its window (theme in the URL hash, messages to the parent window)"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/penpot/penpot/releases",
+          "covers": "Stable releases and their notes"
+        },
+        {
+          "url": "https://github.com/penpot/penpot/tags",
+          "covers": "Release candidates, tagged only"
+        },
+        {
+          "url": "https://github.com/penpot/penpot/blob/develop/CHANGES.md",
+          "covers": "Changelog, including the unreleased version"
+        },
+        {
+          "url": "https://github.com/penpot/penpot/blob/develop/plugins/CHANGELOG.md",
+          "covers": "Plugin API changelog"
+        },
+        {
+          "url": "https://github.com/penpot/penpot/blob/develop/plugins/libs/plugin-types/index.d.ts",
+          "covers": "Plugin API types (@penpot/plugin-types)"
+        },
+        {
+          "url": "https://help.penpot.app/user-guide/design-tokens/",
+          "covers": "The design tokens format and its import"
+        }
+      ],
+      "reviewed": {
+        "through": "2.18.5",
+        "on": "2026-10-29"
+      }
+    },
+    "tokens-studio": {
+      "name": "Tokens Studio",
+      "label": "tokens-studio",
+      "exports": [
+        "@quantum-ds/tokens dist/tokens_studio/: one set per top-level group, tokens.json wrapped as the set `tokens`, tokens-dark.json (format quantum/tokens-studio; not packaged yet)"
+      ],
+      "reliesOn": [
+        "Its own token types: color, dimension, spacing, sizing, borderRadius, borderWidth, fontSizes, lineHeights, letterSpacing, fontFamilies, fontWeights, typography, boxShadow, opacity, number; it maps some DTCG type names to them (fontFamily, fontWeight, shadow), not dimension",
+        "Colors as rgba(), lengths as px strings, font weights as JSON numbers, references in braces: it does not read DTCG color or dimension objects in token files",
+        "No type for a duration or an easing before 2.12.1: those tokens are left out",
+        "A file with $value is read in its DTCG mode ($type/$value), the default since 2.11.0",
+        "Typography composite members as strings",
+        "A boxShadow layer as { x, y, blur, spread, color, type }, not the DTCG shadow shape (no shadow token is exported today)"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/tokens-studio/figma-plugin/releases",
+          "covers": "Plugin releases"
+        },
+        {
+          "url": "https://github.com/tokens-studio/figma-plugin/blob/main/packages/tokens-studio-for-figma/CHANGELOG.md",
+          "covers": "Plugin changelog"
+        },
+        {
+          "url": "https://docs.tokens.studio/",
+          "covers": "Token types and formats (lags behind the releases: the source code is the reference)"
+        }
+      ],
+      "reviewed": {
+        "through": "2.13.2",
+        "on": "2026-10-29"
+      }
+    },
+    "dtcg": {
+      "name": "Design Tokens Format Module (DTCG)",
+      "exports": [
+        "The token sources (packages/tokens/src/) and dist/dtcg/ with its resolver (quantum.resolver.json): the format every design tool export starts from"
+      ],
+      "reliesOn": [
+        "Format 2025.10 value shapes: color objects (colorSpace, components, alpha, hex), dimension objects in px or rem, duration in ms or s, cubicBezier, number, fontFamily, fontWeight (1-1000 or keywords)",
+        "Composites: typography (unitless lineHeight), shadow, border",
+        "References in braces, $type inherited from groups, $description, $extensions; the sources use none of $root, $extends, $deprecated or $ref, which the token library does not read",
+        "Resolver 2025.10: version 2025.10, sets, modifiers with contexts and a default, resolutionOrder as $ref JSON Pointers",
+        "Which version of the format each design tool reads"
+      ],
+      "sources": [
+        {
+          "url": "https://www.designtokens.org/technical-reports/",
+          "covers": "Published versions of the specification, with status and date"
+        },
+        {
+          "url": "https://www.designtokens.org/TR/drafts/",
+          "covers": "The draft of the next version"
+        },
+        {
+          "url": "https://github.com/design-tokens/community-group/commits/main/technical-reports",
+          "covers": "Changes to the specification, errata included"
+        },
+        {
+          "url": "https://www.w3.org/community/design-tokens/",
+          "covers": "Announcements of the community group"
+        }
+      ],
+      "reviewed": {
+        "through": "2025.10",
+        "on": "2026-10-29"
+      }
+    }
+  }
+}

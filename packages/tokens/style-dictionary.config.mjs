@@ -296,7 +296,7 @@ function designToolType(segments, type, { penpot = false } = {}) {
     case 'fontWeight': return penpot ? 'fontWeight' : 'fontWeights';
     case 'number':
       if (has(/^opacity$/)) return 'opacity';
-      // Penpot takes `lineHeights` only inside a typography token: a line height alone is a number.
+      // upstream(penpot): `lineHeights` is taken only inside a typography token; a line height alone is a number.
       if (has(/^line-height$/)) return penpot ? 'number' : 'lineHeights';
       return 'number';
     case 'dimension':
@@ -308,7 +308,8 @@ function designToolType(segments, type, { penpot = false } = {}) {
       if (has(/^(space|gap|column-gap|row-gap|offset|outline-offset)$/) || has(/^(padding|margin)(-|$)/)) return 'spacing';
       if (has(/^(size|width|height|min-width|min-height|max-width|max-height)$/)) return 'sizing';
       return 'dimension';
-    default: return null; // duration, cubicBezier: no design-tool equivalent
+    // upstream(tokens-studio,penpot): no token type for a duration or an easing.
+    default: return null;
   }
 }
 

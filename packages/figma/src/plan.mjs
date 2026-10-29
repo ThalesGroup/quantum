@@ -36,7 +36,10 @@ const TYPOGRAPHY_MEMBERS = {
   letterSpacing: { segment: 'letter-spacing', type: 'dimension' },
 };
 
-/** DTCG type -> Figma variable type; a type missing here (duration, cubicBezier, shadow…) has no Figma variable. */
+/**
+ * DTCG type -> Figma variable type; a type missing here (duration, cubicBezier, shadow…) has no Figma variable.
+ * upstream(figma): no variable type for a duration, an easing or a shadow.
+ */
 const VARIABLE_TYPES = { color: 'COLOR', dimension: 'FLOAT', number: 'FLOAT', fontWeight: 'FLOAT', fontFamily: 'STRING' };
 
 /** Component token property -> the Figma fields a variable may be applied to (its scopes). */
@@ -59,6 +62,7 @@ const COMPONENT_SCOPES = {
   'font-weight': ['FONT_WEIGHT'],
   'letter-spacing': ['LETTER_SPACING'],
   // No Figma field takes them: a unitless line height (Figma reads pixels), the icon font's axes.
+  // upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
   opacity: ['OPACITY'],
   'line-height': [],
   fill: [],
@@ -322,6 +326,7 @@ export function figmaComponent(loaded, spec, blueprint) {
       fontWeight: member('fontWeight'),
       ...(value.letterSpacing !== undefined ? { letterSpacing: member('letterSpacing') } : {}),
       // A unitless line height is a percentage in Figma, without its variable (Figma reads a number variable as pixels).
+      // upstream(figma): a number variable bound to a line height is read as pixels.
       lineHeight: typeof lh === 'number' ? { unit: 'PERCENT', value: +(lh * 100).toFixed(2) } : lh === undefined ? null : { unit: 'PIXELS', value: px(lh) },
     };
   };

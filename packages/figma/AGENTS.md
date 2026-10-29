@@ -36,6 +36,8 @@ translates the Figma plan, so a change here is a change of both drawings.
 - A blueprint or plan change keeps the Penpot plugin's tests passing too (`packages/penpot/test/`,
   `pnpm test`): a new node type or Figma field needs its Penpot translation
   (`packages/penpot/AGENTS.md`).
+- Code that works around a limit of Figma says so with an `upstream(figma): …` marker in its
+  comment, which the review of Figma's releases reads (`agents/design-tools.md`).
 - A new node type, bind key or plugin step comes with a test, and with the stand-in API taught
   the Figma behaviour it relies on. What the stand-in cannot prove (how Figma renders) is checked
   in the Figma desktop app before it is relied on.

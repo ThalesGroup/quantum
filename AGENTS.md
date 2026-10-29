@@ -68,6 +68,7 @@ published CSS, Sass, JavaScript, Android, Figma, Penpot and Tokens Studio format
 | Anything touching accessibility: a role, keyboard, naming, contrast, a cited statement | [agents/accessibility.md](agents/accessibility.md), `packages/components/specs/a11y/` |
 | The Figma library and its local export, a Figma export, plugging tokens, where a token comes from | [agents/token-sources.md](agents/token-sources.md), `packages/tokens/AGENTS.md` |
 | Drawing the components in Figma, a Figma blueprint, the Figma plugin | [agents/token-sources.md](agents/token-sources.md) "Drawing a component in Figma", `packages/figma/AGENTS.md` |
+| New releases of Figma, Penpot or Tokens Studio, whether the design tool exports are up to date, a workaround of a tool's limit | [agents/design-tools.md](agents/design-tools.md), `agents/design-tools.json` |
 | Drawing the components in Penpot, the Penpot plugin | [agents/token-sources.md](agents/token-sources.md) "Drawing a component in Penpot", `packages/penpot/AGENTS.md`, `packages/figma/AGENTS.md` (the blueprints) |
 | Specs format export or import | [agents/specs-interop.md](agents/specs-interop.md) |
 | A screen | `apps/docs/screens/AGENTS.md`, [agents/impact.md](agents/impact.md) |
@@ -84,6 +85,7 @@ published CSS, Sass, JavaScript, Android, Figma, Penpot and Tokens Studio format
 | `review-sheet` | The team must compare renderings to decide: a focused before/after page and one precise question. |
 | `worktree-preview` | Someone needs a local preview of a branch, a pull request or a worktree under `.claude/worktrees/`. |
 | `backlog` | Out-of-scope work becomes an issue, a merged study becomes issues, or the open issues need syncing or labelling. |
+| `design-tools-watch` | The releases of Figma, Penpot, Tokens Studio or DTCG need reviewing against the exports, or a check in the real tool comes back ([agents/design-tools.md](agents/design-tools.md)). |
 
 Claude Code lists them by itself and invokes them by name; another agent reads
 `.claude/skills/<name>/SKILL.md`.

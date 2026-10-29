@@ -139,6 +139,7 @@ one resolved tree per mode; a token varies per platform or per mode, never both.
 ```
 AGENTS.md                      the agent guide (rendered on the site's "How it works" page)
 agents/                        the topic guides AGENTS.md routes to
+  agents/design-tools.json     the design tools the exports target, and how far their releases are reviewed
 CLAUDE.md                      imports AGENTS.md
 .claude/skills/                agent skills for recurring workflows
 .githooks/commit-msg           Conventional Commits check, installed by pnpm install
