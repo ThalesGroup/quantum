@@ -24,6 +24,12 @@ touches the spec but not the tokens, CSS, or docs leaves the repository inconsis
 5. **Update the screens.** Every screen rendering a changed component, or a component whose
    tokens alias a changed token, is part of the change (`pnpm impact` lists them): apply any
    template API change to it, drop a gap a new component or token now fills, and look at it.
+   **Update the framework themes** too (`packages/bootstrap-theme/`, `packages/shadcn-theme/`,
+   skill `framework-theme`): a changed value needs only a rebuild, but a renamed or removed
+   token, option, state or part is fixed in their `src/mapping.mjs` (`pnpm test` names the entry),
+   and a new component, option or semantic token is mapped when the framework has an equivalent,
+   or consciously left out. Rebuild them (`pnpm bootstrap-theme:build`, `pnpm shadcn-theme:build`,
+   the README tables with them) and look at their demos in light and dark (`pnpm themes:demo`).
 6. **Verify:** `pnpm check`, then `pnpm impact`. Fix every error. Read warnings; they usually
    point at forgotten states, unused tokens or uncited references. Walk the impact checklist:
    every linked artifact is either updated or consciously left as is.
@@ -113,6 +119,7 @@ decision may replace provisional content without superseding anything.
 - [ ] CSS has a rule for every option and every state; template renders every example.
 - [ ] The Figma blueprint follows the CSS structure and binds or lists every token slot (`pnpm test`, which draws it in Figma and in Penpot).
 - [ ] Docs updated (variants/sizes/states tables, content, accessibility).
+- [ ] The framework themes follow: their mappings name no gone token, option, state or part, map what is new when the framework has an equivalent, and their demos were rebuilt and looked at in light and dark.
 - [ ] Contrast of every affected color pair computed from the resolved tokens, in every mode, and recorded. A foundation's pairs are declared in its `contrast[]` and computed by `pnpm validate`.
 - [ ] A rule shared by every component lives in a foundation (`packages/components/specs/foundations/`), not in each component; components following it alias its tokens.
 - [ ] Every new raw or semantic token reaches a foundation page: owned by a foundation or matched by one of its specimens (no `pnpm validate` warning).

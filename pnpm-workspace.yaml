@@ -1,3 +1,6 @@
 packages:
   - packages/*
   - apps/*
+# sass pulls @parcel/watcher as an optional native dependency for `sass --watch`, which nothing here runs: deny its build script
+allowBuilds:
+  '@parcel/watcher': false

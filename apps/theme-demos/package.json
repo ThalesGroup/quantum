@@ -1,0 +1,13 @@
+{
+  "name": "theme-demos",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Local preview of the framework theme demos: one Vite server for the demo pages that @quantum-ds/bootstrap-theme and @quantum-ds/shadcn-theme build.",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}

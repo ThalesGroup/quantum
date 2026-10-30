@@ -1,0 +1,21 @@
+/*
+ * The demo's globals.css, as a shadcn/ui project has it, with the Quantum theme imported after
+ * tailwindcss. shadcn-tailwind.css is shadcn's own `shadcn/tailwind.css` (fetched by
+ * scripts/fetch-ui.mjs); the base layer is the new-york-v4 style's. Nothing here styles a
+ * component: the theme is ../../dist/quantum.css.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./shadcn-tailwind.css";
+@import "../../dist/quantum.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
