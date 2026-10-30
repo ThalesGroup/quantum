@@ -25,6 +25,12 @@ export const PATHS = {
   /** The @quantum-ds/penpot package: the Penpot plugin drawing the components from the Figma blueprints, and the plugin it builds (dist/, not committed). */
   penpot: 'packages/penpot',
   penpotDist: 'packages/penpot/dist',
+  /** The @quantum-ds/bootstrap-theme package: the Bootstrap 6 theme built from the tokens, and what it builds (dist/, not committed). */
+  bootstrapTheme: 'packages/bootstrap-theme',
+  bootstrapThemeDist: 'packages/bootstrap-theme/dist',
+  /** The @quantum-ds/shadcn-theme package: the shadcn/ui theme built from the tokens, and what it builds (dist/, not committed). */
+  shadcnTheme: 'packages/shadcn-theme',
+  shadcnThemeDist: 'packages/shadcn-theme/dist',
   /** The docs app (apps/docs): the Astro site, the Markdown guidelines and the screens. */
   docs: 'apps/docs',
   docsSrc: 'apps/docs/src',

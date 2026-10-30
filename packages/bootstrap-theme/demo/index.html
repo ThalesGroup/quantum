@@ -1,0 +1,2156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 6 with Quantum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@100..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0&display=block">
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css" data-inline>
+  <link rel="stylesheet" href="../dist/quantum.css" id="quantum-theme" data-inline>
+  <link rel="stylesheet" href="demo.css" data-inline>
+</head>
+<body>
+  <header class="demo-toolbar">
+    <div class="demo-toolbar-inner">
+      <p class="demo-toolbar-title">Bootstrap 6 <span class="fg-3">with</span> Quantum</p>
+      <div class="btn-group btn-group-sm" role="radiogroup" aria-label="Color mode">
+        <label class="btn-check btn-outline theme-secondary"><input type="radio" name="demo-color-mode" value="light" autocomplete="off"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">light_mode</span>Light</label>
+        <label class="btn-check btn-outline theme-secondary"><input type="radio" name="demo-color-mode" value="dark" autocomplete="off"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">dark_mode</span>Dark</label>
+        <label class="btn-check btn-outline theme-secondary"><input type="radio" name="demo-color-mode" value="auto" autocomplete="off" checked><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">contrast</span>Auto</label>
+      </div>
+      <div class="form-field">
+        <input type="checkbox" class="check" id="demo-quantum-toggle" checked>
+        <label for="demo-quantum-toggle">Quantum theme</label>
+      </div>
+    </div>
+    <nav class="demo-toc" aria-label="Sections">
+      <ul>
+        <li><a href="#typography">Typography</a></li>
+        <li><a href="#icons">Icons</a></li>
+        <li><a href="#buttons">Buttons</a></li>
+        <li><a href="#forms">Forms</a></li>
+        <li><a href="#datepicker">Datepicker</a></li>
+        <li><a href="#checks">Checkboxes</a></li>
+        <li><a href="#radios">Radios</a></li>
+        <li><a href="#switches">Switches</a></li>
+        <li><a href="#range">Range</a></li>
+        <li><a href="#badges">Badges</a></li>
+        <li><a href="#chips">Chips</a></li>
+        <li><a href="#alerts">Alerts</a></li>
+        <li><a href="#cards">Cards</a></li>
+        <li><a href="#accordion">Accordion</a></li>
+        <li><a href="#breadcrumb">Breadcrumb</a></li>
+        <li><a href="#pagination">Pagination</a></li>
+        <li><a href="#progress">Progress</a></li>
+        <li><a href="#spinners">Spinners</a></li>
+        <li><a href="#placeholder">Placeholder</a></li>
+        <li><a href="#avatars">Avatars</a></li>
+        <li><a href="#list-group">List group</a></li>
+        <li><a href="#nav">Nav</a></li>
+        <li><a href="#navbar">Navbar</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#dialog">Dialog</a></li>
+        <li><a href="#drawer">Drawer</a></li>
+        <li><a href="#toasts">Toasts</a></li>
+        <li><a href="#tooltip">Tooltip</a></li>
+        <li><a href="#popover">Popover</a></li>
+        <li><a href="#stepper">Stepper</a></li>
+        <li><a href="#table">Table</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="demo-main">
+
+    <section id="typography" class="demo-section">
+      <h2>Typography</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <h3>Headings</h3>
+      <div class="demo-stack">
+        <h1>h1. Heading level 1</h1>
+        <h2>h2. Heading level 2</h2>
+        <h3>h3. Heading level 3</h3>
+        <h4>h4. Heading level 4</h4>
+        <h5>h5. Heading level 5</h5>
+        <h6>h6. Heading level 6</h6>
+      </div>
+      <h3>Heading classes</h3>
+      <div class="demo-stack">
+        <p class="h1">.h1 heading class</p>
+        <p class="h2">.h2 heading class</p>
+        <p class="h3">.h3 heading class</p>
+        <p class="h4">.h4 heading class</p>
+        <p class="h5">.h5 heading class</p>
+        <p class="h6">.h6 heading class</p>
+      </div>
+      <!-- Bootstrap 6 has no .display-* or .lead classes: the font-size scale (.fs-*) replaces them. -->
+      <h3>Font-size scale</h3>
+      <div class="demo-stack">
+        <p class="fs-xs mb-0">.fs-xs The quick brown fox</p>
+        <p class="fs-sm mb-0">.fs-sm The quick brown fox</p>
+        <p class="fs-md mb-0">.fs-md The quick brown fox</p>
+        <p class="fs-lg mb-0">.fs-lg The quick brown fox</p>
+        <p class="fs-xl mb-0">.fs-xl The quick brown fox</p>
+        <p class="fs-2xl mb-0">.fs-2xl The quick brown fox</p>
+        <p class="fs-3xl mb-0">.fs-3xl The quick brown fox</p>
+        <p class="fs-4xl mb-0">.fs-4xl The quick brown fox</p>
+        <p class="fs-5xl mb-0">.fs-5xl The quick brown fox</p>
+        <p class="fs-6xl mb-0">.fs-6xl The quick brown fox</p>
+      </div>
+      <h3>Body text and inline elements</h3>
+      <div class="demo-stack">
+        <p>Body paragraph. Quantum is the Thales design system: this sentence is long enough to show the line height and the measure of a regular paragraph, with a <a href="#typography">link inside the text</a> and some <strong>strong</strong> and <em>emphasised</em> words.</p>
+        <p><small>Small print rendered with the small element.</small></p>
+        <p>You can use the mark tag to <mark>highlight</mark> text. <del>Deleted text.</del> <s>No longer accurate.</s> <ins>Inserted text.</ins> <u>Underlined text.</u></p>
+        <p>Inline code: <code>const theme = 'quantum'</code>. Keyboard input: press <kbd>Ctrl</kbd> + <kbd>K</kbd>. Abbreviation: <abbr title="HyperText Markup Language" class="initialism">HTML</abbr>.</p>
+        <pre><code>&lt;button class="btn-solid theme-primary"&gt;Save&lt;/button&gt;</code></pre>
+        <p><a href="#typography">A standalone link</a></p>
+      </div>
+      <h3>Blockquote</h3>
+      <div class="demo-stack">
+        <figure class="blockquote">
+          <blockquote>
+            <p>A well-known quote, contained in a blockquote element.</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></figcaption>
+        </figure>
+      </div>
+      <h3>Lists</h3>
+      <div class="demo-grid">
+        <ul>
+          <li>Unordered list item</li>
+          <li>Second item
+            <ul><li>Nested item</li></ul>
+          </li>
+        </ul>
+        <ol>
+          <li>Ordered list item</li>
+          <li>Second item</li>
+        </ol>
+        <ul class="list-unstyled">
+          <li>Unstyled list item</li>
+          <li>Second unstyled item</li>
+        </ul>
+        <ul class="list-inline">
+          <li class="list-inline-item">Inline item</li>
+          <li class="list-inline-item">Inline item</li>
+          <li class="list-inline-item">Inline item</li>
+        </ul>
+        <dl>
+          <dt>Description term</dt>
+          <dd>Description details for the term.</dd>
+        </dl>
+      </div>
+      <h3>Dividers</h3>
+      <p class="demo-note" data-equivalence="divider"></p>
+      <div class="demo-stack">
+        <hr>
+        <div class="hstack gap-3 demo-vr-host">
+          <span>First item</span>
+          <div class="vr"></div>
+          <span>Second item</span>
+          <div class="vr"></div>
+          <span>Third item</span>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="icons" class="demo-section">
+      <h2>Icons</h2>
+      <p class="demo-note" data-equivalence="icon"></p>
+      <h3>16px</h3>
+      <div class="demo-row">
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">home</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">settings</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">notifications</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">favorite</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">delete</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">check_circle</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">warning</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">info</span>
+        <span class="material-symbols-outlined demo-icon-16" aria-hidden="true">close</span>
+      </div>
+      <h3>20px</h3>
+      <div class="demo-row">
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">home</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">settings</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">notifications</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">favorite</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">delete</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">check_circle</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">warning</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">info</span>
+        <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">close</span>
+      </div>
+      <h3>24px</h3>
+      <div class="demo-row">
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">search</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">home</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">settings</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">notifications</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">favorite</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">delete</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">check_circle</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">warning</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">info</span>
+        <span class="material-symbols-outlined demo-icon-24" aria-hidden="true">close</span>
+      </div>
+
+    </section>
+
+    <section id="buttons" class="demo-section">
+      <h2>Buttons</h2>
+      <p class="demo-note" data-equivalence="button icon-button"></p>
+      <h3>Variants × theme colors</h3>
+      <div class="demo-matrix">
+        <span class="demo-matrix-head"></span><span class="demo-matrix-head">.btn-solid</span><span class="demo-matrix-head">.btn-outline</span><span class="demo-matrix-head">.btn-subtle</span><span class="demo-matrix-head">.btn-text</span><span class="demo-matrix-head">.btn-link</span>
+        <span class="demo-matrix-label">.theme-primary</span>
+        <button type="button" class="btn-solid theme-primary">Primary</button>
+        <button type="button" class="btn-outline theme-primary">Primary</button>
+        <button type="button" class="btn-subtle theme-primary">Primary</button>
+        <button type="button" class="btn-text theme-primary">Primary</button>
+        <button type="button" class="btn-link theme-primary">Primary</button>
+        <span class="demo-matrix-label">.theme-accent</span>
+        <button type="button" class="btn-solid theme-accent">Accent</button>
+        <button type="button" class="btn-outline theme-accent">Accent</button>
+        <button type="button" class="btn-subtle theme-accent">Accent</button>
+        <button type="button" class="btn-text theme-accent">Accent</button>
+        <button type="button" class="btn-link theme-accent">Accent</button>
+        <span class="demo-matrix-label">.theme-success</span>
+        <button type="button" class="btn-solid theme-success">Success</button>
+        <button type="button" class="btn-outline theme-success">Success</button>
+        <button type="button" class="btn-subtle theme-success">Success</button>
+        <button type="button" class="btn-text theme-success">Success</button>
+        <button type="button" class="btn-link theme-success">Success</button>
+        <span class="demo-matrix-label">.theme-danger</span>
+        <button type="button" class="btn-solid theme-danger">Danger</button>
+        <button type="button" class="btn-outline theme-danger">Danger</button>
+        <button type="button" class="btn-subtle theme-danger">Danger</button>
+        <button type="button" class="btn-text theme-danger">Danger</button>
+        <button type="button" class="btn-link theme-danger">Danger</button>
+        <span class="demo-matrix-label">.theme-warning</span>
+        <button type="button" class="btn-solid theme-warning">Warning</button>
+        <button type="button" class="btn-outline theme-warning">Warning</button>
+        <button type="button" class="btn-subtle theme-warning">Warning</button>
+        <button type="button" class="btn-text theme-warning">Warning</button>
+        <button type="button" class="btn-link theme-warning">Warning</button>
+        <span class="demo-matrix-label">.theme-info</span>
+        <button type="button" class="btn-solid theme-info">Info</button>
+        <button type="button" class="btn-outline theme-info">Info</button>
+        <button type="button" class="btn-subtle theme-info">Info</button>
+        <button type="button" class="btn-text theme-info">Info</button>
+        <button type="button" class="btn-link theme-info">Info</button>
+        <span class="demo-matrix-label">.theme-inverse</span>
+        <button type="button" class="btn-solid theme-inverse">Inverse</button>
+        <button type="button" class="btn-outline theme-inverse">Inverse</button>
+        <button type="button" class="btn-subtle theme-inverse">Inverse</button>
+        <button type="button" class="btn-text theme-inverse">Inverse</button>
+        <button type="button" class="btn-link theme-inverse">Inverse</button>
+        <span class="demo-matrix-label">.theme-secondary</span>
+        <button type="button" class="btn-solid theme-secondary">Secondary</button>
+        <button type="button" class="btn-outline theme-secondary">Secondary</button>
+        <button type="button" class="btn-subtle theme-secondary">Secondary</button>
+        <button type="button" class="btn-text theme-secondary">Secondary</button>
+        <button type="button" class="btn-link theme-secondary">Secondary</button>
+        <span class="demo-matrix-label">disabled</span>
+        <button type="button" class="btn-solid theme-primary" disabled>Disabled</button>
+        <button type="button" class="btn-outline theme-primary" disabled>Disabled</button>
+        <button type="button" class="btn-subtle theme-primary" disabled>Disabled</button>
+        <button type="button" class="btn-text theme-primary" disabled>Disabled</button>
+        <button type="button" class="btn-link theme-primary" disabled>Disabled</button>
+      </div>
+      <h3>Base class</h3>
+      <div class="demo-row">
+        <button type="button" class="btn">.btn base class</button>
+        <button type="button" class="btn-solid btn-styled theme-primary">.btn-styled</button>
+      </div>
+      <h3>Sizes</h3>
+      <div class="demo-row">
+        <button type="button" class="btn-solid theme-primary btn-xs">Solid xs</button>
+        <button type="button" class="btn-solid theme-primary btn-sm">Solid sm</button>
+        <button type="button" class="btn-solid theme-primary">Solid default</button>
+        <button type="button" class="btn-solid theme-primary btn-lg">Solid lg</button>
+      </div>
+      <div class="demo-row">
+        <button type="button" class="btn-outline theme-primary btn-xs">Outline xs</button>
+        <button type="button" class="btn-outline theme-primary btn-sm">Outline sm</button>
+        <button type="button" class="btn-outline theme-primary">Outline default</button>
+        <button type="button" class="btn-outline theme-primary btn-lg">Outline lg</button>
+      </div>
+      <div class="demo-row">
+        <button type="button" class="btn-subtle theme-primary btn-xs">Subtle xs</button>
+        <button type="button" class="btn-subtle theme-primary btn-sm">Subtle sm</button>
+        <button type="button" class="btn-subtle theme-primary">Subtle default</button>
+        <button type="button" class="btn-subtle theme-primary btn-lg">Subtle lg</button>
+      </div>
+      <div class="demo-row">
+        <button type="button" class="btn-text theme-primary btn-xs">Text xs</button>
+        <button type="button" class="btn-text theme-primary btn-sm">Text sm</button>
+        <button type="button" class="btn-text theme-primary">Text default</button>
+        <button type="button" class="btn-text theme-primary btn-lg">Text lg</button>
+      </div>
+      <h3>With icons</h3>
+      <div class="demo-row">
+        <button type="button" class="btn-solid theme-primary"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">add</span>Leading icon</button>
+        <button type="button" class="btn-outline theme-primary">Trailing icon<span class="material-symbols-outlined demo-icon-20" aria-hidden="true">arrow_forward</span></button>
+        <button type="button" class="btn-subtle theme-primary"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">download</span>Both icons<span class="material-symbols-outlined demo-icon-20" aria-hidden="true">expand_more</span></button>
+        <button type="button" class="btn-text theme-primary btn-sm"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">edit</span>Small with icon</button>
+        <button type="button" class="btn-solid theme-primary btn-lg"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">send</span>Large with icon</button>
+      </div>
+      <h3>Icon buttons (.btn-icon)</h3>
+      <div class="demo-row">
+        <button type="button" class="btn-solid theme-primary btn-icon btn-xs" aria-label="Search (solid, xs)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-solid theme-primary btn-icon btn-sm" aria-label="Search (solid, sm)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-solid theme-primary btn-icon" aria-label="Search (solid, default)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-solid theme-primary btn-icon btn-lg" aria-label="Search (solid, lg)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+      </div>
+      <div class="demo-row">
+        <button type="button" class="btn-outline theme-primary btn-icon btn-xs" aria-label="Search (outline, xs)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-outline theme-primary btn-icon btn-sm" aria-label="Search (outline, sm)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-outline theme-primary btn-icon" aria-label="Search (outline, default)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-outline theme-primary btn-icon btn-lg" aria-label="Search (outline, lg)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+      </div>
+      <div class="demo-row">
+        <button type="button" class="btn-subtle theme-primary btn-icon btn-xs" aria-label="Search (subtle, xs)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-subtle theme-primary btn-icon btn-sm" aria-label="Search (subtle, sm)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-subtle theme-primary btn-icon" aria-label="Search (subtle, default)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-subtle theme-primary btn-icon btn-lg" aria-label="Search (subtle, lg)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+      </div>
+      <div class="demo-row">
+        <button type="button" class="btn-text theme-primary btn-icon btn-xs" aria-label="Search (text, xs)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-text theme-primary btn-icon btn-sm" aria-label="Search (text, sm)"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-text theme-primary btn-icon" aria-label="Search (text, default)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+        <button type="button" class="btn-text theme-primary btn-icon btn-lg" aria-label="Search (text, lg)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+      </div>
+      <div class="demo-row">
+        <button type="button" class="btn-icon" aria-label="Settings (base .btn-icon)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">settings</span></button>
+        <button type="button" class="btn-solid theme-danger btn-icon" aria-label="Delete"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">delete</span></button>
+        <button type="button" class="btn-outline theme-secondary btn-icon" disabled aria-label="Edit (disabled)"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">edit</span></button>
+      </div>
+      <h3>Button group</h3>
+      <div class="demo-row">
+        <div class="btn-group" role="group" aria-label="Solid group">
+          <button type="button" class="btn-solid theme-primary">Left</button>
+          <button type="button" class="btn-solid theme-primary">Middle</button>
+          <button type="button" class="btn-solid theme-primary">Right</button>
+        </div>
+        <div class="btn-group btn-group-divider" role="group" aria-label="Solid group with dividers">
+          <button type="button" class="btn-solid theme-primary">Left</button>
+          <button type="button" class="btn-solid theme-primary active">Active</button>
+          <button type="button" class="btn-solid theme-primary">Right</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Outline group">
+          <button type="button" class="btn-outline theme-secondary">Left</button>
+          <button type="button" class="btn-outline theme-secondary">Middle</button>
+          <button type="button" class="btn-outline theme-secondary">Right</button>
+        </div>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Small group">
+          <button type="button" class="btn-subtle theme-primary">Small</button>
+          <button type="button" class="btn-subtle theme-primary">Group</button>
+        </div>
+        <div class="btn-group-vertical" role="group" aria-label="Vertical group">
+          <button type="button" class="btn-solid theme-secondary">Top</button>
+          <button type="button" class="btn-solid theme-secondary">Middle</button>
+          <button type="button" class="btn-solid theme-secondary">Bottom</button>
+        </div>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group" role="group" aria-label="Pages">
+            <button type="button" class="btn-outline theme-secondary">1</button>
+            <button type="button" class="btn-outline theme-secondary">2</button>
+            <button type="button" class="btn-outline theme-secondary">3</button>
+          </div>
+          <div class="btn-group" role="group" aria-label="Actions">
+            <button type="button" class="btn-outline theme-secondary btn-icon" aria-label="Bold"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">format_bold</span></button>
+            <button type="button" class="btn-outline theme-secondary btn-icon" aria-label="Italic"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">format_italic</span></button>
+          </div>
+        </div>
+      </div>
+      <h3>Toggle buttons (.btn-check)</h3>
+      <div class="demo-row">
+        <label class="btn-check btn-solid theme-primary"><input type="checkbox" checked autocomplete="off">Checked</label>
+        <label class="btn-check btn-solid theme-primary"><input type="checkbox" autocomplete="off">Toggle</label>
+        <label class="btn-check btn-solid theme-primary"><input type="checkbox" disabled autocomplete="off">Disabled</label>
+        <div class="btn-group" role="group" aria-label="Radio toggle group">
+          <label class="btn-check btn-outline theme-primary"><input type="radio" name="demo-btn-radio" autocomplete="off" checked>Radio 1</label>
+          <label class="btn-check btn-outline theme-primary"><input type="radio" name="demo-btn-radio" autocomplete="off">Radio 2</label>
+          <label class="btn-check btn-outline theme-primary"><input type="radio" name="demo-btn-radio" autocomplete="off">Radio 3</label>
+        </div>
+        <button type="button" class="btn-outline theme-primary" data-bs-toggle="button" aria-pressed="false">JS toggle</button>
+        <button type="button" class="btn-outline theme-primary active" data-bs-toggle="button" aria-pressed="true">JS toggle (pressed)</button>
+      </div>
+      <h3>Close button (.btn-close)</h3>
+      <div class="demo-row">
+        <button type="button" class="btn-close" aria-label="Close"></button>
+        <button type="button" class="btn-close" disabled aria-label="Close (disabled)"></button>
+      </div>
+
+    </section>
+
+    <section id="forms" class="demo-section">
+      <h2>Form controls</h2>
+      <p class="demo-note" data-equivalence="text-field textarea select search-field number-field"></p>
+      <h3>Text fields</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-text" class="form-label">Full name</label>
+          <input type="text" class="form-control" id="demo-text" placeholder="Jane Doe">
+          <div class="form-text">Description text under the field.</div>
+        </div>
+        <div class="form-field">
+          <label for="demo-email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="demo-email" placeholder="name@example.com">
+        </div>
+        <div class="form-field">
+          <label for="demo-password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="demo-password" value="secret">
+        </div>
+        <div class="form-field">
+          <label for="demo-number" class="form-label">Quantity (number)</label>
+          <input type="number" class="form-control" id="demo-number" value="3" min="0" max="10">
+        </div>
+        <div class="form-field">
+          <label for="demo-search" class="form-label">Search (.form-adorn)</label>
+          <label class="form-control form-adorn">
+            <span class="form-adorn-icon" aria-hidden="true"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></span>
+            <input type="search" class="form-ghost" id="demo-search" placeholder="Search…">
+          </label>
+        </div>
+        <div class="form-field">
+          <label for="demo-adorn-end" class="form-label">Adornment at the end</label>
+          <label class="form-control form-adorn form-adorn-end">
+            <span class="form-adorn-icon" aria-hidden="true"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">mail</span></span>
+            <input type="email" class="form-ghost" id="demo-adorn-end" placeholder="you@example.com">
+          </label>
+        </div>
+        <div class="form-field">
+          <label for="demo-adorn-text" class="form-label">Text adornment</label>
+          <label class="form-control form-adorn">
+            <span class="form-adorn-text" aria-hidden="true">€</span>
+            <input type="text" class="form-ghost" id="demo-adorn-text" placeholder="0.00">
+          </label>
+        </div>
+        <div class="form-field">
+          <label for="demo-date" class="form-label">Date (native)</label>
+          <input type="date" class="form-control" id="demo-date" value="2026-10-30">
+        </div>
+      </div>
+      <h3>Select and textarea</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-select" class="form-label">Select</label>
+          <select class="form-control" id="demo-select">
+            <option selected>Choose…</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="demo-select-multiple" class="form-label">Multiple select</label>
+          <select class="form-control" id="demo-select-multiple" multiple>
+            <option selected>Open</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="demo-textarea" class="form-label">Textarea</label>
+          <textarea class="form-control" id="demo-textarea" rows="3" placeholder="Write something…"></textarea>
+        </div>
+        <div class="form-field">
+          <label id="demo-combobox-label" class="form-label">Combobox</label>
+          <button class="form-control combobox-toggle" type="button" aria-labelledby="demo-combobox-label" data-bs-toggle="combobox" data-bs-name="demo-combobox" data-bs-placeholder="Select an item…">
+            <span class="combobox-value">Select an item…</span>
+            <svg class="combobox-caret" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0.47 5.47a.75.75 0 0 1 1.06 0L5 8.94l3.47-3.47a.75.75 0 1 1 1.06 1.06l-4 4a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 0 1 0-1.06Z" fill="currentcolor"/></svg>
+          </button>
+          <div class="menu">
+            <button class="menu-item" type="button" data-bs-value="1">Option one</button>
+            <button class="menu-item" type="button" data-bs-value="2">Option two</button>
+            <button class="menu-item" type="button" data-bs-value="3">Option three</button>
+          </div>
+        </div>
+      </div>
+      <h3>Sizes</h3>
+      <div class="demo-grid">
+        <input class="form-control form-control-sm" type="text" placeholder=".form-control-sm" aria-label="Small input">
+        <input class="form-control" type="text" placeholder="Default input" aria-label="Default input">
+        <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg" aria-label="Large input">
+        <select class="form-control form-control-sm" aria-label="Small select"><option selected>Choose…</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option></select>
+        <select class="form-control" aria-label="Default select"><option selected>Choose…</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option></select>
+        <select class="form-control form-control-lg" aria-label="Large select"><option selected>Choose…</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option></select>
+      </div>
+      <h3>Floating labels</h3>
+      <div class="demo-grid">
+        <div class="form-floating">
+          <label for="demo-floating-email">Email address</label>
+          <input type="email" class="form-control" id="demo-floating-email" placeholder="name@example.com">
+        </div>
+        <div class="form-floating">
+          <label for="demo-floating-value">Input with value</label>
+          <input type="text" class="form-control" id="demo-floating-value" placeholder="Name" value="Jane Doe">
+        </div>
+        <div class="form-floating">
+          <label for="demo-floating-select">Select</label>
+          <select class="form-control" id="demo-floating-select"><option selected>Choose…</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option></select>
+        </div>
+        <div class="form-floating">
+          <label for="demo-floating-textarea">Comments</label>
+          <textarea class="form-control" id="demo-floating-textarea" placeholder="Leave a comment"></textarea>
+        </div>
+      </div>
+      <h3>Input group</h3>
+      <div class="demo-grid">
+        <div class="input-group">
+          <span class="input-group-text" id="demo-ig-at">@</span>
+          <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="demo-ig-at">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Recipient" aria-label="Recipient" aria-describedby="demo-ig-domain">
+          <span class="input-group-text" id="demo-ig-domain">@example.com</span>
+        </div>
+        <div class="input-group">
+          <input type="search" class="form-control" placeholder="Search" aria-label="Search with button">
+          <button class="btn-solid theme-primary input-group-btn" type="button">Search</button>
+        </div>
+        <div class="input-group">
+          <button class="btn-outline theme-secondary input-group-btn" type="button">Action</button>
+          <input type="text" class="form-control" aria-label="Input with leading button">
+        </div>
+        <div class="input-group input-group-sm">
+          <span class="input-group-text">Small</span>
+          <input type="text" class="form-control" aria-label="Small input group">
+        </div>
+        <div class="input-group input-group-lg">
+          <span class="input-group-text">Large</span>
+          <input type="text" class="form-control" aria-label="Large input group">
+        </div>
+      </div>
+      <h3>Validation</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-valid" class="form-label">Valid (.is-valid)</label>
+          <input type="text" class="form-control is-valid" id="demo-valid" value="Jane Doe" aria-describedby="demo-valid-feedback">
+          <div class="valid-feedback" id="demo-valid-feedback">Looks good!</div>
+        </div>
+        <div class="form-field">
+          <label for="demo-invalid" class="form-label">Invalid (.is-invalid)</label>
+          <input type="email" class="form-control is-invalid" id="demo-invalid" value="not-an-email" aria-describedby="demo-invalid-feedback">
+          <div class="invalid-feedback" id="demo-invalid-feedback">Please enter a valid email address.</div>
+        </div>
+        <div class="form-field">
+          <label for="demo-invalid-select" class="form-label">Invalid select</label>
+          <select class="form-control is-invalid" id="demo-invalid-select" aria-describedby="demo-invalid-select-feedback">
+            <option selected>Choose…</option>
+          </select>
+          <div class="invalid-feedback" id="demo-invalid-select-feedback">Please select an option.</div>
+        </div>
+        <div class="form-field">
+          <label for="demo-invalid-textarea" class="form-label">Invalid textarea</label>
+          <textarea class="form-control is-invalid" id="demo-invalid-textarea" aria-describedby="demo-invalid-textarea-feedback"></textarea>
+          <div class="invalid-feedback" id="demo-invalid-textarea-feedback">Please enter a message.</div>
+        </div>
+        <div class="form-floating is-invalid">
+          <label for="demo-floating-invalid">Invalid floating</label>
+          <input type="text" class="form-control is-invalid" id="demo-floating-invalid" placeholder="Name" value="x">
+        </div>
+        <div class="form-field">
+          <input type="checkbox" class="check is-invalid" id="demo-invalid-check">
+          <div class="form-field-content">
+            <label for="demo-invalid-check">Invalid checkbox</label>
+            <div class="invalid-feedback">You must agree before submitting.</div>
+          </div>
+        </div>
+      </div>
+      <h3>Client-side validation (data-bs-validate)</h3>
+      <div class="demo-stack">
+        <form class="demo-stack" data-bs-validate="valid" novalidate>
+          <div class="form-field">
+            <label for="demo-validate-email" class="form-label">Email address (required)</label>
+            <input type="email" class="form-control" id="demo-validate-email" required>
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="form-field">
+            <input type="checkbox" id="demo-validate-check" class="check" required>
+            <div class="form-field-content">
+              <label for="demo-validate-check">Agree to terms</label>
+              <div class="invalid-feedback">You must agree before submitting.</div>
+            </div>
+          </div>
+          <div><button class="btn-solid theme-primary" type="submit">Validate</button></div>
+        </form>
+      </div>
+      <h3>Disabled, readonly and plaintext</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-disabled" class="form-label">Disabled input</label>
+          <input type="text" class="form-control" id="demo-disabled" placeholder="Disabled" disabled>
+        </div>
+        <div class="form-field">
+          <label for="demo-readonly" class="form-label">Readonly input</label>
+          <input type="text" class="form-control" id="demo-readonly" value="Readonly value" readonly>
+        </div>
+        <div class="form-field">
+          <label for="demo-disabled-select" class="form-label">Disabled select</label>
+          <select class="form-control" id="demo-disabled-select" disabled><option selected>Choose…</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option></select>
+        </div>
+        <div class="form-field">
+          <label for="demo-disabled-textarea" class="form-label">Disabled textarea</label>
+          <textarea class="form-control" id="demo-disabled-textarea" disabled>Disabled textarea</textarea>
+        </div>
+        <div class="form-field">
+          <label for="demo-plaintext" class="form-label">Plaintext</label>
+          <input type="text" readonly class="form-control-plaintext" id="demo-plaintext" value="email@example.com">
+        </div>
+      </div>
+      <h3>File and color</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-file" class="form-label">File input</label>
+          <input class="form-control" type="file" id="demo-file">
+        </div>
+        <div class="form-field">
+          <label for="demo-file-sm" class="form-label">Small file input</label>
+          <input class="form-control form-control-sm" type="file" id="demo-file-sm">
+        </div>
+        <div class="form-field">
+          <label for="demo-color" class="form-label">Color picker</label>
+          <input type="color" class="form-control form-control-color" id="demo-color" value="#242a75" title="Choose a color">
+        </div>
+      </div>
+      <h3>Chip input</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label class="form-label" for="demo-chip-input">Skills</label>
+          <div class="chip-input theme-primary" data-bs-chips>
+            <span class="chip">JavaScript</span>
+            <span class="chip">TypeScript</span>
+            <input type="text" class="form-ghost" id="demo-chip-input" placeholder="Add more…">
+          </div>
+          <div class="form-text">Press Enter or comma to add a chip.</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="demo-chip-input-disabled">Disabled chip input</label>
+          <div class="chip-input" data-bs-chips>
+            <span class="chip">Read only</span>
+            <input type="text" class="form-ghost" id="demo-chip-input-disabled" placeholder="Disabled…" disabled>
+          </div>
+        </div>
+      </div>
+      <h3>OTP input</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label class="form-label" for="demo-otp">Verification code</label>
+          <div class="otp" data-bs-otp>
+            <input type="text" class="otp-input" id="demo-otp" maxlength="6" aria-describedby="demo-otp-help">
+          </div>
+          <div id="demo-otp-help" class="form-text">Enter the 6-digit code.</div>
+        </div>
+        <div class="form-field">
+          <span class="form-label">Connected, with separator</span>
+          <div class="otp otp-connected" data-bs-otp data-bs-groups="[3,3]">
+            <input type="text" class="otp-input" maxlength="6" aria-label="Connected verification code">
+          </div>
+        </div>
+        <div class="form-field">
+          <span class="form-label">Small and large</span>
+          <div class="otp otp-sm" data-bs-otp>
+            <input type="text" class="otp-input" maxlength="4" aria-label="Small PIN">
+          </div>
+          <div class="otp otp-lg" data-bs-otp>
+            <input type="text" class="otp-input" maxlength="4" aria-label="Large PIN">
+          </div>
+        </div>
+        <div class="form-field">
+          <span class="form-label">Invalid and disabled</span>
+          <div class="otp otp-connected is-invalid" data-bs-otp>
+            <input type="text" class="otp-input" maxlength="6" value="123" aria-label="Invalid verification code">
+          </div>
+          <div class="otp otp-connected" data-bs-otp>
+            <input type="text" class="otp-input" maxlength="6" aria-label="Disabled verification code" disabled>
+          </div>
+        </div>
+      </div>
+      <h3>Password strength meter</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-strength" class="form-label">New password</label>
+          <input type="password" class="form-control" id="demo-strength" placeholder="Type a password">
+          <div class="strength" data-bs-strength>
+            <div class="strength-segment"></div>
+            <div class="strength-segment"></div>
+            <div class="strength-segment"></div>
+            <div class="strength-segment"></div>
+          </div>
+          <span class="strength-text"></span>
+        </div>
+        <div class="form-field">
+          <label for="demo-strength-bar" class="form-label">Progress bar style</label>
+          <input type="password" class="form-control" id="demo-strength-bar" placeholder="Type a password">
+          <div class="strength-bar" data-bs-strength></div>
+        </div>
+        <div class="demo-stack">
+          <div class="strength" data-bs-strength="weak" role="img" aria-label="Strength: weak">
+            <div class="strength-segment active"></div><div class="strength-segment"></div><div class="strength-segment"></div><div class="strength-segment"></div>
+          </div>
+          <div class="strength" data-bs-strength="fair" role="img" aria-label="Strength: fair">
+            <div class="strength-segment active"></div><div class="strength-segment active"></div><div class="strength-segment"></div><div class="strength-segment"></div>
+          </div>
+          <div class="strength" data-bs-strength="good" role="img" aria-label="Strength: good">
+            <div class="strength-segment active"></div><div class="strength-segment active"></div><div class="strength-segment active"></div><div class="strength-segment"></div>
+          </div>
+          <div class="strength" data-bs-strength="strong" role="img" aria-label="Strength: strong">
+            <div class="strength-segment active"></div><div class="strength-segment active"></div><div class="strength-segment active"></div><div class="strength-segment active"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="datepicker" class="demo-section">
+      <h2>Datepicker</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <!-- The datepicker needs vanilla-calendar-pro, which dist/js/bootstrap.bundle.js already includes: no extra dependency. -->
+      <h3>Input and inline</h3>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-datepicker" class="form-label">Choose a date</label>
+          <input type="text" class="form-control" id="demo-datepicker" data-bs-toggle="datepicker" autocomplete="off" placeholder="Choose date…">
+        </div>
+        <div class="form-field">
+          <label for="demo-datepicker-range" class="form-label">Date range</label>
+          <input type="text" class="form-control" id="demo-datepicker-range" data-bs-toggle="datepicker" autocomplete="off" data-bs-selection-mode="multiple-ranged" data-bs-selected-dates='["2026-11-10", "2026-11-18"]' placeholder="Start and end dates…">
+        </div>
+        <div data-bs-toggle="datepicker" data-bs-inline="true" data-bs-selected-dates='["2026-10-30"]'></div>
+      </div>
+
+    </section>
+
+    <section id="checks" class="demo-section">
+      <h2>Checkboxes</h2>
+      <p class="demo-note" data-equivalence="checkbox checkbox-group"></p>
+      <h3>States</h3>
+      <div class="demo-stack">
+        <div class="form-field"><input type="checkbox" class="check" id="demo-check-1"><label for="demo-check-1">Default</label></div>
+        <div class="form-field"><input type="checkbox" class="check" id="demo-check-2" checked><label for="demo-check-2">Checked</label></div>
+        <div class="form-field"><input type="checkbox" class="check" id="demo-check-3" data-demo-indeterminate><label for="demo-check-3">Indeterminate</label></div>
+        <div class="form-field"><input type="checkbox" class="check" id="demo-check-4" disabled><label for="demo-check-4">Disabled</label></div>
+        <div class="form-field"><input type="checkbox" class="check" id="demo-check-5" checked disabled><label for="demo-check-5">Disabled checked</label></div>
+        <div class="form-field"><input type="checkbox" class="check" id="demo-check-6" data-demo-indeterminate disabled><label for="demo-check-6">Disabled indeterminate</label></div>
+      </div>
+      <h3>Sizes and theme</h3>
+      <div class="demo-stack">
+        <div class="form-field"><input type="checkbox" class="check check-sm" id="demo-check-sm" checked><label for="demo-check-sm">Small (.check-sm)</label></div>
+        <div class="form-field"><input type="checkbox" class="check" id="demo-check-md" checked><label for="demo-check-md">Default</label></div>
+        <div class="form-field"><input type="checkbox" class="check check-lg" id="demo-check-lg" checked><label for="demo-check-lg">Large (.check-lg)</label></div>
+        <div class="form-field"><input type="checkbox" class="check theme-success" id="demo-check-success" checked><label for="demo-check-success">.theme-success</label></div>
+        <div class="form-field"><input type="checkbox" class="check theme-danger" id="demo-check-danger" checked><label for="demo-check-danger">.theme-danger</label></div>
+      </div>
+      <h3>Group with legend and descriptions</h3>
+      <div class="demo-stack">
+        <fieldset class="form-group">
+          <legend class="form-label">Notifications</legend>
+          <div class="form-field">
+            <input type="checkbox" class="check" id="demo-check-group-1" checked>
+            <div class="form-field-content">
+              <label for="demo-check-group-1">Email</label>
+              <small class="form-text">A weekly digest of activity.</small>
+            </div>
+          </div>
+          <div class="form-field">
+            <input type="checkbox" class="check" id="demo-check-group-2">
+            <div class="form-field-content">
+              <label for="demo-check-group-2">Push notifications</label>
+              <small class="form-text">Sent to your phone.</small>
+            </div>
+          </div>
+          <div class="form-field">
+            <input type="checkbox" class="check" id="demo-check-group-3" disabled>
+            <div class="form-field-content">
+              <label for="demo-check-group-3">SMS</label>
+              <small class="form-text">Not available in your region.</small>
+            </div>
+          </div>
+          <small class="form-text">Choose how we contact you.</small>
+        </fieldset>
+      </div>
+
+    </section>
+
+    <section id="radios" class="demo-section">
+      <h2>Radio buttons</h2>
+      <p class="demo-note" data-equivalence="radio-group"></p>
+      <h3>Group</h3>
+      <div class="demo-grid">
+        <fieldset class="form-group">
+          <legend class="form-label">Shipping method</legend>
+          <div class="form-field"><input type="radio" class="radio" name="demo-radio" id="demo-radio-1" checked><label for="demo-radio-1">Standard</label></div>
+          <div class="form-field"><input type="radio" class="radio" name="demo-radio" id="demo-radio-2"><label for="demo-radio-2">Express</label></div>
+          <div class="form-field"><input type="radio" class="radio" name="demo-radio" id="demo-radio-3" disabled><label for="demo-radio-3">Drone (disabled)</label></div>
+          <small class="form-text">Choose your preferred shipping speed.</small>
+        </fieldset>
+        <fieldset class="form-group">
+          <legend class="form-label">Disabled group</legend>
+          <div class="form-field"><input type="radio" class="radio" name="demo-radio-disabled" id="demo-radio-d1" checked disabled><label for="demo-radio-d1">Disabled checked</label></div>
+          <div class="form-field"><input type="radio" class="radio" name="demo-radio-disabled" id="demo-radio-d2" disabled><label for="demo-radio-d2">Disabled</label></div>
+        </fieldset>
+      </div>
+      <h3>Sizes and theme</h3>
+      <div class="demo-stack">
+        <div class="form-field"><input type="radio" class="radio radio-sm" name="demo-radio-size" id="demo-radio-sm" checked><label for="demo-radio-sm">Small (.radio-sm)</label></div>
+        <div class="form-field"><input type="radio" class="radio" name="demo-radio-size" id="demo-radio-md"><label for="demo-radio-md">Default</label></div>
+        <div class="form-field"><input type="radio" class="radio radio-lg" name="demo-radio-size" id="demo-radio-lg"><label for="demo-radio-lg">Large (.radio-lg)</label></div>
+        <div class="form-field"><input type="radio" class="radio theme-success" name="demo-radio-theme" id="demo-radio-success" checked><label for="demo-radio-success">.theme-success</label></div>
+      </div>
+      <h3>Card fields (.form-field-card)</h3>
+      <div class="demo-stack">
+        <fieldset class="form-group">
+          <legend class="form-label">Select a plan</legend>
+          <div class="vstack gap-1">
+            <div class="form-field form-field-card">
+              <input type="radio" id="demo-plan-1" class="radio" name="demo-plan" checked>
+              <div class="form-field-content">
+                <label for="demo-plan-1">Basic</label>
+                <small class="form-text">For individuals.</small>
+              </div>
+            </div>
+            <div class="form-field form-field-card">
+              <input type="radio" id="demo-plan-2" class="radio" name="demo-plan">
+              <div class="form-field-content">
+                <label for="demo-plan-2">Pro</label>
+                <small class="form-text">For teams.</small>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+    </section>
+
+    <section id="switches" class="demo-section">
+      <h2>Switches</h2>
+      <p class="demo-note" data-equivalence="switch"></p>
+      <h3>States and sizes</h3>
+      <div class="demo-stack">
+        <div class="form-field"><div class="switch"><input type="checkbox" id="demo-switch-1" role="switch" switch></div><label for="demo-switch-1">Off</label></div>
+        <div class="form-field"><div class="switch"><input type="checkbox" id="demo-switch-2" role="switch" switch checked></div><label for="demo-switch-2">On</label></div>
+        <div class="form-field"><div class="switch"><input type="checkbox" id="demo-switch-3" role="switch" switch disabled></div><label for="demo-switch-3">Disabled</label></div>
+        <div class="form-field"><div class="switch"><input type="checkbox" id="demo-switch-4" role="switch" switch checked disabled></div><label for="demo-switch-4">Disabled on</label></div>
+        <div class="form-field"><div class="switch switch-sm"><input type="checkbox" id="demo-switch-5" role="switch" switch checked></div><label for="demo-switch-5">Small (.switch-sm)</label></div>
+        <div class="form-field"><div class="switch switch-lg"><input type="checkbox" id="demo-switch-6" role="switch" switch checked></div><label for="demo-switch-6">Large (.switch-lg)</label></div>
+        <div class="form-field"><div class="switch theme-success"><input type="checkbox" id="demo-switch-7" role="switch" switch checked></div><label for="demo-switch-7">.theme-success</label></div>
+      </div>
+
+    </section>
+
+    <section id="range" class="demo-section">
+      <h2>Range</h2>
+      <p class="demo-note" data-equivalence="slider"></p>
+      <div class="demo-grid">
+        <div class="form-field">
+          <label for="demo-range" class="form-label">Default</label>
+          <div class="form-range"><input type="range" class="form-range-input" id="demo-range"></div>
+        </div>
+        <div class="form-field">
+          <label for="demo-range-bubble" class="form-label">With value bubble</label>
+          <div class="form-range" data-bs-bubble><input type="range" class="form-range-input" id="demo-range-bubble" min="0" max="100" value="60"></div>
+        </div>
+        <div class="form-field">
+          <label for="demo-range-ticks" class="form-label">With ticks</label>
+          <div class="form-range"><input type="range" class="form-range-input" id="demo-range-ticks" min="0" max="100" step="25" value="50" list="demo-range-ticks-list"></div>
+          <datalist id="demo-range-ticks-list">
+            <option value="0" label="Cold"></option>
+            <option value="25"></option>
+            <option value="50" label="Mild"></option>
+            <option value="75"></option>
+            <option value="100" label="Hot"></option>
+          </datalist>
+        </div>
+        <div class="form-field">
+          <label for="demo-range-theme" class="form-label">.theme-success</label>
+          <div class="form-range theme-success"><input type="range" class="form-range-input" id="demo-range-theme" value="30"></div>
+        </div>
+        <div class="form-field">
+          <label for="demo-range-disabled" class="form-label">Disabled</label>
+          <div class="form-range"><input type="range" class="form-range-input" id="demo-range-disabled" disabled></div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="badges" class="demo-section">
+      <h2>Badges</h2>
+      <p class="demo-note" data-equivalence="badge"></p>
+      <h3>Default and solid</h3>
+      <div class="demo-row">
+        <span class="badge">Default</span>
+        <span class="badge theme-primary">Primary</span>
+        <span class="badge theme-accent">Accent</span>
+        <span class="badge theme-success">Success</span>
+        <span class="badge theme-danger">Danger</span>
+        <span class="badge theme-warning">Warning</span>
+        <span class="badge theme-info">Info</span>
+        <span class="badge theme-inverse">Inverse</span>
+        <span class="badge theme-secondary">Secondary</span>
+      </div>
+      <h3>Subtle (.badge-subtle)</h3>
+      <div class="demo-row">
+        <span class="badge badge-subtle theme-primary">Primary</span>
+        <span class="badge badge-subtle theme-accent">Accent</span>
+        <span class="badge badge-subtle theme-success">Success</span>
+        <span class="badge badge-subtle theme-danger">Danger</span>
+        <span class="badge badge-subtle theme-warning">Warning</span>
+        <span class="badge badge-subtle theme-info">Info</span>
+        <span class="badge badge-subtle theme-inverse">Inverse</span>
+        <span class="badge badge-subtle theme-secondary">Secondary</span>
+      </div>
+      <h3>Outline (.badge-outline)</h3>
+      <div class="demo-row">
+        <span class="badge badge-outline theme-primary">Primary</span>
+        <span class="badge badge-outline theme-accent">Accent</span>
+        <span class="badge badge-outline theme-success">Success</span>
+        <span class="badge badge-outline theme-danger">Danger</span>
+        <span class="badge badge-outline theme-warning">Warning</span>
+        <span class="badge badge-outline theme-info">Info</span>
+        <span class="badge badge-outline theme-inverse">Inverse</span>
+        <span class="badge badge-outline theme-secondary">Secondary</span>
+      </div>
+      <h3>Large and in context</h3>
+      <div class="demo-row">
+        <span class="badge badge-lg theme-primary">Large badge</span>
+        <span class="badge badge-lg badge-subtle theme-success">Large subtle</span>
+        <button type="button" class="btn-solid theme-primary">Notifications <span class="badge theme-danger">4</span></button>
+        <button type="button" class="btn-outline theme-secondary">Inbox <span class="badge badge-subtle theme-primary">12</span></button>
+        <h4 class="mb-0">Heading <span class="badge theme-accent">New</span></h4>
+      </div>
+
+    </section>
+
+    <section id="chips" class="demo-section">
+      <h2>Chips</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <h3>Theme colors</h3>
+      <div class="demo-row">
+        <span class="chip">Default</span>
+        <span class="chip theme-primary">Primary</span>
+        <span class="chip theme-accent">Accent</span>
+        <span class="chip theme-success">Success</span>
+        <span class="chip theme-danger">Danger</span>
+        <span class="chip theme-warning">Warning</span>
+        <span class="chip theme-info">Info</span>
+        <span class="chip theme-inverse">Inverse</span>
+        <span class="chip theme-secondary">Secondary</span>
+      </div>
+      <h3>Selected (.active)</h3>
+      <div class="demo-row">
+        <span class="chip active">Default</span>
+        <span class="chip theme-primary active">Primary</span>
+        <span class="chip theme-accent active">Accent</span>
+        <span class="chip theme-success active">Success</span>
+        <span class="chip theme-danger active">Danger</span>
+        <span class="chip theme-warning active">Warning</span>
+        <span class="chip theme-info active">Info</span>
+        <span class="chip theme-inverse active">Inverse</span>
+        <span class="chip theme-secondary active">Secondary</span>
+      </div>
+      <h3>Icons, dismissible, buttons</h3>
+      <div class="demo-row">
+        <span class="chip"><span class="chip-icon"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">person</span></span>With icon</span>
+        <span class="chip theme-primary">Dismissible<button type="button" class="chip-dismiss" aria-label="Remove"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">close</span></button></span>
+        <button type="button" class="chip">Button chip</button>
+        <button type="button" class="chip active">Selected button chip</button>
+        <button type="button" class="chip" disabled>Disabled chip</button>
+      </div>
+
+    </section>
+
+    <section id="alerts" class="demo-section">
+      <h2>Alerts</h2>
+      <p class="demo-note" data-equivalence="alert"></p>
+      <h3>Default</h3>
+      <div class="demo-stack">
+        <div class="alert" role="alert"><p>A simple default alert.</p></div>
+      </div>
+      <h3>Theme colors</h3>
+      <div class="demo-stack">
+        <div class="alert theme-primary" role="alert">
+          <div>
+            <h4 class="alert-heading">Primary alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+        <div class="alert theme-accent" role="alert">
+          <div>
+            <h4 class="alert-heading">Accent alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+        <div class="alert theme-success" role="alert">
+          <div>
+            <h4 class="alert-heading">Success alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+        <div class="alert theme-danger" role="alert">
+          <div>
+            <h4 class="alert-heading">Danger alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+        <div class="alert theme-warning" role="alert">
+          <div>
+            <h4 class="alert-heading">Warning alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+        <div class="alert theme-info" role="alert">
+          <div>
+            <h4 class="alert-heading">Info alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+        <div class="alert theme-inverse" role="alert">
+          <div>
+            <h4 class="alert-heading">Inverse alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+        <div class="alert theme-secondary" role="alert">
+          <div>
+            <h4 class="alert-heading">Secondary alert</h4>
+            <p class="mb-0">A short message with <a href="#alerts" class="alert-link">an alert link</a>.</p>
+          </div>
+        </div>
+      </div>
+      <h3>Dismissible and with icon</h3>
+      <div class="demo-stack">
+        <div class="alert theme-warning" role="alert">
+          <p>Something is wrong, check the fields and try again.</p>
+          <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert theme-info" role="alert">
+          <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">info</span>
+          <p>An alert with a leading Material Symbols icon.</p>
+        </div>
+        <div class="alert theme-danger" role="alert">
+          <span class="material-symbols-outlined demo-icon-20" aria-hidden="true">error</span>
+          <div>
+            <h4 class="alert-heading">Upload failed</h4>
+            <p class="mb-0">The file is too large.</p>
+          </div>
+          <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="cards" class="demo-section">
+      <h2>Cards</h2>
+      <p class="demo-note" data-equivalence="card"></p>
+      <h3>Basic, header and footer, image</h3>
+      <div class="demo-grid">
+        <div class="card">
+          <div class="card-body">
+            <h4>Card title</h4>
+            <p class="card-subtitle fg-3">Card subtitle</p>
+            <p>Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+            <a href="#cards">Card link</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">Featured</div>
+          <div class="card-body">
+            <h4>Special title treatment</h4>
+            <p>With supporting text below as a natural lead-in to additional content.</p>
+            <div><a href="#cards" class="btn-solid theme-primary">Go somewhere</a></div>
+          </div>
+          <div class="card-footer fg-2">2 days ago</div>
+        </div>
+        <div class="card">
+          <svg class="card-img-top" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Image cap" preserveAspectRatio="xMidYMid slice"><rect width="100%" height="100%" style="fill: var(--bs-bg-3)"></rect><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" style="fill: var(--bs-fg-3)">Image cap</text></svg>
+          <div class="card-body">
+            <h4>Card with image</h4>
+            <p>The image is an inline SVG placeholder.</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">An item</li>
+            <li class="list-group-item">A second item</li>
+          </ul>
+        </div>
+        <div class="card card-translucent">
+          <div class="card-body">
+            <h4>Translucent card</h4>
+            <p>.card-translucent blurs what is behind it.</p>
+          </div>
+        </div>
+      </div>
+      <h3>Card row</h3>
+      <div class="demo-stack">
+        <div class="card card-row">
+          <svg class="card-img-start" width="100%" height="160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Image" preserveAspectRatio="xMidYMid slice"><rect width="100%" height="100%" style="fill: var(--bs-bg-3)"></rect><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" style="fill: var(--bs-fg-3)">Image</text></svg>
+          <div class="card-body">
+            <h4>Horizontal card</h4>
+            <p>.card-row with .card-img-start.</p>
+            <p><small class="fg-2">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+      <h3>Subtle theme cards (.card-subtle)</h3>
+      <div class="demo-grid">
+        <div class="card card-subtle theme-primary">
+          <div class="card-header">Primary</div>
+          <div class="card-body"><p>.card-subtle with .theme-primary</p></div>
+        </div>
+        <div class="card card-subtle theme-accent">
+          <div class="card-header">Accent</div>
+          <div class="card-body"><p>.card-subtle with .theme-accent</p></div>
+        </div>
+        <div class="card card-subtle theme-success">
+          <div class="card-header">Success</div>
+          <div class="card-body"><p>.card-subtle with .theme-success</p></div>
+        </div>
+        <div class="card card-subtle theme-danger">
+          <div class="card-header">Danger</div>
+          <div class="card-body"><p>.card-subtle with .theme-danger</p></div>
+        </div>
+        <div class="card card-subtle theme-warning">
+          <div class="card-header">Warning</div>
+          <div class="card-body"><p>.card-subtle with .theme-warning</p></div>
+        </div>
+        <div class="card card-subtle theme-info">
+          <div class="card-header">Info</div>
+          <div class="card-body"><p>.card-subtle with .theme-info</p></div>
+        </div>
+        <div class="card card-subtle theme-inverse">
+          <div class="card-header">Inverse</div>
+          <div class="card-body"><p>.card-subtle with .theme-inverse</p></div>
+        </div>
+        <div class="card card-subtle theme-secondary">
+          <div class="card-header">Secondary</div>
+          <div class="card-body"><p>.card-subtle with .theme-secondary</p></div>
+        </div>
+      </div>
+      <h3>Solid theme cards</h3>
+      <div class="demo-grid">
+        <div class="card theme-primary">
+          <div class="card-header">Primary</div>
+          <div class="card-body"><p>.card with .theme-primary</p></div>
+        </div>
+        <div class="card theme-accent">
+          <div class="card-header">Accent</div>
+          <div class="card-body"><p>.card with .theme-accent</p></div>
+        </div>
+        <div class="card theme-success">
+          <div class="card-header">Success</div>
+          <div class="card-body"><p>.card with .theme-success</p></div>
+        </div>
+        <div class="card theme-danger">
+          <div class="card-header">Danger</div>
+          <div class="card-body"><p>.card with .theme-danger</p></div>
+        </div>
+        <div class="card theme-warning">
+          <div class="card-header">Warning</div>
+          <div class="card-body"><p>.card with .theme-warning</p></div>
+        </div>
+        <div class="card theme-info">
+          <div class="card-header">Info</div>
+          <div class="card-body"><p>.card with .theme-info</p></div>
+        </div>
+        <div class="card theme-inverse">
+          <div class="card-header">Inverse</div>
+          <div class="card-body"><p>.card with .theme-inverse</p></div>
+        </div>
+        <div class="card theme-secondary">
+          <div class="card-header">Secondary</div>
+          <div class="card-body"><p>.card with .theme-secondary</p></div>
+        </div>
+      </div>
+      <h3>Card group</h3>
+      <div class="demo-stack">
+        <div class="contains-inline">
+          <div class="card-group">
+            <div class="card">
+              <svg class="card-img-top" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Image cap" preserveAspectRatio="xMidYMid slice"><rect width="100%" height="100%" style="fill: var(--bs-bg-3)"></rect><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" style="fill: var(--bs-fg-3)">Image cap</text></svg>
+              <div class="card-body"><h4>Card 1</h4><p>Cards in a .card-group share borders.</p></div>
+              <div class="card-footer"><small class="fg-2">Last updated 3 mins ago</small></div>
+            </div>
+            <div class="card">
+              <svg class="card-img-top" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Image cap" preserveAspectRatio="xMidYMid slice"><rect width="100%" height="100%" style="fill: var(--bs-bg-3)"></rect><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" style="fill: var(--bs-fg-3)">Image cap</text></svg>
+              <div class="card-body"><h4>Card 2</h4><p>Cards in a .card-group share borders.</p></div>
+              <div class="card-footer"><small class="fg-2">Last updated 3 mins ago</small></div>
+            </div>
+            <div class="card">
+              <svg class="card-img-top" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Image cap" preserveAspectRatio="xMidYMid slice"><rect width="100%" height="100%" style="fill: var(--bs-bg-3)"></rect><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" style="fill: var(--bs-fg-3)">Image cap</text></svg>
+              <div class="card-body"><h4>Card 3</h4><p>Cards in a .card-group share borders.</p></div>
+              <div class="card-footer"><small class="fg-2">Last updated 3 mins ago</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="accordion" class="demo-section">
+      <h2>Accordion</h2>
+      <p class="demo-note" data-equivalence="accordion"></p>
+      <h3>Default</h3>
+      <div class="demo-stack">
+        <div class="accordion">
+          <details class="accordion-item" name="demo-accordion" open>
+            <summary class="accordion-header">Accordion item #1<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #1. The native details element handles show and hide without JavaScript.</div>
+          </details>
+          <details class="accordion-item" name="demo-accordion">
+            <summary class="accordion-header">Accordion item #2<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #2. The native details element handles show and hide without JavaScript.</div>
+          </details>
+          <details class="accordion-item" name="demo-accordion">
+            <summary class="accordion-header">Accordion item #3<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #3. The native details element handles show and hide without JavaScript.</div>
+          </details>
+        </div>
+      </div>
+      <h3>Small (.accordion-sm)</h3>
+      <div class="demo-stack">
+        <div class="accordion accordion-sm">
+          <details class="accordion-item" name="demo-accordion-sm" open>
+            <summary class="accordion-header">Accordion item #1<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #1. The native details element handles show and hide without JavaScript.</div>
+          </details>
+          <details class="accordion-item" name="demo-accordion-sm">
+            <summary class="accordion-header">Accordion item #2<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #2. The native details element handles show and hide without JavaScript.</div>
+          </details>
+          <details class="accordion-item" name="demo-accordion-sm">
+            <summary class="accordion-header">Accordion item #3<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #3. The native details element handles show and hide without JavaScript.</div>
+          </details>
+        </div>
+      </div>
+      <h3>Flush (.accordion-flush)</h3>
+      <div class="demo-stack">
+        <div class="accordion accordion-flush">
+          <details class="accordion-item" name="demo-accordion-flush" open>
+            <summary class="accordion-header">Accordion item #1<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #1. The native details element handles show and hide without JavaScript.</div>
+          </details>
+          <details class="accordion-item" name="demo-accordion-flush">
+            <summary class="accordion-header">Accordion item #2<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #2. The native details element handles show and hide without JavaScript.</div>
+          </details>
+          <details class="accordion-item" name="demo-accordion-flush">
+            <summary class="accordion-header">Accordion item #3<svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 5 6 6 6-6"/></svg></summary>
+            <div class="accordion-body">Content of accordion item #3. The native details element handles show and hide without JavaScript.</div>
+          </details>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="breadcrumb" class="demo-section">
+      <h2>Breadcrumb</h2>
+      <p class="demo-note" data-equivalence="breadcrumb"></p>
+      <div class="demo-stack">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="breadcrumb-link" href="#breadcrumb">Home</a></li>
+            <li class="breadcrumb-divider"></li>
+            <li class="breadcrumb-item"><a class="breadcrumb-link" href="#breadcrumb">Library</a></li>
+            <li class="breadcrumb-divider"></li>
+            <li class="breadcrumb-item" aria-current="page"><a class="breadcrumb-link active" href="#breadcrumb">Data</a></li>
+          </ol>
+        </nav>
+        <nav aria-label="Breadcrumb with text dividers">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="breadcrumb-link" href="#breadcrumb"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">home</span><span class="visually-hidden">Home</span></a></li>
+            <li class="breadcrumb-divider">/</li>
+            <li class="breadcrumb-item"><a class="breadcrumb-link" href="#breadcrumb">Library</a></li>
+            <li class="breadcrumb-divider">/</li>
+            <li class="breadcrumb-item" aria-current="page"><a class="breadcrumb-link active" href="#breadcrumb">Data</a></li>
+          </ol>
+        </nav>
+      </div>
+
+    </section>
+
+    <section id="pagination" class="demo-section">
+      <h2>Pagination</h2>
+      <p class="demo-note" data-equivalence="pagination"></p>
+      <div class="demo-stack">
+        <nav aria-label="Small pagination">
+          <ul class="pagination pagination-sm">
+            <li class="page-item disabled"><a class="page-link" aria-disabled="true">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination">1</a></li>
+            <li class="page-item active"><a class="page-link" href="#pagination" aria-current="page">2</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination">3</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Default pagination">
+          <ul class="pagination">
+            <li class="page-item disabled"><a class="page-link" aria-disabled="true">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination">1</a></li>
+            <li class="page-item active"><a class="page-link" href="#pagination" aria-current="page">2</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination">3</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Large pagination">
+          <ul class="pagination pagination-lg">
+            <li class="page-item disabled"><a class="page-link" aria-disabled="true">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination">1</a></li>
+            <li class="page-item active"><a class="page-link" href="#pagination" aria-current="page">2</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination">3</a></li>
+            <li class="page-item"><a class="page-link" href="#pagination" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+          </ul>
+        </nav>
+      </div>
+
+    </section>
+
+    <section id="progress" class="demo-section">
+      <h2>Progress</h2>
+      <p class="demo-note" data-equivalence="progress-bar"></p>
+      <h3>Values</h3>
+      <div class="demo-stack">
+        <div class="progress" role="progressbar" aria-label="0% progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 0%"></div></div>
+        <div class="progress" role="progressbar" aria-label="25% progress" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 25%"></div></div>
+        <div class="progress" role="progressbar" aria-label="50% progress" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 50%"></div></div>
+        <div class="progress" role="progressbar" aria-label="75% progress" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 75%"></div></div>
+        <div class="progress" role="progressbar" aria-label="100% progress" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 100%"></div></div>
+      </div>
+      <h3>With label</h3>
+      <div class="demo-stack">
+        <div class="progress" role="progressbar" aria-label="40% progress" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 40%">40%</div></div>
+        <div class="progress" role="progressbar" aria-label="80% progress" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 80%">80%</div></div>
+      </div>
+      <h3>Theme colors</h3>
+      <div class="demo-stack">
+        <div class="progress" role="progressbar" aria-label="accent progress" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar theme-accent" style="width: 20%">20%</div></div>
+        <div class="progress" role="progressbar" aria-label="success progress" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar theme-success" style="width: 40%">40%</div></div>
+        <div class="progress" role="progressbar" aria-label="info progress" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar theme-info" style="width: 60%">60%</div></div>
+        <div class="progress" role="progressbar" aria-label="warning progress" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar theme-warning" style="width: 80%">80%</div></div>
+        <div class="progress" role="progressbar" aria-label="danger progress" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar theme-danger" style="width: 100%">100%</div></div>
+      </div>
+      <h3>Striped and animated</h3>
+      <div class="demo-stack">
+        <div class="progress" role="progressbar" aria-label="50% progress" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar progress-bar-striped" style="width: 50%"></div></div>
+        <div class="progress" role="progressbar" aria-label="Animated striped progress" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div></div>
+      </div>
+      <h3>Stacked</h3>
+      <div class="demo-stack">
+        <div class="progress-stacked">
+          <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%"><div class="progress-bar"></div></div>
+          <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%"><div class="progress-bar theme-success"></div></div>
+          <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%"><div class="progress-bar theme-info"></div></div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="spinners" class="demo-section">
+      <h2>Spinners</h2>
+      <p class="demo-note" data-equivalence="spinner"></p>
+      <h3>Border and grow</h3>
+      <div class="demo-row">
+        <div class="spinner-border" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-grow" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-border spinner-sm" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-grow spinner-sm" role="status"><span class="visually-hidden">Loading…</span></div>
+      </div>
+      <h3>Colors</h3>
+      <div class="demo-row">
+        <div class="spinner-border fg-primary" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-border fg-accent" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-border fg-success" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-border fg-danger" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-border fg-warning" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-border fg-info" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-grow fg-primary" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-grow fg-accent" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="spinner-grow fg-success" role="status"><span class="visually-hidden">Loading…</span></div>
+      </div>
+      <h3>In context</h3>
+      <div class="demo-row">
+        <button class="btn-solid theme-primary" type="button" disabled><span class="spinner-border spinner-sm" aria-hidden="true"></span><span role="status">Loading…</span></button>
+        <button class="btn-subtle theme-primary" type="button" disabled><span class="spinner-grow spinner-sm" aria-hidden="true"></span><span role="status">Saving…</span></button>
+        <span class="badge theme-primary"><span class="spinner-border" aria-hidden="true"></span><span role="status">Loading</span></span>
+      </div>
+
+    </section>
+
+    <section id="placeholder" class="demo-section">
+      <h2>Placeholder</h2>
+      <p class="demo-note" data-equivalence="skeleton"></p>
+      <h3>Lines and sizes</h3>
+      <div class="demo-stack">
+        <p aria-hidden="true"><span class="placeholder col-6"></span></p>
+        <p aria-hidden="true"><span class="placeholder col-12 placeholder-lg"></span></p>
+        <p aria-hidden="true"><span class="placeholder col-12"></span></p>
+        <p aria-hidden="true"><span class="placeholder col-12 placeholder-sm"></span></p>
+        <p aria-hidden="true"><span class="placeholder col-12 placeholder-xs"></span></p>
+      </div>
+      <h3>Animations</h3>
+      <div class="demo-stack">
+        <p class="placeholder-glow" aria-hidden="true"><span class="placeholder col-12"></span></p>
+        <p class="placeholder-pulse" aria-hidden="true"><span class="placeholder col-12"></span></p>
+        <p class="placeholder-wave" aria-hidden="true"><span class="placeholder col-12"></span></p>
+        <span class="placeholder-wave fg-3">Working on it…</span>
+      </div>
+      <h3>Loading card</h3>
+      <div class="demo-grid">
+        <div class="card" aria-hidden="true">
+          <svg class="card-img-top" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Loading" preserveAspectRatio="xMidYMid slice"><rect width="100%" height="100%" style="fill: var(--bs-bg-3)"></rect><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" style="fill: var(--bs-fg-3)">Loading</text></svg>
+          <div class="card-body">
+            <h4 class="placeholder-wave"><span class="placeholder col-6"></span></h4>
+            <p class="placeholder-wave">
+              <span class="placeholder col-7"></span>
+              <span class="placeholder col-4"></span>
+              <span class="placeholder col-4"></span>
+              <span class="placeholder col-6"></span>
+            </p>
+            <div><a class="btn-solid theme-primary disabled placeholder col-6" aria-disabled="true" tabindex="-1"></a></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="avatars" class="demo-section">
+      <h2>Avatars</h2>
+      <p class="demo-note" data-equivalence="avatar"></p>
+      <h3>Sizes</h3>
+      <div class="demo-row">
+        <span class="avatar avatar-xs">XS</span>
+        <span class="avatar avatar-sm">SM</span>
+        <span class="avatar">MD</span>
+        <span class="avatar avatar-lg">LG</span>
+        <span class="avatar avatar-xl">XL</span>
+      </div>
+      <h3>Theme colors</h3>
+      <div class="demo-row">
+        <span class="avatar">AB</span>
+        <span class="avatar theme-primary">PR</span>
+        <span class="avatar theme-accent">AC</span>
+        <span class="avatar theme-success">SU</span>
+        <span class="avatar theme-danger">DA</span>
+        <span class="avatar theme-warning">WA</span>
+        <span class="avatar theme-info">IN</span>
+        <span class="avatar theme-inverse">IN</span>
+        <span class="avatar theme-secondary">SE</span>
+      </div>
+      <h3>Subtle (.avatar-subtle)</h3>
+      <div class="demo-row">
+        <span class="avatar avatar-subtle theme-primary">PR</span>
+        <span class="avatar avatar-subtle theme-accent">AC</span>
+        <span class="avatar avatar-subtle theme-success">SU</span>
+        <span class="avatar avatar-subtle theme-danger">DA</span>
+        <span class="avatar avatar-subtle theme-warning">WA</span>
+        <span class="avatar avatar-subtle theme-info">IN</span>
+        <span class="avatar avatar-subtle theme-inverse">IN</span>
+        <span class="avatar avatar-subtle theme-secondary">SE</span>
+      </div>
+      <h3>Status</h3>
+      <div class="demo-row">
+        <span class="avatar theme-primary">JD<span class="avatar-status status-online" role="img" aria-label="Online"></span></span>
+        <span class="avatar theme-primary">JD<span class="avatar-status status-offline" role="img" aria-label="Offline"></span></span>
+        <span class="avatar theme-primary">JD<span class="avatar-status status-busy" role="img" aria-label="Busy"></span></span>
+        <span class="avatar theme-primary">JD<span class="avatar-status status-away" role="img" aria-label="Away"></span></span>
+        <span class="avatar avatar-lg avatar-subtle theme-accent">LG<span class="avatar-status status-online" role="img" aria-label="Online"></span></span>
+      </div>
+      <h3>Stack</h3>
+      <div class="demo-row">
+        <div class="avatar-stack">
+          <span class="avatar theme-primary">AB</span>
+          <span class="avatar theme-accent">CD</span>
+          <span class="avatar theme-success">EF</span>
+          <span class="avatar theme-secondary">+5</span>
+        </div>
+        <div class="avatar-stack avatar-stack-sm">
+          <span class="avatar avatar-subtle theme-primary">AB</span>
+          <span class="avatar avatar-subtle theme-accent">CD</span>
+          <span class="avatar avatar-subtle theme-info">EF</span>
+        </div>
+        <div class="avatar-stack avatar-stack-lg">
+          <span class="avatar theme-inverse">AB</span>
+          <span class="avatar theme-warning">CD</span>
+          <span class="avatar theme-danger">EF</span>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="list-group" class="demo-section">
+      <h2>List group</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <div class="demo-grid">
+        <ul class="list-group">
+          <li class="list-group-item active" aria-current="true">An active item</li>
+          <li class="list-group-item">A second item</li>
+          <li class="list-group-item">A third item</li>
+          <li class="list-group-item disabled" aria-disabled="true">A disabled item</li>
+        </ul>
+        <div class="list-group">
+          <a href="#list-group" class="list-group-item list-group-item-action active" aria-current="true">Current link item</a>
+          <a href="#list-group" class="list-group-item list-group-item-action">A link item</a>
+          <button type="button" class="list-group-item list-group-item-action">A button item</button>
+          <button type="button" class="list-group-item list-group-item-action" disabled>A disabled button item</button>
+        </div>
+        <ol class="list-group list-group-numbered">
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto"><div class="fw-bold">Subheading</div>Content for list item</div>
+            <span class="badge theme-primary">14</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto"><div class="fw-bold">Subheading</div>Content for list item</div>
+            <span class="badge theme-primary">2</span>
+          </li>
+        </ol>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Flush item</li>
+          <li class="list-group-item">Flush item</li>
+          <li class="list-group-item">Flush item</li>
+        </ul>
+        <div class="list-group">
+          <a href="#list-group" class="list-group-item list-group-item-action theme-primary">.theme-primary</a>
+          <a href="#list-group" class="list-group-item list-group-item-action theme-accent">.theme-accent</a>
+          <a href="#list-group" class="list-group-item list-group-item-action theme-success">.theme-success</a>
+          <a href="#list-group" class="list-group-item list-group-item-action theme-danger">.theme-danger</a>
+          <a href="#list-group" class="list-group-item list-group-item-action theme-warning">.theme-warning</a>
+          <a href="#list-group" class="list-group-item list-group-item-action theme-info">.theme-info</a>
+          <a href="#list-group" class="list-group-item list-group-item-action theme-inverse">.theme-inverse</a>
+          <a href="#list-group" class="list-group-item list-group-item-action theme-secondary">.theme-secondary</a>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item"><div class="form-field"><input type="checkbox" class="check" id="demo-lg-check-1" checked><label class="stretched-link" for="demo-lg-check-1">First checkbox</label></div></li>
+          <li class="list-group-item"><div class="form-field"><input type="checkbox" class="check" id="demo-lg-check-2"><label class="stretched-link" for="demo-lg-check-2">Second checkbox</label></div></li>
+        </ul>
+      </div>
+      <h3>Horizontal</h3>
+      <div class="demo-row">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item">An item</li>
+          <li class="list-group-item">A second item</li>
+          <li class="list-group-item">A third item</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <section id="nav" class="demo-section">
+      <h2>Nav and tabs</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <h3>Tabs (.nav-tabs) with tab switching</h3>
+      <div class="demo-stack">
+        <div class="demo-stack">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="demo-tabs-0-tab" data-bs-toggle="tab" data-bs-target="#demo-tabs-0" type="button" role="tab" aria-controls="demo-tabs-0" aria-selected="true">Home</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="demo-tabs-1-tab" data-bs-toggle="tab" data-bs-target="#demo-tabs-1" type="button" role="tab" aria-controls="demo-tabs-1" aria-selected="false">Profile</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="demo-tabs-2-tab" data-bs-toggle="tab" data-bs-target="#demo-tabs-2" type="button" role="tab" aria-controls="demo-tabs-2" aria-selected="false">Contact</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" type="button" role="tab" aria-selected="false" disabled>Disabled</button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane show active" id="demo-tabs-0" role="tabpanel" aria-labelledby="demo-tabs-0-tab" tabindex="0"><p>Home panel content.</p></div>
+          <div class="tab-pane" id="demo-tabs-1" role="tabpanel" aria-labelledby="demo-tabs-1-tab" tabindex="0"><p>Profile panel content.</p></div>
+          <div class="tab-pane" id="demo-tabs-2" role="tabpanel" aria-labelledby="demo-tabs-2-tab" tabindex="0"><p>Contact panel content.</p></div>
+        </div>
+        </div>
+      </div>
+      <h3>Pills (.nav-pills) with tab switching</h3>
+      <div class="demo-stack">
+        <div class="demo-stack">
+        <ul class="nav nav-pills" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="demo-pills-0-tab" data-bs-toggle="tab" data-bs-target="#demo-pills-0" type="button" role="tab" aria-controls="demo-pills-0" aria-selected="true">Home</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="demo-pills-1-tab" data-bs-toggle="tab" data-bs-target="#demo-pills-1" type="button" role="tab" aria-controls="demo-pills-1" aria-selected="false">Profile</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="demo-pills-2-tab" data-bs-toggle="tab" data-bs-target="#demo-pills-2" type="button" role="tab" aria-controls="demo-pills-2" aria-selected="false">Contact</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" type="button" role="tab" aria-selected="false" disabled>Disabled</button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane show active" id="demo-pills-0" role="tabpanel" aria-labelledby="demo-pills-0-tab" tabindex="0"><p>Home panel content.</p></div>
+          <div class="tab-pane" id="demo-pills-1" role="tabpanel" aria-labelledby="demo-pills-1-tab" tabindex="0"><p>Profile panel content.</p></div>
+          <div class="tab-pane" id="demo-pills-2" role="tabpanel" aria-labelledby="demo-pills-2-tab" tabindex="0"><p>Contact panel content.</p></div>
+        </div>
+        </div>
+      </div>
+      <h3>Underline (.nav-underline) with tab switching</h3>
+      <div class="demo-stack">
+        <div class="demo-stack">
+        <ul class="nav nav-underline" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="demo-underline-0-tab" data-bs-toggle="tab" data-bs-target="#demo-underline-0" type="button" role="tab" aria-controls="demo-underline-0" aria-selected="true">Home</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="demo-underline-1-tab" data-bs-toggle="tab" data-bs-target="#demo-underline-1" type="button" role="tab" aria-controls="demo-underline-1" aria-selected="false">Profile</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="demo-underline-2-tab" data-bs-toggle="tab" data-bs-target="#demo-underline-2" type="button" role="tab" aria-controls="demo-underline-2" aria-selected="false">Contact</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" type="button" role="tab" aria-selected="false" disabled>Disabled</button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane show active" id="demo-underline-0" role="tabpanel" aria-labelledby="demo-underline-0-tab" tabindex="0"><p>Home panel content.</p></div>
+          <div class="tab-pane" id="demo-underline-1" role="tabpanel" aria-labelledby="demo-underline-1-tab" tabindex="0"><p>Profile panel content.</p></div>
+          <div class="tab-pane" id="demo-underline-2" role="tabpanel" aria-labelledby="demo-underline-2-tab" tabindex="0"><p>Contact panel content.</p></div>
+        </div>
+        </div>
+      </div>
+      <h3>Base nav, vertical pills, nav with menu</h3>
+      <div class="demo-stack">
+        <nav class="nav" aria-label="Base nav">
+          <a class="nav-link active" aria-current="page" href="#nav">Active</a>
+          <a class="nav-link" href="#nav">Link</a>
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </nav>
+        <nav class="nav nav-pills nav-pills-vertical" aria-label="Vertical pills">
+          <a class="nav-link active" aria-current="page" href="#nav">Active</a>
+          <a class="nav-link" href="#nav">Link</a>
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </nav>
+        <ul class="nav nav-tabs">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#nav">Active</a></li>
+          <li class="nav-item">
+            <button class="nav-link" type="button" data-bs-toggle="menu" aria-expanded="false">Menu</button>
+            <div class="menu">
+              <a class="menu-item" href="#nav">Action</a>
+              <a class="menu-item" href="#nav">Another action</a>
+              <hr class="menu-divider">
+              <a class="menu-item" href="#nav">Separated link</a>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#nav">Link</a></li>
+        </ul>
+        <ul class="nav nav-pills nav-fill">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#nav">Fill</a></li>
+          <li class="nav-item"><a class="nav-link" href="#nav">Much longer nav link</a></li>
+          <li class="nav-item"><a class="nav-link" href="#nav">Link</a></li>
+        </ul>
+      </div>
+
+    </section>
+
+    <section id="navbar" class="demo-section">
+      <h2>Navbar</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <h3>Responsive (.md:navbar-expand): expanded when the navbar is wide, drawer below</h3>
+      <div class="demo-stack">
+        <nav class="navbar md:navbar-expand bg-1" aria-label="Responsive navbar">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#navbar">Quantum</a>
+            <button class="btn-icon navbar-toggler" type="button" data-bs-toggle="drawer" data-bs-target="#demo-navbar-responsive" aria-controls="demo-navbar-responsive" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon" aria-hidden="true"></span>
+            </button>
+            <dialog class="drawer drawer-end" tabindex="-1" id="demo-navbar-responsive" aria-labelledby="demo-navbar-responsive-label">
+              <div class="drawer-header">
+                <h5 class="drawer-title" id="demo-navbar-responsive-label">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="drawer" aria-label="Close"></button>
+              </div>
+              <div class="drawer-body">
+                <ul class="nav navbar-nav me-auto">
+                  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#navbar">Home</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#navbar">Features</a></li>
+                  <li class="nav-item">
+                    <button class="nav-link" type="button" data-bs-toggle="menu" aria-expanded="false">Menu</button>
+                    <div class="menu">
+                      <a class="menu-item" href="#navbar">Action</a>
+                      <a class="menu-item" href="#navbar">Another action</a>
+                    </div>
+                  </li>
+                  <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Disabled</a></li>
+                </ul>
+                <form class="hstack gap-2" role="search">
+                  <input class="form-control" type="search" placeholder="Search" aria-label="Search the site">
+                  <button class="btn-solid btn-icon theme-secondary" type="submit" aria-label="Search"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></button>
+                </form>
+              </div>
+            </dialog>
+          </div>
+        </nav>
+        <nav class="navbar navbar-expand bg-1" aria-label="Navbar with text">
+          <div class="container-fluid">
+            <span class="navbar-brand">Brand</span>
+            <span class="navbar-text">Navbar text with an inline element</span>
+          </div>
+        </nav>
+      </div>
+      <h3>Collapsed, with a drawer toggler</h3>
+      <div class="demo-stack">
+        <nav class="navbar bg-1" aria-label="Collapsed navbar">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#navbar">Quantum</a>
+            <button class="btn-icon navbar-toggler" type="button" data-bs-toggle="drawer" data-bs-target="#demo-navbar-drawer" aria-controls="demo-navbar-drawer" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon" aria-hidden="true"></span>
+            </button>
+            <dialog class="drawer drawer-end" tabindex="-1" id="demo-navbar-drawer" aria-labelledby="demo-navbar-drawer-label">
+              <div class="drawer-header">
+                <h5 class="drawer-title" id="demo-navbar-drawer-label">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="drawer" aria-label="Close"></button>
+              </div>
+              <div class="drawer-body">
+                <ul class="navbar-nav">
+                  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#navbar">Home</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#navbar">Features</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#navbar">Pricing</a></li>
+                </ul>
+              </div>
+            </dialog>
+          </div>
+        </nav>
+      </div>
+
+    </section>
+
+    <section id="menu" class="demo-section">
+      <h2>Menu</h2>
+      <p class="demo-note" data-equivalence="dropdown"></p>
+      <h3>Toggled menu</h3>
+      <div class="demo-row">
+        <div>
+          <button class="btn-solid theme-primary" type="button" data-bs-toggle="menu" aria-expanded="false">Open menu<span class="material-symbols-outlined demo-icon-20" aria-hidden="true">expand_more</span></button>
+          <div class="menu">
+            <h6 class="menu-header">Document</h6>
+            <button class="menu-item" type="button"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">content_copy</span>Copy</button>
+            <button class="menu-item" type="button"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">content_cut</span>Cut</button>
+            <button class="menu-item active" type="button" aria-current="true"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">edit</span>Edit (active)</button>
+            <button class="menu-item" type="button">
+              <span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">publish</span>
+              <span class="menu-item-content">Publish now<small class="menu-item-description">Make this page visible immediately</small></span>
+            </button>
+            <button class="menu-item selected" type="button">
+              <span class="menu-item-content">Selected item<small class="menu-item-description">Shows the check mark</small></span>
+              <svg class="menu-item-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 16 16" aria-hidden="true"><path d="m2 7 4 5 8-8"/></svg>
+            </button>
+            <hr class="menu-divider">
+            <span class="menu-text">Menu text</span>
+            <a class="menu-item disabled" aria-disabled="true"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">block</span>Disabled item</a>
+            <button class="menu-item theme-danger" type="button"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">delete</span>Delete</button>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn-outline theme-secondary">Split</button>
+          <button type="button" class="btn-outline theme-secondary menu-toggle-split btn-icon" data-bs-toggle="menu" aria-expanded="false" aria-label="Toggle menu"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">expand_more</span></button>
+          <div class="menu">
+            <a class="menu-item" href="#menu">Action</a>
+            <a class="menu-item" href="#menu">Another action</a>
+            <hr class="menu-divider">
+            <a class="menu-item" href="#menu">Separated link</a>
+          </div>
+        </div>
+        <div>
+          <button class="btn-subtle theme-secondary" type="button" data-bs-toggle="menu" aria-expanded="false">Submenus</button>
+          <div class="menu">
+            <div class="submenu">
+              <button class="menu-item" type="button">File</button>
+              <div class="menu">
+                <a class="menu-item" href="#menu">New</a>
+                <a class="menu-item" href="#menu">Open</a>
+              </div>
+            </div>
+            <a class="menu-item" href="#menu">Preferences</a>
+          </div>
+        </div>
+      </div>
+      <h3>Static menu (always visible, for comparison)</h3>
+      <div class="demo-row demo-row-top">
+        <div class="menu show position-static">
+            <h6 class="menu-header">Document</h6>
+            <button class="menu-item" type="button"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">content_copy</span>Copy</button>
+            <button class="menu-item" type="button"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">content_cut</span>Cut</button>
+            <button class="menu-item active" type="button" aria-current="true"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">edit</span>Edit (active)</button>
+            <button class="menu-item" type="button">
+              <span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">publish</span>
+              <span class="menu-item-content">Publish now<small class="menu-item-description">Make this page visible immediately</small></span>
+            </button>
+            <button class="menu-item selected" type="button">
+              <span class="menu-item-content">Selected item<small class="menu-item-description">Shows the check mark</small></span>
+              <svg class="menu-item-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 16 16" aria-hidden="true"><path d="m2 7 4 5 8-8"/></svg>
+            </button>
+            <hr class="menu-divider">
+            <span class="menu-text">Menu text</span>
+            <a class="menu-item disabled" aria-disabled="true"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">block</span>Disabled item</a>
+            <button class="menu-item theme-danger" type="button"><span class="material-symbols-outlined demo-icon-16 menu-item-icon" aria-hidden="true">delete</span>Delete</button>
+        </div>
+        <div class="menu show position-static">
+          <a class="menu-item theme-primary" href="#menu">.theme-primary</a>
+          <a class="menu-item theme-secondary" href="#menu">.theme-secondary</a>
+          <a class="menu-item theme-success" href="#menu">.theme-success</a>
+          <a class="menu-item theme-danger" href="#menu">.theme-danger</a>
+          <a class="menu-item active theme-primary" href="#menu">Active .theme-primary</a>
+          <a class="menu-item active theme-secondary" href="#menu">Active .theme-secondary</a>
+          <a class="menu-item active theme-success" href="#menu">Active .theme-success</a>
+          <a class="menu-item active theme-danger" href="#menu">Active .theme-danger</a>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="dialog" class="demo-section">
+      <h2>Dialog</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <div class="demo-row">
+        <button type="button" class="btn-solid theme-primary" data-bs-toggle="dialog" data-bs-target="#demo-dialog">Open dialog</button>
+        <button type="button" class="btn-outline theme-primary" data-bs-toggle="dialog" data-bs-target="#demo-dialog-scrollable">Open scrollable dialog</button>
+        <dialog class="dialog" id="demo-dialog" aria-labelledby="demo-dialog-title">
+          <div class="dialog-header">
+            <h1 class="dialog-title" id="demo-dialog-title">Dialog title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="dialog" aria-label="Close"></button>
+          </div>
+          <div class="dialog-body">
+            <p>This is a native dialog element with Bootstrap’s dialog styles.</p>
+            <div class="form-field">
+              <label for="demo-dialog-input" class="form-label">Name</label>
+              <input type="text" class="form-control" id="demo-dialog-input">
+            </div>
+          </div>
+          <div class="dialog-footer">
+            <button type="button" class="btn-outline theme-secondary" data-bs-dismiss="dialog">Cancel</button>
+            <button type="button" class="btn-solid theme-primary" data-bs-dismiss="dialog">Save changes</button>
+          </div>
+        </dialog>
+        <dialog class="dialog dialog-scrollable dialog-sm" id="demo-dialog-scrollable" aria-labelledby="demo-dialog-scrollable-title">
+          <div class="dialog-header">
+            <h1 class="dialog-title" id="demo-dialog-scrollable-title">Scrollable, small</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="dialog" aria-label="Close"></button>
+          </div>
+          <div class="dialog-body">
+            <p>Paragraph 1 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 2 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 3 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 4 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 5 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 6 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 7 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 8 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 9 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 10 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 11 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 12 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 13 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 14 of a long body that scrolls while the header and footer stay fixed.</p>
+            <p>Paragraph 15 of a long body that scrolls while the header and footer stay fixed.</p>
+          </div>
+          <div class="dialog-footer">
+            <button type="button" class="btn-solid theme-primary" data-bs-dismiss="dialog">Close</button>
+          </div>
+        </dialog>
+      </div>
+
+    </section>
+
+    <section id="drawer" class="demo-section">
+      <h2>Drawer</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <div class="demo-row">
+        <button class="btn-solid theme-primary" type="button" data-bs-toggle="drawer" data-bs-target="#demo-drawer-start" aria-controls="demo-drawer-start">Start drawer</button>
+        <button class="btn-outline theme-primary" type="button" data-bs-toggle="drawer" data-bs-target="#demo-drawer-end" aria-controls="demo-drawer-end">End drawer with footer</button>
+        <button class="btn-subtle theme-primary" type="button" data-bs-toggle="drawer" data-bs-target="#demo-drawer-bottom" aria-controls="demo-drawer-bottom">Bottom drawer</button>
+        <dialog class="drawer drawer-start" tabindex="-1" id="demo-drawer-start" aria-labelledby="demo-drawer-start-label">
+          <div class="drawer-header">
+            <h5 class="drawer-title" id="demo-drawer-start-label">Start drawer</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="drawer" aria-label="Close"></button>
+          </div>
+          <div class="drawer-body">
+            <p>Drawer content. Any component can go here.</p>
+          </div>
+        </dialog>
+        <dialog class="drawer drawer-end" tabindex="-1" id="demo-drawer-end" aria-labelledby="demo-drawer-end-label">
+          <div class="drawer-header">
+            <h5 class="drawer-title" id="demo-drawer-end-label">End drawer</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="drawer" aria-label="Close"></button>
+          </div>
+          <div class="drawer-body">
+            <p>Drawer content. Any component can go here.</p>
+          </div>
+          <div class="drawer-footer">
+            <button type="button" class="btn-outline theme-secondary" data-bs-dismiss="drawer">Close</button>
+            <button type="button" class="btn-solid theme-primary">Save changes</button>
+          </div>
+        </dialog>
+        <dialog class="drawer drawer-bottom" tabindex="-1" id="demo-drawer-bottom" aria-labelledby="demo-drawer-bottom-label">
+          <div class="drawer-header">
+            <h5 class="drawer-title" id="demo-drawer-bottom-label">Bottom drawer</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="drawer" aria-label="Close"></button>
+          </div>
+          <div class="drawer-body">
+            <p>Drawer content. Any component can go here.</p>
+          </div>
+        </dialog>
+      </div>
+
+    </section>
+
+    <section id="toasts" class="demo-section">
+      <h2>Toasts</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <h3>Static (visible)</h3>
+      <div class="demo-row demo-row-top">
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <span class="material-symbols-outlined demo-icon-20 me-2" aria-hidden="true">notifications</span>
+              <strong class="me-auto">Quantum</strong>
+              <small>11 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">Hello, world! This is a toast message.</div>
+          </div>
+        <div class="toast show theme-primary" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <span class="material-symbols-outlined demo-icon-20 me-2" aria-hidden="true">notifications</span>
+              <strong class="me-auto">Quantum</strong>
+              <small>11 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">A primary themed toast.</div>
+          </div>
+        <div class="toast show toast-translucent" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <span class="material-symbols-outlined demo-icon-20 me-2" aria-hidden="true">notifications</span>
+              <strong class="me-auto">Quantum</strong>
+              <small>11 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">A translucent toast.</div>
+          </div>
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-body">
+            Custom content toast with actions.
+            <div class="hstack gap-2 mt-2">
+              <button type="button" class="btn-solid theme-primary btn-sm">Take action</button>
+              <button type="button" class="btn-outline theme-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3>Live toast</h3>
+      <div class="demo-row">
+        <button type="button" class="btn-solid theme-primary" id="demo-toast-trigger">Show live toast</button>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+          <div class="toast" id="demo-live-toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <span class="material-symbols-outlined demo-icon-20 me-2" aria-hidden="true">notifications</span>
+              <strong class="me-auto">Quantum</strong>
+              <small>11 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">This toast was shown with the Toast JavaScript API.</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="tooltip" class="demo-section">
+      <h2>Tooltip</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <div class="demo-row">
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">Tooltip on top</button>
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tooltip on right">Tooltip on right</button>
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Tooltip on bottom">Tooltip on bottom</button>
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Tooltip on left">Tooltip on left</button>
+        <a href="#tooltip" data-bs-toggle="tooltip" data-bs-title="Tooltip on a link">Link with tooltip</a>
+        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-title="Disabled button tooltip"><button class="btn-solid theme-primary" type="button" disabled>Disabled button</button></span>
+      </div>
+
+    </section>
+
+    <section id="popover" class="demo-section">
+      <h2>Popover</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <div class="demo-row">
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="popover" data-bs-placement="top" data-bs-title="Popover top" data-bs-content="And here’s some amazing content. It’s very engaging. Right?">Popover on top</button>
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="popover" data-bs-placement="right" data-bs-title="Popover right" data-bs-content="And here’s some amazing content. It’s very engaging. Right?">Popover on right</button>
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="Popover bottom" data-bs-content="And here’s some amazing content. It’s very engaging. Right?">Popover on bottom</button>
+        <button type="button" class="btn-outline theme-secondary" data-bs-toggle="popover" data-bs-placement="left" data-bs-title="Popover left" data-bs-content="And here’s some amazing content. It’s very engaging. Right?">Popover on left</button>
+        <button type="button" class="btn-solid theme-primary" data-bs-toggle="popover" data-bs-content="A popover without a title.">No title</button>
+      </div>
+
+    </section>
+
+    <section id="stepper" class="demo-section">
+      <h2>Stepper</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <h3>Horizontal (.stepper-horizontal)</h3>
+      <div class="demo-stack">
+        <ol class="stepper stepper-horizontal w-100">
+          <li class="stepper-item active">Create account</li>
+          <li class="stepper-item active">Confirm email</li>
+          <li class="stepper-item">Update profile</li>
+          <li class="stepper-item">Finish</li>
+        </ol>
+      </div>
+      <h3>Theme variants</h3>
+      <div class="demo-stack">
+        <ol class="stepper stepper-horizontal w-100">
+          <li class="stepper-item active theme-accent">Accent</li>
+          <li class="stepper-item active theme-success">Success</li>
+          <li class="stepper-item active theme-danger">Danger</li>
+          <li class="stepper-item">Pending</li>
+        </ol>
+      </div>
+      <h3>Vertical (default)</h3>
+      <div class="demo-stack">
+        <ol class="stepper">
+          <li class="stepper-item active">Create account</li>
+          <li class="stepper-item active">Confirm email</li>
+          <li class="stepper-item">Update profile</li>
+          <li class="stepper-item">Finish</li>
+        </ol>
+      </div>
+
+    </section>
+
+    <section id="table" class="demo-section">
+      <h2>Table</h2>
+      <p class="demo-note" data-equivalence="none"></p>
+      <div class="demo-grid demo-grid-wide">
+        <div class="table-responsive">
+          <table class="table">
+            <caption>Default table (.table-active on the first row)</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr class="table-active"><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <caption>.table-striped</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <caption>.table-hover</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <caption>.table-bordered</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-borderless">
+            <caption>.table-borderless</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <caption>.table-sm</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped-columns">
+            <caption>.table-striped-columns</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table theme-primary">
+            <caption>.theme-primary</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-card">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <caption>.table-card wrapper</caption>
+            <thead><tr><th scope="col">#</th><th scope="col">First</th><th scope="col">Last</th><th scope="col">Handle</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
+              <tr><th scope="row">2</th><td>Jacob</td><td>Thornton</td><td>@fat</td></tr>
+              <tr><th scope="row">3</th><td>Larry</td><td>Bird</td><td>@twitter</td></tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Carousel is not shown: Bootstrap 6 carousels need slide images to be meaningful. -->
+  <!-- Bootstrap 6 ships its JavaScript as an ES module (dist/js/bootstrap.bundle.js ends with `export { … }`), hence type="module". -->
+  <script type="module" src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" data-inline></script>
+  <script type="module" src="demo.js" data-inline></script>
+</body>
+</html>

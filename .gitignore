@@ -10,6 +10,9 @@ packages/components/dist/
 # Built from the specs, tokens and blueprints by pnpm build, pnpm figma:export or pnpm penpot:export
 packages/figma/dist/
 packages/penpot/dist/
+# Built from the tokens by pnpm build, pnpm bootstrap-theme:build or pnpm shadcn-theme:build (the themes and their demo pages)
+packages/bootstrap-theme/dist/
+packages/shadcn-theme/dist/
 apps/docs/.astro/
 
 # Local Figma export (private library): never committed

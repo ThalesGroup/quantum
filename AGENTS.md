@@ -5,9 +5,10 @@ This repository is the monorepo of the Quantum Design System (Thales). It holds
 documentation** and a **vanilla CSS reference implementation**, plus an **Astro docs site** that
 renders all of it so people can review a component before it is built in any technology, a
 **Figma plugin** that draws every component in Figma, bound to variables recreated from the
-tokens, and a **Penpot plugin** that draws them in Penpot, bound to Penpot tokens. The packages
-are published on npm under `@quantum-ds` (`@quantum-ds/tokens`, `@quantum-ds/components`,
-`@quantum-ds/figma`, `@quantum-ds/penpot`).
+tokens, a **Penpot plugin** that draws them in Penpot, bound to Penpot tokens, and **themes** that
+bring the tokens to Bootstrap 6 and shadcn/ui through those frameworks' own theming APIs. The
+packages are published on npm under `@quantum-ds` (`@quantum-ds/tokens`, `@quantum-ds/components`,
+`@quantum-ds/figma`, `@quantum-ds/penpot`, `@quantum-ds/bootstrap-theme`, `@quantum-ds/shadcn-theme`).
 
 You (an agent or a human) turn natural-language requests such as *"a button must have a blue
 border using the primary color, in three variants"* into coordinated updates across every
@@ -85,6 +86,7 @@ published CSS, Sass, JavaScript, Android, Figma, Penpot and Tokens Studio format
 | `review-sheet` | The team must compare renderings to decide: a focused before/after page and one precise question. |
 | `worktree-preview` | Someone needs a local preview of a branch, a pull request or a worktree under `.claude/worktrees/`. |
 | `backlog` | Out-of-scope work becomes an issue, a merged study becomes issues, or the open issues need syncing or labelling. |
+| `framework-theme` | A theme of Quantum for a UI framework (Bootstrap, shadcn/ui, another one) is created as a `@quantum-ds/<framework>-theme` package from a mapping checked against the tokens and the specs, or regenerated after a token or spec change. |
 | `design-tools-watch` | The releases of Figma, Penpot, Tokens Studio or DTCG need reviewing against the exports, or a check in the real tool comes back ([agents/design-tools.md](agents/design-tools.md)). |
 
 Claude Code lists them by itself and invokes them by name; another agent reads
@@ -101,18 +103,20 @@ Claude Code lists them by itself and invokes them by name; another agent reads
 | `pnpm figma:export [id…]` | Build the Figma plugin into `packages/figma/dist/` (not committed): it draws the components (all, or the given ones and those their instances use) as component sets bound to Figma variables recreated from the tokens (`packages/figma/AGENTS.md`). |
 | `pnpm penpot:export [id…]` | Build the Penpot plugin into `packages/penpot/dist/` (not committed): it writes the Penpot tokens and draws the components (all, or the given ones and those their copies use) as components with variants bound to them, from the Figma blueprints (`packages/penpot/AGENTS.md`). |
 | `pnpm penpot:serve` | Serve `packages/penpot/dist/` at http://localhost:4400, where Penpot's plugin manager installs `manifest.json` (Penpot loads plugins over HTTP). |
+| `pnpm bootstrap-theme:build` | Build the tokens, then the Bootstrap 6 theme into `packages/bootstrap-theme/dist/` (not committed): the theme as Bootstrap root custom properties and as Sass configuration, and `demo.html`, a self-contained page showing every Bootstrap component with it (`packages/bootstrap-theme/AGENTS.md`). |
+| `pnpm shadcn-theme:build` | Build the tokens, then the shadcn/ui theme into `packages/shadcn-theme/dist/` (not committed): the theme as shadcn CSS variables and as a registry theme item, and `demo.html`, a self-contained page showing every shadcn component with it (`packages/shadcn-theme/AGENTS.md`). |
 | `pnpm validate` | Schema-validate specs and cross-check spec ↔ tokens ↔ docs ↔ web; check mirrored components render the same; check the docs site and the screens are built with the design system. |
 | `pnpm specs:check` | Export every component to the Specs format and require a valid, lossless round trip ([agents/specs-interop.md](agents/specs-interop.md)). |
 | `pnpm specs:export [id…]` | Write `<id>.specs.json` + `<id>.quantum.json` sidecar to `build/specs/`. |
 | `pnpm specs:import <file> [--sidecar <file>]` | Turn a Specs document into a draft spec + component tokens in `build/specs-import/`. Never writes into `packages/components/specs/` or `packages/tokens/src/`. |
-| `pnpm test` | Unit tests of the scripts' libraries (`scripts/test/`) and of the Figma and Penpot plugins (`packages/figma/test/`, `packages/penpot/test/`). |
+| `pnpm test` | Unit tests of the scripts' libraries (`scripts/test/`), of the Figma and Penpot plugins (`packages/figma/test/`, `packages/penpot/test/`) and of the Bootstrap and shadcn themes (`packages/bootstrap-theme/test/`, `packages/shadcn-theme/test/`). |
 | `pnpm check` | `tokens:build` + `validate` + `specs:check` + `test`. **Must pass before any change is considered done.** |
 | `pnpm impact [--base <ref>] [--files …]` | Every artifact linked to what changed (screens included), and whether it changed too. Fails when a component changed without a version bump ([agents/impact.md](agents/impact.md)). |
 | `pnpm commits:check [--base <ref>] [--message "<text>"]` | Check commit messages against Conventional Commits ([agents/git.md](agents/git.md)). |
 | `pnpm a11y:wcag` | Regenerate `packages/components/specs/a11y/wcag.json` from the W3C's machine-readable WCAG 2.2 (network). |
 | `pnpm new:component <id> --name "Name" --role <role>` | Scaffold the four artifacts for a new component and a starter Figma blueprint (to rewrite from the real CSS and template), build the tokens, register it in `packages/components/src/index.css`. |
 | `pnpm dev` | Build tokens, then start the Astro docs site (`apps/docs/`) at http://localhost:4321. |
-| `pnpm build` | Build tokens, the components package (`packages/components/dist/`), the Figma and Penpot plugins (`packages/figma/dist/`, `packages/penpot/dist/`) and the static docs site into `apps/docs/dist/`. |
+| `pnpm build` | Build tokens, the components package (`packages/components/dist/`), the Figma and Penpot plugins (`packages/figma/dist/`, `packages/penpot/dist/`), the Bootstrap and shadcn themes (`packages/bootstrap-theme/dist/`, `packages/shadcn-theme/dist/`) and the static docs site into `apps/docs/dist/`. |
 | `pnpm preview` | Serve the built docs site locally. |
 
 ## Rules that always hold
