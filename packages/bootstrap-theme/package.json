@@ -1,0 +1,53 @@
+{
+  "name": "@quantum-ds/bootstrap-theme",
+  "version": "0.1.0-alpha.0",
+  "description": "Quantum for Bootstrap 6: a theme built from @quantum-ds/tokens through Bootstrap's own theming API (root CSS custom properties and Sass configuration), following the specifications of @quantum-ds/components",
+  "author": "Quantum Core Team",
+  "license": "MIT",
+  "homepage": "https://github.com/ThalesGroup/quantum/tree/main/packages/bootstrap-theme#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThalesGroup/quantum.git",
+    "directory": "packages/bootstrap-theme"
+  },
+  "bugs": {
+    "url": "https://github.com/ThalesGroup/quantum/issues"
+  },
+  "keywords": [
+    "design-system",
+    "bootstrap",
+    "bootstrap-theme",
+    "design-tokens",
+    "css-custom-properties"
+  ],
+  "type": "module",
+  "files": [
+    "CHANGELOG.md",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "bootstrap": "^6.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "@floating-ui/dom": "^1.8.0",
+    "bootstrap": "6.0.0-alpha.1",
+    "sass": "^1.107.0",
+    "vanilla-calendar-pro": "^3.4.0"
+  },
+  "exports": {
+    ".": "./dist/quantum.css",
+    "./quantum.css": "./dist/quantum.css",
+    "./quantum.scss": "./dist/quantum.scss",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "readme": "node build.mjs --readme",
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "prepack": "node build.mjs"
+  }
+}

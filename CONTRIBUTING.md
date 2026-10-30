@@ -10,6 +10,8 @@ This repository is a monorepo managed with [pnpm workspaces](https://pnpm.io/wor
 | [`packages/components`](packages/components) | `@quantum-ds/components`: the component and foundation specifications (published) and the vanilla CSS reference implementation (not published, used by the docs) | [packages/components/AGENTS.md](packages/components/AGENTS.md), [packages/components/specs/AGENTS.md](packages/components/specs/AGENTS.md) |
 | [`packages/figma`](packages/figma) | `@quantum-ds/figma`: the Figma plugin that draws every component from the specifications and the tokens, one blueprint per component | [packages/figma/AGENTS.md](packages/figma/AGENTS.md) |
 | [`packages/penpot`](packages/penpot) | `@quantum-ds/penpot`: the Penpot plugin that draws every component from the specifications, the tokens and the Figma blueprints | [packages/penpot/AGENTS.md](packages/penpot/AGENTS.md) |
+| [`packages/bootstrap-theme`](packages/bootstrap-theme) | `@quantum-ds/bootstrap-theme`: the Bootstrap 6 theme built from the tokens through Bootstrap's theming API, with its demo page | [packages/bootstrap-theme/AGENTS.md](packages/bootstrap-theme/AGENTS.md) |
+| [`packages/shadcn-theme`](packages/shadcn-theme) | `@quantum-ds/shadcn-theme`: the shadcn/ui theme built from the tokens through shadcn's theming API, with its demo page | [packages/shadcn-theme/AGENTS.md](packages/shadcn-theme/AGENTS.md) |
 | [`apps/docs`](apps/docs) | The documentation site: the Markdown guidelines, the screens and the Astro viewer | [apps/docs/AGENTS.md](apps/docs/AGENTS.md), [apps/docs/content/AGENTS.md](apps/docs/content/AGENTS.md), [apps/docs/screens/AGENTS.md](apps/docs/screens/AGENTS.md) |
 | [`scripts`](scripts) | The token build, the validator, the change impact report, the Specs bridge, the scaffolder and their tests | [scripts/AGENTS.md](scripts/AGENTS.md) |
 
@@ -28,7 +30,8 @@ From the repository root:
 - `pnpm impact` lists every artifact linked to what you changed and fails when a component changed without a version bump
 - `pnpm figma:export` builds the Figma plugin into `packages/figma/dist/`, to import in the Figma desktop app ([packages/figma/README.md](packages/figma/README.md))
 - `pnpm penpot:export` builds the Penpot plugin into `packages/penpot/dist/` and `pnpm penpot:serve` serves it, to install in Penpot ([packages/penpot/README.md](packages/penpot/README.md))
-- `pnpm build` builds the tokens, the components package, the Figma and Penpot plugins and the static docs site into `apps/docs/dist/`
+- `pnpm bootstrap-theme:build` and `pnpm shadcn-theme:build` build the Bootstrap 6 and shadcn/ui themes, each with a demo page, into `packages/bootstrap-theme/dist/` and `packages/shadcn-theme/dist/` ([packages/bootstrap-theme/README.md](packages/bootstrap-theme/README.md), [packages/shadcn-theme/README.md](packages/shadcn-theme/README.md))
+- `pnpm build` builds the tokens, the components package, the Figma and Penpot plugins, the Bootstrap and shadcn themes and the static docs site into `apps/docs/dist/`
 - `pnpm --filter <package> <command>` runs a command of a single package, for example `pnpm --filter docs build`
 
 The full list, with what each command does, is in the "Commands" table of [AGENTS.md](AGENTS.md).

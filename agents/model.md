@@ -76,6 +76,21 @@ fields to the Penpot token properties that drive them. What Penpot cannot bind i
 token's value and listed with the reason (`packages/penpot/AGENTS.md`, `agents/token-sources.md`
 "Drawing a component in Penpot").
 
+### In Bootstrap and shadcn/ui
+
+`@quantum-ds/bootstrap-theme` (`packages/bootstrap-theme/`) and `@quantum-ds/shadcn-theme` (`packages/shadcn-theme/`) bring the
+design system to two web frameworks as **themes**, built from the tokens and nothing else: each one
+is a mapping (`src/mapping.mjs`) from the framework's own theming API to Quantum token paths, that
+its build turns into what the framework consumes (Bootstrap's root custom properties and Sass
+configuration; shadcn's CSS variables and registry theme item), in light and dark. The mapping
+respects the tiers: the framework's semantic layer (surfaces, text, borders, theme colors, type,
+radii, spacing, focus) reads Quantum **semantic** tokens; its per-component layer (button sizes,
+control borders, card surfaces) reads Quantum **component** tokens. A theme never restyles the
+framework's components: what the API cannot express is listed in the package README, not forced.
+Each package builds a self-contained `dist/demo.html` showing every component of the framework
+with the theme, to compare with the reference rendering (`packages/bootstrap-theme/AGENTS.md`,
+`packages/shadcn-theme/AGENTS.md`).
+
 Tokens form three tiers with a strict reference direction:
 
 ```
@@ -180,6 +195,12 @@ packages/figma/                @quantum-ds/figma: the Figma plugin drawing every
 packages/penpot/               @quantum-ds/penpot: the Penpot plugin drawing every component -> packages/penpot/AGENTS.md
   build.mjs, serve.mjs         pnpm penpot:export (writes dist/, GENERATED, not committed) and pnpm penpot:serve
   src/plan.mjs, src/plugin.js  the plan (tokens, variants translated from the Figma plan) and the plugin that draws it in Penpot
+packages/bootstrap-theme/            @quantum-ds/bootstrap-theme: the Bootstrap 6 theme built from the tokens -> packages/bootstrap-theme/AGENTS.md
+  build.mjs, src/mapping.mjs   pnpm bootstrap-theme:build: the Bootstrap token -> Quantum token mapping, written to dist/ (GENERATED, not committed) with demo.html
+  demo/                        the source of the demo page (every Bootstrap component, light and dark, theme on/off)
+packages/shadcn-theme/               @quantum-ds/shadcn-theme: the shadcn/ui theme built from the tokens -> packages/shadcn-theme/AGENTS.md
+  build.mjs, src/mapping.mjs   pnpm shadcn-theme:build: the shadcn variable -> Quantum token mapping, written to dist/ (GENERATED, not committed) with demo.html
+  demo/                        the source of the demo page (a Vite + React + Tailwind app showing every shadcn component, light and dark)
 apps/docs/                     the docs site (Astro) -> apps/docs/AGENTS.md
   content/components/, content/foundations/   one Markdown page per component and foundation -> apps/docs/content/AGENTS.md
   screens/                     real-world screens built with the design system, their sources and licences -> apps/docs/screens/AGENTS.md

@@ -120,6 +120,9 @@ const screenTokenLinks = (file, components, context = '') => [
 // A component that renders the same as `id` (scripts/lib/mirrors.mjs) follows every change of it.
 const mirrored = (id, ...kinds) => mirrorsOf(id).flatMap((m) => kinds.map((k) => [artifacts(m.component)[k], `renders the same as ${id} (scripts/lib/mirrors.mjs): apply the change, version + changelog; pnpm validate compares the tokens`]));
 
+// The framework themes map Quantum tokens, options, states and parts (scripts/lib/theme-mapping.mjs): their builds and tests fail when a mapped one disappears.
+const themeMappings = (why) => [PATHS.bootstrapTheme, PATHS.shadcnTheme].map((p) => [`${p}/src/mapping.mjs`, why]);
+
 const isNewFile = (file) => Boolean(base) && !tryGit('cat-file', '-e', `${base}:${file}`) && fs.existsSync(path.join(root, file));
 function overlayPaths(file) {
   const full = path.join(root, file);
@@ -143,11 +146,12 @@ const LINKS = [
       ...(isNewFile(a.spec) ? [[`${PATHS.docsSrc}/`, 'new component: the docs chrome renders it wherever it shows a control it covers (pnpm validate flags native look-alikes); apps/docs/AGENTS.md "Built with the design system" table']] : []),
       ...(isNewFile(a.spec) ? [[`${PATHS.screens}/`, 'new component: it may fill a gap the screens list (meta.gaps): replace their native stand-in and drop the gap']] : []),
       ...screensUsing([id], () => `renders ${id}: apply any API change, look at it on the site (Screens)`),
+      ...themeMappings(`theme mapping: a renamed or removed property, option, state or part of ${id} fails its test; a new one may deserve an equivalence`),
     ];
   }],
   [under(PATHS.tokensSrc, 'components/([a-z0-9-]+)\\.tokens\\.json$'), ([, id]) => {
     const a = artifacts(id);
-    return [[a.css, 'consumes the generated variables'], [a.figma, 'Figma blueprint: binds every slot or lists it in notDrawn (pnpm test)'], [a.spec, 'visible change: bump version + changelog'], [a.docs, 'if the meaning of a variant or state changed'], ...mirrored(id, 'tokens', 'spec'), ...screensUsing([id], () => `renders ${id}: look at it on the site (Screens) in every mode`)];
+    return [[a.css, 'consumes the generated variables'], [a.figma, 'Figma blueprint: binds every slot or lists it in notDrawn (pnpm test)'], [a.spec, 'visible change: bump version + changelog'], [a.docs, 'if the meaning of a variant or state changed'], ...mirrored(id, 'tokens', 'spec'), ...screensUsing([id], () => `renders ${id}: look at it on the site (Screens) in every mode`), ...themeMappings(`theme mapping: a removed ${id} token path fails its test; a changed value shows in its demo`)];
   }],
   [under(PATHS.web, 'components/([a-z0-9-]+)/\\1\\.(css|template\\.mjs)$'), ([, id]) => {
     const a = artifacts(id);
@@ -183,6 +187,7 @@ const LINKS = [
     ...(tier === 'semantic' && siteReadsTokenFile(file) ? [[siteCss, 'the docs chrome reads these semantic tokens: check the site in every mode']] : []),
     ...screenTokenLinks(file, componentsUsingTokenFile(file)),
     ...foundationLinks(tokenFilePaths(file), 'owns, measures or presents these tokens: specimens redraw and contrast is recomputed by pnpm validate; bump version + changelog if the foundation changes'),
+    ...(tier === 'semantic' ? themeMappings('theme mapping: a removed semantic token path fails its test; a changed value shows in its demo (rebuild it)') : []),
   ]],
   [under(PATHS.tokensSrc, 'platforms/([a-z0-9-]+)/.+\\.json$'), ([file, platform]) => [
     ...componentsUsingPaths(overlayPaths(file)).flatMap((id) => [[artifacts(id).spec, `appearance on ${platform} may change: bump version if it does`], [artifacts(id).docs, `if the ${platform} guidance (sizes, targets, typography) changed`]]),
