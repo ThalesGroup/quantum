@@ -35,11 +35,11 @@
     "check:dtcg": "tz check"
   },
   "devDependencies": {
-    "@terrazzo/cli": "^2.9.0",
+    "@terrazzo/cli": "^2.10.0",
     "@types/node": "^26.6.5",
     "fs-extra": "^11.4.1",
     "glob": "^13.0.6",
-    "style-dictionary": "^5.7.0",
+    "style-dictionary": "^5.7.1",
     "typescript": "~7.0.2"
   },
   "packageManager": "pnpm@12.10.1"
