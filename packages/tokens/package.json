@@ -52,6 +52,6 @@
     "prepack": "pnpm run build"
   },
   "devDependencies": {
-    "style-dictionary": "^5.7.0"
+    "style-dictionary": "^5.7.1"
   }
 }

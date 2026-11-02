@@ -13,7 +13,7 @@
     "@component-anatomy/core": "^0.2.0",
     "@quantum-ds/tokens": "workspace:*",
     "@shikijs/transformers": "^4.4.3",
-    "astro": "^7.3.5",
+    "astro": "^7.4.2",
     "marked": "^18.0.14",
     "shiki": "^4.4.3"
   }
