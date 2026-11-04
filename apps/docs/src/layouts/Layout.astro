@@ -5,6 +5,8 @@ import '../styles/site.css';
 import Status from '../components/Status.astro';
 import { getModes, getTokens } from '../lib/tokens';
 import { getScreens, getSections } from '../lib/screens';
+import { platforms } from '../lib/platforms';
+import { PLATFORM_TABS } from '../lib/tabs';
 // The design system itself: the tokens package, then the web reference implementation (packages/components/src/,
 // not published: @quantum-ds/components ships only the specs).
 import '@quantum-ds/tokens/css/index.css';
@@ -15,8 +17,10 @@ interface Props {
   description?: string;
   /** A page laid out as one wide table (Coverage): no outline column, the content takes its room. */
   wide?: boolean;
+  /** The platform of a component page (none on its shared pages): remembered for the next component. */
+  platform?: string;
 }
-const { title, description, wide = false } = Astro.props;
+const { title, description, wide = false, platform = null } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const current = Astro.url.pathname.replace(/\/$/, '');
 const isActive = (href: string) => current === `${base}${href}`.replace(/\/$/, '');
@@ -50,6 +54,12 @@ const { modes, attribute, auto } = getModes();
 const choices = [...(auto ? [{ value: auto, label: 'Auto' }] : []), ...modes.map((m) => ({ value: m.id, label: m.id[0].toUpperCase() + m.id.slice(1) }))];
 const initial = auto ?? modes.find((m) => m.default)?.id ?? null;
 const htmlAttrs = attribute && initial ? { [attribute]: initial } : {};
+
+// The platform followed from one component to the next: the platform of the last component page
+// visited (the web by default), remembered per browser. Links to a component's page of the web
+// (its first page, or a tab every platform has) lead to that page on the remembered platform.
+const platformIds = platforms().map((p) => p.id);
+const followedTabs = PLATFORM_TABS.filter((t) => !('web' in t) && t.slug !== 'guidelines').map((t) => t.slug).filter(Boolean);
 
 // The chrome's controls are the design system's components, rendered by their templates.
 const modeSwitch = attribute && choices.length > 1 ? getTemplate('select')?.render({ label: 'Mode', id: 'site-mode-switch', size: 'small', options: choices.map((c) => ({ label: c.label, value: c.value, selected: c.value === initial })), attrs: { 'data-mode-switch': attribute } }) : null;
@@ -171,6 +181,22 @@ const year = new Date().getFullYear();
         </nav>
       </div>
     </footer>
+    <script is:inline define:vars={{ base, platform, platformIds, followedTabs }}>
+      // Before the links can be followed: remember the platform of this component page, then point
+      // the component links (not the platform links, which name theirs) at the remembered one.
+      try {
+        if (platform) localStorage.setItem('site-platform', platform);
+        const saved = localStorage.getItem('site-platform');
+        if (saved && saved !== 'web' && platformIds.includes(saved)) {
+          const prefix = `${base}/components/`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const pattern = new RegExp(`^${prefix}([^/?#]+)(?:/(${followedTabs.join('|')}))?/?([?#].*)?$`);
+          for (const a of document.querySelectorAll('a[href]:not([data-platform])')) {
+            const m = a.getAttribute('href').match(pattern);
+            if (m) a.setAttribute('href', `${base}/components/${m[1]}/${saved}${m[2] ? `/${m[2]}` : ''}${m[3] ?? ''}`);
+          }
+        }
+      } catch {}
+    </script>
     <script>
       // Header mode switch: set the context attribute on <html> and remember the choice.
       const select = document.querySelector<HTMLSelectElement>('[data-mode-switch]');

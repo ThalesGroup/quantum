@@ -160,7 +160,11 @@ rules (`scripts/lib/site-check.mjs`):
   simulation or token inspector (they belong to the web); its Tokens tab shows the values on that
   platform (and the base value an overlay replaces) without CSS names; Develop says where its
   resolved token trees are, the native control recorded in `implementations.<platform>` (or that
-  none is), and the parts, properties, states and keyboard entries to map.
+  none is), and the parts, properties, states and keyboard entries to map. The platform is
+  followed from one component to the next: the layout remembers the platform of the last
+  component page visited (`site-platform` in `localStorage`, the web by default) and points the
+  links to a component's web page (its first page, or a tab every platform has) at that
+  platform; links that name their platform carry `data-platform` and are left as they are.
 - The states matrix crosses enum properties whose options appear together in one component
   token path (`button.container.background.<emphasis>.<intent>.<state>`): the first in spec
   order gives the rows, every combination of the others its own table. Properties never

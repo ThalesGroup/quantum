@@ -59,7 +59,7 @@ const outputs = new Map(platformTokens().map((p) => [p.id, p.outputs.length]));
             <td><a href={componentHref(base, spec.id, null, 'decisions')}>{(spec.decisions ?? []).filter((d: any) => d.status === 'active').length}</a></td>
             {coverage.platforms.map((c) => (
               <>
-                <td>{html ? (c.sections ? <a href={componentHref(base, spec.id, c.platform, 'guidelines')}>{c.sections}</a> : <Shared />) : <span class="site-coverage__missing">none</span>}</td>
+                <td>{html ? (c.sections ? <a href={componentHref(base, spec.id, c.platform, 'guidelines')} data-platform={c.platform}>{c.sections}</a> : <Shared />) : <span class="site-coverage__missing">none</span>}</td>
                 <td>{c.accessibility || <Shared />}</td>
               </>
             ))}

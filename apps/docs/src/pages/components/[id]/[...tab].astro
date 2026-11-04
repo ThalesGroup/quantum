@@ -96,7 +96,7 @@ const native = platform && !isWeb ? spec.implementations[platform] ?? null : nul
 const tokensOfPart = (part: string) => rows.filter((t) => t.segments[1] === part).length;
 const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform(k, platform)) : [];
 ---
-<Layout title={title} description={spec.summary}>
+<Layout title={title} description={spec.summary} platform={platform ?? undefined}>
   {wireframeCss ? <style is:inline set:html={wireframeCss}></style> : null}
   <header class="site-page-header">
     <p class="site-eyebrow">role <code>{spec.role}</code></p>
@@ -123,7 +123,7 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
     {platform && !tab ? <Anatomy spec={spec} template={template} initial={initial} compact /> : null}
     <nav class="site-platforms" aria-label={`${spec.name} per platform`}>
       {platformLinks.map((p) => (
-        <a href={p.href} aria-current={p.current ? (tab ? 'true' : 'page') : undefined}>{p.name}</a>
+        <a href={p.href} data-platform={p.id} aria-current={p.current ? (tab ? 'true' : 'page') : undefined}>{p.name}</a>
       ))}
     </nav>
     {platform ? (
