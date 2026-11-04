@@ -167,7 +167,8 @@ One edit each, modelled on the two existing packages: `.gitignore` (`packages/<f
 root `package.json` (`<framework>-theme:build` script = `pnpm run tokens:build && pnpm --filter
 @quantum-ds/<framework>-theme build`, its test glob in `test`, its build in `build`, its build in
 `themes:demo`), `apps/theme-demos/` (its route in `DEMOS` of `vite.config.mjs`, its link in `index.html`),
-`scripts/lib/paths.mjs` (`<framework>`, `<framework>Dist`), `scripts/lib/conventional-commits.mjs`
+a `<framework>` label next to `bootstrap` and `shadcn` (ask the user before creating it) and its line
+in `agents/git.md` "Labels", `scripts/lib/paths.mjs` (`<framework>`, `<framework>Dist`), `scripts/lib/conventional-commits.mjs`
 (`AREA_SCOPES`), `agents/git.md` (the scope list), `README.md` (packages table, commands),
 `CONTRIBUTING.md` (structure table, commands), `AGENTS.md` (the package list, the commands
 table rows for `<framework>-theme:build`, `test`, `build`), `agents/model.md` ("In Bootstrap and

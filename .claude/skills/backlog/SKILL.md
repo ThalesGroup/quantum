@@ -18,6 +18,8 @@ issue right away instead of being done or left in the chat.
 - **Area**, every one concerned: `site` (the docs website's code, its screens included),
   `content` (its guidance pages), `tokens`, `components`, `docs` (README, CONTRIBUTING,
   guides, skills) (`agents/git.md` "Labels").
+- **Design tool** (`figma`, `penpot`, `tokens-studio`) and **framework themes** (`themes`, plus
+  `bootstrap` or `shadcn` for each theme concerned): `agents/git.md` "Labels".
 - **One label per component id** (`button`, `icon-button`, `text-field`…), when the set has them: every component
   concerned. A component that mirrors another (`scripts/lib/mirrors.mjs`) gets its label too.
 - **One label per platform** (`web`, `ios`, `android`, `desktop`), when the set has them and the issue is scoped to it.
