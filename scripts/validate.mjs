@@ -20,6 +20,7 @@ import { loadAll, checkReferences, checkPlatforms, checkModes, cssVarName, cssDe
 import { loadA11y, checkRegistry, checkSpecA11y, checkCitations, checkDocsA11y, visibleTextContent } from './lib/a11y.mjs';
 import { allContexts, evaluateContrast, formatRatio } from './lib/contrast.mjs';
 import { checkSiteCss, checkSiteMarkup } from './lib/site-check.mjs';
+import { checkBlueprint } from './lib/blueprint.mjs';
 import { checkTokenMap, parseTokenPath, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
@@ -337,6 +338,13 @@ for (const { spec, where } of specs) {
     if (a11y) report(docRel, checkDocsA11y(read(docFile), spec, a11y));
     checkPlatformHeadings(docRel, read(docFile));
   }
+  const blueprintRel = artifacts(id).blueprint;
+  if (!exists(path.join(root, blueprintRel))) error(where, `missing blueprint ${blueprintRel} (apps/docs/content/AGENTS.md "Blueprint")`);
+  else {
+    let doc = null;
+    try { doc = JSON.parse(read(path.join(root, blueprintRel))); } catch (e) { error(blueprintRel, `invalid JSON: ${e.message}`); }
+    if (doc) report(blueprintRel, checkBlueprint(doc));
+  }
 
   // 3d. web implementation
   const web = spec.implementations.web;
@@ -470,8 +478,8 @@ for (const f of fs.readdirSync(path.join(root, PATHS.tokensSrc, 'components'))) 
   if (f.endsWith('.tokens.json') && !specIds.has(id)) error(`${PATHS.tokensSrc}/components/${f}`, 'has no matching spec');
 }
 for (const f of fs.readdirSync(path.join(root, PATHS.content, 'components'))) {
-  const id = f.replace(/\.md$/, '');
-  if (f.endsWith('.md') && !specIds.has(id)) error(`${PATHS.content}/components/${f}`, 'has no matching spec');
+  const id = f.replace(/\.(md|blueprint\.json)$/, '');
+  if (id !== f && !specIds.has(id)) error(`${PATHS.content}/components/${f}`, 'has no matching spec');
 }
 for (const d of fs.readdirSync(path.join(root, PATHS.web, 'components'))) {
   if (!specIds.has(d)) error(`${PATHS.web}/components/${d}`, 'has no matching spec');

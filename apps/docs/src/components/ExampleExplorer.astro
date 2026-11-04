@@ -2,8 +2,9 @@
 /**
  * Examples of a spec as a master-detail explorer: a vertical tab list (APG tabs pattern, automatic
  * activation, synced to the URL hash) and, for the selected example, its stage and the props that
- * define it. An example scoped to platforms without the web has no rendering: its panel lists the
- * props and says where it applies.
+ * define it, on the web page (the reference rendering is the only one these docs draw). An example
+ * scoped to platforms without the web has no rendering: its panel lists the props and says where
+ * it applies.
  *
  * With `samples` (a foundation's code examples), each panel shows a highlighted code sample instead
  * of a stage, with the playground's "Mode context" select: the block follows the page mode, or the
@@ -63,7 +64,7 @@ const modeSelect = Boolean(samples && attribute && modeChoices.length > 1);
       {ex.web ? (
         <div class="site-explorer__stage site-preview__stage" set:html={ex.html}></div>
       ) : (
-        <p class="site-callout">Applies to {ex.scope} only. The web implementation does not render it; the props below define it.</p>
+        <p class="site-callout">Applies to {ex.scope} only. The reference rendering cannot draw it; the props below define it.</p>
       )}
 
       <div class="site-explorer__bar">

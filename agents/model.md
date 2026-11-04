@@ -10,7 +10,7 @@ Four artifacts describe one component. They must always agree; `pnpm check` prov
 | --- | --- | --- |
 | Spec | `packages/components/specs/components/<id>.spec.json` | What the component **is**: role, anatomy (parts with roles), properties, states, layout, accessibility, content rules, examples, implementation metadata, and the **decision log** that led there. Technology-agnostic. |
 | Component tokens | `packages/tokens/src/components/<id>.tokens.json` | Every **design decision** of the component (colors, dimensions, typography) as DTCG tokens aliasing semantic tokens. |
-| Docs | `apps/docs/content/components/<id>.md` | Usage **guidance** for designers and developers: when to use, variants meaning, content, accessibility. Prose only; no data that the spec already holds. |
+| Docs | `apps/docs/content/components/<id>.md`, `<id>.blueprint.json` | Usage **guidance** for designers and developers: when to use, variants meaning, content, accessibility. Prose only; no data that the spec already holds. The blueprint is the sketch the site shows to tell the component apart (thumbnail, page head), parts placed on a grid of cells, drawn as SVG by `scripts/lib/blueprint.mjs`: never a rendering. |
 | Web implementation | `packages/components/src/components/<id>/<id>.css` + `<id>.template.mjs` | The **reference rendering**: vanilla CSS consuming only component tokens, and a pure HTML template `render(props)`. |
 
 ### Foundations

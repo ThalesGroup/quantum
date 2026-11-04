@@ -36,7 +36,8 @@ artifact.
 Four artifacts describe one **component** and must always agree (`pnpm check` proves it): the
 **spec** `packages/components/specs/components/<id>.spec.json` (what it is, with its decision
 log), the **component tokens** `packages/tokens/src/components/<id>.tokens.json` (every design
-decision), the **docs** `apps/docs/content/components/<id>.md` (usage guidance, prose only) and
+decision), the **docs** `apps/docs/content/components/<id>.md` (usage guidance, prose only, with a
+sketch, `<id>.blueprint.json`, that tells the component apart on the site) and
 the **web implementation** `packages/components/src/components/<id>/` (CSS reading only
 component tokens, a pure HTML template). A **foundation** (`packages/components/specs/foundations/`,
 `apps/docs/content/foundations/`) is a rule every component follows, such as color or the focus

@@ -12,6 +12,49 @@ applies, platform differences, building a component that follows it, Accessibili
 tokens itself (the spec's `specimens`): explain the scales and roles, do not list their values.
 Quote any frontmatter value that contains `: `.
 
+## Blueprint
+
+Each component also has `components/<id>.blueprint.json`: the sketch the site draws in the head
+of its platform pages and as its thumbnail in the component list, on blueprint paper. It tells
+the component apart at a glance ("oh, it's this one"), it never shows how the component looks:
+no tokens, no real sizes, no words.
+
+```json
+{
+  "size": [13, 2],
+  "parts": [
+    {"box": [0, 0, 6, 2], "fill": true},
+    {"text": [1, 1, 4], "strong": true},
+    {"box": [7, 0, 6, 2]},
+    {"text": [8, 1, 4]}
+  ]
+}
+```
+
+- It is drawn like a circuit board: parts placed on a grid of cells, flat (no shadow, no depth).
+  `size` is the drawing in whole cells; each part names one piece and its place in cells, from the
+  top left corner, in whole or half cells. `scripts/lib/blueprint.mjs` draws it as one SVG in
+  screen pixels (10 px a cell in a thumbnail, 20 px in a page head), every outline a one-pixel
+  hairline on a grid line, a label a thin solid bar; a part inside a solid box is drawn in white
+  on the brand blue (the box itself edged in a darker blue), one on the paper (no box holds it, or a dashed one) in blue and neutral ink;
+  `PIECES` there lists the pieces and their options, and `pnpm validate` checks every blueprint
+  against it (and that every component has one).
+- The pieces: `box` [x, y, width, height] (`fill`: hatched, the emphasised one; `dashed`: a
+  placeholder; `radius`: `xs`, `pill`, `round`; `edge`: an accent bar; `outline: false`: a
+  highlighted row), `text` [x, y of its middle, length] (a trace from a pad; `strong`: a label or
+  a title; `soft`: a placeholder), `glyph` [x, y] (`name`, `size` in cells), `check` and `radio` [x, y]
+  (a case of the grid, its outline the cell's; `on`), `switch` [x, y] (two cells; `on`), `track` [x, y, length] (`value`, `knob`), `ring` [x, y, size], `rule`
+  [x, y, length], `media` [x, y, width, height], `via` [x, y].
+- Use the grid: boxes two cells high with their text on the middle line (`"text": [x + 1, y + 1,
+  …]`), a cell between parts in a row and between the rows of a group (the cases never touch), a
+  label's text half a cell above its field. Show what makes
+  the component recognisable: a filled and an outlined button, a label above a field, a checked
+  and an unchecked box.
+- Keep it within 15 × 8 cells, the thumbnail's room. Look at it on the component list and on a
+  component page.
+- When the shape of the component changes (a part added or removed, a new layout), redraw it.
+  `pnpm new:component` writes a starter (a box with a line of text) to redraw.
+
 ## Frontmatter
 
 ```yaml

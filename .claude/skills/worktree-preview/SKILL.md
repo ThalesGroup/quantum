@@ -24,6 +24,7 @@ A branch in `.claude/worktrees/<name>` needs its own server, or the user reviews
    must show paths under `.claude/worktrees/<name>/`.
 5. **Give the URLs** in every reply while the work lasts: the server root, the exact pages
    (`/components/<id>`, `/components/<id>/states`, `/components/<id>/playground`,
+   `/components/<id>/<platform>`, `/components/<id>/spec`,
    `/screens/<source>/<block>`), and the review sheets
    (`http://localhost:<port>/@fs/<absolute path>/build/review/<sheet>.html`).
 

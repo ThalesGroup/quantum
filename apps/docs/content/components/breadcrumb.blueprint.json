@@ -1,0 +1,10 @@
+{
+  "size": [15, 1],
+  "parts": [
+    {"text": [0, 0.5, 3], "strong": true},
+    {"glyph": [3.5, 0], "name": "chevron-right"},
+    {"text": [5, 0.5, 3], "strong": true},
+    {"glyph": [8.5, 0], "name": "chevron-right"},
+    {"text": [10, 0.5, 5]}
+  ]
+}

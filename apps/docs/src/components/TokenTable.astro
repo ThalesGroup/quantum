@@ -1,11 +1,15 @@
 ---
-import type { TokenRow } from '../lib/tokens';
+import type { PlatformTokenRow, TokenRow } from '../lib/tokens';
 import { displayValue, getModes } from '../lib/tokens';
 interface Props {
-  rows: TokenRow[];
+  rows: (TokenRow | PlatformTokenRow)[];
   showTier?: boolean;
+  /** The CSS custom properties column: the web's names, hidden on the other platforms. */
+  css?: boolean;
 }
-const { rows, showTier = false } = Astro.props;
+const { rows, showTier = false, css = true } = Astro.props;
+// On a platform page, a value its token overlay changes also shows the base value it replaces.
+const changed = (r: TokenRow | PlatformTokenRow) => ('changed' in r && r.changed ? r.base : null);
 const swatch = (r: TokenRow, value = r.resolved) => (r.type === 'color' && !value.startsWith('error') ? value : null);
 // Label of the default mode, shown next to the default value when another mode differs.
 const defaultMode = getModes().modes.find((m) => m.default)?.id ?? null;
@@ -24,7 +28,7 @@ const search = (r: TokenRow) =>
         <th scope="col">Type</th>
         <th scope="col">Value</th>
         <th scope="col">Resolved</th>
-        <th scope="col">CSS</th>
+        {css ? <th scope="col">CSS</th> : null}
       </tr>
     </thead>
     <tbody>
@@ -56,10 +60,13 @@ const search = (r: TokenRow) =>
                 <code class="site-small">{m.resolved}</code>
               </div>
             ))}
+            {changed(r) ? <div class="site-muted site-small">base <code>{changed(r)}</code></div> : null}
           </td>
-          <td>
-            {r.css.map(([name]) => <code class="site-small site-cssvar">{name}</code>)}
-          </td>
+          {css ? (
+            <td>
+              {r.css.map(([name]) => <code class="site-small site-cssvar">{name}</code>)}
+            </td>
+          ) : null}
         </tr>
       ))}
     </tbody>

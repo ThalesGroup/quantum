@@ -1,0 +1,37 @@
+---
+/**
+ * The blueprint of a component (apps/docs/content/components/<id>.blueprint.json): a sketch that
+ * tells which component it is, never how it looks, drawn by scripts/lib/blueprint.mjs as one SVG
+ * on blueprint paper, its grid from the drawing's corner. As a thumbnail in lists (`thumb`), the
+ * drawing alone at 10 px a cell; in the head of a component's platform pages, a sheet at 20 px a
+ * cell, with centre lines and a title block naming the component. The paper is the default mode's
+ * brand accent in every mode: the design system's mode context attribute is set to the default
+ * mode. Decorative: the name next to it says what it is.
+ */
+import { artifacts } from '../../../../scripts/lib/paths.mjs';
+import { renderBlueprint } from '../../../../scripts/lib/blueprint.mjs';
+import { readRepoFile, repoPath } from '../lib/repo';
+import { getModes } from '../lib/tokens';
+import { existsSync } from 'node:fs';
+
+interface Props {
+  spec: { id: string; name: string; role: string; version: string };
+  thumb?: boolean;
+  class?: string;
+}
+const { spec, thumb = false, class: extra } = Astro.props;
+const file = artifacts(spec.id).blueprint;
+const cell = thumb ? 10 : 20;
+const svg = existsSync(repoPath(file)) ? renderBlueprint(JSON.parse(readRepoFile(file)), { cell, uid: `${spec.id}-${cell}`, construction: !thumb }) : '';
+const { modes, attribute } = getModes();
+const paperMode = modes.find((m) => m.default)?.id;
+const context = attribute && paperMode ? { [attribute]: paperMode } : {};
+---
+<div class:list={['site-bp', { 'site-bp--thumb': thumb }, extra]} {...context} aria-hidden="true" inert>
+  <Fragment set:html={svg} />
+  {thumb ? null : (
+    <div class="site-bp__title">
+      <span>Quantum</span><span>{spec.name}</span><span>{spec.role}</span><span>v{spec.version}</span>
+    </div>
+  )}
+</div>

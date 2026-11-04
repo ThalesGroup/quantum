@@ -1,0 +1,48 @@
+---
+/**
+ * What the design system covers for one component, per platform (columns): guidelines of its own,
+ * examples, states, accessibility statements of its own, where its token values come from, how the
+ * docs draw it and the native control recorded in the spec; then the framework themes mapping it.
+ * Derived by lib/coverage.ts; a missing piece is said, never hidden.
+ */
+import type { Coverage } from '../lib/coverage';
+import { platformTokens } from '../lib/tokens';
+interface Props {
+  coverage: Coverage;
+  name: string;
+}
+const { coverage, name } = Astro.props;
+const outputs = new Map(platformTokens().map((p) => [p.id, p.outputs]));
+const tokens = (c: Coverage['platforms'][number]) =>
+  c.tokens === 'css' ? 'CSS custom properties' : c.tokens === 'overlay' ? `${outputs.get(c.platform)?.length ?? 0} resolved trees` : 'Base values (no overlay)';
+const rows: { label: string; cell: (c: Coverage['platforms'][number]) => string; missing?: (c: Coverage['platforms'][number]) => boolean }[] = [
+  { label: 'Guideline sections of its own', cell: (c) => (c.sections === null ? 'No guidelines' : String(c.sections)), missing: (c) => !c.sections },
+  { label: 'Examples', cell: (c) => String(c.examples) },
+  { label: 'States', cell: (c) => String(c.states) },
+  { label: 'Accessibility statements of its own', cell: (c) => String(c.accessibility), missing: (c) => !c.accessibility },
+  { label: 'Token values', cell: tokens },
+  { label: 'Drawn in these docs', cell: (c) => (c.rendering === 'reference' ? 'Reference rendering' : 'Not drawn: guidelines and tokens') },
+  { label: 'Native control recorded', cell: (c) => c.implementation ?? 'None yet', missing: (c) => !c.implementation },
+];
+---
+<div class="site-table-wrap">
+  <table class="site-table site-coverage">
+    <caption class="site-sr">Coverage of {name} per platform</caption>
+    <thead>
+      <tr><th scope="col"><span class="site-sr">Aspect</span></th>{coverage.platforms.map((c) => <th scope="col">{c.name}</th>)}</tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <th scope="row">{r.label}</th>
+          {coverage.platforms.map((c) => <td class={r.missing?.(c) ? 'site-coverage__missing' : undefined}>{r.cell(c)}</td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="site-small">
+  Framework themes: {coverage.themes.map((t, i) => (
+    <>{i ? '; ' : ''}<strong>{t.framework}</strong> {t.maps ? <>maps it to <code>{t.maps}</code></> : <span class="site-coverage__missing">does not map it</span>} <span class="site-muted">(<code>{t.package}</code>)</span></>
+  ))}.
+</p>

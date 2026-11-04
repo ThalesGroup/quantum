@@ -3,11 +3,11 @@
  * Options of one enum property (rows) x the states of one part (columns).
  * States are forced through the template's `state` prop -> data-state attribute; a part repeated
  * through a list property gets the state on its single entry (lib/matrix.ts cellProps).
- * Only states that apply to the web can be rendered; the others are listed under the table.
- * Each column says which inputs or platforms the state belongs to (from the spec).
+ * Only the states of the web are drawn, by the reference rendering; the others are listed under the table. Each column says which
+ * inputs or platforms the state belongs to (from the spec).
  */
 import type { Template } from '../lib/web';
-import { onWeb, scopeLabel } from '../lib/platforms';
+import { scopeLabel, stateOn } from '../lib/platforms';
 import { cellProps, type PartMatrix } from '../lib/matrix';
 interface Props {
   spec: any;
@@ -18,9 +18,10 @@ interface Props {
   baseProps: Record<string, unknown>;
 }
 const { spec, template, matrix, property, fixed, baseProps } = Astro.props;
+const platform = 'web';
 const all = matrix.states as { id: string; inputs?: string[]; platforms?: string[] }[];
-const states = all.filter(onWeb);
-const elsewhere = all.filter((s) => !onWeb(s));
+const states = all.filter((s) => stateOn(s, platform));
+const elsewhere = all.filter((s) => !stateOn(s, platform));
 const scope = (s: { inputs?: string[]; platforms?: string[] }) => [s.inputs?.length ? s.inputs.join(', ') : '', scopeLabel(s)].filter(Boolean).join(' · ');
 ---
 <div class="site-matrix-wrap">
@@ -46,5 +47,5 @@ const scope = (s: { inputs?: string[]; platforms?: string[] }) => [s.inputs?.len
   </table>
 </div>
 {elsewhere.length ? (
-  <p class="site-muted site-small">Not rendered here (no web rendering): {elsewhere.map((s) => <span class="site-chip"><code>{s.id}</code> <span class="site-muted">{scopeLabel(s)}</span></span>)}</p>
+  <p class="site-muted site-small">Not on the web: {elsewhere.map((s) => <span class="site-chip"><code>{s.id}</code> <span class="site-muted">{scopeLabel(s)}</span></span>)}</p>
 ) : null}

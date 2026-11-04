@@ -1,0 +1,7 @@
+{
+  "size": [7, 1],
+  "parts": [
+    {"check": [0, 0], "on": true},
+    {"text": [2, 0.5, 5], "strong": true}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "size": [11, 3],
+  "parts": [
+    {"glyph": [0, 0], "name": "star", "size": 3},
+    {"glyph": [4, 0], "name": "heart", "size": 3},
+    {"glyph": [8, 0], "name": "search", "size": 3}
+  ]
+}

@@ -103,6 +103,17 @@ export function scaffoldComponent({ id, name, role, summary, today, a11y }) {
       },
     }, null, 2) + '\n',
 
+    // A starter blueprint: a box with a line of text. Redraw it so it tells the component apart
+    // (apps/docs/content/AGENTS.md "Blueprint").
+    [paths.blueprint]: `{
+  "size": [6, 2],
+  "parts": [
+    {"box": [0, 0, 6, 2]},
+    {"text": [1, 1, 4], "strong": true}
+  ]
+}
+`,
+
     [paths.docs]: `---
 component: ${id}
 title: ${JSON.stringify(name)}

@@ -27,7 +27,7 @@ async function scaffold(role) {
 
 test('the scaffold writes the four artifacts and a Figma blueprint, none of them existing', async () => {
   const { files, paths } = await scaffold('button');
-  assert.deepEqual(Object.keys(files).sort(), [paths.spec, paths.tokens, paths.docs, paths.css, paths.template, paths.figma].sort());
+  assert.deepEqual(Object.keys(files).sort(), [paths.spec, paths.tokens, paths.docs, paths.blueprint, paths.css, paths.template, paths.figma].sort());
   for (const rel of Object.keys(files)) assert.ok(!fs.existsSync(path.join(ROOT, rel)), rel);
 });
 

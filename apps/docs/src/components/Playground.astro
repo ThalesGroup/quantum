@@ -4,13 +4,15 @@
  * client-side and, after each render, dispatches `playground:render` ({ props, state }) on its
  * root, which the token inspector listens to. The rendered HTML is shown formatted, under the
  * whole playground, with a Copy button (the design system's Button). Two simulations apply to the stage only:
- * a vision deficiency (SVG filters) and a larger text size (text-only zoom).
+ * a vision deficiency (SVG filters) and a larger text size (text-only zoom). On the web page only:
+ * the reference rendering is the only one these docs draw.
  */
 import { getTemplate, type Template } from '../lib/web';
 import TokenInspector from './TokenInspector.astro';
 import { highlight } from '../lib/highlight';
 import { formatHtml } from '../lib/format-html';
 import { getModes } from '../lib/tokens';
+import { stateOn } from '../lib/platforms';
 interface Props {
   spec: any;
   template: Template;
@@ -57,7 +59,7 @@ const textSizes = [
       if (p.type === 'number') return <div class="site-playground__field" set:html={field('number-field', { label, id, size: 'small', value: initial[p.id] ?? '', attrs: { name: p.id } })}></div>;
       return <div class="site-playground__field" set:html={field('text-field', { label, id, size: 'small', value: String(initial[p.id] ?? ''), attrs: { name: p.id } })}></div>;
     })}
-    <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: 'Forced state (data-state)', id: `${spec.id}-sandbox-state`, size: 'small', options: spec.states.map((s: any) => ({ label: s.id, value: s.id })), attrs: { name: 'state' } })}></div>
+    <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: 'Forced state (data-state)', id: `${spec.id}-sandbox-state`, size: 'small', options: spec.states.filter((s: any) => stateOn(s, 'web')).map((s: any) => ({ label: s.id, value: s.id })), attrs: { name: 'state' } })}></div>
     {attribute && modeChoices.length > 1 ? (
       <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: `Mode context (${attribute})`, id: `${spec.id}-sandbox-mode`, size: 'small', options: [{ label: '(page mode)', value: '' }, ...modeChoices.map((m) => ({ label: m, value: m }))], attrs: { [`data-mode-context`]: attribute } })}></div>
     ) : null}
@@ -98,7 +100,7 @@ const textSizes = [
     if (!key) continue;
     const form = el.querySelector('form')!;
     const stage = el.querySelector<HTMLElement>('[data-stage]')!;
-    const code = el.querySelector<HTMLElement>('[data-code]')!;
+    const code = el.querySelector<HTMLElement>('[data-code]');
     // Copy: the text of the highlighted code is the formatted HTML. The Clipboard API first; where
     // it is refused (permissions, embedded browsers) the legacy copy command; failing both, the
     // code is selected so the keyboard shortcut copies it. The status says what happened.
@@ -119,13 +121,13 @@ const textSizes = [
     };
     let clear: number | undefined;
     copy?.addEventListener('click', async () => {
-      const text = code.textContent ?? '';
+      const text = code?.textContent ?? '';
       let message = 'Copied to the clipboard';
       try {
         await navigator.clipboard.writeText(text);
       } catch {
         if (!legacyCopy(text)) {
-          getSelection()?.selectAllChildren(code);
+          if (code) getSelection()?.selectAllChildren(code);
           message = 'Copy blocked: the code is selected, press Ctrl+C or ⌘C';
         }
       }
@@ -190,7 +192,7 @@ const textSizes = [
         const html = mod.render(props);
         stage.innerHTML = html;
         scaleText();
-        code.innerHTML = highlight(formatHtml(html), 'html');
+        if (code) code.innerHTML = highlight(formatHtml(html), 'html');
         el.dispatchEvent(new CustomEvent('playground:render', { detail: { props, state: String(props.state ?? 'default') } }));
       };
       // Props passed in the query string (e.g. from "Open in playground" on an example) preset the form.
