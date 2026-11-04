@@ -49,10 +49,13 @@ The repository is the GitHub repository
     Penpot token format, its import, and `@quantum-ds/penpot` in `packages/penpot/`),
     `tokens-studio` (the Tokens Studio token format). A change to `packages/figma/` takes `figma`,
     one to `packages/penpot/` takes `penpot`, on top of its kind.
-  - **Framework**, every one the change or the issue concerns: `bootstrap` (the Bootstrap theme,
-    `@quantum-ds/bootstrap-theme` in `packages/bootstrap-theme/`), `shadcn` (the shadcn/ui theme,
-    `@quantum-ds/shadcn-theme` in `packages/shadcn-theme/`). A change to a theme package takes its
-    framework label on top of its kind.
+  - **Framework themes.** `themes` on everything that touches the framework themes: a theme
+    package, their shared library `scripts/lib/theme-mapping.mjs`, the skill `framework-theme`,
+    `apps/theme-demos/`, or how themes are built and kept in sync. On top of it, every framework
+    the change or the issue concerns: `bootstrap` (`@quantum-ds/bootstrap-theme` in
+    `packages/bootstrap-theme/`), `shadcn` (`@quantum-ds/shadcn-theme` in `packages/shadcn-theme/`).
+    A change to a theme package takes `themes` and its framework label on top of its kind; a
+    change to what every theme shares takes `themes` and the label of each theme it changes.
   - **Quantum NextGen.** Every issue and pull request that concerns it (a pull request against
     `nextgen`, an issue about its packages, specs, docs site, guides or skills) always takes
     `nextgen`.
