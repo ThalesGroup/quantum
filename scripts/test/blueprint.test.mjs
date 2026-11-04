@@ -29,9 +29,9 @@ test('the drawing is in screen pixels, its strokes on the pixel grid, its grid f
   const thumb = renderBlueprint(doc, { cell: 10, uid: 'button-10' });
   assert.match(thumb, /^<svg class="site-bp__svg"[^>]* width="130" height="20" viewBox="0 0 130 20"/);
   // A one-pixel outline sits on half pixels, inside its box.
-  assert.match(thumb, /<rect x="0.5" y="0.5" width="59" height="19" rx="1.5" class="site-bp__line" stroke-width="1"\/>/);
+  assert.match(thumb, /<rect x="0.5" y="0.5" width="59" height="19" rx="1.5" class="site-bp__line site-bp__line--edge" stroke-width="1"\/>/);
   // Hairlines at every cell size: a page head's outline is one pixel too.
-  assert.match(renderBlueprint(doc, { cell: 20, uid: 'button-20' }), /<rect x="0.5" y="0.5" width="119" height="39" rx="3.5" class="site-bp__line" stroke-width="1"\/>/);
+  assert.match(renderBlueprint(doc, { cell: 20, uid: 'button-20' }), /<rect x="0.5" y="0.5" width="119" height="39" rx="3.5" class="site-bp__line site-bp__line--edge" stroke-width="1"\/>/);
   // A label is a thin bar on whole pixels.
   assert.match(renderBlueprint(doc, { cell: 20, uid: 'button-20' }), /<rect x="20" y="18" width="80" height="4" rx="1" class="site-bp__ink"\/>/);
   assert.match(thumb, /<pattern id="site-bp-button-10-minor" width="10" height="10" patternUnits="userSpaceOnUse"><path class="site-bp__grid" d="M.5 0 V10 M0 .5 H10"\/>/);
@@ -40,6 +40,13 @@ test('the drawing is in screen pixels, its strokes on the pixel grid, its grid f
   assert.match(renderBlueprint(doc, { cell: 20, uid: 'b', construction: true }), /stroke-dasharray="10 5 2.5 5"/);
   // A checkbox is a case of the grid: its outline is its cell's.
   assert.match(renderBlueprint({ size: [1, 1], parts: [{ check: [0, 0], on: true }] }, { cell: 10, uid: 'c' }), /<rect x="0.5" y="0.5" width="9" height="9" rx="0" class="site-bp__line" stroke-width="1"\/>/);
+  // A surface inside another one keeps the white edge; a part no solid box holds is drawn on the
+  // paper, in its own ink; one inside a box is not.
+  assert.match(renderBlueprint({ size: [6, 4], parts: [{ box: [0, 0, 6, 4] }, { box: [1, 1, 4, 2], fill: true, outline: true }] }, { cell: 10, uid: 'n' }), /<rect x="10.5" y="10.5" width="39" height="19" rx="1.5" class="site-bp__line" stroke-width="1"\/>/);
+  const field = renderBlueprint({ size: [6, 3], parts: [{ text: [0, 0.5, 3], strong: true }, { box: [0, 1, 6, 2] }, { text: [1, 2, 4] }] }, { cell: 10, uid: 'f' });
+  assert.match(field, /<g class="site-bp__on-sheet"><rect x="0" y="4" width="30" height="2" rx="1" class="site-bp__ink"\/><\/g>/);
+  assert.equal(field.match(/site-bp__on-sheet/g).length, 1);
+  assert.match(renderBlueprint({ size: [2, 2], parts: [{ box: [0, 0, 2, 2], dashed: true }] }, { cell: 10, uid: 'd' }), /<g class="site-bp__on-sheet">/, 'a placeholder is drawn on the paper');
   // Colors are classes of the site's stylesheet, never values.
   assert.doesNotMatch(thumb, /(fill|stroke)="(#|rgb|white|black)/);
 });

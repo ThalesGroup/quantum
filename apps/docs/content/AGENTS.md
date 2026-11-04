@@ -35,7 +35,8 @@ no tokens, no real sizes, no words.
   `size` is the drawing in whole cells; each part names one piece and its place in cells, from the
   top left corner, in whole or half cells. `scripts/lib/blueprint.mjs` draws it as one SVG in
   screen pixels (10 px a cell in a thumbnail, 20 px in a page head), every outline a one-pixel
-  hairline on a grid line, a label a thin solid bar;
+  hairline on a grid line, a label a thin solid bar; a part inside a solid box is drawn in white
+  on the brand blue (the box itself edged in a darker blue), one on the paper (no box holds it, or a dashed one) in blue and neutral ink;
   `PIECES` there lists the pieces and their options, and `pnpm validate` checks every blueprint
   against it (and that every component has one).
 - The pieces: `box` [x, y, width, height] (`fill`: hatched, the emphasised one; `dashed`: a

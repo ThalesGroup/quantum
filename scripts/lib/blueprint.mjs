@@ -60,6 +60,13 @@ export const PIECES = {
 
 const pieceOf = (part) => Object.keys(PIECES).find((p) => p in part);
 
+/** The smallest box that holds a part (its extent inside the box), or null: the part is on the paper. */
+function holder(boxes, part, piece) {
+  const [x, y, w, h] = extent(piece, part);
+  const inside = boxes.filter((b) => b !== part && x >= b.box[0] && y >= b.box[1] && x + w <= b.box[0] + b.box[2] && y + h <= b.box[1] + b.box[3]);
+  return inside.sort((a, b) => a.box[2] * a.box[3] - b.box[2] * b.box[3])[0] ?? null;
+}
+
 /** Width and height a part takes, in cells (its box, for the bounds check). */
 function extent(piece, part) {
   const [x, y, a, b] = part[piece];
@@ -148,13 +155,18 @@ export function renderBlueprint(doc, { cell, uid, construction = false }) {
   // A stroke of odd width sits on half pixels to fill whole pixels; the inset keeps it inside its box.
   const o = (w) => (w % 2 ? 0.5 : 0);
   const id = (name) => `site-bp-${uid}-${name}`;
-  const hatch = `url(#${id('hatch')})`;
+  // Two inks: white on a component's surface, blue on the paper. A part is on the paper when no
+  // solid box holds it (a dashed box is a placeholder drawn on the paper); its elements go in a
+  // `site-bp__on-sheet` group, whose class swaps the ink, and its hatching is the paper's.
+  let onSheet = false;
+  const hatch = () => `url(#${id(onSheet ? 'sheet-hatch' : 'hatch')})`;
   const line = (cls = '') => `site-bp__line${cls ? ` site-bp__line--${cls}` : ''}`;
   const out = [];
   const defs = [
     `<pattern id="${id('minor')}" width="${cell}" height="${cell}" patternUnits="userSpaceOnUse"><path class="site-bp__grid" d="M.5 0 V${cell} M0 .5 H${cell}"/></pattern>`,
     `<pattern id="${id('major')}" width="${5 * cell}" height="${5 * cell}" patternUnits="userSpaceOnUse"><path class="site-bp__grid site-bp__grid--major" d="M.5 0 V${5 * cell} M0 .5 H${5 * cell}"/></pattern>`,
     `<pattern id="${id('hatch')}" width="${cell / 2}" height="${cell / 2}" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="site-bp__line site-bp__line--faint" stroke-width="1" d="M.5 0 V${cell / 2}"/></pattern>`,
+    `<pattern id="${id('sheet-hatch')}" width="${cell / 2}" height="${cell / 2}" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="site-bp__sheet-hatch" stroke-width="1" d="M.5 0 V${cell / 2}"/></pattern>`,
   ];
   // The grid, far past the drawing (the stage clips it), from the drawing's corner.
   const far = 60 * cell;
@@ -167,28 +179,38 @@ export function renderBlueprint(doc, { cell, uid, construction = false }) {
     // Centre marks outside the drawing only, as on a drawing: they never cross its parts.
     const m = 2.5 * cell;
     const g = cell / 2;
-    out.push(el('path', { class: line('mid'), 'stroke-width': 1, 'stroke-dasharray': dash, d: `M${num(-m)} ${num(cy)} H${num(-g)} M${num(px(W) + g)} ${num(cy)} H${num(px(W) + m)} M${num(cx)} ${num(-m)} V${num(-g)} M${num(cx)} ${num(px(H) + g)} V${num(px(H) + m)}` }));
+    out.push('<g class="site-bp__on-sheet">');
+    out.push(el('path', { class: line('faint'), 'stroke-width': 1, 'stroke-dasharray': dash, d: `M${num(-m)} ${num(cy)} H${num(-g)} M${num(px(W) + g)} ${num(cy)} H${num(px(W) + m)} M${num(cx)} ${num(-m)} V${num(-g)} M${num(cx)} ${num(px(H) + g)} V${num(px(H) + m)}` }));
+    out.push('</g>');
   }
 
   const surface = (x, y, w, h, r, { fill = false, dashed = false, outline = true, stroke = s, cls = '' } = {}) => {
     const i = outline ? o(stroke) : 0;
     const box = { x: x + i, y: y + i, width: w - 2 * i, height: h - 2 * i, rx: Math.max(0, r - i) };
     out.push(el('rect', { ...box, class: 'site-bp__paper' }));
-    if (fill) out.push(el('rect', { ...box, fill: hatch }));
+    if (fill) out.push(el('rect', { ...box, fill: hatch() }));
     if (outline) out.push(el('rect', { ...box, class: line(cls), 'stroke-width': stroke, 'stroke-dasharray': dashed ? `${2 * stroke} ${2 * stroke}` : undefined }));
   };
 
+  const boxes = doc.parts.filter((p) => 'box' in p);
   for (const part of doc.parts) {
     const piece = pieceOf(part);
     const at = part[piece];
+    onSheet = piece === 'box' ? Boolean(part.dashed) : !holder(boxes, part, piece) || Boolean(holder(boxes, part, piece).dashed);
+    if (onSheet) out.push('<g class="site-bp__on-sheet">');
     switch (piece) {
       case 'box': {
         const [x, y, w, h] = at.map(px);
         const r = part.radius === 'pill' ? h / 2 : part.radius === 'round' ? Math.min(w, h) / 2 : Math.round(cell * 0.2);
-        surface(x, y, w, h, r, { fill: part.fill, dashed: part.dashed, outline: part.outline !== false, cls: part.dashed ? 'mid' : '' });
+        // A surface on the paper is edged in the dark blue, a shade darker than its fill: a white
+        // line against the light paper would halo it. One inside another surface keeps the white.
+        const loose = !part.dashed && !holder(boxes, part, piece);
+        surface(x, y, w, h, r, { fill: part.fill, dashed: part.dashed, outline: part.outline !== false, cls: part.dashed ? 'mid' : loose ? 'edge' : '' });
         if (part.edge) {
           const e = Math.max(2, even(cell * 0.15));
-          out.push(el('path', { class: line(), 'stroke-width': e, 'stroke-linecap': 'butt', d: `M${num(x + s + e / 2)} ${num(y + r)} V${num(y + h - r)}` }));
+          // Inside the surface, clear of its edge: an accent bar, never a white line on the paper.
+          const inset = Math.round(cell * 0.25);
+          out.push(el('path', { class: line(), 'stroke-width': e, d: `M${num(x + inset + e / 2)} ${num(y + inset + e / 2)} V${num(y + h - inset - e / 2)}` }));
         }
         break;
       }
@@ -219,7 +241,7 @@ export function renderBlueprint(doc, { cell, uid, construction = false }) {
         if (n > 1) out.push(el('rect', { x: x + 0.5, y: y + 0.5, width: G - 1, height: G - 1, class: line('faint'), 'stroke-width': 1, 'stroke-dasharray': `${cell / 5} ${cell / 5}` }));
         if (g.fill === 'ink') out.push(el('path', { d, class: 'site-bp__ink' }));
         else {
-          if (g.fill === 'hatch') out.push(el('path', { d, fill: hatch }));
+          if (g.fill === 'hatch') out.push(el('path', { d, fill: hatch() }));
           out.push(el('path', { d, class: line(), 'stroke-width': gs }));
         }
         if (g.circle) out.push(el('circle', { cx: x + g.circle[0] * G, cy: y + g.circle[1] * G, r: g.circle[2] * G, class: line(), 'stroke-width': gs }));
@@ -290,6 +312,7 @@ export function renderBlueprint(doc, { cell, uid, construction = false }) {
         break;
       }
     }
+    if (onSheet) out.push('</g>');
   }
   return `<svg class="site-bp__svg" xmlns="http://www.w3.org/2000/svg" width="${px(W)}" height="${px(H)}" viewBox="0 0 ${px(W)} ${px(H)}" aria-hidden="true" focusable="false"><defs>${defs.join('')}</defs>${out.join('')}</svg>`;
 }

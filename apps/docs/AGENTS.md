@@ -167,10 +167,13 @@ rules (`scripts/lib/site-check.mjs`):
   Specification page shows the whole description.
 - Blueprints. The head of every page of a platform (not the shared Specification and Decisions)
   and the component list draw the component's blueprint, never a rendering: a sketch that tells
-  which component it is, drawn like a circuit board on blueprint paper (the brand accent of the
-  default mode; text as traces from pads, hatching for filled surfaces; flat, no shadow). Each
-  component places generic pieces (boxes, text, glyphs, checks, radios, switches, tracks, a ring,
-  a rule, media, vias) on a grid of cells in `content/components/<id>.blueprint.json`
+  which component it is, drawn like a circuit board on blueprint paper (the component's surfaces
+  the brand accent of the default mode, drawn in white and edged in a darker blue, never a white
+  line against the paper; the paper a light mix of it with the surface, what no surface holds
+  drawn on it in blue and neutral ink, as its grid; the title block in the paper's tints, so the
+  component stands out; text as traces from pads, hatching for filled surfaces; flat, no shadow).
+  Each component places generic pieces (boxes, text, glyphs, checks, radios, switches, tracks, a
+  ring, a rule, media, vias) on a grid of cells in `content/components/<id>.blueprint.json`
   (`content/AGENTS.md` "Blueprint"); `scripts/lib/blueprint.mjs` draws it as one SVG in screen
   pixels, its grid from the drawing's corner and its outlines one-pixel hairlines on the pixel
   grid, so every outline lies crisp on a grid line at any page width; centre marks outside it on a

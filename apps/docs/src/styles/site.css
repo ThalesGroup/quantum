@@ -193,17 +193,25 @@ td.site-cite a { margin-inline-end: 0.75em; }
    circuit board on blueprint paper. scripts/lib/blueprint.mjs draws a component's blueprint
    (apps/docs/content/components/<id>.blueprint.json, parts placed on a grid of cells) as one SVG in
    screen pixels: the grid from the drawing's corner, whole-pixel strokes, flat. These rules only
-   color it: white ink on the brand blue, the line tints, the grid. The paper is always the light
-   mode's brand accent (Blueprint.astro sets the mode context), so it stays blue in every mode. */
+   color it. The component's surfaces are the brand accent, drawn in white; the paper is a light,
+   translucent-looking brand blue (the accent mixed with the surface), and what is drawn on it
+   (a part no surface holds: a breadcrumb, a label, a track) is in blue and neutral ink, as is its
+   grid, so the component stands out on it, as on a blueprint (scripts/lib/blueprint.mjs puts those
+   parts in site-bp__on-sheet). All are the light mode's (Blueprint.astro sets the mode context), so
+   they stay the same in every mode. */
 .site-bp {
   --site-bp-paper: var(--global-bg-accent-brand-default);
+  --site-bp-sheet: color-mix(in srgb, var(--site-bp-paper) 22%, var(--global-bg-level-0-default));
   --site-bp-ink: var(--global-text-on-accent-brand-default);
   --site-bp-mid: color-mix(in srgb, var(--site-bp-ink) 55%, transparent);
   --site-bp-faint: color-mix(in srgb, var(--site-bp-ink) 30%, transparent);
-  --site-bp-grid: color-mix(in srgb, var(--site-bp-ink) 9%, transparent);
-  --site-bp-grid-major: color-mix(in srgb, var(--site-bp-ink) 18%, transparent);
+  --site-bp-sheet-ink: var(--global-text-on-subtle-brand-default);
+  --site-bp-sheet-mid: var(--global-text-on-base-neutral-secondary);
+  --site-bp-sheet-faint: color-mix(in srgb, var(--site-bp-sheet-ink) 35%, transparent);
+  --site-bp-grid: color-mix(in srgb, var(--site-bp-paper) 10%, transparent);
+  --site-bp-grid-major: color-mix(in srgb, var(--site-bp-paper) 18%, transparent);
   position: relative; display: grid; place-items: center; padding: 1.5rem; overflow: hidden; color: var(--site-bp-ink);
-  background: radial-gradient(ellipse at 30% 15%, var(--site-bp-grid), transparent 70%), var(--site-bp-paper);
+  background: radial-gradient(ellipse at 30% 15%, color-mix(in srgb, var(--global-bg-level-0-default) 45%, transparent), transparent 70%), var(--site-bp-sheet);
   border-radius: var(--corner-radius-sm); pointer-events: none; user-select: none;
 }
 .site-bp--thumb { padding: 0.375rem; border-radius: var(--corner-radius-xs); }
@@ -217,15 +225,18 @@ td.site-cite a { margin-inline-end: 0.75em; }
 .site-bp__line--mid { stroke: var(--site-bp-mid); }
 .site-bp__line--faint { stroke: var(--site-bp-faint); }
 .site-bp__line--paper { stroke: var(--site-bp-paper); }
+.site-bp__line--edge { stroke: var(--site-bp-sheet-ink); }
+.site-bp__on-sheet { --site-bp-ink: var(--site-bp-sheet-ink); --site-bp-mid: var(--site-bp-sheet-mid); --site-bp-faint: var(--site-bp-sheet-faint); --site-bp-paper: var(--site-bp-sheet); }
+.site-bp__sheet-hatch { fill: none; stroke: var(--site-bp-sheet-faint); }
 .site-bp__grid { fill: none; stroke: var(--site-bp-grid); stroke-width: 1; }
 .site-bp__grid--major { stroke: var(--site-bp-grid-major); }
 /* The title block of a sheet, in the bottom right corner, as on a drawing: a row of its own under
    the drawing, so it never covers it. */
 .site-bp:has(.site-bp__title) { grid-template-rows: 1fr auto; container-type: inline-size; }
-.site-bp__title { justify-self: end; display: flex; margin: 1rem -0.75rem -0.75rem 0; border: var(--stroke-width-sm) solid var(--site-bp-mid); font-family: var(--mono-family); font-size: var(--mono-size-xs); font-weight: var(--mono-weight-regular); letter-spacing: var(--font-letter-spacing-normal); text-transform: uppercase; color: var(--site-bp-mid); background: var(--site-bp-paper); }
+.site-bp__title { justify-self: end; display: flex; margin: 1rem -0.75rem -0.75rem 0; border: var(--stroke-width-sm) solid var(--site-bp-sheet-faint); font-family: var(--mono-family); font-size: var(--mono-size-xs); font-weight: var(--mono-weight-regular); letter-spacing: var(--font-letter-spacing-normal); text-transform: uppercase; color: var(--global-text-on-base-neutral-tertiary); background: var(--site-bp-sheet); }
 .site-bp__title > span { padding: 0.25rem 0.6rem; white-space: nowrap; }
-.site-bp__title > span + span { border-inline-start: var(--stroke-width-sm) solid var(--site-bp-mid); }
-.site-bp__title > span:nth-child(2) { color: var(--site-bp-ink); }
+.site-bp__title > span + span { border-inline-start: var(--stroke-width-sm) solid var(--site-bp-sheet-faint); }
+.site-bp__title > span:nth-child(2) { color: var(--site-bp-sheet-ink); }
 @container (max-width: 26rem) { .site-bp__title > span:nth-child(3) { display: none; } }
 .site-subsection > h3 { display: flex; align-items: baseline; gap: 0.5rem; }
 .site-decisions { list-style: none; padding: 0; margin: 0; }
