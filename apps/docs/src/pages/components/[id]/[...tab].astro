@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import { artifacts } from '../../../../../../scripts/lib/paths.mjs';
 import Status from '../../../components/Status.astro';
@@ -11,55 +11,64 @@ import TokenFilter from '../../../components/TokenFilter.astro';
 import Anatomy from '../../../components/Anatomy.astro';
 import DecisionLog from '../../../components/DecisionLog.astro';
 import A11yStatements from '../../../components/A11yStatements.astro';
+import CoverageTable from '../../../components/CoverageTable.astro';
 import { getTemplate, defaultProps } from '../../../lib/web';
-import { componentTokens } from '../../../lib/tokens';
+import { componentTokens, platformComponentTokens, platformDeclarations, platformTokens, hasOverlay } from '../../../lib/tokens';
 import { partMatrices } from '../../../lib/matrix';
 import { readRepoFile } from '../../../lib/repo';
 import { highlight, langOfFile } from '../../../lib/highlight';
 import { cite, conformanceTarget, publisherName } from '../../../lib/a11y';
-import { COMPONENT_TABS } from '../../../lib/tabs';
+import { SHARED_TABS, platformTabs, componentHref } from '../../../lib/tabs';
 import { followersOf } from '../../../lib/foundations';
-import { platformName, scopeLabel, scoped } from '../../../lib/platforms';
+import { platforms, platformName, scopeLabel, scoped, stateOn, onPlatform } from '../../../lib/platforms';
+import { guidelinesFor } from '../../../lib/guidelines';
+import { coverageOf } from '../../../lib/coverage';
 
+// Shared pages (specification, decisions) once per component; then each platform's pages.
 export async function getStaticPaths() {
   const specs = await getCollection('specs');
   const docs = new Set((await getCollection('docs')).map((d) => d.id));
   return specs.flatMap((s) =>
-    COMPONENT_TABS.filter((t) => t.slug !== 'guidelines' || docs.has(s.id)).map((t) => ({
-      params: { id: s.id, tab: t.slug },
-      props: { entry: s },
+    [
+      ...SHARED_TABS.map((t) => ({ platform: null, tab: t.slug as string | undefined })),
+      ...platforms().flatMap((p) => platformTabs(p.id, docs.has(s.id)).map((t) => ({ platform: p.id as string | null, tab: t.slug as string | undefined }))),
+    ].map(({ platform, tab }) => ({
+      params: { id: s.id, tab: [platform && platform !== 'web' ? platform : null, tab].filter(Boolean).join('/') || undefined },
+      props: { entry: s, platform, tab },
     })),
   );
 }
 
-const { entry } = Astro.props;
-const { tab } = Astro.params;
+const { entry, platform, tab } = Astro.props as { entry: any; platform: string | null; tab: string | undefined };
 const spec = entry.data;
 const template = getTemplate(spec.id);
 const doc = await getEntry('docs', spec.id);
-const Content = doc ? (await render(doc)).Content : null;
+const guidelinesHtml: string | null = doc?.rendered?.html ?? null;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const tabs = COMPONENT_TABS.filter((t) => t.slug !== 'guidelines' || Content).map((t) => ({
-  ...t,
-  href: `${base}/components/${spec.id}${t.slug ? `/${t.slug}` : ''}`,
-}));
-const current = tabs.find((t) => t.slug === tab)!;
+const isWeb = platform === 'web';
+const pName = platform ? platformName(platform) : null;
+const shared = SHARED_TABS.map((t) => ({ ...t, href: componentHref(base, spec.id, null, t.slug) }));
+const tabs = platform ? platformTabs(platform, Boolean(guidelinesHtml)).map((t) => ({ ...t, href: componentHref(base, spec.id, platform, t.slug) })) : [];
+const current = (platform ? tabs : shared).find((t) => t.slug === tab)!;
+const title = !platform ? `${current.label} · ${spec.name}` : isWeb && !tab ? spec.name : `${tab ? `${current.label} · ` : ''}${spec.name} on ${pName}`;
+// The platforms, each linking to its first page; the current one is marked.
+const platformLinks = platforms().map((p) => ({ ...p, href: componentHref(base, spec.id, p.id), current: p.id === platform }));
 
 const initial = defaultProps(spec);
 const tokens = componentTokens(spec.id);
 const matrices = partMatrices(spec, tokens);
-const parts = spec.anatomy.map((p) => p.id);
-const tokensByPart = parts.map((part) => ({ part, rows: tokens.filter((t) => t.segments[1] === part) }));
+const parts = spec.anatomy.map((p: any) => p.id);
+// Token values of the page's platform (its overlay, or the base values without one).
+const rows = platform && !isWeb ? platformComponentTokens(spec.id, platform) : tokens;
+const tokensByPart = parts.map((part: string) => ({ part, rows: rows.filter((t) => t.segments[1] === part) }));
 const web = spec.implementations.web;
-const cssSource = readRepoFile(web.css);
-const templateSource = readRepoFile(web.template);
 const specFile = artifacts(spec.id).spec;
 const specSource = readRepoFile(specFile);
 const a11y = spec.accessibility as any;
 const target = conformanceTarget();
-const others = Object.entries(spec.implementations as Record<string, any>).filter(([k]) => k !== 'web');
 const decisions = spec.decisions ?? [];
+const activeDecisions = decisions.filter((d: any) => d.status === 'active').length;
 // Foundations this component follows: those whose tokens its own tokens alias (derived, never declared).
 const followed = (await getCollection('foundations'))
   .map((f) => ({ foundation: f.data, tokens: followersOf(f.data).find((x) => x.component === spec.id)?.tokens ?? [] }))
@@ -67,35 +76,95 @@ const followed = (await getCollection('foundations'))
 const partProps = spec.anatomy.flatMap((part: any) => (part.properties ?? []).map((p: any) => ({ part: part.id, p })));
 const partStates = spec.states.some((s: any) => s.parts?.length);
 const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')}` : '', scopeLabel(s)].filter(Boolean).join(' · ') || 'every platform and input';
+const coverage = coverageOf(spec, guidelinesHtml);
+const mappedBy = coverage.themes.filter((t) => t.maps);
+
+// Wireframe of a platform other than the web: the reference rendering with the component tokens
+// (this component's and those of the components it contains) set to their value on that
+// platform, drawn in greyscale by site.css. The values are data, set by a generated rule.
+const specsById = new Map((await getCollection('specs')).map((s) => [s.id, s.data]));
+const contained = (id: string, seen = new Set<string>()) => {
+  if (seen.has(id)) return seen;
+  seen.add(id);
+  for (const p of specsById.get(id)?.anatomy ?? []) if (p.component) contained(p.component, seen);
+  return seen;
+};
+const wireframe = platform && !isWeb ? platformDeclarations(platform, [...contained(spec.id)]) : [];
+const wireframeCss = wireframe.length ? `[data-wireframe="${platform}"] { ${wireframe.map(([n, v]) => `${n}: ${v};`).join(' ')} }` : '';
+const outputs = platform ? platformTokens().find((p) => p.id === platform)?.outputs ?? [] : [];
+const native = platform && !isWeb ? spec.implementations[platform] ?? null : null;
+const tokensOfPart = (part: string) => rows.filter((t) => t.segments[1] === part).length;
+const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform(k, platform)) : [];
 ---
-<Layout title={tab ? `${current.label} · ${spec.name}` : spec.name} description={spec.summary}>
+<Layout title={title} description={spec.summary}>
+  {wireframeCss ? <style is:inline set:html={wireframeCss}></style> : null}
   <header class="site-page-header">
     <p class="site-eyebrow">role <code>{spec.role}</code></p>
     <h1>{spec.name} <Status status={spec.status} /> <span class="site-version">v{spec.version}</span></h1>
     <p class="site-lede">{spec.summary}</p>
     {spec.description ? <p class="site-page-header__desc">{spec.description}</p> : null}
-    <nav class="site-tabs" aria-label={`${spec.name} sections`}>
-      {tabs.map((t) => (
-        <a href={t.href} aria-current={t === current ? 'page' : undefined}>{t.label}</a>
+    {/* What every platform shares, then a disclosure of what each one covers: out of the way until asked. */}
+    <div class="site-component-bar">
+      <nav class="site-component-bar__shared" aria-label={`${spec.name}, shared by every platform`}>
+        {shared.map((t) => (
+          <a href={t.href} aria-current={t === current ? 'page' : undefined}>{t.label}{t.slug === 'decisions' ? <span class="site-tabs__count">{activeDecisions}</span> : null}</a>
+        ))}
+      </nav>
+      <button type="button" class="ds-button" data-emphasis="subtle" data-intent="neutral" data-size="small" aria-expanded="false" aria-controls="site-coverage" data-coverage-toggle>
+        <span class="ds-button__label">Coverage</span>
+      </button>
+    </div>
+    {/* Not a heading: the outline would list it while the panel is closed. */}
+    <section class="site-coverage-panel" id="site-coverage" aria-labelledby="site-coverage-title" hidden>
+      <p class="site-coverage-panel__title" id="site-coverage-title">Coverage of {spec.name}</p>
+      <CoverageTable coverage={coverage} name={spec.name} />
+      <p class="site-small"><a href={`${base}/coverage`}>Coverage of every component</a></p>
+    </section>
+    {platform && !tab ? <Anatomy spec={spec} template={template} initial={initial} compact /> : null}
+    <nav class="site-platforms" aria-label={`${spec.name} per platform`}>
+      {platformLinks.map((p) => (
+        <a href={p.href} aria-current={p.current ? (tab ? 'true' : 'page') : undefined}>{p.name}</a>
       ))}
     </nav>
+    {platform ? (
+      <nav class="site-tabs" aria-label={`${spec.name} on ${pName}`}>
+        {tabs.map((t) => (
+          <a href={t.href} aria-current={t === current ? 'page' : undefined}>{t.label}</a>
+        ))}
+      </nav>
+    ) : null}
   </header>
 
-  {!tab ? (
+  {platform && !tab ? (
   <section class="site-section" id="examples">
-    <h2 class="site-sr">Examples</h2>
+    <h2>{spec.name} on {pName}</h2>
+    {isWeb ? (
+      <p class="site-platform-note">
+        Drawn by the reference rendering of the specification (<code>packages/components/src</code>), which is never shipped.
+        {mappedBy.length ? <> Web teams build with a framework theme: {mappedBy.map((t, i) => <>{i ? ', ' : ''}{t.framework} (<code>{t.maps}</code>, <code>{t.package}</code>)</>)}.</> : <> No framework theme maps it yet.</>}
+      </p>
+    ) : (
+      <p class="site-platform-note">
+        Drawn as a wireframe: the reference rendering with the {pName} token values{hasOverlay(platform) ? '' : ` (${pName} has no token overlay: the base values)`}, in greyscale. It shows sizes, spacing and emphasis, not how the control looks on {pName}.
+        {native ? <> Native control: <code>{native.control}</code>{native.framework ? ` (${native.framework})` : ''}.</> : <> No native control recorded yet.</>}
+      </p>
+    )}
     {template ? (
-      <ExampleExplorer spec={spec} template={template} playgroundHref={tabs.find((t) => t.slug === 'playground')!.href} />
+      <ExampleExplorer spec={spec} template={template} platform={platform} playgroundHref={tabs.find((t) => t.slug === 'playground')!.href} />
     ) : (
       <p class="site-callout site-callout--error">No web template found at <code>{web.template}</code>.</p>
     )}
   </section>
   ) : null}
 
-  {tab === 'states' ? (
+  {platform && tab === 'states' ? (
   <section class="site-section" id="states">
     <h2>States matrix</h2>
-    <p class="site-muted">Every option of each styling property against every declared state, per part when states belong to parts. Properties whose options combine in one component token path are crossed: one table per combination of the others. States are forced with <code>{web.stateAttribute ?? 'data-state'}</code>, so what you see is exactly what the CSS defines, independent of the pointer. A column header names the inputs or platforms a state belongs to; states without a web rendering are listed under the table.</p>
+    {isWeb ? (
+      <p class="site-muted">Every option of each styling property against every state on the web, per part when states belong to parts. Properties whose options combine in one component token path are crossed: one table per combination of the others. States are forced with <code>{web.stateAttribute ?? 'data-state'}</code>, so what you see is exactly what the CSS defines, independent of the pointer. A column header names the inputs or platforms a state belongs to; states that do not exist on the web are listed under the table.</p>
+    ) : (
+      <p class="site-muted">The same matrices as on every platform, limited to the states that exist on {pName} (its inputs: {platforms().find((p) => p.id === platform)!.inputs.join(', ')}), drawn in the {pName} wireframe. Greyscale keeps emphasis as grey levels; the intents are told apart by the row and table names, their colors are in the Tokens tab.</p>
+    )}
     {template ? matrices.map((m) => (
       <div class="site-subsection">
         {m.part ? <h3>Part <code>{m.part.id}</code>{m.part.component ? <span class="site-muted"> ({m.part.component})</span> : null}</h3> : null}
@@ -106,7 +175,7 @@ const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')
             {g.tables.map((t) => (
               <>
                 {t.fixed.length ? <h4>{t.fixed.map((f, i) => <>{i ? ', ' : ''}<code>{f.property.id}</code> = <code>{f.value}</code></>)}</h4> : null}
-                <StateMatrix spec={spec} template={template} matrix={m} property={t.property} fixed={t.fixed} baseProps={initial} />
+                <StateMatrix spec={spec} template={template} matrix={m} property={t.property} fixed={t.fixed} baseProps={initial} platform={platform} />
               </>
             ))}
           </>
@@ -116,27 +185,131 @@ const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')
   </section>
   ) : null}
 
-  {tab === 'playground' ? (
+  {platform && tab === 'playground' ? (
   <section class="site-section" id="playground">
     <h2>Playground</h2>
-    {template ? <Playground spec={spec} template={template} initial={initial} /> : null}
+    {!isWeb ? <p class="site-muted site-small">The {pName} wireframe: set the props and a state to see what changes. The values behind it are in the Tokens tab.</p> : null}
+    {template ? <Playground spec={spec} template={template} initial={initial} platform={platform} /> : null}
   </section>
   ) : null}
 
-  {tab === 'guidelines' && Content ? (
+  {platform && tab === 'guidelines' && guidelinesHtml ? (
     <section class="site-section" id="guidelines">
       <h2>Guidelines</h2>
-      <p class="site-muted site-small">From <code>apps/docs/content/components/{spec.id}.md</code></p>
-      <article class="site-prose">
-        <Content />
-      </article>
+      <p class="site-muted site-small">From <code>apps/docs/content/components/{spec.id}.md</code>: the guidance every platform shares and the sections of {pName}; the sections of the other platforms are on their own pages.</p>
+      <article class="site-prose" set:html={guidelinesFor(guidelinesHtml, platform)}></article>
     </section>
   ) : null}
 
-  {tab === 'spec' ? (
+  {platform && tab === 'tokens' ? (
+  <section class="site-section" id="tokens">
+    <h2>Tokens</h2>
+    <p class="site-muted site-small">From <code>{spec.tokens.source}</code>. Path grammar: <code>{spec.id}.&lt;part&gt;.&lt;property&gt;[.&lt;option&gt;][.&lt;state&gt;]</code>. Every value aliases a semantic token.
+      {isWeb ? null : hasOverlay(platform) ? <> Values resolved on {pName}: a value its token overlay changes also shows the base value it replaces.</> : <> {pName} has no token overlay: the base values apply.</>}</p>
+    <TokenFilter total={rows.length} />
+    {tokensByPart.filter((g) => g.rows.length).map((g) => (
+      <div class="site-subsection">
+        <h3>Part <code>{g.part}</code> <span class="site-muted site-small" data-token-count>({g.rows.length})</span></h3>
+        <TokenTable rows={g.rows} css={isWeb} />
+      </div>
+    ))}
+    {tokensByPart.filter((g) => !g.rows.length).length ? (
+      <p class="site-muted site-small">Parts without tokens: {tokensByPart.filter((g) => !g.rows.length).map((g) => <code>{g.part}</code>)} (they inherit from their parent).</p>
+    ) : null}
+  </section>
+  ) : null}
+
+  {isWeb && tab === 'code' ? (
+  <section class="site-section" id="code">
+    <h2>Code</h2>
+    <p>
+      {mappedBy.length ? <>On the web, build with a framework theme: {mappedBy.map((t, i) => <>{i ? ', ' : ''}<strong>{t.framework}</strong> maps {spec.name} to <code>{t.maps}</code> (<code>{t.package}</code>)</>)}.</> : <>No framework theme maps {spec.name} yet.</>}
+      {coverage.themes.filter((t) => !t.maps).map((t) => <> {t.framework} (<code>{t.package}</code>) does not map it.</>)}
+    </p>
+    <h3>Reference rendering</h3>
+    <p class="site-muted">The rendering these docs draw, written to review the specification and never shipped. Root <code>{web.selector}</code> on a <code>&lt;{web.element}&gt;</code>. Properties map to attributes: {Object.entries(web.attributes ?? {}).map(([p, a]) => <span class="site-chip"><code>{p}</code> → <code>{a as string}</code></span>)}</p>
+    <details class="site-source" open>
+      <summary><code>{web.css}</code></summary>
+      <pre><code set:html={highlight(readRepoFile(web.css), langOfFile(web.css))}></code></pre>
+    </details>
+    <details class="site-source">
+      <summary><code>{web.template}</code></summary>
+      <pre><code set:html={highlight(readRepoFile(web.template), langOfFile(web.template))}></code></pre>
+    </details>
+  </section>
+  ) : null}
+
+  {platform && tab === 'develop' ? (
+  <section class="site-section" id="develop">
+    <h2>Develop on {pName}</h2>
+    <h3>Tokens</h3>
+    {outputs.length ? (
+      <div>
+        <p>Read the values resolved for {pName}, one tree per mode (aliases followed), from <code>@quantum-ds/tokens</code>:</p>
+        <ul>{outputs.map((o) => <li><code>{o.replace(/^dist\//, '')}</code></li>)}</ul>
+        <p class="site-muted site-small">In <code>packages/tokens/dist/</code> once <code>pnpm tokens:build</code> has run. The Tokens tab lists this component's values there.</p>
+      </div>
+    ) : (
+      <p>{pName} has no token overlay and no tree of its own: the base values apply, listed in the Tokens tab.</p>
+    )}
+    <h3>Native control</h3>
+    {native ? (
+      <div>
+        <p><code>{native.control}</code>{native.framework ? <> ({native.framework})</> : null}{native.source ? <> — <a href={native.source}>{native.source}</a></> : null}</p>
+        {native.notes?.length ? <ul>{native.notes.map((n: string) => <li>{n}</li>)}</ul> : null}
+      </div>
+    ) : (
+      <p>None recorded yet. When a team builds {spec.name} on {pName}, it records the native control in <code>implementations.{platform}</code> of the spec. Until then, the specification, the tokens and the guidelines are the contract.</p>
+    )}
+    <h3>Parts to map</h3>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">Part</th><th scope="col">Role</th><th scope="col">Required</th><th scope="col">Tokens</th><th scope="col">Description</th></tr></thead>
+        <tbody>
+          {spec.anatomy.map((p: any) => (
+            <tr>
+              <th scope="row"><code>{p.id}</code></th>
+              <td><code>{p.role}</code></td>
+              <td>{p.required ? 'yes' : 'no'}</td>
+              <td>{tokensOfPart(p.id) || <span class="site-muted">{p.component ? `those of ${p.component}` : 'inherited'}</span>}</td>
+              <td>{p.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h3>Properties to map</h3>
+    <div class="site-table-wrap">
+      <table class="site-table">
+        <thead><tr><th scope="col">Property</th><th scope="col">Type</th><th scope="col">Options / default</th><th scope="col">Description</th></tr></thead>
+        <tbody>
+          {spec.properties.map((p: any) => (
+            <tr>
+              <th scope="row"><code>{p.id}</code></th>
+              <td>{p.type}</td>
+              <td>{p.options ? p.options.map((o: any) => <code>{o.value}</code>) : p.default !== undefined ? <code>{String(p.default)}</code> : <span class="site-muted">—</span>}</td>
+              <td>{p.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h3>States on {pName}</h3>
+    <ul>{spec.states.filter((s: any) => stateOn(s, platform)).map((s: any) => <li><code>{s.id}</code> <span class="site-muted">({s.trigger}{s.inputs?.length ? `, ${s.inputs.join(', ')}` : ''})</span> — {s.description}</li>)}</ul>
+    {spec.states.some((s: any) => !stateOn(s, platform)) ? <p class="site-muted site-small">Not on {pName}: {spec.states.filter((s: any) => !stateOn(s, platform)).map((s: any) => <code>{s.id}</code>)}</p> : null}
+    {keyboard.length ? (
+      <div>
+        <h3>Keyboard on {pName}</h3>
+        <ul>{keyboard.map((k: any) => <li><kbd>{k.key}</kbd> {k.action}</li>)}</ul>
+      </div>
+    ) : null}
+  </section>
+  ) : null}
+
+  {!platform && tab === 'spec' ? (
   <section class="site-section" id="spec">
     <h2>Specification</h2>
-    <p class="site-muted site-small">From <code>{specFile}</code></p>
+    <p class="site-muted site-small">Shared by every platform. From <code>{specFile}</code></p>
     <details class="site-source">
       <summary>Raw file <code>{specFile}</code></summary>
       <pre><code set:html={highlight(specSource, 'json')}></code></pre>
@@ -280,57 +453,24 @@ const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')
   </section>
   ) : null}
 
-  {tab === 'decisions' ? (
+  {!platform && tab === 'decisions' ? (
   <section class="site-section" id="decisions">
     <h2>Decisions</h2>
-    <p class="site-muted site-small">From <code>decisions</code> in <code>{specFile}</code>, newest first. Every active decision is implemented by the spec, the tokens, the web implementation and the guidelines.</p>
+    <p class="site-muted site-small">From <code>decisions</code> in <code>{specFile}</code>, newest first. Shared by every platform: every active decision is implemented by the spec, the tokens, the reference rendering and the guidelines.</p>
     {decisions.length === 0 ? <p class="site-muted">No decision recorded yet. What this component shows today is provisional until a decision confirms it.</p> : null}
     <DecisionLog spec={spec} />
   </section>
   ) : null}
 
-  {tab === 'tokens' ? (
-  <section class="site-section" id="tokens">
-    <h2>Tokens</h2>
-    <p class="site-muted site-small">From <code>{spec.tokens.source}</code>. Path grammar: <code>{spec.id}.&lt;part&gt;.&lt;property&gt;[.&lt;option&gt;][.&lt;state&gt;]</code>. Every value aliases a semantic token.</p>
-    <TokenFilter total={tokens.length} />
-    {tokensByPart.filter((g) => g.rows.length).map((g) => (
-      <div class="site-subsection">
-        <h3>Part <code>{g.part}</code> <span class="site-muted site-small" data-token-count>({g.rows.length})</span></h3>
-        <TokenTable rows={g.rows} />
-      </div>
-    ))}
-    {tokensByPart.filter((g) => !g.rows.length).length ? (
-      <p class="site-muted site-small">Parts without tokens: {tokensByPart.filter((g) => !g.rows.length).map((g) => <code>{g.part}</code>)} (they inherit from their parent).</p>
-    ) : null}
-  </section>
-  ) : null}
-
-  {tab === 'implementation' ? (
-  <section class="site-section" id="implementation">
-    <h2>Web implementation</h2>
-    <p class="site-muted">Root <code>{web.selector}</code> on a <code>&lt;{web.element}&gt;</code>. Properties map to attributes: {Object.entries(web.attributes ?? {}).map(([p, a]) => <span class="site-chip"><code>{p}</code> → <code>{a}</code></span>)}</p>
-    <details class="site-source" open>
-      <summary><code>{web.css}</code></summary>
-      <pre><code set:html={highlight(cssSource, langOfFile(web.css))}></code></pre>
-    </details>
-    <details class="site-source">
-      <summary><code>{web.template}</code></summary>
-      <pre><code set:html={highlight(templateSource, langOfFile(web.template))}></code></pre>
-    </details>
-    {others.length ? (
-      <div>
-        <h3>Other platforms</h3>
-        <p class="site-muted site-small">Recorded in <code>implementations</code>; nothing here is generated from them.</p>
-        <ul>{others.map(([id, impl]) => (
-          <li><strong>{platformName(id)}</strong>: <code>{impl.control}</code>{impl.framework ? <span> ({impl.framework})</span> : null}{impl.source ? <span> — <a href={impl.source}>{impl.source}</a></span> : null}
-            {impl.notes?.length ? <ul>{impl.notes.map((n: string) => <li>{n}</li>)}</ul> : null}
-          </li>
-        ))}</ul>
-      </div>
-    ) : (
-      <p class="site-muted site-small">No other platform implementation recorded yet. Platform token outputs live under <a href={`${base}/platforms`}>Platforms</a>.</p>
-    )}
-  </section>
-  ) : null}
+  <script>
+    // The coverage disclosure: the design system's Button with aria-expanded, controlling the panel.
+    for (const button of document.querySelectorAll<HTMLButtonElement>('[data-coverage-toggle]')) {
+      const panel = document.getElementById(button.getAttribute('aria-controls')!);
+      button.addEventListener('click', () => {
+        const open = button.getAttribute('aria-expanded') !== 'true';
+        button.setAttribute('aria-expanded', String(open));
+        if (panel) panel.hidden = !open;
+      });
+    }
+  </script>
 </Layout>

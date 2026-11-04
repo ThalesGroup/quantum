@@ -1,0 +1,73 @@
+---
+/**
+ * Coverage of every component: what is shared by every platform (spec, tokens, guidelines,
+ * decisions), what each platform has of its own (guideline sections, accessibility statements, a
+ * native control recorded), and which framework theme maps it. Derived by lib/coverage.ts.
+ */
+import { getCollection, getEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { componentTokens, platformTokens } from '../lib/tokens';
+import { platforms } from '../lib/platforms';
+import { themes } from '../lib/themes';
+import { coverageOf } from '../lib/coverage';
+import { componentHref } from '../lib/tabs';
+import Shared from '../components/CoverageShared.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const specs = (await getCollection('specs')).sort((a, b) => a.data.name.localeCompare(b.data.name));
+const rows = await Promise.all(
+  specs.map(async ({ data: spec }) => {
+    const doc = await getEntry('docs', spec.id);
+    const html: string | null = doc?.rendered?.html ?? null;
+    return { spec, html, tokens: componentTokens(spec.id).length, coverage: coverageOf(spec, html) };
+  }),
+);
+const list = platforms();
+const frameworks = themes();
+const outputs = new Map(platformTokens().map((p) => [p.id, p.outputs.length]));
+---
+<Layout wide title="Coverage" description="What the design system covers for every component, on every platform and in every framework theme.">
+  <header class="site-page-header">
+    <h1>Coverage</h1>
+    <p class="site-lede">Every component is specified once for every platform: its specification, tokens, decisions and shared guidance. On top of that, each platform has the guidance and the accessibility statements of its own, and the web has framework themes.</p>
+    <p class="site-page-header__desc">
+      Token values: the web reads the CSS custom properties; {list.filter((p) => outputs.get(p.id)).map((p, i, all) => <>{i ? (i === all.length - 1 ? ' and ' : ', ') : ''}{p.name}</>)} read their own resolved trees; {list.filter((p) => p.id !== 'web' && !outputs.get(p.id)).map((p) => p.name).join(', ') || 'no platform'} the base values.
+    </p>
+  </header>
+
+  <div class="site-table-wrap">
+    <table class="site-table site-coverage site-coverage--all">
+      <caption class="site-sr">Coverage of every component</caption>
+      <thead>
+        <tr>
+          <th scope="col" rowspan="2">Component</th>
+          <th scope="col" rowspan="2">Tokens</th>
+          <th scope="col" rowspan="2">Decisions</th>
+          {list.map((p) => <th scope="colgroup" colspan="2">{p.name}</th>)}
+          <th scope="colgroup" colspan={frameworks.length}>Framework themes</th>
+        </tr>
+        <tr>
+          {list.map(() => <><th scope="col">Sections</th><th scope="col">A11y</th></>)}
+          {frameworks.map((t) => <th scope="col">{t.framework}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(({ spec, html, tokens, coverage }) => (
+          <tr>
+            <th scope="row"><a href={componentHref(base, spec.id, 'web')}>{spec.name}</a></th>
+            <td>{tokens}</td>
+            <td><a href={componentHref(base, spec.id, null, 'decisions')}>{(spec.decisions ?? []).filter((d: any) => d.status === 'active').length}</a></td>
+            {coverage.platforms.map((c) => (
+              <>
+                <td>{html ? (c.sections ? <a href={componentHref(base, spec.id, c.platform, 'guidelines')}>{c.sections}</a> : <Shared />) : <span class="site-coverage__missing">none</span>}</td>
+                <td>{c.accessibility || <Shared />}</td>
+              </>
+            ))}
+            {coverage.themes.map((t) => <td>{t.maps ? <span class="site-small">{t.maps}</span> : <span class="site-coverage__missing site-small">not mapped</span>}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="site-muted site-small">Sections: the guideline sections a platform has of its own, on top of the guidance every platform shares. A11y: the accessibility statements and keyboard entries of its own, on top of the shared ones. A dash: nothing of its own, the shared guidance applies. Each component's Coverage button also says where the token values come from and which native control is recorded. Framework themes are listed, not drawn: each one has its own demo page.</p>
+</Layout>

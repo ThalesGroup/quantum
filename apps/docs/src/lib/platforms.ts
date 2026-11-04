@@ -23,5 +23,12 @@ export const inputs = (): Record<string, string> => get().inputs;
 export const onWeb = (x: { platforms?: string[] }) => !x.platforms || x.platforms.includes('web');
 export const scoped = (x: { platforms?: string[] }) => Array.isArray(x.platforms) && x.platforms.length > 0;
 
+/** Items without `platforms` apply everywhere; otherwise only on the platforms listed. */
+export const onPlatform = (x: { platforms?: string[] }, platform: string) => !x.platforms || x.platforms.includes(platform);
+
+/** A state applies on a platform when it is not scoped away from it and, when it names inputs, the platform has one of them. */
+export const stateOn = (s: { platforms?: string[]; inputs?: string[] }, platform: string) =>
+  onPlatform(s, platform) && (!s.inputs?.length || s.inputs.some((i) => get().platforms[platform]?.inputs.includes(i)));
+
 /** "iOS, Android" for a scoped item, "" for a universal one. */
 export const scopeLabel = (x: { platforms?: string[] }) => (scoped(x) ? x.platforms!.map(platformName).join(', ') : '');

@@ -35,7 +35,8 @@ touches the spec but not the tokens, CSS, or docs leaves the repository inconsis
    every linked artifact is either updated or consciously left as is.
 7. **Look at it:** `pnpm dev`, open the component page, check the examples, the
    states matrix, the playground (and its token inspector: which token paints which part)
-   and the accessibility contract on the Specification tab; then the **Screens** using it, at
+   on the web and on each platform's pages (`/components/<id>/<platform>`, drawn as wireframes),
+   the guidelines of each platform, and the accessibility contract on the Specification page; then the **Screens** using it, at
    every frame width and in every mode.
 8. **Report** what changed in each artifact, the sources behind any accessibility statement,
    and every linked artifact you deliberately left unchanged, with the reason.
@@ -80,7 +81,7 @@ decision may replace provisional content without superseding anything.
    `group.*` that carry it), `platforms` when scoped, `refs` when accessibility is involved
    (required for `area: "accessibility"`). A decision that replaces an earlier one lists it in
    `supersedes`, and the earlier one becomes `status: "superseded"`; old entries are never
-   edited or deleted. The site renders the log on the component's Decisions tab.
+   edited or deleted. The site renders the log on the component's Decisions page.
 3. **Tokens.** Create, update or delete semantic tokens when the decision is a system-wide
    meaning (step 3 of the change workflow above), then component tokens for every affected part × option × state. Raw
    tokens only when a needed primitive is missing (`agents/token-sources.md`). Delete tokens nothing uses any more.
@@ -102,8 +103,8 @@ decision may replace provisional content without superseding anything.
    control and the focus ring 3:1, WCAG 1.4.11) and record the ratios in the changelog entry.
    Also review target size (2.5.8), focus visibility (2.4.7), meaning by color alone (1.4.1),
    the role profile, and each platform's overlay. New statements cite sources you opened (`agents/accessibility.md`).
-9. **Verify and look:** `pnpm check`, `pnpm impact`, then the site: Decisions tab, examples,
-   states matrix, playground, Specification tab.
+9. **Verify and look:** `pnpm check`, `pnpm impact`, then the site: Decisions page, examples,
+   states matrix, playground (web and each platform), Specification page.
 10. **Report and commit.** Report per artifact what the decision changed, the contrast ratios
     and sources, and each linked artifact left unchanged with the reason. Commit the decision
     on its own branch, as a Conventional Commit scoped to the component (`feat(button): blue

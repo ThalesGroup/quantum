@@ -5,18 +5,26 @@
  * root, which the token inspector listens to. The rendered HTML is shown formatted, under the
  * whole playground, with a Copy button (the design system's Button). Two simulations apply to the stage only:
  * a vision deficiency (SVG filters) and a larger text size (text-only zoom).
+ *
+ * On a platform other than the web (`platform`), the stage is that platform's wireframe
+ * (`data-wireframe`): no HTML to copy, no vision simulation (the wireframe is already greyscale)
+ * and no token inspector (it reads the web's values; the Tokens tab has the platform's).
  */
 import { getTemplate, type Template } from '../lib/web';
 import TokenInspector from './TokenInspector.astro';
 import { highlight } from '../lib/highlight';
 import { formatHtml } from '../lib/format-html';
 import { getModes } from '../lib/tokens';
+import { stateOn } from '../lib/platforms';
 interface Props {
   spec: any;
   template: Template;
   initial: Record<string, unknown>;
+  /** Platform of the page (web by default). */
+  platform?: string;
 }
-const { spec, template, initial } = Astro.props;
+const { spec, template, initial, platform = 'web' } = Astro.props;
+const web = platform === 'web';
 const icons = template.meta?.icons ?? [];
 const props = spec.properties.filter((p: any) => p.type !== 'node');
 // Mode context of the stage: the page's (Mode switch), or one mode set on the stage itself.
@@ -45,7 +53,7 @@ const textSizes = [
   { label: '200% (WCAG 1.4.4)', value: '2' },
 ];
 ---
-<div class="site-playground" data-playground={spec.id}>
+<div class={`site-playground${web ? '' : ' site-playground--wireframe'}`} data-playground={spec.id}>
   <form class="site-playground__form" autocomplete="off">
     {props.map((p: any) => {
       const label = `${p.name ?? p.id} (${p.id})`;
@@ -57,7 +65,7 @@ const textSizes = [
       if (p.type === 'number') return <div class="site-playground__field" set:html={field('number-field', { label, id, size: 'small', value: initial[p.id] ?? '', attrs: { name: p.id } })}></div>;
       return <div class="site-playground__field" set:html={field('text-field', { label, id, size: 'small', value: String(initial[p.id] ?? ''), attrs: { name: p.id } })}></div>;
     })}
-    <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: 'Forced state (data-state)', id: `${spec.id}-sandbox-state`, size: 'small', options: spec.states.map((s: any) => ({ label: s.id, value: s.id })), attrs: { name: 'state' } })}></div>
+    <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: 'Forced state (data-state)', id: `${spec.id}-sandbox-state`, size: 'small', options: spec.states.filter((s: any) => stateOn(s, platform)).map((s: any) => ({ label: s.id, value: s.id })), attrs: { name: 'state' } })}></div>
     {attribute && modeChoices.length > 1 ? (
       <div class="site-playground__field site-playground__field--sandbox" set:html={field('select', { label: `Mode context (${attribute})`, id: `${spec.id}-sandbox-mode`, size: 'small', options: [{ label: '(page mode)', value: '' }, ...modeChoices.map((m) => ({ label: m, value: m }))], attrs: { [`data-mode-context`]: attribute } })}></div>
     ) : null}
@@ -69,16 +77,19 @@ const textSizes = [
     <div class="site-playground__toolbar">
       <!-- Simulations of the stage, next to it rather than among the props: they are not props of the component. -->
       <div class="site-playground__simulations">
-        <Fragment set:html={field('select', { label: 'Vision simulation', id: `${spec.id}-sandbox-vision`, size: 'small', options: [{ label: 'Typical', value: '' }, ...visions.map((v) => ({ label: v.label, value: v.id }))], attrs: { 'data-vision': true } })} />
+        {web ? <Fragment set:html={field('select', { label: 'Vision simulation', id: `${spec.id}-sandbox-vision`, size: 'small', options: [{ label: 'Typical', value: '' }, ...visions.map((v) => ({ label: v.label, value: v.id }))], attrs: { 'data-vision': true } })} /> : null}
         <Fragment set:html={field('select', { label: 'Text size', id: `${spec.id}-sandbox-text-size`, size: 'small', options: textSizes, attrs: { 'data-text-size': true } })} />
       </div>
-      <button type="button" class="ds-button" data-emphasis="subtle" data-intent="neutral" data-size="small" aria-expanded="false" aria-controls={inspectorId}>
-        <span class="ds-button__label">Inspect tokens</span>
-      </button>
+      {web ? (
+        <button type="button" class="ds-button" data-emphasis="subtle" data-intent="neutral" data-size="small" aria-expanded="false" aria-controls={inspectorId}>
+          <span class="ds-button__label">Inspect tokens</span>
+        </button>
+      ) : null}
     </div>
-    <div class="site-preview__stage" data-stage set:html={template.render(initial)}></div>
+    <div class="site-preview__stage" data-stage data-wireframe={web ? undefined : platform} set:html={template.render(initial)}></div>
   </div>
-  <TokenInspector spec={spec} id={inspectorId} />
+  {web ? <TokenInspector spec={spec} id={inspectorId} /> : null}
+  {web ? (
   <div class="site-playground__code">
     <div class="site-playground__code-bar">
       <span class="site-muted site-small">HTML</span>
@@ -87,6 +98,7 @@ const textSizes = [
     </div>
     <pre role="region" aria-label="HTML of the rendering" tabindex="0"><code data-code set:html={highlight(formatHtml(template.render(initial)), 'html')}></code></pre>
   </div>
+  ) : null}
 </div>
 
 <script>
@@ -98,7 +110,7 @@ const textSizes = [
     if (!key) continue;
     const form = el.querySelector('form')!;
     const stage = el.querySelector<HTMLElement>('[data-stage]')!;
-    const code = el.querySelector<HTMLElement>('[data-code]')!;
+    const code = el.querySelector<HTMLElement>('[data-code]');
     // Copy: the text of the highlighted code is the formatted HTML. The Clipboard API first; where
     // it is refused (permissions, embedded browsers) the legacy copy command; failing both, the
     // code is selected so the keyboard shortcut copies it. The status says what happened.
@@ -119,13 +131,13 @@ const textSizes = [
     };
     let clear: number | undefined;
     copy?.addEventListener('click', async () => {
-      const text = code.textContent ?? '';
+      const text = code?.textContent ?? '';
       let message = 'Copied to the clipboard';
       try {
         await navigator.clipboard.writeText(text);
       } catch {
         if (!legacyCopy(text)) {
-          getSelection()?.selectAllChildren(code);
+          if (code) getSelection()?.selectAllChildren(code);
           message = 'Copy blocked: the code is selected, press Ctrl+C or ⌘C';
         }
       }
@@ -190,7 +202,7 @@ const textSizes = [
         const html = mod.render(props);
         stage.innerHTML = html;
         scaleText();
-        code.innerHTML = highlight(formatHtml(html), 'html');
+        if (code) code.innerHTML = highlight(formatHtml(html), 'html');
         el.dispatchEvent(new CustomEvent('playground:render', { detail: { props, state: String(props.state ?? 'default') } }));
       };
       // Props passed in the query string (e.g. from "Open in playground" on an example) preset the form.

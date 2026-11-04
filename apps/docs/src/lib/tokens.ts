@@ -140,3 +140,58 @@ export function platformTokens(): { id: string; outputs: string[]; files: string
     return { id: p.id, outputs, files: p.files, overrides };
   });
 }
+
+/** True when the platform has a token overlay (tokens.config.json); without one, the base values apply. */
+export const hasOverlay = (platform: string) => (getLoaded().platforms as any[]).some((p) => p.id === platform);
+
+// Index of every token in a platform x mode context (default mode when null), one per context.
+const contexts = memo(() => new Map<string, any>());
+const contextIndex = (platform: string | null, mode: string | null = null) => {
+  const key = `${platform ?? ''}|${mode ?? ''}`;
+  const cache = contexts();
+  if (!cache.has(key)) cache.set(key, resolveContext(getLoaded(), { platform: platform && hasOverlay(platform) ? platform : null, mode }));
+  return cache.get(key);
+};
+
+export interface PlatformTokenRow extends TokenRow {
+  /** Resolved value of the base tiers (the web), in the default mode. */
+  base: string;
+  /** True when the platform's overlay changes the default mode's value. */
+  changed: boolean;
+}
+
+/** Component tokens of `id` resolved on `platform`: its value in every mode there, and whether it differs from the base. */
+export function platformComponentTokens(id: string, platform: string): PlatformTokenRow[] {
+  const rows = componentTokens(id);
+  if (!hasOverlay(platform)) return rows.map((r) => ({ ...r, base: r.resolved, changed: false }));
+  const others = (getLoaded().modes as any[]).filter((m) => !m.default);
+  const index = contextIndex(platform);
+  return rows.map((r) => {
+    const resolved = formatIn(index.byPath.get(r.path), index);
+    const modes = others
+      .map((m) => {
+        const mi = contextIndex(platform, m.id);
+        return { mode: m.id, resolved: formatIn(mi.byPath.get(r.path), mi) };
+      })
+      .filter((m) => m.resolved !== resolved);
+    return { ...r, resolved, modes, base: r.resolved, changed: resolved !== r.resolved };
+  });
+}
+
+/**
+ * CSS declarations giving the component tokens of `ids` the value they take on `platform`, where it
+ * differs from the base (sizes, fonts): the wireframe of a platform sets them on its stages, and
+ * every other token keeps following the page's mode. Empty for a platform without an overlay.
+ */
+export function platformDeclarations(platform: string, ids: string[]): [string, string][] {
+  if (!hasOverlay(platform)) return [];
+  const css = { ...getLoaded().config.css, preserveAliases: false };
+  const index = contextIndex(platform);
+  const base = contextIndex(null);
+  return index.all
+    .filter((t: any) => t.tier === 'component' && ids.includes(t.segments[0]))
+    .flatMap((t: any) => {
+      const before = new Map(cssDeclarations(base.byPath.get(t.path), base.byPath, css));
+      return (cssDeclarations(t, index.byPath, css) as [string, string][]).filter(([name, value]) => before.get(name) !== value);
+    });
+}
