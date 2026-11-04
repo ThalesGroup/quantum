@@ -227,11 +227,6 @@ td.site-cite a { margin-inline-end: 0.75em; }
 .site-bp__title > span + span { border-inline-start: var(--stroke-width-sm) solid var(--site-bp-mid); }
 .site-bp__title > span:nth-child(2) { color: var(--site-bp-ink); }
 @container (max-width: 26rem) { .site-bp__title > span:nth-child(3) { display: none; } }
-/* Wireframe: a rendering drawn without a platform's look. Greyscale keeps emphasis as grey levels
-   and drops the colors (the Tokens tab has them); a platform's values are set by a rule the page
-   generates from its tokens ([data-wireframe="<platform>"]). An open popover sits in the top
-   layer, out of its stage, so it gets the filter of its own. */
-[data-wireframe] > *, [data-wireframe] :popover-open { filter: grayscale(1); }
 .site-subsection > h3 { display: flex; align-items: baseline; gap: 0.5rem; }
 .site-decisions { list-style: none; padding: 0; margin: 0; }
 .site-decisions > li { padding: 0.75rem 0; border-top: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }

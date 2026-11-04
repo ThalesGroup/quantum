@@ -14,7 +14,7 @@ import DecisionLog from '../../../components/DecisionLog.astro';
 import A11yStatements from '../../../components/A11yStatements.astro';
 import CoverageTable from '../../../components/CoverageTable.astro';
 import { getTemplate, defaultProps } from '../../../lib/web';
-import { componentTokens, platformComponentTokens, platformDeclarations, platformTokens, hasOverlay } from '../../../lib/tokens';
+import { componentTokens, platformComponentTokens, platformTokens, hasOverlay } from '../../../lib/tokens';
 import { partMatrices } from '../../../lib/matrix';
 import { readRepoFile } from '../../../lib/repo';
 import { highlight, langOfFile } from '../../../lib/highlight';
@@ -52,6 +52,8 @@ const pName = platform ? platformName(platform) : null;
 const shared = SHARED_TABS.map((t) => ({ ...t, href: componentHref(base, spec.id, null, t.slug) }));
 const tabs = platform ? platformTabs(platform, Boolean(guidelinesHtml)).map((t) => ({ ...t, href: componentHref(base, spec.id, platform, t.slug) })) : [];
 const current = (platform ? tabs : shared).find((t) => t.slug === tab)!;
+// What the page shows: a platform tab's id (its first page has no slug), or a shared tab's slug.
+const view = platform ? (current as (typeof tabs)[number]).id : tab;
 const title = !platform ? `${current.label} · ${spec.name}` : isWeb && !tab ? spec.name : `${tab ? `${current.label} · ` : ''}${spec.name} on ${pName}`;
 // The platforms, each linking to its first page; the current one is marked.
 const platformLinks = platforms().map((p) => ({ ...p, href: componentHref(base, spec.id, p.id), current: p.id === platform }));
@@ -80,25 +82,12 @@ const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')
 const coverage = coverageOf(spec, guidelinesHtml);
 const mappedBy = coverage.themes.filter((t) => t.maps);
 
-// Wireframe of a platform other than the web: the reference rendering with the component tokens
-// (this component's and those of the components it contains) set to their value on that
-// platform, drawn in greyscale by site.css. The values are data, set by a generated rule.
-const specsById = new Map((await getCollection('specs')).map((s) => [s.id, s.data]));
-const contained = (id: string, seen = new Set<string>()) => {
-  if (seen.has(id)) return seen;
-  seen.add(id);
-  for (const p of specsById.get(id)?.anatomy ?? []) if (p.component) contained(p.component, seen);
-  return seen;
-};
-const wireframe = platform && !isWeb ? platformDeclarations(platform, [...contained(spec.id)]) : [];
-const wireframeCss = wireframe.length ? `[data-wireframe="${platform}"] { ${wireframe.map(([n, v]) => `${n}: ${v};`).join(' ')} }` : '';
 const outputs = platform ? platformTokens().find((p) => p.id === platform)?.outputs ?? [] : [];
 const native = platform && !isWeb ? spec.implementations[platform] ?? null : null;
 const tokensOfPart = (part: string) => rows.filter((t) => t.segments[1] === part).length;
 const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform(k, platform)) : [];
 ---
 <Layout title={title} description={spec.summary} platform={platform ?? undefined}>
-  {wireframeCss ? <style is:inline set:html={wireframeCss}></style> : null}
   {/* Every page but the Specification keeps the summary and the description to a fixed number of
       lines, so the blueprint, the platforms and the tabs stand at the same place on every component;
       the Specification page shows the whole description. */}
@@ -124,8 +113,8 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
       <CoverageTable coverage={coverage} name={spec.name} />
       <p class="site-small"><a href={`${base}/coverage`}>Coverage of every component</a></p>
     </section>
-    {/* A sketch that says which component this is; its parts are on the Specification page. */}
-    {platform && !tab ? <Blueprint spec={spec} class="site-page-header__blueprint" /> : null}
+    {/* A sketch that says which component this is, on every page of a platform; its parts are on the Specification page. */}
+    {platform ? <Blueprint spec={spec} class="site-page-header__blueprint" /> : null}
     <nav class="site-platforms" aria-label={`${spec.name} per platform`}>
       {platformLinks.map((p) => (
         <a href={p.href} data-platform={p.id} aria-current={p.current ? (tab ? 'true' : 'page') : undefined}>{p.name}</a>
@@ -140,36 +129,25 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
     ) : null}
   </header>
 
-  {platform && !tab ? (
+  {view === 'examples' ? (
   <section class="site-section" id="examples">
     <h2>{spec.name} on {pName}</h2>
-    {isWeb ? (
-      <p class="site-platform-note">
-        Drawn by the reference rendering of the specification (<code>packages/components/src</code>), which is never shipped.
-        {mappedBy.length ? <> Web teams build with a framework theme: {mappedBy.map((t, i) => <>{i ? ', ' : ''}{t.framework} (<code>{t.maps}</code>, <code>{t.package}</code>)</>)}.</> : <> No framework theme maps it yet.</>}
-      </p>
-    ) : (
-      <p class="site-platform-note">
-        Drawn as a wireframe: the reference rendering with the {pName} token values{hasOverlay(platform) ? '' : ` (${pName} has no token overlay: the base values)`}, in greyscale. It shows sizes, spacing and emphasis, not how the control looks on {pName}.
-        {native ? <> Native control: <code>{native.control}</code>{native.framework ? ` (${native.framework})` : ''}.</> : <> No native control recorded yet.</>}
-      </p>
-    )}
+    <p class="site-platform-note">
+      Drawn by the reference rendering of the specification (<code>packages/components/src</code>), which is never shipped.
+      {mappedBy.length ? <> Web teams build with a framework theme: {mappedBy.map((t, i) => <>{i ? ', ' : ''}{t.framework} (<code>{t.maps}</code>, <code>{t.package}</code>)</>)}.</> : <> No framework theme maps it yet.</>}
+    </p>
     {template ? (
-      <ExampleExplorer spec={spec} template={template} platform={platform} playgroundHref={tabs.find((t) => t.slug === 'playground')!.href} />
+      <ExampleExplorer spec={spec} template={template} playgroundHref={tabs.find((t) => t.id === 'playground')!.href} />
     ) : (
       <p class="site-callout site-callout--error">No web template found at <code>{web.template}</code>.</p>
     )}
   </section>
   ) : null}
 
-  {platform && tab === 'states' ? (
+  {view === 'states' ? (
   <section class="site-section" id="states">
     <h2>States matrix</h2>
-    {isWeb ? (
-      <p class="site-muted">Every option of each styling property against every state on the web, per part when states belong to parts. Properties whose options combine in one component token path are crossed: one table per combination of the others. States are forced with <code>{web.stateAttribute ?? 'data-state'}</code>, so what you see is exactly what the CSS defines, independent of the pointer. A column header names the inputs or platforms a state belongs to; states that do not exist on the web are listed under the table.</p>
-    ) : (
-      <p class="site-muted">The same matrices as on every platform, limited to the states that exist on {pName} (its inputs: {platforms().find((p) => p.id === platform)!.inputs.join(', ')}), drawn in the {pName} wireframe. Greyscale keeps emphasis as grey levels; the intents are told apart by the row and table names, their colors are in the Tokens tab.</p>
-    )}
+    <p class="site-muted">Every option of each styling property against every state on the web, per part when states belong to parts. Properties whose options combine in one component token path are crossed: one table per combination of the others. States are forced with <code>{web.stateAttribute ?? 'data-state'}</code>, so what you see is exactly what the CSS defines, independent of the pointer. A column header names the inputs or platforms a state belongs to; states that do not exist on the web are listed under the table.</p>
     {template ? matrices.map((m) => (
       <div class="site-subsection">
         {m.part ? <h3>Part <code>{m.part.id}</code>{m.part.component ? <span class="site-muted"> ({m.part.component})</span> : null}</h3> : null}
@@ -180,7 +158,7 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
             {g.tables.map((t) => (
               <>
                 {t.fixed.length ? <h4>{t.fixed.map((f, i) => <>{i ? ', ' : ''}<code>{f.property.id}</code> = <code>{f.value}</code></>)}</h4> : null}
-                <StateMatrix spec={spec} template={template} matrix={m} property={t.property} fixed={t.fixed} baseProps={initial} platform={platform} />
+                <StateMatrix spec={spec} template={template} matrix={m} property={t.property} fixed={t.fixed} baseProps={initial} />
               </>
             ))}
           </>
@@ -190,23 +168,28 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
   </section>
   ) : null}
 
-  {platform && tab === 'playground' ? (
+  {view === 'playground' ? (
   <section class="site-section" id="playground">
     <h2>Playground</h2>
-    {!isWeb ? <p class="site-muted site-small">The {pName} wireframe: set the props and a state to see what changes. The values behind it are in the Tokens tab.</p> : null}
-    {template ? <Playground spec={spec} template={template} initial={initial} platform={platform} /> : null}
+    {template ? <Playground spec={spec} template={template} initial={initial} /> : null}
   </section>
   ) : null}
 
-  {platform && tab === 'guidelines' && guidelinesHtml ? (
+  {view === 'guidelines' && guidelinesHtml ? (
     <section class="site-section" id="guidelines">
-      <h2>Guidelines</h2>
+      <h2>{isWeb ? 'Guidelines' : `${spec.name} on ${pName}`}</h2>
+      {isWeb ? null : (
+        <p class="site-platform-note">
+          These docs draw no {pName} rendering: the reference rendering is the web's only (Web tab), and no native look is approximated. Build {spec.name} on {pName} from these guidelines, the Tokens tab and Develop.
+          {native ? <> Native control: <code>{native.control}</code>{native.framework ? ` (${native.framework})` : ''}.</> : <> No native control recorded yet.</>}
+        </p>
+      )}
       <p class="site-muted site-small">From <code>apps/docs/content/components/{spec.id}.md</code>: the guidance every platform shares and the sections of {pName}; the sections of the other platforms are on their own pages.</p>
       <article class="site-prose" set:html={guidelinesFor(guidelinesHtml, platform)}></article>
     </section>
   ) : null}
 
-  {platform && tab === 'tokens' ? (
+  {view === 'tokens' ? (
   <section class="site-section" id="tokens">
     <h2>Tokens</h2>
     <p class="site-muted site-small">From <code>{spec.tokens.source}</code>. Path grammar: <code>{spec.id}.&lt;part&gt;.&lt;property&gt;[.&lt;option&gt;][.&lt;state&gt;]</code>. Every value aliases a semantic token.
@@ -224,7 +207,7 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
   </section>
   ) : null}
 
-  {isWeb && tab === 'code' ? (
+  {view === 'code' ? (
   <section class="site-section" id="code">
     <h2>Code</h2>
     <p>
@@ -244,7 +227,7 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
   </section>
   ) : null}
 
-  {platform && tab === 'develop' ? (
+  {view === 'develop' ? (
   <section class="site-section" id="develop">
     <h2>Develop on {pName}</h2>
     <h3>Tokens</h3>

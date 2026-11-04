@@ -177,21 +177,3 @@ export function platformComponentTokens(id: string, platform: string): PlatformT
     return { ...r, resolved, modes, base: r.resolved, changed: resolved !== r.resolved };
   });
 }
-
-/**
- * CSS declarations giving the component tokens of `ids` the value they take on `platform`, where it
- * differs from the base (sizes, fonts): the wireframe of a platform sets them on its stages, and
- * every other token keeps following the page's mode. Empty for a platform without an overlay.
- */
-export function platformDeclarations(platform: string, ids: string[]): [string, string][] {
-  if (!hasOverlay(platform)) return [];
-  const css = { ...getLoaded().config.css, preserveAliases: false };
-  const index = contextIndex(platform);
-  const base = contextIndex(null);
-  return index.all
-    .filter((t: any) => t.tier === 'component' && ids.includes(t.segments[0]))
-    .flatMap((t: any) => {
-      const before = new Map(cssDeclarations(base.byPath.get(t.path), base.byPath, css));
-      return (cssDeclarations(t, index.byPath, css) as [string, string][]).filter(([name, value]) => before.get(name) !== value);
-    });
-}

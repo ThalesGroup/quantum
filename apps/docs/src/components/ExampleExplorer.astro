@@ -2,10 +2,9 @@
 /**
  * Examples of a spec as a master-detail explorer: a vertical tab list (APG tabs pattern, automatic
  * activation, synced to the URL hash) and, for the selected example, its stage and the props that
- * define it. An example scoped to platforms without the web has no rendering: its panel lists the
- * props and says where it applies. On a platform other than the web (`platform`), the examples
- * of that platform are drawn in its wireframe (`data-wireframe`: the reference rendering with the
- * platform's token values, in greyscale) and link to that platform's playground.
+ * define it, on the web page (the reference rendering is the only one these docs draw). An example
+ * scoped to platforms without the web has no rendering: its panel lists the props and says where
+ * it applies.
  *
  * With `samples` (a foundation's code examples), each panel shows a highlighted code sample instead
  * of a stage, with the playground's "Mode context" select: the block follows the page mode, or the
@@ -13,7 +12,7 @@
  * every sample of the explorer.
  */
 import { getTemplate, type Template } from '../lib/web';
-import { onPlatform, onWeb, platformName, scopeLabel } from '../lib/platforms';
+import { onWeb, scopeLabel } from '../lib/platforms';
 import { getModes } from '../lib/tokens';
 
 interface Sample { id: string; name: string; description?: string; source: string; html: string; platforms?: string[] }
@@ -22,15 +21,12 @@ interface Props {
   template?: Template;
   playgroundHref?: string;
   samples?: Sample[];
-  /** Platform of the page (web by default). */
-  platform?: string;
 }
-const { spec, template, playgroundHref, samples, platform = 'web' } = Astro.props;
-const wireframe = platform === 'web' ? undefined : platform;
+const { spec, template, playgroundHref, samples } = Astro.props;
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const examples = samples
   ? samples.map((ex) => ({ ...ex, id: slug(ex.name), web: true, scope: scopeLabel(ex), code: true }))
-  : (spec.examples ?? []).filter((ex: any) => onPlatform(ex, platform)).map((ex: any) => {
+  : (spec.examples ?? []).map((ex: any) => {
       const id = slug(ex.name);
       const web = onWeb(ex);
       const html = web ? template!.render(ex.props) : '';
@@ -66,9 +62,9 @@ const modeSelect = Boolean(samples && attribute && modeChoices.length > 1);
   ) : (
     <section class="site-explorer__panel" role="tabpanel" id={`example-${ex.id}`} aria-labelledby={`tab-${ex.id}`} hidden={i !== 0}>
       {ex.web ? (
-        <div class="site-explorer__stage site-preview__stage" data-wireframe={wireframe} set:html={ex.html}></div>
+        <div class="site-explorer__stage site-preview__stage" set:html={ex.html}></div>
       ) : (
-        <p class="site-callout">Applies to {ex.scope} only. The reference rendering cannot draw it{wireframe ? ` in the ${platformName(platform)} wireframe` : ''}; the props below define it.</p>
+        <p class="site-callout">Applies to {ex.scope} only. The reference rendering cannot draw it; the props below define it.</p>
       )}
 
       <div class="site-explorer__bar">

@@ -16,8 +16,8 @@ export interface PlatformCoverage {
   accessibility: number;
   /** Where its token values come from: the web CSS, the platform's overlay, or the base values. */
   tokens: 'css' | 'overlay' | 'base';
-  /** How the docs draw it: the web reference rendering, or the wireframe. */
-  rendering: 'reference' | 'wireframe';
+  /** How the docs draw it: the web reference rendering, or not at all (no native rendering is drawn or approximated). */
+  rendering: 'reference' | 'none';
   /** Native control recorded in the spec (`implementations.<platform>.control`); the element on the web. */
   implementation: string | null;
 }
@@ -42,7 +42,7 @@ export function coverageOf(spec: any, guidelinesHtml: string | null): Coverage {
       states: spec.states.filter((s: any) => stateOn(s, p.id)).length,
       accessibility: [...(a11y.guidelines ?? []), ...(a11y.keyboard ?? [])].filter((x: any) => own(x, p.id)).length,
       tokens: p.id === 'web' ? 'css' : hasOverlay(p.id) ? 'overlay' : 'base',
-      rendering: p.id === 'web' ? 'reference' : 'wireframe',
+      rendering: p.id === 'web' ? 'reference' : 'none',
       implementation: p.id === 'web' ? `<${spec.implementations.web.element}>` : spec.implementations[p.id]?.control ?? null,
     })),
     themes: themes().map((t) => ({ id: t.id, framework: t.framework, package: t.package, maps: t.components.get(spec.id) ?? null })),

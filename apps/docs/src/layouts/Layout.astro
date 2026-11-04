@@ -6,7 +6,7 @@ import Status from '../components/Status.astro';
 import { getModes, getTokens } from '../lib/tokens';
 import { getScreens, getSections } from '../lib/screens';
 import { platforms } from '../lib/platforms';
-import { PLATFORM_TABS } from '../lib/tabs';
+import { platformTabs } from '../lib/tabs';
 // The design system itself: the tokens package, then the web reference implementation (packages/components/src/,
 // not published: @quantum-ds/components ships only the specs).
 import '@quantum-ds/tokens/css/index.css';
@@ -59,7 +59,13 @@ const htmlAttrs = attribute && initial ? { [attribute]: initial } : {};
 // visited (the web by default), remembered per browser. Links to a component's page of the web
 // (its first page, or a tab every platform has) lead to that page on the remembered platform.
 const platformIds = platforms().map((p) => p.id);
-const followedTabs = PLATFORM_TABS.filter((t) => !('web' in t) && t.slug !== 'guidelines').map((t) => t.slug).filter(Boolean);
+// For each platform, the slug of each web page it also has: the first page leads to its first page,
+// a tab every platform has (Guidelines, Tokens) to that tab, wherever it sits on that platform.
+const webTabs = platformTabs('web', true);
+const followed = Object.fromEntries(platformIds.map((p) => {
+  const theirs = platformTabs(p, true);
+  return [p, Object.fromEntries([['', ''], ...webTabs.filter((t) => t.slug && theirs.some((x) => x.id === t.id)).map((t) => [t.slug, theirs.find((x) => x.id === t.id)!.slug ?? ''])])];
+}));
 
 // The chrome's controls are the design system's components, rendered by their templates.
 const modeSwitch = attribute && choices.length > 1 ? getTemplate('select')?.render({ label: 'Mode', id: 'site-mode-switch', size: 'small', options: choices.map((c) => ({ label: c.label, value: c.value, selected: c.value === initial })), attrs: { 'data-mode-switch': attribute } }) : null;
@@ -181,18 +187,20 @@ const year = new Date().getFullYear();
         </nav>
       </div>
     </footer>
-    <script is:inline define:vars={{ base, platform, platformIds, followedTabs }}>
+    <script is:inline define:vars={{ base, platform, followed }}>
       // Before the links can be followed: remember the platform of this component page, then point
       // the component links (not the platform links, which name theirs) at the remembered one.
       try {
         if (platform) localStorage.setItem('site-platform', platform);
         const saved = localStorage.getItem('site-platform');
-        if (saved && saved !== 'web' && platformIds.includes(saved)) {
+        const slugs = saved && saved !== 'web' ? followed[saved] : null;
+        if (slugs) {
           const prefix = `${base}/components/`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const pattern = new RegExp(`^${prefix}([^/?#]+)(?:/(${followedTabs.join('|')}))?/?([?#].*)?$`);
+          const pattern = new RegExp(`^${prefix}([^/?#]+)(?:/([a-z-]+))?/?([?#].*)?$`);
           for (const a of document.querySelectorAll('a[href]:not([data-platform])')) {
             const m = a.getAttribute('href').match(pattern);
-            if (m) a.setAttribute('href', `${base}/components/${m[1]}/${saved}${m[2] ? `/${m[2]}` : ''}${m[3] ?? ''}`);
+            const slug = m ? slugs[m[2] ?? ''] : undefined;
+            if (slug !== undefined) a.setAttribute('href', `${base}/components/${m[1]}/${saved}${slug ? `/${slug}` : ''}${m[3] ?? ''}`);
           }
         }
       } catch {}

@@ -16,8 +16,7 @@ astro.config.mjs               base/site from env (SITE_BASE, SITE_URL); outDir 
 integrations/repo-sources.mjs  dev only: watches the specs (packages/components/specs), the content (content/), the tokens package (packages/tokens), the screens (screens/), AGENTS.md and agents/ (paths from scripts/lib/paths.mjs) on the current Vite watcher; on change bumps the memo generation (Symbol quantum.docs.generation), re-syncs content, reloads the browser (see below); integration name quantum:repo-sources
 src/content.config.ts          collections: docs (./content/components/*.md), specs (../../packages/components/specs/components/*.spec.json), foundationDocs (./content/foundations/*.md), foundations (../../packages/components/specs/foundations/*.spec.json)
 src/lib/repo.ts                repoRoot (the directory holding pnpm-workspace.yaml and packages/tokens/tokens.config.json) / repoPath / readRepoFile (build-time fs access, repository-relative paths from scripts/lib/paths.mjs); memo(): cache of repository data, dropped when the dev server sees a source change
-src/lib/tokens.ts              loads tokens through scripts/lib/dtcg.mjs; TokenRow with resolved value (+ every other mode's when it differs) + CSS names; getModes (modes + web context attribute), modeTokens, platformTokens; hasOverlay, platformComponentTokens (a component's tokens resolved on a platform, with the base value each overlay change replaces), platformDeclarations (the CSS declarations of the wireframe of a platform: component tokens whose value differs there)
-src/lib/a11y.ts                resolves accessibility refs through scripts/lib/a11y.mjs (citations, WCAG criteria, publishers)
+src/lib/tokens.ts              loads tokens through scripts/lib/dtcg.mjs; TokenRow with resolved value (+ every other mode's when it differs) + CSS names; getModes (modes + web context attribute), modeTokens, platformTokens; hasOverlay, platformComponentTokens (a component's tokens resolved on a platform, with the base value each overlay change replaces), WCAG criteria, publishers)
 src/lib/platforms.ts           reads packages/components/specs/platforms.json: names, inputs, onWeb/onPlatform/stateOn (a state's platforms and inputs)/scopeLabel helpers for scoped items
 src/lib/guidelines.ts          the `### <Platform name>` sections of a component's rendered guidelines: guidelinesFor (the shared guidance + one platform's sections), platformSections (count per platform)
 src/lib/themes.ts              the framework themes (packages/*-theme): package, framework (from the package description) and the Quantum components each mapping maps (import.meta.glob of their src/mapping.mjs)
@@ -27,12 +26,12 @@ src/lib/matrix.ts              states matrix layout: one set of matrices per par
 src/lib/inspector.ts           token inspector data: every component token read through scripts/lib/token-map.mjs (part, options, state, kind), its alias chain (semantic, then raw), resolved values and the decisions naming it or a token it aliases
 src/lib/format-html.ts         formatHtml(html): pretty-prints the one-line template output (one element per line, text-only elements on one line, attributes one per line past 72 columns); server and client
 src/lib/highlight.ts           Shiki (sync core, JS regex engine, fixed grammars): highlight(code, lang) -> inner HTML of <code>; server and client
-src/lib/tabs.ts                component pages: SHARED_TABS (specification, decisions: one page per component) and PLATFORM_TABS (Examples, Guidelines, States matrix, Playground, Tokens, then Code on the web or Develop elsewhere: one page per platform), platformTabs, componentHref; foundation tabs (FOUNDATION_TABS, the index being Overview: specimens, then examples)
+src/lib/tabs.ts                component pages: SHARED_TABS (specification, decisions: one page per component) and PLATFORM_TABS (by id: on the web Examples, Guidelines, States matrix, Playground, Tokens, Code; elsewhere Guidelines, Tokens, Develop: one page per platform), platformTabs (a platform's tabs, the first with no slug: its first page), componentHref (a platform tab by id, so a link to a platform's Guidelines lands on its first page); foundation tabs (FOUNDATION_TABS, the index being Overview: specimens, then examples)
 src/lib/screens.ts             screens (screens/, i.e. apps/docs/screens): modules through import.meta.glob of ../../screens/*/*.screen.mjs, sections, sources and licence texts through fs (memo), originLinks (original and code at the recorded commit), componentsOf (through scripts/lib/screens.mjs)
 src/lib/foundations.ts         foundation tokens (tokensOf), contrast in every platform x mode through scripts/lib/contrast.mjs (contrastOf), components aliasing its tokens (followersOf), specimens (specimenOf: each token's value, alias and inline style in every mode and on every platform overlay, through scripts/lib/specimens.mjs), icon names the component examples use (iconNamesOf)
 src/layouts/Layout.astro       chrome (`wide`: no outline column, for a page that is one wide table), laid out like the docs of quantum.thalesdigital.io minus what that site brings itself (header, breadcrumb): a top strip across the whole width (experimental banner: Alert) + a static sidebar (Mode switch: sets the design system's data-theme on <html>, remembered in localStorage, applied before paint; the areas of the site; then the pages of the current area: components, foundations in their docs `order`, screen sections of screens/sections.json, token tiers) + main (the page) + outline ("On this page": the h2/h3 of main listed by a client script, current one marked aria-current="location"; its column stays reserved, empty, on pages with fewer than two headings so main never moves; hidden under 1200 px) + footer (licences, links); imports src/styles/site.css AND the design system: @quantum-ds/tokens/css/index.css first, then packages/components/src/index.css (relative import)
 src/pages/index.astro          summary strip + component list, each with its blueprint as thumbnail (filter appears past 6 components)
-src/pages/components/[id]/[...tab].astro  agnostic first: a shared head on every page (name, summary, description, links to the shared Specification (incl. cited accessibility contract) and Decisions pages, the Coverage disclosure; on a platform's first page the component's blueprint, a sheet; the anatomy is on the Specification page), then the platforms (Web: /components/<id>, the others: /components/<id>/<platform>) and the tabs of the current one, each its own static page with only that platform's content (see "Platform pages")
+src/pages/components/[id]/[...tab].astro  agnostic first: a shared head on every page (name, summary, description, links to the shared Specification (incl. cited accessibility contract) and Decisions pages, the Coverage disclosure; on every page of a platform the component's blueprint, a sheet; the anatomy is on the Specification page), then the platforms (Web: /components/<id>, the others: /components/<id>/<platform>) and the tabs of the current one, each its own static page with only that platform's content (see "Platform pages")
 src/pages/coverage.astro       every component x every platform: guideline sections and accessibility statements of its own, then the framework themes mapping it (lib/coverage.ts); a `wide` page
 src/pages/tokens/[...tier].astro  one static page per tier (/tokens = first tier), tokens grouped by first path segment, filtered by TokenFilter
 src/pages/platforms.astro      platform vocabulary + per-platform token overrides (platformTokens in lib/tokens.ts)
@@ -44,7 +43,7 @@ src/pages/screens/sources.astro  every source: links, commit, licence, shared ch
 src/pages/screens/[source]/[block]/index.astro  one screen: attribution (ScreenAttribution), preview iframe with Frame width and Mode context selects and a link to open it alone, components it renders, gaps (issue links when the gap names issues), changes, formatted HTML
 src/pages/screens/[source]/[block]/frame.astro  the screen alone in a bare page: only @quantum-ds/tokens/css/index.css, packages/components/src/index.css (relative import) and ../../../../../screens/screens.css, mode from ?mode= or the remembered docs mode (follows the Mode switch through the storage event)
 src/pages/about.astro          renders the root AGENTS.md, then each guide of agents/ (links to a guide jump to its section)
-src/components/*.astro         CoverageTable (a component's coverage per platform, in its Coverage disclosure), CoverageShared (the dash of a coverage cell with nothing of its own), ScreenAttribution (source, original, code at the commit, licence and copyright of a screen), DecisionLog and A11yStatements (shared by component and foundation pages), Specimen (one foundation specimen drawn by its display; Play button for motion, see below), Anatomy (live rendering linked to the parts table by @component-anatomy/core, on the Specification page), Blueprint (a component's blueprint, `content/components/<id>.blueprint.json`, drawn as SVG by `scripts/lib/blueprint.mjs` on blueprint paper: `thumb` in lists at 10 px a cell, a sheet at 20 px a cell with centre marks and a title block in the head of a platform's first page; sets the mode context attribute to the default mode so the paper stays the brand blue in every mode), ExampleExplorer (examples tab: tabs + stage + props + playground link; with `samples`, a foundation's code examples: tabs + highlighted block + source, and the playground's Mode context select, shared by every block of the explorer), StateMatrix, Playground (client script, presets props from the query string; a mode context select sets data-theme on the stage; vision and text size simulations of the stage (see Rules); dispatches `playground:render` { props, state } after each render; the formatted HTML spans the bottom of the playground, scrolls inside 400px and has a Copy button), TokenInspector (playground panel, see below), TokenTable, TokenFilter (client script filtering the TokenTables of its section; ?q= keeps the query), Status (badge or compact dot)
+src/components/*.astro         CoverageTable (a component's coverage per platform, in its Coverage disclosure), CoverageShared (the dash of a coverage cell with nothing of its own), ScreenAttribution (source, original, code at the commit, licence and copyright of a screen), DecisionLog and A11yStatements (shared by component and foundation pages), Specimen (one foundation specimen drawn by its display; Play button for motion, see below), Anatomy (live rendering linked to the parts table by @component-anatomy/core, on the Specification page), Blueprint (a component's blueprint, `content/components/<id>.blueprint.json`, drawn as SVG by `scripts/lib/blueprint.mjs` on blueprint paper: `thumb` in lists at 10 px a cell, a sheet at 20 px a cell with centre marks and a title block in the head of every page of a platform; sets the mode context attribute to the default mode so the paper stays the brand blue in every mode), ExampleExplorer (examples tab: tabs + stage + props + playground link; with `samples`, a foundation's code examples: tabs + highlighted block + source, and the playground's Mode context select, shared by every block of the explorer), StateMatrix, Playground (client script, presets props from the query string; a mode context select sets data-theme on the stage; vision and text size simulations of the stage (see Rules); dispatches `playground:render` { props, state } after each render; the formatted HTML spans the bottom of the playground, scrolls inside 400px and has a Copy button), TokenInspector (playground panel, see below), TokenTable, TokenFilter (client script filtering the TokenTables of its section; ?q= keeps the query), Status (badge or compact dot)
 src/styles/site.css            chrome only; every class is site-*; reads semantic tokens only (no literal color or font value), spacing from --space-* where the chrome is laid out; --site-* = layout constants (--site-top: the offset of sticky elements, 0 until a host header sits above the pages; sidebar and outline widths, content width), except the blueprint's `--site-bp-*` (its paper, ink and line tints: aliases and `color-mix()` of semantic tokens); `site-bp__*` = the classes coloring the blueprint's SVG (see Rules)
 ```
 
@@ -139,49 +138,45 @@ rules (`scripts/lib/site-check.mjs`):
   parts. It is `aria-hidden` and out of the tab order; keyboard users reach parts through the
   table rows. Overlay colours come from the `--ca-*` variables mapped to semantic tokens in site.css.
 - Platform scopes are labels only: the site shows `inputs`/`platforms` from the spec, keeps
-  each platform's states (`platforms`, and `inputs` against the platform's inputs) and examples
-  on that platform's pages, skips the examples that exclude the web (the reference rendering
-  cannot draw them), groups accessibility guidelines by platform, and never decides itself what
-  applies where.
+  each platform's states (`platforms`, and `inputs` against the platform's inputs) on that
+  platform's pages (the web's States matrix, the others' Develop), draws the examples on the web
+  only and lists those that exclude it with their props (the reference rendering cannot draw
+  them), groups accessibility guidelines by platform, and never decides itself what applies
+  where.
 - Platform pages. A reader of one platform finds only that platform's content; the
   specification and the decisions are shared pages, and the Coverage disclosure of the head (and
   the Coverage page) show everything that is covered, for every platform. The Guidelines tab
   shows the shared guidance and the `### <Platform>` sections of its platform only
-  (`lib/guidelines.ts`). On the web the examples, states and playground are the reference
-  rendering in color, and Code shows which framework theme maps the component, then the
-  reference CSS and template, never presented as something to install (Quantum ships tokens,
-  specs and framework themes; themes are linked, never drawn). Every other platform is drawn as
-  a **wireframe**: the same reference rendering, with the component tokens (its own and those of
-  the components it contains) that differ on that platform set by a rule the page generates
-  (`[data-wireframe="<platform>"]`, `platformDeclarations`; values are data, no literal in the
-  site's sources), and greyscale (`filter: grayscale(1)` in site.css, an open popover too), so
-  emphasis stays as grey levels and colors stay in the Tokens tab. A wireframe shows sizes,
-  spacing and emphasis, never the look of a native control. Its playground has no HTML, vision
-  simulation or token inspector (they belong to the web); its Tokens tab shows the values on that
-  platform (and the base value an overlay replaces) without CSS names; Develop says where its
-  resolved token trees are, the native control recorded in `implementations.<platform>` (or that
-  none is), and the parts, properties, states and keyboard entries to map. The platform is
+  (`lib/guidelines.ts`). Only the web is drawn: its Examples, States matrix and Playground are
+  the reference rendering in color, the only rendering these docs have, and Code shows which
+  framework theme maps the component, then the reference CSS and template, never presented as
+  something to install (Quantum ships tokens, specs and framework themes; themes are linked,
+  never drawn). The other platforms have no implementation to draw and none is approximated: their
+  pages are Guidelines (the first page, saying so), Tokens (the values on that platform and the
+  base value an overlay replaces, without CSS names) and Develop (where its resolved token trees
+  are, the native control recorded in `implementations.<platform>` or that none is, and the
+  parts, properties, states and keyboard entries to map). The platform is
   followed from one component to the next: the layout remembers the platform of the last
   component page visited (`site-platform` in `localStorage`, the web by default) and points the
-  links to a component's web page (its first page, or a tab every platform has) at that
-  platform; links that name their platform carry `data-platform` and are left as they are.
+  links to a component's web page (its first page, or a tab every platform has, wherever it
+  sits there: a web Guidelines link leads to another platform's first page) at that platform; links that name their platform carry `data-platform` and are left as they are.
 - A component page's head keeps its height on every page but the Specification: the summary in
   two lines and the description in three, their space reserved and the rest clipped
   (`site-page-header--fixed`), and the blueprint's stage a fixed height, so the blueprint, the
   platforms and the tabs stand at the same place on every component, at any width. The
   Specification page shows the whole description.
-- Blueprints. A component page's head (a platform's first page) and the component list draw the
-  component's blueprint, never a rendering: a sketch that tells which component it is, drawn like
-  a circuit board on blueprint paper (the brand accent of the default mode; text as traces from
-  pads, hatching for filled surfaces; flat, no shadow). Each component places generic pieces
-  (boxes, text, glyphs, checks, radios, switches, tracks, a ring, a rule, media, vias) on a grid of
-  cells in `content/components/<id>.blueprint.json` (`content/AGENTS.md` "Blueprint");
-  `scripts/lib/blueprint.mjs` draws it as one SVG in screen pixels, its grid from the drawing's
-  corner and its outlines one-pixel hairlines on the pixel grid, so every outline lies crisp on a grid line at any page
-  width; centre marks outside it on a sheet. site.css only colors it (`site-bp__*`). The pieces
-  know shapes, never a component; a new piece goes in `PIECES` with a test, reads no component
-  token and draws no realistic size. The anatomy (its parts on the live rendering) is on
-  the Specification page only.
+- Blueprints. The head of every page of a platform (not the shared Specification and Decisions)
+  and the component list draw the component's blueprint, never a rendering: a sketch that tells
+  which component it is, drawn like a circuit board on blueprint paper (the brand accent of the
+  default mode; text as traces from pads, hatching for filled surfaces; flat, no shadow). Each
+  component places generic pieces (boxes, text, glyphs, checks, radios, switches, tracks, a ring,
+  a rule, media, vias) on a grid of cells in `content/components/<id>.blueprint.json`
+  (`content/AGENTS.md` "Blueprint"); `scripts/lib/blueprint.mjs` draws it as one SVG in screen
+  pixels, its grid from the drawing's corner and its outlines one-pixel hairlines on the pixel
+  grid, so every outline lies crisp on a grid line at any page width; centre marks outside it on a
+  sheet. site.css only colors it (`site-bp__*`). The pieces know shapes, never a component; a new
+  piece goes in `PIECES` with a test, reads no component token and draws no realistic size. The
+  anatomy (its parts on the live rendering) is on the Specification page only.
 - The states matrix crosses enum properties whose options appear together in one component
   token path (`button.container.background.<emphasis>.<intent>.<state>`): the first in spec
   order gives the rows, every combination of the others its own table. Properties never

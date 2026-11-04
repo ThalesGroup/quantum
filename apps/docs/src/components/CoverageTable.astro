@@ -21,7 +21,7 @@ const rows: { label: string; cell: (c: Coverage['platforms'][number]) => string;
   { label: 'States', cell: (c) => String(c.states) },
   { label: 'Accessibility statements of its own', cell: (c) => String(c.accessibility), missing: (c) => !c.accessibility },
   { label: 'Token values', cell: tokens },
-  { label: 'Drawn in these docs', cell: (c) => (c.rendering === 'reference' ? 'Reference rendering' : 'Wireframe') },
+  { label: 'Drawn in these docs', cell: (c) => (c.rendering === 'reference' ? 'Reference rendering' : 'Not drawn: guidelines and tokens') },
   { label: 'Native control recorded', cell: (c) => c.implementation ?? 'None yet', missing: (c) => !c.implementation },
 ];
 ---

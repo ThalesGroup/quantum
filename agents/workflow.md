@@ -35,8 +35,8 @@ touches the spec but not the tokens, CSS, or docs leaves the repository inconsis
    every linked artifact is either updated or consciously left as is.
 7. **Look at it:** `pnpm dev`, open the component page, check the examples, the
    states matrix, the playground (and its token inspector: which token paints which part)
-   on the web and on each platform's pages (`/components/<id>/<platform>`, drawn as wireframes),
-   the guidelines of each platform, and the accessibility contract on the Specification page; then the **Screens** using it, at
+   on the web, the guidelines, tokens and Develop page of each other platform
+   (`/components/<id>/<platform>`), and the accessibility contract on the Specification page; then the **Screens** using it, at
    every frame width and in every mode.
 8. **Report** what changed in each artifact, the sources behind any accessibility statement,
    and every linked artifact you deliberately left unchanged, with the reason.

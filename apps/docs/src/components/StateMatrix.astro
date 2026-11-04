@@ -3,12 +3,11 @@
  * Options of one enum property (rows) x the states of one part (columns).
  * States are forced through the template's `state` prop -> data-state attribute; a part repeated
  * through a list property gets the state on its single entry (lib/matrix.ts cellProps).
- * Only the states of the page's platform are drawn (on the web by the reference rendering, elsewhere
- * in the platform's wireframe); the others are listed under the table. Each column says which
+ * Only the states of the web are drawn, by the reference rendering; the others are listed under the table. Each column says which
  * inputs or platforms the state belongs to (from the spec).
  */
 import type { Template } from '../lib/web';
-import { platformName, scopeLabel, stateOn } from '../lib/platforms';
+import { scopeLabel, stateOn } from '../lib/platforms';
 import { cellProps, type PartMatrix } from '../lib/matrix';
 interface Props {
   spec: any;
@@ -17,11 +16,9 @@ interface Props {
   property: any;
   fixed: { property: any; value: string }[];
   baseProps: Record<string, unknown>;
-  /** Platform of the page (web by default). */
-  platform?: string;
 }
-const { spec, template, matrix, property, fixed, baseProps, platform = 'web' } = Astro.props;
-const wireframe = platform === 'web' ? undefined : platform;
+const { spec, template, matrix, property, fixed, baseProps } = Astro.props;
+const platform = 'web';
 const all = matrix.states as { id: string; inputs?: string[]; platforms?: string[] }[];
 const states = all.filter((s) => stateOn(s, platform));
 const elsewhere = all.filter((s) => !stateOn(s, platform));
@@ -41,7 +38,7 @@ const scope = (s: { inputs?: string[]; platforms?: string[] }) => [s.inputs?.len
           <th scope="row"><code>{o.value}</code></th>
           {states.map((s) => (
             <td>
-              <div class="site-matrix__cell" data-wireframe={wireframe} set:html={template.render(cellProps(spec, matrix, baseProps, { property, value: o.value }, fixed, s.id))}></div>
+              <div class="site-matrix__cell" set:html={template.render(cellProps(spec, matrix, baseProps, { property, value: o.value }, fixed, s.id))}></div>
             </td>
           ))}
         </tr>
@@ -50,5 +47,5 @@ const scope = (s: { inputs?: string[]; platforms?: string[] }) => [s.inputs?.len
   </table>
 </div>
 {elsewhere.length ? (
-  <p class="site-muted site-small">Not on {platformName(platform)}: {elsewhere.map((s) => <span class="site-chip"><code>{s.id}</code> <span class="site-muted">{scopeLabel(s)}</span></span>)}</p>
+  <p class="site-muted site-small">Not on the web: {elsewhere.map((s) => <span class="site-chip"><code>{s.id}</code> <span class="site-muted">{scopeLabel(s)}</span></span>)}</p>
 ) : null}
