@@ -39,6 +39,15 @@
         "pnpm penpot:export && pnpm penpot:serve"
       ],
       "port": 4400
+    },
+    {
+      "name": "theme-demos",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "BROWSER=none pnpm themes:demo"
+      ],
+      "port": 4500
     }
   ]
 }

@@ -28,7 +28,7 @@ export const TYPES = {
 };
 
 /** Scopes that are not component ids. */
-export const AREA_SCOPES = ['tokens', 'modes', 'platforms', 'foundations', 'specs', 'a11y', 'components', 'figma', 'penpot', 'web', 'docs', 'screens', 'scripts', 'agents', 'ci', 'deps', 'release'];
+export const AREA_SCOPES = ['tokens', 'modes', 'platforms', 'foundations', 'specs', 'a11y', 'components', 'figma', 'penpot', 'bootstrap-theme', 'shadcn-theme', 'web', 'docs', 'screens', 'scripts', 'agents', 'ci', 'deps', 'release'];
 
 export const MAX_HEADER = 100;
 

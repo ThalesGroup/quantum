@@ -49,6 +49,10 @@ The repository is the GitHub repository
     Penpot token format, its import, and `@quantum-ds/penpot` in `packages/penpot/`),
     `tokens-studio` (the Tokens Studio token format). A change to `packages/figma/` takes `figma`,
     one to `packages/penpot/` takes `penpot`, on top of its kind.
+  - **Framework**, every one the change or the issue concerns: `bootstrap` (the Bootstrap theme,
+    `@quantum-ds/bootstrap-theme` in `packages/bootstrap-theme/`), `shadcn` (the shadcn/ui theme,
+    `@quantum-ds/shadcn-theme` in `packages/shadcn-theme/`). A change to a theme package takes its
+    framework label on top of its kind.
   - **Quantum NextGen.** Every issue and pull request that concerns it (a pull request against
     `nextgen`, an issue about its packages, specs, docs site, guides or skills) always takes
     `nextgen`.
@@ -122,7 +126,8 @@ The repository is the GitHub repository
   change, the foundation id (`focus`) for a foundation change, several comma-separated when one decision spans components
   (`feat(button,icon-button): color modes`), otherwise an area: `tokens`, `modes`,
   `platforms`, `foundations`, `specs`, `a11y`, `components` (the components package), `figma`
-  (the Figma package), `penpot` (the Penpot package), `web`
+  (the Figma package), `penpot` (the Penpot package), `bootstrap-theme` (the Bootstrap theme package),
+  `shadcn-theme` (the shadcn/ui theme package), `web`
   (the web reference implementation), `docs` (the docs app and the guidelines), `screens`,
   `scripts`, `agents`, `ci`, `deps`, `release`. A
   component scope that does not exist fails the check; the list lives in
