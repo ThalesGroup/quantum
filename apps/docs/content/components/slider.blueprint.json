@@ -1,0 +1,7 @@
+{
+  "size": [12, 2],
+  "parts": [
+    {"text": [0, 0.5, 3], "strong": true},
+    {"track": [0, 1.5, 12], "value": 0.5, "knob": true}
+  ]
+}

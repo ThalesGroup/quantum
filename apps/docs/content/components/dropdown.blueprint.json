@@ -1,0 +1,13 @@
+{
+  "size": [10, 7],
+  "parts": [
+    {"box": [0, 0, 5, 2], "fill": true},
+    {"text": [1, 1, 2], "strong": true},
+    {"glyph": [3, 0.5], "name": "chevron-down"},
+    {"box": [0, 3, 10, 4]},
+    {"box": [0.5, 3.5, 9, 1], "fill": true, "outline": false},
+    {"text": [1, 4, 6]},
+    {"text": [1, 5, 8]},
+    {"text": [1, 6, 4]}
+  ]
+}

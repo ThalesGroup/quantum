@@ -1,0 +1,13 @@
+{
+  "size": [12, 2],
+  "parts": [
+    {"glyph": [0, 0.5], "name": "chevron-left"},
+    {"box": [2, 0, 2, 2]},
+    {"text": [2.5, 1, 1], "strong": true},
+    {"box": [5, 0, 2, 2], "fill": true},
+    {"text": [5.5, 1, 1], "strong": true},
+    {"box": [8, 0, 2, 2]},
+    {"text": [8.5, 1, 1], "strong": true},
+    {"glyph": [11, 0.5], "name": "chevron-right"}
+  ]
+}

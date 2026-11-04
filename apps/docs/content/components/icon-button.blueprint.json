@@ -1,0 +1,11 @@
+{
+  "size": [8, 2],
+  "parts": [
+    {"box": [0, 0, 2, 2], "fill": true},
+    {"glyph": [0.5, 0.5], "name": "plus"},
+    {"box": [3, 0, 2, 2]},
+    {"glyph": [3.5, 0.5], "name": "plus"},
+    {"box": [6, 0, 2, 2], "radius": "round"},
+    {"glyph": [6.5, 0.5], "name": "close"}
+  ]
+}

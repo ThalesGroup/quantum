@@ -9,6 +9,7 @@ import Playground from '../../../components/Playground.astro';
 import TokenTable from '../../../components/TokenTable.astro';
 import TokenFilter from '../../../components/TokenFilter.astro';
 import Anatomy from '../../../components/Anatomy.astro';
+import Blueprint from '../../../components/Blueprint.astro';
 import DecisionLog from '../../../components/DecisionLog.astro';
 import A11yStatements from '../../../components/A11yStatements.astro';
 import CoverageTable from '../../../components/CoverageTable.astro';
@@ -98,11 +99,14 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
 ---
 <Layout title={title} description={spec.summary} platform={platform ?? undefined}>
   {wireframeCss ? <style is:inline set:html={wireframeCss}></style> : null}
-  <header class="site-page-header">
+  {/* Every page but the Specification keeps the summary and the description to a fixed number of
+      lines, so the blueprint, the platforms and the tabs stand at the same place on every component;
+      the Specification page shows the whole description. */}
+  <header class:list={['site-page-header', { 'site-page-header--fixed': tab !== 'spec' }]}>
     <p class="site-eyebrow">role <code>{spec.role}</code></p>
     <h1>{spec.name} <Status status={spec.status} /> <span class="site-version">v{spec.version}</span></h1>
     <p class="site-lede">{spec.summary}</p>
-    {spec.description ? <p class="site-page-header__desc">{spec.description}</p> : null}
+    {spec.description || tab !== 'spec' ? <p class="site-page-header__desc">{spec.description}</p> : null}
     {/* What every platform shares, then a disclosure of what each one covers: out of the way until asked. */}
     <div class="site-component-bar">
       <nav class="site-component-bar__shared" aria-label={`${spec.name}, shared by every platform`}>
@@ -120,7 +124,8 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
       <CoverageTable coverage={coverage} name={spec.name} />
       <p class="site-small"><a href={`${base}/coverage`}>Coverage of every component</a></p>
     </section>
-    {platform && !tab ? <Anatomy spec={spec} template={template} initial={initial} compact /> : null}
+    {/* A sketch that says which component this is; its parts are on the Specification page. */}
+    {platform && !tab ? <Blueprint spec={spec} class="site-page-header__blueprint" /> : null}
     <nav class="site-platforms" aria-label={`${spec.name} per platform`}>
       {platformLinks.map((p) => (
         <a href={p.href} data-platform={p.id} aria-current={p.current ? (tab ? 'true' : 'page') : undefined}>{p.name}</a>

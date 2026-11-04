@@ -1,0 +1,8 @@
+{
+  "size": [11, 2],
+  "parts": [
+    {"box": [0, 0, 2, 2], "radius": "round", "dashed": true},
+    {"text": [3, 0.5, 8], "soft": true},
+    {"text": [3, 1.5, 5], "soft": true}
+  ]
+}

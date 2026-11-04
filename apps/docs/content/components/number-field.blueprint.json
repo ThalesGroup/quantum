@@ -1,0 +1,10 @@
+{
+  "size": [14, 3],
+  "parts": [
+    {"text": [0, 0.5, 3], "strong": true},
+    {"box": [0, 1, 14, 2]},
+    {"text": [1, 2, 2]},
+    {"glyph": [10, 1.5], "name": "minus"},
+    {"glyph": [12, 1.5], "name": "plus"}
+  ]
+}

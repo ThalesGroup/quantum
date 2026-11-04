@@ -40,7 +40,7 @@ export const PATHS = {
   agents: 'agents',
 };
 
-/** The four artifacts of a component, plus the generated token CSS, as repository-relative paths. */
+/** The four artifacts of a component (the docs with their blueprint), plus the generated token CSS, as repository-relative paths. */
 export const artifacts = (id) => ({
   spec: `${PATHS.specs}/components/${id}.spec.json`,
   tokens: `${PATHS.tokensSrc}/components/${id}.tokens.json`,
@@ -48,6 +48,8 @@ export const artifacts = (id) => ({
   css: `${PATHS.web}/components/${id}/${id}.css`,
   template: `${PATHS.web}/components/${id}/${id}.template.mjs`,
   docs: `${PATHS.content}/components/${id}.md`,
+  /** The blueprint of the docs: a sketch of the component, its parts placed on a grid (scripts/lib/blueprint.mjs). */
+  blueprint: `${PATHS.content}/components/${id}.blueprint.json`,
   /** The Figma layer tree of the component (@quantum-ds/figma), read from its CSS and template. */
   figma: `${PATHS.figma}/src/blueprints/${id}.mjs`,
 });

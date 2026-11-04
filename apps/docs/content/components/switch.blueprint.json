@@ -1,0 +1,9 @@
+{
+  "size": [8, 3],
+  "parts": [
+    {"switch": [0, 0], "on": true},
+    {"text": [3, 0.5, 5], "strong": true},
+    {"switch": [0, 2]},
+    {"text": [3, 2.5, 5]}
+  ]
+}

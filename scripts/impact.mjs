@@ -155,7 +155,7 @@ const LINKS = [
   }],
   [under(PATHS.web, 'components/([a-z0-9-]+)/\\1\\.(css|template\\.mjs)$'), ([, id]) => {
     const a = artifacts(id);
-    return [[a.spec, 'visible change: bump version + changelog; implementations.web must still describe it'], [a.docs, 'if behaviour or rendering guidance changed'], [a.figma, 'Figma blueprint: its layer tree follows the CSS structure'], ...mirrored(id, 'css', 'spec'), ...screensUsing([id], () => `renders ${id}: apply any template API change, look at it on the site (Screens)`)];
+    return [[a.spec, 'visible change: bump version + changelog; implementations.web must still describe it'], [a.docs, 'if behaviour or rendering guidance changed'], [a.figma, 'Figma blueprint: its layer tree follows the CSS structure'], [a.blueprint, 'docs blueprint: redraw the sketch if the shape of the component changed'], ...mirrored(id, 'css', 'spec'), ...screensUsing([id], () => `renders ${id}: apply any template API change, look at it on the site (Screens)`)];
   }],
   [under(PATHS.content, 'components/([a-z0-9-]+)\\.md$'), ([, id]) => [[artifacts(id).spec, 'guidance must not contradict the spec; WCAG links must be cited by the spec']]],
   [under(PATHS.specs, 'foundations/([a-z0-9-]+)\\.spec\\.json$'), ([, id]) => {
@@ -179,6 +179,7 @@ const LINKS = [
   [/^scripts\/figma-library\.mjs$/, () => [['scripts/test/figma-library.test.mjs', 'a test per name or value rule'], [`${PATHS.tokensSrc}/raw/`, 'recreated from the Figma library: run it to see what diverges'], [`${PATHS.tokens}/AGENTS.md`, '"Origin: the Figma library and additions"'], ['scripts/AGENTS.md', 'script description']]],
   [under(PATHS.figma, 'src/(plan\\.mjs|plugin\\.js|ui/.+)$'), () => [[`${PATHS.figma}/test/plan.test.mjs`, 'a test per node type, bind key, plugin step or window message'], [`${PATHS.figma}/AGENTS.md`, 'blueprint format and plugin'], ['scripts/lib/scaffold.mjs', 'the starter blueprint of a new component follows the format'], ['agents/token-sources.md', '"Drawing a component in Figma"'], [`${PATHS.penpot}/src/plan.mjs`, 'translates the Figma plan: a new node type or field needs its Penpot property (pnpm test)']]],
   [under(PATHS.penpot, 'src/(plan\\.mjs|plugin\\.js|ui/.+)$'), () => [[`${PATHS.penpot}/test/plan.test.mjs`, 'a test per translated field, plugin step or window message, the stand-in taught the Penpot rule'], [`${PATHS.penpot}/AGENTS.md`, 'plan and plugin'], ['agents/token-sources.md', '"Drawing a component in Penpot"']]],
+  [/^scripts\/lib\/blueprint\.mjs$/, () => [['scripts/test/blueprint.test.mjs', 'a test per piece, option or check'], [`${PATHS.content}/AGENTS.md`, '"Blueprint": the pieces and their options'], [`${PATHS.docsSrc}/styles/site.css`, 'the site-bp__* classes the drawing uses'], ['scripts/AGENTS.md', 'library description']]],
   [/^scripts\/lib\/syntax-theme\.mjs$/, () => [['scripts/test/syntax-theme.test.mjs', 'a test per check or output field'], [`${PATHS.tokens}/AGENTS.md`, 'syntax highlighting theme section'], ['scripts/AGENTS.md', 'library description']]],
   [/^scripts\/lib\/contrast\.mjs$/, () => [['scripts/test/contrast.test.mjs', 'a test per color shape or rule'], [`${PATHS.docsSrc}/lib/foundations.ts`, 'site renders the ratios through it'], ['scripts/AGENTS.md', 'library description']]],
   [under(PATHS.tokensSrc, '(?:additions/)?(raw|semantic)/.+\\.json$'), ([file, tier]) => [

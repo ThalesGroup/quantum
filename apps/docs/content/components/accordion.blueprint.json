@@ -1,0 +1,13 @@
+{
+  "size": [14, 7],
+  "parts": [
+    {"box": [0, 0, 14, 2]},
+    {"text": [1, 1, 5], "strong": true},
+    {"glyph": [12, 0.5], "name": "chevron-up"},
+    {"text": [1, 3, 9]},
+    {"text": [1, 4, 6]},
+    {"box": [0, 5, 14, 2]},
+    {"text": [1, 6, 5], "strong": true},
+    {"glyph": [12, 5.5], "name": "chevron-down"}
+  ]
+}

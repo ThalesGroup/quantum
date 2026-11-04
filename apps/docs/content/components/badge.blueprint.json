@@ -1,0 +1,10 @@
+{
+  "size": [10, 1],
+  "parts": [
+    {"box": [0, 0, 3, 1], "fill": true, "radius": "pill"},
+    {"text": [0.5, 0.5, 2], "strong": true},
+    {"box": [4, 0, 4, 1], "radius": "pill"},
+    {"text": [4.5, 0.5, 3]},
+    {"box": [9, 0, 1, 1], "fill": true, "radius": "round"}
+  ]
+}

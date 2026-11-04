@@ -2,7 +2,8 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Status from '../components/Status.astro';
-import { getTemplate, defaultProps } from '../lib/web';
+import Blueprint from '../components/Blueprint.astro';
+import { getTemplate } from '../lib/web';
 import { getTokens } from '../lib/tokens';
 import { conformanceTarget } from '../lib/a11y';
 
@@ -37,11 +38,9 @@ const filterable = specs.length > 6;
     </div>
     <ul class="site-list" data-list>
       {specs.map((s) => {
-        const tpl = getTemplate(s.id);
-        const html = tpl ? tpl.render(defaultProps(s.data)) : '';
         return (
           <li class="site-list__item" data-name={s.data.name.toLowerCase()}>
-            <div class="site-list__thumb site-preview__stage" set:html={html} inert aria-hidden="true"></div>
+            <Blueprint spec={s.data} thumb class="site-list__thumb" />
             <div>
               <h3 class="site-list__title"><a class="site-list__link" href={`${base}/components/${s.id}`}>{s.data.name}</a> <Status status={s.data.status} /></h3>
               <p class="site-list__summary">{s.data.summary}</p>

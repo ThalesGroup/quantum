@@ -130,6 +130,11 @@ body.site {
 .site-page-header { margin-bottom: 1.75rem; }
 .site-page-header h1 { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
 .site-page-header__desc { margin: 0.6rem 0 0; max-width: 78ch; color: var(--global-text-on-base-neutral-secondary); }
+/* A component page's head keeps its height: the summary in two lines, the description in three
+   (the space reserved, the rest clipped; the Specification page shows it whole). */
+.site-page-header--fixed .site-lede, .site-page-header--fixed .site-page-header__desc { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+.site-page-header--fixed .site-lede { -webkit-line-clamp: 2; line-clamp: 2; height: 2lh; }
+.site-page-header--fixed .site-page-header__desc { -webkit-line-clamp: 3; line-clamp: 3; height: 3lh; }
 .site-hero { margin-bottom: 1.75rem; }
 .site-section { margin: 0 0 var(--space-48); }
 .site-section > h2:first-child { margin-bottom: 0.35rem; }
@@ -182,15 +187,46 @@ td.site-cite a { margin-inline-end: 0.75em; }
 .site-platforms a { padding: 0.35rem 0.9rem; border-radius: var(--corner-radius-xs); color: var(--global-text-on-base-neutral-tertiary); text-decoration: none; }
 .site-platforms a:hover { color: var(--global-text-on-base-neutral-primary); background: var(--global-bg-subtle-neutral-hover); }
 .site-platforms a[aria-current] { color: var(--global-text-on-base-neutral-primary); background: var(--global-bg-level-0-default); box-shadow: inset 0 0 0 var(--stroke-width-sm) var(--global-border-level-edge-level-0); }
+.site-bp.site-page-header__blueprint { margin-top: 1.25rem; height: 16rem; }
 .site-platform-note { margin: 0 0 1rem; max-width: 78ch; color: var(--global-text-on-base-neutral-secondary); }
-.site-page-header .site-anatomy--compact { margin-top: 1.25rem; }
-.site-anatomy--compact { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; align-items: start; }
-.site-anatomy--compact .site-anatomy__preview { margin: 0; }
-.site-anatomy__parts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.15rem; font-size: var(--body-size-sm); }
-.site-anatomy__parts li { padding: 0.3rem 0.5rem; border-radius: var(--corner-radius-xs); }
-.site-anatomy__parts li[data-active] { background: var(--global-bg-subtle-brand-default); }
-.site-anatomy__part-desc { display: block; font-size: var(--body-size-xs); color: var(--global-text-on-base-neutral-tertiary); }
-@media (max-width: 760px) { .site-anatomy--compact { grid-template-columns: minmax(0, 1fr); } }
+/* Blueprint: a sketch that tells which component a page is about, never how it looks, drawn as a
+   circuit board on blueprint paper. scripts/lib/blueprint.mjs draws a component's blueprint
+   (apps/docs/content/components/<id>.blueprint.json, parts placed on a grid of cells) as one SVG in
+   screen pixels: the grid from the drawing's corner, whole-pixel strokes, flat. These rules only
+   color it: white ink on the brand blue, the line tints, the grid. The paper is always the light
+   mode's brand accent (Blueprint.astro sets the mode context), so it stays blue in every mode. */
+.site-bp {
+  --site-bp-paper: var(--global-bg-accent-brand-default);
+  --site-bp-ink: var(--global-text-on-accent-brand-default);
+  --site-bp-mid: color-mix(in srgb, var(--site-bp-ink) 55%, transparent);
+  --site-bp-faint: color-mix(in srgb, var(--site-bp-ink) 30%, transparent);
+  --site-bp-grid: color-mix(in srgb, var(--site-bp-ink) 9%, transparent);
+  --site-bp-grid-major: color-mix(in srgb, var(--site-bp-ink) 18%, transparent);
+  position: relative; display: grid; place-items: center; padding: 1.5rem; overflow: hidden; color: var(--site-bp-ink);
+  background: radial-gradient(ellipse at 30% 15%, var(--site-bp-grid), transparent 70%), var(--site-bp-paper);
+  border-radius: var(--corner-radius-sm); pointer-events: none; user-select: none;
+}
+.site-bp--thumb { padding: 0.375rem; border-radius: var(--corner-radius-xs); }
+/* The drawing paints its grid past its edges; the stage clips it. A drawing wider than a narrow
+   stage scales down. */
+.site-bp__svg { display: block; overflow: visible; max-width: 100%; height: auto; }
+.site-bp__paper { fill: var(--site-bp-paper); }
+.site-bp__ink { fill: var(--site-bp-ink); }
+.site-bp__line { fill: none; stroke: var(--site-bp-ink); stroke-linecap: round; stroke-linejoin: round; }
+.site-bp__paper.site-bp__line { fill: var(--site-bp-paper); }
+.site-bp__line--mid { stroke: var(--site-bp-mid); }
+.site-bp__line--faint { stroke: var(--site-bp-faint); }
+.site-bp__line--paper { stroke: var(--site-bp-paper); }
+.site-bp__grid { fill: none; stroke: var(--site-bp-grid); stroke-width: 1; }
+.site-bp__grid--major { stroke: var(--site-bp-grid-major); }
+/* The title block of a sheet, in the bottom right corner, as on a drawing: a row of its own under
+   the drawing, so it never covers it. */
+.site-bp:has(.site-bp__title) { grid-template-rows: 1fr auto; container-type: inline-size; }
+.site-bp__title { justify-self: end; display: flex; margin: 1rem -0.75rem -0.75rem 0; border: var(--stroke-width-sm) solid var(--site-bp-mid); font-family: var(--mono-family); font-size: var(--mono-size-xs); font-weight: var(--mono-weight-regular); letter-spacing: var(--font-letter-spacing-normal); text-transform: uppercase; color: var(--site-bp-mid); background: var(--site-bp-paper); }
+.site-bp__title > span { padding: 0.25rem 0.6rem; white-space: nowrap; }
+.site-bp__title > span + span { border-inline-start: var(--stroke-width-sm) solid var(--site-bp-mid); }
+.site-bp__title > span:nth-child(2) { color: var(--site-bp-ink); }
+@container (max-width: 26rem) { .site-bp__title > span:nth-child(3) { display: none; } }
 /* Wireframe: a rendering drawn without a platform's look. Greyscale keeps emphasis as grey levels
    and drops the colors (the Tokens tab has them); a platform's values are set by a rule the page
    generates from its tokens ([data-wireframe="<platform>"]). An open popover sits in the top
@@ -240,7 +276,7 @@ td.site-cite a { margin-inline-end: 0.75em; }
 .site-list { list-style: none; margin: 0; padding: 0; border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-0); border-radius: var(--corner-radius-sm); overflow: hidden; background: var(--global-bg-level-0-default); }
 /* Rows hidden by a filter are skipped: no separator above the first row still shown. */
 .site-list > li:not([hidden]) ~ li { border-top: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }
-.site-list__item { position: relative; display: grid; grid-template-columns: 168px minmax(0, 1fr) auto; align-items: center; gap: 1.25rem; padding: 0.75rem 1rem 0.75rem 0.75rem; }
+.site-list__item { position: relative; display: grid; grid-template-columns: 176px minmax(0, 1fr) auto; align-items: center; gap: 1.25rem; padding: 0.75rem 1rem 0.75rem 0.75rem; }
 .site-list__item[hidden] { display: none; }
 .site-list__item--text { grid-template-columns: minmax(0, 1fr) auto; padding-left: 1rem; }
 .site-list__item:hover { background: var(--global-bg-level-1-default); }
@@ -250,7 +286,7 @@ td.site-cite a { margin-inline-end: 0.75em; }
 .site-list__link::after { content: ""; position: absolute; inset: 0; }
 .site-list__link:focus-visible { outline: none; }
 .site-list__item:has(.site-list__link:focus-visible) { outline: var(--focus-ring-width) solid var(--color-focus-ring); outline-offset: -2px; border-radius: var(--corner-radius-sm); }
-.site-list .site-list__thumb { display: grid; place-items: center; height: 76px; min-height: 0; padding: 0.5rem; overflow: hidden; border-radius: var(--corner-radius-xs); border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-0); pointer-events: none; }
+.site-list .site-list__thumb { height: 96px; }
 .site-list .site-list__title { display: flex; align-items: center; gap: 0.5rem; margin: 0; font-size: var(--heading-size-2xs); }
 .site-list__summary { margin: 0.15rem 0 0.35rem; color: var(--global-text-on-base-neutral-tertiary); }
 .site-list__meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; margin: 0; font-size: var(--body-size-xs); color: var(--global-text-on-base-neutral-tertiary); }

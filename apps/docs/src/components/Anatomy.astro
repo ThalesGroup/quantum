@@ -5,11 +5,8 @@
  * row. Parts are located through `implementations.web.partSelectors`, so nothing here knows a
  * component. The rendering is the web example showing the most parts (chosen client-side among
  * the candidates below, each also rendered in the states listed by a part's `visibleIn`); without
- * JavaScript the default props rendering stays and the table works.
- *
- * `compact` (the head of every platform's first page) lists the parts instead of the table, and
- * draws the rendering as a wireframe of no platform (greyscale, base values): the parts every
- * platform shares.
+ * JavaScript the default props rendering stays and the table works. Shown on the Specification
+ * page only: the head of the other pages draws the component's blueprint instead.
  */
 import type { Template } from '../lib/web';
 import { onWeb } from '../lib/platforms';
@@ -18,9 +15,8 @@ interface Props {
   spec: any;
   template: Template | null;
   initial: Record<string, unknown>;
-  compact?: boolean;
 }
-const { spec, template, initial, compact = false } = Astro.props;
+const { spec, template, initial } = Astro.props;
 const web = spec.implementations.web;
 const selectors: Record<string, string> = web.partSelectors ?? {};
 // Parts shown only in some states (a menu shown when expanded): each candidate is first rendered
@@ -35,21 +31,11 @@ const candidates = template
 // The overlay chip shows the part id, as the first column of the table does.
 const parts = spec.anatomy.map((p: any) => ({ id: p.id, name: p.id, selector: selectors[p.id] ?? null }));
 ---
-<div class={`site-anatomy${compact ? ' site-anatomy--compact' : ''}`} data-anatomy={JSON.stringify(parts)}>
+<div class="site-anatomy" data-anatomy={JSON.stringify(parts)}>
   {template ? (
-    <div class="site-anatomy__preview site-preview__stage" aria-hidden="true" data-anatomy-preview data-wireframe={compact ? '' : undefined} set:html={candidates[0]}></div>
+    <div class="site-anatomy__preview site-preview__stage" aria-hidden="true" data-anatomy-preview set:html={candidates[0]}></div>
   ) : null}
   {candidates.slice(1).map((html) => <template data-anatomy-candidate set:html={html}></template>)}
-  {compact ? (
-    <ul class="site-anatomy__parts" data-anatomy-panel aria-label={`Parts of ${spec.name}`}>
-      {spec.anatomy.map((p: any) => (
-        <li data-anatomy-item={selectors[p.id] ? p.id : undefined} tabindex={selectors[p.id] ? 0 : undefined}>
-          <code>{p.id}</code>{p.required ? null : <span class="site-muted site-small"> optional</span>}{p.component ? <span class="site-muted site-small"> ({p.component})</span> : null}
-          <span class="site-anatomy__part-desc">{p.description}</span>
-        </li>
-      ))}
-    </ul>
-  ) : (
   <div class="site-table-wrap">
     <table class="site-table">
       <thead><tr><th scope="col">Part</th><th scope="col">Role</th><th scope="col">Required</th><th scope="col">Description</th><th scope="col">Web selector</th></tr></thead>
@@ -66,8 +52,7 @@ const parts = spec.anatomy.map((p: any) => ({ id: p.id, name: p.id, selector: se
       </tbody>
     </table>
   </div>
-  )}
-  {template && !compact ? <p class="site-muted site-small">Hover or focus a row to outline the part in the rendering above; hover the rendering to find its row.</p> : null}
+  {template ? <p class="site-muted site-small">Hover or focus a row to outline the part in the rendering above; hover the rendering to find its row.</p> : null}
 </div>
 
 <script>
