@@ -85,7 +85,7 @@ const chevron = () => el('span', { class: 'scr-nav__chevron' }, ds.icon({ name: 
  */
 export function identity({ icon = null, avatar = null, title, subtitle = null, menu = null }) {
   return el('div', { class: 'scr-identity' },
-    icon ? el('span', { class: 'scr-tile-mark' }, ds.icon({ name: icon, size: 'small' })) : null,
+    icon ? el('span', { class: 'scr-tile-mark' }, ds.icon({ name: icon, size: 'small', surface: 'accent', color: 'neutral' })) : null,
     avatar ? ds.avatar({ size: 'small', shape: 'square', decorative: true, ...avatar }) : null,
     el('span', { class: 'scr-identity__text' }, el('span', { class: 'scr-identity__title' }, text(title)), subtitle ? el('span', { class: 'scr-identity__subtitle' }, text(subtitle)) : null),
     menu ? ds.dropdown({ emphasis: 'ghost', size: 'xsmall', ...menu }) : null,

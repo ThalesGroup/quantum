@@ -5,8 +5,10 @@
  *
  * Rules:
  *  - Only --icon-* custom properties may appear here. No raw values, no semantic tokens.
- *  - A glyph of the icon font. Size and color are data attributes; the default color, current,
- *    inherits the surrounding text color (currentColor: a token cannot say inherit).
+ *  - A glyph of the icon font. Size, color and surface are data attributes; the default color,
+ *    current, inherits the surrounding text color (currentColor: a token cannot say inherit).
+ *  - On a colored fill (data-surface accent, subtle, sunken) a color reads that fill's icon role;
+ *    without a token of its own (neutral on sunken) it keeps the base one.
  */
 
 .ds-icon {
@@ -48,3 +50,23 @@
 .ds-icon[data-color="warning"] { --_color: var(--icon-container-color-warning); }
 .ds-icon[data-color="error"] { --_color: var(--icon-container-color-error); }
 .ds-icon[data-color="info"] { --_color: var(--icon-container-color-info); }
+
+.ds-icon[data-surface="accent"][data-color="neutral"] { --_color: var(--icon-container-color-accent-neutral); }
+.ds-icon[data-surface="accent"][data-color="brand"] { --_color: var(--icon-container-color-accent-brand); }
+.ds-icon[data-surface="accent"][data-color="success"] { --_color: var(--icon-container-color-accent-success); }
+.ds-icon[data-surface="accent"][data-color="warning"] { --_color: var(--icon-container-color-accent-warning); }
+.ds-icon[data-surface="accent"][data-color="error"] { --_color: var(--icon-container-color-accent-error); }
+.ds-icon[data-surface="accent"][data-color="info"] { --_color: var(--icon-container-color-accent-info); }
+
+.ds-icon[data-surface="subtle"][data-color="neutral"] { --_color: var(--icon-container-color-subtle-neutral); }
+.ds-icon[data-surface="subtle"][data-color="brand"] { --_color: var(--icon-container-color-subtle-brand); }
+.ds-icon[data-surface="subtle"][data-color="success"] { --_color: var(--icon-container-color-subtle-success); }
+.ds-icon[data-surface="subtle"][data-color="warning"] { --_color: var(--icon-container-color-subtle-warning); }
+.ds-icon[data-surface="subtle"][data-color="error"] { --_color: var(--icon-container-color-subtle-error); }
+.ds-icon[data-surface="subtle"][data-color="info"] { --_color: var(--icon-container-color-subtle-info); }
+
+.ds-icon[data-surface="sunken"][data-color="brand"] { --_color: var(--icon-container-color-sunken-brand); }
+.ds-icon[data-surface="sunken"][data-color="success"] { --_color: var(--icon-container-color-sunken-success); }
+.ds-icon[data-surface="sunken"][data-color="warning"] { --_color: var(--icon-container-color-sunken-warning); }
+.ds-icon[data-surface="sunken"][data-color="error"] { --_color: var(--icon-container-color-sunken-error); }
+.ds-icon[data-surface="sunken"][data-color="info"] { --_color: var(--icon-container-color-sunken-info); }

@@ -165,6 +165,14 @@ platform and in every mode.
 
 Newest first. Each entry: date, component, what was off, what changed in the process.
 
+- **2026-11-05, Icon, step 4.** The first recommendation was to keep inheriting the text color
+  (`currentColor`) on colored fills, because the icon roles of those fills resolve to the text
+  roles almost everywhere. The team chose the icon roles (`global.icon.on-accent.*`, …): the
+  semantic tier keeps them apart so they can differ, and they already do (warning). Weigh an
+  option by the meaning of the role it reads, not by today's resolved value; equal values
+  today are no reason to read another role. A component placed on fills it does not draw takes
+  a `surface` property naming the fill (`base` by default).
+
 - **2026-11-05, Icon, steps 1 and 3.** Two findings tied to a step went to issues instead of
   being fixed: the foundations' icon sizes made out of date by step 1 (#63) and the warning
   text role failing next to the icon role fixed in step 3 (#64). The team then had them fixed

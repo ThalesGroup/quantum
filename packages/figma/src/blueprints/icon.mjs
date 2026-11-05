@@ -5,7 +5,8 @@
  *
  * The default color, current, has no token: the web glyph inherits the surrounding text color.
  * Figma has no inheritance, so that variant keeps Figma's default text fill, for the designer to
- * set on the instance; every other color option is bound.
+ * set on the instance; every other color option is bound, on each surface to the icon role of
+ * that surface (neutral on sunken, which has no role of its own, to the base one).
  */
 export default {
   root: {

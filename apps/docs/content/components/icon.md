@@ -47,6 +47,19 @@ By default the icon takes the color of the text around it. The other colors are 
 icon roles: neutral (quieter than the text), brand, success, warning, error, info. A color
 never carries the meaning alone.
 
+## On a colored fill
+
+The colors are made for the surface levels: the page, a card, a popover. When the icon sits on
+a colored fill of the system, an accent, subtle or sunken fill, set the surface to that fill
+and pick the color of the fill's hue: a success icon on a subtle success fill, a neutral icon
+on the neutral accent fill. The icon then takes the icon color the system made for that fill,
+which can differ from the color of the text on it (the warning icon on a light sunken fill).
+There is no neutral sunken fill.
+
+An icon of another hue than its fill (a success icon on a brand fill) has no color of its own:
+the system does not pair them. Use the fill's hue, or the current color, which takes the text
+color of the fill.
+
 ## Content
 
 - A named icon's label says its meaning (**Warning**, **Verified**), never the glyph's name.
@@ -66,9 +79,11 @@ source it comes from. This section explains the decisions behind it.
   [WAI tutorial: Informative images](https://www.w3.org/WAI/tutorials/images/informative/),
   [WAI tutorial: Functional images](https://www.w3.org/WAI/tutorials/images/functional/)).
 - **Contrast for named icons.** A named icon is a graphical object and needs 3:1 against the
-  surface. The system's icon roles pass, except the warning icon color in light mode (1.54:1),
-  which the Figma library's POC2 export set to warning 300, the step that fixed dark mode: a
-  known issue of the Color foundation; pair a warning icon with text
+  surface. Every color option passes on every surface level and on its own colored fill, hover
+  and active fills included, in both modes, except warning in light mode: the Figma library's
+  POC2 export set the warning icon role to warning 300, the step that fixed dark mode (1.54:1 on
+  the page, 1.26:1 on the sunken warning fill), a known issue of the Color foundation; pair a
+  warning icon with text. `current` inherits the contrast of the text around it
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
 

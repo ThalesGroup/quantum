@@ -59,7 +59,7 @@
 
 /* Brand mark ------------------------------------------------------------- */
 .scr-brand { display: inline-flex; align-items: center; gap: var(--space-8); color: var(--global-text-on-base-neutral-primary); text-decoration: none; font-weight: var(--body-weight-medium); }
-.scr-brand__mark { display: inline-grid; place-items: center; inline-size: var(--space-24); block-size: var(--space-24); border-radius: var(--corner-radius-xs); background: var(--global-bg-accent-neutral-default); color: var(--global-text-on-accent-neutral-primary); }
+.scr-brand__mark { display: inline-grid; place-items: center; inline-size: var(--space-24); block-size: var(--space-24); border-radius: var(--corner-radius-xs); background: var(--global-bg-accent-neutral-default); }
 
 /* Stacks and rows -------------------------------------------------------- */
 .scr-form { display: grid; }
@@ -92,7 +92,7 @@
 }
 
 /* Token-drawn placeholder picture: no image of the original is reused. */
-.scr-cover { display: grid; place-items: center; min-block-size: 12rem; block-size: 100%; color: var(--global-icon-on-subtle-neutral-default); background: var(--global-bg-subtle-neutral-default); }
+.scr-cover { display: grid; place-items: center; min-block-size: 12rem; block-size: 100%; background: var(--global-bg-subtle-neutral-default); }
 .scr-media-card { display: grid; gap: var(--space-24); }
 .scr-media-card__media { display: none; }
 @container screen (min-width: 48rem) {
@@ -165,7 +165,7 @@ details[open] > .scr-nav__summary .scr-nav__chevron { transform: rotate(90deg); 
 .scr-identity__text > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .scr-identity__title { font-weight: var(--body-weight-medium); }
 .scr-identity__subtitle { color: var(--global-text-on-base-neutral-secondary); font-size: var(--body-size-xs); }
-.scr-tile-mark { display: inline-grid; flex: none; place-items: center; inline-size: var(--space-32); block-size: var(--space-32); border-radius: var(--corner-radius-xs); background: var(--global-bg-accent-neutral-default); color: var(--global-text-on-accent-neutral-primary); }
+.scr-tile-mark { display: inline-grid; flex: none; place-items: center; inline-size: var(--space-32); block-size: var(--space-32); border-radius: var(--corner-radius-xs); background: var(--global-bg-accent-neutral-default); }
 
 /* A panel on a surface (sidebar opt-in form, settings sections). */
 .scr-panel { display: grid; gap: var(--space-8); padding: var(--space-16); border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-1); border-radius: var(--corner-radius-sm); background: var(--global-bg-level-1-default); }

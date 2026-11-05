@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -57,7 +57,7 @@
       "name": "Color",
       "type": "enum",
       "default": "current",
-      "description": "Color of the glyph: the surrounding text color, or one of the system's icon roles.",
+      "description": "Color of the glyph: the surrounding text color, or one of the system's icon roles, read on the surface the icon sits on.",
       "affects": [
         "container"
       ],
@@ -89,6 +89,34 @@
         {
           "value": "info",
           "description": "Informative."
+        }
+      ]
+    },
+    {
+      "id": "surface",
+      "name": "Surface",
+      "type": "enum",
+      "default": "base",
+      "description": "What the icon sits on: a surface level, or a colored fill of the system. On a fill, the color names the fill's hue and reads that fill's icon role. The current color ignores it.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "base",
+          "description": "A surface level: the page, a card, a popover, the sunken level. The default."
+        },
+        {
+          "value": "accent",
+          "description": "An accent fill, the strong fill of a hue."
+        },
+        {
+          "value": "subtle",
+          "description": "A subtle fill, the light fill of a hue."
+        },
+        {
+          "value": "sunken",
+          "description": "A sunken fill of a hue. There is no neutral sunken fill."
         }
       ]
     },
@@ -160,7 +188,7 @@
         ]
       },
       {
-        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). A decorative icon has no contrast requirement.",
+        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). On every surface level and on sunken, the lowest of the other colors are brand 5.46:1 (light) and error 5.30:1 (dark). A decorative icon has no contrast requirement. On a colored fill (surface accent, subtle or sunken), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes, except warning on the sunken warning fill in light mode (1.26:1), whose icon role aliases the on-base one, the same known issue; the lowest of the others is error on the error accent fill at rest, 4.57:1 in both modes. With current, the icon takes the text color that the fill's container sets, and so its contrast.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-graphics"
@@ -365,6 +393,7 @@
       "attributes": {
         "size": "data-size",
         "color": "data-color",
+        "surface": "data-surface",
         "label": "aria-label"
       },
       "stateAttribute": "data-state",
@@ -378,6 +407,21 @@
     "avatar"
   ],
   "decisions": [
+    {
+      "id": "colors-on-fills",
+      "date": "2026-11-05",
+      "version": "0.4.0",
+      "area": "color",
+      "status": "active",
+      "text": "By default an icon inherits the surrounding text color (no token: currentColor). The other colors read the icon role of what the icon sits on, set by the surface property. On a surface level (base, the default) they read the on-base roles: neutral (secondary), brand, success, warning, error, info. On a colored fill (accent, subtle, sunken) the color names the fill's hue and reads that fill's icon role: global.icon.on-accent.*, on-subtle.* or on-sunken.* (neutral is the secondary role on accent and the single neutral role on subtle; there is no neutral sunken fill, so neutral keeps the on-base role there).",
+      "rationale": "Semantically, an icon on a fill reads that fill's icon role, not the text role that current inherits: the semantic tier keeps the two apart so an icon can differ from the text on the same fill, as the warning icon does on the sunken fill in light mode.",
+      "supersedes": [
+        "colors"
+      ],
+      "tokens": [
+        "icon.container.color.*"
+      ]
+    },
     {
       "id": "optical-size-24",
       "date": "2026-11-05",
@@ -438,7 +482,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "By default an icon inherits the surrounding text color (no token: currentColor); the other options read the Figma library's on-base icon roles: neutral (secondary), brand, success, warning, error, info.",
       "tokens": [
         "icon.container.color.*"
@@ -459,6 +503,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.0",
+      "date": "2026-11-05",
+      "note": "Decision colors-on-fills (supersedes colors): new property surface, base (the default, unchanged), accent, subtle or sunken. On a colored fill the color names the fill's hue and reads that fill's icon role: 17 tokens, icon.container.color.accent.* → global.icon.on-accent.* (neutral → neutral.secondary), icon.container.color.subtle.* → global.icon.on-subtle.* (neutral → neutral.default), icon.container.color.sunken.* → global.icon.on-sunken.* (no neutral: it keeps the on-base role). The base tokens and current are unchanged. Contrast of each color on its own fill (default / hover / active fill), light: accent neutral 13.70 / 10.81 / 7.32, brand 5.72 / 8.13 / 13.22, success 5.51 / 7.83 / 12.63, warning 11.43 / 8.28 / 5.67, error 4.57 / 6.05 / 8.75, info 4.92 / 7.63 / 13.22; subtle neutral 12.02 / 11.64 / 11.27, brand 7.38 / 6.64 / 5.39, success 7.18 / 6.42 / 5.54, warning 7.29 / 6.56 / 5.86, error 7.90 / 6.30 / 4.76, info 6.92 / 6.29 / 4.97; sunken brand 10.81, success 6.42, warning 1.26, error 6.30, info 10.90. Dark: accent neutral 11.60 / 9.46 / 7.43, brand 13.06 / 10.50 / 7.79, success 8.00 / 6.17 / 4.85, warning 11.43 / 8.28 / 5.67, error 4.57 / 6.05 / 8.75, info 8.78 / 6.67 / 5.04; subtle neutral 11.90 / 9.22 / 6.92, brand 13.06 / 11.32 / 9.41, success 12.32 / 10.69 / 8.93, warning 12.85 / 11.26 / 9.46, error 9.60 / 8.49 / 7.26, info 11.42 / 10.08 / 8.62; sunken brand 10.57, success 4.85, warning 5.67, error 5.14, info 8.78. Neutral on a sunken fill (on-base role): 9.10 to 10.45:1 light, 8.98 to 9.17:1 dark. The same on iOS and Android. Every pair passes the 3:1 of WCAG 1.4.11 except warning on the sunken warning fill in light mode (1.26:1): the on-sunken warning icon role aliases the on-base one, warning 300 since the Figma library's POC2 export, a known issue of the Color foundation."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-05",

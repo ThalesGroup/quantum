@@ -42,7 +42,7 @@
       },
       "color": {
         "$type": "color",
-        "$description": "The on-base icon roles. The current option (the default) has no token: the glyph inherits the surrounding text color through currentColor.",
+        "$description": "The icon roles of what the icon sits on, set by the surface option: the on-base roles on a surface level (base, the default: tokens without a surface, which hold for every surface that has none of its own), the on-accent, on-subtle and on-sunken roles on a colored fill, whose hue the color option names. There is no neutral sunken fill, so neutral keeps the on-base role on sunken. The current option (the default) has no token: the glyph inherits the surrounding text color through currentColor.",
         "neutral": {
           "$value": "{global.icon.on-base.neutral.secondary}"
         },
@@ -60,6 +60,63 @@
         },
         "info": {
           "$value": "{global.icon.on-base.functional.info.default}"
+        },
+        "accent": {
+          "neutral": {
+            "$value": "{global.icon.on-accent.neutral.secondary}"
+          },
+          "brand": {
+            "$value": "{global.icon.on-accent.brand.default}"
+          },
+          "success": {
+            "$value": "{global.icon.on-accent.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.icon.on-accent.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.icon.on-accent.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.icon.on-accent.functional.info.default}"
+          }
+        },
+        "subtle": {
+          "neutral": {
+            "$value": "{global.icon.on-subtle.neutral.default}"
+          },
+          "brand": {
+            "$value": "{global.icon.on-subtle.brand.default}"
+          },
+          "success": {
+            "$value": "{global.icon.on-subtle.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.icon.on-subtle.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.icon.on-subtle.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.icon.on-subtle.functional.info.default}"
+          }
+        },
+        "sunken": {
+          "brand": {
+            "$value": "{global.icon.on-sunken.brand.default}"
+          },
+          "success": {
+            "$value": "{global.icon.on-sunken.functional.success.default}"
+          },
+          "warning": {
+            "$value": "{global.icon.on-sunken.functional.warning.default}"
+          },
+          "error": {
+            "$value": "{global.icon.on-sunken.functional.error.default}"
+          },
+          "info": {
+            "$value": "{global.icon.on-sunken.functional.info.default}"
+          }
         }
       }
     }
