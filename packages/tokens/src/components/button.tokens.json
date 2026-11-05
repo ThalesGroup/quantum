@@ -256,7 +256,7 @@
       "font-weight": { "$type": "fontWeight", "$value": "{font.icon.weight.light}" },
       "fill": { "$type": "number", "$value": "{font.icon.fill.off}" },
       "grade": { "$type": "number", "$value": "{font.icon.grade.normal}" },
-      "optical-size": { "$type": "number", "$value": "{font.icon.optical-size.20}" },
+      "optical-size": { "$type": "number", "$value": "{font.icon.optical-size.24}" },
       "size": {
         "$type": "dimension",
         "xsmall": { "$value": "{size.2}" },

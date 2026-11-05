@@ -30,11 +30,11 @@
         }
       },
       "optical-size": {
-        "20": {
-          "$value": 20
+        "24": {
+          "$value": 24
         },
         "$type": "number",
-        "$description": "opsz axis, in px: the size the glyph strokes are drawn for."
+        "$description": "opsz axis, in px: the size the glyph strokes are drawn for. One value for every icon size (Iconography decision optical-size-24)."
       }
     },
     "line-height": {

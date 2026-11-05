@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "dropdown",
   "name": "Dropdown",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "status": "draft",
   "role": "disclosure",
   "summary": "A button that opens a menu of related actions.",
@@ -1081,6 +1081,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-05",
+      "note": "Follows the Iconography foundation 0.3.0 (decision optical-size-24): the item icon glyph is drawn for optical size 24 instead of 20 (dropdown.item-icon.optical-size → font.icon.optical-size.24). Sizes and colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.4.2",
       "date": "2026-11-06",

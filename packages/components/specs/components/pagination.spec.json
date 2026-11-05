@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "pagination",
   "name": "Pagination",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "navigation",
   "summary": "Lets people move between the pages of a long list, with the current page marked.",
@@ -650,6 +650,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-05",
+      "note": "Follows the Iconography foundation 0.3.0 (decision optical-size-24): the icon glyph is drawn for optical size 24 instead of 20 (pagination.icon.optical-size → font.icon.optical-size.24). Sizes and colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

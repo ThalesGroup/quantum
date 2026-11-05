@@ -40,6 +40,9 @@ picture that is not there.
 | Xlarge | Next to medium headings, and the glyph of an empty state: 32 px. |
 | Xxlarge | A glyph standing in for a picture, a cover or a placeholder: 40 px. |
 
+Every size draws the same glyph, made for 24 px (the Iconography foundation's single optical
+size), so an icon keeps one look from 16 to 40 px.
+
 By default the icon takes the color of the text around it. The other colors are the system's
 icon roles: neutral (quieter than the text), brand, success, warning, error, info. A color
 never carries the meaning alone.

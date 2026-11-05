@@ -14,8 +14,14 @@ Material Symbols set works; the Overview shows the ones the component examples u
 Material Symbols is a variable font with four axes: fill, weight, grade and optical size. The
 system fixes them once, as the `font.icon.*` tokens (the design system's additions: the Figma library
 has no icon tokens), so every icon in every component has the same style: outlined, light
-weight, normal grade, drawn for 20 px. Components alias those tokens and never pick an axis
+weight, normal grade, drawn for 24 px. Components alias those tokens and never pick an axis
 value of their own.
+
+The optical size is the size a glyph's strokes and details are drawn for. The system keeps a
+single one for every size, from 16 to 40 px: each glyph has one drawing, and the font is a
+single file. Of the values with a file of their own, 24 draws every icon, simple or detailed,
+slightly better than 20 for the same download; matching each size, or a single 32, would load
+the whole variable font, twice as heavy.
 
 ## Size and color
 

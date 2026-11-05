@@ -100,7 +100,7 @@
       },
       "optical-size": {
         "$type": "number",
-        "$value": "{font.icon.optical-size.20}"
+        "$value": "{font.icon.optical-size.24}"
       },
       "color": {
         "$type": "color",

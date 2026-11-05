@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -25,12 +25,12 @@
     {
       "id": "style",
       "name": "One style",
-      "text": "Every icon is drawn in one style: outlined (fill off), light weight, normal grade, optical size 20. The axes are fixed for the whole system, never chosen per component.",
+      "text": "Every icon is drawn in one style: outlined (fill off), light weight, normal grade, optical size 24 at every size. The axes are fixed for the whole system, never chosen per component.",
       "tokens": [
         "font.icon.weight.light",
         "font.icon.fill.off",
         "font.icon.grade.normal",
-        "font.icon.optical-size.20"
+        "font.icon.optical-size.24"
       ]
     },
     {
@@ -210,7 +210,26 @@
       }
     }
   ],
+  "decisions": [
+    {
+      "id": "optical-size-24",
+      "date": "2026-11-05",
+      "version": "0.3.0",
+      "area": "typography",
+      "status": "active",
+      "text": "Every icon is drawn for optical size 24 (font.icon.optical-size.24), at every size and in every component: one optical size, one drawing of each glyph from 16 to 40 px. It replaces optical size 20, the value since the first version.",
+      "rationale": "A single optical size keeps the system simple and loads a single static instance of the icon font. Across every icon, simple or detailed, 24 renders slightly better than 20 for the same download (344 KB against 352 KB, measured on 2026-11-05); 32 renders better still, but Google Fonts has no static instance at 32 and serves the whole variable font instead (732 KB, twice the download).",
+      "tokens": [
+        "font.icon.optical-size.24"
+      ]
+    }
+  ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-05",
+      "note": "Decision optical-size-24: every icon is drawn for optical size 24 instead of 20 (font.icon.optical-size.24 replaces font.icon.optical-size.20, removed), in every component that draws one: Icon, Button, Icon button, Alert, Select, Search field, Accordion, Breadcrumb, Pagination and Dropdown. Glyphs fill a little more of their square (78.3 % against 74.2 % on average over 24 glyphs) and their strokes are about 15 % heavier (1.00 against 0.87 px at 16 px, 2.50 against 2.17 px at 40 px). The web reference implementation requests the static instance at 24. Colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.2.2",
       "date": "2026-11-06",

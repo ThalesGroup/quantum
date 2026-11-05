@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -861,6 +861,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-05",
+      "note": "Follows the Iconography foundation 0.3.0 (decision optical-size-24): the indicator glyph is drawn for optical size 24 instead of 20 (select.indicator.optical-size → font.icon.optical-size.24). Sizes and colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

@@ -99,10 +99,10 @@ color and are hidden from assistive technology; the label alone must make sense.
 
 Icons come from [Material Symbols](https://fonts.google.com/icons), the icon font of the
 whole system, in its outlined style at a light weight (fill off, weight 300, grade 0, optical
-size 20). An icon is named by its Material Symbols name (`add`, `delete`, `arrow_forward`).
+size 24). An icon is named by its Material Symbols name (`add`, `delete`, `arrow_forward`).
 The size property sets how large the glyph is drawn; the style never changes per button.
-The optical size stays at 20 even where the icon is drawn at 24 px: one drawing of each glyph
-for every size keeps buttons consistent and simpler to implement.
+The optical size is 24 at every size, the single optical size of the whole system: one drawing
+of each glyph for every size keeps buttons consistent and simpler to implement.
 
 A button with an icon has a narrower inline padding than one without: a glyph carries its own
 white space inside its box, so a full padding next to it would look wider than on the label

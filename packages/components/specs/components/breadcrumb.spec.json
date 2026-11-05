@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "breadcrumb",
   "name": "Breadcrumb",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "navigation",
   "summary": "Shows where the current page sits in a hierarchy, with a link to each level above it.",
@@ -551,6 +551,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-05",
+      "note": "Follows the Iconography foundation 0.3.0 (decision optical-size-24): the separator glyph is drawn for optical size 24 instead of 20 (breadcrumb.separator.optical-size → font.icon.optical-size.24). Sizes and colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

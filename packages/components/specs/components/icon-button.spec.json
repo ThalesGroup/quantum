@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -841,6 +841,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.0",
+      "date": "2026-11-05",
+      "note": "Follows Button decision icon-optical-size-24 (same-rendering-as-button) and the Iconography foundation 0.3.0: the glyph is drawn for optical size 24 instead of 20 (icon-button.icon.optical-size → font.icon.optical-size.24). sizes-from-button restated optical size 20; that value is now 24. Sizes and colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.5.2",
       "date": "2026-11-06",

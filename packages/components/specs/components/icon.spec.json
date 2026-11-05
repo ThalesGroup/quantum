@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -379,11 +379,31 @@
   ],
   "decisions": [
     {
+      "id": "optical-size-24",
+      "date": "2026-11-05",
+      "version": "0.3.0",
+      "area": "typography",
+      "status": "active",
+      "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 24) at five sizes of the size scale: small 16 px, medium 20 px, large 24 px, xlarge 32 px and xxlarge 40 px. Every size draws the glyph for optical size 24, xlarge and xxlarge included (Iconography decision optical-size-24). Next to text, the icon takes the size of that text (body text, then extra small, small and medium headings); xxlarge stands in for a picture.",
+      "rationale": "A single optical size keeps the system simple and loads a single static instance of the icon font. Across every icon, simple or detailed, 24 renders slightly better than 20 for the same download (344 KB against 352 KB, measured on 2026-11-05); 32 renders better still, but Google Fonts has no static instance at 32 and serves the whole variable font instead (732 KB, twice the download).",
+      "supersedes": [
+        "glyph-size-scale"
+      ],
+      "tokens": [
+        "icon.container.font-family",
+        "icon.container.font-weight",
+        "icon.container.fill",
+        "icon.container.grade",
+        "icon.container.optical-size",
+        "icon.container.size.*"
+      ]
+    },
+    {
       "id": "glyph-size-scale",
       "date": "2026-11-05",
       "version": "0.2.0",
       "area": "size",
-      "status": "active",
+      "status": "superseded",
       "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 20) at five sizes of the size scale: small 16 px, medium 20 px, large 24 px, xlarge 32 px and xxlarge 40 px. Next to text, the icon takes the size of that text (body text, then extra small, small and medium headings); xxlarge stands in for a picture.",
       "supersedes": [
         "icon-font-glyph"
@@ -439,6 +459,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-05",
+      "note": "Decision optical-size-24 (supersedes glyph-size-scale, which differed only by its optical size), following the Iconography foundation 0.3.0: every size draws the glyph for optical size 24 instead of 20 (icon.container.optical-size → font.icon.optical-size.24), xlarge and xxlarge included. At 40 px the glyph is about 2 px larger (inbox 28.3 against 26.3 px) and its stroke 2.50 against 2.17 px. Sizes and colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-05",
