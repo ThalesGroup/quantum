@@ -414,7 +414,7 @@
       "area": "color",
       "status": "active",
       "text": "By default an icon inherits the surrounding text color (no token: currentColor). The other colors read the icon role of what the icon sits on, set by the surface property. On a surface level (base, the default) they read the on-base roles: neutral (secondary), brand, success, warning, error, info. On a colored fill (accent, subtle, sunken) the color names the fill's hue and reads that fill's icon role: global.icon.on-accent.*, on-subtle.* or on-sunken.* (neutral is the secondary role on accent and the single neutral role on subtle; there is no neutral sunken fill, so neutral keeps the on-base role there).",
-      "rationale": "Semantically, an icon on a fill reads that fill's icon role, not the text role that current inherits: the semantic tier keeps the two apart so an icon can differ from the text on the same fill, as the warning icon does on the sunken fill in light mode.",
+      "rationale": "Semantically, an icon on a fill reads that fill's icon role, not the text role that current inherits: the semantic tier keeps the two apart so an icon can differ from the text on the same fill, as the warning icon does on the sunken fill in light mode. Each color token of the Icon only forwards to its semantic role (icon.container.color.accent.success to global.icon.on-accent.functional.success.default). The team is not entirely convinced by this extra layer, and keeps it for now so that the Icon follows the repository's rule that component CSS reads only component tokens, like every other component; the layer may be reconsidered later, for every component rather than for the Icon alone.",
       "supersedes": [
         "colors"
       ],
