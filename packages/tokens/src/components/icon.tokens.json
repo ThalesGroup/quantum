@@ -32,6 +32,12 @@
         },
         "large": {
           "$value": "{size.4}"
+        },
+        "xlarge": {
+          "$value": "{size.5}"
+        },
+        "xxlarge": {
+          "$value": "{size.6}"
         }
       },
       "color": {

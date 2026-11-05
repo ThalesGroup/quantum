@@ -75,7 +75,7 @@ export function legal() {
 
 /** A decorative cover image, drawn with tokens (no picture is reused from the original). */
 export function cover() {
-  return el('div', { class: 'scr-cover', 'aria-hidden': 'true' }, ds.icon({ name: 'landscape', size: 'large' }));
+  return el('div', { class: 'scr-cover', 'aria-hidden': 'true' }, ds.icon({ name: 'landscape', size: 'xxlarge' }));
 }
 
 /** Gaps and changes the authentication screens share (shown on each screen's page). */

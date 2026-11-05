@@ -39,6 +39,8 @@
 
 .ds-icon[data-size="small"] { --_size: var(--icon-container-size-small); }
 .ds-icon[data-size="large"] { --_size: var(--icon-container-size-large); }
+.ds-icon[data-size="xlarge"] { --_size: var(--icon-container-size-xlarge); }
+.ds-icon[data-size="xxlarge"] { --_size: var(--icon-container-size-xxlarge); }
 
 .ds-icon[data-color="neutral"] { --_color: var(--icon-container-color-neutral); }
 .ds-icon[data-color="brand"] { --_color: var(--icon-container-color-brand); }

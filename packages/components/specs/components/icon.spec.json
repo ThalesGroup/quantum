@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -25,22 +25,30 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Side of the square the glyph fills.",
+      "description": "Side of the square the glyph fills. Next to text, the icon takes the size of that text.",
       "affects": [
         "container"
       ],
       "options": [
         {
           "value": "small",
-          "description": "Inline with small text (16 px)."
+          "description": "Next to body text (16 px, also with 14 px text)."
         },
         {
           "value": "medium",
-          "description": "Default (20 px)."
+          "description": "Default. Next to large body text and extra small headings (20 px)."
         },
         {
           "value": "large",
-          "description": "Headings and empty states (24 px)."
+          "description": "Next to small headings (24 px)."
+        },
+        {
+          "value": "xlarge",
+          "description": "Next to medium headings, and the glyph of an empty state (32 px)."
+        },
+        {
+          "value": "xxlarge",
+          "description": "A glyph standing in for a picture: a cover, a placeholder (40 px)."
         }
       ]
     },
@@ -295,6 +303,26 @@
       }
     },
     {
+      "id": "xlarge-neutral",
+      "name": "Xlarge, neutral",
+      "description": "The glyph of an empty state, above its heading.",
+      "props": {
+        "size": "xlarge",
+        "color": "neutral",
+        "name": "inbox"
+      }
+    },
+    {
+      "id": "xxlarge-neutral",
+      "name": "Xxlarge, neutral",
+      "description": "Stands in for a picture that is not there.",
+      "props": {
+        "size": "xxlarge",
+        "color": "neutral",
+        "name": "landscape"
+      }
+    },
+    {
       "id": "medium-warning",
       "name": "Medium, warning, named",
       "props": {
@@ -351,11 +379,30 @@
   ],
   "decisions": [
     {
+      "id": "glyph-size-scale",
+      "date": "2026-11-05",
+      "version": "0.2.0",
+      "area": "size",
+      "status": "active",
+      "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 20) at five sizes of the size scale: small 16 px, medium 20 px, large 24 px, xlarge 32 px and xxlarge 40 px. Next to text, the icon takes the size of that text (body text, then extra small, small and medium headings); xxlarge stands in for a picture.",
+      "supersedes": [
+        "icon-font-glyph"
+      ],
+      "tokens": [
+        "icon.container.font-family",
+        "icon.container.font-weight",
+        "icon.container.fill",
+        "icon.container.grade",
+        "icon.container.optical-size",
+        "icon.container.size.*"
+      ]
+    },
+    {
       "id": "icon-font-glyph",
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "typography",
-      "status": "active",
+      "status": "superseded",
       "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 20) at 16, 20 or 24 px (small, medium, large).",
       "tokens": [
         "icon.container.font-family",
@@ -392,6 +439,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-05",
+      "note": "Decision glyph-size-scale (supersedes icon-font-glyph): two sizes added, xlarge 32 px (size.5) and xxlarge 40 px (size.6), with an example each; each size now says which text it goes with. Small, medium and large are unchanged, and so are the colors and their contrast."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

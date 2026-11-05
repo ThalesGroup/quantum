@@ -28,11 +28,17 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 ## Sizes and colors
 
+Next to text, an icon takes the size of that text, so the glyph and the letters read as one
+line. The two largest sizes stand alone: above the heading of an empty state, or in place of a
+picture that is not there.
+
 | Size | Use for |
 | --- | --- |
-| Small | Inline with small text: 16 px. |
-| Medium | Default: 20 px. |
-| Large | Headings and empty states: 24 px. |
+| Small | Next to body text: 16 px (also with 14 px text). |
+| Medium | Default. Next to large body text and extra small headings: 20 px. |
+| Large | Next to small headings: 24 px. |
+| Xlarge | Next to medium headings, and the glyph of an empty state: 32 px. |
+| Xxlarge | A glyph standing in for a picture, a cover or a placeholder: 40 px. |
 
 By default the icon takes the color of the text around it. The other colors are the system's
 icon roles: neutral (quieter than the text), brand, success, warning, error, info. A color
