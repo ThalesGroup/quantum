@@ -25,9 +25,10 @@ the whole variable font, twice as heavy.
 
 ## Size and color
 
-- **Size** follows the control: an icon in a control takes that control size's icon size
-  from the size scale (`size.2` at extra small and small, `size.3` at medium, `size.4` at large;
-  Spacing and sizing), and the glyph fills a square of that size.
+- **Size** comes from the size scale (Spacing and sizing), and the glyph fills a square of
+  that size. In a control, it goes with the label: each control size picks its icon size in
+  the component's tokens. On its own, next to text, an icon takes the size of that text; the
+  largest sizes stand alone, as the glyph of an empty state or in place of a picture.
 - **Color** follows the text: an icon takes the color of the label next to it, or the icon role
   of its context (`global.icon.*`, which aliases that text color). It changes with the
   emphasis, the intent, the state and the mode.
@@ -87,6 +88,7 @@ action gets a description naming the action.
 
 ## Related
 
-- Spacing and sizing: the control icon sizes.
+- Spacing and sizing: the size scale icons take their sizes from.
 - Typography: the text families, separate from the icon font.
+- Icon: an icon on its own, in five sizes.
 - Button, Icon button, Dropdown: the components drawing icons.

@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -36,7 +36,7 @@
     {
       "id": "size",
       "name": "Size",
-      "text": "An icon in a control takes a size from the size scale (Spacing and sizing foundation), per control size: size.2 (16 px) at extra small and small, size.3 (20 px) at medium, size.4 (24 px) at large. The glyph fills a square of that size."
+      "text": "An icon takes a size from the size scale (Spacing and sizing foundation), in the tokens of the component that draws it, and the glyph fills a square of that size. In a control, each control size picks the icon size that goes with its label. On its own, next to text, an icon takes the size of that text; the largest sizes stand alone, as the glyph of an empty state or in place of a picture."
     },
     {
       "id": "color",
@@ -74,9 +74,11 @@
       "tokens": [
         "size.2",
         "size.3",
-        "size.4"
+        "size.4",
+        "size.5",
+        "size.6"
       ],
-      "description": "An icon at each size the controls use."
+      "description": "An icon at each size the components use, from the smallest in a control to a glyph standing alone."
     }
   ],
   "accessibility": {
@@ -225,6 +227,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.1",
+      "date": "2026-11-05",
+      "note": "Fix: the rule size no longer lists icon sizes per control size (size.2 at extra small and small, size.3 at medium, size.4 at large), which no component follows any more: each component picks its icon sizes from the size scale in its own tokens. It now also covers an icon on its own, next to text or standing alone (the Icon's decision glyph-size-scale). The specimen icon-sizes shows size.2 to size.6 (16 to 40 px). No decision changes (ThalesGroup/quantum#63)."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-05",

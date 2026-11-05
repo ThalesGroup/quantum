@@ -20,15 +20,9 @@ directly.
 
 ## Building with the scales
 
-Each component picks its dimensions from the scales, per size, in its own tokens. The Button,
-from extra small to large:
-
-| Dimension | Steps |
-| --- | --- |
-| Inner padding | `space.6`, `space.8`, `space.12`, `space.16` |
-| Gap between icon and label | `space.4` |
-| Minimum height | `space.24`, `space.32`, `space.40`, `space.48` |
-| Icon size | `size.2`, `size.2`, `size.3`, `size.4` |
+Each component picks its dimensions from the scales, per size, in its own tokens: its inner
+padding, the gap between its parts, its minimum height and its icon size. The Tokens tab of
+each component lists the steps it takes.
 
 A control takes a minimum height, never a fixed one: it grows when its content needs more. A
 new component with sizes should pick the same steps for the same sizes, so a small button and a
@@ -45,7 +39,7 @@ region Apple recommends (see Accessibility).
 ### Android
 
 Lengths are read as density-independent pixels. The control heights are the same as on the
-web, so the extra small, small and medium controls are under the 48 dp touch target Android
+web, so every control size is under the 48 dp touch target Android
 recommends (see Accessibility).
 
 ## Layout
@@ -67,13 +61,13 @@ same with literal layout lengths, and will switch when layout tokens exist.
 - **44 pt on iOS.** Apple asks for a hit region of at least 44 by 44 pt
   ([Apple HIG: Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices),
   [Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
-  The extra small, small and medium controls (24, 32 and 40 pt) fall under it today: the
+  The extra small, small and medium controls (24, 28 and 36 pt) fall under it today: the
   overlay that raised them belonged to a semantic layer the Figma library does not have
  .
 - **48 dp on Android.** Android asks for touch targets of at least 48 by 48 dp
   ([Android: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
-  The extra small, small and medium controls fall under it today, for the same reason
+  Every control size (24 to 44 dp) falls under it today, for the same reason
  .
 
 ## Related
