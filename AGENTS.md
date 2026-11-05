@@ -84,8 +84,7 @@ published CSS, Sass, JavaScript, Android, Figma, Penpot and Tokens Studio format
 | Skill | Use it when |
 | --- | --- |
 | `stepwise-pr` | Work needs several team decisions in a row: a draft pull request whose description is the plan, one step per session ("continue step N"). |
-| `component-refinement` | A component is refined end to end: its tokens challenged against the semantic tier, its accessibility contract and its platforms, with or without a Figma export, down to the blueprint and the themes. Builds on `stepwise-pr`. |
-| `figma-alignment` | A component is compared with or improved from its local Figma export ([agents/token-sources.md](agents/token-sources.md)). Builds on `stepwise-pr`. |
+| `component-refinement` | A component is refined end to end, or compared with or improved from its local Figma export ([agents/token-sources.md](agents/token-sources.md)): its tokens challenged against the semantic tier, its accessibility contract and its platforms, down to the blueprint and the themes. Builds on `stepwise-pr`. |
 | `review-sheet` | The team must compare renderings to decide: a focused before/after page and one precise question. |
 | `worktree-preview` | Someone needs a local preview of a branch, a pull request or a worktree under `.claude/worktrees/`. |
 | `backlog` | Out-of-scope work becomes an issue, a merged study becomes issues, or the open issues need syncing or labelling. |

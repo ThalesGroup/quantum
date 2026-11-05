@@ -109,7 +109,7 @@ asking) goes to memory and, when it is a repository rule, to the guide in `agent
 ## 4. Close
 
 1. The last step reports back (for a reference such as Figma: an issue listing every departure,
-   skill `figma-alignment`).
+   skill `component-refinement`).
 2. Document anything new the work introduced (directories, scripts, rules) in the
    guides of `agents/` and the directory `AGENTS.md` files.
 3. Status line: "Every step is decided". Final `pnpm check` and `pnpm impact --base origin/<base>`.
