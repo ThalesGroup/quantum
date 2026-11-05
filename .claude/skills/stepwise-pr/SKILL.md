@@ -20,9 +20,10 @@ Repository rules still apply in full: `agents/workflow.md` (decision loop), `age
 
 ## 1. Set up (first session only)
 
-1. Create a worktree and a branch from the latest `origin/main`, named after the main commit
-   to come (`feat/button-improvements`):
-   `git fetch origin && git worktree add .claude/worktrees/<name> -b <branch> origin/main`.
+1. Create a worktree and a branch from the latest base branch, the one the work lives on and
+   the pull request targets (`nextgen` for Quantum NextGen, `main` otherwise), named after the
+   main commit to come (`feat/button-improvements`):
+   `git fetch origin && git worktree add .claude/worktrees/<name> -b <branch> origin/<base>`.
    Run `pnpm install` in it.
 2. Put any input material in place (an export goes to `raw_content/components/`, `agents/token-sources.md`).
 3. Push and open a **draft** pull request right away, even before the first change, with the
@@ -75,7 +76,7 @@ Issues opened along the way.
 ## 3. One step
 
 1. **Resume.** In a new session, read only what the step needs: the pull request description,
-   `git -C <worktree> log --oneline origin/main..`, the files the step touches. Check the
+   `git -C <worktree> log --oneline origin/<base>..`, the files the step touches. Check the
    worktree preview is up (skill `worktree-preview`) and give its URL.
 2. **Show.** Build a review sheet per question (skill `review-sheet`): before, after (each
    option), the reference, on the surfaces and in the modes where it matters, plus the real
@@ -86,7 +87,7 @@ Issues opened along the way.
 4. **Apply** the answer through the decision loop (`agents/workflow.md` "Decisions"): decision in
    `decisions[]`, tokens, `pnpm tokens:build`, spec version + changelog, CSS, docs, mirrors
    (`scripts/lib/mirrors.mjs`), screens, contrast in every mode.
-5. **Verify:** `pnpm check`, `pnpm impact --base origin/main`, and look at the site.
+5. **Verify:** `pnpm check`, `pnpm impact --base origin/<base>`, and look at the site.
 6. **Commit** the step alone: `feat(<component>): <decision as a noun phrase>` (`agents/git.md`); a step
    that records a "keep as is" decision is still a commit (decision + changelog).
 7. **Record** on GitHub:
@@ -111,7 +112,7 @@ asking) goes to memory and, when it is a repository rule, to the guide in `agent
    skill `figma-alignment`).
 2. Document anything new the work introduced (directories, scripts, rules) in the
    guides of `agents/` and the directory `AGENTS.md` files.
-3. Status line: "Every step is decided". Final `pnpm check` and `pnpm impact --base origin/main`.
+3. Status line: "Every step is decided". Final `pnpm check` and `pnpm impact --base origin/<base>`.
 4. Mark it ready: `gh pr ready <n> --repo ThalesGroup/quantum`. Never merge it.
 5. Report: branch, commits, pull request link, labels, and the "How to review" list.
 6. Keep the worktree until the merge (its `build/review/` holds the sheets); after the merge,
