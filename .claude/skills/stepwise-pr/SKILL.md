@@ -102,7 +102,10 @@ Issues opened along the way.
    start the next step in a new session:
    `Continue step N+1 from https://github.com/ThalesGroup/quantum/pull/<n>`.
 
-Anything out of scope that comes up becomes an issue at once (skill `backlog`), listed under
+A finding related to the work that should be fixed right away (a foundation the decision just
+made contradicts, a failing value next to the one being fixed) is not out of scope: add it to
+the plan as a step of its own, numbered after the step that found it (`3b`), and open no
+issue. Anything else out of scope becomes an issue at once (skill `backlog`), listed under
 Follow-ups. A rule the user states during a step that holds beyond it (a token policy, a way of
 asking) goes to memory and, when it is a repository rule, to the guide in `agents/` (or the directory `AGENTS.md`) that owns it, in the same pull request.
 

@@ -32,7 +32,8 @@ directory touched.
   not just its value. Change only the component's tokens (add, repoint, delete). Never raw or
   semantic tokens. An addition (`packages/tokens/src/additions/`) is asked for explicitly and
   confirmed before it is written, even when an option mentions it; prefer options that need
-  none. What the semantic tier lacks becomes an issue (skill `backlog`).
+  none. What the semantic tier lacks becomes an issue (skill `backlog`), unless the team
+  asks for it in this run.
 - **Raw values** of an export map to the semantic token that carries them. Values a couple of
   RGB units apart (about 3 or less per channel) are export noise and count as matching; say so
   in "What already matches".
@@ -131,9 +132,12 @@ platform and in every mode.
 - Every step that touches the structure updates the Figma blueprint in the same commit, and
   every step that renames or removes something runs the theme tests in the same commit.
 - Whatever the run reveals beyond the component (a foundation rule, a missing palette step, a
-  semantic token, a sibling component that no longer lines up) becomes an issue at once (skill
-  `backlog`), labelled `upstream-figma-ds` when the Figma library or its primitives must change,
-  and linked under Follow-ups.
+  semantic token, a sibling component that no longer lines up) is fixed in the run when it is
+  related to a step and should be fixed right away: a step of its own after the one that found
+  it (`1b`), no issue. A foundation that the step's decision makes out of date is always this
+  case. The rest becomes an issue at once (skill `backlog`), labelled `upstream-figma-ds` when
+  the Figma library or its primitives must change, and linked under Follow-ups; what the Figma
+  library must change goes to the closing Figma issue.
 
 ## 4. Close
 
@@ -161,6 +165,11 @@ platform and in every mode.
 
 Newest first. Each entry: date, component, what was off, what changed in the process.
 
+- **2026-11-05, Icon, steps 1 and 3.** Two findings tied to a step went to issues instead of
+  being fixed: the foundations' icon sizes made out of date by step 1 (#63) and the warning
+  text role failing next to the icon role fixed in step 3 (#64). The team then had them fixed
+  in the pull request as steps 1b and 3b. A finding related to the work that should be fixed
+  right away is a step of the run, not an issue; only what the run cannot fix becomes one.
 - **2026-11-05, Icon, step 3.** `reference/contrast-levels.mjs` crashed on a pattern that also
   matched non-color tokens (`'^icon\.'` reaches the font family): it now skips them. When a
   semantic value fails WCAG and the team chooses to fix the value rather than repoint the

@@ -7,7 +7,9 @@ description: Keep the ThalesGroup/quantum issue backlog useful - file a standalo
 
 Rules from `agents/git.md`: issues go to `ThalesGroup/quantum` only (always `--repo
 ThalesGroup/quantum`), labels come from the repository's existing set, and out-of-scope work becomes an
-issue right away instead of being done or left in the chat.
+issue right away instead of being done or left in the chat. A finding related to the current
+work that should be fixed right away is not out of scope: it is fixed in the current pull
+request (a step of its own in a step-by-step one), with no issue.
 
 ## Labels
 
