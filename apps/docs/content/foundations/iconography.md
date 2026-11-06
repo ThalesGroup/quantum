@@ -29,6 +29,10 @@ the whole variable font, twice as heavy.
   that size. In a control, it goes with the label: each control size picks its icon size in
   the component's tokens. On its own, next to text, an icon takes the size of that text; the
   largest sizes stand alone, as the glyph of an empty state or in place of a picture.
+- **Text size**: when people raise the text size, icons grow with it. Next to text, an icon
+  keeps the size of that text at every text size, and an icon that carries meaning on its own
+  grows with the text around it. The sizes in a component's tokens are those at the default
+  text size: each platform scales them by the factor it applies to the text they go with.
 - **Color** follows the text: an icon takes the color of the label next to it, or the icon role
   of its context (`global.icon.*`, which aliases that text color). It changes with the
   emphasis, the intent, the state and the mode.
@@ -48,14 +52,22 @@ The reference implementation's `packages/components/src/fonts.css` requests only
 with the fixed axes, and loads it with
 `display=block` so the ligature names never flash as text while the font loads.
 
+Text and icon sizes are px lengths today. A browser's text-only size setting changes neither,
+and zoom enlarges both together; when the text follows that setting, the icons follow it too.
+
 ### iOS
 
-Icons that carry meaning grow with the text when people raise the text size.
+Icons follow Dynamic Type, up to the larger accessibility sizes. At those sizes an icon in a
+row can crowd its text: a stacked layout, the text above the icon, reads better.
 
 ### Android
 
 A decorative icon gets a null content description; an icon that is the only content of an
 action gets a description naming the action.
+
+### Desktop
+
+macOS has no Dynamic Type, so icons keep their sizes there, like the text.
 
 ## Accessibility
 
@@ -80,8 +92,18 @@ action gets a description naming the action.
   a hidden node adds nothing to the name of its control
   ([WAI-ARIA: aria-hidden](https://www.w3.org/TR/wai-aria-1.2/#aria-hidden),
   [AccName: hidden, not referenced](https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced)).
-- **Larger with the text on iOS.** Meaningful icons should grow as the font size increases
-  ([Apple HIG: Supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- **Larger with the text.** Text can be resized up to 200 percent; the criterion covers text,
+  and an icon is non-text content, but people who need larger text need the icons that carry
+  meaning just as much, so icons grow with the text
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent)).
+  Apple asks for meaningful icons to grow as the font size increases
+  ([Apple HIG: Supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type));
+  macOS has no Dynamic Type
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
+  On the web, zoom scales text and icons together, which meets the criterion
+  ([G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142)); px lengths do not follow a
+  text-only size setting
+  ([MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
 - **Content descriptions on Android.** Graphic elements get a content description, or null when
   they have no meaning
   ([Compose: graphic elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements)).

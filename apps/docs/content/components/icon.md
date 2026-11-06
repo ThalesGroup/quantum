@@ -43,6 +43,10 @@ picture that is not there.
 Every size draws the same glyph, made for 24 px (the Iconography foundation's single optical
 size), so an icon keeps one look from 16 to 40 px.
 
+The sizes are those at the default text size. When people raise the text size, the icon grows
+with it: next to text it keeps the size of that text, and a named icon standing alone grows
+with the text around it.
+
 By default the icon takes the color of the text around it. The other colors are the system's
 icon roles: neutral (quieter than the text), brand, success, warning, error, info. A color
 never carries the meaning alone.
@@ -87,6 +91,9 @@ source it comes from. This section explains the decisions behind it.
   then, pair a warning icon with text. `current` inherits the contrast of the text around it
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
+- **Larger with the text.** Resize Text covers text, not icons, but people who need larger text
+  need the icons that carry meaning just as much, so the icon grows with the text
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent)).
 
 ### Web
 
@@ -97,17 +104,30 @@ source it comes from. This section explains the decisions behind it.
   [WAI-ARIA: img role](https://www.w3.org/TR/wai-aria-1.2/#img),
   [MDN: img role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/img_role),
   [WAI-ARIA: aria-label](https://www.w3.org/TR/wai-aria-1.2/#aria-label)).
+- Text and icons are px lengths today: zoom enlarges both together, which meets Resize Text,
+  and a browser's text-only size setting changes neither. When the text follows that setting,
+  the icon follows it too
+  ([G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
 
 ### iOS
 
 - Provide alternative text labels for custom interface icons; they let VoiceOver describe what
   is on screen ([Apple HIG: Icons](https://developer.apple.com/design/human-interface-guidelines/icons)).
+- A meaningful icon grows with Dynamic Type, up to the larger accessibility sizes; where an
+  icon in a row crowds its text, stack the text above it
+  ([Apple HIG: Supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
 - Pass `null` as the content description of a decorative icon; describe a meaningful one by its
   purpose ([Jetpack Compose: graphic elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements),
   [Android accessibility: describe each UI element](https://developer.android.com/guide/topics/ui/accessibility/apps#describe-ui-element)).
+
+### Desktop
+
+- macOS has no Dynamic Type: the icon keeps its size there, like the text
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 
 ## Related
 

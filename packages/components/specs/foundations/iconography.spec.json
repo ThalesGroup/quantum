@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -37,6 +37,11 @@
       "id": "size",
       "name": "Size",
       "text": "An icon takes a size from the size scale (Spacing and sizing foundation), in the tokens of the component that draws it, and the glyph fills a square of that size. In a control, each control size picks the icon size that goes with its label. On its own, next to text, an icon takes the size of that text; the largest sizes stand alone, as the glyph of an empty state or in place of a picture."
+    },
+    {
+      "id": "text-size",
+      "name": "Text size",
+      "text": "When people raise the text size, icons grow with it, on every platform that lets them: next to text, an icon keeps the size of that text at every text size, and an icon that carries meaning on its own grows with the text around it. A component's size tokens give the size at the default text size; the platform scales it by the factor it applies to the text it goes with."
     },
     {
       "id": "color",
@@ -115,12 +120,39 @@
         ]
       },
       {
-        "text": "Icons that convey meaning grow with the text when people raise the text size.",
+        "text": "Text can be resized up to 200 percent; the criterion covers text, not icons, which are non-text content. Icons grow with the text all the same: people who need larger text also need to read the icons that carry meaning, so an icon next to text keeps the size of that text at every text size, and a named icon standing alone grows with the text around it.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: that setting enlarges neither the text nor the icons, while zoom enlarges both, which meets Resize Text. When text follows that setting, icons follow it with it.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Icons that convey meaning grow with Dynamic Type, up to the larger accessibility sizes; where inline icons crowd the text at large sizes, consider a stacked layout with the text above them.",
         "refs": [
           "hig-typography-dynamic-type"
         ],
         "platforms": [
           "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, icons keep their sizes, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -163,6 +195,26 @@
         "id": "compose-graphic-elements",
         "title": "Compose accessibility API defaults: graphic elements",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
       }
     ]
   },
@@ -214,6 +266,23 @@
   ],
   "decisions": [
     {
+      "id": "icons-follow-text-size",
+      "date": "2026-11-06",
+      "version": "0.4.0",
+      "area": "size",
+      "status": "active",
+      "text": "Icons grow with the text size on every platform that lets people raise it (Dynamic Type on iOS, the font size on Android, a text size the web text follows): next to text, an icon keeps the size of that text at every text size, and an icon that carries meaning on its own grows with the text around it. The size tokens are the sizes at the default text size. Where nothing scales the text (macOS), icons keep their sizes.",
+      "rationale": "Next to text an icon already takes the size of that text; a fixed icon breaks that pairing as soon as the text grows (a 16 px icon next to 48 px text at three times the text size). Apple asks for meaningful icons to grow with Dynamic Type, and the reason, legibility for people who need larger text, holds on every platform; WCAG 1.4.4 and the Android guidelines do not require it, and nothing on those platforms argues against it.",
+      "tokens": [
+        "size.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type"
+      ]
+    },
+    {
       "id": "optical-size-24",
       "date": "2026-11-05",
       "version": "0.3.0",
@@ -227,6 +296,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.0",
+      "date": "2026-11-06",
+      "note": "Decision icons-follow-text-size: icons grow with the text size on every platform that scales text, next to text at the size of that text, alone with the text around them (new rule text-size). The iOS guideline names the larger accessibility sizes and the stacked layout; new guidelines for every platform (WCAG 1.4.4 covers text, not icons), for the web (text in px follows zoom, not the text-only setting) and for macOS (no Dynamic Type). No token, CSS or rendering change: the size tokens are the sizes at the default text size."
+    },
     {
       "version": "0.3.1",
       "date": "2026-11-05",

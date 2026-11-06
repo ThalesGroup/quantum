@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -25,7 +25,7 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Side of the square the glyph fills. Next to text, the icon takes the size of that text.",
+      "description": "Side of the square the glyph fills, at the default text size. Next to text, the icon takes the size of that text, at every text size.",
       "affects": [
         "container"
       ],
@@ -149,7 +149,8 @@
     "sizing": "fixed",
     "notes": [
       "A square of the size, aligned on the middle of the surrounding text.",
-      "An icon never stretches; the glyph fills the square as the icon font draws it."
+      "An icon never stretches; the glyph fills the square as the icon font draws it.",
+      "The size is the one at the default text size: when people raise the text size, the square grows with the text (Iconography rule text-size)."
     ]
   },
   "accessibility": {
@@ -201,9 +202,36 @@
         ]
       },
       {
+        "text": "Text can be resized up to 200 percent; the criterion covers text, not icons, which are non-text content. Icons grow with the text all the same: people who need larger text also need to read the icons that carry meaning, so an icon next to text keeps the size of that text at every text size, and a named icon standing alone grows with the text around it.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: that setting enlarges neither the text nor the icons, while zoom enlarges both, which meets Resize Text. When text follows that setting, icons follow it with it.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
         "text": "Provide alternative text labels for custom interface icons; they let VoiceOver describe what is on screen.",
         "refs": [
           "hig-icons"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Icons that convey meaning grow with Dynamic Type, up to the larger accessibility sizes; where inline icons crowd the text at large sizes, consider a stacked layout with the text above them.",
+        "refs": [
+          "hig-typography-dynamic-type"
         ],
         "platforms": [
           "ios"
@@ -217,6 +245,15 @@
         ],
         "platforms": [
           "android"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, icons keep their sizes, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
         ]
       }
     ],
@@ -280,6 +317,31 @@
         "id": "hig-icons",
         "title": "Apple HIG: Icons (alternative text labels for interface icons)",
         "url": "https://developer.apple.com/design/human-interface-guidelines/icons"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
       }
     ]
   },
@@ -431,6 +493,22 @@
   ],
   "decisions": [
     {
+      "id": "follows-text-size",
+      "date": "2026-11-06",
+      "version": "0.6.0",
+      "area": "size",
+      "status": "active",
+      "text": "An icon grows with the text size on every platform that lets people raise it (Iconography decision icons-follow-text-size): next to text it keeps the size of that text at every text size, and a named icon standing alone grows with the text around it. small to xxlarge are the sizes at the default text size. Where nothing scales the text (macOS), the icon keeps its size.",
+      "tokens": [
+        "icon.container.size.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type"
+      ]
+    },
+    {
       "id": "warning-light-from-library",
       "date": "2026-11-06",
       "version": "0.5.0",
@@ -542,6 +620,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.0",
+      "date": "2026-11-06",
+      "note": "Decision follows-text-size, following the Iconography foundation 0.4.0: the icon grows with the text size on every platform that scales text (at 300 % text, a small icon next to body text is 48 px instead of staying at 16 px). The size description and a layout note say the sizes are those at the default text size; accessibility guidelines for every platform, the web, iOS and macOS. No token, CSS or rendering change on the web, where text and icons are px lengths that zoom scales together. Colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.5.1",
       "date": "2026-11-06",
