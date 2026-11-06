@@ -30,7 +30,8 @@ for (const platform of fs.readdirSync(root)) {
     const base = parseColor(t['global.bg.level.0.default']);
     console.log(`\n${platform} ${file.replace('.tokens.json', '')}   levels ${LEVELS.join(' / ')}`);
     for (const id of Object.keys(t).filter((k) => re.test(k))) {
-      const fg = parseColor(t[id]);
+      let fg;
+      try { fg = parseColor(t[id]); } catch { continue; } // not a color (a font, a size)
       if (!fg) continue;
       const ratios = LEVELS.map((l) => {
         const bg = parseColor(t[`global.bg.level.${l}.default`]);

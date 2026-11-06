@@ -161,6 +161,14 @@ platform and in every mode.
 
 Newest first. Each entry: date, component, what was off, what changed in the process.
 
+- **2026-11-05, Icon, step 3.** `reference/contrast-levels.mjs` crashed on a pattern that also
+  matched non-color tokens (`'^icon\.'` reaches the font family): it now skips them. When a
+  semantic value fails WCAG and the team chooses to fix the value rather than repoint the
+  component, the change goes to the mode or tier file with a `$description` naming the
+  decision, the decision to the foundation that owns the token (Color), a contrast pair to that
+  foundation so `pnpm validate` keeps checking it, and the departure to the closing Figma issue.
+  (The Figma library's POC2 export then took the same dark value, #65: the departure was
+  dropped on rebase. When a new export lands mid-run, rebase and drop what it already carries.)
 - **2026-11-05, Icon.** A refinement skill was created while `figma-alignment` already covered
   the Figma part of it: `figma-alignment` is folded into this skill (one skill, with or without
   an export). Before creating a skill, read the existing ones end to end, not only their
