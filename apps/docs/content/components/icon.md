@@ -82,8 +82,9 @@ source it comes from. This section explains the decisions behind it.
   surface. Every color option passes on every surface level and on its own colored fill, hover
   and active fills included, in both modes, except warning in light mode: the Figma library's
   POC2 export set the warning icon role to warning 300, the step that fixed dark mode (1.54:1 on
-  the page, 1.26:1 on the sunken warning fill), a known issue of the Color foundation; pair a
-  warning icon with text. `current` inherits the contrast of the text around it
+  the page, 1.26:1 on the sunken warning fill), a known issue of the Color foundation. The Icon
+  keeps the library's value until the library fixes it, rather than departing from it; until
+  then, pair a warning icon with text. `current` inherits the contrast of the text around it
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
 

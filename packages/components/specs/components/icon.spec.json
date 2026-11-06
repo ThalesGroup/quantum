@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -408,6 +408,22 @@
   ],
   "decisions": [
     {
+      "id": "warning-light-from-library",
+      "date": "2026-11-06",
+      "version": "0.5.0",
+      "area": "color",
+      "status": "active",
+      "text": "The warning color keeps the Figma library's warning icon roles in light mode, on a surface level and on the sunken warning fill (global.icon.on-base.functional.warning.default and global.icon.on-sunken.functional.warning.default, warning 300 since the library's POC2 export), although they fall short of 3:1 there: 1.55 to 1.47:1 on the surface levels, 1.26:1 on the sunken warning fill. Neither the Icon's tokens nor the semantic roles depart from the library for it.",
+      "rationale": "The team waits for the Figma library's fix, agreed with the designers, rather than departing from the library in the repository; the fix will come with a new export. Until then the failure stays a known issue of the Color foundation (pair icon-warning), and a warning icon is paired with text.",
+      "tokens": [
+        "icon.container.color.warning",
+        "icon.container.color.sunken.warning"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "colors-on-fills",
       "date": "2026-11-05",
       "version": "0.4.0",
@@ -503,6 +519,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-06",
+      "note": "Decision warning-light-from-library: the warning color keeps the Figma library's warning icon roles in light mode (warning 300 since the POC2 export, 1.55 to 1.47:1 on the surface levels, 1.26:1 on the sunken warning fill, under the 3:1 of WCAG 1.4.11) until the library fixes them. The other options compared were warning 600 for the on-base role in light mode (6.17 to 6.49:1, 5.28:1 on the fill), the role aliasing the warning text role (warning 800 in light, 12.36 to 13.02:1, 10.59:1), and repointing the Icon to the on-subtle icon role (7.66 to 8.06:1, 6.56:1). No token, CSS or rendering changes."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-05",
