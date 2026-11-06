@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -47,6 +47,53 @@
       "id": "color",
       "name": "Color",
       "text": "An icon takes the color of the text next to it, or the icon role of its context (global.icon.*, which aliases that text color), so it follows every emphasis, intent, state and mode."
+    },
+    {
+      "id": "direction",
+      "name": "Reading direction",
+      "text": "In a right-to-left layout, a glyph whose direction is the reading direction flips horizontally, wherever it is drawn: navigation in a fixed order (back and forward, previous and next, the chevron of a path or a submenu), forward or backward motion (send, reply, undo, sound going forward) and lines of text. The glyph decides, not the component or the use: the glyphs listed here flip, and every other glyph keeps the drawing of the font, among them a real direction (east, west, align right), checkmarks, clocks and circular arrows, media controls and real-world objects. An icon that means a real direction takes a glyph that is not on the list.",
+      "names": [
+        "arrow_back",
+        "arrow_back_ios",
+        "arrow_back_ios_new",
+        "arrow_forward",
+        "arrow_forward_ios",
+        "arrow_left",
+        "arrow_right",
+        "chevron_left",
+        "chevron_right",
+        "exit_to_app",
+        "first_page",
+        "format_indent_decrease",
+        "format_indent_increase",
+        "format_list_bulleted",
+        "forward",
+        "keyboard_arrow_left",
+        "keyboard_arrow_right",
+        "keyboard_double_arrow_left",
+        "keyboard_double_arrow_right",
+        "last_page",
+        "list",
+        "login",
+        "logout",
+        "navigate_before",
+        "navigate_next",
+        "notes",
+        "redo",
+        "reply",
+        "reply_all",
+        "send",
+        "short_text",
+        "sort",
+        "subject",
+        "toc",
+        "undo",
+        "volume_down",
+        "volume_mute",
+        "volume_off",
+        "volume_up",
+        "wrap_text"
+      ]
     },
     {
       "id": "decorative",
@@ -215,6 +262,16 @@
         "id": "hig-typography-macos",
         "title": "Apple HIG: Typography, macOS",
         "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "hig-right-to-left",
+        "title": "Apple HIG: Right to left",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/right-to-left"
+      },
+      {
+        "id": "material-bidirectionality-rtl",
+        "title": "Material 3: Bidirectionality & RTL",
+        "url": "https://m3.material.io/foundations/layout/bidirectionality-rtl"
       }
     ]
   },
@@ -266,6 +323,19 @@
   ],
   "decisions": [
     {
+      "id": "glyphs-follow-reading-direction",
+      "date": "2026-11-06",
+      "version": "0.5.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "Directional glyphs follow the reading direction: in a right-to-left layout, the glyphs listed by the rule direction flip horizontally, in every component and on every platform. Whether a glyph flips is a property of the glyph, kept in that one list; neither a component nor an author decides it per use. A real direction (dock to the right) takes a glyph that is not on the list (east, west, format_align_right).",
+      "rationale": "The direction belongs to the glyph, as with SF Symbols, whose symbols carry their own right-to-left variants: every component follows the rule without a property of its own, and no use can forget it. Apple and Material agree on what flips and what keeps its direction.",
+      "refs": [
+        "hig-right-to-left",
+        "material-bidirectionality-rtl"
+      ]
+    },
+    {
       "id": "icons-follow-text-size",
       "date": "2026-11-06",
       "version": "0.4.0",
@@ -296,6 +366,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-06",
+      "note": "Decision glyphs-follow-reading-direction: in a right-to-left layout, directional glyphs flip horizontally (new rule direction, with the list of the 40 glyphs that flip as data). Before, every glyph kept the drawing of the font, so a back arrow, the Breadcrumb separator and the Pagination chevrons pointed against the reading order. Sources: Apple HIG Right to left, Material 3 Bidirectionality & RTL. No token change."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-06",

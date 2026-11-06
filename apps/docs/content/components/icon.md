@@ -68,6 +68,9 @@ color of the fill.
 
 - A named icon's label says its meaning (**Warning**, **Verified**), never the glyph's name.
 - Use the same glyph for the same meaning everywhere in a product.
+- Pick the glyph for what it means. In a right-to-left language a directional glyph flips, as the
+  Iconography foundation lists them: `arrow_back` for going back points to where the reading
+  started. For a real direction, which never flips, take `east` or `format_align_right`.
 
 ## Accessibility
 

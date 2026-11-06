@@ -7,7 +7,7 @@
  * Extra composition prop: `attrs` adds HTML attributes to the button (a `class` is appended to
  * ds-button), so a component built on Button (Dropdown) can wire it without copying its markup.
  */
-import { escapeHtml, escapeAttr, renderIcon, ICONS } from '../../lib/template-utils.mjs';
+import { escapeHtml, escapeAttr, renderIcon, iconDirection, ICONS } from '../../lib/template-utils.mjs';
 
 export const meta = {
   id: 'button',
@@ -45,9 +45,9 @@ export function render(props = {}) {
   }
 
   const parts = [];
-  if (iconStart) parts.push(`<span class="ds-button__icon" data-part="icon" data-position="start" aria-hidden="true">${renderIcon(iconStart)}</span>`);
+  if (iconStart) parts.push(`<span class="ds-button__icon" data-part="icon" data-position="start"${iconDirection(iconStart)} aria-hidden="true">${renderIcon(iconStart)}</span>`);
   parts.push(`<span class="ds-button__label" data-part="label">${escapeHtml(label)}</span>`);
-  if (iconEnd) parts.push(`<span class="ds-button__icon" data-part="icon" data-position="end" aria-hidden="true">${renderIcon(iconEnd)}</span>`);
+  if (iconEnd) parts.push(`<span class="ds-button__icon" data-part="icon" data-position="end"${iconDirection(iconEnd)} aria-hidden="true">${renderIcon(iconEnd)}</span>`);
 
   return `<button ${attrs.join(' ')}>${parts.join('')}</button>`;
 }

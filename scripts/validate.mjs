@@ -633,6 +633,18 @@ for (const file of foundationFiles) {
   }
 }
 const foundationIds = new Set(foundations.map((f) => f.id));
+// The web templates mark the glyphs that flip in a right-to-left layout from their own copy of the
+// Iconography rule direction's names: both lists hold the same glyphs.
+{
+  const directional = foundations.find((f) => f.id === 'iconography')?.rules.find((r) => r.id === 'direction')?.names;
+  const utilsRel = `${PATHS.web}/lib/template-utils.mjs`;
+  const { DIRECTIONAL_ICONS = [] } = await import(pathToFileURL(path.join(root, utilsRel)).href);
+  if (!directional) error(`${PATHS.specs}/foundations/iconography.spec.json`, 'needs the rule "direction" listing the glyphs that flip in a right-to-left layout (names)');
+  else {
+    for (const n of directional) if (!DIRECTIONAL_ICONS.includes(n)) error(utilsRel, `DIRECTIONAL_ICONS misses "${n}", a glyph of the Iconography rule direction`);
+    for (const n of DIRECTIONAL_ICONS) if (!directional.includes(n)) error(utilsRel, `DIRECTIONAL_ICONS lists "${n}", which the Iconography rule direction does not name`);
+  }
+}
 // Specimen displays: the schema enum and the library that draws them agree.
 const displayEnum = validateFoundation.schema.properties.specimens.items.properties.display.enum;
 if (displayEnum.join() !== Object.keys(DISPLAYS).join()) error(FILES.foundationSchema, `specimen display enum (${displayEnum.join(', ')}) must equal DISPLAYS in scripts/lib/specimens.mjs (${Object.keys(DISPLAYS).join(', ')})`);

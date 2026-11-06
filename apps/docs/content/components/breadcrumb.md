@@ -49,6 +49,8 @@ States belong to the items.
 - Each level is the title of its page, as short as the page allows.
 - The first level is the root (**Home**, **Projects**), the last the current page. Never
   truncate the current page.
+- The separators point along the path; in a right-to-left language they flip with the reading
+  order (Iconography foundation, reading direction).
 
 ## Accessibility
 

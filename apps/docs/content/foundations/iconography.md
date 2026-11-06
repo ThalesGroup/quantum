@@ -37,6 +37,27 @@ the whole variable font, twice as heavy.
   of its context (`global.icon.*`, which aliases that text color). It changes with the
   emphasis, the intent, the state and the mode.
 
+## Reading direction
+
+In a right-to-left language (Arabic, Hebrew, Persian, Urdu) the layout mirrors, and so must the
+glyphs whose direction is the reading direction: a back arrow points to where the reading
+started, the chevrons of a path or of previous and next follow the order, motion goes forward in
+the reading direction, and bars standing for text align with it. A font always draws a glyph the
+same way, so these glyphs flip horizontally.
+
+The glyph decides, not the component or the use. The rule "Reading direction" (Specification
+tab) lists the glyphs that flip, and every component drawing one of them flips it, on every
+platform. Every other glyph keeps its drawing: checkmarks, clocks and circular arrows, media
+controls, real-world objects, and a real direction. An icon that means "to the right" in every
+language takes a glyph that is not on the list, `east` or `format_align_right`, rather than
+`arrow_forward`, which means "forward".
+
+Apple's [Right to left](https://developer.apple.com/design/human-interface-guidelines/right-to-left)
+guidelines and Material's [Bidirectionality & RTL](https://m3.material.io/foundations/layout/bidirectionality-rtl)
+explain what flips and what keeps its direction, with examples; Material also notes exceptions
+by language (media controls and timelines in Hebrew stay left to right). Material Symbols carries
+no right-to-left variants, unlike SF Symbols, so no platform flips these glyphs on its own.
+
 ## With or without a label
 
 | Situation | What the icon is | What it needs |

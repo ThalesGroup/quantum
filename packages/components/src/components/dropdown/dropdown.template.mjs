@@ -14,7 +14,7 @@
  * `expanded` shows the menu, data-state on the root), and an entry's `state` forces a state of
  * that item.
  */
-import { escapeHtml, escapeAttr, renderIcon, ICONS } from '../../lib/template-utils.mjs';
+import { escapeHtml, escapeAttr, renderIcon, iconDirection, ICONS } from '../../lib/template-utils.mjs';
 import { render as renderButton } from '../button/button.template.mjs';
 
 export const meta = {
@@ -30,7 +30,7 @@ function renderItem(entry, menuId) {
   const attrs = ['class="ds-dropdown__item"', 'data-part="item"', `data-intent="${escapeAttr(intent)}"`];
   if (state && state !== 'default') attrs.push(`data-state="${escapeAttr(state)}"`);
   const content = [
-    icon ? `<span class="ds-dropdown__item-icon" data-part="item-icon" aria-hidden="true">${renderIcon(icon)}</span>` : '',
+    icon ? `<span class="ds-dropdown__item-icon" data-part="item-icon"${iconDirection(icon)} aria-hidden="true">${renderIcon(icon)}</span>` : '',
     `<span class="ds-dropdown__item-label" data-part="item-label">${escapeHtml(label)}</span>`,
   ].join('');
   if (href) {

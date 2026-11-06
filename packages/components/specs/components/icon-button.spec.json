@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -841,6 +841,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-06",
+      "note": "Follows the Iconography foundation 0.5.0 (decision glyphs-follow-reading-direction): in a right-to-left layout, a directional glyph flips horizontally, like the Button's icons (same-rendering-as-button). Web: the template marks it with data-directional, flipped under :dir(rtl). No token change."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-05",

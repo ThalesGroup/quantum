@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -1188,6 +1188,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.24.0",
+      "date": "2026-11-06",
+      "note": "Follows the Iconography foundation 0.5.0 (decision glyphs-follow-reading-direction): in a right-to-left layout, an icon whose glyph is directional (arrow_back, arrow_forward…) flips horizontally; any other glyph keeps its drawing. Web: the template marks it with data-directional, flipped under :dir(rtl). No token change."
+    },
     {
       "version": "0.23.0",
       "date": "2026-11-05",

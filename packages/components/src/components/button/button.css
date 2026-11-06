@@ -92,6 +92,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* A directional glyph follows the reading direction (Iconography rule direction). */
+.ds-button__icon[data-directional]:dir(rtl) {
+  scale: -1 1;
+}
+
 /* ---- Padding next to an icon --------------------------------------------- */
 /* With an icon, the label side takes the label-side padding and each icon side the icon-side padding. */
 

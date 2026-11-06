@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -150,7 +150,8 @@
     "notes": [
       "A square of the size, aligned on the middle of the surrounding text.",
       "An icon never stretches; the glyph fills the square as the icon font draws it.",
-      "The size is the one at the default text size: when people raise the text size, the square grows with the text (Iconography rule text-size)."
+      "The size is the one at the default text size: when people raise the text size, the square grows with the text (Iconography rule text-size).",
+      "In a right-to-left layout, a directional glyph flips horizontally in its square (Iconography rule direction); every other glyph keeps its drawing."
     ]
   },
   "accessibility": {
@@ -342,13 +343,24 @@
         "id": "hig-typography-macos",
         "title": "Apple HIG: Typography, macOS",
         "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "hig-right-to-left",
+        "title": "Apple HIG: Right to left",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/right-to-left"
+      },
+      {
+        "id": "material-bidirectionality-rtl",
+        "title": "Material 3: Bidirectionality & RTL",
+        "url": "https://m3.material.io/foundations/layout/bidirectionality-rtl"
       }
     ]
   },
   "content": {
     "guidelines": [
       "The label of a named icon says its meaning, as a noun or a short phrase: Warning, Verified, Locked; never the glyph's name.",
-      "Use the same glyph for the same meaning everywhere in a product."
+      "Use the same glyph for the same meaning everywhere in a product.",
+      "Pick the glyph for what it means: arrow_back for going back, which flips in a right-to-left layout; east or format_align_right for a real direction, which never flips."
     ]
   },
   "examples": [
@@ -493,6 +505,18 @@
   ],
   "decisions": [
     {
+      "id": "follows-reading-direction",
+      "date": "2026-11-06",
+      "version": "0.7.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "In a right-to-left layout, the icon flips its glyph horizontally when the glyph is on the Iconography list of directional glyphs (Iconography decision glyphs-follow-reading-direction); any other glyph keeps its drawing. The icon has no property for it: the name decides.",
+      "refs": [
+        "hig-right-to-left",
+        "material-bidirectionality-rtl"
+      ]
+    },
+    {
       "id": "follows-text-size",
       "date": "2026-11-06",
       "version": "0.6.0",
@@ -620,6 +644,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-06",
+      "note": "Decision follows-reading-direction, following the Iconography foundation 0.5.0: in a right-to-left layout a directional glyph (arrow_back, chevron_right, send…) flips horizontally; every other glyph keeps its drawing. A layout note and a content guideline (pick the glyph for its meaning: east for a real direction). Web: the template marks a glyph of the list with data-directional, flipped under :dir(rtl). No token change; sizes and colors unchanged."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-06",

@@ -9,6 +9,8 @@
  *    current, inherits the surrounding text color (currentColor: a token cannot say inherit).
  *  - On a colored fill (data-surface accent, subtle, sunken) a color reads that fill's icon role;
  *    without a token of its own (neutral on sunken) it keeps the base one.
+ *  - A directional glyph (data-directional, set by the template from the Iconography list) flips
+ *    in a right-to-left layout; :dir() reads the document's direction, not direction: ltr.
  */
 
 .ds-icon {
@@ -37,6 +39,11 @@
   direction: ltr;
   vertical-align: middle;
   -webkit-font-smoothing: antialiased;
+}
+
+/* A directional glyph follows the reading direction (Iconography rule direction). */
+.ds-icon[data-directional]:dir(rtl) {
+  scale: -1 1;
 }
 
 .ds-icon[data-size="small"] { --_size: var(--icon-container-size-small); }

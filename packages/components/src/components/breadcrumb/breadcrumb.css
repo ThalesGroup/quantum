@@ -89,6 +89,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* A directional glyph follows the reading direction (Iconography rule direction). */
+.ds-breadcrumb__separator[data-directional]:dir(rtl) {
+  scale: -1 1;
+}
+
 /* ---- States -------------------------------------------------------------- */
 
 :where(.ds-breadcrumb[data-state="hover"], .ds-breadcrumb__item[data-state="hover"]) .ds-breadcrumb__link,

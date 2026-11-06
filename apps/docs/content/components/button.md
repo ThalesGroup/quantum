@@ -100,6 +100,8 @@ color and are hidden from assistive technology; the label alone must make sense.
 Icons come from [Material Symbols](https://fonts.google.com/icons), the icon font of the
 whole system, in its outlined style at a light weight (fill off, weight 300, grade 0, optical
 size 24). An icon is named by its Material Symbols name (`add`, `delete`, `arrow_forward`).
+In a right-to-left language a directional glyph (an arrow, a chevron) flips with the reading
+direction, as the Iconography foundation lists them.
 The size property sets how large the glyph is drawn; the style never changes per button.
 The optical size is 24 at every size, the single optical size of the whole system: one drawing
 of each glyph for every size keeps buttons consistent and simpler to implement.

@@ -158,7 +158,10 @@ const followers = followersOf(spec).map((f) => ({ ...f, name: specs.get(f.compon
           {spec.rules.map((r) => (
             <tr>
               <th scope="row">{r.name}{scoped(r) ? <div><span class="site-chip">{scopeLabel(r)}</span></div> : null}</th>
-              <td>{r.text}</td>
+              <td>
+                {r.text}
+                {r.names ? <p class="site-small">{r.names.map((n, i) => <>{i ? ', ' : ''}<code>{n}</code></>)}</p> : null}
+              </td>
               <td class="site-small">
                 {ruleTokens(r).length ? ruleTokens(r).map((t) => (
                   <div>
