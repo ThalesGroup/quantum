@@ -22,6 +22,7 @@ import { allContexts, evaluateContrast, formatRatio } from './lib/contrast.mjs';
 import { checkSiteCss, checkSiteMarkup } from './lib/site-check.mjs';
 import { checkBlueprint } from './lib/blueprint.mjs';
 import { checkTokenMap, parseTokenPath, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
+import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
 import { loadScreens, screenComponents, checkSections, checkSource, checkScreenMeta, checkScreenHtml, checkScreenSource, checkScreensCssSelectors, definedScreenClasses, screenSourceFiles, SCREEN_OWN_VARS } from './lib/screens.mjs';
@@ -84,6 +85,8 @@ try {
   for (const t of loaded.all) {
     if (!t.type) warn(`${PATHS.tokens}/${t.file} ${t.path}`, 'has no $type (own or inherited)');
   }
+  // A role read on a fill names the fill the docs site draws behind a component that does not draw it (scripts/lib/backdrop.mjs).
+  for (const m of missingFills(loaded.byPath)) error(`${PATHS.tokens}/${loaded.byPath.get(m.role).file} ${m.role}`, `is read on a fill, but ${m.fill} does not exist: the docs site cannot draw the fill behind a component reading it`);
 } catch (e) {
   error(PATHS.tokens, e.message);
 }

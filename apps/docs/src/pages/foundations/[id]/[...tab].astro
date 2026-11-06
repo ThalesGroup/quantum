@@ -9,6 +9,7 @@ import A11yStatements from '../../../components/A11yStatements.astro';
 import Specimen from '../../../components/Specimen.astro';
 import ExampleExplorer from '../../../components/ExampleExplorer.astro';
 import { getTemplate } from '../../../lib/web';
+import { onBackdrop } from '../../../lib/backdrop';
 import { getModes } from '../../../lib/tokens';
 import { tokensOf, contrastOf, followersOf, specimenOf, basePlatformNames, iconNamesOf } from '../../../lib/foundations';
 import { cite, conformanceTarget, publisherName } from '../../../lib/a11y';
@@ -52,7 +53,7 @@ const ruleTokens = (r: { tokens?: string[] }) => tokensOf(r.tokens ?? []);
 // (`source`) highlighted with the design system's Shiki theme.
 const specs = new Map((await getCollection('specs')).map((s) => [s.id, s.data]));
 const allExamples: any[] = spec.examples ?? [];
-const examples = allExamples.filter((ex) => ex.component && onWeb(ex)).map((ex) => ({ ...ex, html: getTemplate(ex.component)?.render(ex.props) ?? '' })).filter((ex) => ex.html);
+const examples = allExamples.filter((ex) => ex.component && onWeb(ex)).map((ex) => ({ ...ex, html: onBackdrop(specs.get(ex.component), getTemplate(ex.component)?.render(ex.props) ?? '', ex.props) })).filter((ex) => ex.html);
 const codeExamples = allExamples.filter((ex) => ex.source && onWeb(ex)).map((ex) => ({ ...ex, html: highlight(readRepoFile(ex.source), langOfFile(ex.source)) }));
 const offWeb = allExamples.filter((ex) => !onWeb(ex));
 

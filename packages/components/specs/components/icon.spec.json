@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -378,6 +378,29 @@
         "color": "info",
         "name": "info"
       }
+    },
+    {
+      "id": "large-brand-accent",
+      "name": "Large, brand, on an accent fill",
+      "description": "Decorative, on a brand accent fill the product draws (a banner): reads the fill's icon role.",
+      "props": {
+        "size": "large",
+        "color": "brand",
+        "surface": "accent",
+        "name": "rocket_launch"
+      }
+    },
+    {
+      "id": "medium-success-subtle",
+      "name": "Medium, success, on a subtle fill",
+      "description": "Named, on a success subtle fill the product draws (a panel).",
+      "props": {
+        "size": "medium",
+        "color": "success",
+        "surface": "subtle",
+        "name": "check_circle",
+        "label": "Completed"
+      }
     }
   ],
   "tokens": {
@@ -519,6 +542,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.1",
+      "date": "2026-11-06",
+      "note": "Examples on a colored fill: large brand on an accent fill, medium success on a subtle fill. The docs site now draws the fill an icon sits on behind it (the fill paired with the role its color reads), in the examples, the states matrix and the playground. No decision, token, CSS or rendering change."
+    },
     {
       "version": "0.5.0",
       "date": "2026-11-06",

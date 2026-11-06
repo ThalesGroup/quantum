@@ -23,6 +23,7 @@ src/lib/themes.ts              the framework themes (packages/*-theme): package,
 src/lib/coverage.ts            coverageOf(spec, guidelines): per platform, guideline sections and accessibility statements of its own, examples, states, where the token values come from, how the docs draw it, the native control recorded; per framework theme, what it maps the component to
 src/lib/web.ts                 import.meta.glob of ../../../../packages/components/src/components/*/*.template.mjs; defaultProps(spec)
 src/lib/matrix.ts              states matrix layout: one set of matrices per part taking states (state `parts`; the component as a whole otherwise); enum properties sharing a component token path are crossed (one table per combination of the others); cellProps forces a state on a part, through the entry of a list property for a repeated part
+src/lib/backdrop.ts            the fill a rendering sits on (scripts/lib/backdrop.mjs): backdropData(spec) (every token and the CSS variable of the fill of those read on a fill the component does not draw; null for most components, memo), onBackdrop(spec, html, props, state) (the rendering in a `site-backdrop` span on that fill), used by ExampleExplorer, StateMatrix, Playground (in the browser too), the Modes page and the foundations' examples
 src/lib/inspector.ts           token inspector data: every component token read through scripts/lib/token-map.mjs (part, options, state, kind), its alias chain (semantic, then raw), resolved values and the decisions naming it or a token it aliases
 src/lib/format-html.ts         formatHtml(html): pretty-prints the one-line template output (one element per line, text-only elements on one line, attributes one per line past 72 columns); server and client
 src/lib/highlight.ts           Shiki (sync core, JS regex engine, fixed grammars): highlight(code, lang) -> inner HTML of <code>; server and client
@@ -215,6 +216,15 @@ rules (`scripts/lib/site-check.mjs`):
   play on request with the design system's Button (`play_arrow`), at the token's duration and
   easing (easings over one second); under `prefers-reduced-motion: reduce` the dots jump and a
   note says why. Icons are drawn with the `--font-icon-*` variables (`site-icon`).
+- Fills behind a component. A component placed on a fill it does not draw (the Icon with
+  `surface: accent`) reads that fill's roles, and drawn on the stage's level 0 it would show a
+  glyph meant for a fill on the page. Wherever the site renders a component (examples, states
+  matrix cells, the playground after each render, the Modes page, the foundations' examples),
+  the rendering whose active tokens read a role on a fill (`global.icon.on-accent.brand.default`)
+  sits in a `site-backdrop` span on that fill at rest (`global.bg.accent.brand.default`, set
+  inline like a specimen's value): `scripts/lib/backdrop.mjs` pairs them, the site knows no
+  component. A component that draws the fill itself (a Button's accent background) gets none.
+  The playground's code shows the component alone.
 - Forced states use the template's `state` prop, which the CSS matches through
   `[data-state="…"]`. The disabled column also sets the real `disabled` prop. A repeated part
   (an item of a `list` property) is rendered as a single entry carrying the forced `state`, and

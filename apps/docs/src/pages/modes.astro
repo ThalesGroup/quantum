@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { getModes, modeTokens } from '../lib/tokens';
 import { getTemplate } from '../lib/web';
+import { onBackdrop } from '../lib/backdrop';
 import { onWeb } from '../lib/platforms';
 import { highlight } from '../lib/highlight';
 import { displayValue } from '../lib/tokens';
@@ -73,7 +74,7 @@ const usage = attribute
             {modes.map((m) => (
               <figure class="site-mode-grid__item">
                 <figcaption class="site-small site-muted">{m.id}</figcaption>
-                <div class="site-preview__stage" {...{ [attribute]: m.id }} set:html={examples.map((ex: any) => template!.render(ex.props)).join('\n')}></div>
+                <div class="site-preview__stage" {...{ [attribute]: m.id }} set:html={examples.map((ex: any) => onBackdrop(spec, template!.render(ex.props), ex.props)).join('\n')}></div>
               </figure>
             ))}
           </div>

@@ -13,6 +13,8 @@ import { highlight } from '../lib/highlight';
 import { formatHtml } from '../lib/format-html';
 import { getModes } from '../lib/tokens';
 import { stateOn } from '../lib/platforms';
+import { backdropData, onBackdrop } from '../lib/backdrop';
+import { inspectorSpec } from '../lib/inspector';
 interface Props {
   spec: any;
   template: Template;
@@ -25,6 +27,9 @@ const props = spec.properties.filter((p: any) => p.type !== 'node');
 const { modes, attribute, auto } = getModes();
 const modeChoices = [...modes.map((m) => m.id), ...(auto ? [auto] : [])];
 const inspectorId = `inspector-${spec.id}`;
+// The fill the rendering sits on when it reads a role on one (lib/backdrop.ts), found again after each render.
+const backdrop = backdropData(spec);
+const backdropAttr = backdrop ? JSON.stringify({ spec: inspectorSpec(spec), ...backdrop }) : undefined;
 const copyButton = getTemplate('button')?.render({ emphasis: 'subtle', intent: 'neutral', size: 'xsmall', label: 'Copy', iconStart: 'content_copy' }) ?? '';
 // The form is built with the design system's form controls (apps/docs/AGENTS.md "Built with the design system"):
 // Select, Checkbox, Textarea, Text field and Number field render their own label; the script reads them by name.
@@ -78,7 +83,7 @@ const textSizes = [
         <span class="ds-button__label">Inspect tokens</span>
       </button>
     </div>
-    <div class="site-preview__stage" data-stage set:html={template.render(initial)}></div>
+    <div class="site-preview__stage" data-stage data-backdrop={backdropAttr} set:html={onBackdrop(spec, template.render(initial), initial)}></div>
   </div>
   <TokenInspector spec={spec} id={inspectorId} />
   <div class="site-playground__code">
@@ -166,8 +171,10 @@ const textSizes = [
         .map(({ e, style }) => ({ e, size: parseFloat(style.fontSize) }));
       for (const { e, size } of elements) e.style.setProperty('font-size', `${size * factor}px`);
     };
+    // The fill behind the rendering, when the component reads a role on a fill it does not draw (lib/backdrop.ts).
+    const backdrop = stage.dataset.backdrop ? JSON.parse(stage.dataset.backdrop) : null;
     // The highlighter (grammars included) is only fetched on pages with a playground.
-    Promise.all([modules[key](), import('../lib/highlight'), import('../lib/format-html')]).then(([mod, { highlight }, { formatHtml }]) => {
+    Promise.all([modules[key](), import('../lib/highlight'), import('../lib/format-html'), import('../../../../scripts/lib/backdrop.mjs')]).then(([mod, { highlight }, { formatHtml }, { backdropOf }]) => {
       const lastValid: Record<string, unknown> = {};
       const update = () => {
         const props: Record<string, unknown> = {};
@@ -190,7 +197,8 @@ const textSizes = [
           else if (field.value !== '') props[field.name] = field.value;
         }
         const html = mod.render(props);
-        stage.innerHTML = html;
+        const fill = backdrop && backdropOf(backdrop.spec, backdrop.tokens, backdrop.fills, props, String(props.state ?? 'default'));
+        stage.innerHTML = fill ? `<span class="site-backdrop" style="background-color: var(${fill})">${html}</span>` : html;
         scaleText();
         if (code) code.innerHTML = highlight(formatHtml(html), 'html');
         el.dispatchEvent(new CustomEvent('playground:render', { detail: { props, state: String(props.state ?? 'default') } }));
