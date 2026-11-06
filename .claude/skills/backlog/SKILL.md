@@ -22,6 +22,7 @@ issue right away instead of being done or left in the chat.
   `bootstrap` or `shadcn` for each theme concerned): `agents/git.md` "Labels".
 - **One label per component id** (`button`, `icon-button`, `text-field`…), when the set has them: every component
   concerned. A component that mirrors another (`scripts/lib/mirrors.mjs`) gets its label too.
+- **Right-to-left** (`rtl`): RTL layout, icon mirroring, or showing it on the site (`agents/git.md` "Labels").
 - **One label per platform** (`web`, `ios`, `android`, `desktop`), when the set has them and the issue is scoped to it.
 - **Upstream Figma work** (`upstream-figma-ds`, when the set has it): work for the Figma designer (bind a variable, redefine a primitive,
   backport a decision to the library).

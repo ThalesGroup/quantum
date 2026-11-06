@@ -56,6 +56,8 @@ The repository is the GitHub repository
     `packages/bootstrap-theme/`), `shadcn` (`@quantum-ds/shadcn-theme` in `packages/shadcn-theme/`).
     A change to a theme package takes `themes` and its framework label on top of its kind; a
     change to what every theme shares takes `themes` and the label of each theme it changes.
+  - **Right-to-left.** `rtl` on everything about rendering a component right-to-left: its
+    layout in RTL, the mirroring of its icons, or how the docs site shows it.
   - **Quantum NextGen.** Every issue and pull request that concerns it (a pull request against
     `nextgen`, an issue about its packages, specs, docs site, guides or skills) always takes
     `nextgen`.
