@@ -27,6 +27,11 @@ const widths = [
   { label: 'Mobile (390 px)', value: '390' },
 ];
 const select = getTemplate('select')!;
+// Reading direction of the frame (its dir attribute; ?dir=rtl presets it): the screen mirrors, the docs stay left to right.
+const directions = [
+  { label: 'Left to right (ltr)', value: 'ltr' },
+  { label: 'Right to left (rtl)', value: 'rtl' },
+];
 ---
 <Layout title={screen.meta.name} description={screen.meta.description}>
   <header class="site-page-header">
@@ -43,7 +48,8 @@ const select = getTemplate('select')!;
       {attribute ? (
         <div set:html={select.render({ label: `Mode context (${attribute})`, id: 'site-screen-mode', size: 'small', options: [{ label: '(page mode)', value: '' }, ...modes.map((m) => ({ label: m.id, value: m.id }))], attrs: { 'data-mode-context': attribute } })}></div>
       ) : null}
-      <a class="site-screen__open" href={frame} target="_blank" rel="noopener">Open the screen alone<span class="site-sr"> (new tab)</span></a>
+      <div set:html={select.render({ label: 'Direction context (dir)', id: 'site-screen-direction', size: 'small', options: directions, attrs: { 'data-screen-direction': true } })}></div>
+      <a class="site-screen__open" href={frame} target="_blank" rel="noopener" data-screen-open>Open the screen alone<span class="site-sr"> (new tab)</span></a>
     </div>
     <div class="site-screen__stage">
       <iframe class="site-screen__frame" src={frame} title={`${screen.meta.name} (screen)`} data-screen-frame></iframe>
@@ -87,8 +93,8 @@ const select = getTemplate('select')!;
 </Layout>
 
 <script>
-  // Frame width and mode context of the screen preview. The frame follows the docs mode (header
-  // switch) unless the Mode context select names one.
+  // Frame width, mode context and reading direction of the screen preview. The frame follows the docs
+  // mode (header switch) unless the Mode context select names one; ?dir=rtl presets the direction.
   for (const viewer of document.querySelectorAll<HTMLElement>('[data-screen-viewer]')) {
     const frame = viewer.querySelector<HTMLIFrameElement>('[data-screen-frame]')!;
     const width = viewer.querySelector<HTMLSelectElement>('[data-screen-width]');
@@ -108,5 +114,23 @@ const select = getTemplate('select')!;
     header?.addEventListener('change', applyMode);
     frame.addEventListener('load', applyMode);
     applyMode();
+    // The direction is the dir attribute of the frame's root; the link to the screen alone carries it.
+    const direction = viewer.querySelector<HTMLSelectElement>('[data-screen-direction]');
+    const open = viewer.querySelector<HTMLAnchorElement>('[data-screen-open]');
+    const preset = new URLSearchParams(location.search).get('dir');
+    if (direction && preset && [...direction.options].some((o) => o.value === preset)) direction.value = preset;
+    const applyDirection = () => {
+      if (!direction) return;
+      if (frame.contentDocument) frame.contentDocument.documentElement.dir = direction.value;
+      if (open) {
+        const url = new URL(open.href);
+        if (direction.value === 'rtl') url.searchParams.set('dir', 'rtl');
+        else url.searchParams.delete('dir');
+        open.setAttribute('href', url.pathname + url.search);
+      }
+    };
+    direction?.addEventListener('change', applyDirection);
+    frame.addEventListener('load', applyDirection);
+    applyDirection();
   }
 </script>

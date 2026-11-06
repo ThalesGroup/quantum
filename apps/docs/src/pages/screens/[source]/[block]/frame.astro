@@ -34,6 +34,10 @@ const values = [...(auto ? [auto] : []), ...modes.map((m) => m.id)];
         addEventListener('storage', (e) => { if (e.key === 'site-mode' && !document.documentElement.dataset.modeLocked) apply(e.newValue); });
       </script>
     ) : null}
+    <script is:inline>
+      // ?dir=rtl: the screen right to left (the screen page sets dir directly when its Direction context select changes).
+      if (new URLSearchParams(location.search).get('dir') === 'rtl') document.documentElement.dir = 'rtl';
+    </script>
     <style>
       html, body { margin: 0; block-size: 100%; }
       body { background: var(--global-bg-level-0-default); }

@@ -4,7 +4,8 @@
  * client-side and, after each render, dispatches `playground:render` ({ props, state }) on its
  * root, which the token inspector listens to. The rendered HTML is shown formatted, under the
  * whole playground, with a Copy button (the design system's Button). Two simulations apply to the stage only:
- * a vision deficiency (SVG filters) and a larger text size (text-only zoom). On the web page only:
+ * a vision deficiency (SVG filters) and a larger text size (text-only zoom), and so does its reading direction
+ * (?dir=rtl presets it). On the web page only:
  * the reference rendering is the only one these docs draw.
  */
 import { getTemplate, type Template } from '../lib/web';
@@ -45,6 +46,12 @@ const visions = [
   { id: 'tritanopia', label: 'Tritanopia (no blue)', filter: '<feColorMatrix values="1.256 -0.077 -0.179 0 0 -0.078 0.931 0.148 0 0 0.005 0.691 0.304 0 0 0 0 0 1 0"/>' },
   { id: 'achromatopsia', label: 'Achromatopsia (no color)', filter: '<feColorMatrix values="0.213 0.715 0.072 0 0 0.213 0.715 0.072 0 0 0.213 0.715 0.072 0 0 0 0 0 1 0"/>' },
 ];
+// Reading direction of the stage (its dir attribute): directional parts mirror and directional glyphs flip
+// (Iconography rule `direction`); the docs stay left to right.
+const directions = [
+  { label: 'Left to right (ltr)', value: 'ltr' },
+  { label: 'Right to left (rtl)', value: 'rtl' },
+];
 // Text size of the stage, like a browser's text-only zoom: WCAG 1.4.4 asks for 200% without loss of content.
 const textSizes = [
   { label: '100%', value: '1' },
@@ -74,10 +81,11 @@ const textSizes = [
   </svg>
   <div class="site-playground__result">
     <div class="site-playground__toolbar">
-      <!-- Simulations of the stage, next to it rather than among the props: they are not props of the component. -->
+      <!-- Simulations and reading direction of the stage, next to it rather than among the props: they are not props of the component. -->
       <div class="site-playground__simulations">
         <Fragment set:html={field('select', { label: 'Vision simulation', id: `${spec.id}-sandbox-vision`, size: 'small', options: [{ label: 'Typical', value: '' }, ...visions.map((v) => ({ label: v.label, value: v.id }))], attrs: { 'data-vision': true } })} />
         <Fragment set:html={field('select', { label: 'Text size', id: `${spec.id}-sandbox-text-size`, size: 'small', options: textSizes, attrs: { 'data-text-size': true } })} />
+        <Fragment set:html={field('select', { label: 'Direction context (dir)', id: `${spec.id}-sandbox-direction`, size: 'small', options: directions, attrs: { 'data-direction': true } })} />
       </div>
       <button type="button" class="ds-button" data-emphasis="subtle" data-intent="neutral" data-size="small" aria-expanded="false" aria-controls={inspectorId}>
         <span class="ds-button__label">Inspect tokens</span>
@@ -153,6 +161,15 @@ const textSizes = [
     if (vision) {
       const apply = () => (vision.value ? stage.setAttribute('data-vision', vision.value) : stage.removeAttribute('data-vision'));
       vision.addEventListener('change', apply);
+      apply();
+    }
+    // Reading direction: the dir attribute of the stage, preset by ?dir= (a link to the playground in right to left).
+    const direction = el.querySelector<HTMLSelectElement>('[data-direction]');
+    if (direction) {
+      const preset = new URLSearchParams(location.search).get('dir');
+      if (preset && [...direction.options].some((o) => o.value === preset)) direction.value = preset;
+      const apply = () => { stage.dir = direction.value; };
+      direction.addEventListener('change', apply);
       apply();
     }
     // Text size: after each render, every element of the stage gets its computed font size times the
