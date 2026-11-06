@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "avatar",
   "name": "Avatar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "presentation",
   "summary": "Represents a person or an entity with a picture, or their initials when there is none.",
@@ -168,7 +168,7 @@
         ]
       },
       {
-        "text": "Initials contrast 7.34:1 (light) and 13.04:1 (dark) with the brand tint behind them; the picture is the person's and is not subject to a contrast requirement. The hairline border is decoration.",
+        "text": "Initials contrast 7.37:1 (light) and 13.05:1 (dark) with the brand tint behind them; the picture is the person's and is not subject to a contrast requirement. The hairline border is decoration.",
         "refs": [
           "wcag:1.4.3",
           "wcag:1.4.11"
@@ -410,6 +410,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: container.border-color follows the ash retune (#D7D3D4 becomes #D5D5D5). Contrast re-measured on the accessibility guidelines: 7.34 → 7.37:1, 13.04 → 13.05:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

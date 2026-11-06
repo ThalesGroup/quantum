@@ -32,9 +32,9 @@
           "active": {"$type":"color","$value":"{dark-switch.base.200}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.200}"},
-          "hover": {"$type":"color","$value":"{brand.dark.300}"},
-          "active": {"$type":"color","$value":"{brand.dark.400}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.200}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"}
         },
         "functional": {
           "success": {
@@ -49,35 +49,20 @@
           }
         },
         "extended": {
-          "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.400}"},
-            "hover": {"$type":"color","$value":"{extended.lavender.300}"},
-            "active": {"$type":"color","$value":"{extended.lavender.500}"}
-          },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.400}"},
-            "hover": {"$type":"color","$value":"{extended.lime.300}"},
+            "default": {"$type":"color","$value":"{extended.lime.300}"},
+            "hover": {"$type":"color","$value":"{extended.lime.400}"},
             "active": {"$type":"color","$value":"{extended.lime.500}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.400}"},
-            "hover": {"$type":"color","$value":"{extended.forest.300}"},
-            "active": {"$type":"color","$value":"{extended.forest.500}"}
+            "hover": {"$type":"color","$value":"{extended.forest.500}"},
+            "active": {"$type":"color","$value":"{extended.forest.600}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.400}"},
-            "hover": {"$type":"color","$value":"{extended.azure.300}"},
-            "active": {"$type":"color","$value":"{extended.azure.500}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.400}"},
-            "hover": {"$type":"color","$value":"{extended.orchid.300}"},
-            "active": {"$type":"color","$value":"{extended.orchid.500}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.300}"},
-            "hover": {"$type":"color","$value":"{extended.sand.200}"},
-            "active": {"$type":"color","$value":"{extended.sand.400}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.300}"},
+            "hover": {"$type":"color","$value":"{extended.wood.400}"},
+            "active": {"$type":"color","$value":"{extended.wood.500}"}
           }
         }
       },
@@ -88,9 +73,9 @@
           "active": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.4627451002597809,0.4627451002597809,0.4627451002597809],"alpha":0.5,"hex":"#767676"},"$description":"dark-switch.base.400 at opacity.50: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.950}"},
-          "hover": {"$type":"color","$value":"{brand.dark.900}"},
-          "active": {"$type":"color","$value":"{brand.dark.800}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.dark.800}"}
         },
         "functional": {
           "success": {
@@ -121,9 +106,9 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.900}"},
-            "hover": {"$type":"color","$value":"{extended.lavender.800}"},
-            "active": {"$type":"color","$value":"{extended.lavender.950}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "default": {"$type":"color","$value":"{extended.lavender.950}"},
+            "hover": {"$type":"color","$value":"{extended.lavender.900}"},
+            "active": {"$type":"color","$value":"{extended.lavender.800}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "lime": {
             "default": {"$type":"color","$value":"{extended.lime.900}"},
@@ -131,60 +116,25 @@
             "active": {"$type":"color","$value":"{extended.lime.700}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.900}"},
-            "hover": {"$type":"color","$value":"{extended.coral.800}"},
-            "active": {"$type":"color","$value":"{extended.coral.950}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "default": {"$type":"color","$value":"{extended.coral.950}"},
+            "hover": {"$type":"color","$value":"{extended.coral.900}"},
+            "active": {"$type":"color","$value":"{extended.coral.800}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.900}"},
-            "hover": {"$type":"color","$value":"{extended.forest.800}"},
-            "active": {"$type":"color","$value":"{extended.forest.950}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "default": {"$type":"color","$value":"{extended.forest.950}"},
+            "hover": {"$type":"color","$value":"{extended.forest.900}"},
+            "active": {"$type":"color","$value":"{extended.forest.800}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.900}"},
-            "hover": {"$type":"color","$value":"{extended.azure.800}"},
-            "active": {"$type":"color","$value":"{extended.azure.950}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.900}"},
-            "hover": {"$type":"color","$value":"{extended.orchid.800}"},
-            "active": {"$type":"color","$value":"{extended.orchid.950}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.900}"},
-            "hover": {"$type":"color","$value":"{extended.sand.800}"},
-            "active": {"$type":"color","$value":"{extended.sand.950}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.900}"},
-            "hover": {"$type":"color","$value":"{extended.amber.800}"},
-            "active": {"$type":"color","$value":"{extended.amber.950}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.800}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.800}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.800}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.800}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.950}"},
+            "hover": {"$type":"color","$value":"{extended.wood.900}"},
+            "active": {"$type":"color","$value":"{extended.wood.800}"}
           }
         }
       },
       "sunken": {
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.950}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
         },
         "functional": {
           "success": {
@@ -216,37 +166,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.950}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.950}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.950}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.950}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.950}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.800}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.800}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.800}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.950}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.900}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.800}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.950}"}
           }
         }
       },
@@ -285,20 +206,20 @@
           "tertiary": {"$type":"color","$value":"{dark-switch.base.300}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.200}","$description":"Only use with natural bg"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}","$description":"Only use with natural bg"}
         },
         "functional": {
           "success": {
-            "default": {"$type":"color","$value":"{functional.success.400}"}
+            "default": {"$type":"color","$value":"{functional.success.300}"}
           },
           "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.700}"}
+            "default": {"$type":"color","$value":"{functional.warning.300}"}
           },
           "severe": {
-            "default": {"$type":"color","$value":"{functional.severe.500}"}
+            "default": {"$type":"color","$value":"{functional.severe.300}"}
           },
           "error": {
-            "default": {"$type":"color","$value":"{functional.error.400}","$description":"Only use with natural bg"}
+            "default": {"$type":"color","$value":"{functional.error.300}","$description":"Only use with natural bg"}
           },
           "info": {
             "default": {"$type":"color","$value":"{functional.info.300}"}
@@ -306,10 +227,10 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "default": {"$type":"color","$value":"{extended.lavender.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.600}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "default": {"$type":"color","$value":"{extended.lime.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "coral": {
             "default": {"$type":"color","$value":"{extended.coral.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
@@ -317,17 +238,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.500}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.500}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.400}"}
           }
         }
       },
@@ -338,7 +250,7 @@
           "tertiary": {"$type":"color","$value":"{dark-switch.base.600}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.950}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"}
         },
         "functional": {
           "success": {
@@ -347,23 +259,6 @@
           "info": {
             "default": {"$type":"color","$value":"{functional.info.950}"}
           }
-        },
-        "extended": {
-          "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.950}"}
-          },
-          "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.950}"}
-          },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.950}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.950}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.950}"}
-          }
         }
       },
       "on-subtle": {
@@ -371,7 +266,7 @@
           "default": {"$type":"color","$value":"{dark-switch.base.50}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.200}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.200}"}
         },
         "functional": {
           "success": {
@@ -392,7 +287,7 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.300}"}
+            "default": {"$type":"color","$value":"{extended.lavender.200}"}
           },
           "lime": {
             "default": {"$type":"color","$value":"{extended.lime.200}"}
@@ -403,35 +298,14 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.300}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.300}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.300}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.400}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.500}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.200}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.200}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.200}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.200}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.200}"}
           }
         }
       },
       "on-sunken": {
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.300}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"}
         },
         "functional": {
           "success": {
@@ -452,7 +326,7 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.500}"}
+            "default": {"$type":"color","$value":"{extended.lavender.200}"}
           },
           "lime": {
             "default": {"$type":"color","$value":"{extended.lime.500}"}
@@ -463,53 +337,30 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.400}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.500}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.500}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.500}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.500}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.400}"}
           }
         }
       },
       "code": {
-        "keyword": {"$type":"color","$value":"{extended.lavender.400}"},
+        "keyword": {"$type":"color","$value":"{extended.lavender.300}"},
         "variable": {"$type":"color","$value":"{extended.orchid.400}"},
         "function": {"$type":"color","$value":"{extended.azure.400}"},
         "class-and-type": {"$type":"color","$value":"{extended.amber.400}"},
-        "string": {"$type":"color","$value":"{extended.forest.400}","$description":"Decision code-colors-contrast (Code foundation): the Figma library extended.forest.500 is 4.27:1 on global.bg.level.3.default."},
+        "string": {"$type":"color","$value":"{extended.forest.400}"},
         "number": {"$type":"color","$value":"{extended.coral.400}"},
-        "comment": {"$type":"color","$value":"{dark-switch.base.300}","$description":"Decision code-colors-contrast (Code foundation): the Figma library dark-switch.base.400 is 3.54:1 on global.bg.level.1.default and 2.91:1 on level 3."}
+        "comment": {"$type":"color","$value":"{dark-switch.base.300}"}
       },
       "state": {
         "skeleton": {
           "default": {"$type":"color","$value":"{dark-switch.base.700}"}
         },
         "disabled": {
-          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.6156859993934631,0.6079063415527344,0.6117955446243286],"alpha":0.699999988079071,"hex":"#9D9B9C"},"$description":"dark-switch.base.300 at opacity.70: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.6117053627967834,0.6117053627967834,0.6117053627967834],"alpha":0.699999988079071,"hex":"#9C9C9C"},"$description":"dark-switch.base.300 at opacity.70: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         }
       }
     },
     "icon": {
-      "on-base": {
-        "functional": {
-          "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.700}"}
-          }
-        }
-      },
-      "on-subtle": {
-        "functional": {
-          "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.400}"}
-          }
-        }
-      },
       "on-sunken": {
         "functional": {
           "warning": {
@@ -548,10 +399,10 @@
           "2": {"$type":"color","$value":"{dark-switch.base.700}"},
           "3": {"$type":"color","$value":"{dark-switch.base.600}"},
           "4": {"$type":"color","$value":"{dark-switch.base.500}"},
-          "5": {"$type":"color","$value":"{dark-switch.base.600}"}
+          "5": {"$type":"color","$value":"{dark-switch.base.400}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.300}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"}
         },
         "functional": {
           "success": {
@@ -583,30 +434,21 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.400}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.400}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.400}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.400}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.400}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.400}"}
           }
         }
       },
       "accent": {
         "neutral": {
-          "default": {"$type":"color","$value":"{dark-switch.base.200}"},
+          "default": {"$type":"color","$value":"{dark-switch.base.100}"},
           "hover": {"$type":"color","$value":"{dark-switch.base.200}"},
           "active": {"$type":"color","$value":"{dark-switch.base.300}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.300}"},
-          "hover": {"$type":"color","$value":"{brand.dark.400}"},
-          "active": {"$type":"color","$value":"{brand.dark.500}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"}
         },
         "functional": {
           "success": {
@@ -622,22 +464,19 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.500}"}
+            "default": {"$type":"color","$value":"{extended.lavender.400}"},
+            "hover": {"$type":"color","$value":"{extended.lavender.500}"},
+            "active": {"$type":"color","$value":"{extended.lavender.600}"}
           },
-          "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.500}"}
+          "lime": {
+            "default": {"$type":"color","$value":"{extended.lime.400}"},
+            "hover": {"$type":"color","$value":"{extended.lime.500}"},
+            "active": {"$type":"color","$value":"{extended.lime.600}"}
           },
-          "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.600}"}
-          },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.500}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.500}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.500}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.400}"},
+            "hover": {"$type":"color","$value":"{extended.wood.500}"},
+            "active": {"$type":"color","$value":"{extended.wood.600}"}
           }
         }
       },
@@ -648,9 +487,9 @@
           "active": {"$type":"color","$value":"{dark-switch.base.400}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.dark.900}"},
-          "hover": {"$type":"color","$value":"{brand.dark.800}"},
-          "active": {"$type":"color","$value":"{brand.dark.700}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.dark.800}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.dark.700}"}
         },
         "functional": {
           "success": {
@@ -681,48 +520,29 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.800}"}
+            "default": {"$type":"color","$value":"{extended.lavender.900}"},
+            "hover": {"$type":"color","$value":"{extended.lavender.800}"},
+            "active": {"$type":"color","$value":"{extended.lavender.700}"}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.800}"}
+            "default": {"$type":"color","$value":"{extended.lime.800}"},
+            "hover": {"$type":"color","$value":"{extended.lime.700}"},
+            "active": {"$type":"color","$value":"{extended.lime.600}"}
           },
           "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.800}"}
+            "default": {"$type":"color","$value":"{extended.coral.900}"},
+            "hover": {"$type":"color","$value":"{extended.coral.800}"},
+            "active": {"$type":"color","$value":"{extended.coral.700}"}
           },
           "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.800}"}
+            "default": {"$type":"color","$value":"{extended.forest.900}"},
+            "hover": {"$type":"color","$value":"{extended.forest.800}"},
+            "active": {"$type":"color","$value":"{extended.forest.700}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.800}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.800}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.800}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.800}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.900}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.800}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.700}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.900}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.800}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.700}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.900}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.800}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.700}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.900}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.800}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.700}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.900}"},
+            "hover": {"$type":"color","$value":"{extended.wood.800}"},
+            "active": {"$type":"color","$value":"{extended.wood.700}"}
           }
         }
       },
@@ -743,85 +563,92 @@
     }
   },
   "brand-identity": {
-    "marine-blue": {"$type":"color","$value":"{brand.identity-base.true-white}"}
+    "logo": {
+      "color": {
+        "primary": {"$type":"color","$value":"{brand.identity.neutral.true-white}"}
+      },
+      "black-and-white": {
+        "accent": {"$type":"color","$value":"{brand.identity.neutral.true-white}"}
+      }
+    }
   },
   "dataviz": {
     "role": {
       "brand": {
         "bg": {
           "accent": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.200}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.400}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.500}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.600}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.200}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.600}"}
           },
           "subtile": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.400}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.500}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.600}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.700}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.600}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.700}"}
           },
           "area": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.950}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"}
           }
         },
         "text": {
           "base": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.300}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"}
           },
           "on-accent": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.50}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.50}"}
+            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"}
           },
           "on-subtile": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.950}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.50}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.50}"}
+            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"}
           }
         },
         "icon": {
-          "brand-1": {"$type":"color","$value":"{brand.dark.950}"},
-          "brand-2": {"$type":"color","$value":"{brand.dark.950}"},
-          "brand-3": {"$type":"color","$value":"{brand.dark.950}"},
-          "brand-4": {"$type":"color","$value":"{brand.dark.50}"},
-          "brand-5": {"$type":"color","$value":"{brand.dark.50}"}
+          "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+          "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+          "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+          "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"},
+          "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"}
         },
         "border": {
           "base": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.200}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.400}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.700}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.800}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.900}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.200}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.700}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.800}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}"}
           },
           "on-accent": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.200}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.400}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.500}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.600}"}
+            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7023960947990417,0.9275621175765991,0.981253981590271],"alpha":1,"hex":"#B3EDFA"},"$description":"The Figma library aliases Colors / Alias: brand/dark/200, which it does not contain; its literal value is kept"},
+            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5883331298828125,0.8792593479156494,0.9949541687965393],"alpha":1,"hex":"#96E0FE"},"$description":"The Figma library aliases Colors / Alias: brand/dark/300, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.32156863808631897,0.7764706015586853,0.9098039269447327],"alpha":1,"hex":"#52C6E8"},"$description":"The Figma library aliases Colors / Alias: brand/dark/400, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22816769778728485,0.6579188108444214,0.8049243092536926],"alpha":1,"hex":"#3AA8CD"},"$description":"The Figma library aliases Colors / Alias: brand/dark/500, which it does not contain; its literal value is kept"},
+            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.1845805048942566,0.5216836929321289,0.6749654412269592],"alpha":1,"hex":"#2F85AC"},"$description":"The Figma library aliases Colors / Alias: brand/dark/600, which it does not contain; its literal value is kept"}
           },
           "separator": {
-            "brand-1": {"$type":"color","$value":"{brand.dark.200}"},
-            "brand-2": {"$type":"color","$value":"{brand.dark.300}"},
-            "brand-3": {"$type":"color","$value":"{brand.dark.400}"},
-            "brand-4": {"$type":"color","$value":"{brand.dark.500}"},
-            "brand-5": {"$type":"color","$value":"{brand.dark.600}"}
+            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7023960947990417,0.9275621175765991,0.981253981590271],"alpha":1,"hex":"#B3EDFA"},"$description":"The Figma library aliases Colors / Alias: brand/dark/200, which it does not contain; its literal value is kept"},
+            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5883331298828125,0.8792593479156494,0.9949541687965393],"alpha":1,"hex":"#96E0FE"},"$description":"The Figma library aliases Colors / Alias: brand/dark/300, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.32156863808631897,0.7764706015586853,0.9098039269447327],"alpha":1,"hex":"#52C6E8"},"$description":"The Figma library aliases Colors / Alias: brand/dark/400, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22816769778728485,0.6579188108444214,0.8049243092536926],"alpha":1,"hex":"#3AA8CD"},"$description":"The Figma library aliases Colors / Alias: brand/dark/500, which it does not contain; its literal value is kept"},
+            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.1845805048942566,0.5216836929321289,0.6749654412269592],"alpha":1,"hex":"#2F85AC"},"$description":"The Figma library aliases Colors / Alias: brand/dark/600, which it does not contain; its literal value is kept"}
           }
         }
       },
@@ -838,7 +665,7 @@
         }
       },
       "extended": {
-        "sand": {
+        "wood": {
           "accent": {
             "extended-1": {"$type":"color","$value":"{extended.lavender.600}"},
             "extended-3": {"$type":"color","$value":"{extended.coral.600}"},
@@ -854,7 +681,7 @@
             "extended-4": {"$type":"color","$value":"{extended.forest.900}"},
             "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.21270282566547394,0.22243939340114594,0.5424725413322449],"alpha":1,"hex":"#36398A"},"$description":"The Figma library aliases Colors / Base: extended/archive/royal-blue/800, which it does not contain; its literal value is kept"},
             "extended-6": {"$type":"color","$value":"{extended.orchid.900}"},
-            "extended-7": {"$type":"color","$value":"{extended.sand.800}"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.800}"},
             "extended-8": {"$type":"color","$value":"{extended.amber.900}"}
           }
         },
@@ -873,7 +700,7 @@
             "extended-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12770621478557587,0.6857120990753174,0.5626434683799744],"alpha":1,"hex":"#21AF8F"},"$description":"The Figma library aliases Colors / Alias: extended/green/500, which it does not contain; its literal value is kept"},
             "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.691927969455719,0.7146194577217102,0.9519326686859131],"alpha":1,"hex":"#B0B6F3"},"$description":"The Figma library aliases Colors / Alias: extended/royal-blue/300, which it does not contain; its literal value is kept"},
             "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9111660122871399,0.6873764991760254,0.875260591506958],"alpha":1,"hex":"#E8AFDF"},"$description":"The Figma library aliases Colors / Alias: extended/pink/300, which it does not contain; its literal value is kept"},
-            "extended-7": {"$type":"color","$value":"{extended.sand.400}"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.400}"},
             "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9803921580314636,0.7568627595901489,0.21960784494876862],"alpha":1,"hex":"#FAC138"},"$description":"The Figma library aliases Colors / Alias: extended/yellow-01/400, which it does not contain; its literal value is kept"}
           },
           "separator": {
@@ -924,15 +751,15 @@
   "ai": {
     "bg": {
       "gradient": {
-        "avatar": {
-          "start": {"$type":"color","$value":"{brand.dark.800}"},
-          "end": {"$type":"color","$value":"{brand.dark.500}"}
-        },
         "skeleton": {
-          "end": {"$type":"color","$value":"{brand.dark.900}"}
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}"}
+        },
+        "avatar": {
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.dark.800}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"}
         },
         "subtle": {
-          "end": {"$type":"color","$value":"{brand.dark.900}"}
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}"}
         },
         "loading": {
           "end": {"$type":"color","$value":"{ai.bg.subtle.hover}"}
@@ -942,40 +769,40 @@
     "text": {
       "gradient": {
         "on-base": {
-          "start": {"$type":"color","$value":"{brand.dark.400}","$description":"Only use with natural bg"},
-          "end": {"$type":"color","$value":"{brand.dark.600}","$description":"Only use with natural bg"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}","$description":"Only use with natural bg"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.600}","$description":"Only use with natural bg"}
         },
         "on-accent": {
-          "start": {"$type":"color","$value":"{brand.dark.950}","$description":"Only use with natural bg"},
-          "mid": {"$type":"color","$value":"{brand.dark.600}","$description":"Only use with natural bg"},
-          "end": {"$type":"color","$value":"{brand.dark.600}","$description":"Only use with natural bg"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}","$description":"Only use with natural bg"},
+          "mid": {"$type":"color","$value":"{brand.palettes.core-colors.dark.600}","$description":"Only use with natural bg"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.600}","$description":"Only use with natural bg"}
         }
       }
     },
     "icon": {
       "on-base": {
-        "default": {"$type":"color","$value":"{brand.dark.400}","$description":"Only use with natural bg"}
+        "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}","$description":"Only use with natural bg"}
       },
       "on-subtle": {
-        "default": {"$type":"color","$value":"{brand.dark.400}","$description":"Only use with natural bg"}
+        "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}","$description":"Only use with natural bg"}
       },
       "on-accent": {
-        "default": {"$type":"color","$value":"{brand.dark.900}","$description":"Only use with natural bg"}
+        "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}","$description":"Only use with natural bg"}
       }
     },
     "border": {
       "gradient": {
         "avatar": {
-          "start": {"$type":"color","$value":"{brand.dark.500}"},
-          "end": {"$type":"color","$value":"{brand.dark.800}"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.800}"}
         },
         "default": {
-          "start": {"$type":"color","$value":"{brand.dark.950}"},
-          "end": {"$type":"color","$value":"{brand.dark.700}"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.700}"}
         },
         "focus": {
-          "start": {"$type":"color","$value":"{brand.dark.900}"},
-          "end": {"$type":"color","$value":"{brand.dark.400}"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"}
         }
       }
     }

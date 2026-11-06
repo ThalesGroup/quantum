@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "code",
   "name": "Code",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "summary": "The syntax highlighting colors of code, one per category, and the states of marked lines, readable on every surface in every mode.",
   "description": "Code samples, token paths and snippets are set in the mono family (Typography foundation); this foundation colors them. Each syntax category (keyword, variable, function, class and type, string, number, comment) has a semantic color from the Figma library's code colors, global.text.code; the design system adds colors for diffs, invalid code and links, and backgrounds for marked lines, all picked from colors it already has. Everything else in code (plain identifiers, operators, punctuation) keeps the primary on-base text color. A highlighter maps the categories of its grammars to these colors: on the web, a Shiki theme generated from the tokens does it once for every mode, and a style sheet draws the marked lines.",
@@ -534,6 +534,25 @@
   ],
   "decisions": [
     {
+      "id": "code-colors-library",
+      "date": "2026-11-06",
+      "version": "0.2.0",
+      "area": "color",
+      "status": "active",
+      "text": "Every syntax color reaches 4.5:1 on every surface level and sunken, in every mode, with the Figma library's own steps: since its POC2 export, light class and type is amber 800, string forest 700, number coral 700 and keyword lavender 700 (a new value, the lavender ramp now aliasing the purple tint), dark string forest 400, comment dark-switch base 300 and keyword lavender 300. No code color diverges from the library any more.",
+      "rationale": "The library adopted passing steps for the four colors the previous decision had moved (one step further for class and type); keeping the repository's own steps would recreate a divergence for nothing.",
+      "tokens": [
+        "global.text.code.keyword",
+        "global.text.code.class-and-type",
+        "global.text.code.string",
+        "global.text.code.number",
+        "global.text.code.comment"
+      ],
+      "supersedes": [
+        "code-colors-contrast"
+      ]
+    },
+    {
       "id": "code-additions",
       "date": "2026-10-02",
       "version": "0.1.0",
@@ -568,7 +587,7 @@
       "date": "2026-10-02",
       "version": "0.1.0",
       "area": "accessibility",
-      "status": "active",
+      "status": "superseded",
       "text": "Every syntax color reaches 4.5:1 on every surface level and sunken, in every mode. Where the Figma library's step does not, the color takes the nearest step of the same hue that does: light class and type amber 700 (the Figma library 500), string forest 700 (600), number coral 700 (500); dark string forest 400 (500), comment dark-switch base 300 (400). Light mode is then step 700 of every hue and light-switch base 700 for comments; dark mode step 400 and dark-switch base 300.",
       "tokens": [
         "global.text.code.class-and-type",
@@ -593,6 +612,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-06",
+      "note": "Decision code-colors-library (supersedes code-colors-contrast): the Figma library's POC2 export carries passing steps for every syntax color, so the code colors follow it again (Color foundation 3.1.0). Light: keyword #6B0DAC (lavender 700, new value), class and type #3B2D12 (amber 800, was 700 #7F6426), string #41661E (forest 700, new value), number #AC4836 (coral 700, new value); dark: keyword #D5AEFF (lavender 300, was 400), string #7BBA35 (forest 400, new value), number #FB826C, comment #9C9C9C (dark-switch base 300, unchanged step, new value). The link color aliases brand.palettes.core-colors (same values). Every code pair still passes 4.5:1 (pnpm validate)."
+    },
     {
       "version": "0.1.1",
       "date": "2026-10-22",

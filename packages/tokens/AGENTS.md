@@ -183,9 +183,8 @@ Every raw and semantic token comes from one of two places, and its directory say
 | `src/additions/**`, `src/platforms/**` | Added by the design system. Each file says so in its `$description`. |
 
 The recreation keeps the Figma library as it is: its paths, made valid only where a DTCG path or a CSS
-variable cannot carry them (kebab-case, no emoji or space; `brand.identity` becomes
-`brand.identity-base` because its CSS variable would collide with the mapped `brand-identity`),
-its values (lengths as px dimensions, opacity as 0-1, families as a single name), its aliases
+variable cannot carry them (kebab-case, no emoji, space or `&`: `black&white` becomes
+`black-and-white`), its values (lengths as px dimensions, opacity as 0-1, families as a single name), its aliases
 (`global.bg.level.0.default` → `global.bg.base.neutral.1` → `light-switch.base.25` →
 `neutral.light.ash.25`), its typos and its errors. Where the library composes a color from a
 palette step and an opacity, or aliases a color it does not contain, the token holds the literal

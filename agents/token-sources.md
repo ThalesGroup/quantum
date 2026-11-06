@@ -26,8 +26,7 @@ of any token shows in its path:
   Typography in `packages/tokens/src/semantic/` (read by components and the site), the dark
   mapping in `packages/tokens/src/modes/dark/`: the same paths, made valid only where a path or a
   CSS variable cannot carry them (`⚠️ai` → `ai`, `semiBold` → `semi-bold`, `drop shadow` →
-  `drop-shadow`; `brand.identity` → `brand.identity-base`, whose CSS variable would collide with
-  the mapped `brand-identity`), the same values (lengths in px, opacity as 0-1), the same
+  `drop-shadow`, `black&white` → `black-and-white`), the same values (lengths in px, opacity as 0-1), the same
   aliases, errors and limitations included (typos, aliases to colors it does not contain, kept
   as literals, contrast failures recorded as known issues of the Color foundation). Colors the
   library composes from a step and an opacity are written as the resulting color. The Palette

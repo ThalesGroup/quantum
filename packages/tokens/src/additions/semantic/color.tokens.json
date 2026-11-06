@@ -16,7 +16,7 @@
     },
     "focus": {
       "ring": {
-        "$value": "{brand.light.600}",
+        "$value": "{brand.palettes.core-colors.light.600}",
         "$description": "Focus indicator color shared by every interactive component."
       }
     }

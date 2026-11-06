@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "accordion",
   "name": "Accordion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "disclosure",
   "summary": "A stack of sections whose content shows and hides under a header people activate.",
@@ -270,14 +270,14 @@
         ]
       },
       {
-        "text": "Title text contrasts 19.07:1 (light) and 11.27:1 (dark) with the default surface, 17.99:1 and 10.32:1 on the hover tint; content text 12.87:1 and 8.80:1. The hairlines are decoration.",
+        "text": "Title text contrasts 19.03:1 (light) and 11.28:1 (dark) with the default surface, 18.00:1 and 10.33:1 on the hover tint; content text 12.78:1 and 8.86:1. The hairlines are decoration.",
         "refs": [
           "wcag:1.4.3",
           "wcag:1.4.11"
         ]
       },
       {
-        "text": "A visible focus indicator appears around the focused trigger; the focus ring contrasts 5.79:1 (light) and 12.80:1 (dark) with the surface.",
+        "text": "A visible focus indicator appears around the focused trigger; the focus ring contrasts 5.77:1 (light) and 12.76:1 (dark) with the surface.",
         "refs": [
           "wcag:2.4.7",
           "wcag:2.4.13",
@@ -579,6 +579,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 5 tokens follow the ash retune (one to four units per channel). Dark: 2 tokens follow the ash retune (one to four units per channel). Contrast re-measured on the accessibility guidelines: 5.79 → 5.77:1, 8.80 → 8.86:1, 10.32 → 10.33:1, 11.27 → 11.28:1, 12.80 → 12.76:1, 12.87 → 12.78:1, 17.99 → 18.00:1, 19.07 → 19.03:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

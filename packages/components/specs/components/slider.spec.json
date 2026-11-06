@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "slider",
   "name": "Slider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "slider",
   "summary": "Lets people pick a value in a range by moving a thumb along a track.",
@@ -278,14 +278,14 @@
         ]
       },
       {
-        "text": "The thumb and the track are what identify the control and show its value: the thumb contrasts at least 3:1 with the track and the surface in every color mode (brand fill 4.85:1 on the track in light mode and 10.73:1 in dark mode, 5.79:1 and 12.80:1 on the default surface; its light rim separates it from the track), and the focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "text": "The thumb and the track are what identify the control and show its value: the thumb contrasts at least 3:1 with the track and the surface in every color mode (brand fill 4.88:1 on the track in light mode and 10.70:1 in dark mode, 5.77:1 and 12.76:1 on the default surface; its light rim separates it from the track), and the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
         ]
       },
       {
-        "text": "Label and value text contrast at least 4.5:1 with the surface: 19.07:1 and 12.87:1 (light), 11.27:1 and 8.80:1 (dark) on the default surface. Disabled text is inactive and exempt.",
+        "text": "Label and value text contrast at least 4.5:1 with the surface: 19.03:1 and 12.78:1 (light), 11.28:1 and 8.86:1 (dark) on the default surface. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -623,6 +623,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 4 tokens follow the ash retune (one to four units per channel). Dark: 5 tokens follow the ash retune (one to four units per channel). Contrast re-measured on the accessibility guidelines: 4.85 → 4.88:1, 5.79 → 5.77:1, 8.80 → 8.86:1, 10.73 → 10.70:1, 11.27 → 11.28:1, 12.80 → 12.76:1, 12.87 → 12.78:1, 19.07 → 19.03:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

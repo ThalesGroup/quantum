@@ -42,7 +42,7 @@ export const VARIABLES = {
   border: { token: 'card.container.border-color.level-1', reason: 'Component decision: the edge of the Quantum Card at level 1 (= global.border.level.edge.level.1). shadcn\'s --border is mostly card, popover and table edges; Quantum\'s Divider is darker (divider.container.color = global.border.base.neutral.4), which separators lose.' },
   input: { token: 'text-field.control.border-color.default', reason: 'Component decision: the border of a Quantum form control (= global.border.accent.neutral.default), also what checkboxes read.' },
   ring: { token: 'color.focus.ring', reason: 'The Quantum focus ring color (shadcn draws it as a 3px ring at 50%, not Quantum\'s solid 2.4px ring with offset).' },
-  'chart-1': { token: 'dataviz.role.brand.bg.accent.brand-1', reason: 'The Quantum brand data series, darkest first. The categorical alternative is dataviz.role.extended.sand.accent.extended-1..8.' },
+  'chart-1': { token: 'dataviz.role.brand.bg.accent.brand-1', reason: 'The Quantum brand data series, darkest first. The categorical alternative is dataviz.role.extended.wood.accent.extended-1..8.' },
   'chart-2': { token: 'dataviz.role.brand.bg.accent.brand-2' },
   'chart-3': { token: 'dataviz.role.brand.bg.accent.brand-3' },
   'chart-4': { token: 'dataviz.role.brand.bg.accent.brand-4' },

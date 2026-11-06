@@ -20,21 +20,24 @@ without touching a component, and what will let another neutral palette replace 
 single place.
 
 The Figma library is kept with its errors and limitations on purpose: it is the starting point the
-system evolves from, one decision at a time. Its error colors miss the contrast minimum in a
-few places (see Accessibility). The few colors the design system adds live apart, in
-`tokens/additions/`.
+system evolves from, one decision at a time. Since its POC2 export (November 2026) its error
+colors pass the contrast minimum everywhere; one warning icon misses it in light mode (see
+Accessibility). The few colors the design system adds live apart, in `tokens/additions/`.
 
 ## Palettes
 
-- **Neutral.** Ash and slate, a warm and a cool grey, each in a light ramp (light mode) and a
+- **Neutral.** Ash, a pure grey, and slate, a cool grey, each in a light ramp (light mode) and a
   dark ramp (dark mode).
 - **Palette switch.** `light-switch.base.<step>` and `dark-switch.base.<step>` point to one
   neutral palette: ash today. Every neutral role reads them, never a neutral ramp directly.
   Slate will switch every neutral role at once when the system supports a second palette.
-- **Brand.** The brand ramps, light and dark, plus the brand identity colors.
+- **Brand.** The brand core colors in a light and a dark ramp, four tint palettes (purple,
+  yellow, green, beige), and the brand identity colors: the two core colors, true white and
+  true black, and the light and dark step of each tint.
 - **Functional.** Error, warning, success, info and severe: hues that carry a status.
-- **AI, extended, branded extended.** Hues for AI-assisted features, categories, illustrations
-  and data.
+- **AI and extended.** Hues for AI-assisted features, categories, illustrations and data. Amber,
+  azure, coral and orchid are hues of their own; forest, lavender, lime and wood alias the brand
+  tints (green, purple, yellow, beige).
 
 ## Roles
 
@@ -126,10 +129,14 @@ increased-contrast variant yet (see Accessibility).
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
   The Specification section shows every ratio, computed from the tokens; the validator fails
   when one drops under the minimum.
-- **Known failures.** the Figma library's error roles miss that minimum: error text on some levels,
-  text on the error accent fill at rest, and text on the hover and active subtle error fills.
-  They are kept as the Figma library defines them and tracked as a known issue; the validator
-  reports them as warnings until they are fixed, then asks for the marker to be removed.
+- **One known failure.** The Figma library's POC2 export sets the warning icon on the page
+  (`global.icon.on-base.functional.warning.default`, and on sunken) to warning 300 in light mode,
+  the step that fixed dark mode: 1.55:1 on the page, under the 3:1 of
+  [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html),
+  while the warning text stays warning 800. It is kept as exported, tracked as a known issue (the
+  validator reports it as a warning until it is fixed, then asks for the marker to be removed) and
+  reported to the designers. The error roles, which missed the minimum before that export, now
+  pass everywhere.
 - **Measured as people see it.** Contrast is measured against the background the text is
   rendered over. The subtle neutral fill is translucent, so it is composited over each surface
   before measuring.

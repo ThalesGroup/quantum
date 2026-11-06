@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -25,7 +25,7 @@
     {
       "id": "palettes",
       "name": "Palettes",
-      "text": "Raw palettes are ramps from 25 (lightest) to 950 (darkest): neutral (ash and slate) and brand in a light and a dark variant, the functional hues (error, warning, success, info, severe), AI, extended and branded extended hues, and the brand identity colors. Only other tokens reference them, never a component."
+      "text": "Raw palettes are ramps from 25 (lightest) to 950 (darkest): neutral (ash and slate, each in a light and a dark ramp), the brand core colors in a light and a dark ramp (brand.palettes.core-colors) and the brand tint palettes purple, yellow, green and beige (brand.palettes.tint-colors), the functional hues (error, warning, success, info, severe), AI, the extended hues (amber, azure, coral and orchid of their own; forest, lavender, lime and wood alias the green, purple, yellow and beige tints), and the brand identity colors (core colors, neutrals, the light and dark step of each tint). Only other tokens reference them, never a component."
     },
     {
       "id": "palette-switch",
@@ -180,7 +180,7 @@
       "tokens": [
         "brand.*"
       ],
-      "description": "Brand ramps for light and dark mode, and the brand identity colors."
+      "description": "The brand core colors in a light and a dark ramp, the four tint palettes, and the brand identity colors."
     },
     {
       "id": "functional",
@@ -208,16 +208,7 @@
       "tokens": [
         "extended.*"
       ],
-      "description": "Additional hues for categories, illustrations and data."
-    },
-    {
-      "id": "branded-extended",
-      "name": "Branded extended palette",
-      "display": "palette",
-      "tokens": [
-        "branded-extended.*"
-      ],
-      "description": "Brand-flavoured additional hues."
+      "description": "Additional hues for categories, illustrations and data: amber, azure, coral and orchid of their own; forest, lavender, lime and wood alias the brand tints."
     },
     {
       "id": "utility",
@@ -388,8 +379,7 @@
       "minimum": 4.5,
       "refs": [
         "wcag:1.4.3"
-      ],
-      "knownIssue": "The Figma library's error colors: the error text and fills fall under 4.5:1 in some states, kept as they are until the palette is redefined"
+      ]
     },
     {
       "id": "on-accent-neutral",
@@ -431,8 +421,7 @@
       "minimum": 4.5,
       "refs": [
         "wcag:1.4.3"
-      ],
-      "knownIssue": "The Figma library's error colors: the error text and fills fall under 4.5:1 in some states, kept as they are until the palette is redefined"
+      ]
     },
     {
       "id": "on-subtle-neutral",
@@ -481,8 +470,7 @@
       "minimum": 4.5,
       "refs": [
         "wcag:1.4.3"
-      ],
-      "knownIssue": "The Figma library's error colors: the error text and fills fall under 4.5:1 in some states, kept as they are until the palette is redefined"
+      ]
     },
     {
       "id": "text-disabled",
@@ -634,12 +622,29 @@
         "wcag:1.4.11",
         "understanding-ntc-boundaries"
       ]
+    },
+    {
+      "id": "icon-warning",
+      "description": "The warning icon on every surface level and on sunken (it is a graphical object: 3:1).",
+      "foreground": "global.icon.on-base.functional.warning.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11"
+      ],
+      "knownIssue": "The Figma library's POC2 export sets the on-base warning icon to warning 300 in light mode too (1.55:1 on the page), the step that fixed dark mode, while the warning text stays warning 800; kept as exported (decision figma-library-poc2) and reported to the designers"
     }
   ],
   "accessibility": {
     "guidelines": [
       {
-        "text": "Text contrasts at least 4.5:1 with what it sits on, in every mode, family and enabled state: on-base text on every surface level and on sunken, on-accent and on-subtle text on their fills. The Figma library’s error roles fall short today (error text on some levels, text on the error accent fill, text on the hover and active subtle error fills), tracked as a known issue.",
+        "text": "Text contrasts at least 4.5:1 with what it sits on, in every mode, family and enabled state: on-base text on every surface level and on sunken, on-accent and on-subtle text on their fills. Since the Figma library’s POC2 export the error roles pass everywhere; the on-base warning icon falls short in light mode (1.55:1 on the page, the pair icon-warning), tracked as a known issue.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -823,11 +828,36 @@
   ],
   "decisions": [
     {
+      "id": "figma-library-poc2",
+      "date": "2026-11-06",
+      "version": "3.1.0",
+      "area": "color",
+      "status": "active",
+      "text": "The color tokens follow the Figma library's POC2 export of 2026-11-05 (Colors / Base, Colors / Palette Switch in its ash mode, Colors / Mapped light and dark), recreated the same way as before: the same paths made valid (black&white becomes black-and-white), the same values, the same aliases, errors and limitations included. The export is the reference wherever the repository had not changed a value: the ash ramp becomes a pure grey, the brand ramps move under brand.palettes.core-colors, the branded extended hues become the brand tint palettes (brand.palettes.tint-colors) that forest, lavender, lime and the new wood alias, sand and the mapped roles of amber, azure, orchid and the four tints go, the error, info and warning text and icon roles move to other steps, and the library now carries the code color steps the Code foundation had chosen. The design system still adds only color.transparent and the focus ring color, which alias the new brand paths.",
+      "rationale": "The designers' POC2 export is the new source of truth. The team asked for it to be taken as it is, including the values that look like slips (the light-mode warning icon at warning 300, the dark-mode sunken brand fill on the light ramp): they are reported to the designers rather than corrected here.",
+      "tokens": [
+        "global.*",
+        "neutral.*",
+        "light-switch.*",
+        "dark-switch.*",
+        "brand.*",
+        "functional.*",
+        "extended.*",
+        "brand-identity.*",
+        "ai.*",
+        "dataviz.*",
+        "color.*"
+      ],
+      "supersedes": [
+        "figma-library-colors"
+      ]
+    },
+    {
       "id": "figma-library-colors",
       "date": "2026-10-02",
       "version": "3.0.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "The color tokens are the Figma library's Colors / Base, Colors / Palette Switch (ash) and Colors / Mapped (light and dark), recreated with the same paths made valid, the same values and the same aliases, errors and limitations included. The design system adds only color.transparent and the focus ring color, kept apart in tokens/additions/.",
       "rationale": "One vocabulary: the current state mixed the repository's first decisions with tokens partly taken from the Figma library, which made every decision hard to discuss. The Figma library as it is becomes the starting point the system evolves from.",
       "tokens": [
@@ -889,6 +919,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "3.1.0",
+      "date": "2026-11-06",
+      "note": "Decision figma-library-poc2 (supersedes figma-library-colors): the tokens are recreated from the Figma library's POC2 export. Breaking paths: brand.light.* and brand.dark.* become brand.palettes.core-colors.light.* and .dark.*; brand.identity-base.* becomes brand.identity.core-colors.*, .neutral.* and .tint-colors.*; branded-extended.* becomes brand.palettes.tint-colors.*; extended.sand.* goes and extended.wood.* arrives; the mapped roles of the extended hues amber, azure, orchid, sand, purple, yellow, green and beige go (lavender, lime, coral, forest and wood remain, with hover and active steps for their accent and subtle borders); brand-identity.marine-blue and light-blue become brand-identity.logo.color.primary and secondary, plus brand-identity.logo.black-and-white.accent; dataviz.role.extended.sand becomes wood. Values: the neutral ash ramp is a pure grey (every neutral role moves by one to four units), slate is retuned, error 500 is #DF2821, forest, lavender and lime alias the green, purple and yellow tints, coral is retuned. Light: error text on the page error 600 (was 500), on tinted fills error 700 (was 600), info text info 700 (was 600), the on-base and on-sunken warning icons warning 300 (was 800; a known issue, pair icon-warning). Dark: on-base brand text dark 400 (was 200), success, severe and error text re-picked, the on-base warning text and icon warning 300 (was 700, 2.14:1), the base neutral border 5 dark-switch 400 (was 600), the base brand border dark 500 (was 300), the accent neutral border one step lighter, the sunken level #141414 (was #0D0D0D), the sunken brand fill on the light ramp's 950. The three error contrast pairs now pass everywhere (error text 6.13:1 or more on the levels, on the error accent fill 4.57:1, on the subtle error fills 4.75:1 or more), so their known issue is removed. Specimens: Brand covers the core colors, the tints and the identity colors; Branded extended is gone."
+    },
     {
       "version": "3.0.0",
       "date": "2026-10-02",

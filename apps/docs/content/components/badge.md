@@ -75,8 +75,8 @@ source it comes from. This section explains the decisions behind it.
 - **Color never alone.** The label says the status in words, so the badge still reads without
   its tint ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
 - **Contrast.** The label is text and needs 4.5:1 against the fill in every emphasis and intent,
-  in both modes. All pairs pass except the accent error fill (4.46:1), a limit of the Figma library's
-  error colors tracked as a known issue
+  in both modes. All pairs pass; the lowest is the accent error fill (4.56:1 since the Figma
+  library's POC2 export moved the error colors)
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
   The border is decoration and needs no contrast of its own
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)).

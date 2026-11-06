@@ -57,8 +57,9 @@ source it comes from. This section explains the decisions behind it.
   [WAI tutorial: Informative images](https://www.w3.org/WAI/tutorials/images/informative/),
   [WAI tutorial: Functional images](https://www.w3.org/WAI/tutorials/images/functional/)).
 - **Contrast for named icons.** A named icon is a graphical object and needs 3:1 against the
-  surface. The system's icon roles pass, except the warning icon color in dark mode (2.14:1), a
-  the Figma library limit tracked as a known issue; pair a warning icon with text
+  surface. The system's icon roles pass, except the warning icon color in light mode (1.54:1),
+  which the Figma library's POC2 export set to warning 300, the step that fixed dark mode: a
+  known issue of the Color foundation; pair a warning icon with text
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
 

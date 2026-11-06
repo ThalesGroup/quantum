@@ -115,7 +115,7 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   assert.deepEqual([label.type, label.typography, label.fill], ['text', 'button.label.typography.medium', 'button.label.color.accent.neutral.default']);
   assert.deepEqual(plan.values['button.label.typography.medium'], { fontFamily: 'Inter', fontSize: 16, fontWeight: 500, letterSpacing: -0.48, lineHeight: 1 });
   assert.equal(plan.values['button.container.min-height.medium'], 36);
-  assert.deepEqual(plan.values['button.container.background.accent.neutral.default'], { color: '#201E1F', opacity: 1 });
+  assert.deepEqual(plan.values['button.container.background.accent.neutral.default'], { color: '#1F1F1F', opacity: 1 });
 
   const leading = button.variants.find((v) => v.props['Leading icon'] === 'true' && v.props.Size === 'small' && v.props.State === 'default' && v.props['Trailing icon'] === 'false');
   const icon = leading.root.children[0];
@@ -707,7 +707,7 @@ test('the plugin writes the tokens and draws the Button bound to them', async ()
   assert.equal(first.tokens.paddingLeft, 'button.container.padding-inline.medium');
   assert.equal(first.tokens.layoutItemMinH, 'button.container.min-height.medium');
   assert.equal(first.flex.leftPadding, 12);
-  assert.deepEqual(first.fills, [{ fillColor: '#201E1F', fillOpacity: 1 }]);
+  assert.deepEqual(first.fills, [{ fillColor: '#1F1F1F', fillOpacity: 1 }]);
   const label = first.children.find((n) => n.name === 'label');
   assert.deepEqual([label.characters, label.fontFamily, label.fontWeight, label.fontSize, label.lineHeight], ['Button', 'Inter', '500', '16', '1']);
   assert.equal(label.tokens.typography, 'button.label.typography.medium');

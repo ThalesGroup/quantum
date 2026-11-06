@@ -75,8 +75,8 @@ density-independent pixels.
 - **Contrast does not depend on size.** Every text color must reach 4.5:1, the minimum for
   normal text, so no text relies on the large-text exception
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
-  the Color foundation computes the ratios. The Figma library's error colors fall short in a few
-  states.
+  the Color foundation computes the ratios; every text color reaches it since the Figma
+  library's POC2 export moved the error colors.
 - **Dynamic Type on iOS.** The system font supports Dynamic Type; layouts must adapt to every
   text size, including the larger accessibility sizes
   ([Apple HIG: Supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type),

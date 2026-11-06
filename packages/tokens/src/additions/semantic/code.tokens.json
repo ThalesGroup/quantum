@@ -8,7 +8,7 @@
         "deleted": { "$value": "{functional.error.600}", "$description": "Lines a diff removes. The step of error text on tinted fills: on-base error (error 500) is 4.26:1 on level 1." },
         "changed": { "$value": "{functional.severe.700}", "$description": "Lines a context diff changes. The on-base severe text step." },
         "invalid": { "$value": "{functional.error.600}", "$description": "Code a grammar marks invalid or deprecated. Same step as deleted." },
-        "link": { "$value": "{brand.light.600}", "$description": "URLs and links in code and markup. The on-base brand text step." }
+        "link": { "$value": "{brand.palettes.core-colors.light.600}", "$description": "URLs and links in code and markup. The on-base brand text step." }
       }
     },
     "bg": {

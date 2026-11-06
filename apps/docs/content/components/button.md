@@ -183,10 +183,9 @@ This section explains the decisions behind it.
   Label text needs 4.5:1 against the button background in every emphasis, intent and enabled
   state, in light and in dark mode; disabled buttons are exempt
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
-  The error intent does not meet that minimum everywhere yet: the button uses the Figma library's
-  error colors as they are, and the label falls under 4.5:1 on the accent error fill at rest
-  (both modes), on the subtle error fill on hover and press, and on the ghost error press (light
-  mode). The gap is tracked as a known issue and the Specification tab lists the ratios.
+  Every pair passes since the Figma library's POC2 export moved the error colors: the lowest are
+  the label on the accent error fill at rest (4.56:1, both modes) and on the subtle error fill on
+  press (4.75:1, light mode). The Specification tab lists the ratios.
 - **Borders are not the boundary.** A button is identified by its label, so the light border of
   subtle and ghost buttons (ghost buttons have none at rest) need no 3:1 contrast
   ([WCAG 1.4.11 Non-text Contrast, boundaries](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).

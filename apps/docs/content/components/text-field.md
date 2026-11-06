@@ -96,8 +96,8 @@ This section explains the decisions behind it.
   a light grey: the Figma library's light neutral borders fall under 3:1 in dark mode
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).
   Text needs 4.5:1 ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
-  the error text passes on the default surface but falls to 4.26:1 on the level 1 surface in
-  light mode, a limit of the Figma library's error color tracked as a known issue.
+  the error text passes on every surface since the Figma library's POC2 export moved it to a
+  darker step (5.79:1 on the level 1 surface in light mode, the lowest).
 - **Visible focus.** Focus shows the shared ring outside the border
   ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)),

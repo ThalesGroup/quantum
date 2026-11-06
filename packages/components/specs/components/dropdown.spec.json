@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "dropdown",
   "name": "Dropdown",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "status": "draft",
   "role": "disclosure",
   "summary": "A button that opens a menu of related actions.",
@@ -509,7 +509,7 @@
         ]
       },
       {
-        "text": "Item labels contrast at least 4.5:1 with the item background in every color mode, intent and enabled state, on the menu surface. Disabled items are inactive and exempt. Known exception, from the Figma library's error colors: a pressed error item in light mode (4.35:1), tracked as a known issue.",
+        "text": "Item labels contrast at least 4.5:1 with the item background in every color mode, intent and enabled state, on the menu surface. Disabled items are inactive and exempt. Since the Figma library's POC2 export every pair passes; the lowest is a pressed error item in light mode (6.30:1).",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -1081,6 +1081,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.2",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 7 tokens follow the ash retune (one to four units per channel); item-label.color.* (3 tokens) reads global.text.on-subtle.functional.error.default: #C01619 becomes #940E11. Dark: 4 tokens follow the ash retune (one to four units per channel). Contrast re-measured on the accessibility guidelines: 4.35 → 6.30:1."
+    },
     {
       "version": "0.4.1",
       "date": "2026-10-15",
