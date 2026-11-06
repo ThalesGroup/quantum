@@ -77,9 +77,12 @@ color of the fill.
 The Specification tab lists the full accessibility contract. Each statement there links the
 source it comes from. This section explains the decisions behind it.
 
-- **Decorative unless named.** Next to text that says the same thing, the icon is pure
-  decoration and is hidden; standing alone, it has a text alternative naming what it means,
-  not what it looks like
+- **Decorative unless named, on every platform.** Next to text that says the same thing, the
+  icon is pure decoration and is hidden; standing alone, it has a text alternative naming what
+  it means, not what it looks like, and is exposed as an image. Every platform carries this
+  through its own accessibility services, so the contract names no platform API: outside the
+  web, the platforms' guidelines say to name or hide an image, but not which trait or role it
+  takes
   ([WCAG 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html),
   [WCAG 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html),
   [WAI tutorial: Decorative images](https://www.w3.org/WAI/tutorials/images/decorative/),
@@ -91,7 +94,9 @@ source it comes from. This section explains the decisions behind it.
   POC2 export set the warning icon role to warning 300, the step that fixed dark mode (1.54:1 on
   the page, 1.26:1 on the sunken warning fill), a known issue of the Color foundation. The Icon
   keeps the library's value until the library fixes it, rather than departing from it; until
-  then, pair a warning icon with text. `current` inherits the contrast of the text around it
+  then, pair a warning icon with text. `current` inherits the contrast of the text around it:
+  every text role of the system reaches 3:1 on the surface levels (4.24:1 at the lowest, and
+  3.13:1 for disabled text), so a named icon in `current` does too
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
 - **Larger with the text.** Resize Text covers text, not icons, but people who need larger text
@@ -115,20 +120,32 @@ source it comes from. This section explains the decisions behind it.
 
 ### iOS
 
-- Provide alternative text labels for custom interface icons; they let VoiceOver describe what
-  is on screen ([Apple HIG: Icons](https://developer.apple.com/design/human-interface-guidelines/icons)).
+- Give a meaningful icon an alternative text label for VoiceOver, describing only the
+  information it conveys; exclude a purely decorative icon from VoiceOver
+  ([Apple HIG: Icons](https://developer.apple.com/design/human-interface-guidelines/icons),
+  [Apple HIG: VoiceOver, descriptions](https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions)).
 - A meaningful icon grows with Dynamic Type, up to the larger accessibility sizes; where an
   icon in a row crowds its text, stack the text above it
   ([Apple HIG: Supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
-- Pass `null` as the content description of a decorative icon; describe a meaningful one by its
-  purpose ([Jetpack Compose: graphic elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements),
+- Pass `null` as the content description of a decorative icon, or hide it with
+  `hideFromAccessibility`; describe a meaningful one by its purpose
+  ([Jetpack Compose: graphic elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements),
+  [Jetpack Compose: hide semantics](https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics),
   [Android accessibility: describe each UI element](https://developer.android.com/guide/topics/ui/accessibility/apps#describe-ui-element)).
 
 ### Desktop
 
+- On macOS, VoiceOver asks the same as on iOS: label a meaningful icon with the information it
+  conveys, exclude a purely decorative one
+  ([Apple HIG: VoiceOver, descriptions](https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions),
+  [platform considerations](https://developer.apple.com/design/human-interface-guidelines/voiceover#Platform-considerations)).
+- On Windows and Linux, a native app exposes a named icon's role and name through the
+  platform's accessibility services and leaves a decorative one out, as EN 301 549 asks of
+  any native software with a user interface
+  ([EN 301 549 V3.2.1, clauses 11.1.1.1.1, 11.5.2.3 and 11.5.2.5](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=79)).
 - macOS has no Dynamic Type: the icon keeps its size there, like the text
   ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 

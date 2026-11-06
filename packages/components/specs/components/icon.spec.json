@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -156,13 +156,14 @@
   },
   "accessibility": {
     "name": {
-      "text": "Without a label the icon is decoration, hidden from assistive technology. With a label it is an image named by that label (role img and aria-label on the web): the label says what the icon means, not what it looks like.",
+      "text": "Without a label the icon is decoration, hidden from assistive technology. With a label it is an image named by that label: the label says what the icon means, not what it looks like. Every platform exposes it through its own accessibility services (role img and aria-label on the web).",
       "refs": [
         "aria-hidden",
         "aria-img",
         "mdn-img-role",
         "aria-label",
-        "wai-images-functional"
+        "wai-images-functional",
+        "en-301-549-object-information"
       ]
     },
     "keyboard": [],
@@ -190,7 +191,7 @@
         ]
       },
       {
-        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). On every surface level and on sunken, the lowest of the other colors are brand 5.46:1 (light) and error 5.30:1 (dark). A decorative icon has no contrast requirement. On a colored fill (surface accent, subtle or sunken), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes, except warning on the sunken warning fill in light mode (1.26:1), whose icon role aliases the on-base one, the same known issue; the lowest of the others is error on the error accent fill at rest, 4.57:1 in both modes. With current, the icon takes the text color that the fill's container sets, and so its contrast.",
+        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). On every surface level and on sunken, the lowest of the other colors are brand 5.46:1 (light) and error 5.30:1 (dark). A decorative icon has no contrast requirement. On a colored fill (surface accent, subtle or sunken), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes, except warning on the sunken warning fill in light mode (1.26:1), whose icon role aliases the on-base one, the same known issue; the lowest of the others is error on the error accent fill at rest, 4.57:1 in both modes. With current, the icon takes the color of the text around it, and so its contrast: on a surface level every on-base text role gives at least 4.24:1 (extended wood, dark mode, level 3; neutral tertiary 4.81:1) and disabled text 3.13:1, so a named icon in current reaches 3:1 wherever that text uses a system text role; on a fill, it takes the text color that the fill's container sets.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-graphics"
@@ -221,9 +222,10 @@
         ]
       },
       {
-        "text": "Provide alternative text labels for custom interface icons; they let VoiceOver describe what is on screen.",
+        "text": "Give a meaningful icon an alternative text label for VoiceOver, describing only the information it conveys; exclude a purely decorative icon from VoiceOver.",
         "refs": [
-          "hig-icons"
+          "hig-icons",
+          "hig-voiceover-descriptions"
         ],
         "platforms": [
           "ios"
@@ -239,9 +241,10 @@
         ]
       },
       {
-        "text": "Pass null as the contentDescription of a decorative icon; describe a meaningful one by its purpose.",
+        "text": "Pass null as the contentDescription of a decorative icon, or hide it with hideFromAccessibility; describe a meaningful one by its purpose.",
         "refs": [
           "compose-graphic-elements",
+          "compose-hide-semantics",
           "android-describe-ui-element"
         ],
         "platforms": [
@@ -254,6 +257,30 @@
           "hig-typography-macos"
         ],
         "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On macOS, VoiceOver asks the same as on iOS: label a meaningful icon with the information it conveys, exclude a purely decorative one.",
+        "refs": [
+          "hig-voiceover-descriptions",
+          "hig-voiceover-platforms"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "Native software exposes a named icon's role and name to assistive technology through the platform's documented accessibility services, and gives it a text alternative as WCAG 1.1.1 asks; a decorative icon is left out of them.",
+        "refs": [
+          "wcag:1.1.1",
+          "en-301-549-non-text-content",
+          "en-301-549-accessibility-services",
+          "en-301-549-object-information"
+        ],
+        "platforms": [
+          "ios",
+          "android",
           "desktop"
         ]
       }
@@ -273,6 +300,11 @@
         "id": "compose-graphic-elements",
         "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-hide-semantics",
+        "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
       },
       {
         "id": "aria-img",
@@ -320,6 +352,16 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/icons"
       },
       {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (describe meaningful images, exclude decorative ones)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "hig-voiceover-platforms",
+        "title": "Apple HIG: VoiceOver, platform considerations (no additional considerations for macOS)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Platform-considerations"
+      },
+      {
         "id": "understanding-resize-text",
         "title": "Understanding 1.4.4 Resize Text: intent",
         "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
@@ -353,6 +395,21 @@
         "id": "material-bidirectionality-rtl",
         "title": "Material 3: Bidirectionality & RTL",
         "url": "https://m3.material.io/foundations/layout/bidirectionality-rtl"
+      },
+      {
+        "id": "en-301-549-non-text-content",
+        "title": "EN 301 549 V3.2.1, 11.1.1.1.1 Non-text content (open functionality): WCAG 1.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=65"
+      },
+      {
+        "id": "en-301-549-accessibility-services",
+        "title": "EN 301 549 V3.2.1, 11.5.2.3 Use of accessibility services",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=79"
+      },
+      {
+        "id": "en-301-549-object-information",
+        "title": "EN 301 549 V3.2.1, 11.5.2.5 Object information (role and name programmatically determinable)",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=79"
       }
     ]
   },
@@ -505,6 +562,28 @@
   ],
   "decisions": [
     {
+      "id": "named-or-hidden-on-every-platform",
+      "date": "2026-11-06",
+      "version": "0.8.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On every platform, an icon is decorative and hidden from assistive technology unless it is given a label; with a label it is exposed as an image named by that label, which says what the icon means, not what it looks like. Each platform carries it through its own accessibility services; the contract names no platform API.",
+      "rationale": "Each platform's guidelines ask to name a meaningful image and to hide a decorative one (VoiceOver on iOS and macOS, contentDescription and hideFromAccessibility on Android, EN 301 549 for native software), but no trusted guideline outside the web names the image trait or role, only the platforms' API references; the universal statement keeps the role, and EN 301 549 requires a role to be exposed.",
+      "supersedes": [
+        "decorative-unless-named"
+      ],
+      "refs": [
+        "wcag:1.1.1",
+        "aria-hidden",
+        "aria-img",
+        "hig-voiceover-descriptions",
+        "compose-graphic-elements",
+        "compose-hide-semantics",
+        "en-301-549-non-text-content",
+        "en-301-549-object-information"
+      ]
+    },
+    {
       "id": "follows-reading-direction",
       "date": "2026-11-06",
       "version": "0.7.0",
@@ -634,7 +713,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "accessibility",
-      "status": "active",
+      "status": "superseded",
       "text": "An icon is decorative and hidden unless it is given a label, which then names it as an image.",
       "refs": [
         "wcag:1.1.1",
@@ -644,6 +723,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.8.0",
+      "date": "2026-11-06",
+      "note": "Decision named-or-hidden-on-every-platform (supersedes decorative-unless-named): the contract is checked on every platform. iOS: label a meaningful icon with the information it conveys and exclude a decorative one from VoiceOver (Apple HIG, VoiceOver); Android: hideFromAccessibility as the other way to hide a decorative icon (Compose); desktop: the same VoiceOver guidance on macOS, and EN 301 549 clause 11 for native software (11.1.1.1.1, 11.5.2.3, 11.5.2.5). No platform API is named for the role: no trusted guideline outside the web gives one. The contrast guideline gives the floor of current: every on-base text role at least 4.24:1 on the levels, disabled text 3.13:1, so a named icon in current reaches 3:1. No token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-06",
