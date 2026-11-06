@@ -18,7 +18,10 @@ AAA criteria may be cited as extra quality but are not mandatory.
   like any other; the site groups guidelines by platform.
 - **Verify before citing.** Open the page, confirm it says what you claim and that the anchor
   exists. If no trusted source supports a claim, reword it to what the sources say or drop it.
-  Never cite from memory.
+  Never cite from memory. Apple HIG pages are drawn by a script: read a page's text from
+  `https://developer.apple.com/tutorials/data/design/human-interface-guidelines/<page>.json`
+  and cite the page itself. A standard published as a PDF (EN 301 549) is cited at the page of
+  its clause (`#page=<n>`).
 - **Spec contract.** `accessibility` holds `ariaRole`, `name`, `keyboard[]` and `guidelines[]`;
   each carries `refs`: `wcag:<sc>` (resolved against `packages/components/specs/a11y/wcag.json`, generated from the
   W3C's own data) or the id of an entry in `accessibility.references[]`. Parts that are pure

@@ -1,6 +1,6 @@
 ---
 name: component-refinement
-description: Refine an existing component end to end - challenge its component tokens against the semantic tier, its accessibility contract and its platform agnosticity, compare it with its Figma export (raw_content/components/<id>-variants-raw.json) when there is one, and decide every finding with the team one step at a time in a draft pull request, down to the Figma blueprint and the framework themes, closing with an upstream-figma-ds issue when Figma must converge. Use when the user asks to refine, review, rework, challenge or improve a component, to align or compare it with Figma, adds a component export, or continues such a pull request ("continue step N").
+description: Refine an existing component end to end - challenge its component tokens against the semantic tier, its accessibility contract and its platform agnosticity, compare it with its Figma export (raw_content/components/<id>-variants-raw.json) when there is one, and decide every finding with the team one step at a time in a draft pull request, down to the Figma blueprint and the framework themes, closing with a figma issue when the Figma library must converge. Use when the user asks to refine, review, rework, challenge or improve a component, to align or compare it with Figma, adds a component export, or continues such a pull request ("continue step N").
 ---
 
 # Refine a component
@@ -135,7 +135,7 @@ platform and in every mode.
   semantic token, a sibling component that no longer lines up) is fixed in the run when it is
   related to a step and should be fixed right away: a step of its own after the one that found
   it (`1b`), no issue. A foundation that the step's decision makes out of date is always this
-  case. The rest becomes an issue at once (skill `backlog`), labelled `upstream-figma-ds` when
+  case. The rest becomes an issue at once (skill `backlog`), labelled `figma` when
   the Figma library or its primitives must change, and linked under Follow-ups; what the Figma
   library must change goes to the closing Figma issue.
 
@@ -144,7 +144,7 @@ platform and in every mode.
 1. Recheck the whole component against the audit checklist, variant by variant (every color of
    the final repository, resolved, against the export when there is one, and every dimension):
    the final list of what changed and of what was kept on purpose, not just the sum of the steps.
-2. **Report back to Figma.** One issue labelled `upstream-figma-ds`, `components`, the component
+2. **Report back to Figma.** One issue labelled `figma`, `components`, the component
    labels and `nextgen` when it applies (skill `backlog`), written for the Figma designer:
    - each departure: Figma value, repository value, the Figma variable to bind (token path
      written with `/`, e.g. `global/text/on-base/neutral/primary`), the decision id;
@@ -152,11 +152,15 @@ platform and in every mode.
    - the limits of the Figma library the run met (a value that fails WCAG in a mode);
    - with an export: the export noise to ignore and the variants the repository models as
      another component.
-   Without an export, open it only when the run met such a limit or addition.
+   Without an export, open it only when the run met such a limit or addition that no open issue
+   already holds (`gh issue list --label figma`, and the designers' token issues): name the
+   component's decision in that issue instead, and say in the pull request why none was opened.
 3. `pnpm figma:export <id>` and `pnpm penpot:export <id>` build: they give the Figma designer the
    result, bound to variables named after the token paths of the issue (`agents/token-sources.md`
    "Drawing a component in Figma"). Rebuild the themes and look at their demos in light and dark
-   (`pnpm themes:demo`).
+   (`pnpm themes:demo`). In a worktree, serve the worktree's demos instead
+   (`pnpm --dir apps/theme-demos exec vite --port 4501 --open false`): `pnpm themes:demo` and the
+   `theme-demos` launch configuration of the preview tools serve the main checkout's.
 4. `stepwise-pr` §4: status line, checks, ready for review.
 5. **Improve this skill**: add what went wrong or was missing to "Lessons learned" below, and fix
    the step it concerns (here, or in `stepwise-pr`, `review-sheet`), in the same pull request.
@@ -164,6 +168,26 @@ platform and in every mode.
 ## Lessons learned
 
 Newest first. Each entry: date, component, what was off, what changed in the process.
+
+- **2026-11-06, Icon, step 11.** The closing issue was to be labelled `upstream-figma-ds`, a
+  label the repository does not have: the skill and `agents/workflow.md` now say `figma`. The
+  only library limit the run met (the light warning icon) was already an item of the designers'
+  token issue (#66), so no Figma issue was opened: the closing step now checks the open issues
+  first. The theme demos were first served from the main checkout, not the worktree (step 3
+  now says how to serve the worktree's).
+- **2026-11-06, Icon, step 10.** The team asked to see the generated diff of the theme (README
+  row, demo) before the push. With a theme step, put the diff of the generated outputs in the
+  question, not only the mapping.
+- **2026-11-06, Icon, step 7.** Measured contrast figures for `current` went into the contract
+  without being asked; the team kept them, but a statement added to a contract is a decision:
+  ask first, even for a measured one. The topic (naming an icon on each platform) was hard to
+  follow in the abstract: explain an accessibility question in plain words with a short code
+  example per platform. Two sources were hard to read: Apple HIG pages are drawn by a script,
+  and EN 301 549 is a PDF; `agents/accessibility.md` now says how to read and cite both.
+- **2026-11-06, Icon, steps 6b and 9.** The team chose another option than the recommended
+  one twice (a direction select in the playground and the screen preview; `current` drawn as
+  neutral rather than as the primary text). Nothing went wrong, but keep each option complete
+  enough on the sheet to be chosen as it is.
 
 - **2026-11-06, Icon, step 8.** `reference/contrast-levels.mjs` rounded its ratios while the
   docs site and `pnpm validate` truncate them (`formatRatio` in `scripts/lib/contrast.mjs`), so
