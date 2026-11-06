@@ -131,7 +131,7 @@ increased-contrast variant yet (see Accessibility).
   when one drops under the minimum.
 - **One known failure.** The Figma library's POC2 export sets the warning icon on the page
   (`global.icon.on-base.functional.warning.default`, and on sunken) to warning 300 in light mode,
-  the step that fixed dark mode: 1.55:1 on the page, under the 3:1 of
+  the step that fixed dark mode: 1.54:1 on the page, under the 3:1 of
   [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html),
   while the warning text stays warning 800. It is kept as exported, tracked as a known issue (the
   validator reports it as a warning until it is fixed, then asks for the marker to be removed) and

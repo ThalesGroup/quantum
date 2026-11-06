@@ -11,7 +11,7 @@ import { pathToFileURL } from 'node:url';
 
 const [repo, pattern, min = '3'] = process.argv.slice(2);
 if (!repo || !pattern) { console.error('usage: node contrast-levels.mjs <repo> <regex> [minimum]'); process.exit(1); }
-const { parseColor, contrastRatio, composite } = await import(pathToFileURL(path.join(repo, 'scripts/lib/contrast.mjs')).href);
+const { parseColor, contrastRatio, composite, formatRatio } = await import(pathToFileURL(path.join(repo, 'scripts/lib/contrast.mjs')).href);
 const root = path.join(repo, 'packages/tokens/dist/platforms');
 const flat = (o, p = '', out = {}) => {
   for (const k in o) {
@@ -36,7 +36,7 @@ for (const platform of fs.readdirSync(root)) {
       const ratios = LEVELS.map((l) => {
         const bg = parseColor(t[`global.bg.level.${l}.default`]);
         const r = contrastRatio(fg, bg.a < 1 ? composite(bg, base) : bg);
-        return `${r.toFixed(2)}${r < Number(min) ? '!' : ' '}`;
+        return `${formatRatio(r).replace(':1', '')}${r < Number(min) ? '!' : ' '}`;
       });
       console.log(`  ${id.padEnd(58)} ${ratios.join('  ')}`);
     }

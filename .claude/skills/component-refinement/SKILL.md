@@ -165,6 +165,11 @@ platform and in every mode.
 
 Newest first. Each entry: date, component, what was off, what changed in the process.
 
+- **2026-11-06, Icon, step 8.** `reference/contrast-levels.mjs` rounded its ratios while the
+  docs site and `pnpm validate` truncate them (`formatRatio` in `scripts/lib/contrast.mjs`), so
+  the figures copied into the Icon's contract and the pull request were up to 0.01 higher than
+  the site showed (1.55 against 1.54). The script now prints `formatRatio`: write every ratio
+  truncated to two decimals, so a figure never rounds up past a threshold.
 - **2026-11-05, Icon, step 4.** The first recommendation was to keep inheriting the text color
   (`currentColor`) on colored fills, because the icon roles of those fills resolve to the text
   roles almost everywhere. The team chose the icon roles (`global.icon.on-accent.*`, …): the

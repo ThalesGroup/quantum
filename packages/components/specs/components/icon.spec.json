@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -191,7 +191,7 @@
         ]
       },
       {
-        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). On every surface level and on sunken, the lowest of the other colors are brand 5.46:1 (light) and error 5.30:1 (dark). A decorative icon has no contrast requirement. On a colored fill (surface accent, subtle or sunken), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes, except warning on the sunken warning fill in light mode (1.26:1), whose icon role aliases the on-base one, the same known issue; the lowest of the others is error on the error accent fill at rest, 4.57:1 in both modes. With current, the icon takes the color of the text around it, and so its contrast: on a surface level every on-base text role gives at least 4.24:1 (extended wood, dark mode, level 3; neutral tertiary 4.81:1) and disabled text 3.13:1, so a named icon in current reaches 3:1 wherever that text uses a system text role; on a fill, it takes the text color that the fill's container sets.",
+        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). On every surface level and on sunken, the lowest of the other colors are brand 5.45:1 (light) and error 5.30:1 (dark). A decorative icon has no contrast requirement. On a colored fill (surface accent, subtle or sunken), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes, except warning on the sunken warning fill in light mode (1.25:1), whose icon role aliases the on-base one, the same known issue; the lowest of the others is error on the error accent fill at rest, 4.56:1 in both modes. With current, the icon takes the color of the text around it, and so its contrast: on a surface level every on-base text role gives at least 4.24:1 (extended wood, dark mode, level 3; neutral tertiary 4.80:1) and disabled text 3.12:1, so a named icon in current reaches 3:1 wherever that text uses a system text role; on a fill, it takes the text color that the fill's container sets.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-graphics"
@@ -617,7 +617,7 @@
       "version": "0.5.0",
       "area": "color",
       "status": "active",
-      "text": "The warning color keeps the Figma library's warning icon roles in light mode, on a surface level and on the sunken warning fill (global.icon.on-base.functional.warning.default and global.icon.on-sunken.functional.warning.default, warning 300 since the library's POC2 export), although they fall short of 3:1 there: 1.55 to 1.47:1 on the surface levels, 1.26:1 on the sunken warning fill. Neither the Icon's tokens nor the semantic roles depart from the library for it.",
+      "text": "The warning color keeps the Figma library's warning icon roles in light mode, on a surface level and on the sunken warning fill (global.icon.on-base.functional.warning.default and global.icon.on-sunken.functional.warning.default, warning 300 since the library's POC2 export), although they fall short of 3:1 there: 1.54 to 1.46:1 on the surface levels, 1.26:1 on the sunken warning fill. Neither the Icon's tokens nor the semantic roles depart from the library for it.",
       "rationale": "The team waits for the Figma library's fix, agreed with the designers, rather than departing from the library in the repository; the fix will come with a new export. Until then the failure stays a known issue of the Color foundation (pair icon-warning), and a warning icon is paired with text.",
       "tokens": [
         "icon.container.color.warning",
@@ -723,6 +723,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.8.1",
+      "date": "2026-11-06",
+      "note": "Contrast figures truncated to two decimals, as the docs site and pnpm validate show them, instead of rounded: in the 1.4.11 guideline brand 5.45:1 (was 5.46), warning on the light sunken warning fill 1.25:1 (1.26), error on the error accent fill 4.56:1 (4.57), neutral tertiary text 4.80:1 (4.81), disabled text 3.12:1 (3.13); in decision warning-light-from-library 1.54 to 1.46:1 (1.55 to 1.47). Every ratio passes or fails as before. The template computes its placeholder glyph once. No decision, token, CSS or rendering change."
+    },
     {
       "version": "0.8.0",
       "date": "2026-11-06",
