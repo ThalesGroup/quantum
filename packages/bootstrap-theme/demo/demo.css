@@ -150,3 +150,9 @@ body {
 .demo-icon-24 {
   font-size: 24px;
 }
+
+.demo-icon-fill {
+  display: inline-flex;
+  padding: var(--bs-spacer-2);
+  border-radius: var(--bs-radius-5);
+}

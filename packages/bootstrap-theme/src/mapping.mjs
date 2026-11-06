@@ -960,7 +960,19 @@ export default {
       parts: { menu: '.menu', item: '.menu-item', 'item-icon': '.menu-item-icon', separator: '.menu-divider', group: '.menu-header' },
     },
     { component: 'divider', bootstrap: 'Reboot hr / .vr', base: 'hr', options: { orientation: { horizontal: 'hr', vertical: '.vr' } } },
-    { component: 'icon', bootstrap: null, base: null, why: 'Bootstrap has no icon component: use the Material Symbols Outlined font (.material-symbols-outlined) inside any component.' },
+    {
+      component: 'icon', bootstrap: 'Color utilities', base: '.material-symbols-outlined',
+      options: {
+        size: { small: null, medium: null, large: null, xlarge: null, xxlarge: null },
+        color: { current: '', neutral: '.fg-2', brand: '.fg-primary', success: '.fg-success', warning: '.fg-warning', error: '.fg-danger', info: '.fg-info' },
+        surface: { base: '', accent: '.bg-<theme> > .fg-contrast-<theme>', subtle: '.bg-subtle-<theme> > .fg-<theme>', sunken: null },
+      },
+      combinations: [
+        { when: { surface: 'accent', color: 'neutral' }, classes: '.bg-inverse > .fg-contrast-inverse', why: 'Quantum\'s neutral accent is the inverse surface.' },
+        { when: { surface: 'subtle', color: 'neutral' }, classes: '.bg-subtle-secondary > .fg-secondary', why: '.fg-2 is too light on the dark neutral subtle fill (2.28:1).' },
+        { when: { surface: 'subtle', color: 'brand' }, classes: '.bg-subtle-primary > .fg-emphasis-primary', why: 'Quantum\'s on-subtle brand role is the brand emphasis text.' },
+      ],
+    },
   ],
 
   bootstrapOnly: ['Chip', 'Chip input', 'OTP input', 'Strength', 'Combobox', 'Datepicker', 'List group', 'Nav and tabs', 'Navbar', 'Dialog', 'Drawer', 'Toasts', 'Tooltip', 'Popover', 'Stepper', 'Table', 'Carousel', 'Close button'],
