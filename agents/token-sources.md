@@ -120,7 +120,11 @@ Without ids it draws every component; with ids, those and the components their i
   blueprint's `notDrawn`: durations and easings (no variable type), a unitless line height
   (Figma reads a number variable as pixels, so it is set as a percentage), the icon font's fill,
   grade and optical size axes, values computed from a token (the outline radius, a check mark's
-  size), and the widths the web takes from its container (a literal width).
+  size), and the widths the web takes from its container (a literal width). The icon font's
+  axes are drawn anyway: every named instance of the variable font sits at the Iconography's
+  values (fill 0, grade 0, optical size 24). A color the web inherits has no token: its blueprint
+  binds a stand-in the spec decides (the Icon's `current` is drawn as `neutral`, decision
+  `current-drawn-as-neutral`), and the designer overrides it on the instance.
 - **Fonts.** The plugin loads every family the tokens name. The icon font, Material Symbols
   Outlined, is not among Figma's fonts: install it on the machine (the variable font of
   google/material-design-icons) or icons are drawn as empty squares.

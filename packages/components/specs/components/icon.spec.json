@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -562,6 +562,19 @@
   ],
   "decisions": [
     {
+      "id": "current-drawn-as-neutral",
+      "date": "2026-11-06",
+      "version": "0.9.0",
+      "area": "color",
+      "status": "active",
+      "text": "In Figma and Penpot, which cannot inherit a color, the default color current is drawn as neutral on its surface: the glyph of every Color=current variant is bound to the same token as Color=neutral, for the designer to override on the instance where the text around it has another color. The web keeps inheriting the text color.",
+      "tokens": [
+        "icon.container.color.neutral",
+        "icon.container.color.accent.neutral",
+        "icon.container.color.subtle.neutral"
+      ]
+    },
+    {
       "id": "named-or-hidden-on-every-platform",
       "date": "2026-11-06",
       "version": "0.8.0",
@@ -723,6 +736,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-11-06",
+      "note": "Decision current-drawn-as-neutral: the Figma and Penpot blueprints bind the glyph of the Color=current variants to the neutral token of their surface (they kept the tool's default black fill, 1.19:1 on level 0 in dark mode). Neutral on the levels 0 / 1 / 2 / 3 / sunken: 12.78 / 12.09 / 12.78 / 12.09 / 12.09:1 in light, 8.86 / 8.11 / 7.43 / 6.65 / 9.28:1 in dark (WCAG 1.4.11, 3:1); on the fills, the neutral figures of colors-on-fills. Options weighed: keep the default fill; the primary text role; the neutral icon role (chosen). No token, CSS, template or web rendering change."
+    },
     {
       "version": "0.8.1",
       "date": "2026-11-06",

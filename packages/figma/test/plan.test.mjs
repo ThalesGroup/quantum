@@ -111,6 +111,18 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   assert.deepEqual(plan.variables.skipped, ['button/container/transition/duration', 'button/container/transition/easing']);
 });
 
+test('the Icon draws its current color as neutral on each surface', () => {
+  const icon = JSON.parse(fs.readFileSync(path.join(ROOT, artifacts('icon').spec), 'utf8'));
+  const plan = figmaComponent(loaded, icon, BLUEPRINTS.icon);
+  const glyph = (name) => plan.variants.find((v) => v.name === name).root.children[0];
+  for (const surface of ['base', 'accent', 'subtle', 'sunken']) {
+    const current = glyph(`Size=medium, Color=current, Surface=${surface}, State=default`);
+    assert.ok(current.fills, `${surface}: current is bound`);
+    assert.equal(current.fills, glyph(`Size=medium, Color=neutral, Surface=${surface}, State=default`).fills, surface);
+  }
+  assert.equal(glyph('Size=medium, Color=current, Surface=base, State=default').fills, 'icon/container/color/neutral');
+});
+
 test('figmaComponent refuses a slot the component has no token for', () => {
   const blueprint = { root: { type: 'frame', bind: { fill: 'container.backgroud' } } };
   assert.throws(() => figmaComponent(loaded, button, blueprint), /"container.backgroud", which no token of the component has/);
