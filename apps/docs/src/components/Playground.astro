@@ -4,7 +4,8 @@
  * client-side and, after each render, dispatches `playground:render` ({ props, state }) on its
  * root, which the token inspector listens to. The rendered HTML is shown formatted, under the
  * whole playground, with a Copy button (the design system's Button). Two simulations apply to the stage only:
- * a vision deficiency (SVG filters) and a larger text size (text-only zoom). On the web page only:
+ * a vision deficiency (SVG filters) and a larger text size (text-only zoom), and so does its reading direction
+ * (?dir=rtl presets it). On the web page only:
  * the reference rendering is the only one these docs draw.
  */
 import { getTemplate, type Template } from '../lib/web';
@@ -13,6 +14,8 @@ import { highlight } from '../lib/highlight';
 import { formatHtml } from '../lib/format-html';
 import { getModes } from '../lib/tokens';
 import { stateOn } from '../lib/platforms';
+import { backdropData, onBackdrop } from '../lib/backdrop';
+import { inspectorSpec } from '../lib/inspector';
 interface Props {
   spec: any;
   template: Template;
@@ -25,6 +28,9 @@ const props = spec.properties.filter((p: any) => p.type !== 'node');
 const { modes, attribute, auto } = getModes();
 const modeChoices = [...modes.map((m) => m.id), ...(auto ? [auto] : [])];
 const inspectorId = `inspector-${spec.id}`;
+// The fill the rendering sits on when it reads a role on one (lib/backdrop.ts), found again after each render.
+const backdrop = backdropData(spec);
+const backdropAttr = backdrop ? JSON.stringify({ spec: inspectorSpec(spec), ...backdrop }) : undefined;
 const copyButton = getTemplate('button')?.render({ emphasis: 'subtle', intent: 'neutral', size: 'xsmall', label: 'Copy', iconStart: 'content_copy' }) ?? '';
 // The form is built with the design system's form controls (apps/docs/AGENTS.md "Built with the design system"):
 // Select, Checkbox, Textarea, Text field and Number field render their own label; the script reads them by name.
@@ -39,6 +45,12 @@ const visions = [
   { id: 'deuteranopia', label: 'Deuteranopia (no green)', filter: '<feColorMatrix values="0.367 0.861 -0.228 0 0 0.280 0.673 0.047 0 0 -0.012 0.043 0.969 0 0 0 0 0 1 0"/>' },
   { id: 'tritanopia', label: 'Tritanopia (no blue)', filter: '<feColorMatrix values="1.256 -0.077 -0.179 0 0 -0.078 0.931 0.148 0 0 0.005 0.691 0.304 0 0 0 0 0 1 0"/>' },
   { id: 'achromatopsia', label: 'Achromatopsia (no color)', filter: '<feColorMatrix values="0.213 0.715 0.072 0 0 0.213 0.715 0.072 0 0 0.213 0.715 0.072 0 0 0 0 0 1 0"/>' },
+];
+// Reading direction of the stage (its dir attribute): directional parts mirror and directional glyphs flip
+// (Iconography rule `direction`); the docs stay left to right.
+const directions = [
+  { label: 'Left to right (ltr)', value: 'ltr' },
+  { label: 'Right to left (rtl)', value: 'rtl' },
 ];
 // Text size of the stage, like a browser's text-only zoom: WCAG 1.4.4 asks for 200% without loss of content.
 const textSizes = [
@@ -69,16 +81,17 @@ const textSizes = [
   </svg>
   <div class="site-playground__result">
     <div class="site-playground__toolbar">
-      <!-- Simulations of the stage, next to it rather than among the props: they are not props of the component. -->
+      <!-- Simulations and reading direction of the stage, next to it rather than among the props: they are not props of the component. -->
       <div class="site-playground__simulations">
         <Fragment set:html={field('select', { label: 'Vision simulation', id: `${spec.id}-sandbox-vision`, size: 'small', options: [{ label: 'Typical', value: '' }, ...visions.map((v) => ({ label: v.label, value: v.id }))], attrs: { 'data-vision': true } })} />
         <Fragment set:html={field('select', { label: 'Text size', id: `${spec.id}-sandbox-text-size`, size: 'small', options: textSizes, attrs: { 'data-text-size': true } })} />
+        <Fragment set:html={field('select', { label: 'Direction context (dir)', id: `${spec.id}-sandbox-direction`, size: 'small', options: directions, attrs: { 'data-direction': true } })} />
       </div>
       <button type="button" class="ds-button" data-emphasis="subtle" data-intent="neutral" data-size="small" aria-expanded="false" aria-controls={inspectorId}>
         <span class="ds-button__label">Inspect tokens</span>
       </button>
     </div>
-    <div class="site-preview__stage" data-stage set:html={template.render(initial)}></div>
+    <div class="site-preview__stage" data-stage data-backdrop={backdropAttr} set:html={onBackdrop(spec, template.render(initial), initial)}></div>
   </div>
   <TokenInspector spec={spec} id={inspectorId} />
   <div class="site-playground__code">
@@ -150,6 +163,15 @@ const textSizes = [
       vision.addEventListener('change', apply);
       apply();
     }
+    // Reading direction: the dir attribute of the stage, preset by ?dir= (a link to the playground in right to left).
+    const direction = el.querySelector<HTMLSelectElement>('[data-direction]');
+    if (direction) {
+      const preset = new URLSearchParams(location.search).get('dir');
+      if (preset && [...direction.options].some((o) => o.value === preset)) direction.value = preset;
+      const apply = () => { stage.dir = direction.value; };
+      direction.addEventListener('change', apply);
+      apply();
+    }
     // Text size: after each render, every element of the stage gets its computed font size times the
     // factor, read for all of them before any is set. Only the text grows, like a browser's text-only
     // zoom: lengths in px stay, lengths in em follow the text. Icons keep their size: they are glyphs of the
@@ -166,8 +188,10 @@ const textSizes = [
         .map(({ e, style }) => ({ e, size: parseFloat(style.fontSize) }));
       for (const { e, size } of elements) e.style.setProperty('font-size', `${size * factor}px`);
     };
+    // The fill behind the rendering, when the component reads a role on a fill it does not draw (lib/backdrop.ts).
+    const backdrop = stage.dataset.backdrop ? JSON.parse(stage.dataset.backdrop) : null;
     // The highlighter (grammars included) is only fetched on pages with a playground.
-    Promise.all([modules[key](), import('../lib/highlight'), import('../lib/format-html')]).then(([mod, { highlight }, { formatHtml }]) => {
+    Promise.all([modules[key](), import('../lib/highlight'), import('../lib/format-html'), import('../../../../scripts/lib/backdrop.mjs')]).then(([mod, { highlight }, { formatHtml }, { backdropOf }]) => {
       const lastValid: Record<string, unknown> = {};
       const update = () => {
         const props: Record<string, unknown> = {};
@@ -190,7 +214,8 @@ const textSizes = [
           else if (field.value !== '') props[field.name] = field.value;
         }
         const html = mod.render(props);
-        stage.innerHTML = html;
+        const fill = backdrop && backdropOf(backdrop.spec, backdrop.tokens, backdrop.fills, props, String(props.state ?? 'default'));
+        stage.innerHTML = fill ? `<span class="site-backdrop" style="background-color: var(${fill})">${html}</span>` : html;
         scaleText();
         if (code) code.innerHTML = highlight(formatHtml(html), 'html');
         el.dispatchEvent(new CustomEvent('playground:render', { detail: { props, state: String(props.state ?? 'default') } }));

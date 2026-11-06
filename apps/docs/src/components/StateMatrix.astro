@@ -9,6 +9,7 @@
 import type { Template } from '../lib/web';
 import { scopeLabel, stateOn } from '../lib/platforms';
 import { cellProps, type PartMatrix } from '../lib/matrix';
+import { onBackdrop } from '../lib/backdrop';
 interface Props {
   spec: any;
   template: Template;
@@ -22,6 +23,11 @@ const platform = 'web';
 const all = matrix.states as { id: string; inputs?: string[]; platforms?: string[] }[];
 const states = all.filter((s) => stateOn(s, platform));
 const elsewhere = all.filter((s) => !stateOn(s, platform));
+// A cell is drawn on the fill it sits on when it reads a role on one (lib/backdrop.ts).
+const cell = (value: string, state: string) => {
+  const props = cellProps(spec, matrix, baseProps, { property, value }, fixed, state);
+  return onBackdrop(spec, template.render(props), props, state);
+};
 const scope = (s: { inputs?: string[]; platforms?: string[] }) => [s.inputs?.length ? s.inputs.join(', ') : '', scopeLabel(s)].filter(Boolean).join(' · ');
 ---
 <div class="site-matrix-wrap">
@@ -38,7 +44,7 @@ const scope = (s: { inputs?: string[]; platforms?: string[] }) => [s.inputs?.len
           <th scope="row"><code>{o.value}</code></th>
           {states.map((s) => (
             <td>
-              <div class="site-matrix__cell" set:html={template.render(cellProps(spec, matrix, baseProps, { property, value: o.value }, fixed, s.id))}></div>
+              <div class="site-matrix__cell" set:html={cell(o.value, s.id)}></div>
             </td>
           ))}
         </tr>

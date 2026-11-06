@@ -14,6 +14,7 @@
 import { getTemplate, type Template } from '../lib/web';
 import { onWeb, scopeLabel } from '../lib/platforms';
 import { getModes } from '../lib/tokens';
+import { onBackdrop } from '../lib/backdrop';
 
 interface Sample { id: string; name: string; description?: string; source: string; html: string; platforms?: string[] }
 interface Props {
@@ -29,7 +30,7 @@ const examples = samples
   : (spec.examples ?? []).map((ex: any) => {
       const id = slug(ex.name);
       const web = onWeb(ex);
-      const html = web ? template!.render(ex.props) : '';
+      const html = web ? onBackdrop(spec, template!.render(ex.props), ex.props) : '';
       const query = new URLSearchParams(Object.entries(ex.props).map(([k, v]) => [k, typeof v === 'object' ? JSON.stringify(v) : String(v)])).toString();
       return { ...ex, id, web, scope: scopeLabel(ex), html, playground: `${playgroundHref}?${query}` };
     });

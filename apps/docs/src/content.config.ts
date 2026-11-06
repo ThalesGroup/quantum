@@ -103,7 +103,7 @@ const foundations = defineCollection({
       tags: z.array(z.string()).optional(),
       tokens: z.array(z.string()),
       appliesTo: z.enum(['every-component', 'focusable-components']).optional(),
-      rules: z.array(z.object({ id: z.string(), name: z.string(), text: z.string(), tokens: z.array(z.string()).optional(), platforms })),
+      rules: z.array(z.object({ id: z.string(), name: z.string(), text: z.string(), tokens: z.array(z.string()).optional(), names: z.array(z.string()).optional(), platforms })),
       specimens: z.array(z.object({ id: z.string(), name: z.string(), description: z.string().optional(), display: z.string(), tokens: z.array(z.string()), tier: z.enum(['raw', 'semantic']).optional() })).optional(),
       contrast: z.array(z.object({ id: z.string(), description: z.string().optional(), foreground: z.string(), backgrounds: z.array(z.string()), on: z.array(z.string()).optional(), minimum: z.number().optional(), knownIssue: z.string().optional(), refs })).optional(),
       accessibility: z.object({ guidelines: z.array(z.object({ text: z.string(), refs, platforms })), references: z.array(z.object({ id: z.string(), title: z.string(), url: z.string() })) }),

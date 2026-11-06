@@ -32,7 +32,7 @@ Material Symbols Outlined for icons):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@100..900&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=block">
 <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
 <link rel="stylesheet" href="node_modules/@quantum-ds/bootstrap-theme/dist/quantum.css">
 ```
@@ -927,7 +927,7 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | Skeleton (`skeleton`) | Placeholder (`.placeholder`) | shape: text = default, circle = none, rectangle = none; Bootstrap only: `.placeholder-glow`, `.placeholder-wave` |
 | Dropdown (`dropdown`) | Menu (`[data-bs-toggle="menu"] + .menu`) | emphasis: accent = `.btn-solid`, subtle = `.btn-subtle`, ghost = `.btn-text`; intent: neutral = `.theme-secondary`, brand = `.theme-primary`, error = `.theme-danger`; size: xsmall = `.btn-xs`, small = `.btn-sm`, medium = default, large = `.btn-lg`; parts: menu = `.menu`, item = `.menu-item`, item-icon = `.menu-item-icon`, separator = `.menu-divider`, group = `.menu-header` |
 | Divider (`divider`) | Reboot hr / .vr (`hr`) | orientation: horizontal = `hr`, vertical = `.vr` |
-| Icon (`icon`) | none | Bootstrap has no icon component: use the Material Symbols Outlined font (.material-symbols-outlined) inside any component. |
+| Icon (`icon`) | Color utilities (`.material-symbols-outlined`) | size: small = none, medium = none, large = none, xlarge = none, xxlarge = none; color: current = default, neutral = `.fg-2`, brand = `.fg-primary`, success = `.fg-success`, warning = `.fg-warning`, error = `.fg-danger`, info = `.fg-info`; surface: base = default, accent = `.bg-<theme> > .fg-contrast-<theme>`, subtle = `.bg-subtle-<theme> > .fg-<theme>`, sunken = none; surface accent + color neutral = `.bg-inverse > .fg-contrast-inverse`; surface subtle + color neutral = `.bg-subtle-secondary > .fg-secondary`; surface subtle + color brand = `.bg-subtle-primary > .fg-emphasis-primary` |
 
 Bootstrap components with no Quantum equivalent (themed by the root tokens only): Chip, Chip input, OTP input, Strength, Combobox, Datepicker, List group, Nav and tabs, Navbar, Dialog, Drawer, Toasts, Tooltip, Popover, Stepper, Table, Carousel, Close button.
 <!-- equivalences:end -->
@@ -986,6 +986,14 @@ them, and the theme restyles nothing directly.
   error hover and press backgrounds (`dropdown.item.background.error.*`).
 - **Alert parts.** Bootstrap colors the whole alert with the theme `fg`: Quantum's neutral message
   color and icon color are not separate.
+- **Icon.** Bootstrap has no icon component: a `.material-symbols-outlined` glyph takes the Icon's
+  colors from Bootstrap's color utilities (`.fg-*`, and `.fg-contrast-*` on `.bg-*`), which read
+  the theme's text roles, not the Icon's icon roles. On a level, warning and error in light mode
+  (`#644B16`, `#940E11`) are darker than the Icon's (`#FFC61C`, `#C01619`), and success, warning,
+  error and info in dark mode are lighter; neutral on an accent or a subtle fill takes the primary
+  text role instead of the Icon's. Every one of them reaches 3:1 on its surface. The sizes have
+  no class (`.fs-*` are fluid text sizes and Google's class sets 24 px), the sunken fills have no
+  background utility, and a directional glyph does not flip in a right-to-left layout.
 - **Divider.** `.vr` is drawn with `--bs-border-color`, not `divider.container.color` (the `hr`
   takes it).
 - **Card surface level-2** and the **slider's** hover thumb color have no Bootstrap class or token;

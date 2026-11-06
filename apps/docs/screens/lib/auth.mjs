@@ -7,7 +7,7 @@ import { ds, el, link, text } from './ds.mjs';
 
 /** The product mark: an icon tile and the product name, linking home. */
 export function brand(name = 'Acme Inc.') {
-  return el('a', { class: 'scr-brand', href: '#' }, el('span', { class: 'scr-brand__mark' }, ds.icon({ name: 'view_agenda', size: 'small' })), text(name));
+  return el('a', { class: 'scr-brand', href: '#' }, el('span', { class: 'scr-brand__mark' }, ds.icon({ name: 'view_agenda', size: 'small', surface: 'accent', color: 'neutral' })), text(name));
 }
 
 /**
@@ -75,7 +75,7 @@ export function legal() {
 
 /** A decorative cover image, drawn with tokens (no picture is reused from the original). */
 export function cover() {
-  return el('div', { class: 'scr-cover', 'aria-hidden': 'true' }, ds.icon({ name: 'landscape', size: 'large' }));
+  return el('div', { class: 'scr-cover', 'aria-hidden': 'true' }, ds.icon({ name: 'landscape', size: 'xxlarge', surface: 'subtle', color: 'neutral' }));
 }
 
 /** Gaps and changes the authentication screens share (shown on each screen's page). */

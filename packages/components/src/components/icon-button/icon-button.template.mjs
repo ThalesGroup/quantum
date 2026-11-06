@@ -7,7 +7,7 @@
  * ligature name ("delete") is never read.
  * Extra sandbox-only prop: `state` forces a visual state through data-state.
  */
-import { escapeAttr, renderIcon, ICONS } from '../../lib/template-utils.mjs';
+import { escapeAttr, renderIcon, iconDirection, ICONS } from '../../lib/template-utils.mjs';
 
 export const meta = {
   id: 'icon-button',
@@ -38,6 +38,6 @@ export function render(props = {}) {
   if (disabled) attrs.push('disabled');
   if (state && state !== 'default') attrs.push(`data-state="${escapeAttr(state)}"`);
 
-  const glyph = `<span class="ds-icon-button__icon" data-part="icon" aria-hidden="true">${renderIcon(icon || 'add')}</span>`;
+  const glyph = `<span class="ds-icon-button__icon" data-part="icon"${iconDirection(icon || 'add')} aria-hidden="true">${renderIcon(icon || 'add')}</span>`;
   return `<button ${attrs.join(' ')}>${glyph}</button>`;
 }

@@ -7,7 +7,7 @@
  * Extra sandbox-only props: `state` on the root forces a state on every item; an entry's `state`
  * forces it on that item.
  */
-import { escapeHtml, escapeAttr, renderIcon } from '../../lib/template-utils.mjs';
+import { escapeHtml, escapeAttr, renderIcon, iconDirection } from '../../lib/template-utils.mjs';
 
 export const meta = { id: 'breadcrumb', selector: '.ds-breadcrumb' };
 
@@ -24,7 +24,7 @@ export function render(props = {}) {
     const link = current
       ? `<span class="ds-breadcrumb__link" data-part="link" aria-current="page">${escapeHtml(text)}</span>`
       : `<a class="ds-breadcrumb__link" data-part="link" href="${escapeAttr(href ?? '#')}">${escapeHtml(text)}</a>`;
-    const separator = current ? '' : `<span class="ds-breadcrumb__separator" data-part="separator" aria-hidden="true">${renderIcon('chevron_right')}</span>`;
+    const separator = current ? '' : `<span class="ds-breadcrumb__separator" data-part="separator"${iconDirection('chevron_right')} aria-hidden="true">${renderIcon('chevron_right')}</span>`;
     return `<li ${itemAttrs.join(' ')}>${link}${separator}</li>`;
   });
   return `<nav ${rootAttrs.join(' ')}><ol class="ds-breadcrumb__list" data-part="list">${list.join('')}</ol></nav>`;

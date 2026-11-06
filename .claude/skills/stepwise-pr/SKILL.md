@@ -20,9 +20,10 @@ Repository rules still apply in full: `agents/workflow.md` (decision loop), `age
 
 ## 1. Set up (first session only)
 
-1. Create a worktree and a branch from the latest `origin/main`, named after the main commit
-   to come (`feat/button-improvements`):
-   `git fetch origin && git worktree add .claude/worktrees/<name> -b <branch> origin/main`.
+1. Create a worktree and a branch from the latest base branch, the one the work lives on and
+   the pull request targets (`nextgen` for Quantum NextGen, `main` otherwise), named after the
+   main commit to come (`feat/button-improvements`):
+   `git fetch origin && git worktree add .claude/worktrees/<name> -b <branch> origin/<base>`.
    Run `pnpm install` in it.
 2. Put any input material in place (an export goes to `raw_content/components/`, `agents/token-sources.md`).
 3. Push and open a **draft** pull request right away, even before the first change, with the
@@ -75,7 +76,7 @@ Issues opened along the way.
 ## 3. One step
 
 1. **Resume.** In a new session, read only what the step needs: the pull request description,
-   `git -C <worktree> log --oneline origin/main..`, the files the step touches. Check the
+   `git -C <worktree> log --oneline origin/<base>..`, the files the step touches. Check the
    worktree preview is up (skill `worktree-preview`) and give its URL.
 2. **Show.** Build a review sheet per question (skill `review-sheet`): before, after (each
    option), the reference, on the surfaces and in the modes where it matters, plus the real
@@ -86,7 +87,7 @@ Issues opened along the way.
 4. **Apply** the answer through the decision loop (`agents/workflow.md` "Decisions"): decision in
    `decisions[]`, tokens, `pnpm tokens:build`, spec version + changelog, CSS, docs, mirrors
    (`scripts/lib/mirrors.mjs`), screens, contrast in every mode.
-5. **Verify:** `pnpm check`, `pnpm impact --base origin/main`, and look at the site.
+5. **Verify:** `pnpm check`, `pnpm impact --base origin/<base>`, and look at the site.
 6. **Commit** the step alone: `feat(<component>): <decision as a noun phrase>` (`agents/git.md`); a step
    that records a "keep as is" decision is still a commit (decision + changelog).
 7. **Record** on GitHub:
@@ -101,17 +102,20 @@ Issues opened along the way.
    start the next step in a new session:
    `Continue step N+1 from https://github.com/ThalesGroup/quantum/pull/<n>`.
 
-Anything out of scope that comes up becomes an issue at once (skill `backlog`), listed under
+A finding related to the work that should be fixed right away (a foundation the decision just
+made contradicts, a failing value next to the one being fixed) is not out of scope: add it to
+the plan as a step of its own, numbered after the step that found it (`3b`), and open no
+issue. Anything else out of scope becomes an issue at once (skill `backlog`), listed under
 Follow-ups. A rule the user states during a step that holds beyond it (a token policy, a way of
 asking) goes to memory and, when it is a repository rule, to the guide in `agents/` (or the directory `AGENTS.md`) that owns it, in the same pull request.
 
 ## 4. Close
 
 1. The last step reports back (for a reference such as Figma: an issue listing every departure,
-   skill `figma-alignment`).
+   skill `component-refinement`).
 2. Document anything new the work introduced (directories, scripts, rules) in the
    guides of `agents/` and the directory `AGENTS.md` files.
-3. Status line: "Every step is decided". Final `pnpm check` and `pnpm impact --base origin/main`.
+3. Status line: "Every step is decided". Final `pnpm check` and `pnpm impact --base origin/<base>`.
 4. Mark it ready: `gh pr ready <n> --repo ThalesGroup/quantum`. Never merge it.
 5. Report: branch, commits, pull request link, labels, and the "How to review" list.
 6. Keep the worktree until the merge (its `build/review/` holds the sheets); after the merge,

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.22.2",
+  "version": "0.24.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -691,6 +691,22 @@
   ],
   "decisions": [
     {
+      "id": "icon-optical-size-24",
+      "date": "2026-11-05",
+      "version": "0.23.0",
+      "area": "typography",
+      "status": "active",
+      "text": "Icons are drawn for optical size 24 (font.icon.optical-size.24) at every size, the single optical size of the Iconography foundation (decision optical-size-24); the Figma prototype switches between 20 and 24.",
+      "rationale": "A single optical size keeps the system simple and loads a single static instance of the icon font. Across every icon, simple or detailed, 24 renders slightly better than 20 for the same download (344 KB against 352 KB, measured on 2026-11-05); 32 renders better still, but Google Fonts has no static instance at 32 and serves the whole variable font instead (732 KB, twice the download).",
+      "supersedes": [
+        "icon-optical-size-20"
+      ],
+      "tokens": [
+        "button.icon.optical-size",
+        "font.icon.optical-size.24"
+      ]
+    },
+    {
       "id": "default-size-medium",
       "date": "2026-10-15",
       "version": "0.22.0",
@@ -853,7 +869,7 @@
       "date": "2026-10-08",
       "version": "0.15.0",
       "area": "typography",
-      "status": "active",
+      "status": "superseded",
       "text": "Icons keep optical size 20 (font.icon.optical-size.20) at every size, including the 24 px icons of medium and large; the Figma prototype switches between 20 and 24.",
       "rationale": "It eases implementation and keeps buttons consistent whatever their size.",
       "tokens": [
@@ -1172,6 +1188,16 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.24.0",
+      "date": "2026-11-06",
+      "note": "Follows the Iconography foundation 0.5.0 (decision glyphs-follow-reading-direction): in a right-to-left layout, an icon whose glyph is directional (arrow_back, arrow_forward…) flips horizontally; any other glyph keeps its drawing. Web: the template marks it with data-directional, flipped under :dir(rtl). No token change."
+    },
+    {
+      "version": "0.23.0",
+      "date": "2026-11-05",
+      "note": "Decision icon-optical-size-24 (supersedes icon-optical-size-20), following the Iconography foundation 0.3.0: icons are drawn for optical size 24 instead of 20 at every size (button.icon.optical-size → font.icon.optical-size.24). heights-from-prototype restated optical size 20 among the values it kept; that value is now 24. Icon sizes and heights unchanged (the glyph box is the icon size). Colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.22.2",
       "date": "2026-11-06",

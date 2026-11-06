@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "spacing",
   "name": "Spacing and sizing",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "status": "draft",
   "summary": "The spacing scale and the element sizes from the Figma library, which components pick their paddings, gaps, heights and icon sizes from.",
   "description": "Two scales from the Figma library (Dimension), as they are, measure everything: space, the room inside and between elements, on a 4 px grid; and size, the dimensions of elements such as icons and avatars. Components and the docs site read them directly: each component picks its padding, gaps, heights and icon sizes from them in its own tokens. There is no semantic spacing layer in between.",
@@ -30,7 +30,7 @@
     {
       "id": "components",
       "name": "Components pick from the scales",
-      "text": "A component chooses its inner padding, the gap between its parts, its minimum height and its icon size from these scales, per size, in its own component tokens (the Button: padding 6, 8, 12, 16; height 24, 32, 40, 48; icon 16, 16, 20, 24 px, extra small to large). Two components sharing a value share it through the same scale step, not through a shared semantic token."
+      "text": "A component chooses its inner padding, the gap between its parts, its minimum height and its icon size from these scales, per size, in its own component tokens, listed on its Tokens tab. Two components sharing a value share it through the same scale step, not through a shared semantic token."
     },
     {
       "id": "control-height",
@@ -83,7 +83,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 by 44 pt. The extra small, small and medium controls (24, 32 and 40 pt high) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "Apple recommends a hit region of at least 44 by 44 pt. The extra small, small and medium controls (24, 28 and 36 pt high) fall under it on iOS today: the Figma library has no platform heights.",
         "refs": [
           "hig-buttons-best-practices",
           "hig-accessibility-mobility"
@@ -93,7 +93,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 by 48 dp. The extra small, small and medium controls (24, 32 and 40 dp high) fall under it on Android today: the Figma library has no platform heights.",
+        "text": "Android recommends a touch target of at least 48 by 48 dp. Every control size (24, 28, 36 and 44 dp high) falls under it on Android today: the Figma library has no platform heights.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes"
@@ -201,6 +201,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.1",
+      "date": "2026-11-05",
+      "note": "Fix: the rule components no longer gives the Button's dimensions (height 24, 32, 40, 48; icon 16, 16, 20, 24 px), which the Button has since changed (heights space.24 / 28 / 36 / 44, icons size.2 / 3 / 4 / 4): each component's own Tokens tab lists them. The iOS and Android target size statements give today's control heights: 24, 28 and 36 pt under 44 pt on iOS (was 24, 32 and 40), and every size, 24 to 44 dp, under 48 dp on Android (was extra small to medium). No decision changes (ThalesGroup/quantum#63)."
+    },
     {
       "version": "0.2.0",
       "date": "2026-10-02",

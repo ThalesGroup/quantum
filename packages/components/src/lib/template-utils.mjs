@@ -39,3 +39,55 @@ export const ICONS = [
 export function renderIcon(name) {
   return escapeHtml(name);
 }
+
+/**
+ * The glyphs that flip in a right-to-left layout: the names of the Iconography rule direction
+ * (packages/components/specs/foundations/iconography.spec.json), which pnpm validate keeps in step.
+ */
+export const DIRECTIONAL_ICONS = [
+  'arrow_back',
+  'arrow_back_ios',
+  'arrow_back_ios_new',
+  'arrow_forward',
+  'arrow_forward_ios',
+  'arrow_left',
+  'arrow_right',
+  'chevron_left',
+  'chevron_right',
+  'exit_to_app',
+  'first_page',
+  'format_indent_decrease',
+  'format_indent_increase',
+  'format_list_bulleted',
+  'forward',
+  'keyboard_arrow_left',
+  'keyboard_arrow_right',
+  'keyboard_double_arrow_left',
+  'keyboard_double_arrow_right',
+  'last_page',
+  'list',
+  'login',
+  'logout',
+  'navigate_before',
+  'navigate_next',
+  'notes',
+  'redo',
+  'reply',
+  'reply_all',
+  'send',
+  'short_text',
+  'sort',
+  'subject',
+  'toc',
+  'undo',
+  'volume_down',
+  'volume_mute',
+  'volume_off',
+  'volume_up',
+  'wrap_text',
+];
+
+/** Attribute of the icon part marking a directional glyph, which its CSS flips under :dir(rtl); empty otherwise. */
+export function iconDirection(name) {
+  return DIRECTIONAL_ICONS.includes(name) ? ' data-directional' : '';
+}

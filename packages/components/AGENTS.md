@@ -140,6 +140,11 @@ example that exists only on another platform never needs CSS or template code.
   Material Symbols glyph (the icon font, `icon.*` tokens). Any valid name renders; `ICONS` is
   the list the playground offers, extend it there. The icon part styles the glyph from its
   component's `<id>.icon.*` tokens (family, weight, fill, grade, optical size, size).
+  The icon part also carries `${iconDirection(name)}`, which marks a glyph of the Iconography
+  rule direction (`DIRECTIONAL_ICONS`, kept equal to the rule's `names` by `pnpm validate`), and
+  its CSS flips it in a right-to-left layout:
+  `.ds-<id>__icon[data-directional]:dir(rtl) { scale: -1 1; }` (`:dir()` reads the document's
+  direction, so the glyph's own `direction: ltr` does not hide it).
 - Accessibility (validated, see `agents/accessibility.md`): render the native element that carries the
   role (`packages/components/specs/a11y/roles.json` → `web.elements`) and no redundant `role`; map booleans to native
   attributes (`disabled`); put `aria-hidden="true"` on every part marked `decorative`; never

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.1.1",
+  "version": "0.9.0",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -25,22 +25,30 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Side of the square the glyph fills.",
+      "description": "Side of the square the glyph fills, at the default text size. Next to text, the icon takes the size of that text, at every text size.",
       "affects": [
         "container"
       ],
       "options": [
         {
           "value": "small",
-          "description": "Inline with small text (16 px)."
+          "description": "Next to body text (16 px, also with 14 px text)."
         },
         {
           "value": "medium",
-          "description": "Default (20 px)."
+          "description": "Default. Next to large body text and extra small headings (20 px)."
         },
         {
           "value": "large",
-          "description": "Headings and empty states (24 px)."
+          "description": "Next to small headings (24 px)."
+        },
+        {
+          "value": "xlarge",
+          "description": "Next to medium headings, and the glyph of an empty state (32 px)."
+        },
+        {
+          "value": "xxlarge",
+          "description": "A glyph standing in for a picture: a cover, a placeholder (40 px)."
         }
       ]
     },
@@ -49,7 +57,7 @@
       "name": "Color",
       "type": "enum",
       "default": "current",
-      "description": "Color of the glyph: the surrounding text color, or one of the system's icon roles.",
+      "description": "Color of the glyph: the surrounding text color, or one of the system's icon roles, read on the surface the icon sits on.",
       "affects": [
         "container"
       ],
@@ -85,6 +93,34 @@
       ]
     },
     {
+      "id": "surface",
+      "name": "Surface",
+      "type": "enum",
+      "default": "base",
+      "description": "What the icon sits on: a surface level, or a colored fill of the system. On a fill, the color names the fill's hue and reads that fill's icon role. The current color ignores it.",
+      "affects": [
+        "container"
+      ],
+      "options": [
+        {
+          "value": "base",
+          "description": "A surface level: the page, a card, a popover, the sunken level. The default."
+        },
+        {
+          "value": "accent",
+          "description": "An accent fill, the strong fill of a hue."
+        },
+        {
+          "value": "subtle",
+          "description": "A subtle fill, the light fill of a hue."
+        },
+        {
+          "value": "sunken",
+          "description": "A sunken fill of a hue. There is no neutral sunken fill."
+        }
+      ]
+    },
+    {
       "id": "name",
       "name": "Glyph",
       "type": "icon",
@@ -113,18 +149,21 @@
     "sizing": "fixed",
     "notes": [
       "A square of the size, aligned on the middle of the surrounding text.",
-      "An icon never stretches; the glyph fills the square as the icon font draws it."
+      "An icon never stretches; the glyph fills the square as the icon font draws it.",
+      "The size is the one at the default text size: when people raise the text size, the square grows with the text (Iconography rule text-size).",
+      "In a right-to-left layout, a directional glyph flips horizontally in its square (Iconography rule direction); every other glyph keeps its drawing."
     ]
   },
   "accessibility": {
     "name": {
-      "text": "Without a label the icon is decoration, hidden from assistive technology. With a label it is an image named by that label (role img and aria-label on the web): the label says what the icon means, not what it looks like.",
+      "text": "Without a label the icon is decoration, hidden from assistive technology. With a label it is an image named by that label: the label says what the icon means, not what it looks like. Every platform exposes it through its own accessibility services (role img and aria-label on the web).",
       "refs": [
         "aria-hidden",
         "aria-img",
         "mdn-img-role",
         "aria-label",
-        "wai-images-functional"
+        "wai-images-functional",
+        "en-301-549-object-information"
       ]
     },
     "keyboard": [],
@@ -152,7 +191,7 @@
         ]
       },
       {
-        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). A decorative icon has no contrast requirement.",
+        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 7.61:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); the warning icon color is 11.17:1 in dark mode but 1.54:1 in light mode, where the Figma library's POC2 export set it to warning 300 (the step that fixed dark mode), a known issue of the Color foundation (pair icon-warning). On every surface level and on sunken, the lowest of the other colors are brand 5.45:1 (light) and error 5.30:1 (dark). A decorative icon has no contrast requirement. On a colored fill (surface accent, subtle or sunken), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes, except warning on the sunken warning fill in light mode (1.25:1), whose icon role aliases the on-base one, the same known issue; the lowest of the others is error on the error accent fill at rest, 4.56:1 in both modes. With current, the icon takes the color of the text around it, and so its contrast: on a surface level every on-base text role gives at least 4.24:1 (extended wood, dark mode, level 3; neutral tertiary 4.80:1) and disabled text 3.12:1, so a named icon in current reaches 3:1 wherever that text uses a system text role; on a fill, it takes the text color that the fill's container sets.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-graphics"
@@ -165,22 +204,84 @@
         ]
       },
       {
-        "text": "Provide alternative text labels for custom interface icons; they let VoiceOver describe what is on screen.",
+        "text": "Text can be resized up to 200 percent; the criterion covers text, not icons, which are non-text content. Icons grow with the text all the same: people who need larger text also need to read the icons that carry meaning, so an icon next to text keeps the size of that text at every text size, and a named icon standing alone grows with the text around it.",
         "refs": [
-          "hig-icons"
+          "wcag:1.4.4",
+          "understanding-resize-text"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: that setting enlarges neither the text nor the icons, while zoom enlarges both, which meets Resize Text. When text follows that setting, icons follow it with it.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Give a meaningful icon an alternative text label for VoiceOver, describing only the information it conveys; exclude a purely decorative icon from VoiceOver.",
+        "refs": [
+          "hig-icons",
+          "hig-voiceover-descriptions"
         ],
         "platforms": [
           "ios"
         ]
       },
       {
-        "text": "Pass null as the contentDescription of a decorative icon; describe a meaningful one by its purpose.",
+        "text": "Icons that convey meaning grow with Dynamic Type, up to the larger accessibility sizes; where inline icons crowd the text at large sizes, consider a stacked layout with the text above them.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Pass null as the contentDescription of a decorative icon, or hide it with hideFromAccessibility; describe a meaningful one by its purpose.",
         "refs": [
           "compose-graphic-elements",
+          "compose-hide-semantics",
           "android-describe-ui-element"
         ],
         "platforms": [
           "android"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, icons keep their sizes, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On macOS, VoiceOver asks the same as on iOS: label a meaningful icon with the information it conveys, exclude a purely decorative one.",
+        "refs": [
+          "hig-voiceover-descriptions",
+          "hig-voiceover-platforms"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "Native software exposes a named icon's role and name to assistive technology through the platform's documented accessibility services, and gives it a text alternative as WCAG 1.1.1 asks; a decorative icon is left out of them.",
+        "refs": [
+          "wcag:1.1.1",
+          "en-301-549-non-text-content",
+          "en-301-549-accessibility-services",
+          "en-301-549-object-information"
+        ],
+        "platforms": [
+          "ios",
+          "android",
+          "desktop"
         ]
       }
     ],
@@ -199,6 +300,11 @@
         "id": "compose-graphic-elements",
         "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-hide-semantics",
+        "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
       },
       {
         "id": "aria-img",
@@ -244,13 +350,74 @@
         "id": "hig-icons",
         "title": "Apple HIG: Icons (alternative text labels for interface icons)",
         "url": "https://developer.apple.com/design/human-interface-guidelines/icons"
+      },
+      {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (describe meaningful images, exclude decorative ones)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "hig-voiceover-platforms",
+        "title": "Apple HIG: VoiceOver, platform considerations (no additional considerations for macOS)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Platform-considerations"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "hig-right-to-left",
+        "title": "Apple HIG: Right to left",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/right-to-left"
+      },
+      {
+        "id": "material-bidirectionality-rtl",
+        "title": "Material 3: Bidirectionality & RTL",
+        "url": "https://m3.material.io/foundations/layout/bidirectionality-rtl"
+      },
+      {
+        "id": "en-301-549-non-text-content",
+        "title": "EN 301 549 V3.2.1, 11.1.1.1.1 Non-text content (open functionality): WCAG 1.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=65"
+      },
+      {
+        "id": "en-301-549-accessibility-services",
+        "title": "EN 301 549 V3.2.1, 11.5.2.3 Use of accessibility services",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=79"
+      },
+      {
+        "id": "en-301-549-object-information",
+        "title": "EN 301 549 V3.2.1, 11.5.2.5 Object information (role and name programmatically determinable)",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=79"
       }
     ]
   },
   "content": {
     "guidelines": [
       "The label of a named icon says its meaning, as a noun or a short phrase: Warning, Verified, Locked; never the glyph's name.",
-      "Use the same glyph for the same meaning everywhere in a product."
+      "Use the same glyph for the same meaning everywhere in a product.",
+      "Pick the glyph for what it means: arrow_back for going back, which flips in a right-to-left layout; east or format_align_right for a real direction, which never flips."
     ]
   },
   "examples": [
@@ -295,6 +462,26 @@
       }
     },
     {
+      "id": "xlarge-neutral",
+      "name": "Xlarge, neutral",
+      "description": "The glyph of an empty state, above its heading.",
+      "props": {
+        "size": "xlarge",
+        "color": "neutral",
+        "name": "inbox"
+      }
+    },
+    {
+      "id": "xxlarge-neutral",
+      "name": "Xxlarge, neutral",
+      "description": "Stands in for a picture that is not there.",
+      "props": {
+        "size": "xxlarge",
+        "color": "neutral",
+        "name": "landscape"
+      }
+    },
+    {
       "id": "medium-warning",
       "name": "Medium, warning, named",
       "props": {
@@ -322,6 +509,29 @@
         "color": "info",
         "name": "info"
       }
+    },
+    {
+      "id": "large-brand-accent",
+      "name": "Large, brand, on an accent fill",
+      "description": "Decorative, on a brand accent fill the product draws (a banner): reads the fill's icon role.",
+      "props": {
+        "size": "large",
+        "color": "brand",
+        "surface": "accent",
+        "name": "rocket_launch"
+      }
+    },
+    {
+      "id": "medium-success-subtle",
+      "name": "Medium, success, on a subtle fill",
+      "description": "Named, on a success subtle fill the product draws (a panel).",
+      "props": {
+        "size": "medium",
+        "color": "success",
+        "surface": "subtle",
+        "name": "check_circle",
+        "label": "Completed"
+      }
     }
   ],
   "tokens": {
@@ -337,6 +547,7 @@
       "attributes": {
         "size": "data-size",
         "color": "data-color",
+        "surface": "data-surface",
         "label": "aria-label"
       },
       "stateAttribute": "data-state",
@@ -351,11 +562,144 @@
   ],
   "decisions": [
     {
+      "id": "current-drawn-as-neutral",
+      "date": "2026-11-06",
+      "version": "0.9.0",
+      "area": "color",
+      "status": "active",
+      "text": "In Figma and Penpot, which cannot inherit a color, the default color current is drawn as neutral on its surface: the glyph of every Color=current variant is bound to the same token as Color=neutral, for the designer to override on the instance where the text around it has another color. The web keeps inheriting the text color.",
+      "tokens": [
+        "icon.container.color.neutral",
+        "icon.container.color.accent.neutral",
+        "icon.container.color.subtle.neutral"
+      ]
+    },
+    {
+      "id": "named-or-hidden-on-every-platform",
+      "date": "2026-11-06",
+      "version": "0.8.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On every platform, an icon is decorative and hidden from assistive technology unless it is given a label; with a label it is exposed as an image named by that label, which says what the icon means, not what it looks like. Each platform carries it through its own accessibility services; the contract names no platform API.",
+      "rationale": "Each platform's guidelines ask to name a meaningful image and to hide a decorative one (VoiceOver on iOS and macOS, contentDescription and hideFromAccessibility on Android, EN 301 549 for native software), but no trusted guideline outside the web names the image trait or role, only the platforms' API references; the universal statement keeps the role, and EN 301 549 requires a role to be exposed.",
+      "supersedes": [
+        "decorative-unless-named"
+      ],
+      "refs": [
+        "wcag:1.1.1",
+        "aria-hidden",
+        "aria-img",
+        "hig-voiceover-descriptions",
+        "compose-graphic-elements",
+        "compose-hide-semantics",
+        "en-301-549-non-text-content",
+        "en-301-549-object-information"
+      ]
+    },
+    {
+      "id": "follows-reading-direction",
+      "date": "2026-11-06",
+      "version": "0.7.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "In a right-to-left layout, the icon flips its glyph horizontally when the glyph is on the Iconography list of directional glyphs (Iconography decision glyphs-follow-reading-direction); any other glyph keeps its drawing. The icon has no property for it: the name decides.",
+      "refs": [
+        "hig-right-to-left",
+        "material-bidirectionality-rtl"
+      ]
+    },
+    {
+      "id": "follows-text-size",
+      "date": "2026-11-06",
+      "version": "0.6.0",
+      "area": "size",
+      "status": "active",
+      "text": "An icon grows with the text size on every platform that lets people raise it (Iconography decision icons-follow-text-size): next to text it keeps the size of that text at every text size, and a named icon standing alone grows with the text around it. small to xxlarge are the sizes at the default text size. Where nothing scales the text (macOS), the icon keeps its size.",
+      "tokens": [
+        "icon.container.size.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type"
+      ]
+    },
+    {
+      "id": "warning-light-from-library",
+      "date": "2026-11-06",
+      "version": "0.5.0",
+      "area": "color",
+      "status": "active",
+      "text": "The warning color keeps the Figma library's warning icon roles in light mode, on a surface level and on the sunken warning fill (global.icon.on-base.functional.warning.default and global.icon.on-sunken.functional.warning.default, warning 300 since the library's POC2 export), although they fall short of 3:1 there: 1.54 to 1.46:1 on the surface levels, 1.26:1 on the sunken warning fill. Neither the Icon's tokens nor the semantic roles depart from the library for it.",
+      "rationale": "The team waits for the Figma library's fix, agreed with the designers, rather than departing from the library in the repository; the fix will come with a new export. Until then the failure stays a known issue of the Color foundation (pair icon-warning), and a warning icon is paired with text.",
+      "tokens": [
+        "icon.container.color.warning",
+        "icon.container.color.sunken.warning"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "colors-on-fills",
+      "date": "2026-11-05",
+      "version": "0.4.0",
+      "area": "color",
+      "status": "active",
+      "text": "By default an icon inherits the surrounding text color (no token: currentColor). The other colors read the icon role of what the icon sits on, set by the surface property. On a surface level (base, the default) they read the on-base roles: neutral (secondary), brand, success, warning, error, info. On a colored fill (accent, subtle, sunken) the color names the fill's hue and reads that fill's icon role: global.icon.on-accent.*, on-subtle.* or on-sunken.* (neutral is the secondary role on accent and the single neutral role on subtle; there is no neutral sunken fill, so neutral keeps the on-base role there).",
+      "rationale": "Semantically, an icon on a fill reads that fill's icon role, not the text role that current inherits: the semantic tier keeps the two apart so an icon can differ from the text on the same fill, as the warning icon does on the sunken fill in light mode. Each color token of the Icon only forwards to its semantic role (icon.container.color.accent.success to global.icon.on-accent.functional.success.default). The team is not entirely convinced by this extra layer, and keeps it for now so that the Icon follows the repository's rule that component CSS reads only component tokens, like every other component; the layer may be reconsidered later, for every component rather than for the Icon alone.",
+      "supersedes": [
+        "colors"
+      ],
+      "tokens": [
+        "icon.container.color.*"
+      ]
+    },
+    {
+      "id": "optical-size-24",
+      "date": "2026-11-05",
+      "version": "0.3.0",
+      "area": "typography",
+      "status": "active",
+      "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 24) at five sizes of the size scale: small 16 px, medium 20 px, large 24 px, xlarge 32 px and xxlarge 40 px. Every size draws the glyph for optical size 24, xlarge and xxlarge included (Iconography decision optical-size-24). Next to text, the icon takes the size of that text (body text, then extra small, small and medium headings); xxlarge stands in for a picture.",
+      "rationale": "A single optical size keeps the system simple and loads a single static instance of the icon font. Across every icon, simple or detailed, 24 renders slightly better than 20 for the same download (344 KB against 352 KB, measured on 2026-11-05); 32 renders better still, but Google Fonts has no static instance at 32 and serves the whole variable font instead (732 KB, twice the download).",
+      "supersedes": [
+        "glyph-size-scale"
+      ],
+      "tokens": [
+        "icon.container.font-family",
+        "icon.container.font-weight",
+        "icon.container.fill",
+        "icon.container.grade",
+        "icon.container.optical-size",
+        "icon.container.size.*"
+      ]
+    },
+    {
+      "id": "glyph-size-scale",
+      "date": "2026-11-05",
+      "version": "0.2.0",
+      "area": "size",
+      "status": "superseded",
+      "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 20) at five sizes of the size scale: small 16 px, medium 20 px, large 24 px, xlarge 32 px and xxlarge 40 px. Next to text, the icon takes the size of that text (body text, then extra small, small and medium headings); xxlarge stands in for a picture.",
+      "supersedes": [
+        "icon-font-glyph"
+      ],
+      "tokens": [
+        "icon.container.font-family",
+        "icon.container.font-weight",
+        "icon.container.fill",
+        "icon.container.grade",
+        "icon.container.optical-size",
+        "icon.container.size.*"
+      ]
+    },
+    {
       "id": "icon-font-glyph",
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "typography",
-      "status": "active",
+      "status": "superseded",
       "text": "An icon is a glyph of the icon font (Iconography foundation: Material Symbols Outlined, fill off, weight 300, grade 0, optical size 20) at 16, 20 or 24 px (small, medium, large).",
       "tokens": [
         "icon.container.font-family",
@@ -371,7 +715,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "By default an icon inherits the surrounding text color (no token: currentColor); the other options read the Figma library's on-base icon roles: neutral (secondary), brand, success, warning, error, info.",
       "tokens": [
         "icon.container.color.*"
@@ -382,7 +726,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "accessibility",
-      "status": "active",
+      "status": "superseded",
       "text": "An icon is decorative and hidden unless it is given a label, which then names it as an image.",
       "refs": [
         "wcag:1.1.1",
@@ -392,6 +736,56 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-11-06",
+      "note": "Decision current-drawn-as-neutral: the Figma and Penpot blueprints bind the glyph of the Color=current variants to the neutral token of their surface (they kept the tool's default black fill, 1.19:1 on level 0 in dark mode). Neutral on the levels 0 / 1 / 2 / 3 / sunken: 12.78 / 12.09 / 12.78 / 12.09 / 12.09:1 in light, 8.86 / 8.11 / 7.43 / 6.65 / 9.28:1 in dark (WCAG 1.4.11, 3:1); on the fills, the neutral figures of colors-on-fills. Options weighed: keep the default fill; the primary text role; the neutral icon role (chosen). No token, CSS, template or web rendering change."
+    },
+    {
+      "version": "0.8.1",
+      "date": "2026-11-06",
+      "note": "Contrast figures truncated to two decimals, as the docs site and pnpm validate show them, instead of rounded: in the 1.4.11 guideline brand 5.45:1 (was 5.46), warning on the light sunken warning fill 1.25:1 (1.26), error on the error accent fill 4.56:1 (4.57), neutral tertiary text 4.80:1 (4.81), disabled text 3.12:1 (3.13); in decision warning-light-from-library 1.54 to 1.46:1 (1.55 to 1.47). Every ratio passes or fails as before. The template computes its placeholder glyph once. No decision, token, CSS or rendering change."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-06",
+      "note": "Decision named-or-hidden-on-every-platform (supersedes decorative-unless-named): the contract is checked on every platform. iOS: label a meaningful icon with the information it conveys and exclude a decorative one from VoiceOver (Apple HIG, VoiceOver); Android: hideFromAccessibility as the other way to hide a decorative icon (Compose); desktop: the same VoiceOver guidance on macOS, and EN 301 549 clause 11 for native software (11.1.1.1.1, 11.5.2.3, 11.5.2.5). No platform API is named for the role: no trusted guideline outside the web gives one. The contrast guideline gives the floor of current: every on-base text role at least 4.24:1 on the levels, disabled text 3.13:1, so a named icon in current reaches 3:1. No token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-11-06",
+      "note": "Decision follows-reading-direction, following the Iconography foundation 0.5.0: in a right-to-left layout a directional glyph (arrow_back, chevron_right, send…) flips horizontally; every other glyph keeps its drawing. A layout note and a content guideline (pick the glyph for its meaning: east for a real direction). Web: the template marks a glyph of the list with data-directional, flipped under :dir(rtl). No token change; sizes and colors unchanged."
+    },
+    {
+      "version": "0.6.0",
+      "date": "2026-11-06",
+      "note": "Decision follows-text-size, following the Iconography foundation 0.4.0: the icon grows with the text size on every platform that scales text (at 300 % text, a small icon next to body text is 48 px instead of staying at 16 px). The size description and a layout note say the sizes are those at the default text size; accessibility guidelines for every platform, the web, iOS and macOS. No token, CSS or rendering change on the web, where text and icons are px lengths that zoom scales together. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.5.1",
+      "date": "2026-11-06",
+      "note": "Examples on a colored fill: large brand on an accent fill, medium success on a subtle fill. The docs site now draws the fill an icon sits on behind it (the fill paired with the role its color reads), in the examples, the states matrix and the playground. No decision, token, CSS or rendering change."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-11-06",
+      "note": "Decision warning-light-from-library: the warning color keeps the Figma library's warning icon roles in light mode (warning 300 since the POC2 export, 1.55 to 1.47:1 on the surface levels, 1.26:1 on the sunken warning fill, under the 3:1 of WCAG 1.4.11) until the library fixes them. The other options compared were warning 600 for the on-base role in light mode (6.17 to 6.49:1, 5.28:1 on the fill), the role aliasing the warning text role (warning 800 in light, 12.36 to 13.02:1, 10.59:1), and repointing the Icon to the on-subtle icon role (7.66 to 8.06:1, 6.56:1). No token, CSS or rendering changes."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-05",
+      "note": "Decision colors-on-fills (supersedes colors): new property surface, base (the default, unchanged), accent, subtle or sunken. On a colored fill the color names the fill's hue and reads that fill's icon role: 17 tokens, icon.container.color.accent.* → global.icon.on-accent.* (neutral → neutral.secondary), icon.container.color.subtle.* → global.icon.on-subtle.* (neutral → neutral.default), icon.container.color.sunken.* → global.icon.on-sunken.* (no neutral: it keeps the on-base role). The base tokens and current are unchanged. Contrast of each color on its own fill (default / hover / active fill), light: accent neutral 13.70 / 10.81 / 7.32, brand 5.72 / 8.13 / 13.22, success 5.51 / 7.83 / 12.63, warning 11.43 / 8.28 / 5.67, error 4.57 / 6.05 / 8.75, info 4.92 / 7.63 / 13.22; subtle neutral 12.02 / 11.64 / 11.27, brand 7.38 / 6.64 / 5.39, success 7.18 / 6.42 / 5.54, warning 7.29 / 6.56 / 5.86, error 7.90 / 6.30 / 4.76, info 6.92 / 6.29 / 4.97; sunken brand 10.81, success 6.42, warning 1.26, error 6.30, info 10.90. Dark: accent neutral 11.60 / 9.46 / 7.43, brand 13.06 / 10.50 / 7.79, success 8.00 / 6.17 / 4.85, warning 11.43 / 8.28 / 5.67, error 4.57 / 6.05 / 8.75, info 8.78 / 6.67 / 5.04; subtle neutral 11.90 / 9.22 / 6.92, brand 13.06 / 11.32 / 9.41, success 12.32 / 10.69 / 8.93, warning 12.85 / 11.26 / 9.46, error 9.60 / 8.49 / 7.26, info 11.42 / 10.08 / 8.62; sunken brand 10.57, success 4.85, warning 5.67, error 5.14, info 8.78. Neutral on a sunken fill (on-base role): 9.10 to 10.45:1 light, 8.98 to 9.17:1 dark. The same on iOS and Android. Every pair passes the 3:1 of WCAG 1.4.11 except warning on the sunken warning fill in light mode (1.26:1): the on-sunken warning icon role aliases the on-base one, warning 300 since the Figma library's POC2 export, a known issue of the Color foundation."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-05",
+      "note": "Decision optical-size-24 (supersedes glyph-size-scale, which differed only by its optical size), following the Iconography foundation 0.3.0: every size draws the glyph for optical size 24 instead of 20 (icon.container.optical-size → font.icon.optical-size.24), xlarge and xxlarge included. At 40 px the glyph is about 2 px larger (inbox 28.3 against 26.3 px) and its stroke 2.50 against 2.17 px. Sizes and colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-11-05",
+      "note": "Decision glyph-size-scale (supersedes icon-font-glyph): two sizes added, xlarge 32 px (size.5) and xxlarge 40 px (size.6), with an example each; each size now says which text it goes with. Small, medium and large are unchanged, and so are the colors and their contrast."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

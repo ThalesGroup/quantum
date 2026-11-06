@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.2.2",
+  "version": "0.5.0",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -25,23 +25,75 @@
     {
       "id": "style",
       "name": "One style",
-      "text": "Every icon is drawn in one style: outlined (fill off), light weight, normal grade, optical size 20. The axes are fixed for the whole system, never chosen per component.",
+      "text": "Every icon is drawn in one style: outlined (fill off), light weight, normal grade, optical size 24 at every size. The axes are fixed for the whole system, never chosen per component.",
       "tokens": [
         "font.icon.weight.light",
         "font.icon.fill.off",
         "font.icon.grade.normal",
-        "font.icon.optical-size.20"
+        "font.icon.optical-size.24"
       ]
     },
     {
       "id": "size",
       "name": "Size",
-      "text": "An icon in a control takes a size from the size scale (Spacing and sizing foundation), per control size: size.2 (16 px) at extra small and small, size.3 (20 px) at medium, size.4 (24 px) at large. The glyph fills a square of that size."
+      "text": "An icon takes a size from the size scale (Spacing and sizing foundation), in the tokens of the component that draws it, and the glyph fills a square of that size. In a control, each control size picks the icon size that goes with its label. On its own, next to text, an icon takes the size of that text; the largest sizes stand alone, as the glyph of an empty state or in place of a picture."
+    },
+    {
+      "id": "text-size",
+      "name": "Text size",
+      "text": "When people raise the text size, icons grow with it, on every platform that lets them: next to text, an icon keeps the size of that text at every text size, and an icon that carries meaning on its own grows with the text around it. A component's size tokens give the size at the default text size; the platform scales it by the factor it applies to the text it goes with."
     },
     {
       "id": "color",
       "name": "Color",
       "text": "An icon takes the color of the text next to it, or the icon role of its context (global.icon.*, which aliases that text color), so it follows every emphasis, intent, state and mode."
+    },
+    {
+      "id": "direction",
+      "name": "Reading direction",
+      "text": "In a right-to-left layout, a glyph whose direction is the reading direction flips horizontally, wherever it is drawn: navigation in a fixed order (back and forward, previous and next, the chevron of a path or a submenu), forward or backward motion (send, reply, undo, sound going forward) and lines of text. The glyph decides, not the component or the use: the glyphs listed here flip, and every other glyph keeps the drawing of the font, among them a real direction (east, west, align right), checkmarks, clocks and circular arrows, media controls and real-world objects. An icon that means a real direction takes a glyph that is not on the list.",
+      "names": [
+        "arrow_back",
+        "arrow_back_ios",
+        "arrow_back_ios_new",
+        "arrow_forward",
+        "arrow_forward_ios",
+        "arrow_left",
+        "arrow_right",
+        "chevron_left",
+        "chevron_right",
+        "exit_to_app",
+        "first_page",
+        "format_indent_decrease",
+        "format_indent_increase",
+        "format_list_bulleted",
+        "forward",
+        "keyboard_arrow_left",
+        "keyboard_arrow_right",
+        "keyboard_double_arrow_left",
+        "keyboard_double_arrow_right",
+        "last_page",
+        "list",
+        "login",
+        "logout",
+        "navigate_before",
+        "navigate_next",
+        "notes",
+        "redo",
+        "reply",
+        "reply_all",
+        "send",
+        "short_text",
+        "sort",
+        "subject",
+        "toc",
+        "undo",
+        "volume_down",
+        "volume_mute",
+        "volume_off",
+        "volume_up",
+        "wrap_text"
+      ]
     },
     {
       "id": "decorative",
@@ -74,9 +126,11 @@
       "tokens": [
         "size.2",
         "size.3",
-        "size.4"
+        "size.4",
+        "size.5",
+        "size.6"
       ],
-      "description": "An icon at each size the controls use."
+      "description": "An icon at each size the components use, from the smallest in a control to a glyph standing alone."
     }
   ],
   "accessibility": {
@@ -113,12 +167,39 @@
         ]
       },
       {
-        "text": "Icons that convey meaning grow with the text when people raise the text size.",
+        "text": "Text can be resized up to 200 percent; the criterion covers text, not icons, which are non-text content. Icons grow with the text all the same: people who need larger text also need to read the icons that carry meaning, so an icon next to text keeps the size of that text at every text size, and a named icon standing alone grows with the text around it.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: that setting enlarges neither the text nor the icons, while zoom enlarges both, which meets Resize Text. When text follows that setting, icons follow it with it.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Icons that convey meaning grow with Dynamic Type, up to the larger accessibility sizes; where inline icons crowd the text at large sizes, consider a stacked layout with the text above them.",
         "refs": [
           "hig-typography-dynamic-type"
         ],
         "platforms": [
           "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, icons keep their sizes, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -161,6 +242,36 @@
         "id": "compose-graphic-elements",
         "title": "Compose accessibility API defaults: graphic elements",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "hig-right-to-left",
+        "title": "Apple HIG: Right to left",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/right-to-left"
+      },
+      {
+        "id": "material-bidirectionality-rtl",
+        "title": "Material 3: Bidirectionality & RTL",
+        "url": "https://m3.material.io/foundations/layout/bidirectionality-rtl"
       }
     ]
   },
@@ -210,7 +321,71 @@
       }
     }
   ],
+  "decisions": [
+    {
+      "id": "glyphs-follow-reading-direction",
+      "date": "2026-11-06",
+      "version": "0.5.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "Directional glyphs follow the reading direction: in a right-to-left layout, the glyphs listed by the rule direction flip horizontally, in every component and on every platform. Whether a glyph flips is a property of the glyph, kept in that one list; neither a component nor an author decides it per use. A real direction (dock to the right) takes a glyph that is not on the list (east, west, format_align_right).",
+      "rationale": "The direction belongs to the glyph, as with SF Symbols, whose symbols carry their own right-to-left variants: every component follows the rule without a property of its own, and no use can forget it. Apple and Material agree on what flips and what keeps its direction.",
+      "refs": [
+        "hig-right-to-left",
+        "material-bidirectionality-rtl"
+      ]
+    },
+    {
+      "id": "icons-follow-text-size",
+      "date": "2026-11-06",
+      "version": "0.4.0",
+      "area": "size",
+      "status": "active",
+      "text": "Icons grow with the text size on every platform that lets people raise it (Dynamic Type on iOS, the font size on Android, a text size the web text follows): next to text, an icon keeps the size of that text at every text size, and an icon that carries meaning on its own grows with the text around it. The size tokens are the sizes at the default text size. Where nothing scales the text (macOS), icons keep their sizes.",
+      "rationale": "Next to text an icon already takes the size of that text; a fixed icon breaks that pairing as soon as the text grows (a 16 px icon next to 48 px text at three times the text size). Apple asks for meaningful icons to grow with Dynamic Type, and the reason, legibility for people who need larger text, holds on every platform; WCAG 1.4.4 and the Android guidelines do not require it, and nothing on those platforms argues against it.",
+      "tokens": [
+        "size.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type"
+      ]
+    },
+    {
+      "id": "optical-size-24",
+      "date": "2026-11-05",
+      "version": "0.3.0",
+      "area": "typography",
+      "status": "active",
+      "text": "Every icon is drawn for optical size 24 (font.icon.optical-size.24), at every size and in every component: one optical size, one drawing of each glyph from 16 to 40 px. It replaces optical size 20, the value since the first version.",
+      "rationale": "A single optical size keeps the system simple and loads a single static instance of the icon font. Across every icon, simple or detailed, 24 renders slightly better than 20 for the same download (344 KB against 352 KB, measured on 2026-11-05); 32 renders better still, but Google Fonts has no static instance at 32 and serves the whole variable font instead (732 KB, twice the download).",
+      "tokens": [
+        "font.icon.optical-size.24"
+      ]
+    }
+  ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-06",
+      "note": "Decision glyphs-follow-reading-direction: in a right-to-left layout, directional glyphs flip horizontally (new rule direction, with the list of the 40 glyphs that flip as data). Before, every glyph kept the drawing of the font, so a back arrow, the Breadcrumb separator and the Pagination chevrons pointed against the reading order. Sources: Apple HIG Right to left, Material 3 Bidirectionality & RTL. No token change."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-06",
+      "note": "Decision icons-follow-text-size: icons grow with the text size on every platform that scales text, next to text at the size of that text, alone with the text around them (new rule text-size). The iOS guideline names the larger accessibility sizes and the stacked layout; new guidelines for every platform (WCAG 1.4.4 covers text, not icons), for the web (text in px follows zoom, not the text-only setting) and for macOS (no Dynamic Type). No token, CSS or rendering change: the size tokens are the sizes at the default text size."
+    },
+    {
+      "version": "0.3.1",
+      "date": "2026-11-05",
+      "note": "Fix: the rule size no longer lists icon sizes per control size (size.2 at extra small and small, size.3 at medium, size.4 at large), which no component follows any more: each component picks its icon sizes from the size scale in its own tokens. It now also covers an icon on its own, next to text or standing alone (the Icon's decision glyph-size-scale). The specimen icon-sizes shows size.2 to size.6 (16 to 40 px). No decision changes (ThalesGroup/quantum#63)."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-05",
+      "note": "Decision optical-size-24: every icon is drawn for optical size 24 instead of 20 (font.icon.optical-size.24 replaces font.icon.optical-size.20, removed), in every component that draws one: Icon, Button, Icon button, Alert, Select, Search field, Accordion, Breadcrumb, Pagination and Dropdown. Glyphs fill a little more of their square (78.3 % against 74.2 % on average over 24 glyphs) and their strokes are about 15 % heavier (1.00 against 0.87 px at 16 px, 2.50 against 2.17 px at 40 px). The web reference implementation requests the static instance at 24. Colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.2.2",
       "date": "2026-11-06",

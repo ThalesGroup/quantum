@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -607,6 +607,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-05",
+      "note": "Follows the Iconography foundation 0.3.0 (decision optical-size-24): the icon glyph is drawn for optical size 24 instead of 20 (search-field.icon.optical-size → font.icon.optical-size.24). Sizes and colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

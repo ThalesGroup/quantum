@@ -5,8 +5,12 @@
  *
  * Rules:
  *  - Only --icon-* custom properties may appear here. No raw values, no semantic tokens.
- *  - A glyph of the icon font. Size and color are data attributes; the default color, current,
- *    inherits the surrounding text color (currentColor: a token cannot say inherit).
+ *  - A glyph of the icon font. Size, color and surface are data attributes; the default color,
+ *    current, inherits the surrounding text color (currentColor: a token cannot say inherit).
+ *  - On a colored fill (data-surface accent, subtle, sunken) a color reads that fill's icon role;
+ *    without a token of its own (neutral on sunken) it keeps the base one.
+ *  - A directional glyph (data-directional, set by the template from the Iconography list) flips
+ *    in a right-to-left layout; :dir() reads the document's direction, not direction: ltr.
  */
 
 .ds-icon {
@@ -37,8 +41,15 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* A directional glyph follows the reading direction (Iconography rule direction). */
+.ds-icon[data-directional]:dir(rtl) {
+  scale: -1 1;
+}
+
 .ds-icon[data-size="small"] { --_size: var(--icon-container-size-small); }
 .ds-icon[data-size="large"] { --_size: var(--icon-container-size-large); }
+.ds-icon[data-size="xlarge"] { --_size: var(--icon-container-size-xlarge); }
+.ds-icon[data-size="xxlarge"] { --_size: var(--icon-container-size-xxlarge); }
 
 .ds-icon[data-color="neutral"] { --_color: var(--icon-container-color-neutral); }
 .ds-icon[data-color="brand"] { --_color: var(--icon-container-color-brand); }
@@ -46,3 +57,23 @@
 .ds-icon[data-color="warning"] { --_color: var(--icon-container-color-warning); }
 .ds-icon[data-color="error"] { --_color: var(--icon-container-color-error); }
 .ds-icon[data-color="info"] { --_color: var(--icon-container-color-info); }
+
+.ds-icon[data-surface="accent"][data-color="neutral"] { --_color: var(--icon-container-color-accent-neutral); }
+.ds-icon[data-surface="accent"][data-color="brand"] { --_color: var(--icon-container-color-accent-brand); }
+.ds-icon[data-surface="accent"][data-color="success"] { --_color: var(--icon-container-color-accent-success); }
+.ds-icon[data-surface="accent"][data-color="warning"] { --_color: var(--icon-container-color-accent-warning); }
+.ds-icon[data-surface="accent"][data-color="error"] { --_color: var(--icon-container-color-accent-error); }
+.ds-icon[data-surface="accent"][data-color="info"] { --_color: var(--icon-container-color-accent-info); }
+
+.ds-icon[data-surface="subtle"][data-color="neutral"] { --_color: var(--icon-container-color-subtle-neutral); }
+.ds-icon[data-surface="subtle"][data-color="brand"] { --_color: var(--icon-container-color-subtle-brand); }
+.ds-icon[data-surface="subtle"][data-color="success"] { --_color: var(--icon-container-color-subtle-success); }
+.ds-icon[data-surface="subtle"][data-color="warning"] { --_color: var(--icon-container-color-subtle-warning); }
+.ds-icon[data-surface="subtle"][data-color="error"] { --_color: var(--icon-container-color-subtle-error); }
+.ds-icon[data-surface="subtle"][data-color="info"] { --_color: var(--icon-container-color-subtle-info); }
+
+.ds-icon[data-surface="sunken"][data-color="brand"] { --_color: var(--icon-container-color-sunken-brand); }
+.ds-icon[data-surface="sunken"][data-color="success"] { --_color: var(--icon-container-color-sunken-success); }
+.ds-icon[data-surface="sunken"][data-color="warning"] { --_color: var(--icon-container-color-sunken-warning); }
+.ds-icon[data-surface="sunken"][data-color="error"] { --_color: var(--icon-container-color-sunken-error); }
+.ds-icon[data-surface="sunken"][data-color="info"] { --_color: var(--icon-container-color-sunken-info); }

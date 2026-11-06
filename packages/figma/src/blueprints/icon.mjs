@@ -3,9 +3,16 @@
  * component frame that hugs it (a component's root is a frame; the glyph is the `container` part).
  * The glyph is a TEXT property, "Glyph" (the template's default, add).
  *
- * The default color, current, has no token: the web glyph inherits the surrounding text color.
- * Figma has no inheritance, so that variant keeps Figma's default text fill, for the designer to
- * set on the instance; every other color option is bound.
+ * Every color option is bound, on each surface to the icon role of that surface (neutral on
+ * sunken, which has no role of its own, to the base one). The default color, current, has no
+ * token: the web glyph inherits the surrounding text color. It is drawn as neutral on its surface
+ * (decision current-drawn-as-neutral), for the designer to override on the instance.
+ * upstream(figma): upstream(penpot): no fill inherits the color of the text around it.
+ *
+ * The font's fill, grade and optical size axes cannot be bound, but every named instance of the
+ * variable font, the Light one bound here included, sits at fill 0, grade 0 and optical size 24,
+ * the values of the Iconography foundation (whether Figma draws the installed font's named
+ * instance is to check in Figma, ThalesGroup/quantum#47).
  */
 export default {
   root: {
@@ -18,6 +25,7 @@ export default {
         name: 'container',
         glyph: 'add',
         property: 'Glyph',
+        context: (v) => (v.props.color === 'current' ? { props: { color: 'neutral' } } : {}),
         bind: { fill: 'container.color', size: 'container.size', fontFamily: 'container.font-family', fontWeight: 'container.font-weight' },
       },
     ],

@@ -308,6 +308,9 @@ td.site-cite a { margin-inline-end: 0.75em; }
 /* Stage behind every rendered component: the design system's default surface of the stage's own
    mode context. */
 .site-preview__stage { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: center; padding: 1.75rem 1rem; min-height: 96px; background-color: var(--global-bg-level-0-default); background-image: radial-gradient(var(--global-border-level-on-level-0) 0.7px, transparent 0.7px); background-size: 14px 14px; }
+/* The fill a rendering sits on when it reads a role on a fill it does not draw (lib/backdrop.ts): the
+   background token is set inline, like a specimen's value. */
+.site-backdrop { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1rem; border-radius: var(--corner-radius-sm); }
 
 /* Examples explorer: example list (tabs) on the left, the selected example on the right. */
 .site-explorer { display: grid; grid-template-columns: 240px minmax(0, 1fr); border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-0); border-radius: var(--corner-radius-sm); overflow: hidden; background: var(--global-bg-level-0-default); }
@@ -560,7 +563,7 @@ td.site-cite a { margin-inline-end: 0.75em; }
 }
 
 /* Icons, drawn with the semantic icon style (the icon font and its axes). */
-.site-icon { display: inline-block; font-family: var(--font-icon-family); font-weight: var(--font-icon-weight-light); font-style: normal; font-size: var(--size-4); letter-spacing: normal; text-transform: none; white-space: nowrap; font-feature-settings: "liga"; font-variation-settings: "FILL" var(--font-icon-fill-off), "GRAD" var(--font-icon-grade-normal), "opsz" var(--font-icon-optical-size-20); }
+.site-icon { display: inline-block; font-family: var(--font-icon-family); font-weight: var(--font-icon-weight-light); font-style: normal; font-size: var(--size-4); letter-spacing: normal; text-transform: none; white-space: nowrap; font-feature-settings: "liga"; font-variation-settings: "FILL" var(--font-icon-fill-off), "GRAD" var(--font-icon-grade-normal), "opsz" var(--font-icon-optical-size-24); }
 .site-icons { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: 0.5rem; }
 .site-icons li { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; padding: 0.85rem 0.5rem; border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-0); border-radius: var(--corner-radius-sm); }
 .site-icons code { background: none; padding: 0; color: var(--global-text-on-base-neutral-tertiary); }

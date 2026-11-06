@@ -14,17 +14,49 @@ Material Symbols set works; the Overview shows the ones the component examples u
 Material Symbols is a variable font with four axes: fill, weight, grade and optical size. The
 system fixes them once, as the `font.icon.*` tokens (the design system's additions: the Figma library
 has no icon tokens), so every icon in every component has the same style: outlined, light
-weight, normal grade, drawn for 20 px. Components alias those tokens and never pick an axis
+weight, normal grade, drawn for 24 px. Components alias those tokens and never pick an axis
 value of their own.
+
+The optical size is the size a glyph's strokes and details are drawn for. The system keeps a
+single one for every size, from 16 to 40 px: each glyph has one drawing, and the font is a
+single file. Of the values with a file of their own, 24 draws every icon, simple or detailed,
+slightly better than 20 for the same download; matching each size, or a single 32, would load
+the whole variable font, twice as heavy.
 
 ## Size and color
 
-- **Size** follows the control: an icon in a control takes that control size's icon size
-  from the size scale (`size.2` at extra small and small, `size.3` at medium, `size.4` at large;
-  Spacing and sizing), and the glyph fills a square of that size.
+- **Size** comes from the size scale (Spacing and sizing), and the glyph fills a square of
+  that size. In a control, it goes with the label: each control size picks its icon size in
+  the component's tokens. On its own, next to text, an icon takes the size of that text; the
+  largest sizes stand alone, as the glyph of an empty state or in place of a picture.
+- **Text size**: when people raise the text size, icons grow with it. Next to text, an icon
+  keeps the size of that text at every text size, and an icon that carries meaning on its own
+  grows with the text around it. The sizes in a component's tokens are those at the default
+  text size: each platform scales them by the factor it applies to the text they go with.
 - **Color** follows the text: an icon takes the color of the label next to it, or the icon role
   of its context (`global.icon.*`, which aliases that text color). It changes with the
   emphasis, the intent, the state and the mode.
+
+## Reading direction
+
+In a right-to-left language (Arabic, Hebrew, Persian, Urdu) the layout mirrors, and so must the
+glyphs whose direction is the reading direction: a back arrow points to where the reading
+started, the chevrons of a path or of previous and next follow the order, motion goes forward in
+the reading direction, and bars standing for text align with it. A font always draws a glyph the
+same way, so these glyphs flip horizontally.
+
+The glyph decides, not the component or the use. The rule "Reading direction" (Specification
+tab) lists the glyphs that flip, and every component drawing one of them flips it, on every
+platform. Every other glyph keeps its drawing: checkmarks, clocks and circular arrows, media
+controls, real-world objects, and a real direction. An icon that means "to the right" in every
+language takes a glyph that is not on the list, `east` or `format_align_right`, rather than
+`arrow_forward`, which means "forward".
+
+Apple's [Right to left](https://developer.apple.com/design/human-interface-guidelines/right-to-left)
+guidelines and Material's [Bidirectionality & RTL](https://m3.material.io/foundations/layout/bidirectionality-rtl)
+explain what flips and what keeps its direction, with examples; Material also notes exceptions
+by language (media controls and timelines in Hebrew stay left to right). Material Symbols carries
+no right-to-left variants, unlike SF Symbols, so no platform flips these glyphs on its own.
 
 ## With or without a label
 
@@ -41,14 +73,22 @@ The reference implementation's `packages/components/src/fonts.css` requests only
 with the fixed axes, and loads it with
 `display=block` so the ligature names never flash as text while the font loads.
 
+Text and icon sizes are px lengths today. A browser's text-only size setting changes neither,
+and zoom enlarges both together; when the text follows that setting, the icons follow it too.
+
 ### iOS
 
-Icons that carry meaning grow with the text when people raise the text size.
+Icons follow Dynamic Type, up to the larger accessibility sizes. At those sizes an icon in a
+row can crowd its text: a stacked layout, the text above the icon, reads better.
 
 ### Android
 
 A decorative icon gets a null content description; an icon that is the only content of an
 action gets a description naming the action.
+
+### Desktop
+
+macOS has no Dynamic Type, so icons keep their sizes there, like the text.
 
 ## Accessibility
 
@@ -73,14 +113,25 @@ action gets a description naming the action.
   a hidden node adds nothing to the name of its control
   ([WAI-ARIA: aria-hidden](https://www.w3.org/TR/wai-aria-1.2/#aria-hidden),
   [AccName: hidden, not referenced](https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced)).
-- **Larger with the text on iOS.** Meaningful icons should grow as the font size increases
-  ([Apple HIG: Supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- **Larger with the text.** Text can be resized up to 200 percent; the criterion covers text,
+  and an icon is non-text content, but people who need larger text need the icons that carry
+  meaning just as much, so icons grow with the text
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent)).
+  Apple asks for meaningful icons to grow as the font size increases
+  ([Apple HIG: Supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type));
+  macOS has no Dynamic Type
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
+  On the web, zoom scales text and icons together, which meets the criterion
+  ([G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142)); px lengths do not follow a
+  text-only size setting
+  ([MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
 - **Content descriptions on Android.** Graphic elements get a content description, or null when
   they have no meaning
   ([Compose: graphic elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements)).
 
 ## Related
 
-- Spacing and sizing: the control icon sizes.
+- Spacing and sizing: the size scale icons take their sizes from.
 - Typography: the text families, separate from the icon font.
+- Icon: an icon on its own, in five sizes.
 - Button, Icon button, Dropdown: the components drawing icons.

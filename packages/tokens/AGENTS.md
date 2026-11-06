@@ -38,6 +38,10 @@ Every `*.json` file under a tier directory is loaded, deep-merged and flattened;
 - When two parts share a value, still give each part its own token if they could diverge
   later (label color vs icon color). If they never diverge (icons use `currentColor`), document
   it in the token file `$description` and skip the token.
+- A semantic role read on a fill is named after it: `global.<text|icon|border>.on-<accent|subtle|sunken>.<hue>.<role>`
+  is read on `global.bg.<fill>.<hue>.default`, which must exist (`pnpm validate`, `scripts/lib/backdrop.mjs`).
+  A component that reads such a role without drawing that fill (the Icon's `surface`) is placed on
+  it by the product, and the docs site draws the fill behind its rendering.
 - Typography is a composite (`$type: "typography"`) with `fontFamily`, `fontSize`,
   `fontWeight`, `lineHeight`, `letterSpacing`. A component token holds the composite, each
   member aliasing a scale step (`{"fontFamily": "{body.family}", "fontSize": "{body.size.md}",

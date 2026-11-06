@@ -38,6 +38,7 @@
           "name": { "type": "string", "minLength": 1 },
           "text": { "type": "string", "minLength": 1 },
           "tokens": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }, "description": "Token paths carrying this aspect; shown with their value in every mode." },
+          "names": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 }, "description": "The names this rule applies to, as data every platform reads (the icon glyphs that flip in a right-to-left layout): a list that is not a token. Shown with the rule." },
           "platforms": { "$ref": "component.schema.json#/$defs/platforms" }
         }
       }

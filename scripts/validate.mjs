@@ -22,6 +22,7 @@ import { allContexts, evaluateContrast, formatRatio } from './lib/contrast.mjs';
 import { checkSiteCss, checkSiteMarkup } from './lib/site-check.mjs';
 import { checkBlueprint } from './lib/blueprint.mjs';
 import { checkTokenMap, parseTokenPath, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
+import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
 import { loadScreens, screenComponents, checkSections, checkSource, checkScreenMeta, checkScreenHtml, checkScreenSource, checkScreensCssSelectors, definedScreenClasses, screenSourceFiles, SCREEN_OWN_VARS } from './lib/screens.mjs';
@@ -84,6 +85,8 @@ try {
   for (const t of loaded.all) {
     if (!t.type) warn(`${PATHS.tokens}/${t.file} ${t.path}`, 'has no $type (own or inherited)');
   }
+  // A role read on a fill names the fill the docs site draws behind a component that does not draw it (scripts/lib/backdrop.mjs).
+  for (const m of missingFills(loaded.byPath)) error(`${PATHS.tokens}/${loaded.byPath.get(m.role).file} ${m.role}`, `is read on a fill, but ${m.fill} does not exist: the docs site cannot draw the fill behind a component reading it`);
 } catch (e) {
   error(PATHS.tokens, e.message);
 }
@@ -630,6 +633,18 @@ for (const file of foundationFiles) {
   }
 }
 const foundationIds = new Set(foundations.map((f) => f.id));
+// The web templates mark the glyphs that flip in a right-to-left layout from their own copy of the
+// Iconography rule direction's names: both lists hold the same glyphs.
+{
+  const directional = foundations.find((f) => f.id === 'iconography')?.rules.find((r) => r.id === 'direction')?.names;
+  const utilsRel = `${PATHS.web}/lib/template-utils.mjs`;
+  const { DIRECTIONAL_ICONS = [] } = await import(pathToFileURL(path.join(root, utilsRel)).href);
+  if (!directional) error(`${PATHS.specs}/foundations/iconography.spec.json`, 'needs the rule "direction" listing the glyphs that flip in a right-to-left layout (names)');
+  else {
+    for (const n of directional) if (!DIRECTIONAL_ICONS.includes(n)) error(utilsRel, `DIRECTIONAL_ICONS misses "${n}", a glyph of the Iconography rule direction`);
+    for (const n of DIRECTIONAL_ICONS) if (!directional.includes(n)) error(utilsRel, `DIRECTIONAL_ICONS lists "${n}", which the Iconography rule direction does not name`);
+  }
+}
 // Specimen displays: the schema enum and the library that draws them agree.
 const displayEnum = validateFoundation.schema.properties.specimens.items.properties.display.enum;
 if (displayEnum.join() !== Object.keys(DISPLAYS).join()) error(FILES.foundationSchema, `specimen display enum (${displayEnum.join(', ')}) must equal DISPLAYS in scripts/lib/specimens.mjs (${Object.keys(DISPLAYS).join(', ')})`);

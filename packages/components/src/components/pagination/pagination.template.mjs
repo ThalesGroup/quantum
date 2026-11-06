@@ -8,7 +8,7 @@
  * Extra sandbox-only props: `state` on the root forces a state on every item; an entry's `state`
  * forces it on that item.
  */
-import { escapeHtml, escapeAttr, renderIcon } from '../../lib/template-utils.mjs';
+import { escapeHtml, escapeAttr, renderIcon, iconDirection } from '../../lib/template-utils.mjs';
 
 export const meta = { id: 'pagination', selector: '.ds-pagination' };
 
@@ -35,7 +35,7 @@ export function render(props = {}) {
   };
 
   const items = [];
-  items.push(item(link(`<span class="ds-pagination__icon" aria-hidden="true">${renderIcon('chevron_left')}</span><span>Previous</span>`, previous), null, 'previous'));
+  items.push(item(link(`<span class="ds-pagination__icon"${iconDirection('chevron_left')} aria-hidden="true">${renderIcon('chevron_left')}</span><span>Previous</span>`, previous), null, 'previous'));
   pages.forEach((entry, i) => {
     const { label: text = String(i + 1), href = null, current = false, state: itemState = null } = entry;
     const content = current
@@ -43,6 +43,6 @@ export function render(props = {}) {
       : link(escapeHtml(text), href ?? '#');
     items.push(item(content, itemState));
   });
-  items.push(item(link(`<span>Next</span><span class="ds-pagination__icon" aria-hidden="true">${renderIcon('chevron_right')}</span>`, next), null, 'next'));
+  items.push(item(link(`<span>Next</span><span class="ds-pagination__icon"${iconDirection('chevron_right')} aria-hidden="true">${renderIcon('chevron_right')}</span>`, next), null, 'next'));
   return `<nav ${rootAttrs.join(' ')}><ul class="ds-pagination__list" data-part="list">${items.join('')}</ul></nav>`;
 }

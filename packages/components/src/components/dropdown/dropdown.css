@@ -135,6 +135,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* A directional glyph follows the reading direction (Iconography rule direction). */
+.ds-dropdown__item-icon[data-directional]:dir(rtl) {
+  scale: -1 1;
+}
+
 /* ---- Item intent: color ladders --------------------------------------------- */
 /* Selectors are wrapped in :where() so every intent has the same specificity as .ds-dropdown__item. */
 

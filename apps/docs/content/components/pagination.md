@@ -50,7 +50,8 @@ States belong to the items.
 ## Content
 
 - Page labels are the numbers; an ellipsis stands for skipped pages and is not a link.
-- **Previous** and **Next** are written out next to their chevrons.
+- **Previous** and **Next** are written out next to their chevrons. In a right-to-left language
+  the chevrons flip with the order of the pages (Iconography foundation, reading direction).
 
 ## Accessibility
 

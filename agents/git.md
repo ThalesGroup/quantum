@@ -31,7 +31,11 @@ The repository is the GitHub repository
   instead of doing it or leaving it in the chat:
   `gh issue create --repo ThalesGroup/quantum --title "…" --body "…" --label <label>`.
   The body stands alone: context, the artifacts involved (paths), what is expected. Report the
-  issue URL.
+  issue URL. A finding that is related to the current work and should be fixed right away (a
+  foundation that contradicts the decision just made, a semantic value the work shows failing)
+  is not out of scope: fix it in the same pull request, as a step of its own when the pull
+  request has steps, and open no issue for it. Only what the pull request cannot fix (the
+  Figma library itself, another package's release) or what the team sets aside becomes an issue.
 - **Labels.** On every issue and every pull request, pick every label that fits from the
   repository's existing set (`gh label list --repo ThalesGroup/quantum`):
   - **Kind.** A pull request takes the label of its commit type (`feat`, `fix`, `docs`, `ci`,
