@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "switch",
   "name": "Switch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "switch",
   "summary": "Turns a setting on or off, with immediate effect.",
@@ -232,13 +232,13 @@
         ]
       },
       {
-        "text": "Label and description contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.07:1 and 12.87:1 in light mode, 11.27:1 and 8.80:1 in dark mode on the default surface. Disabled text is inactive and exempt.",
+        "text": "Label and description contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.03:1 and 12.78:1 in light mode, 11.28:1 and 8.86:1 in dark mode on the default surface. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The track is what identifies the control and, with the thumb, shows its state, so both contrast at least 3:1 with adjacent colors in every color mode: off, the track border 12.87:1 (light) and 8.80:1 (dark) on the default surface and the thumb 16.29:1 and 13.84:1; on, the track fill 5.79:1 and 12.80:1 against the surface and the thumb 5.74:1 and 13.04:1 against the fill. The focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "text": "The track is what identifies the control and, with the thumb, shows its state, so both contrast at least 3:1 with adjacent colors in every color mode: off, the track border 12.78:1 (light) and 11.28:1 (dark) on the default surface and the thumb 16.20:1 and 13.82:1; on, the track fill 5.77:1 and 12.76:1 against the surface and the thumb 5.72:1 and 13.05:1 against the fill. The focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -567,6 +567,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 8 tokens follow the ash retune (one to four units per channel). Dark: 6 tokens follow the ash retune (one to four units per channel); control.border-color.default, control.border-color.hover reads global.border.accent.neutral.default: #B9B7B7 becomes #CFCFCF. Contrast re-measured on the accessibility guidelines: 5.74 → 5.72:1, 5.79 → 5.77:1, 11.27 → 11.28:1, 12.80 → 12.76:1, 12.87 → 12.78:1, 13.04 → 13.05:1, 19.07 → 19.03:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

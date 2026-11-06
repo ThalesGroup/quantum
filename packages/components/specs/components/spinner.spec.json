@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "spinner",
   "name": "Spinner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "status",
   "summary": "Says that something is loading when its length is unknown, as a turning ring with a label.",
@@ -127,14 +127,14 @@
         ]
       },
       {
-        "text": "The ring is a graphical object conveying the waiting state: its arc contrasts at least 3:1 with the surface in every color mode (5.79:1 light, 12.80:1 dark on the default surface) and with the still part of the ring (4.85:1 and 10.73:1).",
+        "text": "The ring is a graphical object conveying the waiting state: its arc contrasts at least 3:1 with the surface in every color mode (5.77:1 light, 12.76:1 dark on the default surface) and with the still part of the ring (4.88:1 and 10.70:1).",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-graphics"
         ]
       },
       {
-        "text": "The waiting state is conveyed by the movement and by the label, never by color alone. A shown label contrasts 12.87:1 (light) and 8.80:1 (dark) with the default surface.",
+        "text": "The waiting state is conveyed by the movement and by the label, never by color alone. A shown label contrasts 12.78:1 (light) and 8.86:1 (dark) with the default surface.",
         "refs": [
           "wcag:1.4.1",
           "wcag:1.4.3"
@@ -353,6 +353,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 2 tokens follow the ash retune (one to four units per channel). Dark: label.color follows the ash retune (#B9B7B7 becomes #B8B8B8). Contrast re-measured on the accessibility guidelines: 4.85 → 4.88:1, 5.79 → 5.77:1, 8.80 → 8.86:1, 10.73 → 10.70:1, 12.80 → 12.76:1, 12.87 → 12.78:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

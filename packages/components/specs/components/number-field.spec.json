@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -342,13 +342,13 @@
         ]
       },
       {
-        "text": "Label, value, description and error text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.07:1 (light) and 11.27:1 (dark) on the default surface, description 12.87:1 and 8.80:1, placeholder 6.08:1 and 6.36:1, error text 4.52:1 and 4.97:1 (4.26:1 on a level 1 surface in light mode, a Figma library limit tracked as a known issue). Disabled text is inactive and exempt.",
+        "text": "Label, value, description and error text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, error text 6.12:1 and 7.06:1 (5.77:1 on a level 1 surface in light mode). Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.87:1 (light) and 8.80:1 (dark) on the default surface at rest, 12.14:1 and 8.06:1 on the hover tint; the error border 6.12:1 and 3.82:1; the focus ring 5.79:1 and 12.80:1. Disabled is exempt.",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the error border 6.12:1 and 3.73:1; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -798,6 +798,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 8 tokens follow the ash retune (one to four units per channel); error-message.color reads global.text.on-base.functional.error.default: #E12A23 becomes #C01619. Dark: 8 tokens follow the ash retune (one to four units per channel); control.border-color.default reads global.border.accent.neutral.default: #B9B7B7 becomes #CFCFCF; control.border-color.invalid reads global.border.base.functional.error.default: #E12A23 becomes #DF2821; error-message.color reads global.text.on-base.functional.error.default: #EE5248 becomes #F88275. Contrast re-measured on the accessibility guidelines: 3.82 → 3.73:1, 4.26 → 5.79:1, 4.52 → 6.12:1, 4.97 → 7.06:1, 5.79 → 5.77:1, 6.36 → 6.40:1, 11.27 → 11.28:1, 12.14 → 12.09:1, 12.80 → 12.76:1, 12.87 → 12.78:1, 19.07 → 19.03:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

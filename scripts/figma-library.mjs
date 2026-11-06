@@ -44,30 +44,27 @@ export const COLLECTIONS = [
 // ---------------------------------------------------------------------------
 
 /**
- * A Figma library key made valid: no emoji or other non-ASCII marker, camelCase and spaces become
- * kebab-case, lowercase. `⚠️ai` -> `ai`, `semiBold` -> `semi-bold`, `drop shadow` -> `drop-shadow`,
- * `AI` -> `ai`. Typos are kept (`functionnal`, `subtile`).
+ * A Figma library key made valid: no emoji or other non-ASCII marker, camelCase, spaces and `&`
+ * (which a CSS variable cannot carry) become kebab-case, lowercase. `⚠️ai` -> `ai`, `semiBold` ->
+ * `semi-bold`, `drop shadow` -> `drop-shadow`, `black&white` -> `black-and-white`, `AI` -> `ai`.
+ * Typos are kept (`functionnal`, `subtile`).
  */
 export const validKey = (key) =>
   String(key)
     .replace(/[^\x20-\x7e]/g, '')
+    .replace(/&/g, ' and ')
     .trim()
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
     .replace(/\s+/g, '-')
     .toLowerCase();
 
 /**
- * Paths that stay distinct once made valid but would produce the same CSS variable: the build
- * joins segments with `-`, so Base `brand.identity.*` and Mapped `brand-identity.*` collide.
- * The primitive yields; the token people apply keeps its name.
+ * A path is its keys made valid. The build joins segments with `-` for the CSS variable, so two
+ * paths that differ only by a `.` against a `-` would collide (the test "every CSS variable
+ * distinct" guards it); the library has none today (Base `brand.identity.<group>.*` and Mapped
+ * `brand-identity.logo.*` differ by their next segment).
  */
-export const RENAMES = { 'brand.identity': 'brand.identity-base' };
-
-export const validPath = (segments) => {
-  let p = segments.map(validKey).join('.');
-  for (const [from, to] of Object.entries(RENAMES)) if (p === from || p.startsWith(from + '.')) p = to + p.slice(from.length);
-  return p;
-};
+export const validPath = (segments) => segments.map(validKey).join('.');
 
 /** A Figma variable name (`neutral/light/ash/25`) or an alias body (`global.bg.base.neutral.1`). */
 const validName = (name) => validPath(name.split(/[/.]/));

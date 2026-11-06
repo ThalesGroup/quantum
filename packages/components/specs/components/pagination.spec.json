@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "pagination",
   "name": "Pagination",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "navigation",
   "summary": "Lets people move between the pages of a long list, with the current page marked.",
@@ -286,7 +286,7 @@
         ]
       },
       {
-        "text": "Link text contrasts 19.07:1 (light) and 11.27:1 (dark) with the default surface and 11.71:1 and 9.16:1 on the hover tint; the current page 16.29:1 and 13.84:1 on its fill. Disabled links are inactive and exempt.",
+        "text": "Link text contrasts 19.03:1 (light) and 11.28:1 (dark) with the default surface and 11.64:1 and 9.21:1 on the hover tint; the current page 16.20:1 and 13.82:1 on its fill. Disabled links are inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -302,7 +302,7 @@
         ]
       },
       {
-        "text": "A visible focus indicator appears around the focused link; the focus ring contrasts 5.79:1 (light) and 12.80:1 (dark) with the surface.",
+        "text": "A visible focus indicator appears around the focused link; the focus ring contrasts 5.77:1 (light) and 12.76:1 (dark) with the surface.",
         "refs": [
           "wcag:2.4.7",
           "wcag:2.4.13",
@@ -650,6 +650,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 4 tokens follow the ash retune (one to four units per channel). Dark: 3 tokens follow the ash retune (one to four units per channel). Contrast re-measured on the accessibility guidelines: 5.79 → 5.77:1, 11.27 → 11.28:1, 12.80 → 12.76:1, 13.84 → 13.82:1, 16.29 → 16.20:1, 19.07 → 19.03:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

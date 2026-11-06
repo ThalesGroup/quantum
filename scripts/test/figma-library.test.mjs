@@ -19,10 +19,11 @@ test('validKey only changes what a path or a CSS variable cannot carry', () => {
   assert.equal(validKey('25'), '25');
 });
 
-test('validPath renames the base brand identity, whose CSS variable would collide with the mapped one', () => {
-  assert.equal(validPath(['brand', 'identity', 'marine-blue']), 'brand.identity-base.marine-blue');
-  assert.equal(validPath(['brand-identity', 'marine-blue']), 'brand-identity.marine-blue');
-  assert.equal(validPath(['brand', 'light', '600']), 'brand.light.600');
+test('validPath keeps the library paths, made valid key by key', () => {
+  assert.equal(validKey('black&white'), 'black-and-white', 'a CSS variable cannot carry &');
+  assert.equal(validPath(['brand-identity', 'logo', 'black&white', 'accent']), 'brand-identity.logo.black-and-white.accent');
+  assert.equal(validPath(['brand', 'identity', 'core-colors', 'marine-blue']), 'brand.identity.core-colors.marine-blue');
+  assert.equal(validPath(['brand', 'palettes', 'core-colors', 'light', '600']), 'brand.palettes.core-colors.light.600');
 });
 
 test('every path stays unique and every CSS variable distinct', needsExport, () => {
@@ -35,7 +36,7 @@ test('aliases keep their target, made valid', needsExport, () => {
   const mapped = tokens('semantic/colors-mapped.tokens.json');
   assert.equal(mapped.get('global.bg.level.0.default').$value, '{global.bg.base.neutral.1}');
   assert.equal(mapped.get('global.bg.base.neutral.1').$value, '{light-switch.base.25}');
-  assert.equal(mapped.get('global.bg.accent.brand.default').$value, '{brand.light.600}');
+  assert.equal(mapped.get('global.bg.accent.brand.default').$value, '{brand.palettes.core-colors.light.600}');
   assert.equal(mapped.get('ai.bg.accent.default').$value, '{global.bg.accent.brand.default}');
   assert.equal(tokens('raw/palette-switch.tokens.json').get('light-switch.base.25').$value, '{neutral.light.ash.25}');
 });
@@ -43,7 +44,7 @@ test('aliases keep their target, made valid', needsExport, () => {
 test('composed colors and aliases to missing colors keep their literal value and say why', needsExport, () => {
   const mapped = tokens('semantic/colors-mapped.tokens.json');
   const subtle = mapped.get('global.bg.subtle.neutral.default');
-  assert.equal(subtle.$value.hex, '#B6B4B4');
+  assert.equal(subtle.$value.hex, '#B5B5B5');
   assert.ok(Math.abs(subtle.$value.alpha - 0.1) < 1e-6);
   assert.match(subtle.$description, /light-switch\.base\.400 at opacity\.10/);
   const broken = [...mapped.values()].find((t) => /does not contain/.test(t.$description ?? ''));
@@ -69,5 +70,5 @@ test('the dark mode keeps only the tokens whose value differs from light', needs
   assert.ok(dark.size > 0 && dark.size < light.size);
   for (const [p, t] of dark) assert.notDeepEqual(t.$value, light.get(p)?.$value, p);
   assert.equal(dark.has('global.bg.accent.functional.error.default'), false, 'same alias in both modes');
-  assert.equal(dark.get('global.bg.accent.brand.default').$value, '{brand.dark.200}');
+  assert.equal(dark.get('global.bg.accent.brand.default').$value, '{brand.palettes.core-colors.dark.200}');
 });

@@ -42,9 +42,9 @@
           "active": {"$type":"color","$value":"{light-switch.base.700}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.600}"},
-          "hover": {"$type":"color","$value":"{brand.light.700}"},
-          "active": {"$type":"color","$value":"{brand.light.800}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.light.800}"}
         },
         "functional": {
           "success": {
@@ -75,77 +75,42 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.700}"},
-            "hover": {"$type":"color","$value":"{extended.lavender.600}"},
+            "default": {"$type":"color","$value":"{extended.lavender.600}"},
+            "hover": {"$type":"color","$value":"{extended.lavender.700}"},
             "active": {"$type":"color","$value":"{extended.lavender.800}"}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.300}"},
+            "default": {"$type":"color","$value":"{extended.lime.100}"},
             "hover": {"$type":"color","$value":"{extended.lime.200}"},
-            "active": {"$type":"color","$value":"{extended.lime.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "active": {"$type":"color","$value":"{extended.lime.300}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "coral": {
             "default": {"$type":"color","$value":"{extended.coral.400}"},
-            "hover": {"$type":"color","$value":"{extended.coral.300}"},
-            "active": {"$type":"color","$value":"{extended.coral.500}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "hover": {"$type":"color","$value":"{extended.coral.500}"},
+            "active": {"$type":"color","$value":"{extended.coral.600}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.800}"},
-            "hover": {"$type":"color","$value":"{extended.forest.700}"},
-            "active": {"$type":"color","$value":"{extended.forest.900}"}
+            "default": {"$type":"color","$value":"{extended.forest.300}"},
+            "hover": {"$type":"color","$value":"{extended.forest.400}"},
+            "active": {"$type":"color","$value":"{extended.forest.500}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.700}"},
-            "hover": {"$type":"color","$value":"{extended.azure.600}"},
-            "active": {"$type":"color","$value":"{extended.azure.800}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.700}"},
-            "hover": {"$type":"color","$value":"{extended.orchid.600}"},
-            "active": {"$type":"color","$value":"{extended.orchid.700}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.800}"},
-            "hover": {"$type":"color","$value":"{extended.sand.700}"},
-            "active": {"$type":"color","$value":"{extended.sand.900}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.300}"},
-            "hover": {"$type":"color","$value":"{extended.amber.200}"},
-            "active": {"$type":"color","$value":"{extended.amber.400}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.600}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.700}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.800}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.300}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.200}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.300}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.400}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.200}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.300}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.400}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.200}"},
+            "hover": {"$type":"color","$value":"{extended.wood.300}"},
+            "active": {"$type":"color","$value":"{extended.wood.400}"}
           }
         }
       },
       "subtle": {
         "neutral": {
-          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7138650417327881,0.7059080004692078,0.7059076428413391],"alpha":0.10000000149011612,"hex":"#B6B4B4"},"$description":"light-switch.base.400 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "hover": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7138650417327881,0.7059080004692078,0.7059076428413391],"alpha":0.15000000596046448,"hex":"#B6B4B4"},"$description":"light-switch.base.400 at opacity.15: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "active": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7138650417327881,0.7059080004692078,0.7059076428413391],"alpha":0.20000000298023224,"hex":"#B6B4B4"},"$description":"light-switch.base.400 at opacity.20: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7098863124847412,0.7098863124847412,0.7098863124847412],"alpha":0.10000000149011612,"hex":"#B5B5B5"},"$description":"light-switch.base.400 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "hover": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7098863124847412,0.7098863124847412,0.7098863124847412],"alpha":0.15000000596046448,"hex":"#B5B5B5"},"$description":"light-switch.base.400 at opacity.15: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "active": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7098863124847412,0.7098863124847412,0.7098863124847412],"alpha":0.20000000298023224,"hex":"#B5B5B5"},"$description":"light-switch.base.400 at opacity.20: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.50}"},
-          "hover": {"$type":"color","$value":"{brand.light.100}"},
-          "active": {"$type":"color","$value":"{brand.light.200}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"}
         },
         "functional": {
           "success": {
@@ -181,9 +146,9 @@
             "active": {"$type":"color","$value":"{extended.lavender.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.50}"},
-            "hover": {"$type":"color","$value":"{extended.lime.100}"},
-            "active": {"$type":"color","$value":"{extended.lime.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+            "default": {"$type":"color","$value":"{extended.lime.25}"},
+            "hover": {"$type":"color","$value":"{extended.lime.50}"},
+            "active": {"$type":"color","$value":"{extended.lime.100}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "coral": {
             "default": {"$type":"color","$value":"{extended.coral.50}"},
@@ -195,51 +160,16 @@
             "hover": {"$type":"color","$value":"{extended.forest.100}"},
             "active": {"$type":"color","$value":"{extended.forest.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.50}"},
-            "hover": {"$type":"color","$value":"{extended.azure.100}"},
-            "active": {"$type":"color","$value":"{extended.azure.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.50}"},
-            "hover": {"$type":"color","$value":"{extended.orchid.100}"},
-            "active": {"$type":"color","$value":"{extended.orchid.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.50}"},
-            "hover": {"$type":"color","$value":"{extended.sand.100}"},
-            "active": {"$type":"color","$value":"{extended.sand.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.50}"},
-            "hover": {"$type":"color","$value":"{extended.amber.100}"},
-            "active": {"$type":"color","$value":"{extended.amber.200}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.50}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.100}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.200}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.50}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.100}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.200}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.50}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.100}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.200}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.50}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.100}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.200}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.50}"},
+            "hover": {"$type":"color","$value":"{extended.wood.100}"},
+            "active": {"$type":"color","$value":"{extended.wood.200}"}
           }
         }
       },
       "sunken": {
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.100}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"}
         },
         "functional": {
           "success": {
@@ -263,7 +193,7 @@
             "default": {"$type":"color","$value":"{extended.lavender.100}"}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.100}"}
+            "default": {"$type":"color","$value":"{extended.lime.50}"}
           },
           "coral": {
             "default": {"$type":"color","$value":"{extended.coral.100}"}
@@ -271,64 +201,35 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.100}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.100}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.100}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.100}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.100}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.300}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.300}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.300}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.300}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.100}"}
           }
         }
       },
       "transparency": {
         "fade": {
-          "none": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9254804849624634,0.9098302721977234,0.9137433171272278],"alpha":0,"hex":"#ECE8E9"},"$description":"light-switch.base.100 at opacity.0: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "thin": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9254804849624634,0.9098302721977234,0.9137433171272278],"alpha":0.10000000149011612,"hex":"#ECE8E9"},"$description":"light-switch.base.100 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "light": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9254804849624634,0.9098302721977234,0.9137433171272278],"alpha":0.20000000298023224,"hex":"#ECE8E9"},"$description":"light-switch.base.100 at opacity.20: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9254804849624634,0.9098302721977234,0.9137433171272278],"alpha":0.30000001192092896,"hex":"#ECE8E9"},"$description":"light-switch.base.100 at opacity.30: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "strong": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9254804849624634,0.9098302721977234,0.9137433171272278],"alpha":0.5,"hex":"#ECE8E9"},"$description":"light-switch.base.100 at opacity.50: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "blackout": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9254804849624634,0.9098302721977234,0.9137433171272278],"alpha":0.699999988079071,"hex":"#ECE8E9"},"$description":"light-switch.base.100 at opacity.70: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+          "none": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.917655348777771,0.917655348777771,0.917655348777771],"alpha":0,"hex":"#EAEAEA"},"$description":"light-switch.base.100 at opacity.0: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "thin": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.917655348777771,0.917655348777771,0.917655348777771],"alpha":0.10000000149011612,"hex":"#EAEAEA"},"$description":"light-switch.base.100 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "light": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.917655348777771,0.917655348777771,0.917655348777771],"alpha":0.20000000298023224,"hex":"#EAEAEA"},"$description":"light-switch.base.100 at opacity.20: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.917655348777771,0.917655348777771,0.917655348777771],"alpha":0.30000001192092896,"hex":"#EAEAEA"},"$description":"light-switch.base.100 at opacity.30: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "strong": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.917655348777771,0.917655348777771,0.917655348777771],"alpha":0.5,"hex":"#EAEAEA"},"$description":"light-switch.base.100 at opacity.50: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "blackout": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.917655348777771,0.917655348777771,0.917655348777771],"alpha":0.699999988079071,"hex":"#EAEAEA"},"$description":"light-switch.base.100 at opacity.70: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         },
         "overlay": {
-          "none": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19601257145404816,0.18823795020580292,0.1921250820159912],"alpha":0,"hex":"#323031"},"$description":"light-switch.base.800 at opacity.0: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "thin": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19601257145404816,0.18823795020580292,0.1921250820159912],"alpha":0.10000000149011612,"hex":"#323031"},"$description":"light-switch.base.800 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "light": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19601257145404816,0.18823795020580292,0.1921250820159912],"alpha":0.20000000298023224,"hex":"#323031"},"$description":"light-switch.base.800 at opacity.20: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19601257145404816,0.18823795020580292,0.1921250820159912],"alpha":0.30000001192092896,"hex":"#323031"},"$description":"light-switch.base.800 at opacity.30: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "strong": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19601257145404816,0.18823795020580292,0.1921250820159912],"alpha":0.5,"hex":"#323031"},"$description":"light-switch.base.800 at opacity.50: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-          "blackout": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19601257145404816,0.18823795020580292,0.1921250820159912],"alpha":0.699999988079071,"hex":"#323031"},"$description":"light-switch.base.800 at opacity.70: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+          "none": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19212526082992554,0.19212526082992554,0.19212526082992554],"alpha":0,"hex":"#313131"},"$description":"light-switch.base.800 at opacity.0: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "thin": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19212526082992554,0.19212526082992554,0.19212526082992554],"alpha":0.10000000149011612,"hex":"#313131"},"$description":"light-switch.base.800 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "light": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19212526082992554,0.19212526082992554,0.19212526082992554],"alpha":0.20000000298023224,"hex":"#313131"},"$description":"light-switch.base.800 at opacity.20: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19212526082992554,0.19212526082992554,0.19212526082992554],"alpha":0.30000001192092896,"hex":"#313131"},"$description":"light-switch.base.800 at opacity.30: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "strong": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19212526082992554,0.19212526082992554,0.19212526082992554],"alpha":0.5,"hex":"#313131"},"$description":"light-switch.base.800 at opacity.50: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+          "blackout": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19212526082992554,0.19212526082992554,0.19212526082992554],"alpha":0.699999988079071,"hex":"#313131"},"$description":"light-switch.base.800 at opacity.70: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         }
       },
       "state": {
         "skeleton": {
-          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8746619820594788,0.8588387966156006,0.8627949357032776],"alpha":0.4000000059604645,"hex":"#DFDBDC"},"$description":"light-switch.base.200 at opacity.40: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8667503595352173,0.8667503595352173,0.8667503595352173],"alpha":0.4000000059604645,"hex":"#DDDDDD"},"$description":"light-switch.base.200 at opacity.40: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         },
         "disabled": {
-          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7138650417327881,0.7059080004692078,0.7059076428413391],"alpha":0.10000000149011612,"hex":"#B6B4B4"},"$description":"light-switch.base.400 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7098863124847412,0.7098863124847412,0.7098863124847412],"alpha":0.10000000149011612,"hex":"#B5B5B5"},"$description":"light-switch.base.400 at opacity.10: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         }
       }
     },
@@ -340,7 +241,7 @@
           "tertiary": {"$type":"color","$value":"{light-switch.base.600}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.600}","$description":"Only use with natural bg"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}","$description":"Only use with natural bg"}
         },
         "functional": {
           "success": {
@@ -353,10 +254,10 @@
             "default": {"$type":"color","$value":"{functional.severe.700}"}
           },
           "error": {
-            "default": {"$type":"color","$value":"{functional.error.500}","$description":"Only use with natural bg"}
+            "default": {"$type":"color","$value":"{functional.error.600}","$description":"Only use with natural bg"}
           },
           "info": {
-            "default": {"$type":"color","$value":"{functional.info.600}"}
+            "default": {"$type":"color","$value":"{functional.info.700}"}
           }
         },
         "extended": {
@@ -372,17 +273,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.700}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.800}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.700}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.800}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.800}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.700}"}
           }
         }
       },
@@ -393,7 +285,7 @@
           "tertiary": {"$type":"color","$value":"{light-switch.base.300}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.25}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"}
         },
         "functional": {
           "success": {
@@ -423,31 +315,10 @@
             "default": {"$type":"color","$value":"{extended.coral.950}"}
           },
           "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.25}"}
+            "default": {"$type":"color","$value":"{extended.forest.950}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.25}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.25}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.25}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.950}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.25}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.950}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.950}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.950}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.950}"}
           }
         }
       },
@@ -456,7 +327,7 @@
           "default": {"$type":"color","$value":"{global.text.on-base.neutral.secondary}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.700}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"}
         },
         "functional": {
           "success": {
@@ -469,7 +340,7 @@
             "default": {"$type":"color","$value":"{functional.severe.700}"}
           },
           "error": {
-            "default": {"$type":"color","$value":"{functional.error.600}"}
+            "default": {"$type":"color","$value":"{functional.error.700}"}
           },
           "info": {
             "default": {"$type":"color","$value":"{functional.info.700}"}
@@ -477,7 +348,7 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.800}"}
+            "default": {"$type":"color","$value":"{extended.lavender.700}"}
           },
           "lime": {
             "default": {"$type":"color","$value":"{extended.lime.800}"}
@@ -488,35 +359,14 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.700}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.800}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.800}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.700}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.800}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.700}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.700}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.700}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.700}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.700}"}
           }
         }
       },
       "on-sunken": {
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.800}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.800}"}
         },
         "functional": {
           "success": {
@@ -529,7 +379,7 @@
             "default": {"$type":"color","$value":"{functional.severe.700}"}
           },
           "error": {
-            "default": {"$type":"color","$value":"{functional.error.600}"}
+            "default": {"$type":"color","$value":"{functional.error.700}"}
           },
           "info": {
             "default": {"$type":"color","$value":"{functional.info.800}"}
@@ -548,17 +398,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.800}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.800}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.800}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.800}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.800}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.800}"}
           }
         }
       },
@@ -566,9 +407,9 @@
         "keyword": {"$type":"color","$value":"{extended.lavender.700}"},
         "variable": {"$type":"color","$value":"{extended.orchid.700}"},
         "function": {"$type":"color","$value":"{extended.azure.700}"},
-        "class-and-type": {"$type":"color","$value":"{extended.amber.700}","$description":"Decision code-colors-contrast (Code foundation): the Figma library extended.amber.500 is 1.96:1 on global.bg.level.1.default, under the 4.5:1 of WCAG 1.4.3."},
-        "string": {"$type":"color","$value":"{extended.forest.700}","$description":"Decision code-colors-contrast (Code foundation): the Figma library extended.forest.600 is 3.80:1 on global.bg.level.1.default."},
-        "number": {"$type":"color","$value":"{extended.coral.700}","$description":"Decision code-colors-contrast (Code foundation): the Figma library extended.coral.500 is 3.21:1 on global.bg.level.1.default, coral 600 still 4.30:1."},
+        "class-and-type": {"$type":"color","$value":"{extended.amber.800}"},
+        "string": {"$type":"color","$value":"{extended.forest.700}"},
+        "number": {"$type":"color","$value":"{extended.coral.700}"},
         "comment": {"$type":"color","$value":"{light-switch.base.700}"}
       },
       "state": {
@@ -595,7 +436,7 @@
             "default": {"$type":"color","$value":"{global.text.on-base.functional.success.default}"}
           },
           "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.800}"}
+            "default": {"$type":"color","$value":"{functional.warning.300}"}
           },
           "severe": {
             "default": {"$type":"color","$value":"{global.text.on-base.functional.severe.default}"}
@@ -620,17 +461,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{global.text.on-base.extended.forest.default}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{global.text.on-base.extended.azure.default}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{global.text.on-base.extended.orchid.default}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{global.text.on-base.extended.sand.default}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{global.text.on-base.extended.amber.default}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{global.text.on-base.extended.wood.default}"}
           }
         }
       },
@@ -648,7 +480,7 @@
             "default": {"$type":"color","$value":"{global.text.on-accent.functional.success.default}"}
           },
           "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.950}"}
+            "default": {"$type":"color","$value":"{global.text.on-accent.functional.warning.default}"}
           },
           "severe": {
             "default": {"$type":"color","$value":"{global.text.on-accent.functional.severe.default}"}
@@ -673,29 +505,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{global.text.on-accent.extended.forest.default}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.azure.default}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.orchid.default}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.sand.default}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.amber.default}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.purple.default}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.yellow.default}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.green.default}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{global.text.on-accent.extended.beige.default}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{global.text.on-accent.extended.wood.default}"}
           }
         }
       },
@@ -711,7 +522,7 @@
             "default": {"$type":"color","$value":"{global.text.on-subtle.functional.success.default}"}
           },
           "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.800}"}
+            "default": {"$type":"color","$value":"{global.text.on-subtle.functional.warning.default}"}
           },
           "severe": {
             "default": {"$type":"color","$value":"{global.text.on-subtle.functional.severe.default}"}
@@ -736,29 +547,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{global.text.on-subtle.extended.forest.default}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.azure.default}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.orchid.default}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.sand.default}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.amber.default}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.purple.default}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.yellow.default}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.green.default}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.beige.default}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{global.text.on-subtle.extended.wood.default}"}
           }
         }
       },
@@ -796,17 +586,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{global.text.on-sunken.extended.forest.default}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.azure.default}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.orchid.default}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.sand.default}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.amber.default}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.wood.default}"}
           }
         }
       },
@@ -858,7 +639,7 @@
           "5": {"$type":"color","$value":"{light-switch.base.500}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.500}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.500}"}
         },
         "functional": {
           "success": {
@@ -879,10 +660,10 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.600}"}
+            "default": {"$type":"color","$value":"{extended.lavender.500}"}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.500}"}
+            "default": {"$type":"color","$value":"{extended.lime.600}"}
           },
           "coral": {
             "default": {"$type":"color","$value":"{extended.coral.600}"}
@@ -890,17 +671,8 @@
           "forest": {
             "default": {"$type":"color","$value":"{extended.forest.600}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.600}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.600}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.600}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.600}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.600}"}
           }
         }
       },
@@ -911,9 +683,9 @@
           "active": {"$type":"color","$value":"{light-switch.base.600}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.700}"},
-          "hover": {"$type":"color","$value":"{brand.light.800}"},
-          "active": {"$type":"color","$value":"{brand.light.900}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.light.800}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.light.900}"}
         },
         "functional": {
           "success": {
@@ -944,48 +716,29 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.600}"}
+            "default": {"$type":"color","$value":"{extended.lavender.700}"},
+            "hover": {"$type":"color","$value":"{extended.lavender.800}"},
+            "active": {"$type":"color","$value":"{extended.lavender.900}"}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.300}"}
+            "default": {"$type":"color","$value":"{extended.lime.200}"},
+            "hover": {"$type":"color","$value":"{extended.lime.300}"},
+            "active": {"$type":"color","$value":"{extended.lime.400}"}
           },
           "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.600}"}
+            "default": {"$type":"color","$value":"{extended.coral.500}"},
+            "hover": {"$type":"color","$value":"{extended.coral.600}"},
+            "active": {"$type":"color","$value":"{extended.coral.700}"}
           },
           "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.700}"}
+            "default": {"$type":"color","$value":"{extended.forest.400}"},
+            "hover": {"$type":"color","$value":"{extended.forest.500}"},
+            "active": {"$type":"color","$value":"{extended.forest.600}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.700}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.700}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.500}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.400}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.700}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.800}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.900}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.200}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.300}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.400}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.300}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.400}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.500}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.300}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.400}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.500}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.300}"},
+            "hover": {"$type":"color","$value":"{extended.wood.400}"},
+            "active": {"$type":"color","$value":"{extended.wood.500}"}
           }
         }
       },
@@ -996,9 +749,9 @@
           "active": {"$type":"color","$value":"{light-switch.base.400}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.light.100}"},
-          "hover": {"$type":"color","$value":"{brand.light.200}"},
-          "active": {"$type":"color","$value":"{brand.light.300}"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"},
+          "hover": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"},
+          "active": {"$type":"color","$value":"{brand.palettes.core-colors.light.300}"}
         },
         "functional": {
           "success": {
@@ -1029,148 +782,136 @@
         },
         "extended": {
           "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.200}"}
+            "default": {"$type":"color","$value":"{extended.lavender.200}"},
+            "hover": {"$type":"color","$value":"{extended.lavender.300}"},
+            "active": {"$type":"color","$value":"{extended.lavender.400}"}
           },
           "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.100}"}
+            "default": {"$type":"color","$value":"{extended.lime.50}"},
+            "hover": {"$type":"color","$value":"{extended.lime.100}"},
+            "active": {"$type":"color","$value":"{extended.lime.200}"}
           },
           "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.200}"}
+            "default": {"$type":"color","$value":"{extended.coral.100}"},
+            "hover": {"$type":"color","$value":"{extended.coral.200}"},
+            "active": {"$type":"color","$value":"{extended.coral.300}"}
           },
           "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.200}"}
+            "default": {"$type":"color","$value":"{extended.forest.100}"},
+            "hover": {"$type":"color","$value":"{extended.forest.200}"},
+            "active": {"$type":"color","$value":"{extended.forest.300}"}
           },
-          "azure": {
-            "default": {"$type":"color","$value":"{extended.azure.200}"}
-          },
-          "orchid": {
-            "default": {"$type":"color","$value":"{extended.orchid.200}"}
-          },
-          "sand": {
-            "default": {"$type":"color","$value":"{extended.sand.200}"}
-          },
-          "amber": {
-            "default": {"$type":"color","$value":"{extended.amber.200}"}
-          },
-          "purple": {
-            "default": {"$type":"color","$value":"{branded-extended.purple.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.purple.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.purple.300}"}
-          },
-          "yellow": {
-            "default": {"$type":"color","$value":"{branded-extended.yellow.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.yellow.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.yellow.300}"}
-          },
-          "green": {
-            "default": {"$type":"color","$value":"{branded-extended.green.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.green.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.green.300}"}
-          },
-          "beige": {
-            "default": {"$type":"color","$value":"{branded-extended.beige.100}"},
-            "hover": {"$type":"color","$value":"{branded-extended.beige.200}"},
-            "active": {"$type":"color","$value":"{branded-extended.beige.300}"}
+          "wood": {
+            "default": {"$type":"color","$value":"{extended.wood.100}"},
+            "hover": {"$type":"color","$value":"{extended.wood.200}"},
+            "active": {"$type":"color","$value":"{extended.wood.300}"}
           }
         }
       },
       "state": {
         "disabled": {
-          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7138650417327881,0.7059080004692078,0.7059076428413391],"alpha":0.4000000059604645,"hex":"#B6B4B4"},"$description":"light-switch.base.400 at opacity.40: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+          "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7098863124847412,0.7098863124847412,0.7098863124847412],"alpha":0.4000000059604645,"hex":"#B5B5B5"},"$description":"light-switch.base.400 at opacity.40: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         }
       }
     }
   },
   "effect": {
     "shadow": {
-      "1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12549340724945068,0.11757857352495193,0.12153683602809906],"alpha":0.009999999776482582,"hex":"#201E1F"},"$description":"light-switch.base.900 at opacity.1: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-      "2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12549340724945068,0.11757857352495193,0.12153683602809906],"alpha":0.019999999552965164,"hex":"#201E1F"},"$description":"light-switch.base.900 at opacity.2: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-      "3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12549340724945068,0.11757857352495193,0.12153683602809906],"alpha":0.029999999329447746,"hex":"#201E1F"},"$description":"light-switch.base.900 at opacity.3: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-      "4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12549340724945068,0.11757857352495193,0.12153683602809906],"alpha":0.03999999910593033,"hex":"#201E1F"},"$description":"light-switch.base.900 at opacity.4: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
-      "5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12549340724945068,0.11757857352495193,0.12153683602809906],"alpha":0.05000000074505806,"hex":"#201E1F"},"$description":"light-switch.base.900 at opacity.5: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
+      "1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12153598666191101,0.12153598666191101,0.12153598666191101],"alpha":0.009999999776482582,"hex":"#1F1F1F"},"$description":"light-switch.base.900 at opacity.1: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+      "2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12153598666191101,0.12153598666191101,0.12153598666191101],"alpha":0.019999999552965164,"hex":"#1F1F1F"},"$description":"light-switch.base.900 at opacity.2: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+      "3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12153598666191101,0.12153598666191101,0.12153598666191101],"alpha":0.029999999329447746,"hex":"#1F1F1F"},"$description":"light-switch.base.900 at opacity.3: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+      "4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12153598666191101,0.12153598666191101,0.12153598666191101],"alpha":0.03999999910593033,"hex":"#1F1F1F"},"$description":"light-switch.base.900 at opacity.4: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
+      "5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12153598666191101,0.12153598666191101,0.12153598666191101],"alpha":0.05000000074505806,"hex":"#1F1F1F"},"$description":"light-switch.base.900 at opacity.5: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
     }
   },
   "brand-identity": {
-    "marine-blue": {"$type":"color","$value":"{brand.identity-base.marine-blue}"},
-    "light-blue": {"$type":"color","$value":"{brand.identity-base.light-blue}"}
+    "logo": {
+      "color": {
+        "primary": {"$type":"color","$value":"{brand.identity.core-colors.marine-blue}"},
+        "secondary": {"$type":"color","$value":"{brand.identity.core-colors.light-blue}"}
+      },
+      "black-and-white": {
+        "accent": {"$type":"color","$value":"{brand.identity.neutral.true-black}"}
+      }
+    }
   },
   "dataviz": {
     "role": {
       "brand": {
         "bg": {
           "accent": {
-            "brand-1": {"$type":"color","$value":"{brand.light.800}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.700}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.600}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.500}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.400}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.800}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.500}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"}
           },
           "subtile": {
-            "brand-1": {"$type":"color","$value":"{brand.light.400}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.300}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.200}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.100}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.50}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.300}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"}
           },
           "area": {
-            "brand-1": {"$type":"color","$value":"{brand.light.50}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.50}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.50}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.50}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.50}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"}
           }
         },
         "text": {
           "base": {
-            "brand-1": {"$type":"color","$value":"{brand.light.700}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.700}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.700}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.700}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.700}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"}
           },
           "on-accent": {
-            "brand-1": {"$type":"color","$value":"{brand.light.25}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.25}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.25}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.950}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.950}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9646114706993103,0.9780457019805908,0.9956189393997192],"alpha":1,"hex":"#F6F9FE"},"$description":"The Figma library aliases Colors / Alias: brand/light/25, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
           },
           "on-subtile": {
-            "brand-1": {"$type":"color","$value":"{brand.light.25}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.25}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.25}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.950}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.950}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9646114706993103,0.9780457019805908,0.9956189393997192],"alpha":1,"hex":"#F6F9FE"},"$description":"The Figma library aliases Colors / Alias: brand/light/25, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
           }
         },
         "icon": {
-          "brand-1": {"$type":"color","$value":"{brand.light.25}"},
-          "brand-2": {"$type":"color","$value":"{brand.light.25}"},
-          "brand-3": {"$type":"color","$value":"{brand.light.25}"},
-          "brand-4": {"$type":"color","$value":"{brand.light.950}"},
-          "brand-5": {"$type":"color","$value":"{brand.light.950}"}
+          "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
+          "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
+          "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9646114706993103,0.9780457019805908,0.9956189393997192],"alpha":1,"hex":"#F6F9FE"},"$description":"The Figma library aliases Colors / Alias: brand/light/25, which it does not contain; its literal value is kept"},
+          "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"},
+          "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
         },
         "border": {
           "base": {
-            "brand-1": {"$type":"color","$value":"{brand.light.800}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.600}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.400}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.200}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.200}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.800}"},
+            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22416234016418457,0.4476175606250763,0.8480817079544067],"alpha":1,"hex":"#3972D8"},"$description":"The Figma library aliases Colors / Alias: brand/light/600, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"}
           },
           "on-accent": {
-            "brand-1": {"$type":"color","$value":"{brand.light.800}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.600}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.500}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.400}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.300}"}
+            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.15411756932735443,0.2957887351512909,0.594975471496582],"alpha":1,"hex":"#274B98"},"$description":"The Figma library aliases Colors / Alias: brand/light/800, which it does not contain; its literal value is kept"},
+            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22416234016418457,0.4476175606250763,0.8480817079544067],"alpha":1,"hex":"#3972D8"},"$description":"The Figma library aliases Colors / Alias: brand/light/600, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.23852403461933136,0.5172147154808044,0.8755649924278259],"alpha":1,"hex":"#3D84DF"},"$description":"The Figma library aliases Colors / Alias: brand/light/500, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.41905906796455383,0.6843405961990356,0.9312850832939148],"alpha":1,"hex":"#6BAFED"},"$description":"The Figma library aliases Colors / Alias: brand/light/400, which it does not contain; its literal value is kept"},
+            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5774273872375488,0.7846760153770447,0.9560450315475464],"alpha":1,"hex":"#93C8F4"},"$description":"The Figma library aliases Colors / Alias: brand/light/300, which it does not contain; its literal value is kept"}
           },
           "separator": {
-            "brand-1": {"$type":"color","$value":"{brand.light.100}"},
-            "brand-2": {"$type":"color","$value":"{brand.light.600}"},
-            "brand-3": {"$type":"color","$value":"{brand.light.500}"},
-            "brand-4": {"$type":"color","$value":"{brand.light.400}"},
-            "brand-5": {"$type":"color","$value":"{brand.light.300}"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"},
+            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22416234016418457,0.4476175606250763,0.8480817079544067],"alpha":1,"hex":"#3972D8"},"$description":"The Figma library aliases Colors / Alias: brand/light/600, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.23852403461933136,0.5172147154808044,0.8755649924278259],"alpha":1,"hex":"#3D84DF"},"$description":"The Figma library aliases Colors / Alias: brand/light/500, which it does not contain; its literal value is kept"},
+            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.41905906796455383,0.6843405961990356,0.9312850832939148],"alpha":1,"hex":"#6BAFED"},"$description":"The Figma library aliases Colors / Alias: brand/light/400, which it does not contain; its literal value is kept"},
+            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5774273872375488,0.7846760153770447,0.9560450315475464],"alpha":1,"hex":"#93C8F4"},"$description":"The Figma library aliases Colors / Alias: brand/light/300, which it does not contain; its literal value is kept"}
           }
         }
       },
@@ -1240,7 +981,7 @@
         }
       },
       "extended": {
-        "sand": {
+        "wood": {
           "accent": {
             "extended-1": {"$type":"color","$value":"{extended.lavender.500}"},
             "extended-2": {"$type":"color","$value":"{extended.lime.400}"},
@@ -1248,7 +989,7 @@
             "extended-4": {"$type":"color","$value":"{extended.forest.600}"},
             "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.4833069145679474,0.5213414430618286,0.9993811845779419],"alpha":1,"hex":"#7B85FF"},"$description":"The Figma library aliases Colors / Base: extended/archive/royal-blue/400, which it does not contain; its literal value is kept"},
             "extended-6": {"$type":"color","$value":"{extended.orchid.400}"},
-            "extended-7": {"$type":"color","$value":"{extended.sand.500}"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.500}"},
             "extended-8": {"$type":"color","$value":"{extended.amber.500}"}
           },
           "subtile": {
@@ -1258,7 +999,7 @@
             "extended-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8220269680023193,0.9754130244255066,0.9238743185997009],"alpha":1,"hex":"#D2F9EC"},"$description":"The Figma library aliases Colors / Alias: extended/green/100, which it does not contain; its literal value is kept"},
             "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8099703192710876,0.8250095248222351,0.9496342539787292],"alpha":1,"hex":"#CFD2F2"},"$description":"The Figma library aliases Colors / Base: extended/archive/royal-blue/200, which it does not contain; its literal value is kept"},
             "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9659619927406311,0.9060277342796326,0.9579578042030334],"alpha":1,"hex":"#F6E7F4"},"$description":"The Figma library aliases Colors / Alias: extended/pink/100, which it does not contain; its literal value is kept"},
-            "extended-7": {"$type":"color","$value":"{extended.sand.200}"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.200}"},
             "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,0.9607843160629272,0.7803921699523926],"alpha":1,"hex":"#FFF5C7"},"$description":"The Figma library aliases Colors / Alias: extended/yellow-01/100, which it does not contain; its literal value is kept"}
           }
         },
@@ -1270,7 +1011,7 @@
             "extended-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9651716351509094,0.9969239234924316,0.9882001876831055],"alpha":1,"hex":"#F6FEFC"},"$description":"The Figma library aliases Colors / Mapped: text/extended/green/green-primary, which it does not contain; its literal value is kept"},
             "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9641904234886169,0.9860293865203857,0.997016191482544],"alpha":1,"hex":"#F6FBFE"},"$description":"The Figma library aliases Colors / Mapped: text/extended/blue/blue-primary, which it does not contain; its literal value is kept"},
             "extended-6": {"$type":"color","$value":"{extended.orchid.950}"},
-            "extended-7": {"$type":"color","$value":"{extended.sand.950}"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.950}"},
             "extended-8": {"$type":"color","$value":"{extended.amber.950}"}
           },
           "on-subtile": {
@@ -1314,7 +1055,7 @@
             "extended-4": {"$type":"color","$value":"{extended.forest.700}"},
             "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.4230889678001404,0.43091246485710144,0.9709784388542175],"alpha":1,"hex":"#6C6EF8"},"$description":"The Figma library aliases Colors / Alias: extended/royal-blue/500, which it does not contain; its literal value is kept"},
             "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8122602105140686,0.41407275199890137,0.7263584733009338],"alpha":1,"hex":"#CF6AB9"},"$description":"The Figma library aliases Colors / Alias: extended/pink/500, which it does not contain; its literal value is kept"},
-            "extended-7": {"$type":"color","$value":"{extended.sand.600}"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.600}"},
             "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.800000011920929,0.5058823823928833,0.12941177189350128],"alpha":1,"hex":"#CC8121"},"$description":"The Figma library aliases Colors / Alias: extended/yellow-01/600, which it does not contain; its literal value is kept"}
           },
           "on-subtile": {
@@ -1472,17 +1213,17 @@
         "active": {"$type":"color","$value":"{global.bg.subtle.brand.active}"}
       },
       "gradient": {
-        "avatar": {
-          "start": {"$type":"color","$value":"{brand.light.200}"},
-          "end": {"$type":"color","$value":"{brand.light.400}"}
-        },
         "skeleton": {
           "start": {"$type":"color","$value":"{global.bg.level.0.default}"},
-          "end": {"$type":"color","$value":"{brand.light.100}"}
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"}
+        },
+        "avatar": {
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"}
         },
         "subtle": {
           "start": {"$type":"color","$value":"{global.bg.level.0.default}"},
-          "end": {"$type":"color","$value":"{brand.light.50}"}
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}"}
         },
         "loading": {
           "start": {"$type":"color","$value":"{global.bg.transparency.fade.none}"},
@@ -1502,25 +1243,25 @@
       },
       "gradient": {
         "on-base": {
-          "start": {"$type":"color","$value":"{brand.light.600}","$description":"Only use with natural bg"},
-          "end": {"$type":"color","$value":"{brand.light.400}","$description":"Only use with natural bg"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}","$description":"Only use with natural bg"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}","$description":"Only use with natural bg"}
         },
         "on-accent": {
-          "start": {"$type":"color","$value":"{brand.light.50}","$description":"Only use with natural bg"},
-          "mid": {"$type":"color","$value":"{brand.light.200}","$description":"Only use with natural bg"},
-          "end": {"$type":"color","$value":"{brand.light.950}","$description":"Only use with natural bg"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}","$description":"Only use with natural bg"},
+          "mid": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}","$description":"Only use with natural bg"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}","$description":"Only use with natural bg"}
         }
       }
     },
     "icon": {
       "on-base": {
-        "default": {"$type":"color","$value":"{brand.light.500}","$description":"Only use with natural bg"}
+        "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.500}","$description":"Only use with natural bg"}
       },
       "on-subtle": {
-        "default": {"$type":"color","$value":"{brand.light.500}","$description":"Only use with natural bg"}
+        "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.500}","$description":"Only use with natural bg"}
       },
       "on-accent": {
-        "default": {"$type":"color","$value":"{brand.light.50}","$description":"Only use with natural bg"}
+        "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.50}","$description":"Only use with natural bg"}
       }
     },
     "border": {
@@ -1535,16 +1276,16 @@
       },
       "gradient": {
         "avatar": {
-          "start": {"$type":"color","$value":"{brand.light.400}"},
-          "end": {"$type":"color","$value":"{brand.light.200}"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"}
         },
         "default": {
-          "start": {"$type":"color","$value":"{brand.light.25}"},
-          "end": {"$type":"color","$value":"{brand.light.300}"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.300}"}
         },
         "focus": {
-          "start": {"$type":"color","$value":"{brand.light.200}"},
-          "end": {"$type":"color","$value":"{brand.light.600}"}
+          "start": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"},
+          "end": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}"}
         }
       }
     }

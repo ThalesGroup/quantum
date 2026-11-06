@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "typography",
   "name": "Typography",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "status": "draft",
   "summary": "The font families and their size and weight scales from the Figma library, plus the line heights and letter spacing components set their text with.",
   "description": "The families (heading, body, mono) and their size and weight scales are the Figma library's Typography, as they are; line heights and letter spacing, which the Figma library lacks, are the design system's additions (tokens/additions/). Components and the docs site read them directly: a component's typography token is a composite of a family, a size and a weight from the Figma library and a line height and letter spacing from the additions. There are no semantic text styles in between.",
@@ -152,7 +152,7 @@
         ]
       },
       {
-        "text": "Contrast is checked on the colors alone: every text color must reach 4.5:1 whatever its size (Color foundation; the Figma library's error colors fall short in a few states).",
+        "text": "Contrast is checked on the colors alone: every text color must reach 4.5:1 whatever its size (Color foundation; every text color reaches it since the Figma library's POC2 export moved the error colors).",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -247,6 +247,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.2",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the contrast statement follows the Figma library's POC2 export (Color foundation 3.1.0): the error text roles now reach 4.5:1 in every state."
+    },
     {
       "version": "0.3.1",
       "date": "2026-10-22",

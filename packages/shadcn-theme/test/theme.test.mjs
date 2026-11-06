@@ -55,7 +55,7 @@ test('the mapping names existing semantic or component tokens and existing spec 
 
 test('the mapping check refuses unknown tokens, raw tokens and unknown spec ids', () => {
   const bad = {
-    VARIABLES: { background: { token: 'global.bg.nope' }, foreground: { token: 'brand.light.600' } },
+    VARIABLES: { background: { token: 'global.bg.nope' }, foreground: { token: 'brand.palettes.core-colors.light.600' } },
     THEME: {},
     COMPONENTS: [
       { quantum: 'button', configs: [{ set: { emphasis: 'loud' } }, { set: { tone: 'x' } }, { state: 'pressed' }, { part: 'halo' }, { set: { disabled: 'yes' } }] },
@@ -63,7 +63,7 @@ test('the mapping check refuses unknown tokens, raw tokens and unknown spec ids'
     ],
   };
   const problems = checkMapping(bad, quantum);
-  for (const needle of ['unknown Quantum token "global.bg.nope"', '"brand.light.600" is a raw token', 'no option "loud"', 'no property "tone"', 'no state "pressed"', 'no part "halo"', 'is a boolean', 'no Quantum component "carousel"']) {
+  for (const needle of ['unknown Quantum token "global.bg.nope"', '"brand.palettes.core-colors.light.600" is a raw token', 'no option "loud"', 'no property "tone"', 'no state "pressed"', 'no part "halo"', 'is a boolean', 'no Quantum component "carousel"']) {
     assert.ok(problems.some((p) => p.includes(needle)), `reports ${needle}: ${problems.join(' | ')}`);
   }
   assert.throws(() => resolveMapping(bad, quantum), /does not match the Quantum tokens and specs/);

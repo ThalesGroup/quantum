@@ -150,9 +150,9 @@ This section explains the decisions behind it.
   ([WCAG 1.4.11 Non-text Contrast, symbolic characters](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#symbolic-or-graphical-text-characters)).
   The glyph takes the icon colors of the mapped roles, the same values as the button's label
   colors, and clears 3:1 in every emphasis, intent and enabled state, in light and in dark mode.
-  With the Figma library's error colors it no longer reaches the 4.5:1 asked of text everywhere
-  ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html);
-  a known issue), which the glyph does not need but its label colors on the Button do.
+  Since the Figma library's POC2 export it also reaches the 4.5:1 asked of text everywhere
+  ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)),
+  which the glyph does not need but its label colors on the Button do.
 - **Borders are not the boundary.** The glyph identifies the control, so the light borders of
   subtle and ghost icon buttons, and the absent border of a ghost one at rest, need no contrast
   of their own

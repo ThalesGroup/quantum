@@ -69,32 +69,32 @@ of the matching Quantum component, so it follows that component's decisions. The
 | shadcn variable | Where | Quantum token | Value | Why |
 | --- | --- | --- | --- | --- |
 | `--background` | `:root`, `.dark` | `global.bg.level.0.default` | `#FDFDFD` / `#191919` | The page surface: level 0. |
-| `--foreground` | `:root`, `.dark` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` | Running text. |
-| `--card` | `:root`, `.dark` | `card.container.background.level-1` (component, = `global.bg.level.1.default`) | `#F7F6F6` / `#212121` | The Quantum Card surface at its default level. |
-| `--card-foreground` | `:root`, `.dark` | `card.title.color` (component, = `global.text.on-base.neutral.primary`) | `#0E0D0D` / `#D2CECF` | The Card title color. |
+| `--foreground` | `:root`, `.dark` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` | Running text. |
+| `--card` | `:root`, `.dark` | `card.container.background.level-1` (component, = `global.bg.level.1.default`) | `#F7F7F7` / `#212121` | The Quantum Card surface at its default level. |
+| `--card-foreground` | `:root`, `.dark` | `card.title.color` (component, = `global.text.on-base.neutral.primary`) | `#0E0E0E` / `#CFCFCF` | The Card title color. |
 | `--popover` | `:root`, `.dark` | `dropdown.menu.background` (component, = `global.bg.level.2.default`) | `#FDFDFD` / `#282828` | The Dropdown menu surface (level 2); shadcn uses it for every floating surface. |
-| `--popover-foreground` | `:root`, `.dark` | `dropdown.item-label.color.neutral.default` (component, = `global.text.on-subtle.neutral.default`) | `#323031` / `#E3DDDE` | The menu item label. |
+| `--popover-foreground` | `:root`, `.dark` | `dropdown.item-label.color.neutral.default` (component, = `global.text.on-subtle.neutral.default`) | `#313131` / `#DFDFDF` | The menu item label. |
 | `--primary` | `:root`, `.dark` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` | Button emphasis accent, intent brand. |
 | `--primary-foreground` | `:root`, `.dark` | `global.text.on-accent.brand.default` | `#FBFCFD` / `#09191D` | |
-| `--secondary` | `:root`, `.dark` | `global.bg.subtle.neutral.default` | `#B6B4B41a` / `#7676761a` | Button emphasis subtle, intent neutral (translucent). |
-| `--secondary-foreground` | `:root`, `.dark` | `global.text.on-subtle.neutral.default` | `#323031` / `#E3DDDE` | |
-| `--muted` | `:root`, `.dark` | `global.bg.base.neutral.3` | `#ECE8E9` / `#282828` | The neutral step progress-bar and slider tracks read; `neutral.2` equals level 1 and would vanish on cards. |
-| `--muted-foreground` | `:root`, `.dark` | `global.text.on-base.neutral.secondary` | `#323031` / `#B9B7B7` | Descriptions and helper texts. shadcn also uses it for placeholders, which Quantum draws tertiary. |
-| `--accent` | `:root`, `.dark` | `global.bg.subtle.neutral.default` | `#B6B4B41a` / `#7676761a` | The hover surface of Quantum ghost buttons, accordion triggers and menu items; shadcn's ghost/outline hover, focused menu item, pressed toggle. |
-| `--accent-foreground` | `:root`, `.dark` | `global.text.on-subtle.neutral.default` | `#323031` / `#E3DDDE` | |
-| `--destructive` | `:root`, `.dark` | `global.bg.accent.functional.error.default` | `#E12A23` | Button emphasis accent, intent error; shadcn also colors error text and invalid borders with it. |
-| `--destructive-foreground` | `:root`, `.dark` | `global.text.on-accent.functional.error.default` | `#FEFBFA` | No longer in shadcn's documented set (the v4 components write `text-white`); kept for blocks that read it. |
-| `--border` | `:root`, `.dark` | `card.container.border-color.level-1` (component, = `global.border.level.edge.level.1`) | `#D7D3D4` / `#282828` | The edge of the Card at level 1: shadcn's `--border` is mostly card, popover and table edges. |
-| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.accent.neutral.default`) | `#323031` / `#B9B7B7` | The border of a Quantum form control, also what checkboxes read. |
+| `--secondary` | `:root`, `.dark` | `global.bg.subtle.neutral.default` | `#B5B5B5 10%` / `#767676 10%` | Button emphasis subtle, intent neutral (translucent). |
+| `--secondary-foreground` | `:root`, `.dark` | `global.text.on-subtle.neutral.default` | `#313131` / `#DFDFDF` | |
+| `--muted` | `:root`, `.dark` | `global.bg.base.neutral.3` | `#EAEAEA` / `#282828` | The neutral step progress-bar and slider tracks read; `neutral.2` equals level 1 and would vanish on cards. |
+| `--muted-foreground` | `:root`, `.dark` | `global.text.on-base.neutral.secondary` | `#313131` / `#B8B8B8` | Descriptions and helper texts. shadcn also uses it for placeholders, which Quantum draws tertiary. |
+| `--accent` | `:root`, `.dark` | `global.bg.subtle.neutral.default` | `#B5B5B5 10%` / `#767676 10%` | The hover surface of Quantum ghost buttons, accordion triggers and menu items; shadcn's ghost/outline hover, focused menu item, pressed toggle. |
+| `--accent-foreground` | `:root`, `.dark` | `global.text.on-subtle.neutral.default` | `#313131` / `#DFDFDF` | |
+| `--destructive` | `:root`, `.dark` | `global.bg.accent.functional.error.default` | `#DF2821` / `#DF2821` | Button emphasis accent, intent error; shadcn also colors error text and invalid borders with it. |
+| `--destructive-foreground` | `:root`, `.dark` | `global.text.on-accent.functional.error.default` | `#FEFBFA` / `#FEFBFA` | No longer in shadcn's documented set (the v4 components write `text-white`); kept for blocks that read it. |
+| `--border` | `:root`, `.dark` | `card.container.border-color.level-1` (component, = `global.border.level.edge.level.1`) | `#D5D5D5` / `#282828` | The edge of the Card at level 1: shadcn's `--border` is mostly card, popover and table edges. |
+| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.accent.neutral.default`) | `#313131` / `#CFCFCF` | The border of a Quantum form control, also what checkboxes read. |
 | `--ring` | `:root`, `.dark` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | The focus ring color. |
-| `--chart-1` … `--chart-5` | `:root`, `.dark` | `dataviz.role.brand.bg.accent.brand-1` … `brand-5` | `#0B2A69` … `#749DE5` / `#9EE7FA` … `#297B8C` | The brand data series. The categorical alternative is `dataviz.role.extended.sand.accent.extended-1..8`. |
-| `--sidebar` | `:root`, `.dark` | `global.bg.level.1.default` | `#F7F6F6` / `#212121` | A sidebar is a level-1 surface beside the level-0 page. |
-| `--sidebar-foreground` | `:root`, `.dark` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` | |
+| `--chart-1` … `--chart-5` | `:root`, `.dark` | `dataviz.role.brand.bg.accent.brand-1` … `brand-5` | `#0B2A69` … `#749DE5` / `#9EE7FA` … `#297B8C` | The brand data series. The categorical alternative is `dataviz.role.extended.wood.accent.extended-1..8`. |
+| `--sidebar` | `:root`, `.dark` | `global.bg.level.1.default` | `#F7F7F7` / `#212121` | A sidebar is a level-1 surface beside the level-0 page. |
+| `--sidebar-foreground` | `:root`, `.dark` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` | |
 | `--sidebar-primary` | `:root`, `.dark` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` | |
 | `--sidebar-primary-foreground` | `:root`, `.dark` | `global.text.on-accent.brand.default` | `#FBFCFD` / `#09191D` | |
-| `--sidebar-accent` | `:root`, `.dark` | `global.bg.subtle.neutral.default` | `#B6B4B41a` / `#7676761a` | Same as `--accent`. |
-| `--sidebar-accent-foreground` | `:root`, `.dark` | `global.text.on-subtle.neutral.default` | `#323031` / `#E3DDDE` | |
-| `--sidebar-border` | `:root`, `.dark` | `global.border.level.edge.level.1` | `#D7D3D4` / `#282828` | The edge of a level-1 surface. |
+| `--sidebar-accent` | `:root`, `.dark` | `global.bg.subtle.neutral.default` | `#B5B5B5 10%` / `#767676 10%` | Same as `--accent`. |
+| `--sidebar-accent-foreground` | `:root`, `.dark` | `global.text.on-subtle.neutral.default` | `#313131` / `#DFDFDF` | |
+| `--sidebar-border` | `:root`, `.dark` | `global.border.level.edge.level.1` | `#D5D5D5` / `#282828` | The edge of a level-1 surface. |
 | `--sidebar-ring` | `:root`, `.dark` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | |
 | `--radius` | `:root` | `corner-radius.sm` | `8px` | shadcn's base radius, which it takes as `--radius-lg`: the step of Quantum's surfaces. |
 | `--font-sans` | `@theme inline` | `body.family` | `Inter`, then `ui-sans-serif, system-ui, sans-serif` | Body text. |

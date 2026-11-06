@@ -130,9 +130,9 @@ This section explains the decisions behind it.
   ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
   Item labels contrast at least 4.5:1 with the item in every intent and enabled state, in light
   and dark mode
-  ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)),
-  except a pressed error item in light mode (4.35:1), which keeps the Figma library's error colors as
-  they are.
+  ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
+  the lowest pair is a pressed error item in light mode (6.30:1 since the Figma library's POC2
+  export moved the error colors).
   Items are identified by their labels, so the menu border and the separators need no 3:1
   contrast; the focus ring does
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)).

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "breadcrumb",
   "name": "Breadcrumb",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "navigation",
   "summary": "Shows where the current page sits in a hierarchy, with a link to each level above it.",
@@ -244,7 +244,7 @@
         ]
       },
       {
-        "text": "Link text contrasts 12.87:1 (light) and 8.80:1 (dark) with the default surface, the current page 19.07:1 and 11.27:1; the separators are decoration (6.08:1 and 6.36:1 anyway).",
+        "text": "Link text contrasts 12.78:1 (light) and 8.86:1 (dark) with the default surface, the current page 19.03:1 and 11.28:1; the separators are decoration (6.08:1 and 6.40:1 anyway).",
         "refs": [
           "wcag:1.4.3",
           "wcag:1.4.11"
@@ -551,6 +551,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: 3 tokens follow the ash retune (one to four units per channel). Dark: 4 tokens follow the ash retune (one to four units per channel). Contrast re-measured on the accessibility guidelines: 6.36 → 6.40:1, 8.80 → 8.86:1, 11.27 → 11.28:1, 12.87 → 12.78:1, 19.07 → 19.03:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

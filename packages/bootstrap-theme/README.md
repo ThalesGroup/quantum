@@ -99,7 +99,7 @@ and the full radius, which stay in px.
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-primary-base` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` |  |
-| `--bs-primary-fg` | `global.text.on-base.brand.default` | `#175DD6` / `#9EE7FA` | Brand text on the page: the ghost button label and the link color. |
+| `--bs-primary-fg` | `global.text.on-base.brand.default` | `#175DD6` / `#41B9D3` | Brand text on the page: the ghost button label and the link color. |
 | `--bs-primary-fg-emphasis` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The ghost button hover label and the subtle button label: the darker brand text step. |
 | `--bs-primary-bg` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-primary-bg-subtle` | `global.bg.subtle.brand.default` | `#EEF1F7` / `#09191D` |  |
@@ -112,15 +112,15 @@ and the full radius, which stay in px.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-accent-base` | `global.bg.accent.extended.lavender.default` | `#7534A9` / `#B87BF5` |  |
-| `--bs-accent-fg` | `global.text.on-base.extended.lavender.default` | `#7534A9` / `#B87BF5` |  |
-| `--bs-accent-fg-emphasis` | `global.text.on-subtle.extended.lavender.default` | `#3F1A5C` / `#CA9EFA` |  |
-| `--bs-accent-bg` | `global.bg.accent.extended.lavender.default` | `#7534A9` / `#B87BF5` |  |
-| `--bs-accent-bg-subtle` | `global.bg.subtle.extended.lavender.default` | `#F4EBFE` / `#2D1543` |  |
-| `--bs-accent-bg-muted` | `global.bg.subtle.extended.lavender.hover` | `#E6D2FE` / `#3F1A5C` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
-| `--bs-accent-border` | `global.border.accent.extended.lavender.default` | `#8D3BCD` / `#A653EA` |  |
+| `--bs-accent-base` | `global.bg.accent.extended.lavender.default` | `#8636CA` |  |
+| `--bs-accent-fg` | `global.text.on-base.extended.lavender.default` | `#6B0DAC` / `#CAADF4` |  |
+| `--bs-accent-fg-emphasis` | `global.text.on-subtle.extended.lavender.default` | `#6B0DAC` / `#CAADF4` |  |
+| `--bs-accent-bg` | `global.bg.accent.extended.lavender.default` | `#8636CA` |  |
+| `--bs-accent-bg-subtle` | `global.bg.subtle.extended.lavender.default` | `#F5F0FA` / `#1C0E2E` |  |
+| `--bs-accent-bg-muted` | `global.bg.subtle.extended.lavender.hover` | `#DECBF7` / `#310056` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
+| `--bs-accent-border` | `global.border.accent.extended.lavender.default` | `#6B0DAC` / `#C081FF` |  |
 | `--bs-accent-focus-ring` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | Quantum has one focus ring color for every intent (Focus foundation). |
-| `--bs-accent-contrast` | `global.text.on-accent.extended.lavender.default` | `#FDFBFF` / `#1D0E2C` |  |
+| `--bs-accent-contrast` | `global.text.on-accent.extended.lavender.default` | `#FCFCFD` |  |
 
 .theme-success, on root; Sass `$theme-colors`. Quantum functional success.
 
@@ -140,10 +140,10 @@ and the full radius, which stay in px.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-danger-base` | `global.bg.accent.functional.error.default` | `#E12A23` |  |
-| `--bs-danger-fg` | `global.text.on-subtle.functional.error.default` | `#C01619` / `#FAA79D` | Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum's on-subtle step, the alert title and subtle badge label. |
-| `--bs-danger-fg-emphasis` | `global.text.on-sunken.functional.error.default` | `#C01619` / `#EE5248` |  |
-| `--bs-danger-bg` | `global.bg.accent.functional.error.default` | `#E12A23` |  |
+| `--bs-danger-base` | `global.bg.accent.functional.error.default` | `#DF2821` |  |
+| `--bs-danger-fg` | `global.text.on-subtle.functional.error.default` | `#940E11` / `#FAA79D` | Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum's on-subtle step, the alert title and subtle badge label. |
+| `--bs-danger-fg-emphasis` | `global.text.on-sunken.functional.error.default` | `#940E11` / `#EE5248` |  |
+| `--bs-danger-bg` | `global.bg.accent.functional.error.default` | `#DF2821` |  |
 | `--bs-danger-bg-subtle` | `global.bg.subtle.functional.error.default` | `#FEECEA` / `#2B0B08` |  |
 | `--bs-danger-bg-muted` | `global.bg.subtle.functional.error.hover` | `#FCCDC6` / `#3E130F` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
 | `--bs-danger-border` | `global.border.accent.functional.error.default` | `#C01619` | The alert and accent badge border. |
@@ -182,13 +182,13 @@ and the full radius, which stay in px.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-inverse-base` | `global.bg.accent.neutral.default` | `#201E1F` / `#E8E3E4` |  |
-| `--bs-inverse-fg` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` |  |
-| `--bs-inverse-fg-emphasis` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` |  |
-| `--bs-inverse-bg` | `global.bg.accent.neutral.default` | `#201E1F` / `#E8E3E4` | Quantum's neutral accent is the inverse surface (near black in light mode, near white in dark): Button accent/neutral. |
-| `--bs-inverse-bg-subtle` | `global.bg.subtle.neutral.default` | `#B6B4B41a` / `#7676761a` |  |
-| `--bs-inverse-bg-muted` | `global.bg.subtle.neutral.hover` | `#B6B4B426` / `#7676764d` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
-| `--bs-inverse-border` | `global.border.accent.neutral.default` | `#323031` / `#B9B7B7` |  |
+| `--bs-inverse-base` | `global.bg.accent.neutral.default` | `#1F1F1F` / `#E4E4E4` |  |
+| `--bs-inverse-fg` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` |  |
+| `--bs-inverse-fg-emphasis` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` |  |
+| `--bs-inverse-bg` | `global.bg.accent.neutral.default` | `#1F1F1F` / `#E4E4E4` | Quantum's neutral accent is the inverse surface (near black in light mode, near white in dark): Button accent/neutral. |
+| `--bs-inverse-bg-subtle` | `global.bg.subtle.neutral.default` | `#B5B5B51a` / `#7676761a` |  |
+| `--bs-inverse-bg-muted` | `global.bg.subtle.neutral.hover` | `#B5B5B526` / `#7676764d` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
+| `--bs-inverse-border` | `global.border.accent.neutral.default` | `#313131` / `#CFCFCF` |  |
 | `--bs-inverse-focus-ring` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | Quantum has one focus ring color for every intent (Focus foundation). |
 | `--bs-inverse-contrast` | `global.text.on-accent.neutral.primary` | `#FDFDFD` / `#191919` |  |
 
@@ -196,15 +196,15 @@ and the full radius, which stay in px.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-secondary-base` | `global.bg.base.neutral.4` | `#DFDBDC` / `#303030` |  |
-| `--bs-secondary-fg` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` | The subtle and ghost neutral button label. |
-| `--bs-secondary-fg-emphasis` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` |  |
-| `--bs-secondary-bg` | `global.bg.base.neutral.3` | `#ECE8E9` / `#282828` | An opaque neutral surface step for the solid secondary button, which Quantum has no emphasis for (its neutral accent is the inverse one). |
-| `--bs-secondary-bg-subtle` | `global.bg.subtle.neutral.default` | `#B6B4B41a` / `#7676761a` |  |
-| `--bs-secondary-bg-muted` | `global.bg.subtle.neutral.hover` | `#B6B4B426` / `#7676764d` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
-| `--bs-secondary-border` | `global.border.subtle.neutral.default` | `#DFDBDC` / `#36363680` |  |
+| `--bs-secondary-base` | `global.bg.base.neutral.4` | `#DDDDDD` / `#303030` |  |
+| `--bs-secondary-fg` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` | The subtle and ghost neutral button label. |
+| `--bs-secondary-fg-emphasis` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` |  |
+| `--bs-secondary-bg` | `global.bg.base.neutral.3` | `#EAEAEA` / `#282828` | An opaque neutral surface step for the solid secondary button, which Quantum has no emphasis for (its neutral accent is the inverse one). |
+| `--bs-secondary-bg-subtle` | `global.bg.subtle.neutral.default` | `#B5B5B51a` / `#7676761a` |  |
+| `--bs-secondary-bg-muted` | `global.bg.subtle.neutral.hover` | `#B5B5B526` / `#7676764d` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
+| `--bs-secondary-border` | `global.border.subtle.neutral.default` | `#DDDDDD` / `#36363680` |  |
 | `--bs-secondary-focus-ring` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | Quantum has one focus ring color for every intent (Focus foundation). |
-| `--bs-secondary-contrast` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-secondary-contrast` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` |  |
 
 
 #### Surfaces
@@ -214,10 +214,10 @@ Backgrounds, on root; Sass `$theme-bgs`. Bootstrap's bg-1..4 ladder steps away f
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-bg-body` | `global.bg.level.0.default` | `#FDFDFD` / `#191919` |  |
-| `--bs-bg-1` | `global.bg.level.1.default` | `#F7F6F6` / `#212121` |  |
-| `--bs-bg-2` | `global.bg.base.neutral.3` | `#ECE8E9` / `#282828` |  |
-| `--bs-bg-3` | `global.bg.base.neutral.4` | `#DFDBDC` / `#303030` |  |
-| `--bs-bg-4` | `global.bg.base.neutral.5` | `#D7D3D4` / `#363636` |  |
+| `--bs-bg-1` | `global.bg.level.1.default` | `#F7F7F7` / `#212121` |  |
+| `--bs-bg-2` | `global.bg.base.neutral.3` | `#EAEAEA` / `#282828` |  |
+| `--bs-bg-3` | `global.bg.base.neutral.4` | `#DDDDDD` / `#303030` |  |
+| `--bs-bg-4` | `global.bg.base.neutral.5` | `#D5D5D5` / `#363636` |  |
 
 
 #### Text
@@ -226,11 +226,11 @@ Foregrounds, on root; Sass `$theme-fgs`. Quantum has three text steps and a disa
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-fg-body` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` |  |
-| `--bs-fg-1` | `global.text.on-base.neutral.primary` | `#0E0D0D` / `#D2CECF` |  |
-| `--bs-fg-2` | `global.text.on-base.neutral.secondary` | `#323031` / `#B9B7B7` |  |
-| `--bs-fg-3` | `global.text.on-base.neutral.tertiary` | `#616161` / `#9D9B9C` |  |
-| `--bs-fg-4` | `global.text.state.disabled.default` | `#8C8C8C` / `#9D9B9Cb2` |  |
+| `--bs-fg-body` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` |  |
+| `--bs-fg-1` | `global.text.on-base.neutral.primary` | `#0E0E0E` / `#CFCFCF` |  |
+| `--bs-fg-2` | `global.text.on-base.neutral.secondary` | `#313131` / `#B8B8B8` |  |
+| `--bs-fg-3` | `global.text.on-base.neutral.tertiary` | `#616161` / `#9C9C9C` |  |
+| `--bs-fg-4` | `global.text.state.disabled.default` | `#8C8C8C` / `#9C9C9Cb2` |  |
 
 
 #### Borders
@@ -239,18 +239,18 @@ Border colors, on root; Sass `$theme-borders`.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-border-body` | `global.border.base.neutral.3` | `#D7D3D4` / `#303030` |  |
-| `--bs-border-muted` | `global.border.base.neutral.2` | `#DFDBDC` / `#282828` |  |
-| `--bs-border-subtle` | `global.border.base.neutral.1` | `#ECE8E9` / `#212121` |  |
-| `--bs-border-emphasized` | `global.border.base.neutral.4` | `#B6B4B4` / `#363636` |  |
+| `--bs-border-body` | `global.border.base.neutral.3` | `#D5D5D5` / `#303030` |  |
+| `--bs-border-muted` | `global.border.base.neutral.2` | `#DDDDDD` / `#282828` |  |
+| `--bs-border-subtle` | `global.border.base.neutral.1` | `#EAEAEA` / `#212121` |  |
+| `--bs-border-emphasized` | `global.border.base.neutral.4` | `#B5B5B5` / `#363636` |  |
 
 Border width and default color, on root; Sass `$root-tokens`.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-border-width` | `stroke-width.sm` | `0.6px` | The hairline every Quantum container and control border uses. |
-| `--bs-border-color` | `global.border.base.neutral.3` | `#D7D3D4` / `#303030` | Bootstrap's default edge (tables, list groups, inputs before the text-field override): the neutral base step that stays visible in both modes. |
-| `--bs-border-color-translucent` | `global.border.level.edge.level.2` | `#DFDBDC` / `#303030` | Bootstrap draws the edge of raised surfaces (menu, dialog, popover, toast) with it: Quantum's edge of a level-2 surface, the dropdown menu border. |
+| `--bs-border-color` | `global.border.base.neutral.3` | `#D5D5D5` / `#303030` | Bootstrap's default edge (tables, list groups, inputs before the text-field override): the neutral base step that stays visible in both modes. |
+| `--bs-border-color-translucent` | `global.border.level.edge.level.2` | `#DDDDDD` / `#303030` | Bootstrap draws the edge of raised surfaces (menu, dialog, popover, toast) with it: Quantum's edge of a level-2 surface, the dropdown menu border. |
 
 
 #### Typography
@@ -264,7 +264,7 @@ Body, monospace and links, on root; Sass `$root-tokens`.
 | `--bs-body-font-weight` | `body.weight.regular` | `400` |  |
 | `--bs-body-line-height` | `font.line-height.normal` | `1.5` |  |
 | `--bs-font-mono` | `{mono.family}, …` | `"Fragment Mono", ui-monospace, 'SF Mo…` | Fragment Mono first, Bootstrap's monospace stack as the fallback. |
-| `--bs-link-color` | `global.text.on-base.brand.default` | `#175DD6` / `#9EE7FA` | Quantum has no Link component: brand text on the page. |
+| `--bs-link-color` | `global.text.on-base.brand.default` | `#175DD6` / `#41B9D3` | Quantum has no Link component: brand text on the page. |
 | `--bs-link-hover-color` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The darker brand text step (the ghost button hover label). |
 
 Headings, on root; Sass `$type-tokens`.
@@ -372,7 +372,7 @@ Shadow color, on root; Sass `$root-tokens`. Quantum has shadow colors but no sha
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-shadow-color` | `effect.shadow.5` | `#201E1F0d` / `#141414cc` |  |
+| `--bs-shadow-color` | `effect.shadow.5` | `#1F1F1F0d` / `#141414cc` |  |
 
 
 #### Motion
@@ -390,7 +390,7 @@ Overlay easing, on root; Sass `$root-tokens`.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-hr-border-color` | `divider.container.color` | `#B6B4B4` / `#363636` |  |
+| `--bs-hr-border-color` | `divider.container.color` | `#B5B5B5` / `#363636` |  |
 | `--bs-hr-margin-y` | `divider.container.margin-block.horizontal` | `1rem` |  |
 | `--bs-vr-border-width` | `divider.container.border-width` | `0.6px` |  |
 
@@ -401,7 +401,7 @@ Button and input sizes (root), on root; Sass `$root-tokens`. Bootstrap sizes but
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-btn-input-fg` | `text-field.control.color.default` | `#0E0D0D` / `#D2CECF` | Bootstrap's shared control foreground (inputs, OTP, chip input): the Text field value color. |
+| `--bs-btn-input-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` | Bootstrap's shared control foreground (inputs, OTP, chip input): the Text field value color. |
 | `--bs-btn-input-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` | Bootstrap's shared control background (inputs, OTP, chip input, floating labels): the Text field background. |
 | `--bs-btn-input-gap` | `button.container.gap.medium` | `0.25rem` |  |
 | `--bs-btn-input-min-height` | `button.container.min-height.medium` | `2.25rem` |  |
@@ -452,33 +452,33 @@ Solid disabled (accent), on `.btn-solid:disabled, .btn-solid.disabled, .btn-soli
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-btn-disabled-bg` | `button.container.background.accent.disabled` | `#B6B4B41a` / `#7676764d` |  |
-| `--bs-btn-disabled-color` | `button.label.color.accent.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
-| `--bs-btn-disabled-border-color` | `button.container.border-color.accent.disabled` | `#B6B4B466` / `#363636b2` |  |
+| `--bs-btn-disabled-bg` | `button.container.background.accent.disabled` | `#B5B5B51a` / `#7676764d` |  |
+| `--bs-btn-disabled-color` | `button.label.color.accent.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
+| `--bs-btn-disabled-border-color` | `button.container.border-color.accent.disabled` | `#B5B5B566` / `#363636b2` |  |
 
 Outline disabled (subtle), on `.btn-outline:disabled, .btn-outline.disabled, .btn-outline.btn-check:has(input:disabled)`; Sass: written after the @use. Quantum has no outline emphasis: the bordered subtle emphasis is the nearest.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-btn-disabled-bg` | `button.container.background.subtle.disabled` | `#B6B4B41a` / `#7676764d` |  |
-| `--bs-btn-disabled-color` | `button.label.color.subtle.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
-| `--bs-btn-disabled-border-color` | `button.container.border-color.subtle.disabled` | `#B6B4B466` / `#363636b2` |  |
+| `--bs-btn-disabled-bg` | `button.container.background.subtle.disabled` | `#B5B5B51a` / `#7676764d` |  |
+| `--bs-btn-disabled-color` | `button.label.color.subtle.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
+| `--bs-btn-disabled-border-color` | `button.container.border-color.subtle.disabled` | `#B5B5B566` / `#363636b2` |  |
 
 Subtle disabled, on `.btn-subtle:disabled, .btn-subtle.disabled, .btn-subtle.btn-check:has(input:disabled)`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-btn-disabled-bg` | `button.container.background.subtle.disabled` | `#B6B4B41a` / `#7676764d` |  |
-| `--bs-btn-disabled-color` | `button.label.color.subtle.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
-| `--bs-btn-disabled-border-color` | `button.container.border-color.subtle.disabled` | `#B6B4B466` / `#363636b2` |  |
+| `--bs-btn-disabled-bg` | `button.container.background.subtle.disabled` | `#B5B5B51a` / `#7676764d` |  |
+| `--bs-btn-disabled-color` | `button.label.color.subtle.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
+| `--bs-btn-disabled-border-color` | `button.container.border-color.subtle.disabled` | `#B5B5B566` / `#363636b2` |  |
 
 Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn-check:has(input:disabled)`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-btn-disabled-bg` | `button.container.background.ghost.disabled` | `#B6B4B41a` / `#7676764d` |  |
-| `--bs-btn-disabled-color` | `button.label.color.ghost.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
-| `--bs-btn-disabled-border-color` | `button.container.border-color.ghost.disabled` | `#B6B4B466` / `#363636b2` |  |
+| `--bs-btn-disabled-bg` | `button.container.background.ghost.disabled` | `#B5B5B51a` / `#7676764d` |  |
+| `--bs-btn-disabled-color` | `button.label.color.ghost.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
+| `--bs-btn-disabled-border-color` | `button.container.border-color.ghost.disabled` | `#B5B5B566` / `#363636b2` |  |
 
 
 #### Text field
@@ -492,18 +492,18 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum centers a field's line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 40px min-height (line 24px + 2 x 7px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.medium` (fontSize) | `1rem` |  |
 | `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.5` |  |
-| `--bs-control-fg` | `text-field.control.color.default` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
-| `--bs-control-border-color` | `text-field.control.border-color.default` | `#323031` / `#B9B7B7` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
 | `--bs-control-box-shadow` | `none` (rule `effects.shadow`) | `none` | No shadow is drawn in Quantum: no inset shadow on fields. |
 | `--bs-control-transition-duration` | `text-field.control.transition.duration` | `150ms` |  |
 | `--bs-control-transition-timing` | `text-field.control.transition.easing` | `cubic-bezier(0.2, 0, 0, 1)` |  |
-| `--bs-control-placeholder-color` | `text-field.control.placeholder-color.default` | `#616161` / `#9D9B9C` |  |
-| `--bs-control-disabled-color` | `text-field.control.color.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
-| `--bs-control-disabled-bg` | `text-field.control.background.disabled` | `#B6B4B41a` / `#7676764d` |  |
-| `--bs-control-disabled-border-color` | `text-field.control.border-color.disabled` | `#B6B4B466` / `#363636b2` |  |
+| `--bs-control-placeholder-color` | `text-field.control.placeholder-color.default` | `#616161` / `#9C9C9C` |  |
+| `--bs-control-disabled-color` | `text-field.control.color.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
+| `--bs-control-disabled-bg` | `text-field.control.background.disabled` | `#B5B5B51a` / `#7676764d` |  |
+| `--bs-control-disabled-border-color` | `text-field.control.border-color.disabled` | `#B5B5B566` / `#363636b2` |  |
 
 .form-control-sm (small), on `.form-control-sm`; Sass: written after the @use.
 
@@ -537,29 +537,29 @@ Invalid (.is-invalid), on `.form-control.is-invalid`; Sass: written after the @u
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-border-color` | `text-field.control.border-color.invalid` | `#C01619` / `#E12A23` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
 
 Invalid (:user-invalid), on `[data-bs-validate] .form-control:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-border-color` | `text-field.control.border-color.invalid` | `#C01619` / `#E12A23` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
 
 .chip-input, on `.chip-input`; Sass `$chip-input-tokens`. Bootstrap's chip input is a field holding chips: it takes the Text field control.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-fg` | `text-field.control.color.default` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
-| `--bs-control-border-color` | `text-field.control.border-color.default` | `#323031` / `#B9B7B7` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
 
 Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-label-color` | `text-field.label.color.default` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-label-color` | `text-field.label.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-label-font-size` | `text-field.label.typography` (fontSize) | `0.875rem` |  |
 | `--bs-label-font-weight` | `text-field.label.typography` (fontWeight) | `500` |  |
 
@@ -569,7 +569,7 @@ Description (.form-text), on `.form-text`; Sass `$form-text-tokens`.
 | --- | --- | --- | --- |
 | `--bs-form-text-margin-top` | `text-field.container.gap` | `0.25rem` |  |
 | `--bs-form-text-font-size` | `text-field.description.typography` (fontSize) | `0.875rem` |  |
-| `--bs-form-text-color` | `text-field.description.color.default` | `#323031` / `#B9B7B7` |  |
+| `--bs-form-text-color` | `text-field.description.color.default` | `#313131` / `#B8B8B8` |  |
 
 
 #### Checkbox
@@ -580,7 +580,7 @@ Selection controls (root), on root; Sass `$root-tokens`.
 | --- | --- | --- | --- |
 | `--bs-control-checked-bg` | `checkbox.control.background.checked` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-control-checked-border-color` | `checkbox.control.border-color.checked` | `#1148A9` / `#53D6F2` |  |
-| `--bs-control-disabled-bg` | `checkbox.control.background.disabled` | `#B6B4B41a` / `#7676764d` |  |
+| `--bs-control-disabled-bg` | `checkbox.control.background.disabled` | `#B5B5B51a` / `#7676764d` |  |
 | `--bs-control-transition-duration` | `checkbox.control.transition.duration` | `150ms` |  |
 | `--bs-control-transition-timing` | `checkbox.control.transition.easing` | `cubic-bezier(0.2, 0, 0, 1)` |  |
 
@@ -590,12 +590,12 @@ Selection controls (root), on root; Sass `$root-tokens`.
 | --- | --- | --- | --- |
 | `--bs-check-size` | `checkbox.control.size.medium` | `1.25rem` |  |
 | `--bs-check-bg` | `checkbox.control.background.default` | `#FDFDFD` / `#191919` |  |
-| `--bs-check-border-color` | `checkbox.control.border-color.default` | `#323031` / `#B9B7B7` |  |
+| `--bs-check-border-color` | `checkbox.control.border-color.default` | `#313131` / `#CFCFCF` |  |
 | `--bs-check-checked-bg` | `checkbox.control.background.checked` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-check-checked-border-color` | `checkbox.control.border-color.checked` | `#1148A9` / `#53D6F2` |  |
 | `--bs-check-indeterminate-bg` | `checkbox.control.background.indeterminate` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-check-indeterminate-border-color` | `checkbox.control.border-color.indeterminate` | `#1148A9` / `#53D6F2` |  |
-| `--bs-check-disabled-bg` | `checkbox.control.background.disabled` | `#B6B4B41a` / `#7676764d` |  |
+| `--bs-check-disabled-bg` | `checkbox.control.background.disabled` | `#B5B5B51a` / `#7676764d` |  |
 
 .check-sm (small), on `.check-sm`; Sass: written after the @use.
 
@@ -607,13 +607,13 @@ Invalid (.is-invalid), on `.check.is-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-check-border-color` | `checkbox.control.border-color.invalid` | `#C01619` / `#E12A23` |  |
+| `--bs-check-border-color` | `checkbox.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
 
 Invalid (:user-invalid), on `[data-bs-validate] .check:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-check-border-color` | `checkbox.control.border-color.invalid` | `#C01619` / `#E12A23` |  |
+| `--bs-check-border-color` | `checkbox.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
 
 
 #### Radio group
@@ -624,10 +624,10 @@ Invalid (:user-invalid), on `[data-bs-validate] .check:user-invalid`; Sass: writ
 | --- | --- | --- | --- |
 | `--bs-radio-size` | `radio-group.control.size.medium` | `1.25rem` |  |
 | `--bs-radio-bg` | `radio-group.control.background.default` | `#FDFDFD` / `#191919` |  |
-| `--bs-radio-border-color` | `radio-group.control.border-color.default` | `#323031` / `#B9B7B7` |  |
+| `--bs-radio-border-color` | `radio-group.control.border-color.default` | `#313131` / `#CFCFCF` |  |
 | `--bs-radio-checked-bg` | `radio-group.control.background.checked` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-radio-checked-border-color` | `radio-group.control.border-color.checked` | `#1148A9` / `#53D6F2` |  |
-| `--bs-radio-disabled-bg` | `radio-group.control.background.disabled` | `#B6B4B41a` / `#7676764d` |  |
+| `--bs-radio-disabled-bg` | `radio-group.control.background.disabled` | `#B5B5B51a` / `#7676764d` |  |
 
 .radio-sm (small), on `.radio-sm`; Sass: written after the @use.
 
@@ -639,13 +639,13 @@ Invalid (.is-invalid), on `.radio.is-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-radio-border-color` | `radio-group.control.border-color.invalid` | `#C01619` / `#E12A23` |  |
+| `--bs-radio-border-color` | `radio-group.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
 
 Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-radio-border-color` | `radio-group.control.border-color.invalid` | `#C01619` / `#E12A23` |  |
+| `--bs-radio-border-color` | `radio-group.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
 
 
 #### Switch
@@ -659,15 +659,15 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | `--bs-switch-padding` | `switch.thumb.margin` | `0.125rem` |  |
 | `--bs-switch-bg` | `switch.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-switch-border-width` | `switch.control.border-width` | `1.2px` |  |
-| `--bs-switch-border-color` | `switch.control.border-color.default` | `#323031` / `#B9B7B7` |  |
-| `--bs-switch-indicator-bg` | `switch.thumb.background.default` | `#201E1F` / `#E8E3E4` |  |
+| `--bs-switch-border-color` | `switch.control.border-color.default` | `#313131` / `#CFCFCF` |  |
+| `--bs-switch-indicator-bg` | `switch.thumb.background.default` | `#1F1F1F` / `#E4E4E4` |  |
 | `--bs-switch-indicator-width` | `switch.thumb.size.medium` | `1rem` |  |
 | `--bs-switch-indicator-height` | `switch.thumb.size.medium` | `1rem` |  |
 | `--bs-switch-checked-bg` | `switch.control.background.checked` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-switch-checked-border-color` | `switch.control.border-color.checked` | `#1148A9` / `#53D6F2` |  |
 | `--bs-switch-checked-indicator-bg` | `switch.thumb.background.checked` | `#FBFCFD` / `#09191D` |  |
-| `--bs-switch-disabled-bg` | `switch.control.background.disabled` | `#B6B4B41a` / `#7676764d` |  |
-| `--bs-switch-disabled-indicator-bg` | `switch.thumb.background.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
+| `--bs-switch-disabled-bg` | `switch.control.background.disabled` | `#B5B5B51a` / `#7676764d` |  |
+| `--bs-switch-disabled-indicator-bg` | `switch.thumb.background.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
 
 .switch-sm (small), on `.switch-sm`; Sass: written after the @use.
 
@@ -686,13 +686,13 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-range-track-height` | `slider.control.height.medium` | `0.5rem` |  |
-| `--bs-range-track-bg` | `slider.control.background.default` | `#ECE8E9` / `#282828` |  |
+| `--bs-range-track-bg` | `slider.control.background.default` | `#EAEAEA` / `#282828` |  |
 | `--bs-range-track-border-radius` | `slider.control.border-radius` | `9999px` |  |
-| `--bs-range-track-disabled-bg` | `slider.control.background.disabled` | `#B6B4B41a` / `#7676764d` |  |
+| `--bs-range-track-disabled-bg` | `slider.control.background.disabled` | `#B5B5B51a` / `#7676764d` |  |
 | `--bs-range-thumb-width` | `slider.thumb.size.medium` | `1.25rem` |  |
 | `--bs-range-thumb-border` | `{slider.thumb.border-width} solid {slider.thumb.border-color.default}` | `1.2px solid #FDFDFD` / `1.2px solid #191919` |  |
 | `--bs-range-thumb-border-radius` | `slider.thumb.border-radius` | `9999px` |  |
-| `--bs-range-thumb-disabled-bg` | `slider.thumb.background.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
+| `--bs-range-thumb-disabled-bg` | `slider.thumb.background.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
 | `--bs-range-thumb-box-shadow` | `none` (rule `effects.shadow`) | `none` | No shadow is drawn in Quantum. |
 | `--bs-range-thumb-transition-duration` | `slider.control.transition.duration` | `150ms` |  |
 | `--bs-range-thumb-transition-timing` | `slider.control.transition.easing` | `cubic-bezier(0.2, 0, 0, 1)` |  |
@@ -704,15 +704,15 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-card-bg` | `card.container.background.level-1` | `#F7F6F6` / `#212121` |  |
-| `--bs-card-border-color` | `card.container.border-color.level-1` | `#D7D3D4` / `#282828` |  |
+| `--bs-card-bg` | `card.container.background.level-1` | `#F7F7F7` / `#212121` |  |
+| `--bs-card-border-color` | `card.container.border-color.level-1` | `#D5D5D5` / `#282828` |  |
 | `--bs-card-border-width` | `card.container.border-width` | `0.6px` |  |
 | `--bs-card-border-radius` | `card.container.border-radius` | `0.5rem` |  |
 | `--bs-card-spacer-x` | `card.container.padding` | `1rem` |  |
 | `--bs-card-spacer-y` | `card.container.padding` | `1rem` |  |
 | `--bs-card-body-gap` | `card.container.gap` | `0.5rem` |  |
-| `--bs-card-color` | `card.title.color` | `#0E0D0D` / `#D2CECF` | Bootstrap colors the whole card body (title included) with one color: the title color; the subtitle takes the description color. |
-| `--bs-card-subtitle-color` | `card.description.color` | `#323031` / `#B9B7B7` |  |
+| `--bs-card-color` | `card.title.color` | `#0E0E0E` / `#CFCFCF` | Bootstrap colors the whole card body (title included) with one color: the title color; the subtitle takes the description color. |
+| `--bs-card-subtitle-color` | `card.description.color` | `#313131` / `#B8B8B8` |  |
 
 
 #### Badge
@@ -738,7 +738,7 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | `--bs-alert-padding-x` | `alert.container.padding` | `1rem` |  |
 | `--bs-alert-padding-y` | `alert.container.padding` | `1rem` |  |
 | `--bs-alert-border-radius` | `alert.container.border-radius` | `0.5rem` |  |
-| `--bs-alert-color` | `alert.message.color` | `#0E0D0D` / `#D2CECF` | The color of an alert without a theme class; a themed alert takes the theme fg (Quantum's alert title color). |
+| `--bs-alert-color` | `alert.message.color` | `#0E0E0E` / `#CFCFCF` | The color of an alert without a theme class; a themed alert takes the theme fg (Quantum's alert title color). |
 
 
 #### Accordion
@@ -752,14 +752,14 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | `--bs-accordion-body-padding-x` | `accordion.panel.padding-inline` | `0.5rem` |  |
 | `--bs-accordion-body-padding-y` | `accordion.panel.padding-block` | `0.75rem` |  |
 | `--bs-accordion-font-size` | `accordion.title.typography.medium` (fontSize) | `1rem` |  |
-| `--bs-accordion-color` | `accordion.panel.color` | `#323031` / `#B9B7B7` |  |
+| `--bs-accordion-color` | `accordion.panel.color` | `#313131` / `#B8B8B8` |  |
 | `--bs-accordion-bg` | `accordion.trigger.background.default` | `color(srgb 0 0 0 / 0)` | Quantum's accordion has no surface of its own. |
-| `--bs-accordion-border-color` | `accordion.item.border-color` | `#ECE8E9` / `#303030` |  |
+| `--bs-accordion-border-color` | `accordion.item.border-color` | `#EAEAEA` / `#303030` |  |
 | `--bs-accordion-border-width` | `accordion.item.border-width` | `0.6px` |  |
 | `--bs-accordion-border-radius` | `accordion.trigger.border-radius` | `0.25rem` | Quantum rounds the trigger; Bootstrap rounds the group box, the only radius it exposes. |
-| `--bs-accordion-btn-color` | `accordion.title.color` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-accordion-btn-color` | `accordion.title.color` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-accordion-btn-bg` | `accordion.trigger.background.default` | `color(srgb 0 0 0 / 0)` |  |
-| `--bs-accordion-active-color` | `accordion.title.color` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-accordion-active-color` | `accordion.title.color` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-accordion-active-bg` | `accordion.trigger.background.default` | `color(srgb 0 0 0 / 0)` | An expanded trigger keeps its background in Quantum. |
 | `--bs-accordion-btn-icon-width` | `accordion.indicator.size.medium` | `1.5rem` |  |
 | `--bs-accordion-transition-duration` | `accordion.trigger.transition.duration` | `150ms` |  |
@@ -783,7 +783,7 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | --- | --- | --- | --- |
 | `--bs-progress-height` | `progress-bar.track.height.medium` | `0.5rem` |  |
 | `--bs-progress-font-size` | `progress-bar.value.typography` (fontSize) | `0.875rem` |  |
-| `--bs-progress-bg` | `progress-bar.track.background` | `#ECE8E9` / `#282828` |  |
+| `--bs-progress-bg` | `progress-bar.track.background` | `#EAEAEA` / `#282828` |  |
 | `--bs-progress-border-radius` | `progress-bar.track.border-radius` | `9999px` |  |
 | `--bs-progress-box-shadow` | `none` (rule `effects.shadow`) | `none` | No shadow is drawn in Quantum. |
 | `--bs-progress-bar-bg` | `progress-bar.indicator.background` | `#175DD6` / `#9EE7FA` |  |
@@ -817,16 +817,16 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | `--bs-pagination-min-height` | `pagination.link.size.medium` | `2.5rem` |  |
 | `--bs-pagination-padding-x` | `pagination.link.padding-inline.medium` | `0.5rem` |  |
 | `--bs-pagination-font-size` | `pagination.link.typography.medium` (fontSize) | `1rem` |  |
-| `--bs-pagination-color` | `pagination.link.color.default` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-pagination-color` | `pagination.link.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-pagination-bg` | `pagination.link.background.default` | `color(srgb 0 0 0 / 0)` |  |
 | `--bs-pagination-border-width` | `stroke-width.none` | `0px` | Quantum pagination links have no border. |
 | `--bs-pagination-border-radius` | `pagination.link.border-radius` | `0.25rem` |  |
-| `--bs-pagination-hover-color` | `pagination.link.color.default` | `#0E0D0D` / `#D2CECF` |  |
-| `--bs-pagination-hover-bg` | `pagination.link.background.hover` | `#B6B4B41a` / `#7676761a` |  |
+| `--bs-pagination-hover-color` | `pagination.link.color.default` | `#0E0E0E` / `#CFCFCF` |  |
+| `--bs-pagination-hover-bg` | `pagination.link.background.hover` | `#B5B5B51a` / `#7676761a` |  |
 | `--bs-pagination-active-color` | `pagination.link.color.current` | `#FDFDFD` / `#191919` |  |
-| `--bs-pagination-active-bg` | `pagination.link.background.current` | `#201E1F` / `#E8E3E4` |  |
-| `--bs-pagination-active-border-color` | `pagination.link.background.current` | `#201E1F` / `#E8E3E4` |  |
-| `--bs-pagination-disabled-color` | `pagination.link.color.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
+| `--bs-pagination-active-bg` | `pagination.link.background.current` | `#1F1F1F` / `#E4E4E4` |  |
+| `--bs-pagination-active-border-color` | `pagination.link.background.current` | `#1F1F1F` / `#E4E4E4` |  |
+| `--bs-pagination-disabled-color` | `pagination.link.color.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
 | `--bs-pagination-disabled-bg` | `pagination.link.background.disabled` | `color(srgb 0 0 0 / 0)` |  |
 
 .pagination-sm (small), on `.pagination-sm`; Sass: written after the @use.
@@ -846,12 +846,12 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-breadcrumb-font-size` | `breadcrumb.link.typography.medium` (fontSize) | `0.875rem` |  |
-| `--bs-breadcrumb-divider-color` | `breadcrumb.separator.color` | `#616161` / `#9D9B9C` |  |
+| `--bs-breadcrumb-divider-color` | `breadcrumb.separator.color` | `#616161` / `#9C9C9C` |  |
 | `--bs-breadcrumb-link-padding-x` | `breadcrumb.container.gap` | `0.25rem` | Bootstrap spaces the items with the links' inline padding (and a divider margin derived from it): Quantum's gap between items goes there. |
-| `--bs-breadcrumb-link-color` | `breadcrumb.link.color.default` | `#323031` / `#B9B7B7` |  |
-| `--bs-breadcrumb-link-hover-color` | `breadcrumb.link.color.hover` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-breadcrumb-link-color` | `breadcrumb.link.color.default` | `#313131` / `#B8B8B8` |  |
+| `--bs-breadcrumb-link-hover-color` | `breadcrumb.link.color.hover` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-breadcrumb-link-hover-bg` | `color.transparent` | `color(srgb 0 0 0 / 0)` | A Quantum breadcrumb link has no hover fill. |
-| `--bs-breadcrumb-link-active-color` | `breadcrumb.link.color.current` | `#0E0D0D` / `#D2CECF` |  |
+| `--bs-breadcrumb-link-active-color` | `breadcrumb.link.color.current` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-breadcrumb-link-border-radius` | `breadcrumb.link.border-radius` | `0.125rem` |  |
 
 
@@ -877,19 +877,19 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | `--bs-menu-padding-y` | `dropdown.menu.padding` | `0.5rem` |  |
 | `--bs-menu-font-size` | `dropdown.item-label.typography` (fontSize) | `0.875rem` |  |
 | `--bs-menu-bg` | `dropdown.menu.background` | `#FDFDFD` / `#282828` |  |
-| `--bs-menu-border-color` | `dropdown.menu.border-color` | `#DFDBDC` / `#303030` |  |
+| `--bs-menu-border-color` | `dropdown.menu.border-color` | `#DDDDDD` / `#303030` |  |
 | `--bs-menu-border-width` | `dropdown.menu.border-width` | `0.6px` |  |
 | `--bs-menu-border-radius` | `dropdown.menu.border-radius` | `0.5rem` |  |
 | `--bs-menu-box-shadow` | `none` (rule `effects.elevation`) | `none` | A Quantum menu stands apart by its surface level and border, not by a shadow. |
-| `--bs-menu-divider-bg` | `dropdown.separator.color` | `#ECE8E9` / `#767676` |  |
+| `--bs-menu-divider-bg` | `dropdown.separator.color` | `#EAEAEA` / `#767676` |  |
 | `--bs-menu-divider-margin-y` | `dropdown.separator.margin-block` | `0.25rem` |  |
-| `--bs-menu-item-color` | `dropdown.item-label.color.neutral.default` | `#323031` / `#E3DDDE` |  |
+| `--bs-menu-item-color` | `dropdown.item-label.color.neutral.default` | `#313131` / `#DFDFDF` |  |
 | `--bs-menu-item-font-weight` | `dropdown.item-label.typography` (fontWeight) | `500` |  |
-| `--bs-menu-item-hover-color` | `dropdown.item-label.color.neutral.hover` | `#323031` / `#E3DDDE` |  |
-| `--bs-menu-item-hover-bg` | `dropdown.item.background.neutral.hover` | `#B6B4B41a` / `#7676761a` |  |
-| `--bs-menu-item-active-color` | `dropdown.item-label.color.neutral.active` | `#323031` / `#E3DDDE` |  |
-| `--bs-menu-item-active-bg` | `dropdown.item.background.neutral.active` | `#B6B4B426` / `#7676764d` |  |
-| `--bs-menu-item-disabled-color` | `dropdown.item-label.color.disabled` | `#8C8C8C` / `#9D9B9Cb2` |  |
+| `--bs-menu-item-hover-color` | `dropdown.item-label.color.neutral.hover` | `#313131` / `#DFDFDF` |  |
+| `--bs-menu-item-hover-bg` | `dropdown.item.background.neutral.hover` | `#B5B5B51a` / `#7676761a` |  |
+| `--bs-menu-item-active-color` | `dropdown.item-label.color.neutral.active` | `#313131` / `#DFDFDF` |  |
+| `--bs-menu-item-active-bg` | `dropdown.item.background.neutral.active` | `#B5B5B526` / `#7676764d` |  |
+| `--bs-menu-item-disabled-color` | `dropdown.item-label.color.disabled` | `#8C8C8C` / `#9C9C9Cb2` |  |
 | `--bs-menu-item-gap` | `dropdown.item.gap` | `0.5rem` |  |
 | `--bs-menu-item-padding-x` | `dropdown.item.padding-inline` | `0.5rem` |  |
 | `--bs-menu-item-border-radius` | `dropdown.item.border-radius` | `0.125rem` |  |

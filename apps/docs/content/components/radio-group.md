@@ -101,8 +101,8 @@ This section explains the decisions behind it.
   both modes, which is why the unchecked border is the dark accent neutral border and not a
   light grey ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).
   Text needs 4.5:1 ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
-  the error text passes on the default surface but falls under 4.5:1 on the level 1 surface
-  (4.26:1 in light mode), a limit of the Figma library's error color tracked as a known issue.
+  the error text passes on every surface since the Figma library's POC2 export moved it to a
+  darker step (5.79:1 on the level 1 surface in light mode, the lowest).
 - **Never color alone.** The dot shows the choice; the error is text, not only red borders
   ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
   [WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),

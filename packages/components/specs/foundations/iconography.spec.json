@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -89,7 +89,7 @@
         ]
       },
       {
-        "text": "An icon that carries meaning on its own contrasts at least 3:1 with its background; icons take the color of their text (a known issue lists the error states where that text falls under 4.5:1; the icons still reach 3:1).",
+        "text": "An icon that carries meaning on its own contrasts at least 3:1 with its background; icons take the color of their text (since the Figma library's POC2 export that text reaches 4.5:1 everywhere; the on-base warning icon in light mode is the one role under 3:1, 1.54:1, a known issue of the Color foundation).",
         "refs": [
           "wcag:1.4.11",
           "understanding-ntc-symbols"
@@ -211,6 +211,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.2",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the contrast statement follows the Figma library's POC2 export (Color foundation 3.1.0): the error text roles pass 4.5:1 everywhere, and the on-base warning icon in light mode (warning 300, 1.54:1 on the page) is the one icon role under 3:1."
+    },
     {
       "version": "0.2.1",
       "date": "2026-10-22",

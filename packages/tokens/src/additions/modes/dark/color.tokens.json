@@ -3,7 +3,7 @@
   "color": {
     "$type": "color",
     "focus": {
-      "ring": { "$value": "{brand.dark.200}", "$description": "Focus indicator color shared by every interactive component. Dark mode: the brand accent fill of the mode (global.bg.accent.brand.default), as in light mode." }
+      "ring": { "$value": "{brand.palettes.core-colors.dark.200}", "$description": "Focus indicator color shared by every interactive component. Dark mode: the brand accent fill of the mode (global.bg.accent.brand.default), as in light mode." }
     }
   }
 }

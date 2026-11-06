@@ -61,8 +61,9 @@ action gets a description naming the action.
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html),
   [symbolic characters](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#symbolic-or-graphical-text-characters)).
   Icons take the icon role of their context, which has the value of the text next to them
-  (Color foundation); with the Figma library's error colors that text falls under 4.5:1 in a few
-  states, while the icon still clears 3:1.
+  (Color foundation). Since the Figma library's POC2 export that text reaches 4.5:1 everywhere;
+  the one icon role under 3:1 is the warning icon on the page in light mode (1.54:1, a known
+  issue of the Color foundation).
 - **Icons complement color.** Apple suggests distinct shapes or icons in addition to color to
   show differences in function and state
   ([Apple HIG: Accessibility, vision](https://developer.apple.com/design/human-interface-guidelines/accessibility#Vision));

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "divider",
   "name": "Divider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "draft",
   "role": "presentation",
   "summary": "A thin line that separates two groups of content.",
@@ -92,7 +92,7 @@
         ]
       },
       {
-        "text": "The line is decoration from the point of view of contrast: nothing depends on seeing it, so it needs no 3:1 against the surface (2.02:1 in light mode, 1.45:1 in dark mode on the default surface). A separation that must be perceived is also conveyed by spacing or structure.",
+        "text": "The line is decoration from the point of view of contrast: nothing depends on seeing it, so it needs no 3:1 against the surface (2.01:1 in light mode, 1.45:1 in dark mode on the default surface). A separation that must be perceived is also conveyed by spacing or structure.",
         "refs": [
           "wcag:1.4.11",
           "wcag:1.4.1"
@@ -229,6 +229,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-06",
+      "note": "Fix, no decision changed: the Figma library's POC2 export (Color foundation 3.1.0) moves the values of the roles the tokens alias; the tokens, CSS and template are unchanged. Light: container.color follows the ash retune (#B6B4B4 becomes #B5B5B5). Contrast re-measured on the accessibility guidelines: 2.02 → 2.01:1."
+    },
     {
       "version": "0.1.0",
       "date": "2026-10-03",

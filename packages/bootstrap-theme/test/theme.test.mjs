@@ -120,9 +120,9 @@ test('dist/quantum.css: Quantum values where the brief expects them', () => {
   assert.match(get(':root, :host', '--bs-body-font-family'), /^Inter, /);
   assert.match(get(':root, :host', '--bs-font-mono'), /^"Fragment Mono", /);
   assert.equal(get('.form-control', '--bs-control-min-height'), '2.5rem');
-  assert.equal(get('.form-control', '--bs-control-border-color'), 'light-dark(#323031, #B9B7B7)');
+  assert.equal(get('.form-control', '--bs-control-border-color'), 'light-dark(#313131, #CFCFCF)');
   assert.equal(get('.card', '--bs-card-border-radius'), '0.5rem');
-  assert.equal(get('.card', '--bs-card-bg'), 'light-dark(#F7F6F6, #212121)');
+  assert.equal(get('.card', '--bs-card-bg'), 'light-dark(#F7F7F7, #212121)');
 });
 
 test('dist/quantum.css uses the theming API only, each value traced to its source', () => {
