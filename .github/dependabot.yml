@@ -72,8 +72,7 @@ updates:
       default-days: 7
     open-pull-requests-limit: 20
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: 'chore(deps)'
     labels:
       - 'dependencies'
       - 'nextgen'
@@ -104,8 +103,7 @@ updates:
       default-days: 7
     open-pull-requests-limit: 20
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: 'chore(deps)'
     labels:
       - 'dependencies'
       - 'nextgen'
