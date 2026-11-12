@@ -436,7 +436,7 @@
             "default": {"$type":"color","$value":"{global.text.on-base.functional.success.default}"}
           },
           "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.300}"}
+            "default": {"$type":"color","$value":"{functional.warning.500}"}
           },
           "severe": {
             "default": {"$type":"color","$value":"{global.text.on-base.functional.severe.default}"}

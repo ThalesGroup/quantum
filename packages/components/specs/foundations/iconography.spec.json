@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -143,7 +143,7 @@
         ]
       },
       {
-        "text": "An icon that carries meaning on its own contrasts at least 3:1 with its background; icons take the color of their text (since the Figma library's POC2 export that text reaches 4.5:1 everywhere; the on-base warning icon in light mode is the one role under 3:1, 1.54:1, a known issue of the Color foundation).",
+        "text": "An icon that carries meaning on its own contrasts at least 3:1 with its background; icons take the color of their text (since the Figma library's POC2 export that text reaches 4.5:1 everywhere, and since its export of 2026-11-12 every on-base icon role reaches 3:1 on the surface levels, the warning icon in light mode at 3.09:1 the lowest).",
         "refs": [
           "wcag:1.4.11",
           "understanding-ntc-symbols"
@@ -366,6 +366,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.1",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed: the contrast statement follows the Figma library's export of 2026-11-12 (Color foundation 3.1.2): the on-base warning icon in light mode reaches 3:1 (3.09:1 at the lowest, was 1.54:1 on the page), so no on-base icon role falls short any more. No token change."
+    },
     {
       "version": "0.5.0",
       "date": "2026-11-06",

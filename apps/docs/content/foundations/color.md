@@ -21,8 +21,8 @@ single place.
 
 The Figma library is kept with its errors and limitations on purpose: it is the starting point the
 system evolves from, one decision at a time. Since its POC2 export (November 2026) its error
-colors pass the contrast minimum everywhere; one warning icon misses it in light mode (see
-Accessibility). The few colors the design system adds live apart, in `tokens/additions/`.
+colors pass the contrast minimum everywhere, and since its export of 2026-11-12 its warning icon
+does too. The few colors the design system adds live apart, in `tokens/additions/`.
 
 ## Palettes
 
@@ -129,14 +129,13 @@ increased-contrast variant yet (see Accessibility).
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
   The Specification section shows every ratio, computed from the tokens; the validator fails
   when one drops under the minimum.
-- **One known failure.** The Figma library's POC2 export sets the warning icon on the page
-  (`global.icon.on-base.functional.warning.default`, and on sunken) to warning 300 in light mode,
-  the step that fixed dark mode: 1.54:1 on the page, under the 3:1 of
-  [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html),
-  while the warning text stays warning 800. It is kept as exported, tracked as a known issue (the
-  validator reports it as a warning until it is fixed, then asks for the marker to be removed) and
-  reported to the designers. The error roles, which missed the minimum before that export, now
-  pass everywhere.
+- **The warning icon reaches 3:1.** Since the Figma library's export of 2026-11-12 the warning
+  icon on the page (`global.icon.on-base.functional.warning.default`) reads warning 500 in light
+  mode, darkened for it: 3.09:1 at the lowest on the surface levels, over the 3:1 of
+  [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
+  It read warning 300 before, the step that fixed dark mode, which gave 1.54:1 on the page in
+  light mode. The error roles, which missed the minimum before the POC2 export, pass everywhere
+  too.
 - **Measured as people see it.** Contrast is measured against the background the text is
   rendered over. The subtle neutral fill is translucent, so it is composited over each surface
   before measuring.
