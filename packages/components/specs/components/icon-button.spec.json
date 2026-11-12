@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -335,6 +335,47 @@
         ]
       },
       {
+        "text": "Show the label in a tooltip when the pointer rests on the icon button and when it receives keyboard focus, so people who do not recognize the symbol can read the action. The tooltip can be dismissed with Escape without moving the pointer or focus, stays while the pointer moves over it, and stays until hover or focus leaves. The reference implementation draws none until the system has a Tooltip component.",
+        "refs": [
+          "wcag:1.4.13",
+          "apg-tooltip",
+          "mdn-tooltip-role"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never show the label with the title attribute: browsers show it on pointer hover only, never on keyboard focus or touch.",
+        "refs": [
+          "mdn-title-accessibility",
+          "mdn-tooltip-role"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On macOS the system displays a tooltip after people hover over a button for a moment: give the icon button one, a brief phrase that says what it does, like its label.",
+        "refs": [
+          "hig-buttons-content",
+          "hig-offering-help-tooltips"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "iPhone and iPad apps that run on a Mac show tooltips when the pointer rests on an element: give the icon button one there too. On touch there is no hover and no tooltip, so the symbol alone carries the action; when a short text says it more clearly, use a button with a label.",
+        "refs": [
+          "hig-offering-help-tooltips",
+          "hig-buttons-content"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
         "text": "Never rely on color alone to convey emphasis or intent: an error-intent icon button names the consequence in its label and uses a symbol that shows it.",
         "refs": [
           "wcag:1.4.1",
@@ -608,6 +649,31 @@
         "id": "en-301-549-keyboard",
         "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
         "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
+      },
+      {
+        "id": "apg-tooltip",
+        "title": "APG: Tooltip pattern (work in progress)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/"
+      },
+      {
+        "id": "mdn-tooltip-role",
+        "title": "MDN: ARIA tooltip role",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tooltip_role"
+      },
+      {
+        "id": "mdn-title-accessibility",
+        "title": "MDN: the title attribute, accessibility concerns",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/title#accessibility_concerns"
+      },
+      {
+        "id": "hig-buttons-content",
+        "title": "Apple HIG: Buttons, content (tooltips on macOS and visionOS)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/buttons#Content"
+      },
+      {
+        "id": "hig-offering-help-tooltips",
+        "title": "Apple HIG: Offering help, macOS and visionOS (tooltips)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/offering-help#macOS-visionOS"
       }
     ]
   },
@@ -746,6 +812,22 @@
     "button"
   ],
   "decisions": [
+    {
+      "id": "name-shown-as-tooltip",
+      "date": "2026-11-12",
+      "version": "0.10.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Wherever people hover with a pointer or move keyboard focus, the label is also shown on screen as a tooltip, on hover and on keyboard focus alike. On the web the tooltip meets WCAG 1.4.13 (dismissible with Escape, hoverable, persistent) and follows the APG Tooltip pattern, never the title attribute; on macOS, and for iPhone and iPad apps running on a Mac, it is the system tooltip. On touch there is no hover: the symbol alone carries the action, or a button with a text label replaces the icon button. Android says nothing: no trusted Android source covers tooltips. The tooltip itself, and how it relates to the accessible name (a description repeating the label, or the tooltip naming the button), belong to a Tooltip component the system does not have yet; the reference implementation draws none until then.",
+      "rationale": "The label is the only statement of the action and was never shown: sighted people who do not recognize the symbol had nothing to read, while the platforms with hover already show a button's name this way.",
+      "refs": [
+        "wcag:1.4.13",
+        "apg-tooltip",
+        "mdn-title-accessibility",
+        "hig-buttons-content",
+        "hig-offering-help-tooltips"
+      ]
+    },
     {
       "id": "keyboard-on-every-platform",
       "date": "2026-11-12",
@@ -934,6 +1016,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.0",
+      "date": "2026-11-12",
+      "note": "Decision name-shown-as-tooltip: where people hover or move keyboard focus, the label is also shown as a tooltip (web: WCAG 1.4.13 and the APG Tooltip pattern, never title; macOS and iPhone or iPad apps on a Mac: the system tooltip); on touch the symbol carries the action. New web, desktop and iOS guidelines and five references. The reference implementation draws no tooltip until the system has a Tooltip component. No token or rendering change."
+    },
     {
       "version": "0.9.0",
       "date": "2026-11-12",

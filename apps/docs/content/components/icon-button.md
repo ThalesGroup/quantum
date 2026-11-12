@@ -11,8 +11,9 @@ An icon button performs an action, like a button, but shows only an
 icon. It saves room where space is tight and the action is familiar enough to be recognized
 from its symbol: toolbars, table rows, card headers, the close action of a dialog.
 
-Because nothing on screen spells the action out, every icon button carries a **label**. It is
-never shown: it is the name screen readers announce and speech-input users say. An icon button
+Because nothing in the button spells the action out, every icon button carries a **label**.
+It is the name screen readers announce and speech-input users say, and the text of the tooltip
+that appears when a pointer rests on the button or keyboard focus reaches it. An icon button
 without a label is not an icon button.
 
 Like every button, an icon button performs an action and never navigates.
@@ -120,8 +121,8 @@ the system setting); without one, the page is light.
 
 ## Content
 
-The label is the only text of the component, and nobody sees it: write it for people who hear
-or say it.
+The label is the only text of the component. Most people never see it: write it for people
+who hear it, say it, or read it in a tooltip.
 
 - Name the action, starting with a verb: **Delete row**, **Close dialog**, **More actions**.
 - Name the action, not the symbol: **Delete row**, never **Trash** or **Bin icon**.
@@ -142,6 +143,14 @@ This section explains the decisions behind it.
   [WCAG 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)).
   That is why the label property is required, and why the button carries it rather than the
   icon ([APG Button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/)).
+- **Show the name where people can hover or focus.** The label is also shown as a tooltip
+  when a pointer rests on the icon button and when keyboard focus reaches it, so sighted people
+  who do not recognize the symbol can read the action. A tooltip that appears on hover or focus
+  must be dismissible, hoverable and persistent
+  ([WCAG 1.4.13 Content on Hover or Focus](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)).
+  On touch there is no hover, so the symbol alone carries the action: when it does not, use a
+  button with a text label. The system has no Tooltip component yet, so the reference
+  implementation draws no tooltip for now.
 - **Name the function, not the symbol.** Without visible text, the Label in Name criterion does
   not apply, and its Understanding document recommends a name that reflects the function
   ([WCAG 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)).
@@ -195,6 +204,12 @@ This section explains the decisions behind it.
   [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible),
   and the transition is switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+- The tooltip opens on hover and on keyboard focus, closes with **Escape** without moving the
+  pointer or focus, and stays while the pointer moves over it
+  ([APG Tooltip pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/),
+  [MDN: tooltip role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tooltip_role)).
+  Never use the `title` attribute: browsers show it on hover only, never on keyboard focus or
+  touch ([MDN: title, accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/title#accessibility_concerns)).
 - The native `disabled` attribute removes the button from the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
 
@@ -212,6 +227,9 @@ This section explains the decisions behind it.
   navigation of your own to the button
   ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices),
   [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
+- iPhone and iPad apps that run on a Mac show tooltips when the pointer rests on an element:
+  give the icon button one there. On touch there is none, so the symbol carries the action
+  ([Apple HIG: Offering help](https://developer.apple.com/design/human-interface-guidelines/offering-help#macOS-visionOS)).
 
 ### Android
 
@@ -231,6 +249,10 @@ This section explains the decisions behind it.
 - On macOS, Full Keyboard Access lets people navigate to the icon button and activate it with
   the keyboard alone; use the native control and keep the standard keyboard shortcuts
   ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices)).
+- On macOS the system shows a tooltip after people hover over a button for a moment: give the
+  icon button one, a brief phrase that says what it does, like its label
+  ([Apple HIG: Buttons, content](https://developer.apple.com/design/human-interface-guidelines/buttons#Content),
+  [Apple HIG: Offering help](https://developer.apple.com/design/human-interface-guidelines/offering-help#macOS-visionOS)).
   On Windows and Linux, the native button gets keyboard access from the platform, as EN 301 549
   asks of any native software.
 

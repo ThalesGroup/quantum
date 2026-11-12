@@ -110,8 +110,8 @@ A button with an icon has a narrower inline padding than one without: a glyph ca
 white space inside its box, so a full padding next to it would look wider than on the label
 side. The side that holds the icon is the narrowest; the label side narrows less.
 
-Icon-only buttons are a separate component (Icon button) because they need a tooltip and an
-explicit accessible name.
+Icon-only buttons are a separate component (Icon button) because they need an explicit
+accessible name, also shown as a tooltip where people hover or move keyboard focus.
 
 ## Color modes
 
