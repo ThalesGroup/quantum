@@ -43,11 +43,14 @@ Emphasis works as on the button: it answers "how important is this action here?"
 
 | Emphasis | Weight | Use for |
 | --- | --- | --- |
-| Accent | Highest | A standalone icon action that must stand out, such as a floating add action. Strong fill in the intent color. The default. |
-| Subtle | Medium | Icon actions that need a visible shape, next to fields or in a toolbar. Tinted fill and a light border. |
+| Accent | Highest | A standalone icon action that must stand out, such as a floating add action. Strong fill in the intent color. |
+| Subtle | Medium | Icon actions that need a visible shape, next to fields or in a toolbar. Tinted fill and a light border. The default. |
 | Ghost | Lowest | Repeated or inline actions: row actions, overflow menus, close. Glyph only; a tint and a light border appear on hover and press. |
 
-Most icon buttons are ghost: they sit among content and should not outweigh it.
+Without an emphasis, an icon button is subtle: it keeps the visible shape of a button without
+the weight of accent. Choose ghost where icon buttons repeat among content (row actions, overflow
+menus, close) and should not outweigh it, and accent only for the one icon action that must
+stand out.
 
 ## Intent
 
@@ -105,6 +108,8 @@ An icon button is a button without a label: it always looks like the button of t
 emphasis, intent, size and state, with the same fills, borders, corners and focus ring, and a
 glyph in the button's label color. Put them side by side and only the label tells them apart.
 A change to how the button looks is a change to the icon button too.
+Only their default emphasis differs: without one, a button is accent and an icon button
+subtle. Give both an emphasis when they sit together.
 
 ## Color modes
 

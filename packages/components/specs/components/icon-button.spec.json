@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -31,7 +31,7 @@
       "id": "emphasis",
       "name": "Emphasis",
       "type": "enum",
-      "default": "accent",
+      "default": "subtle",
       "description": "Visual weight of the icon button, from strongest to weakest.",
       "affects": [
         "container",
@@ -44,7 +44,7 @@
         },
         {
           "value": "subtle",
-          "description": "Medium emphasis: tinted fill and light border in the intent color."
+          "description": "Medium emphasis: tinted fill and light border in the intent color. The default."
         },
         {
           "value": "ghost",
@@ -889,6 +889,20 @@
   ],
   "decisions": [
     {
+      "id": "default-emphasis-subtle",
+      "date": "2026-11-12",
+      "version": "0.14.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Without an emphasis, an icon button is subtle (the button stays accent, decision defaults on the button). An explicit emphasis renders as before. The icon=only variant of the Figma prototype's Button set defaults to accent.",
+      "rationale": "An icon button left at its default should neither outweigh the content it sits in nor lose the look of a button: subtle lowers the emphasis so that accent is no longer what every icon button gets by omission, and its tinted fill and light border keep the visible shape of a regular button, which ghost only shows on hover and press. Accent stays for the one icon action that must stand out, ghost for icon buttons repeated among content.",
+      "tokens": [
+        "icon-button.container.background.subtle.*",
+        "icon-button.container.border-color.subtle.*",
+        "icon-button.icon.color.subtle.*"
+      ]
+    },
+    {
       "id": "no-pressed-state",
       "date": "2026-11-12",
       "version": "0.13.0",
@@ -1140,6 +1154,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.0",
+      "date": "2026-11-12",
+      "note": "Decision default-emphasis-subtle: an icon button without an emphasis is subtle instead of accent; the button keeps accent. Template default and docs updated; an explicit emphasis renders as before. Departs from the Figma prototype, whose icon=only variant defaults to accent. No token or CSS change; contrast unchanged."
+    },
     {
       "version": "0.13.0",
       "date": "2026-11-12",
