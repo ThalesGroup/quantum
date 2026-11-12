@@ -47,7 +47,7 @@ export const COLLECTIONS = [
  * A Figma library key made valid: no emoji or other non-ASCII marker, camelCase, spaces and `&`
  * (which a CSS variable cannot carry) become kebab-case, lowercase: `AI` -> `ai`, `semiBold` ->
  * `semi-bold`. The library's names are valid as they are today, so this only guards against a
- * new name that is not. Typos are kept (`functionnal`, `subtile`).
+ * new name that is not. A misspelled name is kept: the library corrects it, not this script.
  */
 export const validKey = (key) =>
   String(key)

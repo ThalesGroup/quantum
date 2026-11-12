@@ -15,7 +15,7 @@ test('validKey only changes what a path or a CSS variable cannot carry', () => {
   assert.equal(validKey('drop shadow'), 'drop-shadow');
   assert.equal(validKey('Number'), 'number');
   assert.equal(validKey('Color'), 'color');
-  assert.equal(validKey('functionnal'), 'functionnal', 'typos are kept');
+  assert.equal(validKey('seperator'), 'seperator', 'a misspelled name is kept');
   assert.equal(validKey('on-subtle'), 'on-subtle');
   assert.equal(validKey('25'), '25');
 });

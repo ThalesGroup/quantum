@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "3.1.2",
+  "version": "4.0.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -125,7 +125,7 @@
     {
       "id": "unfinished",
       "name": "AI and data visualization",
-      "text": "The Figma library marks its AI and data visualization roles as unfinished. They are kept as they are, typos (functionnal, subtile) and aliases to colors the Figma library does not contain (kept as their literal value) included, until a component needs them.",
+      "text": "The Figma library marks its AI and data visualization roles as unfinished. They are kept as they are, aliases to colors the Figma library does not contain (kept as their literal value) included, until a component needs them.",
       "tokens": [
         "ai.bg.*",
         "ai.text.*",
@@ -918,6 +918,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "4.0.0",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed. Breaking paths: the Figma library's export of 2026-11-12 corrects the spelling of its data visualization names, so 91 dataviz paths are renamed: subtile becomes subtle (dataviz.role.brand.bg.subtile.* and text.on-subtile.*, dataviz.role.extended.wood.subtile.* and the on-subtile roles of amber, azure, lavender, orchid and icon, dataviz.role.functionnal.*.subtile.* and on-subtile.*, the error-, success- and warning-subtile steps) and dataviz.role.functionnal.* becomes dataviz.role.functional.*. No value or alias changes, and no component reads these roles. The four descriptions that name a Colors / Mapped token the Figma library does not contain spell it the same way (bg/functional/…)."
+    },
     {
       "version": "3.1.2",
       "date": "2026-11-12",
