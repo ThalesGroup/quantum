@@ -62,17 +62,15 @@ same with literal layout lengths, and will switch when layout tokens exist.
   ([Apple HIG: Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices),
   [Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
   The extra small, small and medium controls (24, 28 and 36 pt) fall under it today: the
-  overlay that raised them belonged to a semantic layer the Figma library does not have
- .
+  overlay that raised them belonged to a semantic layer the Figma library does not have.
 - **48 dp on Android.** Android asks for touch targets of at least 48 by 48 dp
   ([Android: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
-  Every control size (24 to 44 dp) falls under it today, for the same reason
- .
+  Every control size (24 to 44 dp) falls under it today, for the same reason.
 
 ## Related
 
 - Typography: the label sizes that go with these heights.
-- Iconography: the icons drawn at the control icon sizes.
+- Iconography: how icons take their sizes from the size scale, in a control or on their own.
 - Platforms: the overlays (font families only today).
 - Button, Icon button, Dropdown: the components built on these dimensions.
