@@ -33,8 +33,9 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
   label, with or without an icon. A word is clearer than a symbol people have to guess.
 - **The main action of a view.** Use a button: a primary action deserves words.
 - **Navigation.** Use a link.
-- **Toggling something on or off** (favorite, mute, bold). Use a toggle button, whose pressed
-  state is announced.
+- **Toggling something on or off** (favorite, mute, bold). The icon button has no pressed state,
+  so nothing would show or announce that the action stays on. The system has no toggle button
+  yet; for a setting in a list or a form, use a switch.
 
 ## Emphasis
 
@@ -282,5 +283,5 @@ This section explains the decisions behind it.
 ## Related
 
 - Button (actions with a text label)
-- Toggle button (icon actions with a pressed state)
+- Switch (a setting turned on or off)
 - Link (navigation)

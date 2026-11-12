@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -735,6 +735,21 @@
         "id": "hig-typography-macos",
         "title": "Apple HIG: Typography, macOS",
         "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "hig-toggles-best-practices",
+        "title": "Apple HIG: Toggles, best practices (buttons that behave like toggles)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices"
+      },
+      {
+        "id": "hig-toggles-ios",
+        "title": "Apple HIG: Toggles, iOS and iPadOS (a button that behaves like a toggle outside a list)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#iOS-iPadOS"
+      },
+      {
+        "id": "android-principles-toggle",
+        "title": "Android: accessibility principles, a custom toggle (toggleable, state description)",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/principles"
       }
     ]
   },
@@ -873,6 +888,21 @@
     "button"
   ],
   "decisions": [
+    {
+      "id": "no-pressed-state",
+      "date": "2026-11-12",
+      "version": "0.13.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "The icon button has no pressed (on or off) state: it triggers an action and its look never says that something stays on. An action that stays on or off (favorite, mute, bold) is a toggle button, a component of its own that the system does not have yet; until then, a setting turned on or off in a list or a form is a switch.",
+      "rationale": "A toggle button needs its own decisions: its look when on for every emphasis and intent, with no selected role in the semantic tier, its states while on, its groups. Each platform treats it as a toggle with its own state (aria-pressed on the web, a button that behaves like a toggle with a background that shows its state on Apple platforms, toggleable with a state description on Android), which a component of its own carries, as the framework themes' toggles do.",
+      "refs": [
+        "apg-button",
+        "hig-toggles-best-practices",
+        "hig-toggles-ios",
+        "android-principles-toggle"
+      ]
+    },
     {
       "id": "grows-with-text-size",
       "date": "2026-11-12",
@@ -1110,6 +1140,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.13.0",
+      "date": "2026-11-12",
+      "note": "Decision no-pressed-state: the icon button has no pressed state; actions that stay on or off wait for a Toggle button component, and a setting in a list or a form is a switch. The docs no longer send toggling actions to a toggle button the system does not have. Three references added (Apple HIG Toggles, Android accessibility principles). No token, CSS, template or rendering change."
+    },
     {
       "version": "0.12.0",
       "date": "2026-11-12",
