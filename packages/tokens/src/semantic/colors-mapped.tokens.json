@@ -846,7 +846,7 @@
             "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.500}"},
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"}
           },
-          "subtile": {
+          "subtle": {
             "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"},
             "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.300}"},
             "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"},
@@ -876,7 +876,7 @@
             "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"},
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
           },
-          "on-subtile": {
+          "on-subtle": {
             "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
             "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
             "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9646114706993103,0.9780457019805908,0.9956189393997192],"alpha":1,"hex":"#F6F9FE"},"$description":"The Figma library aliases Colors / Alias: brand/light/25, which it does not contain; its literal value is kept"},
@@ -915,17 +915,17 @@
           }
         }
       },
-      "functionnal": {
+      "functional": {
         "bg": {
           "accent": {
             "error-accent": {"$type":"color","$value":"{functional.error.600}"},
-            "success-accent": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.10196078568696976,0.5921568870544434,0.3490196168422699],"alpha":1,"hex":"#1A9759"},"$description":"The Figma library aliases Colors / Mapped: bg/functionnal/success/success-primary, which it does not contain; its literal value is kept"},
+            "success-accent": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.10196078568696976,0.5921568870544434,0.3490196168422699],"alpha":1,"hex":"#1A9759"},"$description":"The Figma library aliases Colors / Mapped: bg/functional/success/success-primary, which it does not contain; its literal value is kept"},
             "warning-accent": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,0.7764706015586853,0.10980392247438431],"alpha":1,"hex":"#FFC61C"},"$description":"The Figma library aliases Colors / Alias: function/warning/400, which it does not contain; its literal value is kept"}
           },
-          "subtile": {
-            "error-subtile": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9921568632125854,0.9529411792755127,0.9490196108818054],"alpha":1,"hex":"#FDF3F2"},"$description":"The Figma library aliases Colors / Mapped: bg/functionnal/error/error-secondary, which it does not contain; its literal value is kept"},
-            "success-subtile": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.929411768913269,0.9921568632125854,0.9529411792755127],"alpha":1,"hex":"#EDFDF3"},"$description":"The Figma library aliases Colors / Mapped: bg/functionnal/success/success-secondary, which it does not contain; its literal value is kept"},
-            "warning-subtile": {"$type":"color","$value":"{functional.warning.50}"}
+          "subtle": {
+            "error-subtle": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9921568632125854,0.9529411792755127,0.9490196108818054],"alpha":1,"hex":"#FDF3F2"},"$description":"The Figma library aliases Colors / Mapped: bg/functional/error/error-secondary, which it does not contain; its literal value is kept"},
+            "success-subtle": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.929411768913269,0.9921568632125854,0.9529411792755127],"alpha":1,"hex":"#EDFDF3"},"$description":"The Figma library aliases Colors / Mapped: bg/functional/success/success-secondary, which it does not contain; its literal value is kept"},
+            "warning-subtle": {"$type":"color","$value":"{functional.warning.50}"}
           }
         },
         "text": {
@@ -934,10 +934,10 @@
             "success-accent": {"$type":"color","$value":"{global.text.on-accent.functional.success.default}"},
             "warning-accent": {"$type":"color","$value":"{global.text.on-accent.functional.warning.default}"}
           },
-          "on-subtile": {
-            "error-subtile": {"$type":"color","$value":"{global.text.on-subtle.functional.error.default}"},
-            "success-subtile": {"$type":"color","$value":"{global.text.on-subtle.functional.success.default}"},
-            "warning-subtile": {"$type":"color","$value":"{global.text.on-subtle.functional.warning.default}"}
+          "on-subtle": {
+            "error-subtle": {"$type":"color","$value":"{global.text.on-subtle.functional.error.default}"},
+            "success-subtle": {"$type":"color","$value":"{global.text.on-subtle.functional.success.default}"},
+            "warning-subtle": {"$type":"color","$value":"{global.text.on-subtle.functional.warning.default}"}
           },
           "base": {
             "error-base": {"$type":"color","$value":"{global.text.on-base.functional.error.default}"},
@@ -951,10 +951,10 @@
             "success-accent": {"$type":"color","$value":"{global.text.on-accent.functional.success.default}"},
             "warning-accent": {"$type":"color","$value":"{global.text.on-accent.functional.warning.default}"}
           },
-          "on-subtile": {
-            "error-subtile": {"$type":"color","$value":"{global.text.on-subtle.functional.error.default}"},
-            "success-subtile": {"$type":"color","$value":"{global.text.on-subtle.functional.success.default}"},
-            "warning-subtile": {"$type":"color","$value":"{global.text.on-subtle.functional.warning.default}"}
+          "on-subtle": {
+            "error-subtle": {"$type":"color","$value":"{global.text.on-subtle.functional.error.default}"},
+            "success-subtle": {"$type":"color","$value":"{global.text.on-subtle.functional.success.default}"},
+            "warning-subtle": {"$type":"color","$value":"{global.text.on-subtle.functional.warning.default}"}
           },
           "base": {
             "error-base": {"$type":"color","$value":"{global.text.on-base.functional.error.default}"},
@@ -973,10 +973,10 @@
             "success-accent": {"$type":"color","$value":"{global.border.accent.functional.success.default}"},
             "warning-accent": {"$type":"color","$value":"{global.border.accent.functional.warning.default}"}
           },
-          "on-subtile": {
-            "error-subtile": {"$type":"color","$value":"{global.border.subtle.functional.error.default}"},
-            "success-subtile": {"$type":"color","$value":"{global.border.subtle.functional.success.default}"},
-            "warning-subtile": {"$type":"color","$value":"{global.border.subtle.functional.warning.default}"}
+          "on-subtle": {
+            "error-subtle": {"$type":"color","$value":"{global.border.subtle.functional.error.default}"},
+            "success-subtle": {"$type":"color","$value":"{global.border.subtle.functional.success.default}"},
+            "warning-subtle": {"$type":"color","$value":"{global.border.subtle.functional.warning.default}"}
           }
         }
       },
@@ -992,7 +992,7 @@
             "extended-7": {"$type":"color","$value":"{extended.wood.500}"},
             "extended-8": {"$type":"color","$value":"{extended.amber.500}"}
           },
-          "subtile": {
+          "subtle": {
             "extended-1": {"$type":"color","$value":"{extended.lavender.200}"},
             "extended-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9254902005195618,0.9725490212440491,0.7176470756530762],"alpha":1,"hex":"#ECF8B7"},"$description":"The Figma library aliases Colors / Alias: extended/mustard/100, which it does not contain; its literal value is kept"},
             "extended-3": {"$type":"color","$value":"{extended.coral.200}"},
@@ -1014,7 +1014,7 @@
             "extended-7": {"$type":"color","$value":"{extended.wood.950}"},
             "extended-8": {"$type":"color","$value":"{extended.amber.950}"}
           },
-          "on-subtile": {
+          "on-subtle": {
             "extended-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.4947120249271393,0.27811962366104126,0.6600208282470703],"alpha":1,"hex":"#7E47A8"},"$description":"The Figma library aliases Colors / Mapped: text/extended/lila/accent-secondary, which it does not contain; its literal value is kept"},
             "extended-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.42352941632270813,0.3764705955982208,0],"alpha":1,"hex":"#6C6000"},"$description":"The Figma library aliases Colors / Mapped: text/extended/yellow/yellow-secondary, which it does not contain; its literal value is kept"},
             "extended-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.6973934769630432,0.2545361816883087,0.14462006092071533],"alpha":1,"hex":"#B24125"},"$description":"The Figma library aliases Colors / Mapped: text/extended/orange/orange-secondary, which it does not contain; its literal value is kept"},
@@ -1036,15 +1036,15 @@
             "extended-7": {"$type":"color","$value":"{dataviz.role.extended.amber.on-accent.extended-7}"},
             "extended-8": {"$type":"color","$value":"{dataviz.role.extended.amber.on-accent.extended-8}"}
           },
-          "on-subtile": {
-            "extended-1": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-1}"},
-            "extended-2": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-2}"},
-            "extended-3": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-3}"},
-            "extended-4": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-4}"},
-            "extended-5": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-5}"},
-            "extended-6": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-6}"},
-            "extended-7": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-7}"},
-            "extended-8": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtile.extended-8}"}
+          "on-subtle": {
+            "extended-1": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-1}"},
+            "extended-2": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-2}"},
+            "extended-3": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-3}"},
+            "extended-4": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-4}"},
+            "extended-5": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-5}"},
+            "extended-6": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-6}"},
+            "extended-7": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-7}"},
+            "extended-8": {"$type":"color","$value":"{dataviz.role.extended.amber.on-subtle.extended-8}"}
           }
         },
         "lavender": {
@@ -1058,7 +1058,7 @@
             "extended-7": {"$type":"color","$value":"{extended.wood.600}"},
             "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.800000011920929,0.5058823823928833,0.12941177189350128],"alpha":1,"hex":"#CC8121"},"$description":"The Figma library aliases Colors / Alias: extended/yellow-01/600, which it does not contain; its literal value is kept"}
           },
-          "on-subtile": {
+          "on-subtle": {
             "extended-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.6898306608200073,0.4473418593406677,0.8566842675209045],"alpha":1,"hex":"#B072DA"},"$description":"The Figma library aliases Colors / Alias: extended/lila/500, which it does not contain; its literal value is kept"},
             "extended-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7254902124404907,0.800000011920929,0],"alpha":1,"hex":"#B9CC00"},"$description":"The Figma library aliases Colors / Alias: extended/mustard/400, which it does not contain; its literal value is kept"},
             "extended-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9058823585510254,0.43529412150382996,0.2078431397676468],"alpha":1,"hex":"#E76F35"},"$description":"The Figma library aliases Colors / Alias: extended/orange/500, which it does not contain; its literal value is kept"},
@@ -1090,7 +1090,7 @@
             "extended-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
             "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}}
           },
-          "on-subtile": {
+          "on-subtle": {
             "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
             "extended-7": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
             "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
@@ -1122,7 +1122,7 @@
             "extended-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
             "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}}
           },
-          "on-subtile": {
+          "on-subtle": {
             "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
             "extended-7": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
             "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
