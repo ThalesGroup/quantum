@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validKey, validPath, COLLECTIONS, knownPaths, recreate, available } from '../figma-library.mjs';
+import { validKey, validPath, COLLECTIONS, knownPaths, recreate, convert, available } from '../figma-library.mjs';
 import { PATHS } from '../lib/paths.mjs';
 
 const byOut = (out) => COLLECTIONS.find((c) => c.out === out);
@@ -42,14 +42,27 @@ test('aliases keep their target, made valid', needsExport, () => {
   assert.equal(tokens('raw/palette-switch.tokens.json').get('light-switch.base.25').$value, '{neutral.light.ash.25}');
 });
 
-test('composed colors and aliases to missing colors keep their literal value and say why', needsExport, () => {
+test('composed colors keep their literal value and say why', needsExport, () => {
   const mapped = tokens('semantic/colors-mapped.tokens.json');
   const subtle = mapped.get('global.bg.subtle.neutral.default');
   assert.equal(subtle.$value.hex, '#B5B5B5');
   assert.ok(Math.abs(subtle.$value.alpha - 0.1) < 1e-6);
   assert.match(subtle.$description, /light-switch\.base\.400 at opacity\.10/);
-  const broken = [...mapped.values()].find((t) => /does not contain/.test(t.$description ?? ''));
-  assert.equal(typeof broken.$value, 'object');
+});
+
+test('an alias to a color the export does not contain keeps its literal value and says why', () => {
+  const literal = { colorSpace: 'srgb', components: [1, 0, 0], alpha: 1, hex: '#FF0000' };
+  const token = {
+    $type: 'color',
+    $value: literal,
+    $extensions: { 'com.figma.aliasData': { targetVariableSetName: 'Colors / Alias', targetVariableName: 'extended/red/500' } },
+  };
+  const [p, out] = convert(token, ['dataviz', 'red'], new Set());
+  assert.equal(p, 'dataviz.red');
+  assert.deepEqual(out.$value, literal);
+  assert.match(out.$description, /Colors \/ Alias: extended\/red\/500, which it does not contain/);
+  const [, known] = convert(token, ['dataviz', 'red'], new Set(['extended.red.500']));
+  assert.equal(known.$value, '{extended.red.500}');
 });
 
 test('numbers become DTCG dimensions, fractions, weights and families', needsExport, () => {

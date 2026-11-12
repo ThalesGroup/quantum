@@ -662,7 +662,7 @@
       "functional": {
         "bg": {
           "accent": {
-            "error-accent": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8274509906768799,0.2235294133424759,0.16470588743686676],"alpha":1,"hex":"#D3392A"},"$description":"The Figma library aliases Colors / Mapped: bg/functional/error/error-primary, which it does not contain; its literal value is kept"}
+            "error-accent": {"$type":"color","$value":"{functional.error.500}"}
           },
           "subtle": {
             "error-subtle": {"$type":"color","$value":"{functional.error.950}"},
@@ -675,50 +675,45 @@
         "wood": {
           "accent": {
             "extended-1": {"$type":"color","$value":"{extended.lavender.600}"},
-            "extended-3": {"$type":"color","$value":"{extended.coral.600}"},
-            "extended-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.10602934658527374,0.5579723715782166,0.46214309334754944],"alpha":1,"hex":"#1B8E76"},"$description":"The Figma library aliases Colors / Alias: extended/green/600, which it does not contain; its literal value is kept"},
-            "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8829138278961182,0.5609331130981445,0.8213754296302795],"alpha":1,"hex":"#E18FD1"},"$description":"The Figma library aliases Colors / Alias: extended/pink/400, which it does not contain; its literal value is kept"},
-            "extended-7": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7024500370025635,0.5607610940933228,0.4206547141075134],"alpha":1,"hex":"#B38F6B"},"$description":"The Figma library aliases Colors / Alias: extended/desertstorm/500, which it does not contain; its literal value is kept"},
-            "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9490196108818054,0.6705882549285889,0.1921568661928177],"alpha":1,"hex":"#F2AB31"},"$description":"The Figma library aliases Colors / Alias: extended/yellow-01/500, which it does not contain; its literal value is kept"}
+            "extended-3": {"$type":"color","$value":"{extended.coral.600}"}
           },
           "subtle": {
             "extended-1": {"$type":"color","$value":"{extended.lavender.800}"},
             "extended-2": {"$type":"color","$value":"{extended.lime.900}"},
             "extended-3": {"$type":"color","$value":"{extended.coral.800}"},
             "extended-4": {"$type":"color","$value":"{extended.forest.900}"},
-            "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.21270282566547394,0.22243939340114594,0.5424725413322449],"alpha":1,"hex":"#36398A"},"$description":"The Figma library aliases Colors / Base: extended/archive/royal-blue/800, which it does not contain; its literal value is kept"},
+            "extended-5": {"$type":"color","$value":"{extended.azure.800}"},
             "extended-6": {"$type":"color","$value":"{extended.orchid.900}"},
             "extended-7": {"$type":"color","$value":"{extended.wood.800}"},
             "extended-8": {"$type":"color","$value":"{extended.amber.900}"}
           }
         },
         "amber": {
+          "on-accent": {
+            "extended-1": {"$type":"color","$value":"{extended.lavender.25}"},
+            "extended-3": {"$type":"color","$value":"{extended.coral.950}"}
+          },
           "on-subtle": {
-            "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7175392508506775,0.3404206931591034,0.6139146089553833],"alpha":1,"hex":"#B7579D"},"$description":"The Figma library aliases Colors / Alias: extended/pink/600, which it does not contain; its literal value is kept"},
-            "extended-7": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.1424565613269806,0.11053762584924698,0.07439140230417252],"alpha":1,"hex":"#241C13"},"$description":"The Figma library aliases Colors / Alias: extended/desertstorm/950, which it does not contain; its literal value is kept"},
-            "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.2823529541492462,0.125490203499794,0.0235294122248888],"alpha":1,"hex":"#482006"},"$description":"The Figma library aliases Colors / Alias: extended/yellow-01/950, which it does not contain; its literal value is kept"}
+            "extended-1": {"$type":"color","$value":"{extended.lavender.400}"},
+            "extended-2": {"$type":"color","$value":"{extended.lime.500}"},
+            "extended-3": {"$type":"color","$value":"{extended.coral.400}"},
+            "extended-4": {"$type":"color","$value":"{extended.forest.500}"},
+            "extended-5": {"$type":"color","$value":"{extended.azure.400}"},
+            "extended-6": {"$type":"color","$value":"{extended.orchid.500}"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.300}"},
+            "extended-8": {"$type":"color","$value":"{extended.amber.600}"}
           }
         },
         "lavender": {
-          "on-accent": {
-            "extended-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7625118494033813,0.5631575584411621,0.9074155688285828],"alpha":1,"hex":"#C290E7"},"$description":"The Figma library aliases Colors / Alias: extended/lila/400, which it does not contain; its literal value is kept"},
-            "extended-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7921568751335144,0.886274516582489,0],"alpha":1,"hex":"#CAE200"},"$description":"The Figma library aliases Colors / Alias: extended/mustard/300, which it does not contain; its literal value is kept"},
-            "extended-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9248560667037964,0.5472203493118286,0.32241812348365784],"alpha":1,"hex":"#EC8C52"},"$description":"The Figma library aliases Colors / Alias: extended/orange/400, which it does not contain; its literal value is kept"},
-            "extended-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12770621478557587,0.6857120990753174,0.5626434683799744],"alpha":1,"hex":"#21AF8F"},"$description":"The Figma library aliases Colors / Alias: extended/green/500, which it does not contain; its literal value is kept"},
-            "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.691927969455719,0.7146194577217102,0.9519326686859131],"alpha":1,"hex":"#B0B6F3"},"$description":"The Figma library aliases Colors / Alias: extended/royal-blue/300, which it does not contain; its literal value is kept"},
-            "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9111660122871399,0.6873764991760254,0.875260591506958],"alpha":1,"hex":"#E8AFDF"},"$description":"The Figma library aliases Colors / Alias: extended/pink/300, which it does not contain; its literal value is kept"},
-            "extended-7": {"$type":"color","$value":"{extended.wood.400}"},
-            "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9803921580314636,0.7568627595901489,0.21960784494876862],"alpha":1,"hex":"#FAC138"},"$description":"The Figma library aliases Colors / Alias: extended/yellow-01/400, which it does not contain; its literal value is kept"}
-          },
           "separator": {
-            "extended-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.28180456161499023,0.14304909110069275,0.3787904679775238],"alpha":1,"hex":"#482461"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/lila/900, which it does not contain; its literal value is kept"},
-            "extended-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.30099713802337646,0.249945268034935,0],"alpha":1,"hex":"#4D4000"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/mustard/900, which it does not contain; its literal value is kept"},
-            "extended-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.45087528228759766,0.1783902794122696,0.11800076812505722],"alpha":1,"hex":"#732D1E"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/orange/900, which it does not contain; its literal value is kept"},
-            "extended-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.02485349029302597,0.2593628466129303,0.21782970428466797],"alpha":1,"hex":"#064238"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/green/900, which it does not contain; its literal value is kept"},
-            "extended-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.1400686353445053,0.14920316636562347,0.3249320089817047],"alpha":1,"hex":"#242653"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/royal-blue/900, which it does not contain; its literal value is kept"},
-            "extended-6": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.4064963459968567,0.19675342738628387,0.33018386363983154],"alpha":1,"hex":"#683254"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/pink/900, which it does not contain; its literal value is kept"},
-            "extended-7": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.2402915060520172,0.1709028035402298,0.12950187921524048],"alpha":1,"hex":"#3D2C21"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/desertstorm/900, which it does not contain; its literal value is kept"},
-            "extended-8": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.4313725531101227,0.21960784494876862,0.08627451211214066],"alpha":1,"hex":"#6E3816"},"$description":"When a high contrast is needed (e.g scatter view). The Figma library aliases Colors / Alias: extended/yellow-01/900, which it does not contain; its literal value is kept"}
+            "extended-1": {"$type":"color","$value":"{extended.lavender.900}","$description":"When a high contrast is needed (e.g scatter view)"},
+            "extended-2": {"$type":"color","$value":"{extended.lime.900}","$description":"When a high contrast is needed (e.g scatter view)"},
+            "extended-3": {"$type":"color","$value":"{extended.coral.900}","$description":"When a high contrast is needed (e.g scatter view)"},
+            "extended-4": {"$type":"color","$value":"{extended.forest.900}","$description":"When a high contrast is needed (e.g scatter view)"},
+            "extended-5": {"$type":"color","$value":"{extended.azure.900}","$description":"When a high contrast is needed (e.g scatter view)"},
+            "extended-6": {"$type":"color","$value":"{extended.orchid.900}","$description":"When a high contrast is needed (e.g scatter view)"},
+            "extended-7": {"$type":"color","$value":"{extended.wood.900}","$description":"When a high contrast is needed (e.g scatter view)"},
+            "extended-8": {"$type":"color","$value":"{extended.amber.900}","$description":"When a high contrast is needed (e.g scatter view)"}
           }
         },
         "azure": {
@@ -748,6 +743,11 @@
         "baseline": {
           "baseline-primary": {"$type":"color","$value":"{neutral.dark.ash.100}"},
           "baseline-secondary": {"$type":"color","$value":"{neutral.dark.ash.300}"}
+        }
+      },
+      "grid": {
+        "grid": {
+          "grid-primary": {"$type":"color","$value":"{dark-switch.base.400}"}
         }
       },
       "pointer": {

@@ -65,8 +65,8 @@ compose two tokens, so they are written as the resulting translucent color; thei
 names the step and the opacity.
 
 The Figma library marks its **AI** (`ai.bg`, `ai.text`, `ai.icon`, `ai.border`) and **data
-visualization** (`dataviz`) roles as unfinished. They are kept as they are, aliases to colors the
-Figma library does not contain included, until a component needs them.
+visualization** (`dataviz`) roles as unfinished. They are kept as they are until a component
+needs them.
 
 ## Surface levels
 
