@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -918,6 +918,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "4.0.1",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed: the Figma library's export of 2026-11-12 aliases 20 dataviz.role.brand tokens (32 values across the two modes) to brand.palettes.core-colors instead of the former brand ramps it no longer contains, so they stop being kept as literals, and each border sits one step lighter than the fill it draws on. Light: border.base.brand-2 #175DD6 (was #3972D8); border.on-accent.brand-1 to brand-5 #1148A9, #175DD6, #497EDE, #749DE5, #9BB9EC (were #274B98, #3972D8, #3D84DF, #6BAFED, #93C8F4) and border.separator.brand-2 to brand-5 the same as on-accent; icon.brand-3, text.on-accent.brand-3 and text.on-subtle.brand-3 #FBFCFD (#F6F9FE). Dark: border.on-accent and border.separator brand-1 to brand-5 #CEF2FB, #9EE7FA, #53D6F2, #41B9D3, #3499AF (#B3EDFA, #96E0FE, #52C6E8, #3AA8CD, #2F85AC); icon, text.on-accent and text.on-subtle brand-1 to brand-3 #09191D (#001726). No component reads these roles; the screens' charts and the shadcn/ui theme read dataviz brand roles this does not change. The other dataviz roles (extended, functional, structural) still alias colors the Figma library does not contain."
+    },
     {
       "version": "4.0.0",
       "date": "2026-11-12",

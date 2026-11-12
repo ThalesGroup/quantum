@@ -614,24 +614,24 @@
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"}
           },
           "on-accent": {
-            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
-            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
             "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"},
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"}
           },
           "on-subtle": {
-            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
-            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
             "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"},
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"}
           }
         },
         "icon": {
-          "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
-          "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
-          "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.09019608050584793,0.14901961386203766],"alpha":1,"hex":"#001726"},"$description":"The Figma library aliases Colors / Alias: brand/dark/950, which it does not contain; its literal value is kept"},
+          "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+          "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
+          "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.950}"},
           "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"},
           "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.50}"}
         },
@@ -644,18 +644,18 @@
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.900}"}
           },
           "on-accent": {
-            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7023960947990417,0.9275621175765991,0.981253981590271],"alpha":1,"hex":"#B3EDFA"},"$description":"The Figma library aliases Colors / Alias: brand/dark/200, which it does not contain; its literal value is kept"},
-            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5883331298828125,0.8792593479156494,0.9949541687965393],"alpha":1,"hex":"#96E0FE"},"$description":"The Figma library aliases Colors / Alias: brand/dark/300, which it does not contain; its literal value is kept"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.32156863808631897,0.7764706015586853,0.9098039269447327],"alpha":1,"hex":"#52C6E8"},"$description":"The Figma library aliases Colors / Alias: brand/dark/400, which it does not contain; its literal value is kept"},
-            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22816769778728485,0.6579188108444214,0.8049243092536926],"alpha":1,"hex":"#3AA8CD"},"$description":"The Figma library aliases Colors / Alias: brand/dark/500, which it does not contain; its literal value is kept"},
-            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.1845805048942566,0.5216836929321289,0.6749654412269592],"alpha":1,"hex":"#2F85AC"},"$description":"The Figma library aliases Colors / Alias: brand/dark/600, which it does not contain; its literal value is kept"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.100}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.200}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"}
           },
           "separator": {
-            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7023960947990417,0.9275621175765991,0.981253981590271],"alpha":1,"hex":"#B3EDFA"},"$description":"The Figma library aliases Colors / Alias: brand/dark/200, which it does not contain; its literal value is kept"},
-            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5883331298828125,0.8792593479156494,0.9949541687965393],"alpha":1,"hex":"#96E0FE"},"$description":"The Figma library aliases Colors / Alias: brand/dark/300, which it does not contain; its literal value is kept"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.32156863808631897,0.7764706015586853,0.9098039269447327],"alpha":1,"hex":"#52C6E8"},"$description":"The Figma library aliases Colors / Alias: brand/dark/400, which it does not contain; its literal value is kept"},
-            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22816769778728485,0.6579188108444214,0.8049243092536926],"alpha":1,"hex":"#3AA8CD"},"$description":"The Figma library aliases Colors / Alias: brand/dark/500, which it does not contain; its literal value is kept"},
-            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.1845805048942566,0.5216836929321289,0.6749654412269592],"alpha":1,"hex":"#2F85AC"},"$description":"The Figma library aliases Colors / Alias: brand/dark/600, which it does not contain; its literal value is kept"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.dark.100}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.dark.200}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.dark.500}"}
           }
         }
       },
