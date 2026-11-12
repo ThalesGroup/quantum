@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -119,7 +119,7 @@
       "name": "Label",
       "type": "string",
       "required": true,
-      "description": "Accessible name of the button, never shown: names the action, not the symbol (Delete row, not Trash)."
+      "description": "Accessible name of the button, never drawn in it and shown as a tooltip where people hover or focus: names the action, not the symbol (Delete row, not Trash)."
     },
     {
       "id": "disabled",
@@ -1154,6 +1154,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.1",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed: the label property no longer says the label is never shown (decision name-shown-as-tooltip shows it as a tooltip). Docs: the iOS and Android paragraphs of Sizes no longer repeat the Accessibility section, the glyph takes the icon color that matches the button's label (decision glyph-roles-from-button), and Content no longer says most people never see the label. No token, CSS, template or rendering change."
+    },
     {
       "version": "0.14.0",
       "date": "2026-11-12",

@@ -31,7 +31,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 - **Toggling something on or off.** The button has no pressed state, so nothing would show or
   announce that the action stays on. The system has no toggle button yet; for a setting in a
   list or a form, use a switch.
-- **Choosing between options.** Use radio buttons, a segmented control or a select.
+- **Choosing between options.** Use a radio group or a select.
 
 ## Emphasis
 
@@ -90,15 +90,13 @@ The exact values are tokens (Tokens tab). Never mix sizes within one group of bu
 
 ### iOS
 
-The sizes are drawn as on the web. Every size still reaches the 44 pt hit region Apple
-recommends: the touch area extends around the button, centered, and the layout keeps that room
-free, so the hit regions of neighbouring buttons never overlap.
+The sizes are drawn as on the web, and every size still reaches the 44 pt hit region without
+growing (see Accessibility, iOS).
 
 ### Android
 
-The sizes are drawn as on the web. Every size still reaches the 48 dp touch target Android
-recommends: the button is centered in at least 48 dp of reserved space, which takes the touch,
-so the touch targets of neighbouring buttons never overlap.
+The sizes are drawn as on the web, and every size still reaches the 48 dp touch target without
+growing (see Accessibility, Android).
 
 ## Icons
 

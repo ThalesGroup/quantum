@@ -82,15 +82,13 @@ high as a button of the same size with an icon, so a row of both still lines up.
 
 ### iOS
 
-The sizes are drawn as on the web. Every size still reaches the 44 pt hit region Apple
-recommends: the touch area extends around the square, centered, and the layout keeps that room
-free, so icon buttons in a row sit at least 44 pt apart, center to center.
+The sizes are drawn as on the web, and every size still reaches the 44 pt hit region:
+icon buttons in a row sit at least 44 pt apart, center to center (see Accessibility, iOS).
 
 ### Android
 
-The sizes are drawn as on the web. Every size still reaches the 48 dp touch target Android
-recommends: the square is centered in 48 dp of reserved space, which takes the touch, so icon
-buttons in a row sit at least 48 dp apart, center to center.
+The sizes are drawn as on the web, and every size still reaches the 48 dp touch target:
+icon buttons in a row sit at least 48 dp apart, center to center (see Accessibility, Android).
 
 ## Icon
 
@@ -106,7 +104,7 @@ instead of explaining the icon elsewhere.
 
 An icon button is a button without a label: it always looks like the button of the same
 emphasis, intent, size and state, with the same fills, borders, corners and focus ring, and a
-glyph in the button's label color. Put them side by side and only the label tells them apart.
+glyph in the icon color that matches the button's label. Put them side by side and only the label tells them apart.
 A change to how the button looks is a change to the icon button too.
 
 ## Color modes
@@ -131,8 +129,8 @@ the system setting); without one, the page is light.
 
 ## Content
 
-The label is the only text of the component. Most people never see it: write it for people
-who hear it, say it, or read it in a tooltip.
+The label is the only text of the component. It is never drawn in the button: write it for
+people who hear it, say it, or read it in a tooltip.
 
 - Name the action, starting with a verb: **Delete row**, **Close dialog**, **More actions**.
 - Name the action, not the symbol: **Delete row**, never **Trash** or **Bin icon**.

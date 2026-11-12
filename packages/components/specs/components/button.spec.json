@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.29.0",
+  "version": "0.29.1",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -1407,6 +1407,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.29.1",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed. Docs: When not to use no longer sends choices to a segmented control the system lacks (a radio group or a select), and the iOS and Android paragraphs of Sizes no longer repeat the Accessibility section. No token, CSS, template or rendering change."
+    },
     {
       "version": "0.29.0",
       "date": "2026-11-12",
