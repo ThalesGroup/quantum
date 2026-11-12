@@ -167,8 +167,14 @@ This section explains the decisions behind it.
 - **Target size.** The square is never smaller than 24 by 24 CSS pixels; extra small sits
   exactly there
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
-- **Keyboard.** The icon button is operable from the keyboard like any button
-  ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)).
+- **Keyboard, on every platform.** People who use a physical or assistive keyboard reach the
+  icon button and activate it like any button
+  ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)). Native
+  apps owe the same: EN 301 549 asks it of any software with a user interface, and accepts
+  software that relies on the platform's own keyboard services
+  ([EN 301 549 V3.2.1, clause 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70)).
+  The native button control gets it from those services, so it needs no keyboard handling of
+  its own; the keys are each platform's.
 - **Motion.** The color transition is dropped when people ask their system for less motion
   ([WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html),
   a AAA criterion adopted as extra quality).
@@ -201,6 +207,11 @@ This section explains the decisions behind it.
   ([Apple HIG: Buttons, best practices](https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices),
   [Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
   The extra small, small and medium icon buttons fall under it today.
+- Full Keyboard Access lets people reach and activate controls with the keyboard alone: use
+  the native button, test with Full Keyboard Access on, and on iPadOS add no keyboard
+  navigation of your own to the button
+  ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices),
+  [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
 
 ### Android
 
@@ -210,6 +221,18 @@ This section explains the decisions behind it.
 - The touch target must be at least 48 by 48 dp
   ([Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
   Every size falls under it today.
+- With a hardware keyboard or Switch Access, focus navigation reaches the icon button and
+  highlights it, in a logical order, and focus can always move on
+  ([Orange guidelines: access to interactive elements](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements),
+  [keyboard navigation order](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order)).
+
+### Desktop
+
+- On macOS, Full Keyboard Access lets people navigate to the icon button and activate it with
+  the keyboard alone; use the native control and keep the standard keyboard shortcuts
+  ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices)).
+  On Windows and Linux, the native button gets keyboard access from the platform, as EN 301 549
+  asks of any native software.
 
 ## Related
 

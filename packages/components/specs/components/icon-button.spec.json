@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -236,6 +236,43 @@
         ],
         "platforms": [
           "web"
+        ]
+      },
+      {
+        "text": "The icon button can be reached and activated from a keyboard, physical or assistive, on every platform. The platform provides this to its native button control through its own keyboard services, so the control needs no keyboard handling of its own; the keys are the platform's.",
+        "refs": [
+          "wcag:2.1.1",
+          "en-301-549-keyboard"
+        ]
+      },
+      {
+        "text": "Use the native button so Full Keyboard Access can reach and activate it, and test the app with Full Keyboard Access on. On iPadOS, do not add keyboard navigation of your own to the button: Full Keyboard Access activates controls.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "With a hardware keyboard or Switch Access, focus navigation reaches the icon button and highlights it, in a logical order, and focus can always move away from it.",
+        "refs": [
+          "orange-android-focus-access",
+          "orange-android-focus-order"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, Full Keyboard Access lets people navigate to the icon button and activate it with the keyboard alone: use the native control and keep the standard keyboard shortcuts.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -528,6 +565,16 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
       },
       {
+        "id": "hig-keyboards-best-practices",
+        "title": "Apple HIG: Keyboards, best practices (Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-speech",
+        "title": "Apple HIG: Accessibility, speech (keyboard alone, Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech"
+      },
+      {
         "id": "android-large-controls",
         "title": "Android accessibility: use large, simple controls",
         "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
@@ -546,6 +593,21 @@
         "id": "compose-interactive-elements",
         "title": "Jetpack Compose accessibility: interactive elements (Button semantics)",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-access",
+        "title": "Orange accessibility guidelines, Android: access to interactive elements (keyboard navigation)",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-order",
+        "title": "Orange accessibility guidelines, Android: keyboard navigation order",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order"
+      },
+      {
+        "id": "en-301-549-keyboard",
+        "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
       }
     ]
   },
@@ -684,6 +746,21 @@
     "button"
   ],
   "decisions": [
+    {
+      "id": "keyboard-on-every-platform",
+      "date": "2026-11-12",
+      "version": "0.9.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Being reached and activated from a keyboard is a requirement on every platform (WCAG 2.1.1 on the web, EN 301 549 11.2.1.1.1 for native software), met through the native button control and the platform's own keyboard services; only the keys are per platform. The web keeps its keys (Tab, Enter, Space, from APG). iOS and macOS rely on Full Keyboard Access, with no custom keyboard navigation for the button on iPadOS; Android relies on focus navigation, reached and highlighted in a logical order. No key is named for iOS, Android or desktop: no trusted source of those platforms names them.",
+      "rationale": "The keyboard requirement holds everywhere; the contract said it for the web only.",
+      "refs": [
+        "wcag:2.1.1",
+        "en-301-549-keyboard",
+        "hig-keyboards-best-practices",
+        "orange-android-focus-access"
+      ]
+    },
     {
       "id": "glyph-roles-from-button",
       "date": "2026-11-12",
@@ -857,6 +934,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-11-12",
+      "note": "Decision keyboard-on-every-platform: the icon button is reached and activated from a keyboard on every platform (WCAG 2.1.1, EN 301 549 11.2.1.1.1), through the native control and the platform's keyboard services; new guidelines for iOS (Full Keyboard Access), Android (focus navigation) and desktop (macOS Full Keyboard Access). The web keys are unchanged. No token or rendering change."
+    },
     {
       "version": "0.8.0",
       "date": "2026-11-12",
