@@ -99,6 +99,8 @@ source it comes from. This section explains the decisions behind it.
   segment. The animation stops under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)
   ([MDN: :indeterminate](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:indeterminate)).
+- In a right-to-left layout the segment sweeps from right to left: from the start of the track
+  to its end, like the value it stands for.
 - The sweep lasts six times the normal motion duration: the additions have no long duration
   token yet, so the factor is written in the CSS (an open decision).
 

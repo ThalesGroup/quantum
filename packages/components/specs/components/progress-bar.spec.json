@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "progress-bar",
   "name": "Progress bar",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "status": "draft",
   "role": "progressbar",
   "summary": "Shows how far a task has progressed, or that it is in progress when its length is unknown.",
@@ -448,6 +448,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.2",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed: in a right-to-left layout the indeterminate segment swept left to right, from end to start; it now plays in reverse there, so it goes from start to end in both directions, as the state says. The gradient takes an angle instead of to right (it is symmetric). Tokens, template and contrast unchanged."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

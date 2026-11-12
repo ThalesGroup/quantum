@@ -34,6 +34,12 @@ order) first, then `src/index.css`.
 - Read **only** `--<id>-*` custom properties (generated from the component tokens) and private
   `--_*` properties. No literals, no semantic or raw variables. The validator errors on
   unknown `--<id>-*` names and warns on literals.
+- Logical properties and values only, so a right-to-left layout mirrors the component with no
+  rule of its own: `margin-inline-start`, `inset-inline-end`, `border-start-start-radius`,
+  `text-align: start`, never a physical `left` or `right` in a property, in `text-align`,
+  `float` or `clear`, or in a gradient's `to left|right` (an angle when the drawing is symmetric).
+  What only one direction needs (a translate, a reversed animation) goes in a `:dir(rtl)` rule,
+  where physical values are allowed. `pnpm validate` errors on the rest (`scripts/lib/logical-css.mjs`).
 - Pattern: declare private properties (`--_background`, `--_color`, …) once on the root with
   the default option and state values, then let option and state selectors *only*
   reassign private properties. Layout and typography declarations appear once.
