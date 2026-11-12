@@ -117,7 +117,7 @@ Which shadcn component and props render each Quantum component (the `COMPONENTS`
 | Quantum component | shadcn | Equivalence |
 | --- | --- | --- |
 | Button | `button` | emphasis accent + intent brand = `default`, subtle + neutral = `secondary`, ghost + neutral = `ghost`, accent + error = `destructive`; size xsmall / small / medium / large = `xs` / `sm` / `default` / `lg`; `disabled`. Quantum's default, subtle + neutral, is `secondary`. No shadcn variant for accent + neutral, subtle or ghost in brand or error. shadcn only: `outline`, `link`. |
-| Icon button | `button` | size xsmall / small / medium / large = `icon-xs` / `icon-sm` / `icon` / `icon-lg`, same variants as Button. |
+| Icon button | `button` | size xsmall / small / medium / large = `icon-xs` / `icon-sm` / `icon` / `icon-lg`, the Button's variants and `disabled`; the glyph is the only child, named by `aria-label`. Quantum's default, subtle + neutral, is `secondary`. No shadcn variant for accent + neutral, subtle or ghost in brand or error. shadcn only: `outline`, `link`. |
 | Badge | `badge` | accent + brand = `default`, subtle + neutral = `secondary`, accent + error = `destructive`. No success, warning, info intents, one size. shadcn only: `outline`, `ghost`, `link`. |
 | Alert | `alert` | intent info = `default` (an untinted card), error = `destructive`; no success, warning. |
 | Card | `card` | surface level-1 = `Card`, title = `CardTitle`, description = `CardDescription`; no level-2 surface. |

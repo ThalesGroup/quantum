@@ -904,7 +904,7 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | Quantum component | Bootstrap | Options, states and parts |
 | --- | --- | --- |
 | Button (`button`) | Buttons | emphasis: accent = `.btn-solid`, subtle = `.btn-subtle`, ghost = `.btn-text`; intent: neutral = `.theme-secondary`, brand = `.theme-primary`, error = `.theme-danger`; size: xsmall = `.btn-xs`, small = `.btn-sm`, medium = default, large = `.btn-lg`; emphasis accent + intent neutral = `.btn-solid.theme-inverse`; states: hover = `:hover`, active = `:active`, focus-visible = `:focus-visible`, disabled = `:disabled`; parts: icon = `.material-symbols-outlined (any inline icon)`; Bootstrap only: `.btn-outline`, `.btn-link`, `.btn-styled`, `.btn-group`, `.btn-check`, `.btn-close` |
-| Icon button (`icon-button`) | Buttons (`.btn-icon`) | emphasis: accent = `.btn-solid`, subtle = `.btn-subtle`, ghost = `.btn-text`; intent: neutral = `.theme-secondary`, brand = `.theme-primary`, error = `.theme-danger`; size: xsmall = `.btn-xs`, small = `.btn-sm`, medium = default, large = `.btn-lg`; emphasis accent + intent neutral = `.btn-icon.btn-solid.theme-inverse`; states: disabled = `:disabled` |
+| Icon button (`icon-button`) | Buttons (`.btn-icon`) | emphasis: accent = `.btn-solid`, subtle = `.btn-subtle`, ghost = `.btn-text`; intent: neutral = `.theme-secondary`, brand = `.theme-primary`, error = `.theme-danger`; size: xsmall = `.btn-xs`, small = `.btn-sm`, medium = default, large = `.btn-lg`; emphasis accent + intent neutral = `.btn-icon.btn-solid.theme-inverse`; states: hover = `:hover`, active = `:active`, focus-visible = `:focus-visible`, disabled = `:disabled`; parts: icon = `.material-symbols-outlined (the only child)`; Bootstrap only: `.btn-outline` |
 | Badge (`badge`) | Badge (`.badge`) | emphasis: accent = default, subtle = `.badge-subtle`; intent: neutral = `.theme-secondary`, brand = `.theme-primary`, success = `.theme-success`, warning = `.theme-warning`, error = `.theme-danger`, info = `.theme-info`; size: small = none, medium = default; emphasis accent + intent neutral = `.badge.theme-inverse`; Bootstrap only: `.badge-outline`, `.badge-lg` |
 | Alert (`alert`) | Alert (`.alert`) | intent: info = `.theme-info`, success = `.theme-success`, warning = `.theme-warning`, error = `.theme-danger`; parts: title = `.alert-heading`, message = `text after .alert-heading`; Bootstrap only: `dismissible alerts (.btn-close)`, `.alert-link` |
 | Card (`card`) | Card (`.card`) | surface: level-1 = default, level-2 = none; parts: container = `.card`, title = `.card-body > h5 (a heading)`, description = `.card-subtitle or a paragraph`; Bootstrap only: `.card-header`, `.card-footer`, `.card-img-*`, `.card-group`, `.card-translucent` |
@@ -950,6 +950,9 @@ them, and the theme restyles nothing directly.
   (`button.container.padding-inline.icon-side.*`, `.label-side.*`), the icon sizes
   (`button.icon.size.*`) and the label letter spacing (`font.letter-spacing.tight.*`): Bootstrap
   has one inline padding and no icon size or letter-spacing token.
+- **Icon button anatomy.** The glyph sizes (`icon-button.icon.size.*`, 16 / 20 / 24 / 24px) and
+  the block padding around the glyph (`icon-button.container.padding.*`): `.btn-icon` is a square
+  of the button's height with no padding, and the glyph is sized by the markup.
 - **Disabled selection controls.** A disabled checked checkbox, radio or switch keeps the brand
   fill at Bootstrap's opacity (`.65`, the switch indicator `0.4`, hard-coded): Quantum's disabled
   colors only reach the unchecked controls (`--bs-check-disabled-bg`, …).
