@@ -24,9 +24,10 @@ of any token shows in its path:
   recreated it once as clean DTCG: Colors / Base and the Palette Switch in
   `packages/tokens/src/raw/` (hidden primitives), Colors / Mapped, Dimension, Effect and
   Typography in `packages/tokens/src/semantic/` (read by components and the site), the dark
-  mapping in `packages/tokens/src/modes/dark/`: the same paths, made valid only where a path or a
-  CSS variable cannot carry them (`⚠️ai` → `ai`, `semiBold` → `semi-bold`, `drop shadow` →
-  `drop-shadow`, `black&white` → `black-and-white`), the same values (lengths in px, opacity as 0-1), the same
+  mapping in `packages/tokens/src/modes/dark/`: the same paths, lowercased (`AI` → `ai`,
+  `Color` → `color`; the library has used the repository's names since its export of
+  2026-11-10, where `⚠️ai`, `semiBold`, `drop shadow` and `black&white` became `ai`,
+  `semi-bold`, `drop-shadow` and `black-and-white`), the same values (lengths in px, opacity as 0-1), the same
   aliases, errors and limitations included (typos, aliases to colors it does not contain, kept
   as literals, contrast failures recorded as known issues of the Color foundation). Colors the
   library composes from a step and an opacity are written as the resulting color. The Palette

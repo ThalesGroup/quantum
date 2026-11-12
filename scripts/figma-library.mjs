@@ -45,8 +45,10 @@ export const COLLECTIONS = [
 
 /**
  * A Figma library key made valid: no emoji or other non-ASCII marker, camelCase, spaces and `&`
- * (which a CSS variable cannot carry) become kebab-case, lowercase. `⚠️ai` -> `ai`, `semiBold` ->
- * `semi-bold`, `drop shadow` -> `drop-shadow`, `black&white` -> `black-and-white`, `AI` -> `ai`.
+ * (which a CSS variable cannot carry) become kebab-case, lowercase. Since its export of 2026-11-10
+ * the library itself writes `ai`, `semi-bold`, `drop-shadow` and `black-and-white` (they were `⚠️ai`,
+ * `semiBold`, `drop shadow` and `black&white`); what is left is the case: `AI` -> `ai`, `Color` ->
+ * `color`, `Number` -> `number`. The earlier names are still read, for the earlier exports.
  * Typos are kept (`functionnal`, `subtile`).
  */
 export const validKey = (key) =>
@@ -80,7 +82,10 @@ const round = (n) => Number(Number(n).toFixed(4));
 function convert(token, segments, known) {
   const ext = token.$extensions ?? {};
   const alias = ext['com.figma.aliasData'];
+  // A color made of a color variable and an opacity variable: `composedColor` until 2026-11,
+  // `boundVariables` ({ color, opacity } as alias references) since the export of 2026-11-10.
   const composed = ext['com.figma.composedColor'];
+  const bound = ext['com.figma.boundVariables'];
   const p = validPath(segments);
   const out = {};
   let type = token.$type;
@@ -111,6 +116,9 @@ function convert(token, segments, known) {
   } else if (composed) {
     const name = (arg) => (arg?.type === 'alias' ? validName(arg.alias.targetVariableName) : JSON.stringify(arg?.value ?? arg));
     notes.push(`${name(composed.colorArg)} at ${name(composed.opacityArg)}: the Figma library composes them, DTCG cannot, so the resulting color is written as is`);
+  } else if (bound?.color && bound?.opacity) {
+    const name = (ref) => validName(String(ref).replace(/^\{|\}$/g, ''));
+    notes.push(`${name(bound.color)} at ${name(bound.opacity)}: the Figma library composes them, DTCG cannot, so the resulting color is written as is`);
   }
 
   if (type) out.$type = type;
@@ -124,7 +132,26 @@ function convert(token, segments, known) {
 // Reading and writing
 // ---------------------------------------------------------------------------
 
-const read = (file) => JSON.parse(fs.readFileSync(path.join(SRC, file), 'utf8'));
+/**
+ * An export file, by its collection folder as COLLECTIONS names it. The `/` of a collection name
+ * is ` _ ` in the earlier exports and ` - ` since the export of 2026-11-10 (`Colors - Base`): read
+ * either.
+ */
+const locate = (file) => {
+  const named = path.join(SRC, file);
+  return fs.existsSync(named) ? named : path.join(SRC, file.replace(/ _ /g, ' - '));
+};
+
+const read = (file) => JSON.parse(fs.readFileSync(locate(file), 'utf8'));
+
+/**
+ * Whether two values are the same. A color is its hex and its alpha: exports write its components
+ * at different precisions (float32 until 2026-11, four decimals since), which is not a change.
+ */
+const sameValue = (a, b) => {
+  const key = (v) => (v && typeof v === 'object' && 'hex' in v ? `${String(v.hex).toUpperCase()}@${round(v.alpha ?? 1)}` : JSON.stringify(v));
+  return key(a) === key(b);
+};
 
 function flatten(tree, prefix = [], acc = []) {
   for (const [k, v] of Object.entries(tree)) {
@@ -145,7 +172,7 @@ export function recreate(collection, known = knownPaths()) {
   const tokens = flatten(read(collection.file)).map(([s, t]) => convert(t, s, known));
   if (!collection.overlayOf) return tokens;
   const base = new Map(flatten(read(collection.overlayOf)).map(([s, t]) => convert(t, s, known)));
-  return tokens.filter(([p, t]) => JSON.stringify(t.$value) !== JSON.stringify(base.get(p)?.$value));
+  return tokens.filter(([p, t]) => !sameValue(t.$value, base.get(p)?.$value));
 }
 
 function nest(entries) {
@@ -190,7 +217,7 @@ function report() {
     const lines = [];
     for (const [p, t] of want) {
       if (!have.has(p)) lines.push(`  - ${p} (removed)`);
-      else if (JSON.stringify(have.get(p).$value) !== JSON.stringify(t.$value)) lines.push(`  ~ ${p}: ${JSON.stringify(t.$value)} -> ${JSON.stringify(have.get(p).$value)}`);
+      else if (!sameValue(have.get(p).$value, t.$value)) lines.push(`  ~ ${p}: ${JSON.stringify(t.$value)} -> ${JSON.stringify(have.get(p).$value)}`);
     }
     for (const p of have.keys()) if (!want.has(p)) lines.push(`  + ${p} (added)`);
     diverged += lines.length;
