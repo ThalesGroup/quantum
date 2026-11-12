@@ -45,9 +45,9 @@ export const COLLECTIONS = [
 
 /**
  * A Figma library key made valid: no emoji or other non-ASCII marker, camelCase, spaces and `&`
- * (which a CSS variable cannot carry) become kebab-case, lowercase. `⚠️ai` -> `ai`, `semiBold` ->
- * `semi-bold`, `drop shadow` -> `drop-shadow`, `black&white` -> `black-and-white`, `AI` -> `ai`.
- * Typos are kept (`functionnal`, `subtile`).
+ * (which a CSS variable cannot carry) become kebab-case, lowercase: `AI` -> `ai`, `semiBold` ->
+ * `semi-bold`. The library's names are valid as they are today, so this only guards against a
+ * new name that is not. Typos are kept (`functionnal`, `subtile`).
  */
 export const validKey = (key) =>
   String(key)
@@ -80,6 +80,7 @@ const round = (n) => Number(Number(n).toFixed(4));
 function convert(token, segments, known) {
   const ext = token.$extensions ?? {};
   const alias = ext['com.figma.aliasData'];
+  // A color made of a color variable and an opacity variable, both as alias references.
   const composed = ext['com.figma.composedColor'];
   const p = validPath(segments);
   const out = {};
@@ -108,9 +109,9 @@ function convert(token, segments, known) {
     const target = validName(alias.targetVariableName);
     if (known.has(target)) value = `{${target}}`;
     else notes.push(`The Figma library aliases ${alias.targetVariableSetName}: ${alias.targetVariableName}, which it does not contain; its literal value is kept`);
-  } else if (composed) {
-    const name = (arg) => (arg?.type === 'alias' ? validName(arg.alias.targetVariableName) : JSON.stringify(arg?.value ?? arg));
-    notes.push(`${name(composed.colorArg)} at ${name(composed.opacityArg)}: the Figma library composes them, DTCG cannot, so the resulting color is written as is`);
+  } else if (composed?.color && composed?.opacity) {
+    const name = (ref) => validName(String(ref).replace(/^\{|\}$/g, ''));
+    notes.push(`${name(composed.color)} at ${name(composed.opacity)}: the Figma library composes them, DTCG cannot, so the resulting color is written as is`);
   }
 
   if (type) out.$type = type;
@@ -125,6 +126,15 @@ function convert(token, segments, known) {
 // ---------------------------------------------------------------------------
 
 const read = (file) => JSON.parse(fs.readFileSync(path.join(SRC, file), 'utf8'));
+
+/**
+ * Whether two values are the same. A color is its hex and its alpha: the export rounds its
+ * components to four decimals, the recreated tokens keep Figma's float32 ones.
+ */
+const sameValue = (a, b) => {
+  const key = (v) => (v && typeof v === 'object' && 'hex' in v ? `${String(v.hex).toUpperCase()}@${round(v.alpha ?? 1)}` : JSON.stringify(v));
+  return key(a) === key(b);
+};
 
 function flatten(tree, prefix = [], acc = []) {
   for (const [k, v] of Object.entries(tree)) {
@@ -145,7 +155,7 @@ export function recreate(collection, known = knownPaths()) {
   const tokens = flatten(read(collection.file)).map(([s, t]) => convert(t, s, known));
   if (!collection.overlayOf) return tokens;
   const base = new Map(flatten(read(collection.overlayOf)).map(([s, t]) => convert(t, s, known)));
-  return tokens.filter(([p, t]) => JSON.stringify(t.$value) !== JSON.stringify(base.get(p)?.$value));
+  return tokens.filter(([p, t]) => !sameValue(t.$value, base.get(p)?.$value));
 }
 
 function nest(entries) {
@@ -190,7 +200,7 @@ function report() {
     const lines = [];
     for (const [p, t] of want) {
       if (!have.has(p)) lines.push(`  - ${p} (removed)`);
-      else if (JSON.stringify(have.get(p).$value) !== JSON.stringify(t.$value)) lines.push(`  ~ ${p}: ${JSON.stringify(t.$value)} -> ${JSON.stringify(have.get(p).$value)}`);
+      else if (!sameValue(have.get(p).$value, t.$value)) lines.push(`  ~ ${p}: ${JSON.stringify(t.$value)} -> ${JSON.stringify(have.get(p).$value)}`);
     }
     for (const p of have.keys()) if (!want.has(p)) lines.push(`  + ${p} (added)`);
     diverged += lines.length;
