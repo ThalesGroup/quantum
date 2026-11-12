@@ -116,7 +116,7 @@ Which shadcn component and props render each Quantum component (the `COMPONENTS`
 
 | Quantum component | shadcn | Equivalence |
 | --- | --- | --- |
-| Button | `button` | emphasis accent + intent brand = `default`, subtle + neutral = `secondary`, ghost + neutral = `ghost`, accent + error = `destructive`; size xsmall / small / medium / large = `xs` / `sm` / `default` / `lg`; `disabled`. No shadcn variant for accent + neutral (Quantum's default), subtle or ghost in brand or error. shadcn only: `outline`, `link`. |
+| Button | `button` | emphasis accent + intent brand = `default`, subtle + neutral = `secondary`, ghost + neutral = `ghost`, accent + error = `destructive`; size xsmall / small / medium / large = `xs` / `sm` / `default` / `lg`; `disabled`. Quantum's default, subtle + neutral, is `secondary`. No shadcn variant for accent + neutral, subtle or ghost in brand or error. shadcn only: `outline`, `link`. |
 | Icon button | `button` | size xsmall / small / medium / large = `icon-xs` / `icon-sm` / `icon` / `icon-lg`, same variants as Button. |
 | Badge | `badge` | accent + brand = `default`, subtle + neutral = `secondary`, accent + error = `destructive`. No success, warning, info intents, one size. shadcn only: `outline`, `ghost`, `link`. |
 | Alert | `alert` | intent info = `default` (an untinted card), error = `destructive`; no success, warning. |

@@ -39,9 +39,12 @@ Emphasis is the visual weight of the button. It answers "how important is this a
 
 | Emphasis | Weight | Use for |
 | --- | --- | --- |
-| Accent | Highest | The single most important action on the view. Strong fill in the intent color with a contrasting label. The default. |
-| Subtle | Medium | Actions that support the accent one (Cancel, Back, Save draft). Tinted fill and a light border in the intent color. |
+| Accent | Highest | The single most important action on the view. Strong fill in the intent color with a contrasting label. |
+| Subtle | Medium | Actions that support the accent one (Cancel, Back, Save draft). Tinted fill and a light border in the intent color. The default. |
 | Ghost | Lowest | Repeated, tertiary or inline actions (table row actions, "Learn more"). Label only at rest; a tint and a light border appear on hover and press. |
+
+Without an emphasis, a button is subtle: it keeps the visible shape of a button without the
+weight of accent, so accent is always a choice. Set accent on the one action that must stand out.
 
 Limit each view to one accent button. When two actions compete for attention, neither is
 accent: demote both to subtle and let the layout order carry the hierarchy.

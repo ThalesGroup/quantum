@@ -104,15 +104,15 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   const figma = figmaComponent(loaded, specOf('button'), BLUEPRINTS.button);
   assert.equal(button.variants.length, figma.variants.length);
   const first = button.variants[0];
-  assert.deepEqual(first.props, { Emphasis: 'accent', Intent: 'neutral', Size: 'medium', 'Leading icon': 'false', 'Trailing icon': 'false', State: 'default' });
+  assert.deepEqual(first.props, { Emphasis: 'subtle', Intent: 'neutral', Size: 'medium', 'Leading icon': 'false', 'Trailing icon': 'false', State: 'default' });
   assert.deepEqual([first.root.type, first.root.layout, first.root.justify, first.root.align], ['board', 'row', 'center', 'center']);
-  assert.equal(first.root.fill, 'button.container.background.accent.neutral.default');
+  assert.equal(first.root.fill, 'button.container.background.subtle.neutral.default');
   assert.equal(first.root.bind.paddingLeft, 'button.container.padding-inline.medium');
   assert.equal(first.root.bind.columnGap, 'button.container.gap.medium');
   assert.equal(first.root.bind.borderRadiusTopLeft, 'button.container.border-radius.medium');
   assert.equal(first.root.bind.layoutItemMinH, 'button.container.min-height.medium');
   const label = first.root.children[0];
-  assert.deepEqual([label.type, label.typography, label.fill], ['text', 'button.label.typography.medium', 'button.label.color.accent.neutral.default']);
+  assert.deepEqual([label.type, label.typography, label.fill], ['text', 'button.label.typography.medium', 'button.label.color.subtle.neutral.default']);
   assert.deepEqual(plan.values['button.label.typography.medium'], { fontFamily: 'Inter', fontSize: 16, fontWeight: 500, letterSpacing: -0.48, lineHeight: 1 });
   assert.equal(plan.values['button.container.min-height.medium'], 36);
   assert.deepEqual(plan.values['button.container.background.accent.neutral.default'], { color: '#1F1F1F', opacity: 1 });
@@ -703,15 +703,15 @@ test('the plugin writes the tokens and draws the Button bound to them', async ()
   const first = container.children[0];
   assert.equal(first.name, plan.components[0].variants[0].name);
   assert.deepEqual([first.flex.dir, first.flex.justifyContent, first.flex.alignItems], ['row', 'center', 'center']);
-  assert.equal(first.tokens.fill, 'button.container.background.accent.neutral.default');
+  assert.equal(first.tokens.fill, 'button.container.background.subtle.neutral.default');
   assert.equal(first.tokens.paddingLeft, 'button.container.padding-inline.medium');
   assert.equal(first.tokens.layoutItemMinH, 'button.container.min-height.medium');
   assert.equal(first.flex.leftPadding, 12);
-  assert.deepEqual(first.fills, [{ fillColor: '#1F1F1F', fillOpacity: 1 }]);
+  assert.deepEqual(first.fills, [{ fillColor: '#B5B5B5', fillOpacity: 0.1 }]);
   const label = first.children.find((n) => n.name === 'label');
   assert.deepEqual([label.characters, label.fontFamily, label.fontWeight, label.fontSize, label.lineHeight], ['Button', 'Inter', '500', '16', '1']);
   assert.equal(label.tokens.typography, 'button.label.typography.medium');
-  assert.equal(label.tokens.fill, 'button.label.color.accent.neutral.default');
+  assert.equal(label.tokens.fill, 'button.label.color.subtle.neutral.default');
 
   const focus = container.children.find((n) => n.name.endsWith('State=focus-visible'));
   const ring = focus.children.find((n) => n.name === 'focus-ring');
@@ -756,7 +756,7 @@ test('without the icon font, the plugin draws placeholder icons and says so', as
   assert.match(logs[0], /The font "Material Symbols Outlined" is not among Penpot's fonts/);
   const [container] = containersOf(fake, 'Button');
   const icon = container.children.find((n) => n.name.includes('Leading icon=true')).children[0];
-  assert.deepEqual([icon.type, icon.tokens.strokeColor, icon.tokens.width], ['board', 'button.label.color.accent.neutral.default', 'button.icon.size.medium']);
+  assert.deepEqual([icon.type, icon.tokens.strokeColor, icon.tokens.width], ['board', 'button.label.color.subtle.neutral.default', 'button.icon.size.medium']);
 });
 
 test('on Penpot 2.18, the plugin applies a font family token under its former property name', async () => {

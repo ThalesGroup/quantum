@@ -98,7 +98,7 @@ export const COMPONENTS = [
       { set: { size: 'large' }, props: { size: 'lg' } },
       { set: { disabled: true }, props: { disabled: true } },
       { part: 'icon', props: { children: '<svg> (lucide-react)' } },
-      { set: { emphasis: 'accent', intent: 'neutral' }, props: null, note: 'Quantum\'s default button (neutral accent) has no shadcn variant: --primary is the brand.' },
+      { set: { emphasis: 'accent', intent: 'neutral' }, props: null, note: 'Quantum\'s neutral accent button has no shadcn variant: --primary is the brand.' },
       { set: { emphasis: 'subtle', intent: 'brand' }, props: null },
       { set: { emphasis: 'ghost', intent: 'brand' }, props: null },
       { set: { emphasis: 'subtle', intent: 'error' }, props: null },

@@ -82,9 +82,9 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
 
   // The default variant comes first: Figma's default variant is the top-left one.
   const first = plan.variants[0];
-  assert.equal(first.name, 'Emphasis=accent, Intent=neutral, Size=medium, Leading icon=false, Trailing icon=false, State=default');
+  assert.equal(first.name, 'Emphasis=subtle, Intent=neutral, Size=medium, Leading icon=false, Trailing icon=false, State=default');
   assert.deepEqual([first.row, first.column], [0, 0]);
-  assert.equal(first.root.fills, 'button/container/background/accent/neutral/default');
+  assert.equal(first.root.fills, 'button/container/background/subtle/neutral/default');
   assert.equal(first.root.bind.paddingLeft, 'button/container/padding-inline/medium');
   assert.equal(first.root.children[0].typography.fontSize, 'button/label/typography/medium/font-size');
   assert.deepEqual(first.root.children[0].typography.lineHeight, { unit: 'PERCENT', value: 100 });
@@ -336,7 +336,7 @@ test('the plugin creates the variables and draws the Button bound to them', asyn
   assert.equal(first.minHeight, 36);
   assert.equal(first.bound.minHeight, 'button/container/min-height/medium');
   assert.equal(first.bound.paddingLeft, 'button/container/padding-inline/medium');
-  assert.equal(first.fills[0].boundVariables.color.id, fill.id);
+  assert.equal(first.fills[0].boundVariables.color.id, byName.get('button/container/background/subtle/neutral/default').id);
   const label = first.children.find((n) => n.name === 'label');
   assert.equal(label.characters, 'Button');
   assert.deepEqual(label.componentPropertyReferences, { characters: 'Label#0:1' });

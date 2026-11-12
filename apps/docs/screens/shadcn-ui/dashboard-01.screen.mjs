@@ -124,7 +124,7 @@ export function render() {
     label: 'Main',
     header: el('a', { class: 'scr-brand', href: '#' }, el('span', { class: 'scr-brand__mark' }, ds.icon({ name: 'contrast', size: 'small' })), 'Acme Inc.'),
     content: [
-      el('div', { class: 'scr-row scr-quick' }, ds.button({ label: 'Quick Create', iconStart: 'add_circle', size: 'small' }), ds.iconButton({ icon: 'mail', label: 'Inbox', emphasis: 'subtle', size: 'small' })),
+      el('div', { class: 'scr-row scr-quick' }, ds.button({ label: 'Quick Create', iconStart: 'add_circle', emphasis: 'accent', size: 'small' }), ds.iconButton({ icon: 'mail', label: 'Inbox', emphasis: 'subtle', size: 'small' })),
       group({ items: [
         { label: 'Dashboard', icon: 'dashboard', current: true },
         { label: 'Lifecycle', icon: 'list_alt' },

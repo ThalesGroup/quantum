@@ -50,7 +50,7 @@ export function passwordField(id, { label = 'Password', description = null, auto
 export const forgotPassword = () => el('p', { class: 'scr-hint', 'data-align': 'end' }, link('Forgot your password?'));
 
 export function submit(label) {
-  return ds.button({ label, type: 'submit' });
+  return ds.button({ label, emphasis: 'accent', type: 'submit' });
 }
 
 /** A secondary action (the original's outline buttons). */
