@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -685,6 +685,22 @@
   ],
   "decisions": [
     {
+      "id": "glyph-roles-from-button",
+      "date": "2026-11-12",
+      "version": "0.8.0",
+      "area": "color",
+      "status": "active",
+      "text": "The glyph keeps the roles of the Button's label decisions rather than the role of the fill it sits on: subtle neutral, and ghost neutral in every state, read global.icon.on-base.neutral.primary although the subtle fill has its own role (global.icon.on-subtle.neutral.default), as in button decision neutral-label-primary; ghost error reads global.icon.on-subtle.functional.error.default in every state, at rest with no fill too, as in button decision error-label-figma-library. The Icon button renders the same as the Button (same-rendering-as-button), so these roles change only with the Button's decisions.",
+      "rationale": "The Button already decided these colors; the icon button renders the same as the button in the end.",
+      "tokens": [
+        "icon-button.icon.color.subtle.neutral.*",
+        "icon-button.icon.color.ghost.neutral.*",
+        "icon-button.icon.color.ghost.error.*",
+        "global.icon.on-base.neutral.primary",
+        "global.icon.on-subtle.functional.error.default"
+      ]
+    },
+    {
       "id": "default-size-medium",
       "date": "2026-10-15",
       "version": "0.5.0",
@@ -841,6 +857,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.8.0",
+      "date": "2026-11-12",
+      "note": "Decision glyph-roles-from-button: subtle and ghost neutral glyphs keep global.icon.on-base.neutral.primary, and ghost error glyphs global.icon.on-subtle.functional.error.default, as the Button's label does (neutral-label-primary, error-label-figma-library), rather than the role of the fill they sit on. No token change, so contrast is unchanged: lowest glyph contrast on the page and on a card, light 16.01:1 (subtle neutral, active) and 6.30:1 (ghost error, active), dark 5.55:1 (subtle neutral, active) and 8.49:1 (ghost error)."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-06",
