@@ -48,8 +48,10 @@ The repository is the GitHub repository
     templates), `docs` (README, CONTRIBUTING, the agent guides in `agents/` and the skills; the
     same label as the commit type, there is no `documentation` label). Scripts and workflows take
     no area label: the kind says it (`build`, `ci`).
-  - **Design tool**, every one the change or the issue concerns: `figma` (the Figma library, its
-    export, the Figma token format, and `@quantum-ds/figma` in `packages/figma/`), `penpot` (the
+  - **Design tool**, every one the change or the issue concerns: `figma` (what goes to Figma:
+    the Figma token format, `@quantum-ds/figma` in `packages/figma/`, and the changes asked of
+    the Figma library; not what the repository reads from it: work on the library's export,
+    such as recreating tokens from it, takes no `figma`), `penpot` (the
     Penpot token format, its import, and `@quantum-ds/penpot` in `packages/penpot/`),
     `tokens-studio` (the Tokens Studio token format). A change to `packages/figma/` takes `figma`,
     one to `packages/penpot/` takes `penpot`, on top of its kind.
