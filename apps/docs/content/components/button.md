@@ -28,7 +28,9 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 ## When not to use
 
 - **Navigation between pages or views.** Use a link.
-- **Toggling a setting on or off.** Use a switch or a toggle button, whose pressed state is announced.
+- **Toggling something on or off.** The button has no pressed state, so nothing would show or
+  announce that the action stays on. The system has no toggle button yet; for a setting in a
+  list or a form, use a switch.
 - **Choosing between options.** Use radio buttons, a segmented control or a select.
 
 ## Emphasis
@@ -294,5 +296,5 @@ This section explains the decisions behind it.
 
 - Link (navigation)
 - Icon button (icon-only actions, named by a label for assistive technology)
-- Toggle button (pressed state)
+- Switch (a setting turned on or off)
 - Dropdown (a button opening a menu of related actions)
