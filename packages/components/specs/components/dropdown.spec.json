@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "dropdown",
   "name": "Dropdown",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "draft",
   "role": "disclosure",
   "summary": "A button that opens a menu of related actions.",
@@ -149,7 +149,7 @@
       "id": "emphasis",
       "name": "Emphasis",
       "type": "enum",
-      "default": "accent",
+      "default": "subtle",
       "description": "Emphasis of the trigger Button: same options, same meaning.",
       "affects": [
         "trigger"
@@ -161,7 +161,7 @@
         },
         {
           "value": "subtle",
-          "description": "Medium emphasis."
+          "description": "Medium emphasis. The default."
         },
         {
           "value": "ghost",
@@ -990,6 +990,20 @@
   ],
   "decisions": [
     {
+      "id": "default-emphasis-subtle",
+      "date": "2026-11-12",
+      "version": "0.7.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Without an emphasis, the trigger is subtle, the button's default (Button decision default-emphasis-subtle), as decision trigger-is-button asks. An explicit emphasis renders as before.",
+      "rationale": "The trigger is a button and takes its defaults: a dropdown left at its default should neither outweigh the content it sits in nor lose the look of a button, and is rarely the single most important action of a view.",
+      "tokens": [
+        "button.container.background.subtle.*",
+        "button.container.border-color.subtle.*",
+        "button.label.color.subtle.*"
+      ]
+    },
+    {
       "id": "menu-level-2-figma-library",
       "date": "2026-10-02",
       "version": "0.4.0",
@@ -1081,6 +1095,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-12",
+      "note": "Decision default-emphasis-subtle: a dropdown without an emphasis has a subtle trigger instead of accent, following the Button 0.29.0 default (decision trigger-is-button). Template default and docs updated; an explicit emphasis renders as before; every screen sets its emphasis and is unchanged. No token or CSS change; contrast unchanged."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-06",

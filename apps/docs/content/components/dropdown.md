@@ -38,7 +38,8 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 The trigger label names the set of actions: **Share**, **Export**, **More actions**. It never
 repeats the first item. Choose its emphasis like a button's: a dropdown is rarely the single
-most important action of a view, so subtle and ghost are the usual choices. Keep the error
+most important action of a view, so subtle and ghost are the usual choices. Without an
+emphasis, the trigger is subtle, like a button. Keep the error
 intent for a trigger whose every item is destructive.
 
 The chevron is part of the trigger and cannot be removed: it is what tells people the button
