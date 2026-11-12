@@ -24,9 +24,8 @@ of any token shows in its path:
   recreated it once as clean DTCG: Colors / Base and the Palette Switch in
   `packages/tokens/src/raw/` (hidden primitives), Colors / Mapped, Dimension, Effect and
   Typography in `packages/tokens/src/semantic/` (read by components and the site), the dark
-  mapping in `packages/tokens/src/modes/dark/`: the same paths, lowercased (`AI` → `ai`,
-  `Color` → `color`), the same values (lengths in px, opacity as 0-1), the same
-  aliases, errors and limitations included (typos, aliases to colors it does not contain, kept
+  mapping in `packages/tokens/src/modes/dark/`: the same paths, the same values (lengths in px,
+  opacity as 0-1), the same aliases, errors and limitations included (typos, aliases to colors it does not contain, kept
   as literals, contrast failures recorded as known issues of the Color foundation). Colors the
   library composes from a step and an opacity are written as the resulting color. The Palette
   Switch is in its Ash mode; Slate is not recreated yet.
