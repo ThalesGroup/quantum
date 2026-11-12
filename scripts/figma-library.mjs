@@ -30,13 +30,13 @@ const out = (file) => `${PATHS.tokensSrc}/${file}`;
 
 /** One entry per Figma library collection (and mode): where its tokens go. */
 export const COLLECTIONS = [
-  { set: 'Colors / Base', file: 'Colors _ Base/Mode 1.tokens.json', out: out('raw/colors-base.tokens.json') },
-  { set: 'Colors / Palette Switch', file: 'Colors _ Palette Switch/Ash.tokens.json', out: out('raw/palette-switch.tokens.json'), note: 'Ash mode: the default palette. The Slate mode is not recreated yet.' },
+  { set: 'Colors / Base', file: 'Colors - Base/Mode 1.tokens.json', out: out('raw/colors-base.tokens.json') },
+  { set: 'Colors / Palette Switch', file: 'Colors - Palette Switch/Ash.tokens.json', out: out('raw/palette-switch.tokens.json'), note: 'Ash mode: the default palette. The Slate mode is not recreated yet.' },
   { set: 'Dimension', file: 'Dimension/Mode 1.tokens.json', out: out('semantic/dimension.tokens.json') },
   { set: 'Effect', file: 'Effect/Mode 1.tokens.json', out: out('semantic/effect.tokens.json') },
   { set: 'Typography', file: 'Typography/Mode 1.tokens.json', out: out('semantic/typography.tokens.json') },
-  { set: 'Colors / Mapped', file: 'Colors _ Mapped/light.tokens.json', out: out('semantic/colors-mapped.tokens.json'), note: 'Light mode: the default mode.' },
-  { set: 'Colors / Mapped', file: 'Colors _ Mapped/dark.tokens.json', out: out('modes/dark/colors-mapped.tokens.json'), note: 'Dark mode: only the tokens whose value differs from the light mode.', overlayOf: 'Colors _ Mapped/light.tokens.json' },
+  { set: 'Colors / Mapped', file: 'Colors - Mapped/light.tokens.json', out: out('semantic/colors-mapped.tokens.json'), note: 'Light mode: the default mode.' },
+  { set: 'Colors / Mapped', file: 'Colors - Mapped/dark.tokens.json', out: out('modes/dark/colors-mapped.tokens.json'), note: 'Dark mode: only the tokens whose value differs from the light mode.', overlayOf: 'Colors - Mapped/light.tokens.json' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -45,10 +45,8 @@ export const COLLECTIONS = [
 
 /**
  * A Figma library key made valid: no emoji or other non-ASCII marker, camelCase, spaces and `&`
- * (which a CSS variable cannot carry) become kebab-case, lowercase. Since its export of 2026-11-10
- * the library itself writes `ai`, `semi-bold`, `drop-shadow` and `black-and-white` (they were `⚠️ai`,
- * `semiBold`, `drop shadow` and `black&white`); what is left is the case: `AI` -> `ai`, `Color` ->
- * `color`, `Number` -> `number`. The earlier names are still read, for the earlier exports.
+ * (which a CSS variable cannot carry) become kebab-case, lowercase: `AI` -> `ai`, `Color` -> `color`,
+ * `Number` -> `number`.
  * Typos are kept (`functionnal`, `subtile`).
  */
 export const validKey = (key) =>
@@ -82,9 +80,7 @@ const round = (n) => Number(Number(n).toFixed(4));
 function convert(token, segments, known) {
   const ext = token.$extensions ?? {};
   const alias = ext['com.figma.aliasData'];
-  // A color made of a color variable and an opacity variable: `composedColor` until 2026-11,
-  // `boundVariables` ({ color, opacity } as alias references) since the export of 2026-11-10.
-  const composed = ext['com.figma.composedColor'];
+  // A color made of a color variable and an opacity variable, both as alias references.
   const bound = ext['com.figma.boundVariables'];
   const p = validPath(segments);
   const out = {};
@@ -113,9 +109,6 @@ function convert(token, segments, known) {
     const target = validName(alias.targetVariableName);
     if (known.has(target)) value = `{${target}}`;
     else notes.push(`The Figma library aliases ${alias.targetVariableSetName}: ${alias.targetVariableName}, which it does not contain; its literal value is kept`);
-  } else if (composed) {
-    const name = (arg) => (arg?.type === 'alias' ? validName(arg.alias.targetVariableName) : JSON.stringify(arg?.value ?? arg));
-    notes.push(`${name(composed.colorArg)} at ${name(composed.opacityArg)}: the Figma library composes them, DTCG cannot, so the resulting color is written as is`);
   } else if (bound?.color && bound?.opacity) {
     const name = (ref) => validName(String(ref).replace(/^\{|\}$/g, ''));
     notes.push(`${name(bound.color)} at ${name(bound.opacity)}: the Figma library composes them, DTCG cannot, so the resulting color is written as is`);
@@ -132,21 +125,11 @@ function convert(token, segments, known) {
 // Reading and writing
 // ---------------------------------------------------------------------------
 
-/**
- * An export file, by its collection folder as COLLECTIONS names it. The `/` of a collection name
- * is ` _ ` in the earlier exports and ` - ` since the export of 2026-11-10 (`Colors - Base`): read
- * either.
- */
-const locate = (file) => {
-  const named = path.join(SRC, file);
-  return fs.existsSync(named) ? named : path.join(SRC, file.replace(/ _ /g, ' - '));
-};
-
-const read = (file) => JSON.parse(fs.readFileSync(locate(file), 'utf8'));
+const read = (file) => JSON.parse(fs.readFileSync(path.join(SRC, file), 'utf8'));
 
 /**
- * Whether two values are the same. A color is its hex and its alpha: exports write its components
- * at different precisions (float32 until 2026-11, four decimals since), which is not a change.
+ * Whether two values are the same. A color is its hex and its alpha: the export rounds its
+ * components to four decimals, the recreated tokens keep Figma's float32 ones.
  */
 const sameValue = (a, b) => {
   const key = (v) => (v && typeof v === 'object' && 'hex' in v ? `${String(v.hex).toUpperCase()}@${round(v.alpha ?? 1)}` : JSON.stringify(v));
