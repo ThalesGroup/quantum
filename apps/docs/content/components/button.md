@@ -78,6 +78,9 @@ and corners, not by a bigger label.
 The minimum height sets the height at the default text size. When the content grows beyond it
 (larger text, a larger icon), the button grows with it and keeps a minimum space above and
 below the content, so the label never touches the edges.
+When people raise the text size, the label grows and the icon grows by the same factor, so it
+keeps its size next to the label; a button and an icon button of the same size stay the same
+height at every text size.
 The exact values are tokens (Tokens tab). Never mix sizes within one group of buttons.
 
 ### iOS
@@ -206,6 +209,10 @@ This section explains the decisions behind it.
 - **Target size.** The floor everywhere is 24 by 24 CSS pixels, which extra small meets exactly
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
   Touch platforms ask for more; see below.
+- **Text size.** People who need larger text raise the text size, and the label grows with it
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent)).
+  The icon grows by the same factor so it keeps its size next to the label, and the button
+  grows with both and keeps its block padding.
 - **Disabled buttons** cannot explain themselves, which is why the recommendation above is to
   keep actions enabled and explain on activation.
 - **Motion.** The color transition is dropped when people ask their system for less motion
@@ -227,6 +234,11 @@ This section explains the decisions behind it.
   keyboard or a screen reader may never learn the action exists. APG recommends keeping a
   control focusable when its presence matters
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
+- Text sizes are px lengths today, so a browser's text-only size setting enlarges neither the
+  label nor the icon, while zoom enlarges both, which meets Resize Text
+  ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
+  When text follows that setting, the icon follows it with it.
 
 ### iOS
 
@@ -245,6 +257,9 @@ This section explains the decisions behind it.
   is that press state.
 - When Reduce Motion is on, automatic and repetitive animations are reduced
   ([Apple HIG: Accessibility, cognitive](https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive)).
+- The label grows with Dynamic Type, up to the larger accessibility sizes, and the icon with
+  it: Apple asks for meaningful interface icons to grow as the font size increases
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
@@ -272,6 +287,8 @@ This section explains the decisions behind it.
   ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices)).
   On Windows and Linux, the native button gets keyboard access from the platform, as EN 301 549
   asks of any native software.
+- macOS does not support Dynamic Type: there the button keeps its size, as text does
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 
 ## Related
 

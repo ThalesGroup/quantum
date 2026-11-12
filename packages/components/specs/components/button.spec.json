@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -186,7 +186,7 @@
     "sizing": "hug",
     "notes": [
       "Parts sit on one row separated by container.gap, which follows the size option.",
-      "Inline padding, minimum height and corner radius come from the size option; the block padding is a minimum: at the default text size the minimum height sets the height and the content centers vertically; larger content grows the button and keeps the block padding. With an icon, the side that holds it takes the icon-side padding and the label side of a one-icon button the label-side padding.",
+      "Inline padding, minimum height and corner radius come from the size option; the block padding is a minimum: at the default text size the minimum height sets the height and the content centers vertically; larger content grows the button and keeps the block padding. When people raise the text size, the label grows and the icon grows by the same factor (Iconography rule text-size), so the button grows with them. With an icon, the side that holds it takes the icon-side padding and the label side of a one-icon button the label-side padding.",
       "Width hugs the content; a layout may stretch it (full width) without changing the component."
     ]
   },
@@ -363,6 +363,42 @@
         ],
         "platforms": [
           "android"
+        ]
+      },
+      {
+        "text": "Text can be resized up to 200 percent without loss of content or function: the label grows with the text size, and the icon, non-text content, grows by the same factor so that it keeps its size next to the label. The button grows with its content and keeps its block padding, so the label never touches the edges.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: that setting enlarges neither the label nor the icon, while zoom enlarges both, which meets Resize Text. When text follows that setting, the icon follows it with it.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The label grows with Dynamic Type, up to the larger accessibility sizes, and the icon grows with it, as Apple asks of meaningful interface icons; the button grows with them.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, the button keeps its size, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -586,6 +622,31 @@
         "id": "en-301-549-keyboard",
         "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
         "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
       }
     ]
   },
@@ -752,6 +813,25 @@
     "dropdown"
   ],
   "decisions": [
+    {
+      "id": "grows-with-text-size",
+      "date": "2026-11-12",
+      "version": "0.27.0",
+      "area": "size",
+      "status": "active",
+      "text": "As on the Icon button, the button grows with the text size on every platform that lets people raise it: the label grows with the text, and the icon grows by the same factor so that it keeps its size next to the label (Iconography decision icons-follow-text-size). The minimum height and the block padding stay (block-padding-fits-icon): at the default text size nothing moves; when the content outgrows the minimum height, the button grows and keeps that space above and below, as high as an icon button of the same size. Where nothing scales the text (macOS) and on the web, where text and icons are px lengths that zoom scales together, the button keeps its size.",
+      "rationale": "The Button already grew with its content, but its contract did not say that its icon grows with the label, which the Iconography foundation asks and the Icon button's decision relies on to line up with it at every text size.",
+      "tokens": [
+        "button.label.typography.*",
+        "button.icon.size.*",
+        "button.container.padding-block.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type"
+      ]
+    },
     {
       "id": "touch-target-hit-region",
       "date": "2026-11-12",
@@ -1280,6 +1360,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.27.0",
+      "date": "2026-11-12",
+      "note": "Decision grows-with-text-size, as on the Icon button: the label grows with the text size on every platform that scales text, the icon by the same factor, and the button grows with them and keeps its block padding. New guidelines for every platform (WCAG 1.4.4), the web, iOS and macOS, five references; a layout note. No token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.26.0",
       "date": "2026-11-12",
