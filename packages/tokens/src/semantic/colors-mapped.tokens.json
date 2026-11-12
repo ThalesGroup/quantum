@@ -872,14 +872,14 @@
           "on-accent": {
             "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
             "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9646114706993103,0.9780457019805908,0.9956189393997192],"alpha":1,"hex":"#F6F9FE"},"$description":"The Figma library aliases Colors / Alias: brand/light/25, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
             "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"},
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
           },
           "on-subtle": {
             "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
             "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9646114706993103,0.9780457019805908,0.9956189393997192],"alpha":1,"hex":"#F6F9FE"},"$description":"The Figma library aliases Colors / Alias: brand/light/25, which it does not contain; its literal value is kept"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
             "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"},
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
           }
@@ -887,31 +887,31 @@
         "icon": {
           "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
           "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
-          "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9646114706993103,0.9780457019805908,0.9956189393997192],"alpha":1,"hex":"#F6F9FE"},"$description":"The Figma library aliases Colors / Alias: brand/light/25, which it does not contain; its literal value is kept"},
+          "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.25}"},
           "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"},
           "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
         },
         "border": {
           "base": {
             "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.800}"},
-            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22416234016418457,0.4476175606250763,0.8480817079544067],"alpha":1,"hex":"#3972D8"},"$description":"The Figma library aliases Colors / Alias: brand/light/600, which it does not contain; its literal value is kept"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}"},
             "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"},
             "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"},
             "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.200}"}
           },
           "on-accent": {
-            "brand-1": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.15411756932735443,0.2957887351512909,0.594975471496582],"alpha":1,"hex":"#274B98"},"$description":"The Figma library aliases Colors / Alias: brand/light/800, which it does not contain; its literal value is kept"},
-            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22416234016418457,0.4476175606250763,0.8480817079544067],"alpha":1,"hex":"#3972D8"},"$description":"The Figma library aliases Colors / Alias: brand/light/600, which it does not contain; its literal value is kept"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.23852403461933136,0.5172147154808044,0.8755649924278259],"alpha":1,"hex":"#3D84DF"},"$description":"The Figma library aliases Colors / Alias: brand/light/500, which it does not contain; its literal value is kept"},
-            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.41905906796455383,0.6843405961990356,0.9312850832939148],"alpha":1,"hex":"#6BAFED"},"$description":"The Figma library aliases Colors / Alias: brand/light/400, which it does not contain; its literal value is kept"},
-            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5774273872375488,0.7846760153770447,0.9560450315475464],"alpha":1,"hex":"#93C8F4"},"$description":"The Figma library aliases Colors / Alias: brand/light/300, which it does not contain; its literal value is kept"}
+            "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.700}"},
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.500}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.300}"}
           },
           "separator": {
             "brand-1": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"},
-            "brand-2": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.22416234016418457,0.4476175606250763,0.8480817079544067],"alpha":1,"hex":"#3972D8"},"$description":"The Figma library aliases Colors / Alias: brand/light/600, which it does not contain; its literal value is kept"},
-            "brand-3": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.23852403461933136,0.5172147154808044,0.8755649924278259],"alpha":1,"hex":"#3D84DF"},"$description":"The Figma library aliases Colors / Alias: brand/light/500, which it does not contain; its literal value is kept"},
-            "brand-4": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.41905906796455383,0.6843405961990356,0.9312850832939148],"alpha":1,"hex":"#6BAFED"},"$description":"The Figma library aliases Colors / Alias: brand/light/400, which it does not contain; its literal value is kept"},
-            "brand-5": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.5774273872375488,0.7846760153770447,0.9560450315475464],"alpha":1,"hex":"#93C8F4"},"$description":"The Figma library aliases Colors / Alias: brand/light/300, which it does not contain; its literal value is kept"}
+            "brand-2": {"$type":"color","$value":"{brand.palettes.core-colors.light.600}"},
+            "brand-3": {"$type":"color","$value":"{brand.palettes.core-colors.light.500}"},
+            "brand-4": {"$type":"color","$value":"{brand.palettes.core-colors.light.400}"},
+            "brand-5": {"$type":"color","$value":"{brand.palettes.core-colors.light.300}"}
           }
         }
       },
