@@ -67,5 +67,6 @@ export default {
   },
   notDrawn: [
     { slot: 'indicator.transition', reason: 'Figma variables have no duration or easing (the indeterminate sweep is an animation).' },
+    { slot: 'indicator.opacity', reason: 'The low point of the pulse that replaces the sweep under reduced motion, an animation: the indicator at rest is opaque.' },
   ],
 };

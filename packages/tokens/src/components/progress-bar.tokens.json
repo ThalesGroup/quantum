@@ -66,7 +66,7 @@
       }
     },
     "indicator": {
-      "$description": "The filled part of the track, as long as the value; a moving segment when the value is unknown (indeterminate). Drawn by the track (a pseudo-element on the web).",
+      "$description": "The filled part of the track, as long as the value; a moving segment when the value is unknown (indeterminate), or under reduced motion the whole track pulsing. Drawn by the track (a pseudo-element on the web).",
       "background": {
         "$type": "color",
         "$value": "{global.bg.accent.brand.default}"
@@ -84,6 +84,11 @@
           "$type": "cubicBezier",
           "$value": "{easing.standard}"
         }
+      },
+      "opacity": {
+        "$type": "number",
+        "$description": "Low point of the opacity pulse that replaces the indeterminate sweep under reduced motion.",
+        "$value": "{opacity.40}"
       }
     }
   }

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "progress-bar",
   "name": "Progress bar",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "status": "draft",
   "role": "progressbar",
   "summary": "Shows how far a task has progressed, or that it is in progress when its length is unknown.",
@@ -107,7 +107,7 @@
     {
       "id": "indeterminate",
       "trigger": "system",
-      "description": "The value is unknown: a segment moves along the track from start to end, and keeps moving until a value is set or the bar is removed. Under reduced motion the segment rests at the start."
+      "description": "The value is unknown: a segment moves along the track from start to end, and keeps moving until a value is set or the bar is removed. Under reduced motion the whole track pulses its opacity instead, so the bar never stands still."
     }
   ],
   "layout": {
@@ -192,16 +192,18 @@
         ]
       },
       {
-        "text": "An indeterminate bar moves for as long as the task runs. A moving indicator of a task that is not presented in parallel with other content is the preloader case that WCAG 2.2.2 describes as acceptable; when the page is usable meanwhile, prefer a determinate bar or keep the animation subtle. The movement is removed when the user asks for reduced motion.",
+        "text": "An indeterminate bar moves for as long as the task runs. A moving indicator of a task that is not presented in parallel with other content is the preloader case that WCAG 2.2.2 describes as acceptable; when the page is usable meanwhile, prefer a determinate bar or keep the animation subtle. When the user asks for reduced motion, the sweep gives way to an opacity pulse of the whole track: a change of opacity is not motion animation, and a bar that stops would look like a stalled task.",
         "refs": [
           "wcag:2.2.2",
           "understanding-pause-stop-hide",
           "wcag:2.3.3",
+          "understanding-motion-animation",
+          "hig-progress-indicators",
           "mdn-reduced-motion"
         ]
       },
       {
-        "text": "The indeterminate look is the native one, a progress without value (:indeterminate); the forced state for review draws the same segment. Under prefers-reduced-motion: reduce the animation stops and the segment rests at the start of the track.",
+        "text": "The indeterminate look is the native one, a progress without value (:indeterminate); the forced state for review draws the same segment. Under prefers-reduced-motion: reduce the track fills with the indicator color and pulses its opacity, the way MDN tones a movement down to a dissolve.",
         "refs": [
           "mdn-indeterminate",
           "mdn-reduced-motion"
@@ -292,6 +294,11 @@
         "id": "understanding-pause-stop-hide",
         "title": "Understanding WCAG 2.2.2 Pause, Stop, Hide (a preloader animation example)",
         "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      },
+      {
+        "id": "understanding-motion-animation",
+        "title": "Understanding WCAG 2.3.3 Animation from Interactions: motion animation (changes of opacity are not)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html#dfn-motion-animation"
       },
       {
         "id": "understanding-status-messages",
@@ -399,6 +406,29 @@
   "related": [],
   "decisions": [
     {
+      "id": "indeterminate-pulse-under-reduced-motion",
+      "date": "2026-11-12",
+      "version": "0.2.0",
+      "area": "motion",
+      "status": "active",
+      "text": "A determinate bar animates its length with the normal duration and the standard easing, and changes it at once under reduced motion. The indeterminate segment sweeps the track from start to end in six times the normal duration (1.5 s), forever; under reduced motion the sweep gives way to the whole track in the indicator color, pulsing between full opacity and the 40 % step (progress-bar.indicator.opacity), six times the normal duration per half cycle, like the Spinner. The six-fold factor is written in the CSS because the additions have no long duration token: a decision to take.",
+      "rationale": "A bar that stops reads as a stalled task, and a still segment reads as a value; a change of opacity is not motion animation. Follows the Motion foundation 0.3.0 (decision activity-indicators-keep-moving).",
+      "supersedes": [
+        "indeterminate-motion"
+      ],
+      "tokens": [
+        "progress-bar.indicator.transition.*",
+        "progress-bar.indicator.opacity"
+      ],
+      "refs": [
+        "wcag:2.3.3",
+        "understanding-motion-animation",
+        "wcag:2.2.2",
+        "understanding-pause-stop-hide",
+        "hig-progress-indicators"
+      ]
+    },
+    {
       "id": "track-and-indicator-colors",
       "date": "2026-10-03",
       "version": "0.1.0",
@@ -436,7 +466,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "motion",
-      "status": "active",
+      "status": "superseded",
       "text": "A determinate bar animates its length with the normal duration and the standard easing; the indeterminate segment sweeps the track in six times the normal duration (1.5 s), forever, and stops under reduced motion. The six-fold factor is written in the CSS because the additions have no long duration token: a decision to take.",
       "tokens": [
         "progress-bar.indicator.transition.*"
@@ -448,6 +478,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-12",
+      "note": "Decision indeterminate-pulse-under-reduced-motion (supersedes indeterminate-motion): under reduced motion the indeterminate bar pulses its opacity over the whole track instead of stopping. Before, it showed an empty track (the segment rested out of view, not at the start as stated), and the forced indeterminate state kept sweeping. New token progress-bar.indicator.opacity (opacity.40). Contrast unchanged at full opacity; like the Spinner's, the pulse dims the indicator during each cycle."
+    },
     {
       "version": "0.1.2",
       "date": "2026-11-12",

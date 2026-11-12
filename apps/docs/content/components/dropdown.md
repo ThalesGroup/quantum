@@ -174,6 +174,8 @@ This section explains the decisions behind it.
 - The menu is placed with CSS anchor positioning, the trigger being its implicit anchor.
   Browsers without anchor positioning show the menu in their default popover position, centered
   in the viewport; it keeps working.
+- The color transitions of the items are switched off under
+  [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
 
 ### iOS
 

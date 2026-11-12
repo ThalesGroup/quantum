@@ -47,7 +47,7 @@ is accurate; hide it when it jumps or stalls.
 | State | How it happens | What changes |
 | --- | --- | --- |
 | Default | The value is known. | The indicator fills the track in proportion to the value. |
-| Indeterminate | No value is set. | A segment moves along the track and keeps moving until a value is set or the bar is removed. Under reduced motion it rests at the start. |
+| Indeterminate | No value is set. | A segment moves along the track and keeps moving until a value is set or the bar is removed. Under reduced motion the whole track pulses instead. |
 
 Prefer a determinate bar whenever the duration is known: a moving segment says that something
 happens, not how long it will take.
@@ -81,9 +81,15 @@ source it comes from. This section explains the decisions behind it.
   ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
 - **Motion.** The indeterminate segment moves for as long as the task runs. WCAG's own example
   of an acceptable moving indicator is a preloader shown while nothing else is usable; when the
-  page is usable meanwhile, prefer a determinate bar. The movement stops when people ask for
-  less motion ([WCAG 2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html),
-  [WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)).
+  page is usable meanwhile, prefer a determinate bar
+  ([WCAG 2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)).
+- **Less motion, never a still bar.** When people ask for less motion, the segment stops
+  sweeping and the whole track pulses its opacity instead, as the Spinner does. A change of
+  opacity is not motion animation
+  ([WCAG 2.3.3: motion animation](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html#dfn-motion-animation)),
+  and a bar that stood still would read as a stalled task
+  ([Apple HIG: Progress indicators, best practices](https://developer.apple.com/design/human-interface-guidelines/progress-indicators#Best-practices))
+  or, as a segment at rest, as a value.
 - **Completion is a status message.** When the task ends, the page says so in a live region;
   the bar announces its name and value when people reach it
   ([WCAG 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)).
@@ -96,8 +102,10 @@ source it comes from. This section explains the decisions behind it.
   [ARIA in HTML: progress](https://www.w3.org/TR/html-aria/#el-progress),
   [HTML-AAM: progress](https://www.w3.org/TR/html-aam-1.0/#el-progress)).
 - The indeterminate look is the native one (`:indeterminate`); the forced state draws the same
-  segment. The animation stops under
+  segment. Under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion)
+  the track fills with the indicator color and pulses, the way MDN tones a movement down to a
+  dissolve; a determinate bar changes its length at once
   ([MDN: :indeterminate](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:indeterminate)).
 - In a right-to-left layout the segment sweeps from right to left: from the start of the track
   to its end, like the value it stands for.
