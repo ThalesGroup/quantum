@@ -69,8 +69,12 @@ buttons in a row and reads as one of them.
 | Medium | Default everywhere else. An icon button without a size is medium, like the button and every control with sizes. |
 | Large | Hero surfaces, next to a large button. |
 
-The glyph grows with the size; its style does not change. It sits centered in the square,
-with no padding of its own.
+The glyph grows with the size; its style does not change. It sits centered in the square.
+
+The sizes are those at the default text size. When people raise the text size, the glyph grows
+with the text, as a button's icon does, and the square keeps the button's block padding around
+it: at the default size nothing moves, and at larger sizes the icon button stays exactly as
+high as a button of the same size with an icon, so a row of both still lines up.
 
 ### iOS
 
@@ -175,6 +179,10 @@ This section explains the decisions behind it.
   the border, thick enough for the AAA focus appearance criterion
   ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)).
+- **Text size.** Resize Text covers text, not icons, but people who need larger text also
+  need to read the symbol that names the action, so the glyph grows with the text on every
+  platform that lets people raise it, and the square with it
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent)).
 - **Target size.** The square is never smaller than 24 by 24 CSS pixels; extra small sits
   exactly there
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
@@ -214,6 +222,11 @@ This section explains the decisions behind it.
   touch ([MDN: title, accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/title#accessibility_concerns)).
 - The native `disabled` attribute removes the button from the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
+- Text sizes are px lengths today, so a browser's text-only size setting enlarges neither the
+  labels nor the glyph, while zoom enlarges both, which meets Resize Text
+  ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
+  When text follows that setting, the glyph follows it with it.
 
 ### iOS
 
@@ -233,6 +246,9 @@ This section explains the decisions behind it.
 - iPhone and iPad apps that run on a Mac show tooltips when the pointer rests on an element:
   give the icon button one there. On touch there is none, so the symbol carries the action
   ([Apple HIG: Offering help](https://developer.apple.com/design/human-interface-guidelines/offering-help#macOS-visionOS)).
+- Apple asks for meaningful interface icons to grow as the font size increases: the glyph grows
+  with Dynamic Type, up to the larger accessibility sizes, and the square with it
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
@@ -260,6 +276,8 @@ This section explains the decisions behind it.
   [Apple HIG: Offering help](https://developer.apple.com/design/human-interface-guidelines/offering-help#macOS-visionOS)).
   On Windows and Linux, the native button gets keyboard access from the platform, as EN 301 549
   asks of any native software.
+- macOS does not support Dynamic Type: there the icon button keeps its size, as text does
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 
 ## Related
 
