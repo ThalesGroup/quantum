@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -426,7 +426,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt. The extra small, small and medium icon buttons (24, 28 and 36 pt square) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "Every size has a hit region of at least 44 x 44 pt, as Apple recommends: the extra small, small and medium squares (24, 28 and 36 pt) keep their drawn size and the hit region extends around them, centered, with the layout reserving it so that the hit regions of neighbouring controls do not overlap.",
         "refs": [
           "hig-buttons-best-practices",
           "hig-accessibility-mobility"
@@ -436,7 +436,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp. Every size (24, 28, 36 and 44 dp square) falls under it on Android today: the Figma library has no platform heights.",
+        "text": "Every size has a touch target of at least 48 x 48 dp, as Android recommends: the square (24, 28, 36 or 44 dp) keeps its drawn size and is centered in 48 dp of reserved layout space, with the touch target extended to it (Compose: the minimumInteractiveComponentSize modifier, which Material's IconButton already applies).",
         "refs": [
           "android-large-controls",
           "compose-target-sizes"
@@ -813,6 +813,21 @@
   ],
   "decisions": [
     {
+      "id": "touch-target-hit-region",
+      "date": "2026-11-12",
+      "version": "0.11.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On iOS and Android every size reaches the platform's touch target without growing: the hit region is at least 44 x 44 pt on iOS and 48 x 48 dp on Android, centered on the drawn square, and the layout reserves it so that neighbouring targets do not overlap (on Android the minimumInteractiveComponentSize modifier, as Material's IconButton does). The drawn square, the glyph and the tokens stay the same on every platform, as in Figma and on the Button it mirrors. The web (WCAG 2.5.8, 24 x 24 CSS px) and desktop already meet their targets and keep the drawn square as the target.",
+      "rationale": "The extra small to medium squares were under Apple's 44 pt and every size under Android's 48 dp, and icon buttons are the smallest controls of the system, often set in rows. Both platforms let a control keep a smaller drawn size with a larger touch area around it, which keeps one rendering everywhere instead of platform sizes.",
+      "refs": [
+        "hig-buttons-best-practices",
+        "hig-accessibility-mobility",
+        "android-large-controls",
+        "compose-target-sizes"
+      ]
+    },
+    {
       "id": "name-shown-as-tooltip",
       "date": "2026-11-12",
       "version": "0.10.0",
@@ -1016,6 +1031,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.11.0",
+      "date": "2026-11-12",
+      "note": "Decision touch-target-hit-region: on iOS every size has a hit region of at least 44 x 44 pt and on Android a touch target of at least 48 x 48 dp, centered on the drawn square and reserved in the layout; the drawn square is unchanged. The iOS and Android guidelines no longer say the sizes fall under the platform targets. No token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.10.0",
       "date": "2026-11-12",

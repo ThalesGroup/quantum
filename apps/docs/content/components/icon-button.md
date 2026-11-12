@@ -74,13 +74,15 @@ with no padding of its own.
 
 ### iOS
 
-The sizes are the same as on the web: extra small, small and medium icon buttons are under the
-44 pt hit region Apple recommends until the platform gets its own sizes.
+The sizes are drawn as on the web. Every size still reaches the 44 pt hit region Apple
+recommends: the touch area extends around the square, centered, and the layout keeps that room
+free, so icon buttons in a row sit at least 44 pt apart, center to center.
 
 ### Android
 
-The sizes are the same as on the web: every size, large included, is under the 48 dp touch
-target Android recommends until the platform gets its own sizes.
+The sizes are drawn as on the web. Every size still reaches the 48 dp touch target Android
+recommends: the square is centered in 48 dp of reserved space, which takes the touch, so icon
+buttons in a row sit at least 48 dp apart, center to center.
 
 ## Icon
 
@@ -221,7 +223,8 @@ This section explains the decisions behind it.
 - The hit region must be at least 44 by 44 pt and a custom button always shows a press state
   ([Apple HIG: Buttons, best practices](https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices),
   [Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
-  The extra small, small and medium icon buttons fall under it today.
+  Every size reaches it: the hit region extends around the drawn square and the layout
+  reserves it, so the hit regions of neighbouring controls never overlap.
 - Full Keyboard Access lets people reach and activate controls with the keyboard alone: use
   the native button, test with Full Keyboard Access on, and on iPadOS add no keyboard
   navigation of your own to the button
@@ -237,8 +240,10 @@ This section explains the decisions behind it.
   framework cannot describe the graphic on its own
   ([Jetpack Compose: graphic elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements)).
 - The touch target must be at least 48 by 48 dp
-  ([Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
-  Every size falls under it today.
+  ([Android: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
+  [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
+  Every size reaches it while keeping its drawn size: `minimumInteractiveComponentSize`
+  reserves 48 dp around the square and the touch target fills it, as in Material's `IconButton`.
 - With a hardware keyboard or Switch Access, focus navigation reaches the icon button and
   highlights it, in a logical order, and focus can always move on
   ([Orange guidelines: access to interactive elements](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements),
