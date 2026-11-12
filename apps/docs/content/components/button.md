@@ -82,14 +82,15 @@ The exact values are tokens (Tokens tab). Never mix sizes within one group of bu
 
 ### iOS
 
-The sizes are the same as on the web: extra small, small and medium buttons are under the
-44 pt hit region Apple recommends until the platform gets its own heights. Prefer large
-buttons for touch.
+The sizes are drawn as on the web. Every size still reaches the 44 pt hit region Apple
+recommends: the touch area extends around the button, centered, and the layout keeps that room
+free, so the hit regions of neighbouring buttons never overlap.
 
 ### Android
 
-The sizes are the same as on the web: every size, large included, is under the
-48 dp touch target Android recommends until the platform gets its own heights.
+The sizes are drawn as on the web. Every size still reaches the 48 dp touch target Android
+recommends: the button is centered in at least 48 dp of reserved space, which takes the touch,
+so the touch targets of neighbouring buttons never overlap.
 
 ## Icons
 
@@ -233,7 +234,8 @@ This section explains the decisions behind it.
   support with them
   ([Apple HIG: Buttons, best practices](https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices),
   [Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
-  The extra small, small and medium buttons fall under it today.
+  Every size reaches it: the hit region extends around the drawn button and the layout
+  reserves it, so the hit regions of neighbouring controls never overlap.
 - Full Keyboard Access lets people reach and activate controls with the keyboard alone: use
   the native button, test with Full Keyboard Access on, and on iPadOS add no keyboard
   navigation of your own to the button
@@ -249,7 +251,9 @@ This section explains the decisions behind it.
 - Interactive elements need a touch target of at least 48 by 48 dp
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
-  The extra small, small and medium buttons fall under it today.
+  Every size reaches it while keeping its drawn size: `minimumInteractiveComponentSize`
+  reserves at least 48 dp around the button and the touch target fills it, as in Material's
+  `Button`.
 - A Material `Button` merges its children into one entity with the button semantics
   ([Jetpack Compose: interactive elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements)).
   The icon passes `null` as `contentDescription`, or is hidden with `hideFromAccessibility`,

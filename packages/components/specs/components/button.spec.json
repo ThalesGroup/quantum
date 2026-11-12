@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -346,7 +346,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt. The extra small, small and medium buttons (24, 28 and 36 pt high) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "Every size has a hit region of at least 44 x 44 pt, as Apple recommends: the extra small, small and medium buttons (24, 28 and 36 pt high) keep their drawn size and the hit region extends around them, centered, with the layout reserving it so that the hit regions of neighbouring controls do not overlap.",
         "refs": [
           "hig-buttons-best-practices",
           "hig-accessibility-mobility"
@@ -356,7 +356,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp. Every size (24, 28, 36 and 44 dp high) falls under it on Android today: the Figma library has no platform heights.",
+        "text": "Every size has a touch target of at least 48 x 48 dp, as Android recommends: the button (24, 28, 36 or 44 dp high) keeps its drawn size and is centered in at least 48 dp of reserved layout space in each dimension, with the touch target extended to it (Compose: the minimumInteractiveComponentSize modifier, which Material's Button already applies).",
         "refs": [
           "android-large-controls",
           "compose-target-sizes"
@@ -752,6 +752,21 @@
     "dropdown"
   ],
   "decisions": [
+    {
+      "id": "touch-target-hit-region",
+      "date": "2026-11-12",
+      "version": "0.26.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "As on the Icon button, on iOS and Android every size reaches the platform's touch target without growing: the hit region is at least 44 x 44 pt on iOS and 48 x 48 dp on Android, centered on the drawn button, and the layout reserves it so that neighbouring targets do not overlap (on Android the minimumInteractiveComponentSize modifier). A button with a text label is usually wider than the target already, so in practice only its height is extended. The drawn button, its label and the tokens stay the same on every platform, as in Figma; the web (WCAG 2.5.8, 24 x 24 CSS px) and desktop already meet their targets and keep the drawn button as the target.",
+      "rationale": "The extra small to medium buttons were under Apple's 44 pt and every size under Android's 48 dp; the Icon button, which renders the same, now reaches both with a hit region, and the two components make the same promise on touch.",
+      "refs": [
+        "hig-buttons-best-practices",
+        "hig-accessibility-mobility",
+        "android-large-controls",
+        "compose-target-sizes"
+      ]
+    },
     {
       "id": "keyboard-on-every-platform",
       "date": "2026-11-12",
@@ -1265,6 +1280,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.26.0",
+      "date": "2026-11-12",
+      "note": "Decision touch-target-hit-region, as on the Icon button: on iOS every size has a hit region of at least 44 x 44 pt and on Android a touch target of at least 48 x 48 dp, centered on the drawn button and reserved in the layout; the drawn button is unchanged. The iOS and Android guidelines no longer say the sizes fall under the platform targets; the docs' Android accessibility bullet no longer says only extra small to medium do. No token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.25.0",
       "date": "2026-11-12",
