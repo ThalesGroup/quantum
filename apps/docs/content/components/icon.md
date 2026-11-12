@@ -90,11 +90,11 @@ source it comes from. This section explains the decisions behind it.
   [WAI tutorial: Functional images](https://www.w3.org/WAI/tutorials/images/functional/)).
 - **Contrast for named icons.** A named icon is a graphical object and needs 3:1 against the
   surface. Every color option passes on every surface level and on its own colored fill, hover
-  and active fills included, in both modes, except warning in light mode: the Figma library's
-  POC2 export set the warning icon role to warning 300, the step that fixed dark mode (1.54:1 on
-  the page, 1.25:1 on the sunken warning fill), a known issue of the Color foundation. The Icon
-  keeps the library's value until the library fixes it, rather than departing from it; until
-  then, pair a warning icon with text. `current` inherits the contrast of the text around it:
+  and active fills included, in both modes, except warning on the sunken warning fill in light
+  mode (2.66:1): its icon role aliases the warning icon on the page, which the Figma library
+  darkened to warning 500 for the page (3.09:1 at the lowest) but which stays too light on that
+  fill. The Icon keeps the library's value rather than departing from it; on that fill, pair a
+  warning icon with text. `current` inherits the contrast of the text around it:
   every text role of the system reaches 3:1 on the surface levels (4.24:1 at the lowest, and
   3.12:1 for disabled text), so a named icon in `current` does too
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),

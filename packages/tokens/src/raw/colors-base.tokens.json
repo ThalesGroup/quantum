@@ -204,7 +204,7 @@
       "200": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,0.8392353057861328,0.3293110728263855],"alpha":1,"hex":"#FFD654"}},
       "300": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9999379515647888,0.7764593958854675,0.11023182421922684],"alpha":1,"hex":"#FFC61C"}},
       "400": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8744964003562927,0.6549431681632996,0.0009887474589049816],"alpha":1,"hex":"#DFA700"}},
-      "500": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7646132111549377,0.5176354646682739,0.004616602323949337],"alpha":1,"hex":"#C38401"}},
+      "500": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.7412,0.5059,0.0275],"alpha":1,"hex":"#BD8107"}},
       "600": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.4627884030342102,0.34511470794677734,0.09403806179761887],"alpha":1,"hex":"#765818"}},
       "700": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.39216503500938416,0.2940959334373474,0.08613844215869904],"alpha":1,"hex":"#644B16"}},
       "800": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.24317722022533417,0.17646364867687225,0.04691243916749954],"alpha":1,"hex":"#3E2D0C"}},

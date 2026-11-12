@@ -156,7 +156,7 @@ and the full radius, which stay in px.
 | --- | --- | --- | --- |
 | `--bs-warning-base` | `global.bg.accent.functional.warning.default` | `#FFC61C` |  |
 | `--bs-warning-fg` | `global.text.on-subtle.functional.warning.default` | `#644B16` / `#FFD654` | Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum's on-subtle step, the alert title and subtle badge label. |
-| `--bs-warning-fg-emphasis` | `global.text.on-sunken.functional.warning.default` | `#2D2107` / `#C38401` |  |
+| `--bs-warning-fg-emphasis` | `global.text.on-sunken.functional.warning.default` | `#2D2107` / `#BD8107` |  |
 | `--bs-warning-bg` | `global.bg.accent.functional.warning.default` | `#FFC61C` |  |
 | `--bs-warning-bg-subtle` | `global.bg.subtle.functional.warning.default` | `#FFF1C7` / `#1F1504` |  |
 | `--bs-warning-bg-muted` | `global.bg.subtle.functional.warning.hover` | `#FFE495` / `#2D2107` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |

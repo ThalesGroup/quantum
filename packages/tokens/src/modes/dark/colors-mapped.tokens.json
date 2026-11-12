@@ -361,6 +361,13 @@
       }
     },
     "icon": {
+      "on-base": {
+        "functional": {
+          "warning": {
+            "default": {"$type":"color","$value":"{functional.warning.300}"}
+          }
+        }
+      },
       "on-sunken": {
         "functional": {
           "warning": {
