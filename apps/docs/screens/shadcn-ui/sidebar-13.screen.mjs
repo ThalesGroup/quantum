@@ -36,7 +36,7 @@ const CURRENT = 'Messages & media';
 
 export function render() {
   return screen({ class: 'scr-dialog-stage' },
-    ds.button({ label: 'Open Dialog', size: 'small' }),
+    ds.button({ label: 'Open Dialog', emphasis: 'accent', size: 'small' }),
     el('dialog', { class: 'scr-dialog', open: true, 'aria-labelledby': 'sidebar-13-title', 'aria-describedby': 'sidebar-13-description' },
       // The original's title and description are visually hidden.
       el('h2', { class: 'scr-sr', id: 'sidebar-13-title' }, 'Settings'),

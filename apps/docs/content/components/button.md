@@ -28,8 +28,10 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 ## When not to use
 
 - **Navigation between pages or views.** Use a link.
-- **Toggling a setting on or off.** Use a switch or a toggle button, whose pressed state is announced.
-- **Choosing between options.** Use radio buttons, a segmented control or a select.
+- **Toggling something on or off.** The button has no pressed state, so nothing would show or
+  announce that the action stays on. The system has no toggle button yet; for a setting in a
+  list or a form, use a switch.
+- **Choosing between options.** Use a radio group or a select.
 
 ## Emphasis
 
@@ -37,9 +39,12 @@ Emphasis is the visual weight of the button. It answers "how important is this a
 
 | Emphasis | Weight | Use for |
 | --- | --- | --- |
-| Accent | Highest | The single most important action on the view. Strong fill in the intent color with a contrasting label. The default. |
-| Subtle | Medium | Actions that support the accent one (Cancel, Back, Save draft). Tinted fill and a light border in the intent color. |
+| Accent | Highest | The single most important action on the view. Strong fill in the intent color with a contrasting label. |
+| Subtle | Medium | Actions that support the accent one (Cancel, Back, Save draft). Tinted fill and a light border in the intent color. The default. |
 | Ghost | Lowest | Repeated, tertiary or inline actions (table row actions, "Learn more"). Label only at rest; a tint and a light border appear on hover and press. |
+
+Without an emphasis, a button is subtle: it keeps the visible shape of a button without the
+weight of accent, so accent is always a choice. Set accent on the one action that must stand out.
 
 Limit each view to one accent button. When two actions compete for attention, neither is
 accent: demote both to subtle and let the layout order carry the hierarchy.
@@ -78,18 +83,20 @@ and corners, not by a bigger label.
 The minimum height sets the height at the default text size. When the content grows beyond it
 (larger text, a larger icon), the button grows with it and keeps a minimum space above and
 below the content, so the label never touches the edges.
+When people raise the text size, the label grows and the icon grows by the same factor, so it
+keeps its size next to the label; a button and an icon button of the same size stay the same
+height at every text size.
 The exact values are tokens (Tokens tab). Never mix sizes within one group of buttons.
 
 ### iOS
 
-The sizes are the same as on the web: extra small, small and medium buttons are under the
-44 pt hit region Apple recommends until the platform gets its own heights. Prefer large
-buttons for touch.
+The sizes are drawn as on the web, and every size still reaches the 44 pt hit region without
+growing (see Accessibility, iOS).
 
 ### Android
 
-The sizes are the same as on the web: every size, large included, is under the
-48 dp touch target Android recommends until the platform gets its own heights.
+The sizes are drawn as on the web, and every size still reaches the 48 dp touch target without
+growing (see Accessibility, Android).
 
 ## Icons
 
@@ -110,8 +117,8 @@ A button with an icon has a narrower inline padding than one without: a glyph ca
 white space inside its box, so a full padding next to it would look wider than on the label
 side. The side that holds the icon is the narrowest; the label side narrows less.
 
-Icon-only buttons are a separate component (Icon button) because they need a tooltip and an
-explicit accessible name.
+Icon-only buttons are a separate component (Icon button) because they need an explicit
+accessible name, also shown as a tooltip where people hover or move keyboard focus.
 
 ## Color modes
 
@@ -179,6 +186,14 @@ This section explains the decisions behind it.
   The ring uses the strong focus width of the stroke scale rather than a thinner one, so it keeps the 2 CSS pixel thickness of the AAA focus appearance
   criterion, beyond what AA asks
   ([WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)).
+- **Keyboard, on every platform.** People who use a physical or assistive keyboard reach the
+  button and activate it
+  ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)). Native
+  apps owe the same: EN 301 549 asks it of any software with a user interface, and accepts
+  software that relies on the platform's own keyboard services
+  ([EN 301 549 V3.2.1, clause 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70)).
+  The native button control gets it from those services, so it needs no keyboard handling of
+  its own; the keys are each platform's.
 - **Color is never the only signal.** Emphasis shows through fill and border, not hue alone,
   and intent is always backed by the label: an error button says what it destroys
   ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
@@ -197,6 +212,10 @@ This section explains the decisions behind it.
 - **Target size.** The floor everywhere is 24 by 24 CSS pixels, which extra small meets exactly
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
   Touch platforms ask for more; see below.
+- **Text size.** People who need larger text raise the text size, and the label grows with it
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent)).
+  The icon grows by the same factor so it keeps its size next to the label, and the button
+  grows with both and keeps its block padding.
 - **Disabled buttons** cannot explain themselves, which is why the recommendation above is to
   keep actions enabled and explain on activation.
 - **Motion.** The color transition is dropped when people ask their system for less motion
@@ -218,6 +237,11 @@ This section explains the decisions behind it.
   keyboard or a screen reader may never learn the action exists. APG recommends keeping a
   control focusable when its presence matters
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
+- Text sizes are px lengths today, so a browser's text-only size setting enlarges neither the
+  label nor the icon, while zoom enlarges both, which meets Resize Text
+  ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
+  When text follows that setting, the icon follows it with it.
 
 ### iOS
 
@@ -225,28 +249,53 @@ This section explains the decisions behind it.
   support with them
   ([Apple HIG: Buttons, best practices](https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices),
   [Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
-  The extra small, small and medium buttons fall under it today.
+  Every size reaches it: the hit region extends around the drawn button and the layout
+  reserves it, so the hit regions of neighbouring controls never overlap.
+- Full Keyboard Access lets people reach and activate controls with the keyboard alone: use
+  the native button, test with Full Keyboard Access on, and on iPadOS add no keyboard
+  navigation of your own to the button
+  ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices),
+  [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
 - A custom button always shows a press state, otherwise it feels unresponsive: the active state
   is that press state.
 - When Reduce Motion is on, automatic and repetitive animations are reduced
   ([Apple HIG: Accessibility, cognitive](https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive)).
+- The label grows with Dynamic Type, up to the larger accessibility sizes, and the icon with
+  it: Apple asks for meaningful interface icons to grow as the font size increases
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
 - Interactive elements need a touch target of at least 48 by 48 dp
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
-  The extra small, small and medium buttons fall under it today.
+  Every size reaches it while keeping its drawn size: `minimumInteractiveComponentSize`
+  reserves at least 48 dp around the button and the touch target fills it, as in Material's
+  `Button`.
 - A Material `Button` merges its children into one entity with the button semantics
   ([Jetpack Compose: interactive elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements)).
   The icon passes `null` as `contentDescription`, or is hidden with `hideFromAccessibility`,
   so only the label is announced
   ([Jetpack Compose: graphic elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements),
   [Android accessibility: describe each UI element](https://developer.android.com/guide/topics/ui/accessibility/apps#describe-ui-element)).
+- With a hardware keyboard or Switch Access, focus navigation reaches the button and
+  highlights it, in a logical order, and focus can always move on
+  ([Orange guidelines: access to interactive elements](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements),
+  [keyboard navigation order](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order)).
+
+### Desktop
+
+- On macOS, Full Keyboard Access lets people navigate to the button and activate it with the
+  keyboard alone; use the native control and keep the standard keyboard shortcuts
+  ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices)).
+  On Windows and Linux, the native button gets keyboard access from the platform, as EN 301 549
+  asks of any native software.
+- macOS does not support Dynamic Type: there the button keeps its size, as text does
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 
 ## Related
 
 - Link (navigation)
 - Icon button (icon-only actions, named by a label for assistive technology)
-- Toggle button (pressed state)
+- Switch (a setting turned on or off)
 - Dropdown (a button opening a menu of related actions)

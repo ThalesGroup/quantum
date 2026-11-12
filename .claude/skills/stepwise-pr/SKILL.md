@@ -115,7 +115,9 @@ asking) goes to memory and, when it is a repository rule, to the guide in `agent
    skill `component-refinement`).
 2. Document anything new the work introduced (directories, scripts, rules) in the
    guides of `agents/` and the directory `AGENTS.md` files.
-3. Status line: "Every step is decided". Final `pnpm check` and `pnpm impact --base origin/<base>`.
+3. Status line: "Every step is decided". Rebase on `origin/<base>` first (a branch behind its
+   base shows the base's newer changes as its own in `pnpm impact`), then the final `pnpm check`
+   and `pnpm impact --base origin/<base>`.
 4. Mark it ready: `gh pr ready <n> --repo ThalesGroup/quantum`. Never merge it.
 5. Report: branch, commits, pull request link, labels, and the "How to review" list.
 6. Keep the worktree until the merge (its `build/review/` holds the sheets); after the merge,

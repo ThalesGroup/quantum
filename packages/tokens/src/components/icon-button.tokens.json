@@ -139,6 +139,14 @@
         "medium": { "$value": "{space.36}" },
         "large": { "$value": "{space.44}" }
       },
+      "padding": {
+        "$type": "dimension",
+        "$description": "Minimum space around the glyph on every side: the Button's block padding. At the default text size the minimum width and height set the side; when the glyph grows with the text size, the square grows to the glyph plus this padding, as high as a Button of the same size with an icon.",
+        "xsmall": { "$value": "{space.2}" },
+        "small": { "$value": "{space.3}" },
+        "medium": { "$value": "{space.5}" },
+        "large": { "$value": "{space.8}" }
+      },
       "outline-width": {
         "$type": "dimension",
         "focus-visible": { "$value": "{focus.ring.width}" }

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.7.0",
+  "version": "0.14.1",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -31,7 +31,7 @@
       "id": "emphasis",
       "name": "Emphasis",
       "type": "enum",
-      "default": "accent",
+      "default": "subtle",
       "description": "Visual weight of the icon button, from strongest to weakest.",
       "affects": [
         "container",
@@ -44,7 +44,7 @@
         },
         {
           "value": "subtle",
-          "description": "Medium emphasis: tinted fill and light border in the intent color."
+          "description": "Medium emphasis: tinted fill and light border in the intent color. The default."
         },
         {
           "value": "ghost",
@@ -82,7 +82,7 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Square side (minimum width and height), corner radius and glyph size scale together: the side is the height of the button of the same size, the glyph the size of its icon.",
+      "description": "Square side (minimum width and height), padding, corner radius and glyph size scale together: at the default text size the side is the height of the button of the same size, the glyph the size of its icon.",
       "affects": [
         "container",
         "icon"
@@ -119,7 +119,7 @@
       "name": "Label",
       "type": "string",
       "required": true,
-      "description": "Accessible name of the button, never shown: names the action, not the symbol (Delete row, not Trash)."
+      "description": "Accessible name of the button, never drawn in it and shown as a tooltip where people hover or focus: names the action, not the symbol (Delete row, not Trash)."
     },
     {
       "id": "disabled",
@@ -168,11 +168,11 @@
     "align": "center",
     "justify": "center",
     "wrap": false,
-    "sizing": "fixed",
+    "sizing": "hug",
     "notes": [
-      "The container is a square: minimum width and minimum height both come from the size option, so the container stays square at every size. Its side is the height of the button of the same size.",
-      "No padding: the glyph sits centered in the square.",
-      "The glyph box is the icon size of the size option, the size of the button's icon."
+      "The container is a square: minimum width and minimum height both come from the size option, so the container stays square at every size. At the default text size its side is the height of the button of the same size.",
+      "The padding is a minimum on every side, the button's block padding: at the default text size the minimum side sets the size and the glyph sits centered in the square; when the glyph grows with the text size and outgrows it, the square grows to the glyph plus the padding, as high as a button of the same size with an icon.",
+      "The glyph box is the icon size of the size option, the size of the button's icon, at the default text size; it grows with the text size (Iconography rule text-size)."
     ]
   },
   "accessibility": {
@@ -239,6 +239,43 @@
         ]
       },
       {
+        "text": "The icon button can be reached and activated from a keyboard, physical or assistive, on every platform. The platform provides this to its native button control through its own keyboard services, so the control needs no keyboard handling of its own; the keys are the platform's.",
+        "refs": [
+          "wcag:2.1.1",
+          "en-301-549-keyboard"
+        ]
+      },
+      {
+        "text": "Use the native button so Full Keyboard Access can reach and activate it, and test the app with Full Keyboard Access on. On iPadOS, do not add keyboard navigation of your own to the button: Full Keyboard Access activates controls.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "With a hardware keyboard or Switch Access, focus navigation reaches the icon button and highlights it, in a logical order, and focus can always move away from it.",
+        "refs": [
+          "orange-android-focus-access",
+          "orange-android-focus-order"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, Full Keyboard Access lets people navigate to the icon button and activate it with the keyboard alone: use the native control and keep the standard keyboard shortcuts.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
         "text": "Use an icon button for actions and a link for navigation: the role must match the function the control provides.",
         "refs": [
           "apg-button",
@@ -298,6 +335,47 @@
         ]
       },
       {
+        "text": "Show the label in a tooltip when the pointer rests on the icon button and when it receives keyboard focus, so people who do not recognize the symbol can read the action. The tooltip can be dismissed with Escape without moving the pointer or focus, stays while the pointer moves over it, and stays until hover or focus leaves. The reference implementation draws none until the system has a Tooltip component.",
+        "refs": [
+          "wcag:1.4.13",
+          "apg-tooltip",
+          "mdn-tooltip-role"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never show the label with the title attribute: browsers show it on pointer hover only, never on keyboard focus or touch.",
+        "refs": [
+          "mdn-title-accessibility",
+          "mdn-tooltip-role"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On macOS the system displays a tooltip after people hover over a button for a moment: give the icon button one, a brief phrase that says what it does, like its label.",
+        "refs": [
+          "hig-buttons-content",
+          "hig-offering-help-tooltips"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "iPhone and iPad apps that run on a Mac show tooltips when the pointer rests on an element: give the icon button one there too. On touch there is no hover and no tooltip, so the symbol alone carries the action; when a short text says it more clearly, use a button with a label.",
+        "refs": [
+          "hig-offering-help-tooltips",
+          "hig-buttons-content"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
         "text": "Never rely on color alone to convey emphasis or intent: an error-intent icon button names the consequence in its label and uses a symbol that shows it.",
         "refs": [
           "wcag:1.4.1",
@@ -348,7 +426,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt. The extra small, small and medium icon buttons (24, 28 and 36 pt square) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "Every size has a hit region of at least 44 x 44 pt, as Apple recommends: the extra small, small and medium squares (24, 28 and 36 pt) keep their drawn size and the hit region extends around them, centered, with the layout reserving it so that the hit regions of neighbouring controls do not overlap.",
         "refs": [
           "hig-buttons-best-practices",
           "hig-accessibility-mobility"
@@ -358,13 +436,49 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp. Every size (24, 28, 36 and 44 dp square) falls under it on Android today: the Figma library has no platform heights.",
+        "text": "Every size has a touch target of at least 48 x 48 dp, as Android recommends: the square (24, 28, 36 or 44 dp) keeps its drawn size and is centered in 48 dp of reserved layout space, with the touch target extended to it (Compose: the minimumInteractiveComponentSize modifier, which Material's IconButton already applies).",
         "refs": [
           "android-large-controls",
           "compose-target-sizes"
         ],
         "platforms": [
           "android"
+        ]
+      },
+      {
+        "text": "Text can be resized up to 200 percent; the criterion covers text, not icons, which are non-text content. The glyph grows with the text all the same, as every icon that carries meaning on its own does: people who need larger text also need to read the symbol that names the action. The square grows with it and keeps the padding around the glyph, so it stays as high as a button of the same size with an icon.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: that setting enlarges neither the button labels nor the glyph, while zoom enlarges both, which meets Resize Text. When text follows that setting, the glyph follows it with it.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The glyph grows with Dynamic Type, up to the larger accessibility sizes, as Apple asks of meaningful interface icons; the square grows with it.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, the icon button keeps its size, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -528,6 +642,16 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
       },
       {
+        "id": "hig-keyboards-best-practices",
+        "title": "Apple HIG: Keyboards, best practices (Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-speech",
+        "title": "Apple HIG: Accessibility, speech (keyboard alone, Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech"
+      },
+      {
         "id": "android-large-controls",
         "title": "Android accessibility: use large, simple controls",
         "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
@@ -546,6 +670,86 @@
         "id": "compose-interactive-elements",
         "title": "Jetpack Compose accessibility: interactive elements (Button semantics)",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-access",
+        "title": "Orange accessibility guidelines, Android: access to interactive elements (keyboard navigation)",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-order",
+        "title": "Orange accessibility guidelines, Android: keyboard navigation order",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order"
+      },
+      {
+        "id": "en-301-549-keyboard",
+        "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
+      },
+      {
+        "id": "apg-tooltip",
+        "title": "APG: Tooltip pattern (work in progress)",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/"
+      },
+      {
+        "id": "mdn-tooltip-role",
+        "title": "MDN: ARIA tooltip role",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tooltip_role"
+      },
+      {
+        "id": "mdn-title-accessibility",
+        "title": "MDN: the title attribute, accessibility concerns",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/title#accessibility_concerns"
+      },
+      {
+        "id": "hig-buttons-content",
+        "title": "Apple HIG: Buttons, content (tooltips on macOS and visionOS)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/buttons#Content"
+      },
+      {
+        "id": "hig-offering-help-tooltips",
+        "title": "Apple HIG: Offering help, macOS and visionOS (tooltips)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/offering-help#macOS-visionOS"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "hig-toggles-best-practices",
+        "title": "Apple HIG: Toggles, best practices (buttons that behave like toggles)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices"
+      },
+      {
+        "id": "hig-toggles-ios",
+        "title": "Apple HIG: Toggles, iOS and iPadOS (a button that behaves like a toggle outside a list)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#iOS-iPadOS"
+      },
+      {
+        "id": "android-principles-toggle",
+        "title": "Android: accessibility principles, a custom toggle (toggleable, state description)",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/principles"
       }
     ]
   },
@@ -684,6 +888,115 @@
     "button"
   ],
   "decisions": [
+    {
+      "id": "default-emphasis-subtle",
+      "date": "2026-11-12",
+      "version": "0.14.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Without an emphasis, an icon button is subtle, like the button (Button decision default-emphasis-subtle). An explicit emphasis renders as before. The icon=only variant of the Figma prototype's Button set defaults to accent.",
+      "rationale": "A button or icon button left at its default should neither outweigh the content it sits in nor lose the look of a button: subtle lowers the emphasis so that accent is no longer what every button gets by omission, and its tinted fill and light border keep the visible shape of a button, which ghost only shows on hover and press. Accent is chosen on purpose, for the one action that must stand out; ghost for actions repeated among content.",
+      "tokens": [
+        "icon-button.container.background.subtle.*",
+        "icon-button.container.border-color.subtle.*",
+        "icon-button.icon.color.subtle.*"
+      ]
+    },
+    {
+      "id": "no-pressed-state",
+      "date": "2026-11-12",
+      "version": "0.13.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "The icon button has no pressed (on or off) state: it triggers an action and its look never says that something stays on. An action that stays on or off (favorite, mute, bold) is a toggle button, a component of its own that the system does not have yet; until then, a setting turned on or off in a list or a form is a switch.",
+      "rationale": "A toggle button needs its own decisions: its look when on for every emphasis and intent, with no selected role in the semantic tier, its states while on, its groups. Each platform treats it as a toggle with its own state (aria-pressed on the web, a button that behaves like a toggle with a background that shows its state on Apple platforms, toggleable with a state description on Android), which a component of its own carries, as the framework themes' toggles do.",
+      "refs": [
+        "apg-button",
+        "hig-toggles-best-practices",
+        "hig-toggles-ios",
+        "android-principles-toggle"
+      ]
+    },
+    {
+      "id": "grows-with-text-size",
+      "date": "2026-11-12",
+      "version": "0.12.0",
+      "area": "size",
+      "status": "active",
+      "text": "The icon button grows with the text size on every platform that lets people raise it, as a button of the same size with an icon does (Iconography decision icons-follow-text-size): the glyph grows with the text, and the square keeps its side as a minimum and a minimum padding on every side, the button's block padding (space.2 / 3 / 5 / 8, extra small to large). At the default text size nothing moves; when the glyph outgrows the square, the square grows to the glyph plus that padding and stays as high as the button next to it. Where nothing scales the text (macOS) and on the web, where text and glyph are px lengths that zoom scales together, the icon button keeps its size.",
+      "rationale": "The glyph is an icon that carries meaning on its own, which the Iconography foundation and Apple ask to grow with the text. Growing like the button keeps an icon button and a button of the same size lined up at every text size, as the mirror wants; growing in proportion would make it taller than the button next to it, and keeping it fixed would leave the symbol at its default size next to text two or three times larger.",
+      "tokens": [
+        "icon-button.container.padding.*",
+        "icon-button.icon.size.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type"
+      ]
+    },
+    {
+      "id": "touch-target-hit-region",
+      "date": "2026-11-12",
+      "version": "0.11.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On iOS and Android every size reaches the platform's touch target without growing: the hit region is at least 44 x 44 pt on iOS and 48 x 48 dp on Android, centered on the drawn square, and the layout reserves it so that neighbouring targets do not overlap (on Android the minimumInteractiveComponentSize modifier, as Material's IconButton does). The drawn square, the glyph and the tokens stay the same on every platform, as in Figma and on the Button it mirrors. The web (WCAG 2.5.8, 24 x 24 CSS px) and desktop already meet their targets and keep the drawn square as the target.",
+      "rationale": "The extra small to medium squares were under Apple's 44 pt and every size under Android's 48 dp, and icon buttons are the smallest controls of the system, often set in rows. Both platforms let a control keep a smaller drawn size with a larger touch area around it, which keeps one rendering everywhere instead of platform sizes.",
+      "refs": [
+        "hig-buttons-best-practices",
+        "hig-accessibility-mobility",
+        "android-large-controls",
+        "compose-target-sizes"
+      ]
+    },
+    {
+      "id": "name-shown-as-tooltip",
+      "date": "2026-11-12",
+      "version": "0.10.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Wherever people hover with a pointer or move keyboard focus, the label is also shown on screen as a tooltip, on hover and on keyboard focus alike. On the web the tooltip meets WCAG 1.4.13 (dismissible with Escape, hoverable, persistent) and follows the APG Tooltip pattern, never the title attribute; on macOS, and for iPhone and iPad apps running on a Mac, it is the system tooltip. On touch there is no hover: the symbol alone carries the action, or a button with a text label replaces the icon button. Android says nothing: no trusted Android source covers tooltips. The tooltip itself, and how it relates to the accessible name (a description repeating the label, or the tooltip naming the button), belong to a Tooltip component the system does not have yet; the reference implementation draws none until then.",
+      "rationale": "The label is the only statement of the action and was never shown: sighted people who do not recognize the symbol had nothing to read, while the platforms with hover already show a button's name this way.",
+      "refs": [
+        "wcag:1.4.13",
+        "apg-tooltip",
+        "mdn-title-accessibility",
+        "hig-buttons-content",
+        "hig-offering-help-tooltips"
+      ]
+    },
+    {
+      "id": "keyboard-on-every-platform",
+      "date": "2026-11-12",
+      "version": "0.9.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Being reached and activated from a keyboard is a requirement on every platform (WCAG 2.1.1 on the web, EN 301 549 11.2.1.1.1 for native software), met through the native button control and the platform's own keyboard services; only the keys are per platform. The web keeps its keys (Tab, Enter, Space, from APG). iOS and macOS rely on Full Keyboard Access, with no custom keyboard navigation for the button on iPadOS; Android relies on focus navigation, reached and highlighted in a logical order. No key is named for iOS, Android or desktop: no trusted source of those platforms names them.",
+      "rationale": "The keyboard requirement holds everywhere; the contract said it for the web only.",
+      "refs": [
+        "wcag:2.1.1",
+        "en-301-549-keyboard",
+        "hig-keyboards-best-practices",
+        "orange-android-focus-access"
+      ]
+    },
+    {
+      "id": "glyph-roles-from-button",
+      "date": "2026-11-12",
+      "version": "0.8.0",
+      "area": "color",
+      "status": "active",
+      "text": "The glyph keeps the roles of the Button's label decisions rather than the role of the fill it sits on: subtle neutral, and ghost neutral in every state, read global.icon.on-base.neutral.primary although the subtle fill has its own role (global.icon.on-subtle.neutral.default), as in button decision neutral-label-primary; ghost error reads global.icon.on-subtle.functional.error.default in every state, at rest with no fill too, as in button decision error-label-figma-library. The Icon button renders the same as the Button (same-rendering-as-button), so these roles change only with the Button's decisions.",
+      "rationale": "The Button already decided these colors; the icon button renders the same as the button in the end.",
+      "tokens": [
+        "icon-button.icon.color.subtle.neutral.*",
+        "icon-button.icon.color.ghost.neutral.*",
+        "icon-button.icon.color.ghost.error.*",
+        "global.icon.on-base.neutral.primary",
+        "global.icon.on-subtle.functional.error.default"
+      ]
+    },
     {
       "id": "default-size-medium",
       "date": "2026-10-15",
@@ -841,6 +1154,46 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.1",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed: the label property no longer says the label is never shown (decision name-shown-as-tooltip shows it as a tooltip). Docs: the iOS and Android paragraphs of Sizes no longer repeat the Accessibility section, the glyph takes the icon color that matches the button's label (decision glyph-roles-from-button), and Content no longer says most people never see the label. No token, CSS, template or rendering change."
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-11-12",
+      "note": "Decision default-emphasis-subtle: an icon button without an emphasis is subtle instead of accent, as the button. Template default and docs updated; an explicit emphasis renders as before. Departs from the Figma prototype, whose icon=only variant defaults to accent. No token or CSS change; contrast unchanged."
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-11-12",
+      "note": "Decision no-pressed-state: the icon button has no pressed state; actions that stay on or off wait for a Toggle button component, and a setting in a list or a form is a switch. The docs no longer send toggling actions to a toggle button the system does not have. Three references added (Apple HIG Toggles, Android accessibility principles). No token, CSS, template or rendering change."
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-11-12",
+      "note": "Decision grows-with-text-size: the glyph grows with the text size on every platform that scales text, and the square grows with it as a button with an icon does, keeping a minimum padding on every side. New component tokens icon-button.container.padding.* (space.2 / 3 / 5 / 8, the button's block padding, mirrored); layout sizing hug instead of fixed. New guidelines for every platform (WCAG 1.4.4), the web, iOS and macOS, five references. At the default text size nothing moves: same sizes on every platform, contrast unchanged."
+    },
+    {
+      "version": "0.11.0",
+      "date": "2026-11-12",
+      "note": "Decision touch-target-hit-region: on iOS every size has a hit region of at least 44 x 44 pt and on Android a touch target of at least 48 x 48 dp, centered on the drawn square and reserved in the layout; the drawn square is unchanged. The iOS and Android guidelines no longer say the sizes fall under the platform targets. No token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.10.0",
+      "date": "2026-11-12",
+      "note": "Decision name-shown-as-tooltip: where people hover or move keyboard focus, the label is also shown as a tooltip (web: WCAG 1.4.13 and the APG Tooltip pattern, never title; macOS and iPhone or iPad apps on a Mac: the system tooltip); on touch the symbol carries the action. New web, desktop and iOS guidelines and five references. The reference implementation draws no tooltip until the system has a Tooltip component. No token or rendering change."
+    },
+    {
+      "version": "0.9.0",
+      "date": "2026-11-12",
+      "note": "Decision keyboard-on-every-platform: the icon button is reached and activated from a keyboard on every platform (WCAG 2.1.1, EN 301 549 11.2.1.1.1), through the native control and the platform's keyboard services; new guidelines for iOS (Full Keyboard Access), Android (focus navigation) and desktop (macOS Full Keyboard Access). The web keys are unchanged. No token or rendering change."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-12",
+      "note": "Decision glyph-roles-from-button: subtle and ghost neutral glyphs keep global.icon.on-base.neutral.primary, and ghost error glyphs global.icon.on-subtle.functional.error.default, as the Button's label does (neutral-label-primary, error-label-figma-library), rather than the role of the fill they sit on. No token change, so contrast is unchanged: lowest glyph contrast on the page and on a card, light 16.01:1 (subtle neutral, active) and 6.30:1 (ghost error, active), dark 5.55:1 (subtle neutral, active) and 8.49:1 (ghost error)."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-06",

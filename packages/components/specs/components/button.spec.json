@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.24.0",
+  "version": "0.29.1",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -38,7 +38,7 @@
       "id": "emphasis",
       "name": "Emphasis",
       "type": "enum",
-      "default": "accent",
+      "default": "subtle",
       "description": "Visual weight of the button, from strongest to weakest. Use one accent button per view.",
       "affects": [
         "container",
@@ -51,7 +51,7 @@
         },
         {
           "value": "subtle",
-          "description": "Medium emphasis: tinted fill and light border in the intent color."
+          "description": "Medium emphasis: tinted fill and light border in the intent color. The default."
         },
         {
           "value": "ghost",
@@ -186,7 +186,7 @@
     "sizing": "hug",
     "notes": [
       "Parts sit on one row separated by container.gap, which follows the size option.",
-      "Inline padding, minimum height and corner radius come from the size option; the block padding is a minimum: at the default text size the minimum height sets the height and the content centers vertically; larger content grows the button and keeps the block padding. With an icon, the side that holds it takes the icon-side padding and the label side of a one-icon button the label-side padding.",
+      "Inline padding, minimum height and corner radius come from the size option; the block padding is a minimum: at the default text size the minimum height sets the height and the content centers vertically; larger content grows the button and keeps the block padding. When people raise the text size, the label grows and the icon grows by the same factor (Iconography rule text-size), so the button grows with them. With an icon, the side that holds it takes the icon-side padding and the label side of a one-icon button the label-side padding.",
       "Width hugs the content; a layout may stretch it (full width) without changing the component."
     ]
   },
@@ -254,6 +254,43 @@
         ]
       },
       {
+        "text": "The button can be reached and activated from a keyboard, physical or assistive, on every platform. The platform provides this to its native button control through its own keyboard services, so the control needs no keyboard handling of its own; the keys are the platform's.",
+        "refs": [
+          "wcag:2.1.1",
+          "en-301-549-keyboard"
+        ]
+      },
+      {
+        "text": "Use the native button so Full Keyboard Access can reach and activate it, and test the app with Full Keyboard Access on. On iPadOS, do not add keyboard navigation of your own to the button: Full Keyboard Access activates controls.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "With a hardware keyboard or Switch Access, focus navigation reaches the button and highlights it, in a logical order, and focus can always move away from it.",
+        "refs": [
+          "orange-android-focus-access",
+          "orange-android-focus-order"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, Full Keyboard Access lets people navigate to the button and activate it with the keyboard alone: use the native control and keep the standard keyboard shortcuts.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
         "text": "Use a button for actions and a link for navigation: the role must match the function the control provides.",
         "refs": [
           "apg-button",
@@ -309,7 +346,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt. The extra small, small and medium buttons (24, 28 and 36 pt high) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "Every size has a hit region of at least 44 x 44 pt, as Apple recommends: the extra small, small and medium buttons (24, 28 and 36 pt high) keep their drawn size and the hit region extends around them, centered, with the layout reserving it so that the hit regions of neighbouring controls do not overlap.",
         "refs": [
           "hig-buttons-best-practices",
           "hig-accessibility-mobility"
@@ -319,13 +356,49 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp. Every size (24, 28, 36 and 44 dp high) falls under it on Android today: the Figma library has no platform heights.",
+        "text": "Every size has a touch target of at least 48 x 48 dp, as Android recommends: the button (24, 28, 36 or 44 dp high) keeps its drawn size and is centered in at least 48 dp of reserved layout space in each dimension, with the touch target extended to it (Compose: the minimumInteractiveComponentSize modifier, which Material's Button already applies).",
         "refs": [
           "android-large-controls",
           "compose-target-sizes"
         ],
         "platforms": [
           "android"
+        ]
+      },
+      {
+        "text": "Text can be resized up to 200 percent without loss of content or function: the label grows with the text size, and the icon, non-text content, grows by the same factor so that it keeps its size next to the label. The button grows with its content and keeps its block padding, so the label never touches the edges.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: that setting enlarges neither the label nor the icon, while zoom enlarges both, which meets Resize Text. When text follows that setting, the icon follows it with it.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The label grows with Dynamic Type, up to the larger accessibility sizes, and the icon grows with it, as Apple asks of meaningful interface icons; the button grows with them.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, the button keeps its size, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -501,6 +574,16 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive"
       },
       {
+        "id": "hig-keyboards-best-practices",
+        "title": "Apple HIG: Keyboards, best practices (Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices"
+      },
+      {
+        "id": "hig-accessibility-speech",
+        "title": "Apple HIG: Accessibility, speech (keyboard alone, Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech"
+      },
+      {
         "id": "android-large-controls",
         "title": "Android accessibility: use large, simple controls",
         "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
@@ -524,6 +607,61 @@
         "id": "compose-interactive-elements",
         "title": "Jetpack Compose accessibility: interactive elements (Button semantics)",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-access",
+        "title": "Orange accessibility guidelines, Android: access to interactive elements (keyboard navigation)",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-order",
+        "title": "Orange accessibility guidelines, Android: keyboard navigation order",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order"
+      },
+      {
+        "id": "en-301-549-keyboard",
+        "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "hig-toggles-best-practices",
+        "title": "Apple HIG: Toggles, best practices (buttons that behave like toggles)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices"
+      },
+      {
+        "id": "hig-toggles-ios",
+        "title": "Apple HIG: Toggles, iOS and iPadOS (a button that behaves like a toggle outside a list)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#iOS-iPadOS"
+      },
+      {
+        "id": "android-principles-toggle",
+        "title": "Android: accessibility principles, a custom toggle (toggleable, state description)",
+        "url": "https://developer.android.com/guide/topics/ui/accessibility/principles"
       }
     ]
   },
@@ -690,6 +828,87 @@
     "dropdown"
   ],
   "decisions": [
+    {
+      "id": "default-emphasis-subtle",
+      "date": "2026-11-12",
+      "version": "0.29.0",
+      "area": "variant",
+      "status": "active",
+      "supersedes": [
+        "defaults"
+      ],
+      "text": "Without explicit options, a button is subtle, neutral and medium (supersedes defaults, which made it accent): the icon button takes the same default. An explicit emphasis renders as before. The Figma prototype's Button set defaults to accent.",
+      "rationale": "A button or icon button left at its default should neither outweigh the content it sits in nor lose the look of a button: subtle lowers the emphasis so that accent is no longer what every button gets by omission, and its tinted fill and light border keep the visible shape of a button, which ghost only shows on hover and press. Accent is chosen on purpose, for the one action that must stand out; ghost for actions repeated among content.",
+      "tokens": [
+        "button.container.background.subtle.*",
+        "button.container.border-color.subtle.*",
+        "button.label.color.subtle.*"
+      ]
+    },
+    {
+      "id": "no-pressed-state",
+      "date": "2026-11-12",
+      "version": "0.28.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "The button has no pressed (on or off) state: it triggers an action and its look never says that something stays on. An action that stays on or off is a toggle button, a component of its own that the system does not have yet; until then, a setting turned on or off in a list or a form is a switch. The icon button decides the same.",
+      "rationale": "A toggle button needs its own decisions: its look when on for every emphasis and intent, with no selected role in the semantic tier, its states while on, its groups. Each platform treats it as a toggle with its own state (aria-pressed on the web, a button that behaves like a toggle with a background that shows its state on Apple platforms, toggleable with a state description on Android), which a component of its own carries, as the framework themes' toggles do.",
+      "refs": [
+        "apg-button",
+        "hig-toggles-best-practices",
+        "hig-toggles-ios",
+        "android-principles-toggle"
+      ]
+    },
+    {
+      "id": "grows-with-text-size",
+      "date": "2026-11-12",
+      "version": "0.27.0",
+      "area": "size",
+      "status": "active",
+      "text": "As on the Icon button, the button grows with the text size on every platform that lets people raise it: the label grows with the text, and the icon grows by the same factor so that it keeps its size next to the label (Iconography decision icons-follow-text-size). The minimum height and the block padding stay (block-padding-fits-icon): at the default text size nothing moves; when the content outgrows the minimum height, the button grows and keeps that space above and below, as high as an icon button of the same size. Where nothing scales the text (macOS) and on the web, where text and icons are px lengths that zoom scales together, the button keeps its size.",
+      "rationale": "The Button already grew with its content, but its contract did not say that its icon grows with the label, which the Iconography foundation asks and the Icon button's decision relies on to line up with it at every text size.",
+      "tokens": [
+        "button.label.typography.*",
+        "button.icon.size.*",
+        "button.container.padding-block.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type"
+      ]
+    },
+    {
+      "id": "touch-target-hit-region",
+      "date": "2026-11-12",
+      "version": "0.26.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "As on the Icon button, on iOS and Android every size reaches the platform's touch target without growing: the hit region is at least 44 x 44 pt on iOS and 48 x 48 dp on Android, centered on the drawn button, and the layout reserves it so that neighbouring targets do not overlap (on Android the minimumInteractiveComponentSize modifier). A button with a text label is usually wider than the target already, so in practice only its height is extended. The drawn button, its label and the tokens stay the same on every platform, as in Figma; the web (WCAG 2.5.8, 24 x 24 CSS px) and desktop already meet their targets and keep the drawn button as the target.",
+      "rationale": "The extra small to medium buttons were under Apple's 44 pt and every size under Android's 48 dp; the Icon button, which renders the same, now reaches both with a hit region, and the two components make the same promise on touch.",
+      "refs": [
+        "hig-buttons-best-practices",
+        "hig-accessibility-mobility",
+        "android-large-controls",
+        "compose-target-sizes"
+      ]
+    },
+    {
+      "id": "keyboard-on-every-platform",
+      "date": "2026-11-12",
+      "version": "0.25.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Being reached and activated from a keyboard is a requirement on every platform (WCAG 2.1.1 on the web, EN 301 549 11.2.1.1.1 for native software), met, as on the Icon button, through the native button control and the platform's own keyboard services; only the keys are per platform. The web keeps its keys (Tab, Enter, Space, from APG). iOS and macOS rely on Full Keyboard Access, with no custom keyboard navigation for the button on iPadOS; Android relies on focus navigation, reached and highlighted in a logical order. No key is named for iOS, Android or desktop: no trusted source of those platforms names them.",
+      "rationale": "The keyboard requirement holds everywhere; the contract said it for the web only.",
+      "refs": [
+        "wcag:2.1.1",
+        "en-301-549-keyboard",
+        "hig-keyboards-best-practices",
+        "orange-android-focus-access"
+      ]
+    },
     {
       "id": "icon-optical-size-24",
       "date": "2026-11-05",
@@ -1132,7 +1351,7 @@
     {
       "date": "2026-10-01",
       "version": "0.5.1",
-      "status": "active",
+      "status": "superseded",
       "id": "defaults",
       "area": "variant",
       "text": "Without explicit options, a button is accent, neutral and medium."
@@ -1188,6 +1407,36 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.29.1",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed. Docs: When not to use no longer sends choices to a segmented control the system lacks (a radio group or a select), and the iOS and Android paragraphs of Sizes no longer repeat the Accessibility section. No token, CSS, template or rendering change."
+    },
+    {
+      "version": "0.29.0",
+      "date": "2026-11-12",
+      "note": "Decision default-emphasis-subtle (supersedes defaults): a button without an emphasis is subtle instead of accent, as the icon button. Template default and docs updated; an explicit emphasis renders as before; the screens' primary actions now set accent. Departs from the Figma prototype, whose Button set defaults to accent. No token or CSS change; contrast unchanged."
+    },
+    {
+      "version": "0.28.0",
+      "date": "2026-11-12",
+      "note": "Decision no-pressed-state, as on the Icon button: the button has no pressed state; actions that stay on or off wait for a Toggle button component, and a setting in a list or a form is a switch. The docs no longer send toggling to a toggle button the system does not have. Three references added (Apple HIG Toggles, Android accessibility principles). No token, CSS, template or rendering change."
+    },
+    {
+      "version": "0.27.0",
+      "date": "2026-11-12",
+      "note": "Decision grows-with-text-size, as on the Icon button: the label grows with the text size on every platform that scales text, the icon by the same factor, and the button grows with them and keeps its block padding. New guidelines for every platform (WCAG 1.4.4), the web, iOS and macOS, five references; a layout note. No token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.26.0",
+      "date": "2026-11-12",
+      "note": "Decision touch-target-hit-region, as on the Icon button: on iOS every size has a hit region of at least 44 x 44 pt and on Android a touch target of at least 48 x 48 dp, centered on the drawn button and reserved in the layout; the drawn button is unchanged. The iOS and Android guidelines no longer say the sizes fall under the platform targets; the docs' Android accessibility bullet no longer says only extra small to medium do. No token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.25.0",
+      "date": "2026-11-12",
+      "note": "Decision keyboard-on-every-platform, as on the Icon button 0.9.0: the button is reached and activated from a keyboard on every platform (WCAG 2.1.1, EN 301 549 11.2.1.1.1), through the native control and the platform's keyboard services; new guidelines for iOS (Full Keyboard Access), Android (focus navigation) and desktop (macOS Full Keyboard Access). The web keys are unchanged. No token or rendering change."
+    },
     {
       "version": "0.24.0",
       "date": "2026-11-06",

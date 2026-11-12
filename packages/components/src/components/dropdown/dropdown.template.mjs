@@ -47,7 +47,7 @@ function renderItem(entry, menuId) {
 export function render(props = {}) {
   const {
     label = 'Actions',
-    emphasis = 'accent',
+    emphasis = 'subtle',
     intent = 'neutral',
     size = 'medium',
     iconStart = null,

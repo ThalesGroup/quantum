@@ -38,7 +38,9 @@ directory touched.
   RGB units apart (about 3 or less per channel) are export noise and count as matching; say so
   in "What already matches".
 - **Mirrors**: a component that renders the same as this one (`scripts/lib/mirrors.mjs`: the
-  Icon button mirrors the Button) changes in the same step, or `pnpm validate` fails.
+  Icon button mirrors the Button) changes in the same step, or `pnpm validate` fails. The
+  mirror check covers rendering only: a contract decision (keyboard, target size, text size,
+  default) is asked for the mirrored component too, so plan its `b` step with the step itself.
 - **Accessibility wins** over the existing values and over the export: WCAG 2.2 AA in every mode,
   on every surface level the component can sit on, on every platform. A failure (target size
   2.5.8, contrast 1.4.3 / 1.4.11, focus 2.4.7…) is shown with its criterion and the source you
@@ -97,7 +99,9 @@ platform and in every mode.
   same script lists candidate semantic tokens (`'^global\..*warning'`) for an option. Against an
   export: [reference/button-figmadiff.py](reference/button-figmadiff.py) compares every color of
   the `medium` variants with the resolved light tokens and prints the differences above the noise
-  threshold; adapt its part and property names to the component.
+  threshold; adapt its part and property names to the component. The script measures each color
+  against the surface levels, not against the component's own fill (a glyph on an accent fill
+  reads 1.00 there): the glyph-on-fill pairs are the ones `pnpm validate` checks and warns about.
 - **Focus ring** (width, color, offset) against the Focus foundation.
 - **Accessibility contract** (`packages/components/specs/a11y/roles.json` profile, the spec's
   `accessibility`): name, role per platform, states announced, target size (2.5.8), focus
@@ -135,9 +139,10 @@ platform and in every mode.
   semantic token, a sibling component that no longer lines up) is fixed in the run when it is
   related to a step and should be fixed right away: a step of its own after the one that found
   it (`1b`), no issue. A foundation that the step's decision makes out of date is always this
-  case. The rest becomes an issue at once (skill `backlog`), labelled `figma` when
-  the Figma library or its primitives must change, and linked under Follow-ups; what the Figma
-  library must change goes to the closing Figma issue.
+  case. The rest becomes an issue at once (skill `backlog`), in the step that finds it and never
+  "at close" (siblings sharing the gap a step just closed are listed one by one in it), labelled
+  `figma` when the Figma library or its primitives must change, and linked under Follow-ups;
+  what the Figma library must change goes to the closing Figma issue.
 
 ## 4. Close
 
@@ -152,7 +157,8 @@ platform and in every mode.
    - the limits of the Figma library the run met (a value that fails WCAG in a mode);
    - with an export: the export noise to ignore and the variants the repository models as
      another component.
-   Without an export, open it only when the run met such a limit or addition that no open issue
+   Without an export, open it only when the run met a departure from the Figma prototype (the
+   component drawn as another's variant still counts), a limit or an addition that no open issue
    already holds (`gh issue list --label figma`, and the designers' token issues): name the
    component's decision in that issue instead, and say in the pull request why none was opened.
 3. `pnpm figma:export <id>` and `pnpm penpot:export <id>` build: they give the Figma designer the
@@ -168,6 +174,17 @@ platform and in every mode.
 ## Lessons learned
 
 Newest first. Each entry: date, component, what was off, what changed in the process.
+
+- **2026-11-12, Icon button, step 11.** Four things. The branch was one commit behind its base
+  at close, and `pnpm impact` listed another pull request's semantic tokens as changed until
+  the rebase: `stepwise-pr` §4 now rebases before the final checks. Every contract decision
+  (keyboard, tooltip, touch target, text size, pressed state, default) had to be carried to the
+  Button as its own `b` step, found one at a time, because the mirror check covers rendering
+  only: the Mirrors rule now plans them with the step. Two findings shared by sibling components
+  (the touch-target shortfall in seven specs, the web-only keyboard contract in fourteen) were
+  kept "for the close" instead of becoming issues when found: §3 now says in the step that
+  finds it. Without an export, the closing rule only named limits and additions, while the run's
+  one departure from the Figma prototype (subtle by default) needed the issue: §4 now names it.
 
 - **2026-11-06, Icon, step 11.** The closing issue was to be labelled `upstream-figma-ds`, a
   label the repository does not have: the skill and `agents/workflow.md` now say `figma`. The

@@ -28,7 +28,7 @@ export function render() {
     ds.card({ title: 'Subscribe to our newsletter', description: 'Opt-in to receive updates and news about the sidebar.', headingLevel: 2 }),
     el('form', { class: 'scr-form', action: '#', method: 'post' }, el('div', { class: 'scr-stack' },
       ds.textField({ label: 'Email', placeholder: 'Email', size: 'small', required: true, id: 'sidebar-06-email', name: 'email', attrs: { autocomplete: 'email', inputmode: 'email' } }),
-      ds.button({ label: 'Subscribe', size: 'small', type: 'submit' }),
+      ds.button({ label: 'Subscribe', emphasis: 'accent', size: 'small', type: 'submit' }),
     )),
   );
   return screen({},

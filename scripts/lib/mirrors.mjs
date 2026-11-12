@@ -1,7 +1,7 @@
 /**
  * Mirrored components: a component that always renders the same as another one. The icon button
  * is a button without a label (decision same-rendering-as-button in
- * packages/components/specs/components/icon-button.spec.json): its side, glyph, fills, borders, corners, focus ring
+ * packages/components/specs/components/icon-button.spec.json): its side, glyph, padding, fills, borders, corners, focus ring
  * and motion are the button's. Component tokens alias semantic tokens only (agents/conventions.md), so
  * the mirror keeps its own tokens and `pnpm validate` proves they resolve to the original's
  * values in every platform x mode; `pnpm impact` links a change of the original to the mirror.
@@ -23,8 +23,9 @@ export const MIRRORS = [
     paths: [
       ['icon.color.', 'label.color.'],
       ['container.min-width.', 'container.min-height.'],
+      ['container.padding.', 'container.padding-block.'],
     ],
-    ignore: ['container.padding-inline.*', 'container.padding-block.*', 'container.gap.*', 'label.typography.*'],
+    ignore: ['container.padding-inline.*', 'container.gap.*', 'label.typography.*'],
   },
 ];
 

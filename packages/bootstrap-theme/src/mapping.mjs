@@ -886,9 +886,11 @@ export default {
         size: { xsmall: '.btn-xs', small: '.btn-sm', medium: '', large: '.btn-lg' },
       },
       combinations: [
-        { when: { emphasis: 'accent', intent: 'neutral' }, classes: '.btn-icon.btn-solid.theme-inverse' },
+        { when: { emphasis: 'accent', intent: 'neutral' }, classes: '.btn-icon.btn-solid.theme-inverse', why: 'Quantum\'s neutral accent is the inverse surface.' },
       ],
-      states: { disabled: ':disabled' },
+      states: { hover: ':hover', active: ':active', 'focus-visible': ':focus-visible', disabled: ':disabled' },
+      parts: { icon: '.material-symbols-outlined (the only child)' },
+      bootstrapOnly: ['.btn-outline'],
     },
     {
       component: 'badge', bootstrap: 'Badge', base: '.badge',

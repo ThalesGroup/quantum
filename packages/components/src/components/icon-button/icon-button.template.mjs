@@ -17,7 +17,7 @@ export const meta = {
 
 export function render(props = {}) {
   const {
-    emphasis = 'accent',
+    emphasis = 'subtle',
     intent = 'neutral',
     size = 'medium',
     icon = 'add',
