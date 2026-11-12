@@ -77,7 +77,7 @@ const validName = (name) => validPath(name.split(/[/.]/));
 const DIMENSION_GROUPS = new Set(['space', 'size', 'corner-radius', 'stroke-width', 'blur']);
 const round = (n) => Number(Number(n).toFixed(4));
 
-function convert(token, segments, known) {
+export function convert(token, segments, known) {
   const ext = token.$extensions ?? {};
   const alias = ext['com.figma.aliasData'];
   // A color made of a color variable and an opacity variable, both as alias references.

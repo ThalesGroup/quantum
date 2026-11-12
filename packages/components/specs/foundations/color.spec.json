@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -125,7 +125,7 @@
     {
       "id": "unfinished",
       "name": "AI and data visualization",
-      "text": "The Figma library marks its AI and data visualization roles as unfinished. They are kept as they are, aliases to colors the Figma library does not contain (kept as their literal value) included, until a component needs them.",
+      "text": "The Figma library marks its AI and data visualization roles as unfinished. They are kept as they are until a component needs them.",
       "tokens": [
         "ai.bg.*",
         "ai.text.*",
@@ -918,6 +918,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "5.0.0",
+      "date": "2026-11-12",
+      "note": "Fix, no decision changed. Breaking paths: the Figma library's export of 2026-11-12 aliases every dataviz value to a color it contains, so the last 91 values kept as literals (aliases to the former Colors / Alias, Colors / Mapped and archived Colors / Base) go. Removed: dataviz.role.extended.lavender.on-accent.* and on-subtle.* (16 tokens, 26 of those values). Realiased, the 65 others (light, then dark when it differs). extended.amber.on-accent extended-1 to extended-5: light lavender 950, lime 800, coral 900, forest 950, azure 800 (#1C0E2E, #323210, #361A13, #101A0B, #153443; were #FCFAFE, #4D4000, #FEFAF6, #F6FEFC, #F6FBFE); dark lavender 25, lime 800, coral 950, forest 950, azure 800 (#FCFCFD, #323210, #1F1411, #101A0B, #153443). extended.amber.on-subtle extended-1 to extended-8: light lavender 700, lime 700, coral 800, forest 700, azure 700, orchid 700, wood 700, amber 700 (#6B0DAC, #5B5A21, #4E2017, #41661E, #266280, #923D78, #654428, #7F6426; were #7E47A8, #6C6000, #B24125, #14715E, #2A6E94, #9D4881, #78543D, #A35A1A); dark lavender 400, lime 500, coral 400, forest 500, azure 400, orchid 500, wood 300, amber 600 (#C081FF, #98A320, #FB826C, #6DA631, #5BB8E7, #D956B1, #E6A159, #B58D31; were the light values, #B7579D, #241C13, #482006 for 6 to 8). extended.lavender.separator extended-1 to extended-8: light lavender 800, lime 800, coral 800, forest 800, azure 700, orchid 700, wood 800, amber 800 (#410B6A, #323210, #4E2017, #20370B, #266280, #923D78, #3F2B1B, #3B2D12; were #673B89, #5A4E00, #8D3622, #18614E, #4445B0, #9D4881, #5C3D2D, #864819); dark the 900 step of the same hues (#310056, #23250D, #361A13, #152A03, #14262E, #33182A, #2E2016, #2A2212; were #482461, #4D4000, #732D1E, #064238, #242653, #683254, #3D2C21, #6E3816). extended.wood.accent: extended-5 azure 400 #5BB8E7 (was #7B85FF) in both modes; dark extended-4, 6, 7, 8 forest 600, orchid 400, wood 500, amber 500 (#608D35, #F283CD, #AE7338, #DDAB35; were #1B8E76, #E18FD1, #B38F6B, #F2AB31). extended.wood.subtle: light extended-2, 4, 5, 6, 8 lime 100, forest 100, azure 200, orchid 100, amber 100 (#E4F938, #DAF5C3, #B5DDF3, #FBDDEF, #FFEBC4; were #ECF8B7, #D2F9EC, #CFD2F2, #F6E7F4, #FFF5C7); dark extended-5 azure 800 #153443 (was #36398A). Every amber on-accent and on-subtle text now reaches 4.5:1 or more on the wood accent and subtle fill of the same index, in both modes (4.51:1 at the lowest; 18 of them were between 1.11:1 and 3.96:1 before). functional.bg: accent.success-accent success 500 #129957 (was #1A9759) and accent.warning-accent warning 300 #FFC61C (same color) in both modes, dark accent.error-accent error 500 #DF2821 (was #D3392A); light subtle.error-subtle error 50 #FEECEA (was #FDF3F2) and subtle.success-subtle success 25 #F8FEFA (was #EDFDF3). structural: light axis.axis-primary and axis-secondary light-switch base 300 and 400 (#D5D5D5, #B5B5B5; were #D8D8D8, #B3B3B3); grid.grid.grid-primary light-switch base 600 #616161 in light and dark-switch base 400 #767676 in dark (was #6C6C6C in both). The separators take the export's description (for a high contrast, such as a scatter view). No component, framework theme or screen reads these roles."
+    },
     {
       "version": "4.0.1",
       "date": "2026-11-12",
