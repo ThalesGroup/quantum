@@ -79,6 +79,7 @@ must be declared in the spec.
 - Every state selector is written twice through `:where()`: the native pseudo-class **and**
   `[data-state="<state>"]`, so the site can force any state for review.
 - CSS reads **only** `--<id>-*` tokens and private `--_*` properties. No literals.
+- CSS uses logical properties and values, never a physical `left` or `right` outside a `:dir()` rule (`packages/components/AGENTS.md` "CSS rules").
 - The template is a pure function `render(props) -> string` with no DOM access, usable in Node and browsers.
 - No script ships in the web implementation: interactive behaviour comes from native HTML
   (`<button>`, popover, `popovertarget`). A pattern that needs script to be accessible (an ARIA

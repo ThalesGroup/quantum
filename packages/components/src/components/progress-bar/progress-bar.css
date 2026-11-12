@@ -83,9 +83,11 @@
   border-radius: var(--progress-bar-indicator-border-radius);
 }
 
-/* Indeterminate: no value bar; a segment a third of the track sweeps from start to end. The duration is
+/* Indeterminate: no value bar; a segment sweeps from start to end. The duration is
    a multiple of the normal motion duration (there is no long duration token yet, see the spec).
-   WebKit paints the track in ::-webkit-progress-bar over the element, so the segment is drawn there too. */
+   WebKit paints the track in ::-webkit-progress-bar over the element, so the segment is drawn there too.
+   The gradient is symmetric, so its angle only sets the axis; the sweep runs left to right, and a
+   right-to-left layout plays it in reverse so it still goes from start to end. */
 .ds-progress-bar__track:where(:indeterminate)::-webkit-progress-value,
 .ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track::-webkit-progress-value {
   opacity: 0;
@@ -98,10 +100,17 @@
 .ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track,
 .ds-progress-bar__track:where(:indeterminate)::-webkit-progress-bar,
 .ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track::-webkit-progress-bar {
-  background-image: linear-gradient(to right, transparent 0%, transparent 33%, currentColor 33%, currentColor 66%, transparent 66%);
+  background-image: linear-gradient(90deg, transparent 0%, transparent 33%, currentColor 33%, currentColor 66%, transparent 66%);
   background-size: 300% 100%;
   background-position: 100% 0;
   animation: ds-progress-bar-indeterminate calc(var(--progress-bar-indicator-transition-duration) * 6) var(--progress-bar-indicator-transition-easing) infinite;
+}
+
+.ds-progress-bar__track:where(:indeterminate):dir(rtl),
+.ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track:dir(rtl),
+.ds-progress-bar__track:where(:indeterminate):dir(rtl)::-webkit-progress-bar,
+.ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track:dir(rtl)::-webkit-progress-bar {
+  animation-direction: reverse;
 }
 
 @keyframes ds-progress-bar-indeterminate {

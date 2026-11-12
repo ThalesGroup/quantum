@@ -20,6 +20,7 @@ import { loadAll, checkReferences, checkPlatforms, checkModes, cssVarName, cssDe
 import { loadA11y, checkRegistry, checkSpecA11y, checkCitations, checkDocsA11y, visibleTextContent } from './lib/a11y.mjs';
 import { allContexts, evaluateContrast, formatRatio } from './lib/contrast.mjs';
 import { checkSiteCss, checkSiteMarkup } from './lib/site-check.mjs';
+import { checkLogicalCss } from './lib/logical-css.mjs';
 import { checkBlueprint } from './lib/blueprint.mjs';
 import { checkTokenMap, parseTokenPath, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
 import { missingFills } from './lib/backdrop.mjs';
@@ -380,6 +381,8 @@ for (const { spec, where } of specs) {
     if (/#[0-9a-fA-F]{3,8}\b|\b\d+(\.\d+)?(px|rem|em|ms)\b/.test(css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\d+(\.\d+)?%/g, ''))) {
       warn(rel(cssFile), 'contains literal colors or lengths; values should come from tokens');
     }
+    // Logical properties only, so a right-to-left layout mirrors the component (lib/logical-css.mjs).
+    report(rel(cssFile), checkLogicalCss(css));
     if (!css.includes(web.selector)) error(rel(cssFile), `does not define the root selector ${web.selector}`);
     const stateAttr = web.stateAttribute ?? 'data-state';
     const webStateIds = spec.states.filter(onWeb).map((s) => s.id);
