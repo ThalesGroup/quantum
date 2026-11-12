@@ -9,8 +9,9 @@
  *    drawn by the component; the indicator is the browser's value pseudo-element (WebKit, Gecko).
  *  - Size is a data attribute on the root. The indeterminate state is the native one (a progress
  *    without value); [data-state="indeterminate"] on the root forces its look for review. Both animate
- *    a segment along the track, at a multiple of the motion token's duration, and stop under
- *    prefers-reduced-motion: the segment then rests at the start of the track.
+ *    a segment along the track, at a multiple of the motion token's duration. Under
+ *    prefers-reduced-motion the segment no longer moves: the whole track pulses its opacity, as the
+ *    Spinner does (Motion rule reduced-motion: an activity indicator never stands still).
  */
 
 .ds-progress-bar {
@@ -118,12 +119,32 @@
   to { background-position: 0 0; }
 }
 
+@keyframes ds-progress-bar-pulse {
+  from { opacity: 1; }
+  to { opacity: var(--progress-bar-indicator-opacity); }
+}
+
+/* Reduced motion: the length of a determinate bar changes at once; an indeterminate bar fills its
+   track with the indicator color and pulses its opacity instead of sweeping. The selectors repeat
+   the indeterminate ones above so they win over them, the forced state and right to left included
+   (a pulse has no direction). */
 @media (prefers-reduced-motion: reduce) {
   .ds-progress-bar__track,
-  .ds-progress-bar__track::-webkit-progress-bar,
   .ds-progress-bar__track::-webkit-progress-value {
-    animation: none;
     transition: none;
-    background-position: 100% 0;
+  }
+  .ds-progress-bar__track:where(:indeterminate),
+  .ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track,
+  .ds-progress-bar__track:where(:indeterminate)::-webkit-progress-bar,
+  .ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track::-webkit-progress-bar {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 100%;
+    animation: none;
+  }
+  .ds-progress-bar__track:where(:indeterminate),
+  .ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track,
+  .ds-progress-bar__track:where(:indeterminate):dir(rtl),
+  .ds-progress-bar:where([data-state="indeterminate"]) .ds-progress-bar__track:dir(rtl) {
+    animation: ds-progress-bar-pulse calc(var(--progress-bar-indicator-transition-duration) * 6) var(--progress-bar-indicator-transition-easing) infinite alternate;
   }
 }

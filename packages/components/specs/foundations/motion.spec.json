@@ -2,10 +2,10 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "motion",
   "name": "Motion",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "draft",
   "summary": "Durations and easing curves, the state transitions of controls, and how motion gives way when people ask for less of it.",
-  "description": "Motion holds two durations and one easing curve, the design system's additions (packages/tokens/src/additions/): the Figma library has none. Components read them directly for one use: the transition of a control between its states. Every transition is a color change, never a movement, and every component switches it off when people ask for reduced motion.",
+  "description": "Motion holds two durations and one easing curve, the design system's additions (packages/tokens/src/additions/): the Figma library has none. Components read them directly for one use: the transition of a control between its states. Every transition is a color change, unless a component's spec names a part that moves, and every component switches it off when people ask for reduced motion; an activity indicator then pulses its opacity instead of standing still.",
   "tags": [
     "motion",
     "transition",
@@ -33,7 +33,7 @@
     {
       "id": "color-only",
       "name": "Color, not movement",
-      "text": "Transitions change colors only: nothing slides, scales or moves when a control changes state."
+      "text": "Control transitions change colors: nothing slides, scales or moves when a control changes state, unless its component's spec names the part that moves and why (the Switch thumb, the Accordion chevron). That movement follows the same rules, and stops under reduced motion like any transition."
     },
     {
       "id": "optional",
@@ -43,12 +43,12 @@
     {
       "id": "reduced-motion",
       "name": "Reduced motion",
-      "text": "When people ask their system for reduced motion, components drop their transitions and change state instantly."
+      "text": "When people ask their system for reduced motion, components drop their transitions and movements and change state instantly. An indicator whose only job is to show that something continues (the Spinner, an indeterminate Progress bar) never stands still: it replaces its movement with an opacity pulse. Any other animation stops, a loading placeholder (the Skeleton) included."
     },
     {
       "id": "web-rendering",
       "name": "Web rendering",
-      "text": "CSS transition on the component, reading its transition tokens, and a prefers-reduced-motion: reduce rule setting transition to none. The validator requires that rule whenever a component's CSS transitions or animates.",
+      "text": "CSS transition on the component, reading its transition tokens, and a prefers-reduced-motion: reduce rule setting transition (and animation) to none; an activity indicator's rule swaps its animation for an opacity pulse instead. The validator requires that rule whenever a component's CSS transitions or animates.",
       "platforms": [
         "web"
       ]
@@ -77,9 +77,10 @@
   "accessibility": {
     "guidelines": [
       {
-        "text": "Motion triggered by an interaction can be turned off: every transition of the system stops when people ask for reduced motion (WCAG 2.3.3, AAA, adopted as extra quality).",
+        "text": "Motion triggered by an interaction can be turned off: every transition and movement of the system stops when people ask for reduced motion (WCAG 2.3.3, AAA, adopted as extra quality). A change of opacity or color is not motion animation, so an activity indicator may keep pulsing.",
         "refs": [
-          "wcag:2.3.3"
+          "wcag:2.3.3",
+          "understanding-motion-animation"
         ]
       },
       {
@@ -89,7 +90,15 @@
         ]
       },
       {
-        "text": "Components read prefers-reduced-motion and set their transitions to none under reduce.",
+        "text": "An activity indicator never stands still: people associate a stationary indicator with a stalled process, and the animation of a preload phase is essential when, without it, people could think the content is frozen or broken.",
+        "refs": [
+          "hig-progress-indicators",
+          "wcag:2.2.2",
+          "understanding-pause-stop-hide-note"
+        ]
+      },
+      {
+        "text": "Components read prefers-reduced-motion and set their transitions to none under reduce; an activity indicator tones its movement down to an opacity pulse, as a dissolve replaces a movement in MDN's example: reduce removes, reduces or replaces motion-based animations.",
         "refs": [
           "wcag-c39",
           "mdn-reduced-motion"
@@ -99,7 +108,7 @@
         ]
       },
       {
-        "text": "When the Reduce Motion setting is on, automatic and repetitive animations are reduced.",
+        "text": "When the Reduce Motion setting is on, automatic and repetitive animations are reduced, and transitions along an axis can give way to fades.",
         "refs": [
           "hig-accessibility-cognitive"
         ],
@@ -128,6 +137,21 @@
         "id": "hig-accessibility-cognitive",
         "title": "Apple HIG: Accessibility, cognitive",
         "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Cognitive"
+      },
+      {
+        "id": "understanding-motion-animation",
+        "title": "Understanding WCAG 2.3.3 Animation from Interactions: motion animation (changes of color or opacity are not)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html#dfn-motion-animation"
+      },
+      {
+        "id": "understanding-pause-stop-hide-note",
+        "title": "Understanding WCAG 2.2.2 Pause, Stop, Hide: Note 4, the animation of a preload phase",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html#success-criterion"
+      },
+      {
+        "id": "hig-progress-indicators",
+        "title": "Apple HIG: Progress indicators, best practices (a stationary indicator reads as stalled)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/progress-indicators#Best-practices"
       }
     ]
   },
@@ -164,7 +188,40 @@
       }
     }
   ],
+  "decisions": [
+    {
+      "id": "activity-indicators-keep-moving",
+      "date": "2026-11-12",
+      "version": "0.3.0",
+      "area": "motion",
+      "status": "active",
+      "text": "Under reduced motion, an indicator whose only job is to show that something continues (the Spinner, an indeterminate Progress bar) replaces its movement with an opacity pulse instead of stopping; every other transition, movement and animation stops, a loading placeholder (the Skeleton) included.",
+      "rationale": "A still indicator reads as a stalled task, and a change of opacity is not motion animation. Microsoft Fluent's progress bar pulses its opacity instead of sliding under reduced motion; Atlassian and Chakra keep loading indicators running as essential motion; IBM Carbon and GitHub Primer stop their skeletons.",
+      "refs": [
+        "wcag:2.3.3",
+        "understanding-motion-animation",
+        "wcag:2.2.2",
+        "understanding-pause-stop-hide-note",
+        "hig-progress-indicators",
+        "mdn-reduced-motion"
+      ]
+    },
+    {
+      "id": "part-movement-by-spec",
+      "date": "2026-11-12",
+      "version": "0.3.0",
+      "area": "motion",
+      "status": "active",
+      "text": "A control changing state moves a part only when its component's spec names that part and why (the Switch thumb slides, the Accordion chevron turns); the movement reads the component's transition tokens and stops under reduced motion like any transition.",
+      "rationale": "The rule color-only stated no exception while the Switch and the Accordion already move a part; GitHub Primer and IBM Carbon move a toggle's knob and make it instant under reduced motion, and no reviewed system makes transitions color-only."
+    }
+  ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-12",
+      "note": "Decisions activity-indicators-keep-moving and part-movement-by-spec. Under reduced motion, the Spinner and an indeterminate Progress bar pulse their opacity instead of stopping (Progress bar 0.2.0); every other animation stops. The rule color-only now says a control may move a part its spec names (Switch thumb, Accordion chevron). Sources: WCAG 2.3.3 (motion animation), WCAG 2.2.2 Note 4, Apple HIG Progress indicators and Accessibility, MDN prefers-reduced-motion. No token change."
+    },
     {
       "version": "0.2.0",
       "date": "2026-10-02",
