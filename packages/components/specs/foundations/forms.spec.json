@@ -320,6 +320,16 @@
         "url": "https://m3.material.io/components/text-fields/guidelines"
       },
       {
+        "id": "material-text-fields-overview",
+        "title": "Material Design 3: Text fields, overview",
+        "url": "https://m3.material.io/components/text-fields/overview"
+      },
+      {
+        "id": "material-checkbox-overview",
+        "title": "Material Design 3: Checkbox, overview (error states)",
+        "url": "https://m3.material.io/components/checkbox/overview"
+      },
+      {
         "id": "material-text-fields-accessibility",
         "title": "Material Design 3: Text fields, accessibility",
         "url": "https://m3.material.io/components/text-fields/accessibility"
@@ -433,7 +443,7 @@
       "status": "active",
       "text": "Material's component guidelines (m3.material.io/components/) and Microsoft's Windows app controls guidance and WinUI automation reference are trusted sources, so the form rules for Android and Windows cite those platforms' own guidance.",
       "rationale": "They hold the only Android and Windows guidance on forms (required marking, error text replacing the supporting text, spacing, announcing changes); without them, the foundation could only say these platforms are silent.",
-      "refs": ["material-text-fields-guidelines", "material-text-fields-accessibility", "material-menus-guidelines", "windows-forms", "windows-text-box", "windows-number-box", "windows-checkbox", "windows-slider", "winui-live-setting"]
+      "refs": ["material-text-fields-guidelines", "material-text-fields-overview", "material-text-fields-accessibility", "material-checkbox-overview", "material-menus-guidelines", "windows-forms", "windows-text-box", "windows-number-box", "windows-checkbox", "windows-slider", "winui-live-setting"]
     }
   ],
   "changelog": [
