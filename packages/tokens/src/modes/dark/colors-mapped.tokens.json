@@ -206,7 +206,7 @@
           "tertiary": {"$type":"color","$value":"{dark-switch.base.300}"}
         },
         "brand": {
-          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.400}","$description":"Only use with natural bg"}
+          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.200}","$description":"Only use with natural bg"}
         },
         "functional": {
           "success": {

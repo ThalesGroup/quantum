@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.29.1",
+  "version": "0.29.2",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -1407,6 +1407,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.29.2",
+      "date": "2026-11-13",
+      "note": "Fix, no decision changed: the Figma library's export of 2026-11-12 (Color foundation 5.0.1) sets global.text.on-base.brand.default back to dark 200 in dark mode, so label.color.ghost.brand.default is #9EE7FA (was #41B9D3), the color of the subtle brand label and of the ghost brand label on hover and press, as decision ghost-brand-label-on-base intends; the tokens, CSS and template are unchanged. Dark: the ghost brand label at rest on the levels 0 / 1 / 2 / 3 / sunken 12.76 / 11.68 / 10.70 / 9.58 / 13.37:1 (was 7.61 / 6.97 / 6.38 / 5.71 / 7.98:1). Light mode is unchanged."
+    },
     {
       "version": "0.29.1",
       "date": "2026-11-12",

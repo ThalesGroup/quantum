@@ -99,7 +99,7 @@ and the full radius, which stay in px.
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-primary-base` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` |  |
-| `--bs-primary-fg` | `global.text.on-base.brand.default` | `#175DD6` / `#41B9D3` | Brand text on the page: the ghost button label and the link color. |
+| `--bs-primary-fg` | `global.text.on-base.brand.default` | `#175DD6` / `#9EE7FA` | Brand text on the page: the ghost button label and the link color. |
 | `--bs-primary-fg-emphasis` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The ghost button hover label and the subtle button label: the darker brand text step. |
 | `--bs-primary-bg` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-primary-bg-subtle` | `global.bg.subtle.brand.default` | `#EEF1F7` / `#09191D` |  |
@@ -264,7 +264,7 @@ Body, monospace and links, on root; Sass `$root-tokens`.
 | `--bs-body-font-weight` | `body.weight.regular` | `400` |  |
 | `--bs-body-line-height` | `font.line-height.normal` | `1.5` |  |
 | `--bs-font-mono` | `{mono.family}, …` | `"Fragment Mono", ui-monospace, 'SF Mo…` | Fragment Mono first, Bootstrap's monospace stack as the fallback. |
-| `--bs-link-color` | `global.text.on-base.brand.default` | `#175DD6` / `#41B9D3` | Quantum has no Link component: brand text on the page. |
+| `--bs-link-color` | `global.text.on-base.brand.default` | `#175DD6` / `#9EE7FA` | Quantum has no Link component: brand text on the page. |
 | `--bs-link-hover-color` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The darker brand text step (the ghost button hover label). |
 
 Headings, on root; Sass `$type-tokens`.
