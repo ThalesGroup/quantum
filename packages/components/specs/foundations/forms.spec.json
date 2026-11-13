@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "draft",
   "summary": "How every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form is a set of controls people fill in and submit: text fields, number fields, text areas, selects, checkboxes, radio groups. Each control is specified on its own page; this foundation holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -313,6 +313,21 @@
         "id": "en-301-549-11-3-3",
         "title": "EN 301 549 V3.2.1, clause 11.3.3: input assistance in non-web software",
         "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=76"
+      },
+      {
+        "id": "material-text-fields-guidelines",
+        "title": "Material Design 3: Text fields, guidelines",
+        "url": "https://m3.material.io/components/text-fields/guidelines"
+      },
+      {
+        "id": "windows-forms",
+        "title": "Windows apps: Forms",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms"
+      },
+      {
+        "id": "winui-live-setting",
+        "title": "Windows App SDK: AutomationProperties.LiveSetting",
+        "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.livesetting"
       }
     ]
   },
@@ -379,8 +394,24 @@
       }
     }
   ],
-  "decisions": [],
+  "decisions": [
+    {
+      "id": "forms-platform-sources",
+      "date": "2026-11-13",
+      "version": "0.2.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Material's component guidelines (m3.material.io/components/) and Microsoft's Windows app controls guidance and WinUI automation reference are trusted sources, so the form rules for Android and Windows cite those platforms' own guidance.",
+      "rationale": "They hold the only Android and Windows guidance on forms (required marking, error text replacing the supporting text, spacing, announcing changes); without them, the foundation could only say these platforms are silent.",
+      "refs": ["material-text-fields-guidelines", "windows-forms", "winui-live-setting"]
+    }
+  ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-13",
+      "note": "Material's component guidelines and Microsoft's Windows app controls guidance become trusted sources for the form rules on Android and Windows (forms-platform-sources)."
+    },
     {
       "version": "0.1.0",
       "date": "2026-11-12",

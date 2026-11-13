@@ -19,10 +19,12 @@ field is made of, how a required field is marked, which validation statuses exis
 look, when a value is checked, how errors are announced and summarised, how fields are spaced
 and how messages are written.
 
-Only the web has a forms guide of its own (the W3C forms tutorial). Apple and Android cover
-forms through their text field, data entry and writing guidance; this page follows each
-platform's own guidance and says so where a platform is silent, rather than borrowing another
-platform's rule.
+Only the web and Windows have a forms guide of their own (the W3C forms tutorial,
+[Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms)).
+Apple covers forms through its text field, data entry and writing guidance, Android through
+Material's [text field guidelines](https://m3.material.io/components/text-fields/guidelines);
+this page follows each platform's own guidance and says so where a platform is silent, rather
+than borrowing another platform's rule.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
 sub-heading named after it; everything else holds everywhere.

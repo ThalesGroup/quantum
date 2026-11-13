@@ -90,9 +90,14 @@
       "prefixes": ["https://developer.android.com/guide/topics/ui/accessibility", "https://developer.android.com/develop/ui/compose/accessibility"]
     },
     "material": {
-      "name": "Material Design 3 foundations",
+      "name": "Material Design 3 foundations and component guidelines",
       "kind": "platform",
-      "prefixes": ["https://m3.material.io/foundations/"]
+      "prefixes": ["https://m3.material.io/foundations/", "https://m3.material.io/components/"]
+    },
+    "windows": {
+      "name": "Microsoft Windows app controls guidance and WinUI automation reference",
+      "kind": "platform",
+      "prefixes": ["https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/", "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation."]
     },
     "orange": {
       "name": "Orange accessibility guidelines",
