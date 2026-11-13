@@ -320,9 +320,39 @@
         "url": "https://m3.material.io/components/text-fields/guidelines"
       },
       {
+        "id": "material-text-fields-accessibility",
+        "title": "Material Design 3: Text fields, accessibility",
+        "url": "https://m3.material.io/components/text-fields/accessibility"
+      },
+      {
+        "id": "material-menus-guidelines",
+        "title": "Material Design 3: Menus, guidelines (text field dropdown menus)",
+        "url": "https://m3.material.io/components/menus/guidelines"
+      },
+      {
         "id": "windows-forms",
         "title": "Windows apps: Forms",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms"
+      },
+      {
+        "id": "windows-text-box",
+        "title": "Windows apps: Text box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "windows-number-box",
+        "title": "Windows apps: Number box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box"
+      },
+      {
+        "id": "windows-checkbox",
+        "title": "Windows apps: Check box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/checkbox"
+      },
+      {
+        "id": "windows-slider",
+        "title": "Windows apps: Slider",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/slider"
       },
       {
         "id": "winui-live-setting",
@@ -403,7 +433,7 @@
       "status": "active",
       "text": "Material's component guidelines (m3.material.io/components/) and Microsoft's Windows app controls guidance and WinUI automation reference are trusted sources, so the form rules for Android and Windows cite those platforms' own guidance.",
       "rationale": "They hold the only Android and Windows guidance on forms (required marking, error text replacing the supporting text, spacing, announcing changes); without them, the foundation could only say these platforms are silent.",
-      "refs": ["material-text-fields-guidelines", "windows-forms", "winui-live-setting"]
+      "refs": ["material-text-fields-guidelines", "material-text-fields-accessibility", "material-menus-guidelines", "windows-forms", "windows-text-box", "windows-number-box", "windows-checkbox", "windows-slider", "winui-live-setting"]
     }
   ],
   "changelog": [
