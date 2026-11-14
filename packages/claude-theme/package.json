@@ -1,0 +1,12 @@
+{
+  "name": "@quantum-ds/claude-theme",
+  "version": "0.1.0-alpha.0",
+  "private": true,
+  "description": "Claude Quantum: a theme mod for the Claude Code desktop app built from @quantum-ds/tokens, the quantum.thalesdigital.io homepage animated behind the conversation",
+  "author": "Quantum Core Team",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}
