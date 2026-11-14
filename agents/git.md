@@ -138,7 +138,8 @@ The repository is the GitHub repository
   (`feat(button,icon-button): color modes`), otherwise an area: `tokens`, `modes`,
   `platforms`, `foundations`, `specs`, `a11y`, `components` (the components package), `figma`
   (the Figma package), `penpot` (the Penpot package), `bootstrap-theme` (the Bootstrap theme package),
-  `shadcn-theme` (the shadcn/ui theme package), `web`
+  `shadcn-theme` (the shadcn/ui theme package), `claude-theme` (Claude Quantum, the Claude Code
+  desktop theme mod), `web`
   (the web reference implementation), `docs` (the docs app and the guidelines), `screens`,
   `scripts`, `agents`, `ci`, `deps`, `release`. A
   component scope that does not exist fails the check; the list lives in
