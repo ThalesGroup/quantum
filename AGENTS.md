@@ -6,7 +6,9 @@ documentation** and a **vanilla CSS reference implementation**, plus an **Astro 
 renders all of it so people can review a component before it is built in any technology, a
 **Figma plugin** that draws every component in Figma, bound to variables recreated from the
 tokens, a **Penpot plugin** that draws them in Penpot, bound to Penpot tokens, and **themes** that
-bring the tokens to Bootstrap 6 and shadcn/ui through those frameworks' own theming APIs. The
+bring the tokens to Bootstrap 6 and shadcn/ui through those frameworks' own theming APIs, plus
+**Claude Quantum** (`packages/claude-theme/`, private), a theme mod for the Claude Code desktop app
+built from the tokens. The
 packages are published on npm under `@quantum-ds` (`@quantum-ds/tokens`, `@quantum-ds/components`,
 `@quantum-ds/figma`, `@quantum-ds/penpot`, `@quantum-ds/bootstrap-theme`, `@quantum-ds/shadcn-theme`).
 
@@ -107,6 +109,7 @@ Claude Code lists them by itself and invokes them by name; another agent reads
 | `pnpm penpot:serve` | Serve `packages/penpot/dist/` at http://localhost:4400, where Penpot's plugin manager installs `manifest.json` (Penpot loads plugins over HTTP). |
 | `pnpm bootstrap-theme:build` | Build the tokens, then the Bootstrap 6 theme into `packages/bootstrap-theme/dist/` (not committed): the theme as Bootstrap root custom properties and as Sass configuration, and `demo.html`, a self-contained page showing every Bootstrap component with it (`packages/bootstrap-theme/AGENTS.md`). |
 | `pnpm shadcn-theme:build` | Build the tokens, then the shadcn/ui theme into `packages/shadcn-theme/dist/` (not committed): the theme as shadcn CSS variables and as a registry theme item, and `demo.html`, a self-contained page showing every shadcn component with it (`packages/shadcn-theme/AGENTS.md`). |
+| `pnpm claude-theme:build` | Build Claude Quantum, the Claude Code desktop theme mod, into `packages/claude-theme/dist/claude-quantum/` (not committed): the app colors from the semantic tokens (fills and hovers pinned to the accent tokens) over dots on the spacing grid, with the chat rows and bars drawn solid over them; `--install <dir>` copies it into a mods folder (`packages/claude-theme/README.md`). |
 | `pnpm themes:demo` | Build the tokens and every framework theme, then serve their demo pages at http://localhost:4500 and open the browser (`apps/theme-demos/`, a small Vite server); rebuild a theme and reload to see a change. |
 | `pnpm validate` | Schema-validate specs and cross-check spec ↔ tokens ↔ docs ↔ web; check mirrored components render the same; check the docs site and the screens are built with the design system. |
 | `pnpm specs:check` | Export every component to the Specs format and require a valid, lossless round trip ([agents/specs-interop.md](agents/specs-interop.md)). |
