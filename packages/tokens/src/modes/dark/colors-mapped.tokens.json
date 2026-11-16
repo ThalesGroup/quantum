@@ -200,7 +200,7 @@
             "default": {"$type":"color","$value":"{extended.forest.400}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
           },
           "wood": {
-            "default": {"$type":"color","$value":"{extended.wood.400}"}
+            "default": {"$type":"color","$value":"{extended.wood.300}"}
           }
         }
       },
