@@ -81,7 +81,7 @@ export default {
       tokens: {
         '--bs-success-base': 'global.bg.accent.functional.success.default',
         '--bs-success-fg': ['global.text.on-subtle.functional.success.default', 'Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum\'s on-subtle step, the alert title and subtle badge label.'],
-        '--bs-success-fg-emphasis': 'global.text.on-sunken.functional.success.default',
+        '--bs-success-fg-emphasis': ['global.text.on-subtle.functional.success.default', 'The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum\'s on-subtle step, as for primary and accent.'],
         '--bs-success-bg': 'global.bg.accent.functional.success.default',
         '--bs-success-bg-subtle': 'global.bg.subtle.functional.success.default',
         '--bs-success-bg-muted': ['global.bg.subtle.functional.success.hover', 'The next step of the subtle ramp, Quantum\'s hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum\'s hover.'],
@@ -97,7 +97,7 @@ export default {
       tokens: {
         '--bs-danger-base': 'global.bg.accent.functional.error.default',
         '--bs-danger-fg': ['global.text.on-subtle.functional.error.default', 'Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum\'s on-subtle step, the alert title and subtle badge label.'],
-        '--bs-danger-fg-emphasis': 'global.text.on-sunken.functional.error.default',
+        '--bs-danger-fg-emphasis': ['global.text.on-subtle.functional.error.default', 'The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum\'s on-subtle step, as for primary and accent.'],
         '--bs-danger-bg': 'global.bg.accent.functional.error.default',
         '--bs-danger-bg-subtle': 'global.bg.subtle.functional.error.default',
         '--bs-danger-bg-muted': ['global.bg.subtle.functional.error.hover', 'The next step of the subtle ramp, Quantum\'s hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum\'s hover.'],
@@ -113,7 +113,7 @@ export default {
       tokens: {
         '--bs-warning-base': 'global.bg.accent.functional.warning.default',
         '--bs-warning-fg': ['global.text.on-subtle.functional.warning.default', 'Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum\'s on-subtle step, the alert title and subtle badge label.'],
-        '--bs-warning-fg-emphasis': 'global.text.on-sunken.functional.warning.default',
+        '--bs-warning-fg-emphasis': ['global.text.on-subtle.functional.warning.default', 'The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum\'s on-subtle step, as for primary and accent.'],
         '--bs-warning-bg': 'global.bg.accent.functional.warning.default',
         '--bs-warning-bg-subtle': 'global.bg.subtle.functional.warning.default',
         '--bs-warning-bg-muted': ['global.bg.subtle.functional.warning.hover', 'The next step of the subtle ramp, Quantum\'s hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum\'s hover.'],
@@ -129,7 +129,7 @@ export default {
       tokens: {
         '--bs-info-base': 'global.bg.accent.functional.info.default',
         '--bs-info-fg': ['global.text.on-subtle.functional.info.default', 'Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum\'s on-subtle step, the alert title and subtle badge label.'],
-        '--bs-info-fg-emphasis': 'global.text.on-sunken.functional.info.default',
+        '--bs-info-fg-emphasis': ['global.text.on-subtle.functional.info.default', 'The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum\'s on-subtle step, as for primary and accent.'],
         '--bs-info-bg': 'global.bg.accent.functional.info.default',
         '--bs-info-bg-subtle': 'global.bg.subtle.functional.info.default',
         '--bs-info-bg-muted': ['global.bg.subtle.functional.info.hover', 'The next step of the subtle ramp, Quantum\'s hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum\'s hover.'],
@@ -967,7 +967,7 @@ export default {
       options: {
         size: { small: null, medium: null, large: null, xlarge: null, xxlarge: null },
         color: { current: '', neutral: '.fg-2', brand: '.fg-primary', success: '.fg-success', warning: '.fg-warning', error: '.fg-danger', info: '.fg-info' },
-        surface: { base: '', accent: '.bg-<theme> > .fg-contrast-<theme>', subtle: '.bg-subtle-<theme> > .fg-<theme>', sunken: null },
+        surface: { base: '', accent: '.bg-<theme> > .fg-contrast-<theme>', subtle: '.bg-subtle-<theme> > .fg-<theme>' },
       },
       combinations: [
         { when: { surface: 'accent', color: 'neutral' }, classes: '.bg-inverse > .fg-contrast-inverse', why: 'Quantum\'s neutral accent is the inverse surface.' },

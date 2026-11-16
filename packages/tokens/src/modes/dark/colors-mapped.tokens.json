@@ -132,45 +132,6 @@
           }
         }
       },
-      "sunken": {
-        "brand": {
-          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.950}"}
-        },
-        "functional": {
-          "success": {
-            "default": {"$type":"color","$value":"{functional.success.950}"}
-          },
-          "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.950}"}
-          },
-          "severe": {
-            "default": {"$type":"color","$value":"{functional.severe.950}"}
-          },
-          "error": {
-            "default": {"$type":"color","$value":"{functional.error.950}"}
-          },
-          "info": {
-            "default": {"$type":"color","$value":"{functional.info.950}"}
-          }
-        },
-        "extended": {
-          "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.950}"}
-          },
-          "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.950}"}
-          },
-          "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.950}"}
-          },
-          "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.950}"}
-          },
-          "wood": {
-            "default": {"$type":"color","$value":"{extended.wood.950}"}
-          }
-        }
-      },
       "transparency": {
         "fade": {
           "none": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.09803921729326248,0.09803921729326248,0.09803921729326248],"alpha":0,"hex":"#191919"},"$description":"dark-switch.base.900 at opacity.0: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
@@ -303,45 +264,6 @@
           }
         }
       },
-      "on-sunken": {
-        "brand": {
-          "default": {"$type":"color","$value":"{brand.palettes.core-colors.dark.300}"}
-        },
-        "functional": {
-          "success": {
-            "default": {"$type":"color","$value":"{functional.success.500}"}
-          },
-          "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.500}"}
-          },
-          "severe": {
-            "default": {"$type":"color","$value":"{functional.severe.500}"}
-          },
-          "error": {
-            "default": {"$type":"color","$value":"{functional.error.400}"}
-          },
-          "info": {
-            "default": {"$type":"color","$value":"{functional.info.300}"}
-          }
-        },
-        "extended": {
-          "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.200}"}
-          },
-          "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.500}"}
-          },
-          "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.500}"}
-          },
-          "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.400}"}
-          },
-          "wood": {
-            "default": {"$type":"color","$value":"{extended.wood.400}"}
-          }
-        }
-      },
       "code": {
         "keyword": {"$type":"color","$value":"{extended.lavender.300}"},
         "variable": {"$type":"color","$value":"{extended.orchid.400}"},
@@ -365,13 +287,6 @@
         "functional": {
           "warning": {
             "default": {"$type":"color","$value":"{functional.warning.300}"}
-          }
-        }
-      },
-      "on-sunken": {
-        "functional": {
-          "warning": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.functional.warning.default}"}
           }
         }
       }

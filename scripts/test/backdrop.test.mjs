@@ -6,7 +6,8 @@ test('fillOf pairs a role read on a fill with that fill at rest', () => {
   assert.equal(fillOf('global.icon.on-accent.brand.default'), 'global.bg.accent.brand.default');
   assert.equal(fillOf('global.text.on-subtle.functional.success.default'), 'global.bg.subtle.functional.success.default');
   assert.equal(fillOf('global.icon.on-accent.neutral.secondary'), 'global.bg.accent.neutral.default');
-  assert.equal(fillOf('global.border.on-sunken.brand.default'), 'global.bg.sunken.brand.default');
+  assert.equal(fillOf('global.border.on-subtle.brand.default'), 'global.bg.subtle.brand.default');
+  assert.equal(fillOf('global.text.on-sunken.brand.default'), null);
   assert.equal(fillOf('global.icon.on-base.brand.default'), null);
   assert.equal(fillOf('global.bg.accent.brand.default'), null);
   assert.equal(fillOf(null), null);
@@ -28,7 +29,7 @@ test('backdropOf follows the active-token rule', () => {
     id: 'glyph',
     properties: [
       { id: 'color', type: 'enum', default: 'brand', affects: ['container'], options: [{ value: 'brand' }, { value: 'neutral' }] },
-      { id: 'surface', type: 'enum', default: 'base', affects: ['container'], options: [{ value: 'base' }, { value: 'accent' }, { value: 'sunken' }] },
+      { id: 'surface', type: 'enum', default: 'base', affects: ['container'], options: [{ value: 'base' }, { value: 'accent' }, { value: 'subtle' }] },
     ],
     states: [{ id: 'default', trigger: 'interaction' }],
   };
@@ -37,16 +38,16 @@ test('backdropOf follows the active-token rule', () => {
     ['glyph.container.color.neutral', 'global.icon.on-base.neutral.secondary'],
     ['glyph.container.color.accent.brand', 'global.icon.on-accent.brand.default'],
     ['glyph.container.color.accent.neutral', 'global.icon.on-accent.neutral.secondary'],
-    ['glyph.container.color.sunken.brand', 'global.icon.on-sunken.brand.default'],
+    ['glyph.container.color.subtle.brand', 'global.icon.on-subtle.brand.default'],
   ];
   const tokens = rows.map(([path]) => ({ path, segments: path.split('.') }));
   const fills = fillsOf(rows.map(([path, semantic]) => ({ path, semantic })));
   assert.equal(backdropOf(spec, tokens, fills, {}), null);
   assert.equal(backdropOf(spec, tokens, fills, { surface: 'accent' }), 'global.bg.accent.brand.default');
   assert.equal(backdropOf(spec, tokens, fills, { surface: 'accent', color: 'neutral' }), 'global.bg.accent.neutral.default');
-  assert.equal(backdropOf(spec, tokens, fills, { surface: 'sunken' }), 'global.bg.sunken.brand.default');
-  // No neutral token of its own on sunken: the on-base one applies, on a level.
-  assert.equal(backdropOf(spec, tokens, fills, { surface: 'sunken', color: 'neutral' }), null);
+  assert.equal(backdropOf(spec, tokens, fills, { surface: 'subtle' }), 'global.bg.subtle.brand.default');
+  // No neutral token of its own on subtle here: the on-base one applies, on a level.
+  assert.equal(backdropOf(spec, tokens, fills, { surface: 'subtle', color: 'neutral' }), null);
 });
 
 test('missingFills lists the roles whose fill does not exist', () => {

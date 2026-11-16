@@ -46,8 +46,8 @@ Every role path reads the same way: what is painted, where, which family, which 
 | Role | Meaning | When to use it |
 | --- | --- | --- |
 | `global.bg.level` | The page (level 0), the surfaces raised above it (levels 1 to 3) and the plane recessed below it (sunken), with hover and active steps for surfaces people interact with. | Behind content. See Surface levels. |
-| `global.bg.accent` / `subtle` / `sunken` | The fill of an emphasized element: a strong fill, a tint, a deeper tint, per family, with hover and active steps. | Accent for the one strong action of an area, subtle for secondary actions; a ghost element has no fill at rest. |
-| `global.text` | On-base text on surfaces (neutral primary, secondary, tertiary, and one color per family), text on each fill (`on-accent`, `on-subtle`, `on-sunken`), code colors, disabled and skeleton. | Always pair a fill with its own text color, never with the on-base text. |
+| `global.bg.accent` / `subtle` | The fill of an emphasized element: a strong fill or a tint, per family, with hover and active steps. | Accent for the one strong action of an area, subtle for secondary actions; a ghost element has no fill at rest. |
+| `global.text` | On-base text on surfaces (neutral primary, secondary, tertiary, and one color per family), text on each fill (`on-accent`, `on-subtle`), code colors, disabled and skeleton. | Always pair a fill with its own text color, never with the on-base text. |
 | `global.icon` | The same contexts as text. Each icon role aliases the text role next to it. | Icons, so they can diverge from text later without touching a component. |
 | `global.border` | Level borders for surfaces (see Surface levels), base borders, and borders following the accent and subtle fills. | Never as the only edge of a component that has nothing else showing it is there (see Accessibility). |
 | `global.bg.state` and friends | Disabled and skeleton. | Disabled is a state, not a family: an inactive component takes the disabled fill, border, text and icon whatever its emphasis and family. |
@@ -56,7 +56,7 @@ Every role path reads the same way: what is painted, where, which family, which 
 
 **Families** say what the color means: neutral for most things, brand to draw the eye to the
 main path, a functional hue for a status (error for destructive or failed things), an extended
-hue for categories. **Emphasis** is how loud it is: accent, subtle or sunken. Pick the family
+hue for categories. **Emphasis** is how loud it is: accent or subtle. Pick the family
 from the meaning, then the emphasis from the hierarchy of the area, never the other way round.
 
 Some roles are **composed**: the Figma library builds them from a palette step and an opacity (the
@@ -83,7 +83,7 @@ it says nothing about which element is drawn on top.
 - **Level 3 is the ceiling.** Nothing goes above it. When a layout needs level 3, its hierarchy
   is usually too deep: try to flatten it first.
 - **Sunken goes down, not up.** Sunken is a recess below the page, for wide areas such as a
-  panel background or a canvas.
+  panel background or a canvas. It is a neutral surface level: there is no colored sunken fill.
 
 ### Borders follow the level
 
