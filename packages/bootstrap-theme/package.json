@@ -34,7 +34,7 @@
   "devDependencies": {
     "@floating-ui/dom": "^1.8.0",
     "bootstrap": "6.0.0-alpha.1",
-    "sass": "^1.107.0",
+    "sass": "^1.108.1",
     "vanilla-calendar-pro": "^3.4.0"
   },
   "exports": {
