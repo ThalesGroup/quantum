@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.14.2",
+  "version": "0.15.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -141,7 +141,7 @@
       "inputs": [
         "pointer"
       ],
-      "description": "Pointer over the container. Needs a pointing device: touch has no hover. Fill and border move one step along the intent ramp; the glyph keeps its color, except a ghost brand glyph, which takes the tinted fill's brand color."
+      "description": "Pointer over the container. Needs a pointing device: touch has no hover. Fill and border move one step along the intent ramp; the glyph keeps its color."
     },
     {
       "id": "active",
@@ -889,6 +889,28 @@
   ],
   "decisions": [
     {
+      "id": "ghost-brand-glyph-on-subtle",
+      "date": "2026-11-16",
+      "version": "0.15.0",
+      "area": "color",
+      "status": "active",
+      "supersedes": [
+        "colors-from-button"
+      ],
+      "text": "The icon button takes the button's color decisions. Subtle and ghost neutral glyphs are global.icon.on-base.neutral.primary in every state and both modes (button decision neutral-label-primary); a ghost brand glyph is global.icon.on-subtle.brand.default in every state and both modes, at rest too (button decision ghost-brand-label-on-subtle, which supersedes ghost-brand-label-on-base); a ghost icon button takes the subtle border one step behind on hover and press, global.border.subtle.<family>.default / hover (ghost-border-one-step-behind), and the shared disabled fill and border when disabled (ghost-disabled-shared). Error glyphs keep the Figma library's error colors (error-label-figma-library). Supersedes colors-from-button, whose ghost brand glyph at rest was global.icon.on-base.brand.default.",
+      "tokens": [
+        "icon-button.icon.color.subtle.neutral.*",
+        "icon-button.icon.color.ghost.*",
+        "icon-button.container.border-color.ghost.*",
+        "icon-button.container.background.ghost.disabled",
+        "global.icon.on-base.neutral.primary",
+        "global.icon.on-subtle.brand.default",
+        "global.border.subtle.*",
+        "global.bg.state.disabled.default",
+        "global.border.state.disabled.default"
+      ]
+    },
+    {
       "id": "default-emphasis-subtle",
       "date": "2026-11-12",
       "version": "0.14.0",
@@ -1054,7 +1076,7 @@
       "date": "2026-10-15",
       "version": "0.4.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "The icon button takes the button's color decisions of 0.19.0 and 0.20.0. Subtle and ghost neutral glyphs are global.icon.on-base.neutral.primary in every state and both modes (button decision neutral-label-primary); a ghost brand glyph at rest is global.icon.on-base.brand.default (ghost-brand-label-on-base); a ghost icon button takes the subtle border one step behind on hover and press, global.border.subtle.<family>.default / hover (ghost-border-one-step-behind), and the shared disabled fill and border when disabled (ghost-disabled-shared). Error glyphs keep the Figma library's error colors (error-label-figma-library).",
       "tokens": [
         "icon-button.icon.color.subtle.neutral.*",
@@ -1154,6 +1176,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.15.0",
+      "date": "2026-11-16",
+      "note": "Decision ghost-brand-glyph-on-subtle (supersedes colors-from-button), following button decision ghost-brand-label-on-subtle: icon.color.ghost.brand.default reads global.icon.on-subtle.brand.default instead of global.icon.on-base.brand.default, so a ghost brand glyph is the same color in every state, as on the button. Light: #175DD6 becomes #1148A9; the ghost brand glyph at rest on the levels 0 / 1 / 2 / 3 / sunken 8.19 / 7.75 / 8.19 / 7.75 / 7.75:1 (was 5.77 / 5.45 / 5.77 / 5.45 / 5.45:1). Dark: unchanged, both roles are #9EE7FA. The hover state description no longer names the ghost brand glyph as an exception. CSS and template unchanged."
+    },
     {
       "version": "0.14.2",
       "date": "2026-11-13",

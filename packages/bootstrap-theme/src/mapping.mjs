@@ -48,8 +48,8 @@ export default {
       why: 'Quantum brand intent (Button and Badge intent brand).',
       tokens: {
         '--bs-primary-base': 'global.bg.accent.brand.default',
-        '--bs-primary-fg': ['global.text.on-base.brand.default', 'Brand text on the page: the ghost button label and the link color.'],
-        '--bs-primary-fg-emphasis': ['global.text.on-subtle.brand.default', 'The ghost button hover label and the subtle button label: the darker brand text step.'],
+        '--bs-primary-fg': ['global.text.on-base.brand.default', 'Brand text on the page: the link color. Bootstrap also paints the ghost (.btn-text) primary label at rest with it, where Quantum reads the on-subtle step (README, Not themable).'],
+        '--bs-primary-fg-emphasis': ['global.text.on-subtle.brand.default', 'The ghost and subtle brand button labels: the darker brand text step.'],
         '--bs-primary-bg': 'global.bg.accent.brand.default',
         '--bs-primary-bg-subtle': 'global.bg.subtle.brand.default',
         '--bs-primary-bg-muted': ['global.bg.subtle.brand.hover', 'The next step of the subtle ramp, Quantum\'s hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum\'s hover.'],
@@ -227,7 +227,7 @@ export default {
         '--bs-body-line-height': 'font.line-height.normal',
         '--bs-font-mono': { template: `{mono.family}, ${MONO_STACK}`, why: 'Fragment Mono first, Bootstrap\'s monospace stack as the fallback.' },
         '--bs-link-color': ['global.text.on-base.brand.default', 'Quantum has no Link component: brand text on the page.'],
-        '--bs-link-hover-color': ['global.text.on-subtle.brand.default', 'The darker brand text step (the ghost button hover label).'],
+        '--bs-link-hover-color': ['global.text.on-subtle.brand.default', 'The darker brand text step (the ghost brand button label).'],
       },
     },
     {

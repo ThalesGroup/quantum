@@ -99,8 +99,8 @@ and the full radius, which stay in px.
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-primary-base` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` |  |
-| `--bs-primary-fg` | `global.text.on-base.brand.default` | `#175DD6` / `#9EE7FA` | Brand text on the page: the ghost button label and the link color. |
-| `--bs-primary-fg-emphasis` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The ghost button hover label and the subtle button label: the darker brand text step. |
+| `--bs-primary-fg` | `global.text.on-base.brand.default` | `#175DD6` / `#9EE7FA` | Brand text on the page: the link color. Bootstrap also paints the ghost (.btn-text) primary label at rest with it, where Quantum reads the on-subtle step (README, Not themable). |
+| `--bs-primary-fg-emphasis` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The ghost and subtle brand button labels: the darker brand text step. |
 | `--bs-primary-bg` | `global.bg.accent.brand.default` | `#175DD6` / `#9EE7FA` |  |
 | `--bs-primary-bg-subtle` | `global.bg.subtle.brand.default` | `#EEF1F7` / `#09191D` |  |
 | `--bs-primary-bg-muted` | `global.bg.subtle.brand.hover` | `#DDE6F5` / `#0D272E` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
@@ -265,7 +265,7 @@ Body, monospace and links, on root; Sass `$root-tokens`.
 | `--bs-body-line-height` | `font.line-height.normal` | `1.5` |  |
 | `--bs-font-mono` | `{mono.family}, …` | `"Fragment Mono", ui-monospace, 'SF Mo…` | Fragment Mono first, Bootstrap's monospace stack as the fallback. |
 | `--bs-link-color` | `global.text.on-base.brand.default` | `#175DD6` / `#9EE7FA` | Quantum has no Link component: brand text on the page. |
-| `--bs-link-hover-color` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The darker brand text step (the ghost button hover label). |
+| `--bs-link-hover-color` | `global.text.on-subtle.brand.default` | `#1148A9` / `#9EE7FA` | The darker brand text step (the ghost brand button label). |
 
 Headings, on root; Sass `$type-tokens`.
 
@@ -943,6 +943,12 @@ them, and the theme restyles nothing directly.
   (`button.container.background.accent.<intent>.hover`, `.active`, and the matching border and
   subtle steps) are close but not exact; `$theme-colors` has no hover key and `$button-variants`
   only passes `bg-subtle` through unchanged. The ghost (`.btn-text`) hover is exact.
+- **Ghost brand label at rest.** Quantum paints a ghost brand button's label with
+  `button.label.color.ghost.brand.default` (`global.text.on-subtle.brand.default`, `#1148A9` in
+  light mode) in every state. Bootstrap's `.btn-text` takes its resting color from the theme's
+  `--bs-theme-fg`, which is `--bs-primary-fg`, the link color (`global.text.on-base.brand.default`,
+  `#175DD6`): it has no per-variant property for it, so the primary text button stays one step
+  lighter at rest in light mode. Dark mode matches.
 - **Button borders.** Bootstrap draws a solid button's border in its fill color and gives subtle
   buttons none: Quantum's accent border (`global.border.accent.*`) and subtle border
   (`global.border.subtle.*`) are not drawn.
