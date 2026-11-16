@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -367,6 +367,86 @@
       "id": "text-error",
       "description": "Error text on every surface.",
       "foreground": "global.text.on-base.functional.error.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-extended-coral",
+      "description": "Extended coral text on every surface.",
+      "foreground": "global.text.on-base.extended.coral.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-extended-forest",
+      "description": "Extended forest text on every surface.",
+      "foreground": "global.text.on-base.extended.forest.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-extended-lavender",
+      "description": "Extended lavender text on every surface.",
+      "foreground": "global.text.on-base.extended.lavender.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-extended-lime",
+      "description": "Extended lime text on every surface.",
+      "foreground": "global.text.on-base.extended.lime.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-extended-wood",
+      "description": "Extended wood text on every surface.",
+      "foreground": "global.text.on-base.extended.wood.default",
       "backgrounds": [
         "global.bg.level.0.default",
         "global.bg.level.1.default",
@@ -916,6 +996,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "7.0.1",
+      "date": "2026-11-16",
+      "note": "Fix, no decision changed: the Figma library's export of 2026-11-16 (issue 72) sets global.text.on-base.extended.wood.default to extended.wood.300 in dark mode (#E6A159, was wood 400 #C58440), so the dark wood text reaches 4.5:1 on every surface level. global.icon.on-base.extended.wood.default, which aliases it, follows. Light mode is unchanged. New pairs text-extended-coral, text-extended-forest, text-extended-lavender, text-extended-lime and text-extended-wood measure every on-base extended text role on the levels and on sunken, minimum 4.5:1. Wood in dark mode on the levels 0 / 1 / 2 / 3 / sunken: 8.05 / 7.37 / 6.75 / 6.04 / 8.43:1 (was 5.65 / 5.17 / 4.73 / 4.24 / 5.92:1, under 4.5:1 on level 3). The lowest of the other extended pairs: coral in dark mode on level 3, 5.34:1."
+    },
     {
       "version": "7.0.0",
       "date": "2026-11-16",
