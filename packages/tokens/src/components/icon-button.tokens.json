@@ -210,7 +210,7 @@
             "active": { "$value": "{global.icon.on-base.neutral.primary}" }
           },
           "brand": {
-            "default": { "$value": "{global.icon.on-base.brand.default}" },
+            "default": { "$value": "{global.icon.on-subtle.brand.default}" },
             "hover": { "$value": "{global.icon.on-subtle.brand.default}" },
             "active": { "$value": "{global.icon.on-subtle.brand.default}" }
           },

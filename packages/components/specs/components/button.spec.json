@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.29.2",
+  "version": "0.30.0",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -829,6 +829,22 @@
   ],
   "decisions": [
     {
+      "id": "ghost-brand-label-on-subtle",
+      "date": "2026-11-16",
+      "version": "0.30.0",
+      "area": "color",
+      "status": "active",
+      "supersedes": [
+        "ghost-brand-label-on-base"
+      ],
+      "text": "A ghost brand button's label is global.text.on-subtle.brand.default in every state and both modes, the color of the subtle brand label: at rest too, where it took global.text.on-base.brand.default (supersedes ghost-brand-label-on-base). Other brand text on the page, links included, keeps global.text.on-base.brand.default. The Figma prototype binds the on-base role at rest; the Figma library is asked to bind the same role (issue 66, point 5b).",
+      "rationale": "The label keeps one color in every state and in both modes, like the subtle brand label, instead of darkening on hover in light mode.",
+      "tokens": [
+        "button.label.color.ghost.brand.*",
+        "global.text.on-subtle.brand.default"
+      ]
+    },
+    {
       "id": "default-emphasis-subtle",
       "date": "2026-11-12",
       "version": "0.29.0",
@@ -986,7 +1002,7 @@
       "date": "2026-10-08",
       "version": "0.19.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "At rest, a ghost brand button, which has no fill and sits on the surface, takes the brand text of the surface, global.text.on-base.brand.default, as in the Figma prototype; on hover and press, when its tint appears, it takes global.text.on-subtle.brand.default as before.",
       "tokens": [
         "button.label.color.ghost.brand.*",
@@ -1407,6 +1423,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.30.0",
+      "date": "2026-11-16",
+      "note": "Decision ghost-brand-label-on-subtle (supersedes ghost-brand-label-on-base): label.color.ghost.brand.default reads global.text.on-subtle.brand.default instead of global.text.on-base.brand.default, so a ghost brand label is the same color in every state, as the subtle brand label. Light: #175DD6 becomes #1148A9; the ghost brand label at rest on the levels 0 / 1 / 2 / 3 / sunken 8.19 / 7.75 / 8.19 / 7.75 / 7.75:1 (was 5.77 / 5.45 / 5.77 / 5.45 / 5.45:1). Dark: unchanged, both roles are #9EE7FA. CSS and template unchanged; the hover state description, which says the label keeps its color, now holds for every emphasis."
+    },
     {
       "version": "0.29.2",
       "date": "2026-11-13",
