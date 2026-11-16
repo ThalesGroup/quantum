@@ -23,8 +23,8 @@ test('validKey only changes what a path or a CSS variable cannot carry', () => {
 test('validPath keeps the library paths, made valid key by key', () => {
   assert.equal(validKey('black&white'), 'black-and-white', 'a CSS variable cannot carry &');
   assert.equal(validPath(['brand-identity', 'logo', 'black&white', 'accent']), 'brand-identity.logo.black-and-white.accent');
-  assert.equal(validPath(['brand', 'identity', 'core-colors', 'marine-blue']), 'brand.identity.core-colors.marine-blue');
-  assert.equal(validPath(['brand', 'palettes', 'core-colors', 'light', '600']), 'brand.palettes.core-colors.light.600');
+  assert.equal(validPath(['brand', 'identity', 'core', 'marine-blue']), 'brand.identity.core.marine-blue');
+  assert.equal(validPath(['brand', 'palettes', 'core', 'light', '600']), 'brand.palettes.core.light.600');
 });
 
 test('every path stays unique and every CSS variable distinct', needsExport, () => {
@@ -37,7 +37,7 @@ test('aliases keep their target, made valid', needsExport, () => {
   const mapped = tokens('semantic/colors-mapped.tokens.json');
   assert.equal(mapped.get('global.bg.level.0.default').$value, '{global.bg.base.neutral.1}');
   assert.equal(mapped.get('global.bg.base.neutral.1').$value, '{light-switch.base.25}');
-  assert.equal(mapped.get('global.bg.accent.brand.default').$value, '{brand.palettes.core-colors.light.600}');
+  assert.equal(mapped.get('global.bg.accent.brand.default').$value, '{brand.palettes.core.light.600}');
   assert.equal(mapped.get('ai.bg.accent.default').$value, '{global.bg.accent.brand.default}');
   assert.equal(tokens('raw/palette-switch.tokens.json').get('light-switch.base.25').$value, '{neutral.light.ash.25}');
 });
@@ -84,5 +84,5 @@ test('the dark mode keeps only the tokens whose value differs from light', needs
   assert.ok(dark.size > 0 && dark.size < light.size);
   for (const [p, t] of dark) assert.notDeepEqual(t.$value, light.get(p)?.$value, p);
   assert.equal(dark.has('global.bg.accent.functional.error.default'), false, 'same alias in both modes');
-  assert.equal(dark.get('global.bg.accent.brand.default').$value, '{brand.palettes.core-colors.dark.200}');
+  assert.equal(dark.get('global.bg.accent.brand.default').$value, '{brand.palettes.core.dark.200}');
 });

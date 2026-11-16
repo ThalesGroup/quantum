@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -25,7 +25,7 @@
     {
       "id": "palettes",
       "name": "Palettes",
-      "text": "Raw palettes are ramps from 25 (lightest) to 950 (darkest): neutral (ash and slate, each in a light and a dark ramp), the brand core colors in a light and a dark ramp (brand.palettes.core-colors) and the brand tint palettes purple, yellow, green and beige (brand.palettes.tint-colors), the functional hues (error, warning, success, info, severe), AI, the extended hues (amber, azure, coral and orchid of their own; forest, lavender, lime and wood alias the green, purple, yellow and beige tints), and the brand identity colors (core colors, neutrals, the light and dark step of each tint). Only other tokens reference them, never a component."
+      "text": "Raw palettes are ramps from 25 (lightest) to 950 (darkest): neutral (ash and slate, each in a light and a dark ramp), the brand core colors in a light and a dark ramp (brand.palettes.core) and the brand tint palettes purple, yellow, green and beige (brand.palettes.tint), the functional hues (error, warning, success, info, severe), AI, the extended hues (amber, azure, coral and orchid of their own; forest, lavender, lime and wood alias the green, purple, yellow and beige tints), and the brand identity colors (core colors, neutrals, the light and dark step of each tint). Only other tokens reference them, never a component."
     },
     {
       "id": "palette-switch",
@@ -916,6 +916,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "7.0.0",
+      "date": "2026-11-16",
+      "note": "Fix, no decision changed. Breaking paths: the Figma library's export of 2026-11-16 (issue 66, point 7) drops -colors from the brand group names. Renamed: brand.palettes.core-colors.* is brand.palettes.core.*, brand.palettes.tint-colors.* is brand.palettes.tint.*, brand.identity.core-colors.* is brand.identity.core.* and brand.identity.tint-colors.* is brand.identity.tint.*. Raw tokens only: every semantic alias follows, no value, semantic path or component token changes, and no contrast pair changes."
+    },
     {
       "version": "6.0.0",
       "date": "2026-11-16",

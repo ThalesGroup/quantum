@@ -64,7 +64,7 @@
   },
   "brand": {
     "palettes": {
-      "core-colors": {
+      "core": {
         "light": {
           "25": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9842743277549744,0.9888831973075867,0.9934849739074707],"alpha":1,"hex":"#FBFCFD"}},
           "50": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9334307312965393,0.9456717371940613,0.9701281189918518],"alpha":1,"hex":"#EEF1F7"}},
@@ -94,7 +94,7 @@
           "950": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.0351981520652771,0.09767841547727585,0.11327560245990753],"alpha":1,"hex":"#09191D"}}
         }
       },
-      "tint-colors": {
+      "tint": {
         "purple": {
           "25": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9878668189048767,0.9878655672073364,0.9908414483070374],"alpha":1,"hex":"#FCFCFD"}},
           "50": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9607701897621155,0.9415115118026733,0.9800266027450562],"alpha":1,"hex":"#F5F0FA"}},
@@ -158,11 +158,11 @@
         "true-white": {"$type":"color","$value":{"colorSpace":"srgb","components":[1,1,1],"alpha":1,"hex":"#FFFFFF"}},
         "true-black": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0,0],"alpha":1,"hex":"#000000"}}
       },
-      "core-colors": {
+      "core": {
         "marine-blue": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.1411764770746231,0.16470588743686676,0.4588235318660736],"alpha":1,"hex":"#242A75"}},
         "light-blue": {"$type":"color","$value":{"colorSpace":"srgb","components":[0,0.7333333492279053,0.8666666746139526],"alpha":1,"hex":"#00BBDD"},"$description":"Brand value. DON'T MODIFY ⚠️"}
       },
-      "tint-colors": {
+      "tint": {
         "purple": {
           "light": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8352941274642944,0.6823529601097107,1],"alpha":1,"hex":"#D5AEFF"}},
           "dark": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.16078431904315948,0,0.2862745225429535],"alpha":1,"hex":"#290049"}}
@@ -270,32 +270,32 @@
   },
   "extended": {
     "lavender": {
-      "25": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.25}"},
-      "50": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.50}"},
-      "100": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.100}"},
-      "200": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.200}"},
-      "300": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.300}"},
-      "400": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.400}"},
-      "500": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.500}"},
-      "600": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.600}"},
-      "700": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.700}"},
-      "800": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.800}"},
-      "900": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.900}"},
-      "950": {"$type":"color","$value":"{brand.palettes.tint-colors.purple.950}"}
+      "25": {"$type":"color","$value":"{brand.palettes.tint.purple.25}"},
+      "50": {"$type":"color","$value":"{brand.palettes.tint.purple.50}"},
+      "100": {"$type":"color","$value":"{brand.palettes.tint.purple.100}"},
+      "200": {"$type":"color","$value":"{brand.palettes.tint.purple.200}"},
+      "300": {"$type":"color","$value":"{brand.palettes.tint.purple.300}"},
+      "400": {"$type":"color","$value":"{brand.palettes.tint.purple.400}"},
+      "500": {"$type":"color","$value":"{brand.palettes.tint.purple.500}"},
+      "600": {"$type":"color","$value":"{brand.palettes.tint.purple.600}"},
+      "700": {"$type":"color","$value":"{brand.palettes.tint.purple.700}"},
+      "800": {"$type":"color","$value":"{brand.palettes.tint.purple.800}"},
+      "900": {"$type":"color","$value":"{brand.palettes.tint.purple.900}"},
+      "950": {"$type":"color","$value":"{brand.palettes.tint.purple.950}"}
     },
     "lime": {
-      "25": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.25}"},
-      "50": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.50}"},
-      "100": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.100}"},
-      "200": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.200}"},
-      "300": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.300}"},
-      "400": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.400}"},
-      "500": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.500}"},
-      "600": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.600}"},
-      "700": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.700}"},
-      "800": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.800}"},
-      "900": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.900}"},
-      "950": {"$type":"color","$value":"{brand.palettes.tint-colors.yellow.950}"}
+      "25": {"$type":"color","$value":"{brand.palettes.tint.yellow.25}"},
+      "50": {"$type":"color","$value":"{brand.palettes.tint.yellow.50}"},
+      "100": {"$type":"color","$value":"{brand.palettes.tint.yellow.100}"},
+      "200": {"$type":"color","$value":"{brand.palettes.tint.yellow.200}"},
+      "300": {"$type":"color","$value":"{brand.palettes.tint.yellow.300}"},
+      "400": {"$type":"color","$value":"{brand.palettes.tint.yellow.400}"},
+      "500": {"$type":"color","$value":"{brand.palettes.tint.yellow.500}"},
+      "600": {"$type":"color","$value":"{brand.palettes.tint.yellow.600}"},
+      "700": {"$type":"color","$value":"{brand.palettes.tint.yellow.700}"},
+      "800": {"$type":"color","$value":"{brand.palettes.tint.yellow.800}"},
+      "900": {"$type":"color","$value":"{brand.palettes.tint.yellow.900}"},
+      "950": {"$type":"color","$value":"{brand.palettes.tint.yellow.950}"}
     },
     "coral": {
       "25": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9988909363746643,0.9848787188529968,0.981377899646759],"alpha":1,"hex":"#FFFBFA"}},
@@ -312,18 +312,18 @@
       "950": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.12161315977573395,0.07897484302520752,0.067352294921875],"alpha":1,"hex":"#1F1411"}}
     },
     "forest": {
-      "25": {"$type":"color","$value":"{brand.palettes.tint-colors.green.25}"},
-      "50": {"$type":"color","$value":"{brand.palettes.tint-colors.green.50}"},
-      "100": {"$type":"color","$value":"{brand.palettes.tint-colors.green.100}"},
-      "200": {"$type":"color","$value":"{brand.palettes.tint-colors.green.200}"},
-      "300": {"$type":"color","$value":"{brand.palettes.tint-colors.green.300}"},
-      "400": {"$type":"color","$value":"{brand.palettes.tint-colors.green.400}"},
-      "500": {"$type":"color","$value":"{brand.palettes.tint-colors.green.500}"},
-      "600": {"$type":"color","$value":"{brand.palettes.tint-colors.green.600}"},
-      "700": {"$type":"color","$value":"{brand.palettes.tint-colors.green.700}"},
-      "800": {"$type":"color","$value":"{brand.palettes.tint-colors.green.800}"},
-      "900": {"$type":"color","$value":"{brand.palettes.tint-colors.green.900}"},
-      "950": {"$type":"color","$value":"{brand.palettes.tint-colors.green.950}"}
+      "25": {"$type":"color","$value":"{brand.palettes.tint.green.25}"},
+      "50": {"$type":"color","$value":"{brand.palettes.tint.green.50}"},
+      "100": {"$type":"color","$value":"{brand.palettes.tint.green.100}"},
+      "200": {"$type":"color","$value":"{brand.palettes.tint.green.200}"},
+      "300": {"$type":"color","$value":"{brand.palettes.tint.green.300}"},
+      "400": {"$type":"color","$value":"{brand.palettes.tint.green.400}"},
+      "500": {"$type":"color","$value":"{brand.palettes.tint.green.500}"},
+      "600": {"$type":"color","$value":"{brand.palettes.tint.green.600}"},
+      "700": {"$type":"color","$value":"{brand.palettes.tint.green.700}"},
+      "800": {"$type":"color","$value":"{brand.palettes.tint.green.800}"},
+      "900": {"$type":"color","$value":"{brand.palettes.tint.green.900}"},
+      "950": {"$type":"color","$value":"{brand.palettes.tint.green.950}"}
     },
     "azure": {
       "25": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9803828001022339,0.9882081151008606,0.9960341453552246],"alpha":1,"hex":"#FAFCFE"}},
@@ -354,18 +354,18 @@
       "950": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.11365944147109985,0.07844632863998413,0.09800614416599274],"alpha":1,"hex":"#1D1419"}}
     },
     "wood": {
-      "25": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.25}"},
-      "50": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.50}"},
-      "100": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.100}"},
-      "200": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.200}"},
-      "300": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.300}"},
-      "400": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.400}"},
-      "500": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.500}"},
-      "600": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.600}"},
-      "700": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.700}"},
-      "800": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.800}"},
-      "900": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.900}"},
-      "950": {"$type":"color","$value":"{brand.palettes.tint-colors.beige.950}"}
+      "25": {"$type":"color","$value":"{brand.palettes.tint.beige.25}"},
+      "50": {"$type":"color","$value":"{brand.palettes.tint.beige.50}"},
+      "100": {"$type":"color","$value":"{brand.palettes.tint.beige.100}"},
+      "200": {"$type":"color","$value":"{brand.palettes.tint.beige.200}"},
+      "300": {"$type":"color","$value":"{brand.palettes.tint.beige.300}"},
+      "400": {"$type":"color","$value":"{brand.palettes.tint.beige.400}"},
+      "500": {"$type":"color","$value":"{brand.palettes.tint.beige.500}"},
+      "600": {"$type":"color","$value":"{brand.palettes.tint.beige.600}"},
+      "700": {"$type":"color","$value":"{brand.palettes.tint.beige.700}"},
+      "800": {"$type":"color","$value":"{brand.palettes.tint.beige.800}"},
+      "900": {"$type":"color","$value":"{brand.palettes.tint.beige.900}"},
+      "950": {"$type":"color","$value":"{brand.palettes.tint.beige.950}"}
     },
     "amber": {
       "25": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.9999319911003113,0.9882176518440247,0.9647913575172424],"alpha":1,"hex":"#FFFCF6"}},
