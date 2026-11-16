@@ -115,7 +115,7 @@ test('the Icon draws its current color as neutral on each surface', () => {
   const icon = JSON.parse(fs.readFileSync(path.join(ROOT, artifacts('icon').spec), 'utf8'));
   const plan = figmaComponent(loaded, icon, BLUEPRINTS.icon);
   const glyph = (name) => plan.variants.find((v) => v.name === name).root.children[0];
-  for (const surface of ['base', 'accent', 'subtle', 'sunken']) {
+  for (const surface of ['base', 'accent', 'subtle']) {
     const current = glyph(`Size=medium, Color=current, Surface=${surface}, State=default`);
     assert.ok(current.fills, `${surface}: current is bound`);
     assert.equal(current.fills, glyph(`Size=medium, Color=neutral, Surface=${surface}, State=default`).fills, surface);

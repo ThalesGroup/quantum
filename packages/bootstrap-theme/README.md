@@ -128,7 +128,7 @@ and the full radius, which stay in px.
 | --- | --- | --- | --- |
 | `--bs-success-base` | `global.bg.accent.functional.success.default` | `#0B7742` / `#11C772` |  |
 | `--bs-success-fg` | `global.text.on-subtle.functional.success.default` | `#075D33` / `#30F498` | Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum's on-subtle step, the alert title and subtle badge label. |
-| `--bs-success-fg-emphasis` | `global.text.on-sunken.functional.success.default` | `#075D33` / `#129957` |  |
+| `--bs-success-fg-emphasis` | `global.text.on-subtle.functional.success.default` | `#075D33` / `#30F498` | The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum's on-subtle step, as for primary and accent. |
 | `--bs-success-bg` | `global.bg.accent.functional.success.default` | `#0B7742` / `#11C772` |  |
 | `--bs-success-bg-subtle` | `global.bg.subtle.functional.success.default` | `#DBFAE6` / `#011C16` |  |
 | `--bs-success-bg-muted` | `global.bg.subtle.functional.success.hover` | `#AEF6C9` / `#022A23` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
@@ -142,7 +142,7 @@ and the full radius, which stay in px.
 | --- | --- | --- | --- |
 | `--bs-danger-base` | `global.bg.accent.functional.error.default` | `#DF2821` |  |
 | `--bs-danger-fg` | `global.text.on-subtle.functional.error.default` | `#940E11` / `#FAA79D` | Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum's on-subtle step, the alert title and subtle badge label. |
-| `--bs-danger-fg-emphasis` | `global.text.on-sunken.functional.error.default` | `#940E11` / `#EE5248` |  |
+| `--bs-danger-fg-emphasis` | `global.text.on-subtle.functional.error.default` | `#940E11` / `#FAA79D` | The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum's on-subtle step, as for primary and accent. |
 | `--bs-danger-bg` | `global.bg.accent.functional.error.default` | `#DF2821` |  |
 | `--bs-danger-bg-subtle` | `global.bg.subtle.functional.error.default` | `#FEECEA` / `#2B0B08` |  |
 | `--bs-danger-bg-muted` | `global.bg.subtle.functional.error.hover` | `#FCCDC6` / `#3E130F` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
@@ -156,7 +156,7 @@ and the full radius, which stay in px.
 | --- | --- | --- | --- |
 | `--bs-warning-base` | `global.bg.accent.functional.warning.default` | `#FFC61C` |  |
 | `--bs-warning-fg` | `global.text.on-subtle.functional.warning.default` | `#644B16` / `#FFD654` | Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum's on-subtle step, the alert title and subtle badge label. |
-| `--bs-warning-fg-emphasis` | `global.text.on-sunken.functional.warning.default` | `#2D2107` / `#BD8107` |  |
+| `--bs-warning-fg-emphasis` | `global.text.on-subtle.functional.warning.default` | `#644B16` / `#FFD654` | The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum's on-subtle step, as for primary and accent. |
 | `--bs-warning-bg` | `global.bg.accent.functional.warning.default` | `#FFC61C` |  |
 | `--bs-warning-bg-subtle` | `global.bg.subtle.functional.warning.default` | `#FFF1C7` / `#1F1504` |  |
 | `--bs-warning-bg-muted` | `global.bg.subtle.functional.warning.hover` | `#FFE495` / `#2D2107` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
@@ -170,7 +170,7 @@ and the full radius, which stay in px.
 | --- | --- | --- | --- |
 | `--bs-info-base` | `global.bg.accent.functional.info.default` | `#2B68E0` / `#94B6F4` |  |
 | `--bs-info-fg` | `global.text.on-subtle.functional.info.default` | `#1A4CAD` / `#BBCFF3` | Text in the intent color reads on the subtle fill (alert, subtle badge) and on the page: Quantum's on-subtle step, the alert title and subtle badge label. |
-| `--bs-info-fg-emphasis` | `global.text.on-sunken.functional.info.default` | `#0C2A68` / `#94B6F4` |  |
+| `--bs-info-fg-emphasis` | `global.text.on-subtle.functional.info.default` | `#1A4CAD` / `#BBCFF3` | The emphasis text in the intent color, on the subtle fill (alert, subtle badge): Quantum's on-subtle step, as for primary and accent. |
 | `--bs-info-bg` | `global.bg.accent.functional.info.default` | `#2B68E0` / `#94B6F4` |  |
 | `--bs-info-bg-subtle` | `global.bg.subtle.functional.info.default` | `#EDF1F9` / `#09162F` |  |
 | `--bs-info-bg-muted` | `global.bg.subtle.functional.info.hover` | `#DEE7F6` / `#0B204B` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
@@ -927,7 +927,7 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | Skeleton (`skeleton`) | Placeholder (`.placeholder`) | shape: text = default, circle = none, rectangle = none; Bootstrap only: `.placeholder-glow`, `.placeholder-wave` |
 | Dropdown (`dropdown`) | Menu (`[data-bs-toggle="menu"] + .menu`) | emphasis: accent = `.btn-solid`, subtle = `.btn-subtle`, ghost = `.btn-text`; intent: neutral = `.theme-secondary`, brand = `.theme-primary`, error = `.theme-danger`; size: xsmall = `.btn-xs`, small = `.btn-sm`, medium = default, large = `.btn-lg`; parts: menu = `.menu`, item = `.menu-item`, item-icon = `.menu-item-icon`, separator = `.menu-divider`, group = `.menu-header` |
 | Divider (`divider`) | Reboot hr / .vr (`hr`) | orientation: horizontal = `hr`, vertical = `.vr` |
-| Icon (`icon`) | Color utilities (`.material-symbols-outlined`) | size: small = none, medium = none, large = none, xlarge = none, xxlarge = none; color: current = default, neutral = `.fg-2`, brand = `.fg-primary`, success = `.fg-success`, warning = `.fg-warning`, error = `.fg-danger`, info = `.fg-info`; surface: base = default, accent = `.bg-<theme> > .fg-contrast-<theme>`, subtle = `.bg-subtle-<theme> > .fg-<theme>`, sunken = none; surface accent + color neutral = `.bg-inverse > .fg-contrast-inverse`; surface subtle + color neutral = `.bg-subtle-secondary > .fg-secondary`; surface subtle + color brand = `.bg-subtle-primary > .fg-emphasis-primary` |
+| Icon (`icon`) | Color utilities (`.material-symbols-outlined`) | size: small = none, medium = none, large = none, xlarge = none, xxlarge = none; color: current = default, neutral = `.fg-2`, brand = `.fg-primary`, success = `.fg-success`, warning = `.fg-warning`, error = `.fg-danger`, info = `.fg-info`; surface: base = default, accent = `.bg-<theme> > .fg-contrast-<theme>`, subtle = `.bg-subtle-<theme> > .fg-<theme>`; surface accent + color neutral = `.bg-inverse > .fg-contrast-inverse`; surface subtle + color neutral = `.bg-subtle-secondary > .fg-secondary`; surface subtle + color brand = `.bg-subtle-primary > .fg-emphasis-primary` |
 
 Bootstrap components with no Quantum equivalent (themed by the root tokens only): Chip, Chip input, OTP input, Strength, Combobox, Datepicker, List group, Nav and tabs, Navbar, Dialog, Drawer, Toasts, Tooltip, Popover, Stepper, Table, Carousel, Close button.
 <!-- equivalences:end -->
@@ -1001,8 +1001,8 @@ them, and the theme restyles nothing directly.
   (`#644B16`, `#940E11`) are darker than the Icon's (`#FFC61C`, `#C01619`), and success, warning,
   error and info in dark mode are lighter; neutral on an accent or a subtle fill takes the primary
   text role instead of the Icon's. Every one of them reaches 3:1 on its surface. The sizes have
-  no class (`.fs-*` are fluid text sizes and Google's class sets 24 px), the sunken fills have no
-  background utility, and a directional glyph does not flip in a right-to-left layout.
+  no class (`.fs-*` are fluid text sizes and Google's class sets 24 px), and a directional glyph
+  does not flip in a right-to-left layout.
 - **Divider.** `.vr` is drawn with `--bs-border-color`, not `divider.container.color` (the `hr`
   takes it).
 - **Card surface level-2** and the **slider's** hover thumb color have no Bootstrap class or token;

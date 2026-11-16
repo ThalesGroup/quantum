@@ -10,8 +10,8 @@
 import { activeTokens } from './token-map.mjs';
 
 /** A semantic role read on a fill: kind, fill, then the hue path and the role's last segment. */
-export const ON_FILL = /^global\.(?:text|icon|border)\.on-(accent|subtle|sunken)\.(.+)\.[^.]+$/;
-const DRAWN = /^global\.bg\.(accent|subtle|sunken)\./;
+export const ON_FILL = /^global\.(?:text|icon|border)\.on-(accent|subtle)\.(.+)\.[^.]+$/;
+const DRAWN = /^global\.bg\.(accent|subtle)\./;
 
 /** The background token a role is read on, at rest (`global.bg.<fill>.<hue>.default`), or null. */
 export function fillOf(role) {

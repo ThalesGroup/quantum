@@ -54,11 +54,11 @@ never carries the meaning alone.
 ## On a colored fill
 
 The colors are made for the surface levels: the page, a card, a popover. When the icon sits on
-a colored fill of the system, an accent, subtle or sunken fill, set the surface to that fill
+a colored fill of the system, an accent or subtle fill, set the surface to that fill
 and pick the color of the fill's hue: a success icon on a subtle success fill, a neutral icon
 on the neutral accent fill. The icon then takes the icon color the system made for that fill,
-which can differ from the color of the text on it (the warning icon on a light sunken fill).
-There is no neutral sunken fill.
+which can differ from the color of the text on it. The sunken level is a surface level, not a
+colored fill: there, keep the base surface.
 
 An icon of another hue than its fill (a success icon on a brand fill) has no color of its own:
 the system does not pair them. Use the fill's hue, or the current color, which takes the text
@@ -90,11 +90,8 @@ source it comes from. This section explains the decisions behind it.
   [WAI tutorial: Functional images](https://www.w3.org/WAI/tutorials/images/functional/)).
 - **Contrast for named icons.** A named icon is a graphical object and needs 3:1 against the
   surface. Every color option passes on every surface level and on its own colored fill, hover
-  and active fills included, in both modes, except warning on the sunken warning fill in light
-  mode (2.66:1): its icon role aliases the warning icon on the page, which the Figma library
-  darkened to warning 500 for the page (3.09:1 at the lowest) but which stays too light on that
-  fill. The Icon keeps the library's value rather than departing from it; on that fill, pair a
-  warning icon with text. `current` inherits the contrast of the text around it:
+  and active fills included, in both modes (warning 3.09:1 at the lowest, in light mode).
+  `current` inherits the contrast of the text around it:
   every text role of the system reaches 3:1 on the surface levels (4.24:1 at the lowest, and
   3.12:1 for disabled text), so a named icon in `current` does too
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),

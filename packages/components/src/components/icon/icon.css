@@ -7,8 +7,7 @@
  *  - Only --icon-* custom properties may appear here. No raw values, no semantic tokens.
  *  - A glyph of the icon font. Size, color and surface are data attributes; the default color,
  *    current, inherits the surrounding text color (currentColor: a token cannot say inherit).
- *  - On a colored fill (data-surface accent, subtle, sunken) a color reads that fill's icon role;
- *    without a token of its own (neutral on sunken) it keeps the base one.
+ *  - On a colored fill (data-surface accent, subtle) a color reads that fill's icon role.
  *  - A directional glyph (data-directional, set by the template from the Iconography list) flips
  *    in a right-to-left layout; :dir() reads the document's direction, not direction: ltr.
  */
@@ -72,8 +71,3 @@
 .ds-icon[data-surface="subtle"][data-color="error"] { --_color: var(--icon-container-color-subtle-error); }
 .ds-icon[data-surface="subtle"][data-color="info"] { --_color: var(--icon-container-color-subtle-info); }
 
-.ds-icon[data-surface="sunken"][data-color="brand"] { --_color: var(--icon-container-color-sunken-brand); }
-.ds-icon[data-surface="sunken"][data-color="success"] { --_color: var(--icon-container-color-sunken-success); }
-.ds-icon[data-surface="sunken"][data-color="warning"] { --_color: var(--icon-container-color-sunken-warning); }
-.ds-icon[data-surface="sunken"][data-color="error"] { --_color: var(--icon-container-color-sunken-error); }
-.ds-icon[data-surface="sunken"][data-color="info"] { --_color: var(--icon-container-color-sunken-info); }

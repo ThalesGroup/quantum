@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -35,7 +35,7 @@
     {
       "id": "roles",
       "name": "Roles",
-      "text": "A mapped color names what a color does, not what it looks like: global.bg (fills and surfaces), global.text, global.icon and global.border, then the context (level, base, accent, subtle, sunken, state…), the color family (neutral, brand, functional.<hue>, extended.<hue>) and the state. Components alias roles, never a palette step. The focus ring color belongs to the Focus ring foundation."
+      "text": "A mapped color names what a color does, not what it looks like: global.bg (fills and surfaces), global.text, global.icon and global.border, then the context (level, base, accent, subtle, state…), the color family (neutral, brand, functional.<hue>, extended.<hue>) and the state. Components alias roles, never a palette step. The focus ring color belongs to the Focus ring foundation."
     },
     {
       "id": "levels",
@@ -57,11 +57,10 @@
     {
       "id": "emphasis",
       "name": "Emphasis and family",
-      "text": "Fills come by emphasis: accent, a strong fill; subtle, a tinted fill; sunken, a deeper tint. Each emphasis exists for the neutral, brand, functional and extended families, with default, hover and active steps where the Figma library defines them. Every fill has its own text and icon color: on-accent, on-subtle and on-sunken, per family.",
+      "text": "Fills come by emphasis: accent, a strong fill; subtle, a tinted fill. Each emphasis exists for the neutral, brand, functional and extended families, with default, hover and active steps where the Figma library defines them. Every fill has its own text and icon color: on-accent and on-subtle, per family. Sunken is a neutral surface level, not a fill: there is no colored sunken fill.",
       "tokens": [
         "global.bg.accent.*",
-        "global.bg.subtle.*",
-        "global.bg.sunken.*"
+        "global.bg.subtle.*"
       ]
     },
     {
@@ -236,7 +235,6 @@
       "tokens": [
         "global.bg.accent.*",
         "global.bg.subtle.*",
-        "global.bg.sunken.*",
         "global.bg.state.*",
         "global.bg.transparency.*"
       ],
@@ -918,6 +916,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "6.0.0",
+      "date": "2026-11-16",
+      "note": "Fix, no decision changed. Breaking paths: the Figma library's export of 2026-11-16 (issue 66, point 6, the dark-mode sunken brand fill that aliased the light ramp) deletes every colored sunken role rather than realiasing that one fill. Removed, in both modes (33 tokens): global.bg.sunken.* (brand, functional success, warning, severe, error, info, extended lavender, lime, coral, forest, wood), global.text.on-sunken.* and global.icon.on-sunken.* (the same families). The sunken surface level (global.bg.level.sunken.*) and its edge (global.border.level.edge.sunken.default) stay: sunken is a neutral surface level, and the fills come in two emphases, accent and subtle. The Icon drops its sunken surface (0.10.0), and the Bootstrap theme's --bs-<intent>-fg-emphasis of success, danger, warning and info read global.text.on-subtle.functional.<hue>.default instead of the on-sunken text. No contrast pair changes."
+    },
     {
       "version": "5.0.1",
       "date": "2026-11-13",

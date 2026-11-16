@@ -3,8 +3,7 @@
  * component frame that hugs it (a component's root is a frame; the glyph is the `container` part).
  * The glyph is a TEXT property, "Glyph" (the template's default, add).
  *
- * Every color option is bound, on each surface to the icon role of that surface (neutral on
- * sunken, which has no role of its own, to the base one). The default color, current, has no
+ * Every color option is bound, on each surface, to the icon role of that surface. The default color, current, has no
  * token: the web glyph inherits the surrounding text color. It is drawn as neutral on its surface
  * (decision current-drawn-as-neutral), for the designer to override on the instance.
  * upstream(figma): upstream(penpot): no fill inherits the color of the text around it.

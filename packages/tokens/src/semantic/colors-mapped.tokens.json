@@ -167,45 +167,6 @@
           }
         }
       },
-      "sunken": {
-        "brand": {
-          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.100}"}
-        },
-        "functional": {
-          "success": {
-            "default": {"$type":"color","$value":"{functional.success.100}"}
-          },
-          "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.100}"}
-          },
-          "severe": {
-            "default": {"$type":"color","$value":"{functional.severe.50}"}
-          },
-          "error": {
-            "default": {"$type":"color","$value":"{functional.error.100}"}
-          },
-          "info": {
-            "default": {"$type":"color","$value":"{functional.info.100}"}
-          }
-        },
-        "extended": {
-          "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.100}"}
-          },
-          "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.50}"}
-          },
-          "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.100}"}
-          },
-          "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.100}"}
-          },
-          "wood": {
-            "default": {"$type":"color","$value":"{extended.wood.100}"}
-          }
-        }
-      },
       "transparency": {
         "fade": {
           "none": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.917655348777771,0.917655348777771,0.917655348777771],"alpha":0,"hex":"#EAEAEA"},"$description":"light-switch.base.100 at opacity.0: the Figma library composes them, DTCG cannot, so the resulting color is written as is"},
@@ -364,45 +325,6 @@
           }
         }
       },
-      "on-sunken": {
-        "brand": {
-          "default": {"$type":"color","$value":"{brand.palettes.core-colors.light.800}"}
-        },
-        "functional": {
-          "success": {
-            "default": {"$type":"color","$value":"{functional.success.700}"}
-          },
-          "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.900}"}
-          },
-          "severe": {
-            "default": {"$type":"color","$value":"{functional.severe.700}"}
-          },
-          "error": {
-            "default": {"$type":"color","$value":"{functional.error.700}"}
-          },
-          "info": {
-            "default": {"$type":"color","$value":"{functional.info.800}"}
-          }
-        },
-        "extended": {
-          "lavender": {
-            "default": {"$type":"color","$value":"{extended.lavender.700}"}
-          },
-          "lime": {
-            "default": {"$type":"color","$value":"{extended.lime.800}"}
-          },
-          "coral": {
-            "default": {"$type":"color","$value":"{extended.coral.800}"}
-          },
-          "forest": {
-            "default": {"$type":"color","$value":"{extended.forest.800}"}
-          },
-          "wood": {
-            "default": {"$type":"color","$value":"{extended.wood.800}"}
-          }
-        }
-      },
       "code": {
         "keyword": {"$type":"color","$value":"{extended.lavender.700}"},
         "variable": {"$type":"color","$value":"{extended.orchid.700}"},
@@ -549,45 +471,6 @@
           },
           "wood": {
             "default": {"$type":"color","$value":"{global.text.on-subtle.extended.wood.default}"}
-          }
-        }
-      },
-      "on-sunken": {
-        "brand": {
-          "default": {"$type":"color","$value":"{global.text.on-sunken.brand.default}"}
-        },
-        "functional": {
-          "success": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.functional.success.default}"}
-          },
-          "warning": {
-            "default": {"$type":"color","$value":"{global.icon.on-base.functional.warning.default}"}
-          },
-          "severe": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.functional.severe.default}"}
-          },
-          "error": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.functional.error.default}"}
-          },
-          "info": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.functional.info.default}","$description":"Created by the POC2 migration. Value not set. Remove -RET once assigned."}
-          }
-        },
-        "extended": {
-          "lavender": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.lavender.default}"}
-          },
-          "lime": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.lime.default}"}
-          },
-          "coral": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.coral.default}"}
-          },
-          "forest": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.forest.default}"}
-          },
-          "wood": {
-            "default": {"$type":"color","$value":"{global.text.on-sunken.extended.wood.default}"}
           }
         }
       },
