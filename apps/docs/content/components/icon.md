@@ -92,7 +92,7 @@ source it comes from. This section explains the decisions behind it.
   surface. Every color option passes on every surface level and on its own colored fill, hover
   and active fills included, in both modes (warning 3.09:1 at the lowest, in light mode).
   `current` inherits the contrast of the text around it:
-  every text role of the system reaches 3:1 on the surface levels (4.24:1 at the lowest, and
+  every text role of the system reaches 3:1 on the surface levels (4.80:1 at the lowest, and
   3.12:1 for disabled text), so a named icon in `current` does too
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#graphical-objects),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)).
