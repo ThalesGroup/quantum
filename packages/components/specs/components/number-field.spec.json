@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -55,9 +55,12 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, value text and inline padding take the height, the text size and the inline padding of the Button of the same size; label, description and message keep their size.",
+      "description": "Control height, value text and inline padding take the height, the text size and the inline padding of the Button of the same size; the label takes the text size of the value; the description and the message take the helper sizes.",
       "affects": [
-        "control"
+        "control",
+        "label",
+        "description",
+        "message"
       ],
       "options": [
         {
@@ -352,6 +355,15 @@
         ]
       },
       {
+        "text": "Apple's recommended minimum text size is 11 pt on iOS and iPadOS; the 12 pt text of the description and the message is above it.",
+        "refs": [
+          "hig-typography"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
         "text": "Say the severity in text next to the field, whatever it is: the message names what is wrong and how to fix it for an error, what to check for a warning and what was confirmed for a success, and is associated with the control. Color is never the only sign of a severity.",
         "refs": [
           "wcag:3.3.1",
@@ -414,6 +426,13 @@
         "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 28, 36 and 44 pixels.",
         "refs": [
           "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The label, description and message are set from 12 to 16 px, under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text.",
+        "refs": [
+          "wcag:1.4.4",
+          "wcag:1.4.3"
         ]
       },
       {
@@ -598,6 +617,11 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
       },
       {
+        "id": "hig-typography",
+        "title": "Apple HIG: Typography, specifications (minimum sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Specifications"
+      },
+      {
         "id": "android-large-controls",
         "title": "Android accessibility: use large, simple controls",
         "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
@@ -778,6 +802,20 @@
   ],
   "decisions": [
     {
+      "id": "label-help-text-sizes",
+      "date": "2026-11-19",
+      "version": "0.6.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The label of the Number field takes the text size of the value, and the description and the message the helper sizes, as the Text field's (decision label-help-text-sizes of the Text field, which holds the rule and its rationale): label small 14 px, medium 16 px, large 16 px; description and message small 12 px, medium 12 px, large 14 px. Each is a typography token per size. pnpm validate compares number-field.label.typography.*, number-field.description.typography.* and number-field.message.typography.* with the Text field's. Changes the single 14 px style that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep the single 14 px style for the label, the description and the message; B, the label follows the field (14 / 16 / 16 px) and the help text stays 14 px; C, the label follows the field and the help text takes Figma's helper sizes (12 / 12 / 14 px), chosen; D, Figma's sizes (label 12 / 14 / 16 px, help text 12 / 12 / 14 px, compact line height), rejected because the label would be smaller than the value at the small size and the Typography foundation would need an exception. A label above a field reads at the field's own size, and the help text is secondary to what it describes.",
+      "tokens": [
+        "number-field.label.typography.*",
+        "number-field.description.typography.*",
+        "number-field.message.typography.*"
+      ]
+    },
+    {
       "id": "padding-inline-button",
       "date": "2026-11-19",
       "version": "0.5.1",
@@ -912,6 +950,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.0",
+      "date": "2026-11-19",
+      "note": "Decision label-help-text-sizes (Text field decision of the same name): the label scales with the field (14 / 16 / 16 px) and the help text shrinks (12 / 12 / 14 px) (number-field.label.typography: one 14 px style becomes small, medium and large, font size body.size.sm to sm / md / md, line height normal 1.5 to tight 1.2; number-field.description.typography and number-field.message.typography: body.size.sm to xs / xs / sm, so 14 px becomes 12 / 12 / 14 px; weights, normal line height and letter spacing kept). The Size property now affects the label, the description and the message. pnpm validate now fails when the label and the value alias different font size tokens. Colors unchanged; contrast re-measured on levels 0 to 3: description 12.78:1 (levels 0 and 2) and 12.09:1 (levels 1 and 3) in light mode, 8.86:1, 8.11:1, 7.43:1 and 6.65:1 on levels 0 to 3 in dark mode; error text 6.12:1 and 5.79:1 (levels 0 and 2, then 1 and 3) in light mode, 7.06:1, 6.47:1, 5.92:1 and 5.30:1 in dark mode, the same on every platform; 4.5:1 required (WCAG 1.4.3), the lowest being 6.65:1 (description) and 5.30:1 (error text)."
+    },
     {
       "version": "0.5.1",
       "date": "2026-11-19",

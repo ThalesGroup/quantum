@@ -53,8 +53,9 @@ This section explains the decisions behind it.
   [WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/)).
-- **Contrast, focus and target size** follow the Text field
-  ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
+- **Contrast, text size, focus and target size** follow the Text field
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text),
+  [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
   [WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html),
   [WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html),
@@ -84,6 +85,8 @@ This section explains the decisions behind it.
 
 ### iOS
 
+- The recommended minimum text size is 11 pt; the help text at 12 pt is above it
+  ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - A stepper is a two-segment control that increases or decreases an incremental value, next to
   a field that shows it: the iOS counterpart of the spin control
   ([Apple HIG: Steppers](https://developer.apple.com/design/human-interface-guidelines/steppers)).

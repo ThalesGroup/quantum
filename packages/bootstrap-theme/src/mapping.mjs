@@ -539,20 +539,21 @@ export default {
     {
       id: 'labels', section: 'Text field', component: 'text-field', title: 'Labels (.form-label)', selector: ROOT, tier: 'component',
       sass: { map: '$root-tokens', strip: '--bs-' },
-      why: 'Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label.',
+      why: 'Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.',
       tokens: {
         '--bs-label-color': 'text-field.label.color.default',
-        '--bs-label-font-size': { token: 'text-field.label.typography', member: 'fontSize' },
-        '--bs-label-font-weight': { token: 'text-field.label.typography', member: 'fontWeight' },
+        '--bs-label-font-size': { token: 'text-field.label.typography.medium', member: 'fontSize' },
+        '--bs-label-font-weight': { token: 'text-field.label.typography.medium', member: 'fontWeight' },
       },
     },
     {
       id: 'form-text', section: 'Text field', component: 'text-field', title: 'Description (.form-text)', tier: 'component',
       selector: '.form-text',
       sass: { map: '$form-text-tokens', strip: '--bs-' },
+      why: 'A Quantum description is smaller with its field; Bootstrap has one description size, so it takes the medium one (12px).',
       tokens: {
         '--bs-form-text-margin-top': 'text-field.container.gap',
-        '--bs-form-text-font-size': { token: 'text-field.description.typography', member: 'fontSize' },
+        '--bs-form-text-font-size': { token: 'text-field.description.typography.medium', member: 'fontSize' },
         '--bs-form-text-color': 'text-field.description.color.default',
       },
     },

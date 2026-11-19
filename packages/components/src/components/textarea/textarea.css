@@ -30,6 +30,21 @@
   --_font-weight: var(--textarea-control-typography-medium-font-weight);
   --_line-height: var(--textarea-control-typography-medium-line-height);
   --_letter-spacing: var(--textarea-control-typography-medium-letter-spacing);
+  --_label-font-family: var(--textarea-label-typography-medium-font-family);
+  --_label-font-size: var(--textarea-label-typography-medium-font-size);
+  --_label-font-weight: var(--textarea-label-typography-medium-font-weight);
+  --_label-line-height: var(--textarea-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--textarea-label-typography-medium-letter-spacing);
+  --_description-font-family: var(--textarea-description-typography-medium-font-family);
+  --_description-font-size: var(--textarea-description-typography-medium-font-size);
+  --_description-font-weight: var(--textarea-description-typography-medium-font-weight);
+  --_description-line-height: var(--textarea-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--textarea-description-typography-medium-letter-spacing);
+  --_message-font-family: var(--textarea-message-typography-medium-font-family);
+  --_message-font-size: var(--textarea-message-typography-medium-font-size);
+  --_message-font-weight: var(--textarea-message-typography-medium-font-weight);
+  --_message-line-height: var(--textarea-message-typography-medium-line-height);
+  --_message-letter-spacing: var(--textarea-message-typography-medium-letter-spacing);
   --_padding-block: var(--textarea-control-padding-block-medium);
 
   box-sizing: border-box;
@@ -51,6 +66,21 @@
   --_font-weight: var(--textarea-control-typography-small-font-weight);
   --_line-height: var(--textarea-control-typography-small-line-height);
   --_letter-spacing: var(--textarea-control-typography-small-letter-spacing);
+  --_label-font-family: var(--textarea-label-typography-small-font-family);
+  --_label-font-size: var(--textarea-label-typography-small-font-size);
+  --_label-font-weight: var(--textarea-label-typography-small-font-weight);
+  --_label-line-height: var(--textarea-label-typography-small-line-height);
+  --_label-letter-spacing: var(--textarea-label-typography-small-letter-spacing);
+  --_description-font-family: var(--textarea-description-typography-small-font-family);
+  --_description-font-size: var(--textarea-description-typography-small-font-size);
+  --_description-font-weight: var(--textarea-description-typography-small-font-weight);
+  --_description-line-height: var(--textarea-description-typography-small-line-height);
+  --_description-letter-spacing: var(--textarea-description-typography-small-letter-spacing);
+  --_message-font-family: var(--textarea-message-typography-small-font-family);
+  --_message-font-size: var(--textarea-message-typography-small-font-size);
+  --_message-font-weight: var(--textarea-message-typography-small-font-weight);
+  --_message-line-height: var(--textarea-message-typography-small-line-height);
+  --_message-letter-spacing: var(--textarea-message-typography-small-letter-spacing);
   --_padding-block: var(--textarea-control-padding-block-small);
 }
 
@@ -62,6 +92,21 @@
   --_font-weight: var(--textarea-control-typography-large-font-weight);
   --_line-height: var(--textarea-control-typography-large-line-height);
   --_letter-spacing: var(--textarea-control-typography-large-letter-spacing);
+  --_label-font-family: var(--textarea-label-typography-large-font-family);
+  --_label-font-size: var(--textarea-label-typography-large-font-size);
+  --_label-font-weight: var(--textarea-label-typography-large-font-weight);
+  --_label-line-height: var(--textarea-label-typography-large-line-height);
+  --_label-letter-spacing: var(--textarea-label-typography-large-letter-spacing);
+  --_description-font-family: var(--textarea-description-typography-large-font-family);
+  --_description-font-size: var(--textarea-description-typography-large-font-size);
+  --_description-font-weight: var(--textarea-description-typography-large-font-weight);
+  --_description-line-height: var(--textarea-description-typography-large-line-height);
+  --_description-letter-spacing: var(--textarea-description-typography-large-letter-spacing);
+  --_message-font-family: var(--textarea-message-typography-large-font-family);
+  --_message-font-size: var(--textarea-message-typography-large-font-size);
+  --_message-font-weight: var(--textarea-message-typography-large-font-weight);
+  --_message-line-height: var(--textarea-message-typography-large-line-height);
+  --_message-letter-spacing: var(--textarea-message-typography-large-letter-spacing);
   --_padding-block: var(--textarea-control-padding-block-large);
 }
 
@@ -69,11 +114,11 @@
 
 .ds-textarea__label {
   color: var(--_label-color);
-  font-family: var(--textarea-label-typography-font-family);
-  font-size: var(--textarea-label-typography-font-size);
-  font-weight: var(--textarea-label-typography-font-weight);
-  line-height: var(--textarea-label-typography-line-height);
-  letter-spacing: var(--textarea-label-typography-letter-spacing);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
 }
 
 .ds-textarea__control {
@@ -107,21 +152,21 @@
 .ds-textarea__description {
   margin: 0;
   color: var(--_description-color);
-  font-family: var(--textarea-description-typography-font-family);
-  font-size: var(--textarea-description-typography-font-size);
-  font-weight: var(--textarea-description-typography-font-weight);
-  line-height: var(--textarea-description-typography-line-height);
-  letter-spacing: var(--textarea-description-typography-letter-spacing);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
 }
 
 .ds-textarea__message {
   margin: 0;
   color: var(--_message-color);
-  font-family: var(--textarea-message-typography-font-family);
-  font-size: var(--textarea-message-typography-font-size);
-  font-weight: var(--textarea-message-typography-font-weight);
-  line-height: var(--textarea-message-typography-line-height);
-  letter-spacing: var(--textarea-message-typography-letter-spacing);
+  font-family: var(--_message-font-family);
+  font-size: var(--_message-font-size);
+  font-weight: var(--_message-font-weight);
+  line-height: var(--_message-line-height);
+  letter-spacing: var(--_message-letter-spacing);
 }
 
 /* Multi-line: the block padding sets the inset of the first and last line; the control can be resized vertically. */
