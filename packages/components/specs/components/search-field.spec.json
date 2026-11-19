@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -266,7 +266,7 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the focus outline 5.77:1 and 12.76:1 on the default surface. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt.",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the focus outline 5.77:1 and 12.76:1 on the default surface. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries",
@@ -511,6 +511,16 @@
         "id": "windows-text-box",
         "title": "Windows apps: Text box",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "material-text-fields",
+        "title": "Material Design 3: Text fields, specs",
+        "url": "https://m3.material.io/components/text-fields/specs"
+      },
+      {
+        "id": "hig-text-fields",
+        "title": "Apple HIG: Text fields",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields"
       }
     ]
   },
@@ -601,6 +611,24 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "border-base-neutral-5",
+      "date": "2026-11-19",
+      "version": "0.10.0",
+      "area": "color",
+      "status": "active",
+      "text": "The resting border of the box is global.border.base.neutral.5, as the Text field's (decision border-base-neutral-5 of the Text field, which holds the rule, the options and the measurements): #8C8C8C in light and #9C9C9C in dark, 3.30:1 and 6.40:1 on the page, 3.12:1 and 4.80:1 at the lowest on the surface levels. Hover keeps it. Disabled, the focus outline and the severity outlines are unchanged.",
+      "tokens": [
+        "search-field.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-non-text-contrast-boundaries",
+        "material-text-fields",
+        "hig-text-fields",
+        "windows-text-box"
+      ]
+    },
     {
       "id": "fill-page-level",
       "date": "2026-11-19",
@@ -795,6 +823,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.0",
+      "date": "2026-11-19",
+      "note": "Decision border-base-neutral-5 (Text field decision of the same name): the resting border of the box (search-field.control.border-color.default) is global.border.base.neutral.5 instead of global.border.accent.neutral.default: #8C8C8C in light (was #313131) and #9C9C9C in dark (was #CFCFCF). Contrast of the border on the surface levels 0 / 1 / 2 / 3: light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1 (was 12.78 / 12.09 / 12.78 / 12.09:1 and 11.28 / 10.33 / 9.46 / 8.47:1). Disabled, focus and invalid are unchanged."
+    },
     {
       "version": "0.9.1",
       "date": "2026-11-19",

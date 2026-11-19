@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -400,7 +400,7 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries",
@@ -721,6 +721,16 @@
         "id": "windows-text-box",
         "title": "Windows apps: Text box",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "material-text-fields",
+        "title": "Material Design 3: Text fields, specs",
+        "url": "https://m3.material.io/components/text-fields/specs"
+      },
+      {
+        "id": "hig-text-fields",
+        "title": "Apple HIG: Text fields",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields"
       }
     ]
   },
@@ -847,6 +857,24 @@
     "slider"
   ],
   "decisions": [
+    {
+      "id": "border-base-neutral-5",
+      "date": "2026-11-19",
+      "version": "0.10.0",
+      "area": "color",
+      "status": "active",
+      "text": "The resting border of the box is global.border.base.neutral.5, as the Text field's (decision border-base-neutral-5 of the Text field, which holds the rule, the options and the measurements): #8C8C8C in light and #9C9C9C in dark, 3.30:1 and 6.40:1 on the page, 3.12:1 and 4.80:1 at the lowest on the surface levels. Hover and read-only keep it. Disabled, the focus outline and the severity outlines are unchanged.",
+      "tokens": [
+        "number-field.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-non-text-contrast-boundaries",
+        "material-text-fields",
+        "hig-text-fields",
+        "windows-text-box"
+      ]
+    },
     {
       "id": "fill-page-level",
       "date": "2026-11-19",
@@ -1060,6 +1088,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.0",
+      "date": "2026-11-19",
+      "note": "Decision border-base-neutral-5 (Text field decision of the same name): the resting border of the box (number-field.control.border-color.default) is global.border.base.neutral.5 instead of global.border.accent.neutral.default: #8C8C8C in light (was #313131) and #9C9C9C in dark (was #CFCFCF). Contrast of the border on the surface levels 0 / 1 / 2 / 3: light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1 (was 12.78 / 12.09 / 12.78 / 12.09:1 and 11.28 / 10.33 / 9.46 / 8.47:1). Disabled, focus and the severities are unchanged."
+    },
     {
       "version": "0.9.1",
       "date": "2026-11-19",

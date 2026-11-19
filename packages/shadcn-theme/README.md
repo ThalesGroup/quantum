@@ -85,7 +85,7 @@ of the matching Quantum component, so it follows that component's decisions. The
 | `--destructive` | `:root`, `.dark` | `global.bg.accent.functional.error.default` | `#DF2821` / `#DF2821` | Button emphasis accent, intent error; shadcn also colors error text and invalid borders with it. |
 | `--destructive-foreground` | `:root`, `.dark` | `global.text.on-accent.functional.error.default` | `#FEFBFA` / `#FEFBFA` | No longer in shadcn's documented set (the v4 components write `text-white`); kept for blocks that read it. |
 | `--border` | `:root`, `.dark` | `card.container.border-color.level-1` (component, = `global.border.level.edge.level.1`) | `#D5D5D5` / `#282828` | The edge of the Card at level 1: shadcn's `--border` is mostly card, popover and table edges. |
-| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.accent.neutral.default`) | `#313131` / `#CFCFCF` | The border of a Quantum form control, also what checkboxes read. |
+| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.base.neutral.5`) | `#8C8C8C` / `#9C9C9C` | The border of a Quantum text field (3:1 or more on every surface). shadcn has no input-specific border variable: `--input` is also read by its checkbox, radio, select, switch and textarea, which Quantum draws with the accent neutral border (`#313131` / `#CFCFCF`) until the complex controls are refined, so they are lighter than the Quantum ones. |
 | `--ring` | `:root`, `.dark` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | The focus ring color. |
 | `--chart-1` … `--chart-5` | `:root`, `.dark` | `dataviz.role.brand.bg.accent.brand-1` … `brand-5` | `#0B2A69` … `#749DE5` / `#9EE7FA` … `#297B8C` | The brand data series. The categorical alternative is `dataviz.role.extended.wood.accent.extended-1..8`. |
 | `--sidebar` | `:root`, `.dark` | `global.bg.level.1.default` | `#F7F7F7` / `#212121` | A sidebar is a level-1 surface beside the level-0 page. |
@@ -158,8 +158,8 @@ them out rather than restyle the components:
 - **Disabled.** shadcn fades the whole control (`opacity-50`); Quantum swaps to the disabled
   tokens (`global.bg.state.disabled.default`, `global.text.state.disabled.default`).
 - **Dark-mode blends.** In dark, shadcn fills inputs and outline buttons with `--input` at 30 %
-  (`dark:bg-input/30`) and dims `destructive` to 60 %; with Quantum's strong control border
-  (`#B9B7B7`) the fields get a grey fill Quantum does not have (its fields sit on level 0).
+  (`dark:bg-input/30`) and dims `destructive` to 60 %; with Quantum's control border
+  (`#9C9C9C` in dark) the fields get a grey fill Quantum does not have (its fields sit on level 0).
 - **Per-component colors one variable carries for several components.** The Quantum menu is 8 px
   round, its controls 4 px, but shadcn rounds both with `rounded-md` (4 px here). The Divider's
   color (`global.border.base.neutral.4`) is darker than the card edge `--border` takes. The

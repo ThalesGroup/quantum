@@ -112,7 +112,7 @@
       "border-color": {
         "$type": "color",
         "default": {
-          "$value": "{global.border.accent.neutral.default}"
+          "$value": "{global.border.base.neutral.5}"
         },
         "error": {
           "$value": "{global.border.accent.functional.error.default}"

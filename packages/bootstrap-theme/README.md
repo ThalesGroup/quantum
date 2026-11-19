@@ -495,7 +495,7 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
-| `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.default` | `#8C8C8C` / `#9C9C9C` | The base neutral 5 border: the field's border is lighter than the Quantum borders of the checkbox, radio and switch (accent neutral) until those are refined. |
 | `--bs-control-border-radius` | `text-field.control.border-radius.medium` | `0.25rem` |  |
 | `--bs-control-box-shadow` | `none` (rule `effects.shadow`) | `none` | No shadow is drawn in Quantum: no inset shadow on fields. |
 | `--bs-control-transition-duration` | `text-field.control.transition.duration` | `150ms` |  |
@@ -564,7 +564,7 @@ Success (:user-valid), on `[data-bs-validate~=valid] .form-control:user-valid`; 
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
-| `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.default` | `#8C8C8C` / `#9C9C9C` | The base neutral 5 border: the field's border is lighter than the Quantum borders of the checkbox, radio and switch (accent neutral) until those are refined. |
 | `--bs-control-border-radius` | `text-field.control.border-radius.medium` | `0.25rem` |  |
 
 Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.
