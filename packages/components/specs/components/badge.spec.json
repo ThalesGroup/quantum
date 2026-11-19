@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "badge",
   "name": "Badge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "status": "draft",
   "role": "presentation",
   "summary": "A short piece of text that qualifies the item next to it: a status, a count, a category.",
@@ -394,6 +394,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.2",
+      "date": "2026-11-19",
+      "note": "Fix, no decision changed: the Color foundation 7.1.0 changes two accent functional border roles; the tokens, CSS and template are unchanged. The border of the accent warning badge (container.border-color.accent.warning) is functional warning 500 #BD8107 in light mode (was #DFA700) and that of the accent error badge is functional error 400 #EE5248 in dark mode (was #C01619). The border is decoration: the text identifies the badge."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",
