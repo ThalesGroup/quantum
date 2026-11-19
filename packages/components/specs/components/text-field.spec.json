@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -678,6 +678,16 @@
         "id": "windows-text-box",
         "title": "Windows apps: Text box",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "mdn-placeholder",
+        "title": "MDN: ::placeholder, accessibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#accessibility"
+      },
+      {
+        "id": "hig-color",
+        "title": "Apple HIG: Color, system colors (placeholder text)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/color"
       }
     ]
   },
@@ -819,6 +829,28 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "placeholder-tertiary",
+      "date": "2026-11-19",
+      "version": "0.10.1",
+      "area": "color",
+      "status": "active",
+      "text": "The placeholder is global.text.on-base.neutral.tertiary in every enabled state (text-field.control.placeholder-color.default; there is no hover, focus or severity member), and global.text.state.disabled.default when disabled. Tertiary is #616161 in light and #9C9C9C in dark, against the value's #0E0E0E and #CFCFCF. The decision keeps the tokens as they were: no token changes. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Departs from Figma, which draws the placeholder #313131 (secondary) at rest, on hover and invalid and lightens it to #616161 on focus; the disabled color is as Figma's.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep tertiary in every enabled state (chosen); B, Figma's placeholder: global.text.on-base.neutral.secondary (#313131) at rest, on hover and invalid, tertiary (#616161) on focus, which adds a focus-visible member that Bootstrap and shadcn cannot theme; C, secondary in every state. Reasons for A: the distance from the typed value, which is what keeps a placeholder from being taken for entered data (MDN asks for enough of a difference between the placeholder and the input text): tertiary is 3.12:1 from the value in light and 1.76:1 in dark, secondary only 1.48:1 and 1.27:1, and secondary is also the help text's color (tertiary stays distinct from it, 2.10:1 and 1.38:1); contrast does not decide it, since every option passes WCAG 1.4.3 (tertiary's lowest is 5.75:1 in light and 5.86:1 in dark, on the hover and read-only fills, and 6.08:1 and 6.40:1 at rest); Material 3 and Apple's HIG keep one placeholder color for every state, and no source asks for a change on focus. Departs from Figma, which draws #313131 at rest, on hover and invalid and #616161 on focus.",
+      "tokens": [
+        "text-field.control.placeholder-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "understanding-contrast-minimum",
+        "mdn-placeholder",
+        "wai-instructions-placeholder",
+        "html-placeholder",
+        "material-text-fields",
+        "hig-color",
+        "windows-text-box"
+      ]
+    },
     {
       "id": "border-base-neutral-5",
       "date": "2026-11-19",
@@ -1055,6 +1087,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.1",
+      "date": "2026-11-19",
+      "note": "Decision placeholder-tertiary: the placeholder (text-field.control.placeholder-color.*) stays global.text.on-base.neutral.tertiary in every enabled state, rather than Figma's secondary at rest. Distance from the value, light / dark: 3.12:1 / 1.76:1 (secondary 1.48:1 / 1.27:1); contrast against the fill at rest 6.08:1 / 6.40:1 (lowest 5.75:1 / 5.86:1). Kept as it was: no token or rendering change."
+    },
     {
       "version": "0.10.0",
       "date": "2026-11-19",
