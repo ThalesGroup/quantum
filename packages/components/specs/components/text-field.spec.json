@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -124,7 +124,7 @@
       "name": "Read-only",
       "type": "boolean",
       "default": false,
-      "description": "The value can be read, focused and copied but not edited (a generated identifier)."
+      "description": "The value can be read, focused and copied but not edited (a generated identifier). Say so in the label or the description."
     },
     {
       "id": "severity",
@@ -426,6 +426,14 @@
         ]
       },
       {
+        "text": "A read-only field looks almost the same as an editable one (its fill is 1.05:1 in light and 1.09:1 in dark from the resting fill, the same as the hover fill): say that it is read-only in the label or the description, not by the fill alone.",
+        "refs": [
+          "material-text-fields-read-only",
+          "windows-text-box-read-only",
+          "html-readonly-attribute"
+        ]
+      },
+      {
         "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (28 and 36 pt) fall under it on iOS today and the large size (44 pt) reaches it: the Figma library has no platform heights.",
         "refs": [
           "hig-accessibility-mobility"
@@ -688,6 +696,21 @@
         "id": "hig-color",
         "title": "Apple HIG: Color, system colors (placeholder text)",
         "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+      },
+      {
+        "id": "material-text-fields-read-only",
+        "title": "Material Design 3: Text fields, guidelines, read-only fields",
+        "url": "https://m3.material.io/components/text-fields/guidelines#f572b53d-1a15-4ede-881a-80adbbdc24a5"
+      },
+      {
+        "id": "windows-text-box-read-only",
+        "title": "Windows apps: Text box, make a text box read-only",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#make-a-text-box-read-only"
+      },
+      {
+        "id": "html-readonly-attribute",
+        "title": "HTML: the readonly attribute",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#the-readonly-attribute"
       }
     ]
   },
@@ -782,7 +805,7 @@
         "size": "medium",
         "label": "Workspace identifier",
         "value": "ws_8f3a2c",
-        "description": "Generated when the workspace was created.",
+        "description": "Read-only: generated when the workspace was created.",
         "readonly": true
       }
     },
@@ -829,6 +852,23 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "variants-modeled-differently",
+      "date": "2026-11-19",
+      "version": "0.11.0",
+      "area": "variant",
+      "status": "active",
+      "text": "The Text field keeps its own model of variants and states, and records where it departs from the Figma prototype's \"Form - text input\" set: the `filled` state and the `text filled` axis become the `value` property, which combines with every state (hover, focus, the severities, read-only, disabled), because content is not a state; `active` is the focus state, drawn on pointer and keyboard focus alike (decision focus-outline, step 7); the drawn \"Typer line\" caret is the platform's own text caret, which the component does not draw; `error` is the `severity` property set to `error`, with `message`; `show helper` is the `description`, shown when it is set; `show label` is dropped, the label is always visible (where it sits belongs to the Forms foundation, #105 step 3); `select` is the Select component; Figma has no read-only state, the repository keeps `readonly`. Owned by other steps, not decided here: the warning and success states (step 13, #105 step 5), the status fill and icon (step 12), the left icon (step 15), the required mark (step 16), the message that replaces the description in a status (step 14) and the default size (step 21: Figma small, repository medium). Measured: the read-only fill global.bg.level.1.default is 1.05:1 in light and 1.09:1 in dark from the resting fill, and it is the same value as the editable field's hover fill, so it qualifies what the decision fill-page-level says about the read-only fill: it differs from an editable field, but weakly. A guideline therefore asks to say that a field is read-only in its label or description, and the read-only example and the readonly property say so. The Number field and the Textarea follow through the mirror check (decision field-family-mirrors); the Search field has no read-only.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the model and record the departures; B, A plus a guideline that says read-only in text (chosen); C, style read-only as rest, Material's way, rejected because it would remove the token text-field.control.background.readonly, the only visual cue of a read-only field, which is a breaking change (and Windows warns that a read-only text box that looks like an editable one \"might be confusing to a user\"). A alone is rejected too: it records the departures but leaves a weak cue unexplained. Reasons for B: nothing Figma has is missing (each option is the same, decided in an earlier step, owned by a later one or modeled as another component); Material styles a read-only field like a regular one and \"clearly labeled as read-only\", and Windows says it looks the same as a read/write one; no source asks for a distinct look, so the statement is the guideline, with no token, CSS or template change.",
+      "tokens": [
+        "text-field.control.background.readonly"
+      ],
+      "refs": [
+        "material-text-fields-read-only",
+        "windows-text-box-read-only",
+        "html-readonly-attribute"
+      ]
+    },
     {
       "id": "placeholder-tertiary",
       "date": "2026-11-19",
@@ -1087,6 +1127,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.11.0",
+      "date": "2026-11-19",
+      "note": "Decision variants-modeled-differently: records every departure from the Figma prototype (filled state and text filled axis as the value property, active as focus, the platform's caret, error as the severity error, show helper as description, show label as an always visible label, select as the Select component, read-only kept) and what steps 12 to 16, 21 and #105 own. New guideline: a read-only field's fill is 1.05:1 in light and 1.09:1 in dark from the resting fill, the same as the hover fill, so say that it is read-only in the label or the description. The readonly property and the read-only example say so. No token or rendering change."
+    },
     {
       "version": "0.10.1",
       "date": "2026-11-19",
