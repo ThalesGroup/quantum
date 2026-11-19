@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -55,7 +55,7 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height and value text take the height and the text size of the Button of the same size; inline padding grows with the size; label, description and message keep their size.",
+      "description": "Control height, value text and inline padding take the height, the text size and the inline padding of the Button of the same size; label, description and message keep their size.",
       "affects": [
         "control"
       ],
@@ -743,6 +743,18 @@
   ],
   "decisions": [
     {
+      "id": "padding-inline-button",
+      "date": "2026-11-19",
+      "version": "0.5.1",
+      "area": "dimension",
+      "status": "active",
+      "text": "The inline padding of the box of the Textarea is the inline padding of the Button without an icon, as the Text field's (decision padding-inline-button of the Text field, which holds the rule and its rationale): small 8 px, medium 12 px, large 16 px. The block padding stays the Textarea's own. The decision keeps the values the box already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the inline padding of the Button without an icon (8 / 12 / 16 px), chosen; B, Figma's 6 / 8 / 10 px; C, the Button's label-side padding (8 / 8 / 10 px), rejected here because it belongs to the question of a leading icon in the field. A field and a Button of the same size start their text at the same inset.",
+      "tokens": [
+        "textarea.control.padding-inline.*"
+      ]
+    },
+    {
       "id": "box-height-button",
       "date": "2026-11-19",
       "version": "0.5.0",
@@ -867,6 +879,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.1",
+      "date": "2026-11-19",
+      "note": "Decision padding-inline-button (Text field decision of the same name): the inline padding (textarea.control.padding-inline.*) is the Button's inline padding without an icon at the same size. Kept as it was: no token or rendering change."
+    },
     {
       "version": "0.5.0",
       "date": "2026-11-19",
