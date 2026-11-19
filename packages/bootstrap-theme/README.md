@@ -567,20 +567,20 @@ Success (:user-valid), on `[data-bs-validate~=valid] .form-control:user-valid`; 
 | `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
 
-Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label.
+Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-label-color` | `text-field.label.color.default` | `#0E0E0E` / `#CFCFCF` |  |
-| `--bs-label-font-size` | `text-field.label.typography` (fontSize) | `0.875rem` |  |
-| `--bs-label-font-weight` | `text-field.label.typography` (fontWeight) | `500` |  |
+| `--bs-label-font-size` | `text-field.label.typography.medium` (fontSize) | `1rem` |  |
+| `--bs-label-font-weight` | `text-field.label.typography.medium` (fontWeight) | `500` |  |
 
-Description (.form-text), on `.form-text`; Sass `$form-text-tokens`.
+Description (.form-text), on `.form-text`; Sass `$form-text-tokens`. A Quantum description is smaller with its field; Bootstrap has one description size, so it takes the medium one (12px).
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-form-text-margin-top` | `text-field.container.gap` | `0.25rem` |  |
-| `--bs-form-text-font-size` | `text-field.description.typography` (fontSize) | `0.875rem` |  |
+| `--bs-form-text-font-size` | `text-field.description.typography.medium` (fontSize) | `0.75rem` |  |
 | `--bs-form-text-color` | `text-field.description.color.default` | `#313131` / `#B8B8B8` |  |
 
 
@@ -999,6 +999,12 @@ them, and the theme restyles nothing directly.
   form rows with spacing utilities in the markup (`.mb-3`) and builds a horizontal form's label
   column from grid classes in the markup, with no custom property or Sass setting for these gaps,
   so the four gap tokens are not mapped.
+- **Label and help text sizes.** A Quantum label scales with its field (14, 16 and 16px) and the
+  description and the message are smaller (12, 12 and 14px). Bootstrap has one label size
+  and one description size on every field, so the theme sets the medium ones
+  (`text-field.label.typography.medium`, `text-field.description.typography.medium`);
+  `.col-form-label-sm` and `.col-form-label-lg` keep Bootstrap's own sizes, and so does the
+  message (`.invalid-feedback`, `.valid-feedback`).
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
   button sizes: the same heights (28px, 44px) as Quantum's small and large fields, but the
   button label's line height and padding, not the field's.

@@ -34,7 +34,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Large | A prominent single field, such as a search page or a sign-in form: 44 px high with 16 px text. |
 
 Height, text size and inline padding are those of the Button of the same size, so a field and a
-button side by side line up and start their text at the same inset. The label, the description and the error message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
+button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), and the description and the message are smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form.
 
 ## Rows
 
@@ -95,6 +95,12 @@ This section explains the decisions behind it.
   Text needs 4.5:1 ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
   the error text passes on every surface since the Figma library's POC2 export moved it to a
   darker step (5.79:1 on the level 1 surface in light mode, the lowest).
+- **Text size.** The label and the help text are set from 12 to 16 px. WCAG sets no minimum text
+  size: it asks that text can be resized up to 200 % without loss of content or functionality, and
+  the box height is a minimum, so it grows with larger text
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text)). These sizes
+  are under the large text size, so their colors keep the 4.5:1 above; the help text passes
+  everywhere, at 5.30:1 or more.
 - **Visible focus.** Focus shows the shared ring outside the border
   ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)),
@@ -125,6 +131,8 @@ This section explains the decisions behind it.
 
 ### iOS
 
+- The recommended minimum text size is 11 pt; the help text at 12 pt is above it
+  ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - Show a hint to help communicate the purpose of a text field, and include a separate label
   because placeholder text disappears when people start typing
   ([Apple HIG: Text fields, best practices](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).

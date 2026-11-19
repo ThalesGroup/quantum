@@ -30,6 +30,21 @@
   --_font-weight: var(--number-field-control-typography-medium-font-weight);
   --_line-height: var(--number-field-control-typography-medium-line-height);
   --_letter-spacing: var(--number-field-control-typography-medium-letter-spacing);
+  --_label-font-family: var(--number-field-label-typography-medium-font-family);
+  --_label-font-size: var(--number-field-label-typography-medium-font-size);
+  --_label-font-weight: var(--number-field-label-typography-medium-font-weight);
+  --_label-line-height: var(--number-field-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--number-field-label-typography-medium-letter-spacing);
+  --_description-font-family: var(--number-field-description-typography-medium-font-family);
+  --_description-font-size: var(--number-field-description-typography-medium-font-size);
+  --_description-font-weight: var(--number-field-description-typography-medium-font-weight);
+  --_description-line-height: var(--number-field-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--number-field-description-typography-medium-letter-spacing);
+  --_message-font-family: var(--number-field-message-typography-medium-font-family);
+  --_message-font-size: var(--number-field-message-typography-medium-font-size);
+  --_message-font-weight: var(--number-field-message-typography-medium-font-weight);
+  --_message-line-height: var(--number-field-message-typography-medium-line-height);
+  --_message-letter-spacing: var(--number-field-message-typography-medium-letter-spacing);
 
   box-sizing: border-box;
   display: inline-flex;
@@ -50,6 +65,21 @@
   --_font-weight: var(--number-field-control-typography-small-font-weight);
   --_line-height: var(--number-field-control-typography-small-line-height);
   --_letter-spacing: var(--number-field-control-typography-small-letter-spacing);
+  --_label-font-family: var(--number-field-label-typography-small-font-family);
+  --_label-font-size: var(--number-field-label-typography-small-font-size);
+  --_label-font-weight: var(--number-field-label-typography-small-font-weight);
+  --_label-line-height: var(--number-field-label-typography-small-line-height);
+  --_label-letter-spacing: var(--number-field-label-typography-small-letter-spacing);
+  --_description-font-family: var(--number-field-description-typography-small-font-family);
+  --_description-font-size: var(--number-field-description-typography-small-font-size);
+  --_description-font-weight: var(--number-field-description-typography-small-font-weight);
+  --_description-line-height: var(--number-field-description-typography-small-line-height);
+  --_description-letter-spacing: var(--number-field-description-typography-small-letter-spacing);
+  --_message-font-family: var(--number-field-message-typography-small-font-family);
+  --_message-font-size: var(--number-field-message-typography-small-font-size);
+  --_message-font-weight: var(--number-field-message-typography-small-font-weight);
+  --_message-line-height: var(--number-field-message-typography-small-line-height);
+  --_message-letter-spacing: var(--number-field-message-typography-small-letter-spacing);
 }
 
 .ds-number-field[data-size="large"] {
@@ -60,17 +90,32 @@
   --_font-weight: var(--number-field-control-typography-large-font-weight);
   --_line-height: var(--number-field-control-typography-large-line-height);
   --_letter-spacing: var(--number-field-control-typography-large-letter-spacing);
+  --_label-font-family: var(--number-field-label-typography-large-font-family);
+  --_label-font-size: var(--number-field-label-typography-large-font-size);
+  --_label-font-weight: var(--number-field-label-typography-large-font-weight);
+  --_label-line-height: var(--number-field-label-typography-large-line-height);
+  --_label-letter-spacing: var(--number-field-label-typography-large-letter-spacing);
+  --_description-font-family: var(--number-field-description-typography-large-font-family);
+  --_description-font-size: var(--number-field-description-typography-large-font-size);
+  --_description-font-weight: var(--number-field-description-typography-large-font-weight);
+  --_description-line-height: var(--number-field-description-typography-large-line-height);
+  --_description-letter-spacing: var(--number-field-description-typography-large-letter-spacing);
+  --_message-font-family: var(--number-field-message-typography-large-font-family);
+  --_message-font-size: var(--number-field-message-typography-large-font-size);
+  --_message-font-weight: var(--number-field-message-typography-large-font-weight);
+  --_message-line-height: var(--number-field-message-typography-large-line-height);
+  --_message-letter-spacing: var(--number-field-message-typography-large-letter-spacing);
 }
 
 /* ---- Parts --------------------------------------------------------------- */
 
 .ds-number-field__label {
   color: var(--_label-color);
-  font-family: var(--number-field-label-typography-font-family);
-  font-size: var(--number-field-label-typography-font-size);
-  font-weight: var(--number-field-label-typography-font-weight);
-  line-height: var(--number-field-label-typography-line-height);
-  letter-spacing: var(--number-field-label-typography-letter-spacing);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
 }
 
 .ds-number-field__control {
@@ -104,21 +149,21 @@
 .ds-number-field__description {
   margin: 0;
   color: var(--_description-color);
-  font-family: var(--number-field-description-typography-font-family);
-  font-size: var(--number-field-description-typography-font-size);
-  font-weight: var(--number-field-description-typography-font-weight);
-  line-height: var(--number-field-description-typography-line-height);
-  letter-spacing: var(--number-field-description-typography-letter-spacing);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
 }
 
 .ds-number-field__message {
   margin: 0;
   color: var(--_message-color);
-  font-family: var(--number-field-message-typography-font-family);
-  font-size: var(--number-field-message-typography-font-size);
-  font-weight: var(--number-field-message-typography-font-weight);
-  line-height: var(--number-field-message-typography-line-height);
-  letter-spacing: var(--number-field-message-typography-letter-spacing);
+  font-family: var(--_message-font-family);
+  font-size: var(--_message-font-size);
+  font-weight: var(--_message-font-weight);
+  line-height: var(--_message-line-height);
+  letter-spacing: var(--_message-letter-spacing);
 }
 
 /* The browser's spin buttons keep their native look (no portable way to draw them from tokens). */

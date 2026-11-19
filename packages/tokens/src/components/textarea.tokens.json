@@ -20,12 +20,33 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.medium}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Label text: scales with the field, the text size of the value and of the Button of the same size (body.size.sm, md, md), medium weight, the tight line height of single lines and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
         }
       }
     },
@@ -200,12 +221,33 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.regular}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Description text: the helper size, smaller than the label and the value (body.size.xs, xs, sm), regular weight, the normal line height and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
         }
       }
     },
@@ -224,12 +266,33 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.medium}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Message text: the helper size, smaller than the label and the value (body.size.xs, xs, sm), medium weight, the normal line height and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
         }
       }
     }
