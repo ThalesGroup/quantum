@@ -24,6 +24,7 @@
   --_description-color: var(--number-field-description-color-default);
   --_message-color: var(--number-field-message-color-error);
   --_min-height: var(--number-field-control-min-height-medium);
+  --_border-radius: var(--number-field-control-border-radius-medium);
   --_padding-inline: var(--number-field-control-padding-inline-medium);
   --_font-family: var(--number-field-control-typography-medium-font-family);
   --_font-size: var(--number-field-control-typography-medium-font-size);
@@ -59,6 +60,7 @@
 
 .ds-number-field[data-size="small"] {
   --_min-height: var(--number-field-control-min-height-small);
+  --_border-radius: var(--number-field-control-border-radius-small);
   --_padding-inline: var(--number-field-control-padding-inline-small);
   --_font-family: var(--number-field-control-typography-small-font-family);
   --_font-size: var(--number-field-control-typography-small-font-size);
@@ -84,6 +86,7 @@
 
 .ds-number-field[data-size="large"] {
   --_min-height: var(--number-field-control-min-height-large);
+  --_border-radius: var(--number-field-control-border-radius-large);
   --_padding-inline: var(--number-field-control-padding-inline-large);
   --_font-family: var(--number-field-control-typography-large-font-family);
   --_font-size: var(--number-field-control-typography-large-font-size);
@@ -126,7 +129,7 @@
   padding-block: 0;
   padding-inline: var(--_padding-inline);
   border: var(--number-field-control-border-width) solid var(--_control-border-color);
-  border-radius: var(--number-field-control-border-radius);
+  border-radius: var(--_border-radius);
   background-color: var(--_control-background);
   color: var(--_control-color);
   font-family: var(--_font-family);

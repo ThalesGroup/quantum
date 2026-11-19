@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -159,7 +159,7 @@
     "sizing": "fill",
     "notes": [
       "Label, control, description and error message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
-      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change.",
+      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
       "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start."
     ]
   },
@@ -569,6 +569,18 @@
   ],
   "decisions": [
     {
+      "id": "radius-button",
+      "date": "2026-11-19",
+      "version": "0.8.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The Search field takes the corner radius of the Button of the same size, as the Text field's (decision radius-button of the Text field, which holds the rule and its rationale): small 2 px, medium and large 4 px (search-field.control.border-radius per size). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the single 4 px radius of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among three options (A, keep 4 px at every size; B, the Shape foundation's radius per size, chosen; C, 2 px at every size); see the Text field's decision for the rationale.",
+      "tokens": [
+        "search-field.control.border-radius.*"
+      ]
+    },
+    {
       "id": "part-gap-6",
       "date": "2026-11-19",
       "version": "0.7.0",
@@ -710,6 +722,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.8.0",
+      "date": "2026-11-19",
+      "note": "Decision radius-button: the corner radius of the box is the Button's at the same size (search-field.control.border-radius per size: small corner-radius.2xs, 2 px; medium and large corner-radius.xs, 4 px; it was corner-radius.xs, 4 px, at every size). Colors, sizes and typography unchanged."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-19",

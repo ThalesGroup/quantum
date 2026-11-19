@@ -24,6 +24,7 @@
   --_description-color: var(--textarea-description-color-default);
   --_message-color: var(--textarea-message-color-error);
   --_min-height: var(--textarea-control-min-height-medium);
+  --_border-radius: var(--textarea-control-border-radius-medium);
   --_padding-inline: var(--textarea-control-padding-inline-medium);
   --_font-family: var(--textarea-control-typography-medium-font-family);
   --_font-size: var(--textarea-control-typography-medium-font-size);
@@ -60,6 +61,7 @@
 
 .ds-textarea[data-size="small"] {
   --_min-height: var(--textarea-control-min-height-small);
+  --_border-radius: var(--textarea-control-border-radius-small);
   --_padding-inline: var(--textarea-control-padding-inline-small);
   --_font-family: var(--textarea-control-typography-small-font-family);
   --_font-size: var(--textarea-control-typography-small-font-size);
@@ -86,6 +88,7 @@
 
 .ds-textarea[data-size="large"] {
   --_min-height: var(--textarea-control-min-height-large);
+  --_border-radius: var(--textarea-control-border-radius-large);
   --_padding-inline: var(--textarea-control-padding-inline-large);
   --_font-family: var(--textarea-control-typography-large-font-family);
   --_font-size: var(--textarea-control-typography-large-font-size);
@@ -129,7 +132,7 @@
   padding-block: 0;
   padding-inline: var(--_padding-inline);
   border: var(--textarea-control-border-width) solid var(--_control-border-color);
-  border-radius: var(--textarea-control-border-radius);
+  border-radius: var(--_border-radius);
   background-color: var(--_control-background);
   color: var(--_control-color);
   font-family: var(--_font-family);
