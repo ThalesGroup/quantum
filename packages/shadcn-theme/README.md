@@ -145,8 +145,8 @@ shadcn components with no Quantum component yet: `dialog`, `tabs`, `table`, `too
 These Quantum decisions live in shadcn's class strings, not in its variables, so the theme leaves
 them out rather than restyle the components:
 
-- **Sizes and spacing.** Control heights (Quantum buttons 24 / 28 / 36 / 44 px, text fields 32 / 40 /
-  48 px), paddings, gaps, icon sizes and font sizes are Tailwind utilities in each component (`h-9`,
+- **Sizes and spacing.** Control heights (Quantum buttons 24 / 28 / 36 / 44 px, text fields 28 / 36 /
+  44 px), paddings, gaps, icon sizes and font sizes are Tailwind utilities in each component (`h-9`,
   `px-4`, `text-sm`). Quantum's medium button label is 16 px; shadcn's is 14 px.
 - **Border widths.** Quantum draws 0.6 px borders (`stroke-width.sm`); shadcn's `border` is 1 px.
 - **Hover and active colors.** Quantum has a token per state (`global.bg.accent.brand.hover`,

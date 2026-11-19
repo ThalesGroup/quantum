@@ -359,7 +359,7 @@ export default {
     {
       id: 'btn-input', section: 'Button', component: 'button', title: 'Button and input sizes (root)', selector: ROOT, tier: 'component',
       sass: { map: '$root-tokens', strip: '--bs-' },
-      why: 'Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights differ (32, 40, 48), get their own values on .form-control below.',
+      why: 'Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights are those of the Button (28, 36, 44) but whose text style and block padding are their own, get their own values on .form-control below.',
       tokens: {
         '--bs-btn-input-fg': ['text-field.control.color.default', 'Bootstrap\'s shared control foreground (inputs, OTP, chip input): the Text field value color.'],
         '--bs-btn-input-bg': ['text-field.control.background.default', 'Bootstrap\'s shared control background (inputs, OTP, chip input, floating labels): the Text field background.'],
@@ -457,7 +457,7 @@ export default {
       tokens: {
         '--bs-control-min-height': 'text-field.control.min-height.medium',
         '--bs-control-padding-x': 'text-field.control.padding-inline.medium',
-        '--bs-control-padding-y': ['space.7', 'Bootstrap pads inputs and textareas alike; Quantum centers a field\'s line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 40px min-height (line 24px + 2 x 7px + borders).'],
+        '--bs-control-padding-y': ['space.7', 'Bootstrap pads inputs and textareas alike; Quantum centers a field\'s line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders).'],
         '--bs-control-font-size': { token: 'text-field.control.typography.medium', member: 'fontSize' },
         '--bs-control-line-height': { token: 'text-field.control.typography.medium', member: 'lineHeight' },
         '--bs-control-fg': 'text-field.control.color.default',
@@ -480,7 +480,7 @@ export default {
       tokens: {
         '--bs-control-min-height': 'text-field.control.min-height.small',
         '--bs-control-padding-x': 'text-field.control.padding-inline.small',
-        '--bs-control-padding-y': ['space.4', 'Keeps a small input at its 32px min-height (line 21px).'],
+        '--bs-control-padding-y': ['space.4', 'Keeps a small input at its 28px min-height (line 16.8px + 2 x 4px + borders).'],
         '--bs-control-font-size': { token: 'text-field.control.typography.small', member: 'fontSize' },
         '--bs-control-line-height': { token: 'text-field.control.typography.small', member: 'lineHeight' },
         '--bs-control-border-radius': ['text-field.control.border-radius', 'Bootstrap gives small controls the small button radius; a Quantum field keeps one radius at every size.'],
@@ -492,7 +492,7 @@ export default {
       tokens: {
         '--bs-control-min-height': 'text-field.control.min-height.large',
         '--bs-control-padding-x': 'text-field.control.padding-inline.large',
-        '--bs-control-padding-y': ['space.8', 'Keeps a large input at its 48px min-height (line 30px).'],
+        '--bs-control-padding-y': ['space.10', 'Keeps a large input at its 44px min-height (line 19.2px + 2 x 10px + borders).'],
         '--bs-control-font-size': { token: 'text-field.control.typography.large', member: 'fontSize' },
         '--bs-control-line-height': { token: 'text-field.control.typography.large', member: 'lineHeight' },
         '--bs-control-border-radius': 'text-field.control.border-radius',

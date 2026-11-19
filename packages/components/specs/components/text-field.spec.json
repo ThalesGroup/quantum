@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -55,22 +55,22 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height and inline padding grow with the size; the value text takes the text size of the Button of the same size; label, description and message keep their size.",
+      "description": "Control height and value text take the height and the text size of the Button of the same size; inline padding grows with the size; label, description and message keep their size.",
       "affects": [
         "control"
       ],
       "options": [
         {
           "value": "small",
-          "description": "Dense forms, toolbars, table rows (32 px high)."
+          "description": "Dense forms, toolbars, table rows (28 px high)."
         },
         {
           "value": "medium",
-          "description": "Default (40 px)."
+          "description": "Default (36 px)."
         },
         {
           "value": "large",
-          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+          "description": "Prominent, single fields: a search page, a sign-in form (44 px)."
         }
       ]
     },
@@ -368,7 +368,7 @@
         ]
       },
       {
-        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 28, 36 and 44 pixels.",
         "refs": [
           "wcag:2.5.8"
         ]
@@ -396,7 +396,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (32 and 40 pt) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (28 and 36 pt) fall under it on iOS today and the large size (44 pt) reaches it: the Figma library has no platform heights.",
         "refs": [
           "hig-accessibility-mobility"
         ],
@@ -405,7 +405,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today. Expose an error with the error semantics so the message is announced with the field.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp; all three sizes (28, 36 and 44 dp) fall under it on Android today. Expose an error with the error semantics so the message is announced with the field.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -745,6 +745,18 @@
   ],
   "decisions": [
     {
+      "id": "box-height-button",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The minimum height of the box takes the height of the Button of the same size: small 28 px, medium 36 px, large 44 px (space.28, space.36 and space.44, the semantic tokens button.container.min-height reads at the same size), on every platform. The box keeps its inline padding and has no block padding: the line of text is centred in the height. A field and a Button of the same size are as tall. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Changes the 32 / 40 / 48 px minimum heights that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep 32 / 40 / 48 px (one step taller than the Button of the same size); B, the Button's heights 28 / 36 / 44 px, chosen; C, the height Figma's padding gives with the new text (33.6 / 40 / 44 px), which matches neither the Button nor today's; D, Figma's heights rounded up (36 / 40 / 44 px). A field and a Button of the same size line up (a search field next to its button, a form row), and the large size reaches the 44 pt that Apple recommends. The hit region of the small and medium sizes is a later step, as for the Button.",
+      "tokens": [
+        "text-field.control.min-height.*"
+      ]
+    },
+    {
       "id": "value-text-button-size",
       "date": "2026-11-19",
       "version": "0.4.0",
@@ -854,6 +866,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision box-height-button: the minimum height of the box takes the height of the Button of the same size (text-field.control.min-height.*: small space.32 to space.28, medium space.40 to space.36, large space.48 to space.44, so 32 / 40 / 48 px become 28 / 36 / 44 px); inline padding unchanged, no block padding. Target size (WCAG 2.5.8): every size stays above 24 x 24 CSS px; the iOS and Android guidelines now say the sizes under the 44 pt hit region and the 48 dp touch target. Colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-19",

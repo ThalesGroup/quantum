@@ -119,7 +119,7 @@ test('dist/quantum.css: Quantum values where the brief expects them', () => {
   assert.equal(get(':root, :host', '--bs-border-width'), '0.6px');
   assert.match(get(':root, :host', '--bs-body-font-family'), /^Inter, /);
   assert.match(get(':root, :host', '--bs-font-mono'), /^"Fragment Mono", /);
-  assert.equal(get('.form-control', '--bs-control-min-height'), '2.5rem');
+  assert.equal(get('.form-control', '--bs-control-min-height'), '2.25rem');
   assert.equal(get('.form-control', '--bs-control-border-color'), 'light-dark(#313131, #CFCFCF)');
   assert.equal(get('.card', '--bs-card-border-radius'), '0.5rem');
   assert.equal(get('.card', '--bs-card-bg'), 'light-dark(#F7F7F7, #212121)');
@@ -154,7 +154,7 @@ test('dist/quantum.scss passes the maps to Bootstrap and compiles with sass', (t
   const r = spawnSync(sass, ['--load-path=node_modules', '--no-source-map', 'dist/quantum.scss'], { cwd: PKG, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /--primary-bg: light-dark\(#175DD6, #9EE7FA\)/);
-  assert.match(r.stdout, /--control-min-height: 2\.5rem/);
+  assert.match(r.stdout, /--control-min-height: 2\.25rem/);
 });
 
 test('dist/demo.html is self-contained apart from the webfonts', () => {
