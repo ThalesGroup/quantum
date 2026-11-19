@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -546,6 +546,22 @@
   ],
   "decisions": [
     {
+      "id": "same-box-as-text-field",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Search field always renders the same box as the Text field of the same size and state: height, inline padding, text, border, corners, colors, focus ring, label, description and motion are the Text field's (it has no severity, message or read-only state: decision no-error-state). A Text field decision on any of these applies to the Search field in the same change: pnpm validate fails when a Search field token differs from the Text field token at the same place (MIRRORS in scripts/lib/mirrors.mjs, decision field-family-mirrors of the Text field). The glyph and the start padding that clears it are its own: the start padding (control.padding-inline-start.*) is a sum, glyph margin + glyph size + the gap before the text (28, 36, 40 px today), so a step that changes the box's inline padding, the glyph size or the glyph margin recomputes it. The mirror covers rendering only: a contract decision is asked for the Search field too.",
+      "rationale": "Nothing tied the three plain fields to the Text field: a decision on its box left them behind. Mirroring them lets every rendering step of the Text field refinement change the four in the same commit, and pnpm validate prove they agree, where the alternatives (the Text field alone, with a closing step per sibling or an issue for the others) leave the siblings out of step in between. The Select is not mirrored now: it gets its own step later, with the complex controls.",
+      "tokens": [
+        "search-field.container.*",
+        "search-field.control.*",
+        "search-field.label.*",
+        "search-field.description.*",
+        "search-field.icon.*"
+      ]
+    },
+    {
       "id": "field-colors",
       "date": "2026-10-03",
       "version": "0.1.0",
@@ -607,6 +623,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "Decision same-box-as-text-field (Text field decision field-family-mirrors): the Search field is a mirror of the Text field, so every Text field decision on the box applies here in the same change and pnpm validate compares the tokens; its glyph tokens and start padding are declared as its own, and the start padding is a sum to recompute with the box. No token, CSS or template change: the tokens already resolve to the Text field's values in every platform and mode, so sizes, colors and contrast are unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-05",
