@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -622,6 +622,15 @@
   ],
   "decisions": [
     {
+      "id": "variants-modeled-differently",
+      "date": "2026-11-19",
+      "version": "0.10.2",
+      "area": "variant",
+      "status": "active",
+      "text": "The Search field follows the Text field's decision variants-modeled-differently, which holds the departures from the Figma prototype (the value property instead of the filled state, the platform's caret, severity with message, the description, an always visible label) and the options. The Search field has no read-only, so it takes no guideline. No token changes.",
+      "rationale": "Decided by the team on 2026-11-19 (option B of three, see the Text field's decision): the model is kept and the departures are recorded."
+    },
+    {
       "id": "placeholder-tertiary",
       "date": "2026-11-19",
       "version": "0.10.1",
@@ -855,6 +864,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.2",
+      "date": "2026-11-19",
+      "note": "Decision variants-modeled-differently (Text field decision of the same name): the departures from the Figma prototype are recorded (the Search field has no read-only). No token or rendering change."
+    },
     {
       "version": "0.10.1",
       "date": "2026-11-19",

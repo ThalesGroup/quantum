@@ -52,7 +52,7 @@ when they write more. The box never resizes horizontally: it fills the width the
 | Error | `severity` property set to error, after validation. | An outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
 | Warning | `severity` property set to warning. | An outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
 | Success | `severity` property set to success. | An outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
-| Read-only | `readonly` property. | The box takes the level 1 surface; the text can still be focused, read and copied. |
+| Read-only | `readonly` property. | The box takes the level 1 surface, which is close to the resting one, so say in the description that it is read-only; the text can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, text, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
 ## Content
@@ -112,6 +112,8 @@ This section explains the decisions behind it.
 - **Read-only before disabled.** A read-only textarea keeps its text reachable and copyable; a
   disabled one leaves the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
+  Say that the textarea is read-only in its label or description: its fill barely differs from an
+  editable one's ([Material 3: Read-only fields](https://m3.material.io/components/text-fields/guidelines#f572b53d-1a15-4ede-881a-80adbbdc24a5), [Windows: Make a text box read-only](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#make-a-text-box-read-only)).
 - **Motion.** The color transition is dropped when people ask their system for less motion
   ([WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html),
   a AAA criterion adopted as extra quality).
