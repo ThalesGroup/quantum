@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "focus",
   "name": "Focus ring",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "status": "draft",
   "summary": "The one visible focus indicator every focusable component shows on keyboard focus.",
   "description": "People who move through an interface with a keyboard, a switch or another assistive input need to see which component will receive their next action. The focus ring is the system's single answer: the same solid ring, in the same color, at the same distance, around every focusable component, on every surface and in every mode. Components do not design their own focus indicator; they draw this one from their focus-visible tokens, which alias the tokens below.",
@@ -13,7 +13,7 @@
   ],
   "tokens": [
     "focus.ring.width",
-    "focus.ring.*",
+    "focus.ring.offset",
     "color.focus.ring"
   ],
   "appliesTo": "focusable-components",
@@ -64,7 +64,11 @@
       "tokens": [
         "focus.ring.width",
         "color.focus.ring"
-      ]
+      ],
+      "exempts": {
+        "components": ["text-field", "number-field", "search-field", "textarea"],
+        "tokens": ["focus.ring.offset"]
+      }
     },
     {
       "id": "web-rendering",
@@ -269,7 +273,7 @@
     {
       "id": "text-entry-flush",
       "date": "2026-11-19",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "area": "accessibility",
       "status": "active",
       "text": "The text-entry controls (Text field, Number field, Search field, Textarea) draw the ring flush over their border, at an offset of minus the border width, and in the severity's color when they have a severity, instead of at the focus offset in the focus color. They no longer alias focus.ring.offset, and the validator no longer requires it of every focusable component (focus.ring.* in tokens). Every other component keeps the ring at a gap in the focus color.",
@@ -320,7 +324,12 @@
   ],
   "changelog": [
     {
-      "version": "0.3.0",
+      "version": "0.3.1",
+      "date": "2026-11-19",
+      "note": "The foundation lists focus.ring.offset again, so every focusable component must alias it; the text-entry rule exempts the Text field, Number field, Search field and Textarea from it (new rule field exempts), instead of the focus.ring.* wildcard that stopped requiring the offset of every component. Tokens unchanged."
+    },
+    {
+      "version": "0.3.1",
       "date": "2026-11-19",
       "note": "Decision text-entry-flush: the Text field, Number field, Search field and Textarea draw the ring flush over their border (offset minus the border width), in the severity's color when they have a severity, and no longer claim WCAG 2.4.13; the other components are unchanged. The foundation lists focus.ring.* instead of focus.ring.offset, so the offset is not required of the text-entry controls. Tokens unchanged."
     },
