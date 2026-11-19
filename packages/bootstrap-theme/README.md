@@ -320,7 +320,7 @@ Radii, on root; Sass `$radii`. Bootstrap rounds buttons and inputs with radius-5
 | `--bs-radius-2` | `corner-radius.2xs` | `0.125rem` |  |
 | `--bs-radius-3` | `corner-radius.2xs` | `0.125rem` | Bootstrap's placeholder and kbd radius: the Skeleton text radius. |
 | `--bs-radius-4` | `corner-radius.xs` | `0.25rem` |  |
-| `--bs-radius-5` | `corner-radius.xs` | `0.25rem` | button.container.border-radius.medium and text-field.control.border-radius. |
+| `--bs-radius-5` | `corner-radius.xs` | `0.25rem` | button.container.border-radius.medium and text-field.control.border-radius.medium. |
 | `--bs-radius-6` | `corner-radius.sm` | `0.5rem` |  |
 | `--bs-radius-7` | `corner-radius.sm` | `0.5rem` | card.container.border-radius, alert.container.border-radius, dropdown.menu.border-radius. |
 | `--bs-radius-8` | `corner-radius.md` | `0.75rem` |  |
@@ -496,7 +496,7 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
 | `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
+| `--bs-control-border-radius` | `text-field.control.border-radius.medium` | `0.25rem` |  |
 | `--bs-control-box-shadow` | `none` (rule `effects.shadow`) | `none` | No shadow is drawn in Quantum: no inset shadow on fields. |
 | `--bs-control-transition-duration` | `text-field.control.transition.duration` | `150ms` |  |
 | `--bs-control-transition-timing` | `text-field.control.transition.easing` | `cubic-bezier(0.2, 0, 0, 1)` |  |
@@ -514,7 +514,7 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-padding-y` | `space.4` | `0.25rem` | Keeps a small input at its 28px min-height (line 16.8px + 2 x 4px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.small` (fontSize) | `0.875rem` |  |
 | `--bs-control-line-height` | `text-field.control.typography.small` (lineHeight) | `1.2` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` | Bootstrap gives small controls the small button radius; a Quantum field keeps one radius at every size. |
+| `--bs-control-border-radius` | `text-field.control.border-radius.small` | `0.125rem` |  |
 
 .form-control-lg (large), on `.form-control-lg`; Sass: written after the @use.
 
@@ -525,7 +525,7 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-padding-y` | `space.10` | `0.625rem` | Keeps a large input at its 44px min-height (line 19.2px + 2 x 10px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.large` (fontSize) | `1rem` |  |
 | `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.2` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
+| `--bs-control-border-radius` | `text-field.control.border-radius.large` | `0.25rem` |  |
 
 Focus ring offset, on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use.
 
@@ -565,7 +565,7 @@ Success (:user-valid), on `[data-bs-validate~=valid] .form-control:user-valid`; 
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
 | `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
+| `--bs-control-border-radius` | `text-field.control.border-radius.medium` | `0.25rem` |  |
 
 Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.
 

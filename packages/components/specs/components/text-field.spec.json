@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -224,7 +224,7 @@
     "sizing": "fill",
     "notes": [
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
-      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change."
+      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change."
     ]
   },
   "accessibility": {
@@ -769,6 +769,18 @@
   ],
   "decisions": [
     {
+      "id": "radius-button",
+      "date": "2026-11-19",
+      "version": "0.8.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "A field takes the corner radius of the Button of the same size, the Shape foundation's rule for controls: small 2 px (corner-radius.2xs), medium and large 4 px (corner-radius.xs), on every platform. text-field.control.border-radius becomes one value per size, as the Button's container.border-radius; the radius is the same in every state. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Changes the single 4 px radius of the Figma-library import (decision sizes); everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep corner-radius.xs (4 px) at every size, which breaks the Shape foundation at small (a small field would be rounder than the small Button next to it); B, the Shape foundation, the same radius as the Button of the same size, chosen; C, Figma's 4 px read as corner-radius.2xs at every size, which would change the Shape foundation, make the Button differ at medium and large, and keep shadcn's shared rounded-md from following. B keeps one rule for every control and puts a field and a button side by side with the same corners.",
+      "tokens": [
+        "text-field.control.border-radius.*"
+      ]
+    },
+    {
       "id": "part-gap-6",
       "date": "2026-11-19",
       "version": "0.7.0",
@@ -928,6 +940,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.8.0",
+      "date": "2026-11-19",
+      "note": "Decision radius-button: the corner radius of the box is the Button's at the same size (text-field.control.border-radius per size: small corner-radius.2xs, 2 px; medium and large corner-radius.xs, 4 px; it was corner-radius.xs, 4 px, at every size). Colors, sizes and typography unchanged."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-19",

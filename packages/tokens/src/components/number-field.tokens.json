@@ -79,7 +79,16 @@
       },
       "border-radius": {
         "$type": "dimension",
-        "$value": "{corner-radius.xs}"
+        "$description": "The Button's corner radius at the same size (Shape foundation): 2 px at small, 4 px at medium and large.",
+        "small": {
+          "$value": "{corner-radius.2xs}"
+        },
+        "medium": {
+          "$value": "{corner-radius.xs}"
+        },
+        "large": {
+          "$value": "{corner-radius.xs}"
+        }
       },
       "border-width": {
         "$type": "dimension",

@@ -22,6 +22,7 @@
   --_label-color: var(--search-field-label-color-default);
   --_description-color: var(--search-field-description-color-default);
   --_min-height: var(--search-field-control-min-height-medium);
+  --_border-radius: var(--search-field-control-border-radius-medium);
   --_padding-inline: var(--search-field-control-padding-inline-medium);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-medium);
   --_icon-size: var(--search-field-icon-size-medium);
@@ -55,6 +56,7 @@
 
 .ds-search-field[data-size="small"] {
   --_min-height: var(--search-field-control-min-height-small);
+  --_border-radius: var(--search-field-control-border-radius-small);
   --_padding-inline: var(--search-field-control-padding-inline-small);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-small);
   --_icon-size: var(--search-field-icon-size-small);
@@ -77,6 +79,7 @@
 
 .ds-search-field[data-size="large"] {
   --_min-height: var(--search-field-control-min-height-large);
+  --_border-radius: var(--search-field-control-border-radius-large);
   --_padding-inline: var(--search-field-control-padding-inline-large);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-large);
   --_icon-size: var(--search-field-icon-size-large);
@@ -150,7 +153,7 @@
   padding-inline: var(--_padding-inline);
   padding-inline-start: var(--_padding-inline-start);
   border: var(--search-field-control-border-width) solid var(--_control-border-color);
-  border-radius: var(--search-field-control-border-radius);
+  border-radius: var(--_border-radius);
   background-color: var(--_control-background);
   color: var(--_control-color);
   font-family: var(--_font-family);
