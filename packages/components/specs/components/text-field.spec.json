@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -180,28 +180,28 @@
     {
       "id": "focus-visible",
       "trigger": "interaction",
-      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the focus color as a 2.4 px outline drawn flush over its border however it was focused; the border and the text do not move."
     },
     {
       "id": "error",
       "trigger": "property",
       "property": "severity",
       "value": "error",
-      "description": "Severity error: the border takes the error color and the message is shown under the control, in the error color."
+      "description": "Severity error: an outline in the error color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the error color."
     },
     {
       "id": "warning",
       "trigger": "property",
       "property": "severity",
       "value": "warning",
-      "description": "Severity warning: the border takes the warning color and the message is shown under the control, in the warning color. No web state beyond the data attribute."
+      "description": "Severity warning: an outline in the warning color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the warning color. No web state beyond the data attribute."
     },
     {
       "id": "success",
       "trigger": "property",
       "property": "severity",
       "value": "success",
-      "description": "Severity success: the border takes the success color and the message is shown under the control, in the success color. No web state beyond the data attribute."
+      "description": "Severity success: an outline in the success color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the success color. No web state beyond the data attribute."
     },
     {
       "id": "readonly",
@@ -357,26 +357,37 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
         "refs": [
           "wcag:1.4.11",
-          "understanding-non-text-contrast-boundaries"
+          "understanding-non-text-contrast-boundaries",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
+        "text": "A visible focus indicator appears when the control receives focus: a 2.4 px outline in the focus color drawn flush over the border, at every size, so focus is visible by pointer and keyboard alike (WCAG 2.4.7). WCAG 2.4.13 Focus Appearance (AAA) is not met at 1x and 2x, because the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, and the fields do not claim it.",
         "refs": [
           "wcag:2.4.7",
-          "wcag:2.4.13"
+          "wcag:2.4.13",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
+        "text": "The focus outline is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard. It is a CSS outline, never a box-shadow, so forced colors mode repaints it in a system color.",
         "refs": [
-          "mdn-focus-visible"
+          "mdn-focus-visible",
+          "mdn-forced-colors"
         ],
         "platforms": [
           "web"
+        ]
+      },
+      {
+        "text": "The severity outline (1.2 px) and the focus outline (2.4 px) differ by width, so a field with a severity is not mistaken for a focused one, in forced colors too, where both take the same system color. At 1x the severity outline is as wide as the 1 px border at rest: the severity's color and the message say what the severity is, never the color alone.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag-f78",
+          "wcag-f81"
         ]
       },
       {
@@ -627,6 +638,26 @@
         "id": "compose-error-components",
         "title": "Jetpack Compose accessibility: error semantics of components",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components"
+      },
+      {
+        "id": "understanding-focus-contrast",
+        "title": "Understanding 1.4.11 Non-text Contrast: relationship with Focus Visible",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus"
+      },
+      {
+        "id": "wcag-f78",
+        "title": "WCAG failure F78: a focus indicator that is not visible, or looks the same as another outline",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F78"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      },
+      {
+        "id": "material-text-fields",
+        "title": "Material Design 3: Text fields, specs",
+        "url": "https://m3.material.io/components/text-fields/specs"
       }
     ]
   },
@@ -768,6 +799,31 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "state-outline-flush",
+      "date": "2026-11-19",
+      "version": "0.9.0",
+      "area": "state",
+      "status": "active",
+      "text": "A field draws its focus and severity indicators as outlines flush over its border, never as a thicker border: the border stays stroke-width.sm (0.6 px) in every state, so the text never moves. Focus (:focus-visible, which an editable field matches for pointer and keyboard focus alike) is an outline of focus.ring.width (2.4 px) in color.focus.ring; a severity (error, warning or success) at rest is an outline of stroke-width.md (1.2 px) in the severity's border color (global.border.accent.functional.<severity>.default); a severity with focus is an outline of focus.ring.width in the severity's color, not the focus color. The outline offset is minus the border width, computed in the CSS as calc(-1 * border-width) because a DTCG alias cannot negate a token, so the outline covers the border exactly and the visible line is 2.4 px (focus, a severity with focus) or 1.2 px (a severity at rest), growing outward. There is no separate ring with a gap any more: the four fields no longer read focus.ring.offset, and text-field.control.outline-offset.focus-visible is removed. The Number field, the Search field (focus only: it has no severity) and the Textarea follow through the mirror check (decision field-family-mirrors). The Focus foundation records the exception (decision text-entry-flush, Focus 0.3.0).",
+      "rationale": "Decided by the team on 2026-11-19 among options: A, keep the 0.6 px border and the ring at a gap (today); B, the Figma library's 1.2 px border on focus and invalid; C, 1.2 px on invalid only; D, 1.2 px in every state; E1 and E3, a thicker border (or an inset outline) on focus, rejected because the text moves with the border and a border change is not repainted in forced colors as an outline is; E4, an outline over the border at offset 0 or minus the border width, colored (a) in the error color or (b) in the focus color when invalid. Chosen: E4a at offset minus 0.6 px. The text never moves, outlines are repainted in system colors in forced colors mode (MDN, forced-colors), and there is one focus width, 2.4 px, as the Button's. Material 3 draws the same pattern, a 1 dp outline at rest and a thicker one in primary on focus, and in the error color when invalid, with no color of its own for the focused error. Known consequences: (1) the severity outlines read the accent functional borders (decision forms-severity), which reach 3:1 against every surface level (Color foundation decision border-accent-functional-3-to-1), so they meet WCAG 1.4.11 where the base error border first chosen was 2.80:1 against surface level 3 in dark. (2) At offset minus 0.6 px, WCAG 2.4.13 Focus Appearance (AAA, information only) is not met at 1x and 2x: the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, so the qualifying band is the outward 1 to 1.5 px, under the area the criterion asks for; the fields drop the Focus foundation's 2.4.13 claim, and 2.4.7 and 1.4.11 are still met. (3) At 1x, a severity at rest draws a 1 px line, as at rest (the outline covers the 1 px border): the color and the message are the cues, never the color alone (1.4.1). (4) The focus outline in the severity's color of a field with a severity breaks the Focus foundation's single focus color; the foundation records the exception. The severity outline stays distinguishable from the focus one by width (1.2 against 2.4 px), including in forced colors (F78).",
+      "tokens": [
+        "text-field.control.outline-width.*",
+        "text-field.control.outline-color.*",
+        "text-field.control.border-width"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11",
+        "wcag:2.4.13",
+        "wcag:1.4.1",
+        "understanding-focus-contrast",
+        "wcag-f78",
+        "mdn-forced-colors",
+        "mdn-focus-visible",
+        "material-text-fields"
+      ]
+    },
     {
       "id": "radius-button",
       "date": "2026-11-19",
@@ -940,6 +996,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-11-19",
+      "note": "Decision state-outline-flush: focus is an outline of 2.4 px (focus.ring.width, color.focus.ring) drawn flush over the 0.6 px border, offset minus the border width, instead of a ring 4 px away; a severity (error, warning, success) is an outline of 1.2 px (stroke-width.md) in the severity's border color (global.border.accent.functional.<severity>.default), 2.4 px in that color with focus; the border and the text never change; outline-offset.focus-visible removed. Contrast, light / dark: focus outline 5.77:1 / 12.76:1 on the default surface (5.45 / 9.58 on level 3); severity outlines as the severity borders, on the default surface and at least on every surface level: error 6.12:1 / 4.97:1 and 5.79 / 3.73, warning 3.27:1 / 8.09:1 and 3.09 / 6.07, success 7.87:1 / 6.08:1 and 7.44 / 4.57. WCAG 2.4.13 is no longer claimed."
+    },
     {
       "version": "0.8.0",
       "date": "2026-11-19",

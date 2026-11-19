@@ -499,9 +499,10 @@ export default {
       },
     },
     {
-      id: 'form-control-focus', section: 'Text field', component: 'text-field', title: 'Focus ring offset', tier: 'component',
+      id: 'form-control-focus', section: 'Text field', component: 'text-field', title: 'Focus ring offset (flush)', tier: 'component',
       selector: '.form-control:focus-visible, .form-control:focus-within',
-      tokens: { '--bs-focus-ring-offset': 'text-field.control.outline-offset.focus-visible' },
+      why: 'Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap keeps its own focus ring color for a control in error and draws no outline at rest, so the 1.2 px and 2.4 px severity outlines of a Quantum field are not themable.',
+      tokens: { '--bs-focus-ring-offset': { template: 'calc(-1 * {text-field.control.border-width})', why: 'The ring covers the 0.6px border exactly (a token alias cannot negate a token).' } },
     },
     {
       id: 'form-control-error', section: 'Text field', component: 'text-field', title: 'Error (.is-invalid)', tier: 'component',

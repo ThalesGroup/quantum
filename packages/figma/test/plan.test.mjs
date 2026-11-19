@@ -111,6 +111,16 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   assert.deepEqual(plan.variables.skipped, ['button/container/transition/duration', 'button/container/transition/easing']);
 });
 
+test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const ring = (severity, state) => plan.variants.find((v) => v.name === `Size=medium, Severity=${severity}, Content=value, State=${state}`).root.children.find((c) => c.name === 'control').focusRing;
+  assert.deepEqual(ring('none', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible', offset: -0.6, stroke: 'text-field/control/outline-color/focus-visible' });
+  assert.deepEqual(ring('error', 'default'), { strokeWeight: 'text-field/control/outline-width/error', offset: -0.6, stroke: 'text-field/control/outline-color/error' });
+  assert.deepEqual(ring('warning', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible', offset: -0.6, stroke: 'text-field/control/outline-color/warning' });
+  assert.equal(ring('none', 'default'), undefined);
+  assert.equal(ring('success', 'disabled'), undefined);
+});
+
 test('the Icon draws its current color as neutral on each surface', () => {
   const icon = JSON.parse(fs.readFileSync(path.join(ROOT, artifacts('icon').spec), 'utf8'));
   const plan = figmaComponent(loaded, icon, BLUEPRINTS.icon);

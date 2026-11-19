@@ -31,6 +31,11 @@ sub-heading named after it; everything else holds everywhere.
 - **One color.** The focus color is the brand accent of each mode. It does not change with the
   component's emphasis or intent, so it never looks like a variant or a state of the component
   itself.
+- **Text-entry controls, flush.** The Text field, Number field, Search field and Textarea
+  are the exception: their ring is drawn flush over their border, with no gap, so the border keeps
+  its width and the text never moves. One with a severity (error, warning, success) draws it in
+  the severity's color, not the focus color. Focus reaches an editable field from a pointer as well as the keyboard, so their ring shows
+  on both.
 
 ## When it appears
 
@@ -72,7 +77,9 @@ the ring against that surface too, and pick a surface token that keeps it visibl
 
 - Give the root part three tokens on the `focus-visible` state: `outline-width`,
   `outline-offset` and `outline-color`, aliasing `focus.ring.width`, `focus.ring.offset` and
-  `color.focus.ring`. The validator requires them for every focusable role.
+  `color.focus.ring`. The validator requires the width and the color for every focusable role.
+  A text-entry control has no offset token: it draws the ring flush, with an offset of minus its
+  border width, which the CSS computes because a token alias cannot negate a token.
 - Do not tint the fill or change the border on focus to replace the ring. Hover and press
   styles may still apply while the component is focused.
 - Leave room for the ring. A parent that clips its content (scroll areas, cards with hidden
@@ -88,11 +95,15 @@ the ring against that surface too, and pick a surface token that keeps it visibl
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html),
   [relationship with Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus)).
   The offset is what makes this the only pair to check: the ring never touches the component's
-  own colors.
+  own colors. A text-entry control draws its ring over its border and outward, so the outward part
+  is checked the same way; its ring with a severity, in the severity's accent functional border
+  color, reaches 3:1 on every surface level too.
 - **Big enough to notice.** At 2.4 px, the solid ring covers more than a 2 CSS pixel perimeter of
   the component and changes those pixels by more than 3:1, which is what the AAA focus
   appearance criterion asks. The system adopts it as extra quality, beyond the AA target
   ([WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)).
+  The text-entry controls do not claim it: their ring covers their border, which it changes by
+  only 2.21:1 in light and 1.13:1 in dark, so the area test fails at 1x and 2x.
 - **Never hidden.** A visible ring is useless under a sticky header, a cookie banner or a
   floating toolbar: a focused component must never be entirely covered by content the product
   adds ([WCAG 2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)).
@@ -115,5 +126,6 @@ the ring against that surface too, and pick a surface token that keeps it visibl
 
 ## Related
 
-- Button and Icon button draw this ring on their `focus-visible` state.
+- Button and Icon button draw this ring on their `focus-visible` state, at a gap.
+- Text field, Number field, Search field and Textarea draw it flush over their border.
 - Modes: the focus color takes another value in dark mode; the same tokens, another context.

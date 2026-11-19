@@ -223,10 +223,36 @@
   outline: none;
 }
 
+/* Focus and a severity are outlines drawn flush over the border: the offset is minus the border
+   width, so the border keeps its width and the text never moves. A severity at rest is a thin line
+   in its color; with focus it takes the focus width, still in the severity's color. */
 .ds-text-field:where([data-state="focus-visible"]) .ds-text-field__control,
 .ds-text-field__control:focus-visible {
   outline: var(--text-field-control-outline-width-focus-visible) solid var(--text-field-control-outline-color-focus-visible);
-  outline-offset: var(--text-field-control-outline-offset-focus-visible);
+  outline-offset: calc(-1 * var(--text-field-control-border-width));
+}
+
+.ds-text-field:where([data-state="error"], [data-severity="error"]) .ds-text-field__control:not(:disabled),
+.ds-text-field__control[aria-invalid="true"]:not(:disabled) {
+  outline: var(--text-field-control-outline-width-error) solid var(--text-field-control-outline-color-error);
+  outline-offset: calc(-1 * var(--text-field-control-border-width));
+}
+
+.ds-text-field:where([data-state="warning"], [data-severity="warning"]) .ds-text-field__control:not(:disabled) {
+  outline: var(--text-field-control-outline-width-warning) solid var(--text-field-control-outline-color-warning);
+  outline-offset: calc(-1 * var(--text-field-control-border-width));
+}
+
+.ds-text-field:where([data-state="success"], [data-severity="success"]) .ds-text-field__control:not(:disabled) {
+  outline: var(--text-field-control-outline-width-success) solid var(--text-field-control-outline-color-success);
+  outline-offset: calc(-1 * var(--text-field-control-border-width));
+}
+
+.ds-text-field:where([data-state="error"], [data-state="warning"], [data-state="success"], [data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-text-field__control:not(:disabled):focus-visible,
+.ds-text-field:where([data-state="focus-visible"]):where([data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-text-field__control:not(:disabled),
+.ds-text-field:where([data-state="focus-visible"]) .ds-text-field__control[aria-invalid="true"]:not(:disabled),
+.ds-text-field__control[aria-invalid="true"]:not(:disabled):focus-visible {
+  outline-width: var(--text-field-control-outline-width-focus-visible);
 }
 
 @media (prefers-reduced-motion: reduce) {

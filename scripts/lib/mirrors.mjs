@@ -46,7 +46,7 @@ export const MIRRORS = [
     of: 'text-field',
     paths: [],
     // A search field has no severity and no read-only state, so no message (decision no-error-state).
-    ignore: ['control.background.readonly', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'message.*'],
+    ignore: ['control.background.readonly', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'control.outline-width.error', 'control.outline-width.warning', 'control.outline-width.success', 'control.outline-color.error', 'control.outline-color.warning', 'control.outline-color.success', 'message.*'],
     // The glyph, and the start padding that clears it. control.padding-inline-start.* is a SUM, not an
     // independent value: icon.margin-inline + icon.size + the gap before the text (8 + 16 + 4,
     // 8 + 20 + 8, 8 + 24 + 8 = 28 / 36 / 40 today). Any step that changes the box's inline padding,

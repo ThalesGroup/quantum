@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -142,7 +142,7 @@
     {
       "id": "focus-visible",
       "trigger": "interaction",
-      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the focus color as a 2.4 px outline drawn flush over its border however it was focused; the border and the text do not move."
     },
     {
       "id": "disabled",
@@ -266,23 +266,26 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the focus outline 5.77:1 and 12.76:1 on the default surface. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
-          "understanding-non-text-contrast-boundaries"
+          "understanding-non-text-contrast-boundaries",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
+        "text": "A visible focus indicator appears when the control receives focus: a 2.4 px outline in the focus color drawn flush over the border, at every size, so focus is visible by pointer and keyboard alike (WCAG 2.4.7). WCAG 2.4.13 Focus Appearance (AAA) is not met at 1x and 2x, because the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, and the fields do not claim it.",
         "refs": [
           "wcag:2.4.7",
-          "wcag:2.4.13"
+          "wcag:2.4.13",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
+        "text": "The focus outline is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard. It is a CSS outline, never a box-shadow, so forced colors mode repaints it in a system color.",
         "refs": [
-          "mdn-focus-visible"
+          "mdn-focus-visible",
+          "mdn-forced-colors"
         ],
         "platforms": [
           "web"
@@ -478,6 +481,16 @@
         "id": "aria-hidden",
         "title": "WAI-ARIA 1.2: aria-hidden",
         "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "understanding-focus-contrast",
+        "title": "Understanding 1.4.11 Non-text Contrast: relationship with Focus Visible",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
       }
     ]
   },
@@ -568,6 +581,26 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "state-outline-flush",
+      "date": "2026-11-19",
+      "version": "0.9.0",
+      "area": "state",
+      "status": "active",
+      "text": "The Search field draws focus as the Text field does (decision state-outline-flush of the Text field, which holds the rule and its rationale): the border stays 0.6 px in every state and the outline is drawn flush over it, offset minus the border width, so the text never moves. Focus is an outline of focus.ring.width (2.4 px) in color.focus.ring. search-field.control.outline-offset.focus-visible is removed. pnpm validate compares the shared tokens with the Text field's through the mirror check. The Search field has no severity (decision no-error-state), so it has the focus part only.",
+      "rationale": "Decided by the team on 2026-11-19 (E4a at offset minus 0.6 px); see the Text field's decision for the options, the rationale and the known consequences (2.4.13 not met at 1x and 2x).",
+      "tokens": [
+        "search-field.control.outline-width.*",
+        "search-field.control.outline-color.*"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11",
+        "wcag:2.4.13",
+        "understanding-focus-contrast",
+        "mdn-forced-colors"
+      ]
+    },
     {
       "id": "radius-button",
       "date": "2026-11-19",
@@ -722,6 +755,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-11-19",
+      "note": "Decision state-outline-flush: focus is an outline of 2.4 px (focus.ring.width, color.focus.ring) drawn flush over the 0.6 px border, offset minus the border width, instead of a ring 4 px away; the border and the text never change; outline-offset.focus-visible removed. Contrast, light / dark: focus outline 5.77:1 / 12.76:1 on the default surface (5.45 / 9.58 on level 3); WCAG 2.4.13 is no longer claimed."
+    },
     {
       "version": "0.8.0",
       "date": "2026-11-19",

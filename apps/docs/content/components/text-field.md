@@ -51,14 +51,14 @@ type, so it never replaces the label and never carries an instruction people mus
 | --- | --- | --- |
 | Default | Resting. | An outlined box on the default surface. |
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
-| Focus visible | The box has focus, from the keyboard or a pointer. | The shared focus ring appears outside the border. An editable field shows it however it was focused. |
-| Error | `severity` property set to error, after validation. | The border takes the error color and the message appears under the box, in the error color. The control is exposed as in error. |
-| Warning | `severity` property set to warning. | The border takes the warning color and the message appears under the box, in the warning color. No web state: the message says it. |
-| Success | `severity` property set to success. | The border takes the success color and the message appears under the box, in the success color. No web state: the message says it. |
+| Focus visible | The box has focus, from the keyboard or a pointer. | The focus color as a 2.4 px outline drawn flush over the border, which keeps its width, so the text does not move. An editable field shows it however it was focused. |
+| Error | `severity` property set to error, after validation. | An outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | An outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | An outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
 | Read-only | `readonly` property. | The box takes the level 1 surface; the value can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, value, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
-A severity and hover combine (the hover tint under the severity border), and disabled wins over
+A severity and hover combine (the hover tint under the severity outline), and disabled wins over
 every other state: the states matrix shows what the tokens decide.
 
 ## Content
@@ -108,10 +108,18 @@ This section explains the decisions behind it.
   ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text)). These sizes
   are under the large text size, so their colors keep the 4.5:1 above; the help text passes
   everywhere, at 5.30:1 or more.
-- **Visible focus.** Focus shows the shared ring outside the border
-  ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
-  [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)),
+- **Visible focus.** Focus shows a 2.4 px outline in the focus color, drawn flush over the border
+  ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)),
   and Tab reaches the control ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)).
+  The outline covers the border instead of sitting at a gap, so WCAG 2.4.13 Focus Appearance
+  (AAA, extra quality) is not claimed: the part over the border changes contrast only 2.21:1 in
+  light and 1.13:1 in dark. A field with a severity draws 1.2 px in the severity's color and,
+  with focus, 2.4 px in the same color: width tells them apart, including in forced colors, and
+  the message says why, never the color alone
+  ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
+  [F78](https://www.w3.org/WAI/WCAG22/Techniques/failures/F78)). The severity colors are the
+  accent functional borders, at least 3:1 on every surface level in both modes
+  ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus)).
 - **Target size.** Every size is at least 28 px high, above the 24 px minimum
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
 - **Input purpose.** A field collecting information about the person (name, email, phone,
@@ -143,7 +151,7 @@ This section explains the decisions behind it.
   [WAI tutorial: placeholder text](https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text)).
 - The input type (`email`, `tel`, `url`) and the `autocomplete` token are passed through the
   template's extra attributes; they change the keyboard and the browser's help, not the look.
-- The focus ring uses `:focus-visible`, which browsers match whenever an editable field has
+- The focus outline uses `:focus-visible`, which browsers match whenever an editable field has
   focus ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   the transition is switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).

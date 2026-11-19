@@ -171,12 +171,6 @@
           "$value": "{focus.ring.width}"
         }
       },
-      "outline-offset": {
-        "$type": "dimension",
-        "focus-visible": {
-          "$value": "{focus.ring.offset}"
-        }
-      },
       "outline-color": {
         "$type": "color",
         "focus-visible": {

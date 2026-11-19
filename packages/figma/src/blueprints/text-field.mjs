@@ -69,7 +69,7 @@ export const content = ({ value = 'Value', placeholder = 'Placeholder' } = {}) =
   },
 ];
 
-/** The editable box: its border, background, min height and inline padding, the focus ring outside it. */
+/** The editable box: its border, background, min height and inline padding, the focus outline over it (flush, drawn from its outline slots). */
 export const control = ({ children, bind = {}, counter = 'CENTER' }) => ({
   type: 'frame',
   name: 'control',
