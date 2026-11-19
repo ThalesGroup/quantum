@@ -579,7 +579,7 @@ Description (.form-text), on `.form-text`; Sass `$form-text-tokens`. A Quantum d
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-form-text-margin-top` | `text-field.container.gap` | `0.25rem` |  |
+| `--bs-form-text-margin-top` | `text-field.container.gap` | `0.375rem` |  |
 | `--bs-form-text-font-size` | `text-field.description.typography.medium` (fontSize) | `0.75rem` |  |
 | `--bs-form-text-color` | `text-field.description.color.default` | `#313131` / `#B8B8B8` |  |
 

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -769,6 +769,18 @@
   ],
   "decisions": [
     {
+      "id": "part-gap-6",
+      "date": "2026-11-19",
+      "version": "0.7.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The parts of a field are 6 px apart: label and box, box and description, description and message, at every size and in every state (text-field.container.gap, space.4 to space.6), on every platform. It is one token, so the box never moves when the state changes: the message, the description and the label are stacked at the same distance whether or not they are shown (Shape foundation, same box rule). The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Changes the 4 px gap that the decision sizes and the Figma-library import state; everything else they state is unchanged. Left for later: the gap between the label and its required mark (Figma 2 / 4 / 4 px) is its own step, and the Checkbox group and Radio group legends (container.row-gap, space.8) follow with the complex controls (#105).",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep space.4 (4 px); B, Figma's resting variants (label to box 6 px at every size, box to description to message 4 / 6 / 8 px, two tokens); C, Figma's validation variants (label to box 6 / 8 / 10 px, the rest 4 / 6 / 8 px); D, one step more everywhere, 6 px, chosen. Figma contradicts itself: the label to box distance is 6 px in the resting variants but 6 / 8 / 10 px in the error, warning, success and disabled ones, which would move the box when the state changes, against the Shape foundation's same-box rule. One token at 6 px gives the label and the help text room to breathe without that.",
+      "tokens": [
+        "text-field.container.gap"
+      ]
+    },
+    {
       "id": "label-help-text-sizes",
       "date": "2026-11-19",
       "version": "0.6.0",
@@ -916,6 +928,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-19",
+      "note": "Decision part-gap-6: the parts of the field are 6 px apart at every size and in every state (text-field.container.gap: space.4 to space.6, 4 px to 6 px between the label, the box, the description and the message). The box never moves between states. Colors, sizes and typography unchanged."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-19",

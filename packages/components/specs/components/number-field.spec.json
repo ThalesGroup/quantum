@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -802,6 +802,18 @@
   ],
   "decisions": [
     {
+      "id": "part-gap-6",
+      "date": "2026-11-19",
+      "version": "0.7.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The parts of the Number field are 6 px apart at every size and in every state (number-field.container.gap, space.4 to space.6), as the Text field's (decision part-gap-6 of the Text field, which holds the rule and its rationale). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the 4 px gap of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options (A, keep 4 px; B and C, Figma's two inconsistent sets of gaps; D, 6 px everywhere, chosen); see the Text field's decision for the rationale.",
+      "tokens": [
+        "number-field.container.gap"
+      ]
+    },
+    {
       "id": "label-help-text-sizes",
       "date": "2026-11-19",
       "version": "0.6.0",
@@ -950,6 +962,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-19",
+      "note": "Decision part-gap-6: the parts of the field are 6 px apart at every size and in every state (number-field.container.gap: space.4 to space.6, 4 px to 6 px between the label, the box, the description and the message). The box never moves between states. Colors, sizes and typography unchanged."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-19",
