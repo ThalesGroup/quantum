@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SCOPES, TIERS, inScope, followedByScope, componentsInScope, tiersOf, inheritedGuidelines, checkInputControl } from '../lib/foundation-scope.mjs';
+import { SCOPES, TIERS, inScope, followedByScope, componentsInScope, tiersOf, inheritedGuidelines, checkInputControl, requiredTokensFor, checkExemptions } from '../lib/foundation-scope.mjs';
 import { loadA11y, checkRegistry } from '../lib/a11y.mjs';
 import { PATHS } from '../lib/paths.mjs';
 
@@ -124,4 +124,20 @@ test('a follower inherits the foundation guidelines of the tiers it follows, nev
 test('the Forms guidelines name only known tiers', () => {
   const forms = JSON.parse(fs.readFileSync(path.join(root, PATHS.specs, 'foundations/forms.spec.json'), 'utf8'));
   for (const g of forms.accessibility.guidelines) if (g.tier) assert.ok(TIERS.includes(g.tier), g.tier);
+});
+
+test('a rule exempts only the components and tokens it names', () => {
+  const spec = { rules: [{ id: 'a' }, { id: 'b', exempts: { components: ['field'], tokens: ['focus.ring.offset'] } }] };
+  const required = ['focus.ring.width', 'focus.ring.offset'];
+  assert.deepEqual(requiredTokensFor(spec, 'field', required), ['focus.ring.width']);
+  assert.deepEqual(requiredTokensFor(spec, 'button', required), required);
+  assert.deepEqual(requiredTokensFor({ rules: [] }, 'field', required), required);
+});
+
+test('an exemption naming an unknown component or an unowned token is a problem', () => {
+  const owned = new Set(['focus.ring.offset']);
+  const spec = (exempts) => ({ rules: [{ id: 'b', exempts }] });
+  assert.deepEqual(checkExemptions(spec({ components: ['field'], tokens: ['focus.ring.offset'] }), ['field'], owned), []);
+  assert.equal(checkExemptions(spec({ components: ['nope'], tokens: ['focus.ring.offset'] }), ['field'], owned).length, 1);
+  assert.equal(checkExemptions(spec({ components: ['field'], tokens: ['color.x'] }), ['field'], owned).length, 1);
 });
