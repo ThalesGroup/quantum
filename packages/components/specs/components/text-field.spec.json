@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -357,7 +357,7 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries",
@@ -820,6 +820,25 @@
   ],
   "decisions": [
     {
+      "id": "border-base-neutral-5",
+      "date": "2026-11-19",
+      "version": "0.10.0",
+      "area": "color",
+      "status": "active",
+      "text": "The resting border of the box is global.border.base.neutral.5 (text-field.control.border-color.default), not the accent neutral border: #8C8C8C in light and #9C9C9C in dark, 3.30:1 and 6.40:1 on the page, 3.12:1 and 4.80:1 at the lowest on the surface levels 0 to 3. Hover keeps this border (there is no hover border token: hover only tints the fill) and so does read-only (it only moves the fill to level 1); disabled, the focus outline and the severity outlines are unchanged. The dark value of global.border.base.neutral.5 moves from dark base 400 (#767676, 2.90:1 on dark level 3, under the 3:1 of Understanding 1.4.11) to dark base 300 (#9C9C9C): a departure from the Figma library recorded by the Color foundation (decision border-base-neutral-5-dark). The Select, Checkbox, Radio group and Switch keep the accent neutral border until the complex controls are refined, so the field family's border is now lighter than theirs. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). This replaces the border part of the decision field-colors.",
+      "rationale": "Decided by the team on 2026-11-19 among options: 9A, keep global.border.accent.neutral.default (#313131 light / #CFCFCF dark: 12.78 / 11.28:1 on level 0, 8.47:1 at the lowest in dark); 9B, Figma's global.border.base.neutral.3 (#D5D5D5 / #303030: 1.44:1 at best in light and 1.33:1 in dark, so it fails 1.4.11 on every surface, Figma's own pairing included); 9C, global.border.base.neutral.5 (chosen); 9D, a new semantic role, which would be an addition to ask for; global.border.accent.neutral.active also passes (#616161 / #9C9C9C) but it is the pressed step of the accent border, so reading it for a resting border is rejected by the semantic-role rule. 9C was weighed three ways: A, fix its dark value (chosen); B, keep it with a known failure on dark level 3 (2.90:1); C, back to 9A. Why the border must reach 3:1: it is what identifies an empty field, which has no other visible content (Understanding 1.4.11, boundaries: a text input's complete border must meet 3:1, Figures 31, 32 and 45), and no fill can do it (decision fill-page-level: the best neutral fill reaches 1.43:1). Material 3's outlined text field draws a 4.52:1 outline on white, so a mid-grey border is the common reading. Measured on the resolved tokens (border against the surface level, 0 / 1 / 2 / 3): light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1. Against the hover fill: light 3.12 / 2.79 / 3.12 / 3.12:1 and dark 5.86 / 5.36 / 4.80 / 4.80:1; the boundary is checked against the surface around the field, as the box's own fill is not the adjacent color. Apple's HIG and the Windows text box guidance say nothing on a text field's border color.",
+      "tokens": [
+        "text-field.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-non-text-contrast-boundaries",
+        "material-text-fields",
+        "hig-text-fields",
+        "windows-text-box"
+      ]
+    },
+    {
       "id": "fill-page-level",
       "date": "2026-11-19",
       "version": "0.9.1",
@@ -1036,6 +1055,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.0",
+      "date": "2026-11-19",
+      "note": "Decision border-base-neutral-5: the resting border of the box (text-field.control.border-color.default) is global.border.base.neutral.5 instead of global.border.accent.neutral.default: #8C8C8C in light (was #313131) and #9C9C9C in dark (was #CFCFCF), over a dark value of that semantic token fixed from #767676 (Color foundation 7.2.0). Contrast of the border on the surface levels 0 / 1 / 2 / 3: light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1 (was 12.78 / 12.09 / 12.78 / 12.09:1 and 11.28 / 10.33 / 9.46 / 8.47:1). Hover and read-only keep the border; disabled, focus and the severities are unchanged. The field family's border is now lighter than the Select, Checkbox, Radio group and Switch."
+    },
     {
       "version": "0.9.1",
       "date": "2026-11-19",

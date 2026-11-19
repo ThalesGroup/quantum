@@ -120,7 +120,7 @@ test('dist/quantum.css: Quantum values where the brief expects them', () => {
   assert.match(get(':root, :host', '--bs-body-font-family'), /^Inter, /);
   assert.match(get(':root, :host', '--bs-font-mono'), /^"Fragment Mono", /);
   assert.equal(get('.form-control', '--bs-control-min-height'), '2.25rem');
-  assert.equal(get('.form-control', '--bs-control-border-color'), 'light-dark(#313131, #CFCFCF)');
+  assert.equal(get('.form-control', '--bs-control-border-color'), 'light-dark(#8C8C8C, #9C9C9C)');
   assert.equal(get('.card', '--bs-card-border-radius'), '0.5rem');
   assert.equal(get('.card', '--bs-card-bg'), 'light-dark(#F7F7F7, #212121)');
 });

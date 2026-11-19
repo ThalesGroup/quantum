@@ -96,8 +96,11 @@ This section explains the decisions behind it.
   [WAI tutorial: User notifications](https://www.w3.org/WAI/tutorials/forms/notifications/),
   [H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)).
 - **The border is the boundary.** A field is identified by its box, so the border needs 3:1
-  against the surface in both modes. That is why it is the dark accent neutral border rather than
-  a light grey: the Figma library's light neutral borders fall under 3:1 in dark mode
+  against the surface in both modes. That is why it is the mid-grey base neutral 5 border
+  (`global.border.base.neutral.5`, 3.12:1 at the lowest in light mode and 4.80:1 in dark) rather
+  than the Figma library's light neutral borders, which fall under 3:1, and why its dark value is
+  lighter than the library's, which fell to 2.90:1 on the highest surface. It is lighter than the
+  border of the Select, Checkbox, Radio group and Switch, which keep the accent neutral border for now
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).
   Text needs 4.5:1 ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
   the error text passes on every surface since the Figma library's POC2 export moved it to a

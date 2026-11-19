@@ -312,7 +312,7 @@
           "2": {"$type":"color","$value":"{dark-switch.base.700}"},
           "3": {"$type":"color","$value":"{dark-switch.base.600}"},
           "4": {"$type":"color","$value":"{dark-switch.base.500}"},
-          "5": {"$type":"color","$value":"{dark-switch.base.400}"}
+          "5": {"$type":"color","$value":"{dark-switch.base.300}"}
         },
         "brand": {
           "default": {"$type":"color","$value":"{brand.palettes.core.dark.500}"}
