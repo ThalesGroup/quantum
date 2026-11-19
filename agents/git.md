@@ -62,6 +62,11 @@ The repository is the GitHub repository
     `packages/bootstrap-theme/`), `shadcn` (`@quantum-ds/shadcn-theme` in `packages/shadcn-theme/`).
     A change to a theme package takes `themes` and its framework label on top of its kind; a
     change to what every theme shares takes `themes` and the label of each theme it changes.
+  - **Specifications.** `specifications` on everything that changes the spec JSON of a
+    component or a foundation (`packages/components/specs/`, its `a11y/` data included), or
+    studies the spec format itself (an export target, another spec standard to compare with).
+    It goes on top of the area labels: a component change takes `components` and
+    `specifications` when it touches the spec.
   - **Right-to-left.** `rtl` on everything about rendering a component right-to-left: its
     layout in RTL, the mirroring of its icons, or how the docs site shows it.
   - **Quantum NextGen.** Every issue and pull request that concerns it (a pull request against
