@@ -4,8 +4,8 @@
     "container": {
       "gap": {
         "$type": "dimension",
-        "$value": "{space.4}",
-        "$description": "Between the label, the control, the description and the message."
+        "$value": "{space.6}",
+        "$description": "Between the label, the control, the description and the message: one value at every size and state, so the box never moves."
       }
     },
     "label": {
