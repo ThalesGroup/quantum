@@ -84,14 +84,30 @@ A field stacks four parts, top to bottom:
 - **Label.** Names the information asked for. Always visible, also while people type.
 - **Control.** The box, the list or the set of options people act on.
 - **Description.** Optional help people need to fill the field: a format, an example, a limit.
-- **Message.** Shown after validation: what is wrong and how to fix it.
+- **Message.** Shown with a severity: what is wrong and how to fix it, what to check, or what
+  was confirmed.
 
 A group of checkboxes or radios has the same parts around its options, with a legend as its
-label.
+label, and the message after the options.
 
-> **Not decided yet (step 3).** Today the message appears under the description, so both are
-> visible at once. The Figma prototype shows the message in place of the description, which
-> keeps the field's height. Which one do all fields follow, and do groups follow the same?
+**The message sits under the description, for every severity.** The help and the message are
+both visible, and the control's `aria-describedby` lists the description, then the message, so a
+screen reader reads the name, the help, then the message. The help stays where people need it
+most: a format or a limit is what they need to fix an error. The cost is a shift when a message
+appears: the next field moves down 24 px for a one-line message and 42 px for a two-line one on
+a medium Text field (85 px at rest), and 29 px under a Radio group. A message appears after
+validation, not while people type (step 7 decides when). The description is not replaced, not
+moved above the control, and no line is reserved for the message, which may come back as a
+choice of the form's layout in step 10.
+
+Material's text field guidelines say to replace the supporting text with the error text, so the
+layout does not shift ([Material: text fields guidelines](https://m3.material.io/components/text-fields/guidelines)),
+but its accessibility page reads the supporting text first, then the error text, when a field
+shows both ([Material: text fields accessibility](https://m3.material.io/components/text-fields/accessibility)).
+WCAG does not mandate any place for an error
+([Understanding 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification#intent)),
+and Apple only asks to show it right next to the field
+([HIG: Writing](https://developer.apple.com/design/human-interface-guidelines/writing#Best-practices)).
 
 ## Required fields
 

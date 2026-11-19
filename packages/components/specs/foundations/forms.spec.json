@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -33,7 +33,7 @@
     {
       "id": "anatomy",
       "name": "Anatomy of a field",
-      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. A group of checkboxes or radios takes the same parts around its options, with a legend as its label. Today the message is shown under the description; whether it replaces it is not decided yet."
+      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10)."
     },
     {
       "id": "label",
@@ -368,6 +368,11 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
       },
       {
+        "id": "accname-description",
+        "title": "Accessible Name and Description Computation 1.2: description",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
         "id": "wcag-h90",
         "title": "WCAG technique H90: indicating required form controls using label or legend",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
@@ -585,6 +590,23 @@
   ],
   "decisions": [
     {
+      "id": "forms-message-under-description",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The message of a severity sits under the description, for every severity and every control: the description stays visible, and the control's aria-describedby lists the description, then the message. In a group the message sits after the options, as today. The message does not replace the description, the description is not moved above the control, and no line is reserved for the message.",
+      "rationale": "Options. A: under the description. B: replaces the description, as the Figma prototype and Material's guideline do. C: replaces it for errors only. D: the description above the control. E: the message line reserved. B removes the shift only when the field has a one-line description and a one-line message; otherwise the field still moves (with no description +24 px, with a two-line message +18 px, with a two-line description it moves up 36 px), the help disappears when people need it to fix an error (a format, a limit), and in a group it moves the options up 29 px, under the pointer. C hides the help for errors only, the one case where people act, and gives a field two heights. D changes the look decided for the Text field family and every screen with descriptions. E makes every field 24 px taller (85 to 109 px) whether it ever shows a message or not; it may come back as a choice of the form's layout in step 10. A keeps the help where it is needed and reads in the order Material's accessibility page gives (supporting text first, followed by the error text); the cost is a shift when a message appears: on a medium Text field (85 px at rest) the next field moves down 24 px for a one-line message and 42 px for a two-line one, and 29 px under a Radio group. No source asks for B on the web: Understanding 3.3.1 mandates no place for an error, and the AccName computation concatenates every referenced node, so a screen reader reads the description, then the message. Material's text field guidelines say to replace the supporting text, so A departs from that guideline, not from Android's accessibility pages. No token, CSS, template or theme changes.",
+      "refs": [
+        "wcag:3.3.1",
+        "material-text-fields-guidelines",
+        "material-text-fields-accessibility",
+        "hig-writing-best-practices",
+        "windows-forms",
+        "accname-description"
+      ]
+    },
+    {
       "id": "forms-validation-severities",
       "date": "2026-11-19",
       "version": "0.4.0",
@@ -655,6 +677,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision forms-message-under-description: the message of a severity sits under the description for every severity, the description stays visible and aria-describedby lists the description, then the message; a group puts the message after its options. The rule on the anatomy of a field says so."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-19",
