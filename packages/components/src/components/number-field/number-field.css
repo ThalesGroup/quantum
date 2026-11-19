@@ -228,10 +228,36 @@
   outline: none;
 }
 
+/* Focus and a severity are outlines drawn flush over the border: the offset is minus the border
+   width, so the border keeps its width and the text never moves. A severity at rest is a thin line
+   in its color; with focus it takes the focus width, still in the severity's color. */
 .ds-number-field:where([data-state="focus-visible"]) .ds-number-field__control,
 .ds-number-field__control:focus-visible {
   outline: var(--number-field-control-outline-width-focus-visible) solid var(--number-field-control-outline-color-focus-visible);
-  outline-offset: var(--number-field-control-outline-offset-focus-visible);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="error"], [data-severity="error"]) .ds-number-field__control:not(:disabled),
+.ds-number-field__control[aria-invalid="true"]:not(:disabled) {
+  outline: var(--number-field-control-outline-width-error) solid var(--number-field-control-outline-color-error);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="warning"], [data-severity="warning"]) .ds-number-field__control:not(:disabled) {
+  outline: var(--number-field-control-outline-width-warning) solid var(--number-field-control-outline-color-warning);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="success"], [data-severity="success"]) .ds-number-field__control:not(:disabled) {
+  outline: var(--number-field-control-outline-width-success) solid var(--number-field-control-outline-color-success);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="error"], [data-state="warning"], [data-state="success"], [data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-number-field__control:not(:disabled):focus-visible,
+.ds-number-field:where([data-state="focus-visible"]):where([data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-number-field__control:not(:disabled),
+.ds-number-field:where([data-state="focus-visible"]) .ds-number-field__control[aria-invalid="true"]:not(:disabled),
+.ds-number-field__control[aria-invalid="true"]:not(:disabled):focus-visible {
+  outline-width: var(--number-field-control-outline-width-focus-visible);
 }
 
 @media (prefers-reduced-motion: reduce) {

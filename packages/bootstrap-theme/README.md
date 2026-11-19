@@ -527,11 +527,11 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.2` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius.large` | `0.25rem` |  |
 
-Focus ring offset, on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use.
+Focus ring offset (flush), on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use. Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap keeps its own focus ring color for a control in error and draws no outline at rest, so the 1.2 px and 2.4 px severity outlines of a Quantum field are not themable.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-focus-ring-offset` | `text-field.control.outline-offset.focus-visible` | `4px` |  |
+| `--bs-focus-ring-offset` | `calc(-1 * {text-field.control.border-width})` | `calc(-1 * 0.6px)` | The ring covers the 0.6px border exactly (a token alias cannot negate a token). |
 
 Error (.is-invalid), on `.form-control.is-invalid`; Sass: written after the @use.
 

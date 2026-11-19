@@ -15,7 +15,7 @@
  * `values` holds the resolved value of each one in the default mode, which the plugin sets first.
  */
 import { cssVarName, isAlias, aliasPath, resolveContext, resolveValue } from '../../../scripts/lib/dtcg.mjs';
-import { activeTokens, parseTokenPath } from '../../../scripts/lib/token-map.mjs';
+import { activeTokens, effectiveStates, parseTokenPath } from '../../../scripts/lib/token-map.mjs';
 
 /** Figma variable collection of each token tier. */
 export const COLLECTIONS = {
@@ -373,10 +373,27 @@ export function figmaComponent(loaded, spec, blueprint) {
       for (const f of FIELDS[key]) out.set[f] = +(px(resolved(path)) * factor).toFixed(3);
     }
     if (node.focusRing) {
-      const ring = ['outline-width', 'outline-offset', 'outline-color'].map((p) => `${node.focusRing}.${p}`);
+      // A part without an `outline-offset` slot draws its ring flush over its border: the offset is
+      // minus the border width, a number (a variable cannot be negated: `upstream(figma)`).
+      const flush = !slots.has(`${node.focusRing}.outline-offset`);
+      const ring = ['outline-width', ...(flush ? [] : ['outline-offset']), 'outline-color'].map((p) => `${node.focusRing}.${p}`);
       ring.forEach(useSlot);
-      const [width, offset, color] = ring.map((s) => active.get(s));
-      if (width) out.focusRing = { strokeWeight: binding(width), offset: binding(offset), stroke: binding(color) };
+      let width = active.get(`${node.focusRing}.outline-width`);
+      // A flush ring follows the CSS of the text-entry controls: a disabled control draws none (not
+      // even its severity's outline), and a focused one draws the focus width in whatever color is
+      // active (a severity with focus: the severity's color, 2.4 px).
+      if (flush && width) {
+        const states = effectiveStates(spec, v.props, v.state);
+        const focusWidth = `${spec.id}.${node.focusRing}.outline-width.focus-visible`;
+        if (states.includes('disabled')) width = undefined;
+        else if (states.includes('focus-visible') && loaded.byPath.has(focusWidth)) width = focusWidth;
+      }
+      const offset = active.get(`${node.focusRing}.outline-offset`);
+      const color = active.get(`${node.focusRing}.outline-color`);
+      if (width) {
+        const border = active.get(`${node.focusRing}.border-width`);
+        out.focusRing = { strokeWeight: binding(width), offset: flush ? -px(resolved(border)) : binding(offset), stroke: binding(color) };
+      }
     }
     for (const [key, prop] of [['text', 'property'], ['glyph', 'property']]) {
       if (node[key] === undefined) continue;

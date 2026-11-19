@@ -48,10 +48,10 @@ when they write more. The box never resizes horizontally: it fills the width the
 | --- | --- | --- |
 | Default | Resting. | An outlined box on the default surface. |
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
-| Focus visible | The box has focus, from the keyboard or a pointer. | The shared focus ring appears outside the border. |
-| Error | `severity` property set to error, after validation. | The border takes the error color and the message appears under the box, in the error color. The control is exposed as in error. |
-| Warning | `severity` property set to warning. | The border takes the warning color and the message appears under the box, in the warning color. No web state: the message says it. |
-| Success | `severity` property set to success. | The border takes the success color and the message appears under the box, in the success color. No web state: the message says it. |
+| Focus visible | The box has focus, from the keyboard or a pointer. | The focus color as a 2.4 px outline drawn flush over the border, which keeps its width, so the text does not move. An editable field shows it however it was focused. |
+| Error | `severity` property set to error, after validation. | An outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | An outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | An outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
 | Read-only | `readonly` property. | The box takes the level 1 surface; the text can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, text, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
@@ -101,9 +101,8 @@ This section explains the decisions behind it.
   ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text)). These sizes
   are under the large text size, so their colors keep the 4.5:1 above; the help text passes
   everywhere, at 5.30:1 or more.
-- **Visible focus.** Focus shows the shared ring outside the border
-  ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
-  [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)),
+- **Visible focus.** Focus shows a 2.4 px outline in the focus color, drawn flush over the border
+  ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)),
   and Tab reaches the control ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)).
 - **Target size.** Every size is at least 28 px high, above the 24 px minimum
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
@@ -124,7 +123,7 @@ This section explains the decisions behind it.
   [HTML: the textarea element](https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element),
   [ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1),
   [ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
-- The focus ring uses `:focus-visible`
+- The focus outline uses `:focus-visible`
   ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   the transition is switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).

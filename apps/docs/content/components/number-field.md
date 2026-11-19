@@ -58,7 +58,6 @@ This section explains the decisions behind it.
   [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
   [WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html),
   [WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
-  [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html),
   [WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html),
   [WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
   [WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)).
@@ -76,7 +75,7 @@ This section explains the decisions behind it.
   [ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
 - MDN's advice for non-numeric values: a text input with `inputmode="numeric"` and a pattern
   ([MDN: input type=number, accessibility](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/number#accessibility)).
-- The focus ring uses `:focus-visible`
+- The focus outline uses `:focus-visible`
   ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   a read-only field keeps its value reachable, a disabled one leaves the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).

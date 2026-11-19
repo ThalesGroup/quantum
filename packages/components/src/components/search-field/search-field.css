@@ -215,10 +215,13 @@
   outline: none;
 }
 
+/* Focus is an outline drawn flush over the border: the offset is minus the border width, so the
+   border keeps its width and the text never moves (as the Text field's, which also draws a severity
+   this way; the Search field has none). */
 .ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control,
 .ds-search-field__control:focus-visible {
   outline: var(--search-field-control-outline-width-focus-visible) solid var(--search-field-control-outline-color-focus-visible);
-  outline-offset: var(--search-field-control-outline-offset-focus-visible);
+  outline-offset: calc(-1 * var(--search-field-control-border-width));
 }
 
 @media (prefers-reduced-motion: reduce) {

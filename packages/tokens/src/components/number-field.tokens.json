@@ -181,18 +181,30 @@
         "$type": "dimension",
         "focus-visible": {
           "$value": "{focus.ring.width}"
-        }
-      },
-      "outline-offset": {
-        "$type": "dimension",
-        "focus-visible": {
-          "$value": "{focus.ring.offset}"
+        },
+        "error": {
+          "$value": "{stroke-width.md}"
+        },
+        "warning": {
+          "$value": "{stroke-width.md}"
+        },
+        "success": {
+          "$value": "{stroke-width.md}"
         }
       },
       "outline-color": {
         "$type": "color",
         "focus-visible": {
           "$value": "{color.focus.ring}"
+        },
+        "error": {
+          "$value": "{global.border.accent.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.border.accent.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.border.accent.functional.success.default}"
         }
       },
       "transition": {
