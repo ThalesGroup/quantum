@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -658,6 +658,26 @@
         "id": "material-text-fields",
         "title": "Material Design 3: Text fields, specs",
         "url": "https://m3.material.io/components/text-fields/specs"
+      },
+      {
+        "id": "understanding-non-text-contrast-adjacent-colors",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: adjacent colors",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast#adjacent-colors"
+      },
+      {
+        "id": "understanding-contrast-minimum",
+        "title": "Understanding WCAG 1.4.3 Contrast (Minimum)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum"
+      },
+      {
+        "id": "material-text-fields-guidelines",
+        "title": "Material Design 3: Text fields, guidelines",
+        "url": "https://m3.material.io/components/text-fields/guidelines"
+      },
+      {
+        "id": "windows-text-box",
+        "title": "Windows apps: Text box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
       }
     ]
   },
@@ -799,6 +819,26 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "fill-page-level",
+      "date": "2026-11-19",
+      "version": "0.9.1",
+      "area": "color",
+      "status": "active",
+      "text": "The fill of the box is the page's own level, not a level above it: at rest global.bg.level.0.default, on hover global.bg.level.0.hover, and when read-only global.bg.level.1.default, the next level, which is how a read-only field differs from an editable one, on every platform. The fill does not identify the field, the border does (WCAG 1.4.11 asks 3:1 for a fill that identifies a text input, and no neutral fill reaches 1.5:1 against the surface; the border color is decided separately). The fill is the one every form control reads (Select, Checkbox, Radio, Switch). The decision keeps the tokens as they were: no token changes. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Not decided here: the disabled fill (global.bg.state.disabled.default, translucent). The team may revisit it after the Text field for every component, and every form control reads that one token, so it changes in one place.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the page level (chosen); B, Figma's level 1 (#F7F7F7 at rest, #EAEAEA on hover: global.bg.level.1.default and .hover, read-only moved to level 0), rejected because on the light level 1 and 3 surfaces the fill equals the surface, so the field would change look by surface, and it would split the field family from the Select, Checkbox, Radio and Switch, which all read level 0; C, the default Button's translucent global.bg.subtle.neutral.default and .hover, rejected because it fails WCAG 1.4.3 in dark: the placeholder on the hover fill measures 4.46, 4.08, 3.83 and 3.49:1 on levels 0 to 3, and 4.33:1 at rest on level 3 (placeholder and text shown on hover are in scope of Understanding 1.4.3). Reasons for A: no neutral fill can identify the field, the best reaches 1.43:1 against the surface, under the 3:1 of Understanding 1.4.11 (Figure 34), so the border identifies it; Material 3 says its filled and outlined text fields provide the same functionality; one fill rule for every form control; a read-only field must stay distinct from an editable one, as the Windows text box guidance warns that a read-only box that looks editable confuses people. Measured on the resolved tokens at rest on level 0: value 19.03:1 light, 11.28:1 dark; placeholder 6.08:1 light, 6.40:1 dark; lowest over levels 0 to 3, placeholder 5.75:1 light, 5.86:1 dark.",
+      "tokens": [
+        "text-field.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.3",
+        "understanding-non-text-contrast-adjacent-colors",
+        "understanding-contrast-minimum",
+        "material-text-fields-guidelines",
+        "windows-text-box"
+      ]
+    },
     {
       "id": "state-outline-flush",
       "date": "2026-11-19",
@@ -996,6 +1036,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.1",
+      "date": "2026-11-19",
+      "note": "Decision fill-page-level: the box keeps the page's level as its fill (text-field.control.background.*: global.bg.level.0.default at rest, .hover on hover, global.bg.level.1.default when read-only), rather than Figma's level 1 or the Button's translucent subtle fill (fails 1.4.3 for the placeholder in dark). Contrast at rest on level 0, light / dark: value 19.03:1 / 11.28:1, placeholder 6.08:1 / 6.40:1 (lowest over levels 0 to 3: 5.75:1 / 5.86:1). Kept as it was: no token or rendering change. The disabled fill is out of this decision."
+    },
     {
       "version": "0.9.0",
       "date": "2026-11-19",
