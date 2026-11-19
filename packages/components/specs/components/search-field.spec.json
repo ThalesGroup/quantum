@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -521,6 +521,16 @@
         "id": "hig-text-fields",
         "title": "Apple HIG: Text fields",
         "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields"
+      },
+      {
+        "id": "mdn-placeholder",
+        "title": "MDN: ::placeholder, accessibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#accessibility"
+      },
+      {
+        "id": "hig-color",
+        "title": "Apple HIG: Color, system colors (placeholder text)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/color"
       }
     ]
   },
@@ -611,6 +621,28 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "placeholder-tertiary",
+      "date": "2026-11-19",
+      "version": "0.10.1",
+      "area": "color",
+      "status": "active",
+      "text": "The placeholder of the Search field is global.text.on-base.neutral.tertiary in every enabled state (search-field.control.placeholder-color.default) and global.text.state.disabled.default when disabled, as the Text field's (decision placeholder-tertiary of the Text field, which holds the rule, the options and the measurements). The decision keeps the values the control already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep tertiary in every enabled state (chosen); B, Figma's secondary at rest and tertiary on focus; C, secondary in every state, rejected because it is too close to the typed value and the same color as the help text. See the Text field's decision for the measurements.",
+      "tokens": [
+        "search-field.control.placeholder-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "understanding-contrast-minimum",
+        "mdn-placeholder",
+        "wai-instructions-placeholder",
+        "html-placeholder",
+        "material-text-fields",
+        "hig-color",
+        "windows-text-box"
+      ]
+    },
     {
       "id": "border-base-neutral-5",
       "date": "2026-11-19",
@@ -823,6 +855,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.1",
+      "date": "2026-11-19",
+      "note": "Decision placeholder-tertiary (Text field decision of the same name): the placeholder (search-field.control.placeholder-color.*) stays global.text.on-base.neutral.tertiary in every enabled state, rather than Figma's secondary at rest. Distance from the value, light / dark: 3.12:1 / 1.76:1 (secondary 1.48:1 / 1.27:1); contrast against the fill at rest 6.08:1 / 6.40:1 (lowest 5.75:1 / 5.86:1). Kept as it was: no token or rendering change."
+    },
     {
       "version": "0.10.0",
       "date": "2026-11-19",
