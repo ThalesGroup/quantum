@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -55,7 +55,7 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, inline padding and text size scale together; label, description and message keep their size.",
+      "description": "Control height and inline padding grow with the size; the value text takes the text size of the Button of the same size; label, description and message keep their size.",
       "affects": [
         "control"
       ],
@@ -743,6 +743,21 @@
   ],
   "decisions": [
     {
+      "id": "value-text-button-size",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "typography",
+      "status": "active",
+      "supersedes": [
+        "sizes"
+      ],
+      "text": "The value and placeholder text of the Textarea takes the text size of the Button of the same size, as the Text field's (decision value-text-button-size of the Text field, which holds the rule and its rationale): small 14 px, medium 16 px, large 16 px, regular weight, normal letter spacing and the tight line height (1.2) of the Text field, which pnpm validate compares with textarea.control.typography.*. The block padding and the rows stay the Textarea's own. Supersedes sizes: the heights, inline padding, border, corners and the 14 px label, description and error message of that decision are unchanged here; only the text of the large size (20 to 16 px) and the line height (1.5 to 1.2) change.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep today's text (small 14, medium 16, large 20 px, line height 1.5: the large size breaks the rule); B, the Button's whole label style (medium weight, compact line height 1.0, tight letter spacing), rejected because people's content would look like a control label, descenders and accents would touch the line, and the Typography foundation would need an exception; C, the Button's text size with the Typography foundation's single-line style (regular weight, normal letter spacing, tight line height 1.2), chosen; D, the Button's text size with the line height 1.5, rejected because that line height is meant for running text. The Textarea, which holds several lines, takes the same 1.2 line height by team decision (step 3b, option A; rejected: B, its own line height 1.5, the foundation's running-text value), the mirror staying whole.",
+      "tokens": [
+        "textarea.control.typography.*"
+      ]
+    },
+    {
       "id": "same-box-as-text-field",
       "date": "2026-11-19",
       "version": "0.3.0",
@@ -799,7 +814,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "size",
-      "status": "active",
+      "status": "superseded",
       "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
       "tokens": [
         "textarea.control.min-height.*",
@@ -840,6 +855,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Decision value-text-button-size (Text field decision of the same name): the value and placeholder text takes the text size of the Button of the same size (small 14, medium 16, large 16 px; the large size was 20 px), with the tight line height of the Text field (textarea.control.typography.*: large font size body.size.lg to body.size.md, line height normal to tight). Supersedes sizes. Colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-19",

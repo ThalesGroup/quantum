@@ -26,6 +26,7 @@ import { checkTokenMap, parseTokenPath, kindOf, matchesTokenPattern } from './li
 import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
+import { TEXT_SIZE_RULES, checkTextSizeRules } from './lib/text-size-rules.mjs';
 import { loadScreens, screenComponents, checkSections, checkSource, checkScreenMeta, checkScreenHtml, checkScreenSource, checkScreensCssSelectors, definedScreenClasses, screenSourceFiles, SCREEN_OWN_VARS } from './lib/screens.mjs';
 import { SCOPES, followedByScope, componentsInScope, checkInputControl } from './lib/foundation-scope.mjs';
 import { PATHS, FILES, artifacts, foundationArtifacts } from './lib/paths.mjs';
@@ -679,6 +680,9 @@ for (const m of MIRRORS) {
   for (const id of [m.component, m.of]) if (!specIds.has(id)) error('scripts/lib/mirrors.mjs', `names unknown component "${id}"`);
   if (specIds.has(m.component) && specIds.has(m.of)) for (const p of checkMirror(m, contexts)) error(artifacts(m.component).tokens, p.message);
 }
+
+// Text size rules: a component's text takes the size of another component's text (scripts/lib/text-size-rules.mjs)
+if (contexts.length) for (const p of checkTextSizeRules(TEXT_SIZE_RULES, contexts[0].index.byPath)) error('scripts/lib/text-size-rules.mjs', p.message);
 
 // ---------------------------------------------------------------------------
 // 4. Documentation site: built with the design system (apps/docs/AGENTS.md)

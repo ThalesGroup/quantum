@@ -33,10 +33,10 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | --- | --- |
 | Small | Dense forms, toolbars and table rows: 32 px high with 14 px text. |
 | Medium | Forms, the default: 40 px high with 16 px text. |
-| Large | A prominent single field, such as a search page or a sign-in form: 48 px high with 20 px text. |
+| Large | A prominent single field, such as a search page or a sign-in form: 48 px high with 16 px text. |
 
-Height, inline padding and text size scale together; the label, the description and the error
-message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
+Height and inline padding grow with the size, and the text takes the size of the Button of the
+same size; the label, the description and the error message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
 
 ## Label, description and placeholder
 

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -55,7 +55,7 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, inline padding and text size scale together; label, description and message keep their size.",
+      "description": "Control height and inline padding grow with the size; the value text takes the text size of the Button of the same size; label, description and message keep their size.",
       "affects": [
         "control"
       ],
@@ -745,6 +745,21 @@
   ],
   "decisions": [
     {
+      "id": "value-text-button-size",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "typography",
+      "status": "active",
+      "supersedes": [
+        "sizes"
+      ],
+      "text": "The value and placeholder text of a field takes the text size of the Button of the same size: small 14 px, medium 16 px, large 16 px (body.size.sm, md and md, the semantic tokens of button.label.typography at the same size), on every platform. The rest of its style is the Typography foundation's single-line style: regular weight, normal letter spacing and the tight line height (1.2); it is not the Button label's own style (medium weight, compact line height, tight letter spacing). The rule is enforced by pnpm validate (scripts/lib/text-size-rules.mjs): text-field.control.typography.<size> and button.label.typography.<size> must alias the same font size token. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Supersedes sizes: the 32 / 40 / 48 px minimum heights, the 8 / 12 / 16 px inline padding, the 0.6 px border, the 4 px corners and the 14 px label, description and error message of that decision are unchanged here; only the text of the large size changes, from 20 to 16 px, and the line height from 1.5 to 1.2.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep today's text (small 14, medium 16, large 20 px, line height 1.5: the large size breaks the rule); B, the Button's whole label style (medium weight, compact line height 1.0, tight letter spacing), rejected because people's content would look like a control label, descenders and accents would touch the line, and the Typography foundation would need an exception; C, the Button's text size with the Typography foundation's single-line style (regular weight, normal letter spacing, tight line height 1.2), chosen; D, the Button's text size with the line height 1.5, rejected because that line height is meant for running text. The Textarea, which holds several lines, takes the same 1.2 line height by team decision (step 3b, option A; rejected: B, its own line height 1.5, the foundation's running-text value), the mirror staying whole.",
+      "tokens": [
+        "text-field.control.typography.*"
+      ]
+    },
+    {
       "id": "field-family-mirrors",
       "date": "2026-11-19",
       "version": "0.3.0",
@@ -801,7 +816,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "size",
-      "status": "active",
+      "status": "superseded",
       "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
       "tokens": [
         "text-field.control.min-height.*",
@@ -839,6 +854,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Decision value-text-button-size: the value and placeholder text takes the text size of the Button of the same size (small 14, medium 16, large 16 px, body.size.sm / md / md; the large size was 20 px) with regular weight, normal letter spacing and the tight line height (text-field.control.typography.*: large font size body.size.lg to body.size.md, line height normal 1.5 to tight 1.2 at every size). pnpm validate now fails when text-field.control.typography.<size> and button.label.typography.<size> alias different font size tokens. Supersedes sizes. Colors unchanged, so contrast is unchanged (placeholder 6.08:1 light and 6.40:1 dark, value 19.03:1 light and 11.28:1 dark, on the default surface)."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-19",

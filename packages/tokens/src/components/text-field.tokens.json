@@ -117,12 +117,13 @@
       },
       "typography": {
         "$type": "typography",
+        "$description": "Value and placeholder text: the text size of the Button of the same size (body.size.sm, md, md), regular weight, the tight line height of single lines and the normal letter spacing (Typography foundation).",
         "small": {
           "$value": {
             "fontFamily": "{body.family}",
             "fontSize": "{body.size.sm}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         },
@@ -131,16 +132,16 @@
             "fontFamily": "{body.family}",
             "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         },
         "large": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.lg}",
+            "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         }

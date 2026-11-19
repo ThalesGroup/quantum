@@ -491,7 +491,7 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-padding-x` | `text-field.control.padding-inline.medium` | `0.75rem` |  |
 | `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum centers a field's line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 40px min-height (line 24px + 2 x 7px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.medium` (fontSize) | `1rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.5` |  |
+| `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.2` |  |
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
@@ -513,7 +513,7 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-padding-x` | `text-field.control.padding-inline.small` | `0.5rem` |  |
 | `--bs-control-padding-y` | `space.4` | `0.25rem` | Keeps a small input at its 32px min-height (line 21px). |
 | `--bs-control-font-size` | `text-field.control.typography.small` (fontSize) | `0.875rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.small` (lineHeight) | `1.5` |  |
+| `--bs-control-line-height` | `text-field.control.typography.small` (lineHeight) | `1.2` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` | Bootstrap gives small controls the small button radius; a Quantum field keeps one radius at every size. |
 
 .form-control-lg (large), on `.form-control-lg`; Sass: written after the @use.
@@ -523,8 +523,8 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-min-height` | `text-field.control.min-height.large` | `3rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.large` | `1rem` |  |
 | `--bs-control-padding-y` | `space.8` | `0.5rem` | Keeps a large input at its 48px min-height (line 30px). |
-| `--bs-control-font-size` | `text-field.control.typography.large` (fontSize) | `1.25rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.5` |  |
+| `--bs-control-font-size` | `text-field.control.typography.large` (fontSize) | `1rem` |  |
+| `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.2` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
 
 Focus ring offset, on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use.
