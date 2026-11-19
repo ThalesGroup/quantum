@@ -7,7 +7,8 @@ import { followersOf, tokensOf, contrastOf } from '../../lib/foundations';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const order = new Map((await getCollection('foundationDocs')).map((d) => [d.data.foundation, d.data.order ?? Infinity]));
 const foundations = (await getCollection('foundations')).map((f) => f.data).sort((a, b) => (order.get(a.id) ?? Infinity) - (order.get(b.id) ?? Infinity) || a.name.localeCompare(b.name));
-const specs = new Map((await getCollection('specs')).map((s) => [s.id, s.data.name]));
+const components = (await getCollection('specs')).map((s) => s.data);
+const specs = new Map(components.map((s) => [s.id, s.name]));
 ---
 <Layout title="Foundations" description="Global specifications shared by every component: what they are, their tokens, their accessibility requirements and the components following them.">
   <header class="site-page-header">
@@ -21,7 +22,7 @@ const specs = new Map((await getCollection('specs')).map((s) => [s.id, s.data.na
     {foundations.length === 0 ? <p class="site-muted">No foundation specified yet.</p> : null}
     <ul class="site-list">
       {foundations.map((f) => {
-        const followers = followersOf(f);
+        const followers = followersOf(f, components);
         const contrast = contrastOf(f);
         const lowest = contrast.filter((r) => !r.error && r.minimum !== null).sort((a, b) => parseFloat(a.ratio) - parseFloat(b.ratio))[0];
         const tokenCount = tokensOf(f.tokens).length;

@@ -11,6 +11,9 @@ import { allContexts, evaluateContrast, formatRatio } from '../../../../scripts/
 import { DISPLAYS, specimenTokens, nearestFamily, easingPath } from '../../../../scripts/lib/specimens.mjs';
 import { memo, repoPath } from './repo';
 import { getTokens, type TokenRow } from './tokens';
+import { roleProfiles } from './a11y';
+// @ts-ignore - plain ESM without types
+import { followedByScope, componentsInScope, tiersOf, SCOPES } from '../../../../scripts/lib/foundation-scope.mjs';
 import { platformName, platforms as allPlatforms } from './platforms';
 
 const getContexts = memo((): any[] => allContexts(loadAll(repoPath(PATHS.tokens))));
@@ -44,8 +47,31 @@ export function contrastOf(spec: { contrast?: any[] }): ContrastRow[] {
   return evaluateContrast(spec.contrast ?? [], getContexts()).map((r: any) => ({ ...r, ratio: formatRatio(r.ratio) }));
 }
 
-/** Components whose tokens alias a token the foundation owns: each component token and the owned tokens it aliases. */
-export function followersOf(spec: { tokens: string[] }): { component: string; tokens: string[]; aliases: { path: string; owned: string[] }[] }[] {
+export interface Follower {
+  component: string;
+  tokens: string[];
+  aliases: { path: string; owned: string[] }[];
+  /** Scope followers only: the component's role, and the foundation's rule tiers it follows, read from its spec. */
+  role?: string;
+  tiers?: string[];
+}
+
+/** True when the foundation's followers are the components in its scope (`appliesTo`), not the ones aliasing its tokens. */
+export const followedByRole = (spec: { appliesTo?: string }): boolean => Boolean(spec.appliesTo && followedByScope(spec.appliesTo));
+
+/** The sentence saying who must follow the foundation, from its `appliesTo`. */
+export const scopeRule = (spec: { appliesTo?: string }): string | null => (spec.appliesTo ? SCOPES[spec.appliesTo]?.rule ?? null : null);
+
+/**
+ * Components following the foundation. A foundation read from the role profiles (Forms: `input`)
+ * is followed by every component in scope, each with the tiers of rules its spec asks for. Any
+ * other is followed by the components whose tokens alias a token it owns: each component token
+ * and the owned tokens it aliases.
+ */
+export function followersOf(spec: { tokens: string[]; appliesTo?: string }, components: any[] = []): Follower[] {
+  if (followedByRole(spec)) {
+    return componentsInScope(spec.appliesTo, components, roleProfiles()).map((c: any) => ({ component: c.id, tokens: [], aliases: [], role: c.role, tiers: tiersOf(c) }));
+  }
   const owned = new Set(tokensOf(spec.tokens).map((r) => r.path));
   const byComponent = new Map<string, { path: string; owned: string[] }[]>();
   for (const r of getTokens().rows) {

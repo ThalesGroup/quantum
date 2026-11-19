@@ -1,7 +1,7 @@
 ---
 foundation: forms
 title: Forms
-summary: How every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.
+summary: What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.
 order: 10
 ---
 
@@ -12,10 +12,9 @@ order: 10
 
 ## Overview
 
-A form is a set of controls people fill in and submit: text fields, number fields, text areas,
-selects, checkboxes, radio groups. Each control has its own page. This page holds what they
-share, so that a field behaves like its neighbours and the same way on every platform: what a
-field is made of, how a required field is marked, which validation statuses exist and how they
+A form is a set of controls people fill in and submit. Each control has its own page. This
+page says which components are form controls and holds what they share, so that a field
+behaves like its neighbours and the same way on every platform: what a field is made of, how a required field is marked, which validation statuses exist and how they
 look, when a value is checked, how errors are announced and summarised, how fields are spaced
 and how messages are written.
 
@@ -28,6 +27,54 @@ than borrowing another platform's rule.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
 sub-heading named after it; everything else holds everywhere.
+
+## What a form control is
+
+A form control is a component through which people **enter or choose a value the product
+keeps**: text, a number, one or several options, on or off, a point in a range. It has a visible
+label and may have a description. When its value can be missing or wrong, it can be marked
+required and report an error.
+
+A control is defined by what people do with it, not by where it sits. A label is owed to every
+input, also outside a form
+([WCAG 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions)). Whether the
+value applies at once or with the rest of the form depends on how the control is used, not on
+the component: a settings page applies each change as it is made, a sign-up form collects the
+values and applies them when people submit.
+
+Which rules a control follows is read from its specification, with no list of exceptions:
+
+- **Every control** follows the anatomy and label rules.
+- **A control that can be required** (it has a required property) also follows the rules on
+  required fields.
+- **A control that can report an error** (it has the invalid state) also follows the rules on
+  validation statuses, errors and their announcement, and says its error in text.
+
+The components that follow this page are the ones whose role is marked as an input; the
+foundation's Tokens tab lists them with the rules each follows.
+
+A **button that submits is a form action**, not a form control: people activate it, they do not
+enter or choose a value with it
+([WCAG 3.2.2](https://www.w3.org/WAI/WCAG22/Understanding/on-input)). It does not follow this
+page as a control; the rules about the actions of a form, when they are decided, name it.
+
+> **Not decided yet (step 2).** Whether the Search field, which can be required but has no error
+> state, gets one; and whether the label, required and error message guidelines the controls
+> repeat move into this page.
+
+### Web
+
+A button contributes to the submitted data only when it is the one that submitted the form
+([HTML Standard: constructing the entry list](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#constructing-form-data-set)).
+
+### Desktop
+
+On Windows, a form either applies each value at once, as on a settings page, or collects the
+values and applies them when people choose to submit; the same input controls serve both
+([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms)).
+On macOS, a switch can sit in a grouped form, where a mini switch controls the setting of a
+single row
+([HIG: Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles#Switches)).
 
 ## Anatomy of a field
 
@@ -133,6 +180,11 @@ The field exposes its error with the error semantics, so TalkBack reads the erro
   [WAI forms tutorial: labels](https://www.w3.org/WAI/tutorials/forms/labels/)). Related
   controls are grouped under a name, a set of radios always
   ([WAI forms tutorial: grouping](https://www.w3.org/WAI/tutorials/forms/grouping/)).
+- **Every input is labelled, in a form or not.** Labels or instructions are owed to the controls
+  people enter or choose a value with, not only to the ones inside a form; a button that
+  submits a form is activating a control, not changing a setting
+  ([WCAG 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions),
+  [WCAG 3.2.2](https://www.w3.org/WAI/WCAG22/Understanding/on-input)).
 - **Required is visible, not only programmatic.** A required state only exposed to assistive
   technology is not perceivable on screen, and a symbol must be explained before its first use
   ([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90),
@@ -181,8 +233,8 @@ On macOS, Apple's guidance above applies.
 
 ## Related
 
-- Components: Text field, Number field, Textarea, Select, Search field, Checkbox, Checkbox
-  group, Radio group, Switch, Slider.
+- Every component whose role is an input follows this page; the Tokens tab of the foundation
+  lists them.
 - [Alert](/components/alert): the candidate for an error summary (step 9).
 - [Color](/foundations/color): the error, warning and success colors.
 - [Spacing](/foundations/spacing): the scale the spacing between fields will use.

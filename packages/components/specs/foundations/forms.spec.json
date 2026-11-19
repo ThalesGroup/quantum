@@ -2,10 +2,10 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "draft",
-  "summary": "How every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
-  "description": "A form is a set of controls people fill in and submit: text fields, number fields, text areas, selects, checkboxes, radio groups. Each control is specified on its own page; this foundation holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
+  "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
+  "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
   "tags": [
     "accessibility",
     "content",
@@ -13,7 +13,23 @@
     "validation"
   ],
   "tokens": [],
+  "appliesTo": "input-components",
   "rules": [
+    {
+      "id": "form-control",
+      "name": "What a form control is",
+      "text": "A form control is a component through which people enter or choose a value the product keeps: text, a number, one or several options, on or off, a point in a range. It has a visible label and may have a description; when its value can be missing or wrong, it can be marked required and report an error. Whether the value applies at once or with the rest of the form depends on how the control is used, not on the component."
+    },
+    {
+      "id": "tiers",
+      "name": "Which rules a control follows",
+      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can report an error (it has the invalid state) also follows the rules on validation statuses, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its invalid state and its error message part, with no list of exceptions. Not decided yet (step 2): whether the Search field, which can be required but has no error state, gets one, and whether the label, required and error message guidelines the controls repeat move into this foundation."
+    },
+    {
+      "id": "form-actions",
+      "name": "Form actions",
+      "text": "A button that submits a form is a form action, not a form control: people activate it, they do not enter or choose a value with it. It does not follow this foundation as a control; the rules about the actions of a form name it in their text."
+    },
     {
       "id": "anatomy",
       "name": "Anatomy of a field",
@@ -157,6 +173,45 @@
   "accessibility": {
     "guidelines": [
       {
+        "text": "A control through which people enter or choose a value has a visible label or instructions whether or not it sits in a form that is submitted; a link or a control not associated with data entry does not.",
+        "refs": [
+          "wcag:3.3.2"
+        ]
+      },
+      {
+        "text": "Activating a button that submits a form is not changing the setting of a control: entering text, checking a box or choosing an option in a list is, and does not submit the form by itself.",
+        "refs": [
+          "wcag:3.2.2"
+        ]
+      },
+      {
+        "text": "A button contributes to the submitted data only when it is the one that submitted the form.",
+        "refs": [
+          "whatwg-form-entry-list"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A form either applies each value at once (a settings page) or collects the values and applies them when people choose to submit; the same input controls serve both.",
+        "refs": [
+          "windows-forms"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On macOS, a switch can sit in a grouped form, where a mini switch controls the setting of a single row.",
+        "refs": [
+          "hig-toggles-switches"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
         "text": "Every control has a visible label or instructions, associated with it programmatically.",
         "refs": [
           "wcag:3.3.2",
@@ -249,6 +304,16 @@
       }
     ],
     "references": [
+      {
+        "id": "whatwg-form-entry-list",
+        "title": "HTML Standard: constructing the entry list (form data set)",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#constructing-form-data-set"
+      },
+      {
+        "id": "hig-toggles-switches",
+        "title": "Apple HIG: Toggles, macOS switches (within a grouped form)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Switches"
+      },
       {
         "id": "wai-forms-labels",
         "title": "WAI tutorials: Forms, labeling controls",
@@ -436,6 +501,16 @@
   ],
   "decisions": [
     {
+      "id": "forms-input-components",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A form control is a component through which people enter or choose a value the product keeps (text, a number, one or several options, on or off, a point in a range); it has a visible label and may have a description, and when its value can be missing or wrong it can be marked required and report an error. Whether the value applies at once or with the rest of the form depends on how the control is used, not on the component. A button that submits is a form action, not a form control. The components that follow the foundation are the ones whose role profile is marked as input (roles.json), read from each specification: the rules on anatomy and label for every input, on required fields for those with a required property, on validation for those with the invalid state.",
+      "rationale": "Labels and instructions are not limited to forms (WCAG 3.3.2), a submit button is activating a control, not changing a setting (WCAG 3.2.2), and Windows tells instantly updating forms from submitting ones, so a control is defined by what people do with it, not by where it sits. The role profiles already name the roles that require WCAG 3.3.2, so the foundation reads them (input) instead of keeping a list. Also considered: a section in each specification declaring when its value applies (at once or on submit), which writes a web submit model into specifications iOS and Android have no source for; a scope per rule, the most precise and the most work; an explicit list of identifiers, which silently leaves a new component out. Known weak spot: the role group is generic, so a future component with the role group that is not an input would be counted as one; revisit it then. Known gap, set aside until the complex controls are aligned after the Text field: the Checkbox has the invalid state and no error message part (the validator warns).",
+      "refs": ["wcag:3.3.2", "wcag:3.2.2", "windows-forms", "hig-toggles-switches", "whatwg-form-entry-list"]
+    },
+    {
       "id": "forms-platform-sources",
       "date": "2026-11-13",
       "version": "0.2.0",
@@ -447,6 +522,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "A form control is defined by what people do with it, and the foundation applies to every component whose role profile is marked as input; a button that submits is a form action (forms-input-components)."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-13",

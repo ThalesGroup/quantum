@@ -27,6 +27,7 @@ import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
 import { loadScreens, screenComponents, checkSections, checkSource, checkScreenMeta, checkScreenHtml, checkScreenSource, checkScreensCssSelectors, definedScreenClasses, screenSourceFiles, SCREEN_OWN_VARS } from './lib/screens.mjs';
+import { SCOPES, followedByScope, componentsInScope, checkInputControl } from './lib/foundation-scope.mjs';
 import { PATHS, FILES, artifacts, foundationArtifacts } from './lib/paths.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -579,14 +580,19 @@ for (const file of foundationFiles) {
   }
   for (const [id, k] of known) if (k.failing === 0) error(where, `contrast "${id}" passes everywhere: remove its knownIssue (${k.issue})`);
 
-  // Components that must follow the foundation alias every exact path it owns.
+  // Components in the scope of `appliesTo` (role profiles: scripts/lib/foundation-scope.mjs) alias
+  // every exact path the foundation owns. The scope input-components is read from the roles, not
+  // from token aliases (Forms owns no token): each of its components must also meet what the
+  // foundation asks of an input (a label, an error message part with the `invalid` state).
   if (spec.appliesTo && loaded) {
     const required = spec.tokens.filter((p) => !p.endsWith('.*'));
+    const inScopeSpecs = componentsInScope(spec.appliesTo, specs.map((s) => s.spec), a11y?.roles ?? {});
+    if (followedByScope(spec.appliesTo) && inScopeSpecs.length === 0) error(where, `appliesTo "${spec.appliesTo}" (${SCOPES[spec.appliesTo].rule}) matches no component`);
     for (const { spec: comp, where: compWhere } of specs) {
-      const inScope = spec.appliesTo === 'every-component' || (spec.appliesTo === 'focusable-components' && a11y?.roles[comp.role]?.focusable);
-      if (!inScope) continue;
+      if (!inScopeSpecs.includes(comp)) continue;
       const refs = new Set(loaded.all.filter((t) => t.tier === 'component' && t.segments[0] === comp.id).flatMap((t) => t.references));
       for (const p of required) if (!refs.has(p)) error(compWhere, `follows the "${id}" foundation (${spec.appliesTo}): a component token must alias ${p} (${where})`);
+      if (spec.appliesTo === 'input-components') report(compWhere, checkInputControl(comp).map((p) => ({ ...p, message: `follows the "${id}" foundation (${spec.appliesTo}): ${p.message}` })));
     }
   }
 

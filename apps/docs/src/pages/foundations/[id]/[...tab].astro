@@ -11,7 +11,7 @@ import ExampleExplorer from '../../../components/ExampleExplorer.astro';
 import { getTemplate } from '../../../lib/web';
 import { onBackdrop } from '../../../lib/backdrop';
 import { getModes } from '../../../lib/tokens';
-import { tokensOf, contrastOf, followersOf, specimenOf, basePlatformNames, iconNamesOf } from '../../../lib/foundations';
+import { tokensOf, contrastOf, followersOf, followedByRole, scopeRule, specimenOf, basePlatformNames, iconNamesOf } from '../../../lib/foundations';
 import { cite, conformanceTarget, publisherName } from '../../../lib/a11y';
 import { onWeb, scoped, scopeLabel, platforms as allPlatforms } from '../../../lib/platforms';
 import { readRepoFile } from '../../../lib/repo';
@@ -78,7 +78,8 @@ const failing = contrast.filter((r) => !r.pass);
 const knownIssues = [...new Set((spec.contrast ?? []).map((c) => c.knownIssue).filter(Boolean))];
 const issueUrl = (ref) => { const [repo, n] = ref.split('#'); return `https://github.com/${repo}/issues/${n}`; };
 
-const followers = followersOf(spec).map((f) => ({ ...f, name: specs.get(f.component)?.name ?? f.component }));
+const byRole = followedByRole(spec);
+const followers = followersOf(spec, [...specs.values()]).map((f) => ({ ...f, name: specs.get(f.component)?.name ?? f.component }));
 ---
 <Layout title={tab ? `${current.label} · ${spec.name}` : spec.name} description={spec.summary}>
   <header class="site-page-header">
@@ -242,18 +243,18 @@ const followers = followersOf(spec).map((f) => ({ ...f, name: specs.get(f.compon
 
     <h3>Components following it</h3>
     <p class="site-muted site-small">
-      Derived from the component tokens aliasing the foundation's tokens.
-      {spec.appliesTo === 'focusable-components' ? ' Every component with a focusable role must follow it (pnpm validate).' : spec.appliesTo === 'every-component' ? ' Every component must follow it (pnpm validate).' : ''}
+      {byRole ? <>Derived from the role profiles (<code>packages/components/specs/a11y/roles.json</code>) and each component's spec.</> : <>Derived from the component tokens aliasing the foundation's tokens.</>}
+      {spec.appliesTo && scopeRule(spec) ? ` Every ${scopeRule(spec)!.replace(/^every /, '')} must follow it (pnpm validate).` : ''}
     </p>
     {followers.length ? (
       <div class="site-table-wrap">
         <table class="site-table">
-          <thead><tr><th scope="col">Component</th><th scope="col">Component tokens aliasing the foundation</th></tr></thead>
+          <thead><tr><th scope="col">Component</th>{byRole ? <><th scope="col">Role</th><th scope="col">Rules it follows, read from its spec</th></> : <th scope="col">Component tokens aliasing the foundation</th>}</tr></thead>
           <tbody>
             {followers.map((f) => (
               <tr>
                 <th scope="row"><a href={`${base}/components/${f.component}`}>{f.name}</a></th>
-                <td><ul class="site-plain-list site-small">{f.aliases.map((a) => <li><code>{a.path}</code> <span class="site-muted">→</span> {a.owned.map((o) => <code class="site-alias">{`{${o}}`}</code>)}</li>)}</ul></td>
+                {byRole ? <><td><code>{f.role}</code></td><td>{(f.tiers ?? []).join(', ')}</td></> : <td><ul class="site-plain-list site-small">{f.aliases.map((a) => <li><code>{a.path}</code> <span class="site-muted">→</span> {a.owned.map((o) => <code class="site-alias">{`{${o}}`}</code>)}</li>)}</ul></td>}
               </tr>
             ))}
           </tbody>
