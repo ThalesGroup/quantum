@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -745,6 +745,22 @@
   ],
   "decisions": [
     {
+      "id": "field-family-mirrors",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Number field, the Search field and the Textarea render the same box as the Text field of the same size and state: height, inline padding, text, border, corners, colors, focus ring, label, description, message and motion are the Text field's, in every platform and mode. A decision on the Text field's box applies to the three in the same change, and pnpm validate fails when a token they share differs (MIRRORS in scripts/lib/mirrors.mjs). What a field has alone is declared, not compared: the Search field's glyph and its start padding, which is a sum (glyph margin + glyph size + the gap before the text) and is recomputed whenever the box's inline padding or the glyph changes; the Textarea's block padding. What a field lacks is declared too: the Search field has no read-only state, no severity and no message. The mirror covers rendering only: a contract decision (keyboard, target size, text size, default) is asked for each of the four. The Select is not mirrored.",
+      "rationale": "Nothing tied the three plain fields to the Text field: a decision on its box left them behind. Mirroring them lets every rendering step of the Text field refinement change the four in the same commit, and pnpm validate prove they agree, where the alternatives (the Text field alone, with a closing step per sibling or an issue for the others) leave the siblings out of step in between. The Select is not mirrored now (the team considered mirroring it too, as Figma draws its chevron in the Text field's resting variants): its listbox makes it one of the complex controls, which get their own step once the Text field is settled.",
+      "tokens": [
+        "text-field.container.*",
+        "text-field.control.*",
+        "text-field.label.*",
+        "text-field.description.*",
+        "text-field.message.*"
+      ]
+    },
+    {
       "id": "forms-severity",
       "date": "2026-11-19",
       "version": "0.2.0",
@@ -823,6 +839,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "Decision field-family-mirrors: the Number field, the Search field and the Textarea are mirrors of the Text field (scripts/lib/mirrors.mjs), so a decision on its box changes the four in one commit and pnpm validate fails when they differ. The Select is not mirrored yet. No token, CSS or template change: the shared tokens already resolve to the same values in every platform and mode, so sizes, colors and contrast are unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-19",

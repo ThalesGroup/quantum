@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -778,6 +778,22 @@
   ],
   "decisions": [
     {
+      "id": "same-box-as-text-field",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Number field always renders the same box as the Text field of the same size and state: height, inline padding, text, border, corners, colors, focus ring, label, description, message and motion are the Text field's, and only the spin control, the browser's, is its own. A Text field decision on any of these applies to the Number field in the same change: pnpm validate fails when a Number field token differs from the Text field token at the same place (MIRRORS in scripts/lib/mirrors.mjs, decision field-family-mirrors of the Text field). The mirror covers rendering only: a contract decision is asked for the Number field too.",
+      "rationale": "Nothing tied the three plain fields to the Text field: a decision on its box left them behind. Mirroring them lets every rendering step of the Text field refinement change the four in the same commit, and pnpm validate prove they agree, where the alternatives (the Text field alone, with a closing step per sibling or an issue for the others) leave the siblings out of step in between. The Select is not mirrored now: it gets its own step later, with the complex controls.",
+      "tokens": [
+        "number-field.container.*",
+        "number-field.control.*",
+        "number-field.label.*",
+        "number-field.description.*",
+        "number-field.message.*"
+      ]
+    },
+    {
       "id": "forms-severity",
       "date": "2026-11-19",
       "version": "0.2.0",
@@ -857,6 +873,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "Decision same-box-as-text-field (Text field decision field-family-mirrors): the Number field is a mirror of the Text field, so every Text field decision on the box applies here in the same change and pnpm validate compares the tokens. No token, CSS or template change: the tokens already resolve to the Text field's values in every platform and mode, so sizes, colors and contrast are unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-19",
