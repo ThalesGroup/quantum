@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -60,7 +60,7 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height and inline padding grow with the size; the value text takes the text size of the Button of the same size; label, description and error keep their size.",
+      "description": "Control height and value text take the height and the text size of the Button of the same size; inline padding grows with the size; label, description and error keep their size.",
       "affects": [
         "control",
         "icon"
@@ -68,15 +68,15 @@
       "options": [
         {
           "value": "small",
-          "description": "Dense forms, toolbars, table rows (32 px high)."
+          "description": "Dense forms, toolbars, table rows (28 px high)."
         },
         {
           "value": "medium",
-          "description": "Default (40 px)."
+          "description": "Default (36 px)."
         },
         {
           "value": "large",
-          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+          "description": "Prominent, single fields: a search page, a sign-in form (44 px)."
         }
       ]
     },
@@ -287,7 +287,7 @@
         ]
       },
       {
-        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 28, 36 and 44 pixels.",
         "refs": [
           "wcag:2.5.8"
         ]
@@ -303,7 +303,7 @@
         ]
       },
       {
-        "text": "A search field is an editable text field that displays a search icon, a clear button and placeholder text; use placeholder text to help people know what they can search for. The small and medium sizes (32 and 40 pt) fall under the 44 x 44 pt hit region on iOS today.",
+        "text": "A search field is an editable text field that displays a search icon, a clear button and placeholder text; use placeholder text to help people know what they can search for. The small and medium sizes (28 and 36 pt) fall under the 44 x 44 pt hit region on iOS today; the large size (44 pt) reaches it.",
         "refs": [
           "hig-search-fields",
           "hig-accessibility-mobility"
@@ -313,7 +313,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp; all three sizes (28, 36 and 44 dp) fall under it on Android today.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes"
@@ -546,6 +546,18 @@
   ],
   "decisions": [
     {
+      "id": "box-height-button",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The minimum height of the box of the Search field takes the height of the Button of the same size, as the Text field's (decision box-height-button of the Text field, which holds the rule and its rationale): small 28 px, medium 36 px, large 44 px, so a search field and the button next to it line up. pnpm validate compares search-field.control.min-height.* with the Text field's. The search glyph (16, 20, 24 px) stays centred in the height, and the start padding that clears it is unchanged. Changes the 32 / 40 / 48 px minimum heights that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep 32 / 40 / 48 px (one step taller than the Button of the same size); B, the Button's heights 28 / 36 / 44 px, chosen; C, the height Figma's padding gives with the new text (33.6 / 40 / 44 px), which matches neither the Button nor today's; D, Figma's heights rounded up (36 / 40 / 44 px). A field and a Button of the same size line up (a search field next to its button, a form row), and the large size reaches the 44 pt that Apple recommends. The hit region of the small and medium sizes is a later step, as for the Button.",
+      "tokens": [
+        "search-field.control.min-height.*"
+      ]
+    },
+    {
       "id": "value-text-button-size",
       "date": "2026-11-19",
       "version": "0.4.0",
@@ -638,6 +650,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision box-height-button (Text field decision of the same name): the minimum height takes the height of the Button of the same size (search-field.control.min-height.*: 32 / 40 / 48 px become 28 / 36 / 44 px). The glyph and the start padding that clears it are unchanged. Target size (WCAG 2.5.8): every size stays above 24 x 24 CSS px. Colors unchanged, so contrast is unchanged."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-19",

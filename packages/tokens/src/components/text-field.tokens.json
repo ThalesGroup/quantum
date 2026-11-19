@@ -33,14 +33,15 @@
       "$description": "The editable box: a native single-line text input drawn by the component.",
       "min-height": {
         "$type": "dimension",
+        "$description": "Height of the box: the height of the Button of the same size (space.28, 36, 44).",
         "small": {
-          "$value": "{space.32}"
+          "$value": "{space.28}"
         },
         "medium": {
-          "$value": "{space.40}"
+          "$value": "{space.36}"
         },
         "large": {
-          "$value": "{space.48}"
+          "$value": "{space.44}"
         }
       },
       "padding-inline": {

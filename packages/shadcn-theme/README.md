@@ -145,8 +145,8 @@ shadcn components with no Quantum component yet: `dialog`, `tabs`, `table`, `too
 These Quantum decisions live in shadcn's class strings, not in its variables, so the theme leaves
 them out rather than restyle the components:
 
-- **Sizes and spacing.** Control heights (Quantum buttons 24 / 28 / 36 / 44 px, text fields 32 / 40 /
-  48 px), paddings, gaps, icon sizes and font sizes are Tailwind utilities in each component (`h-9`,
+- **Sizes and spacing.** Control heights (Quantum buttons 24 / 28 / 36 / 44 px, text fields 28 / 36 /
+  44 px), paddings, gaps, icon sizes and font sizes are Tailwind utilities in each component (`h-9`,
   `px-4`, `text-sm`). Quantum's medium button label is 16 px; shadcn's is 14 px.
 - **The Forms family.** The Forms foundation's `form.*` tokens are the defaults every form control
   aliases: its colors, its text sizes per size, the part gap `form.container.gap`, and the layout

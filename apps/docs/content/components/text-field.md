@@ -31,12 +31,12 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 | Size | Use for |
 | --- | --- |
-| Small | Dense forms, toolbars and table rows: 32 px high with 14 px text. |
-| Medium | Forms, the default: 40 px high with 16 px text. |
-| Large | A prominent single field, such as a search page or a sign-in form: 48 px high with 16 px text. |
+| Small | Dense forms, toolbars and table rows: 28 px high with 14 px text. |
+| Medium | Forms, the default: 36 px high with 16 px text. |
+| Large | A prominent single field, such as a search page or a sign-in form: 44 px high with 16 px text. |
 
-Height and inline padding grow with the size, and the text takes the size of the Button of the
-same size; the label, the description and the error message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
+Height and text take the height and the text size of the Button of the same size, so a field and
+a button side by side line up; inline padding grows with the size. The label, the description and the error message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
 
 ## Label, description and placeholder
 
@@ -106,7 +106,7 @@ This section explains the decisions behind it.
   ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)),
   and Tab reaches the control ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)).
-- **Target size.** Every size is at least 32 px high, above the 24 px minimum
+- **Target size.** Every size is at least 28 px high, above the 24 px minimum
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
 - **Input purpose.** A field collecting information about the person (name, email, phone,
   address) carries the matching autocomplete token, so browsers and assistive technology can
@@ -153,7 +153,7 @@ This section explains the decisions behind it.
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under it
+- Interactive elements need a 48 by 48 dp touch target; every size falls under it
   today. Expose an error with the error semantics so the message
   is announced with the field
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),

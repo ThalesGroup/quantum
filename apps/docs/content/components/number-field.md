@@ -92,7 +92,7 @@ This section explains the decisions behind it.
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under
+- Interactive elements need a 48 by 48 dp touch target; every size falls under
   it today. Expose an error with the error semantics
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),

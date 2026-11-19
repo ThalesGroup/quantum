@@ -397,7 +397,7 @@ Overlay easing, on root; Sass `$root-tokens`.
 
 #### Button
 
-Button and input sizes (root), on root; Sass `$root-tokens`. Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights differ (32, 40, 48), get their own values on .form-control below.
+Button and input sizes (root), on root; Sass `$root-tokens`. Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights are those of the Button (28, 36, 44) but whose text style and block padding are their own, get their own values on .form-control below.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
@@ -487,9 +487,9 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-min-height` | `text-field.control.min-height.medium` | `2.5rem` |  |
+| `--bs-control-min-height` | `text-field.control.min-height.medium` | `2.25rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.medium` | `0.75rem` |  |
-| `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum centers a field's line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 40px min-height (line 24px + 2 x 7px + borders). |
+| `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum centers a field's line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.medium` (fontSize) | `1rem` |  |
 | `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.2` |  |
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
@@ -509,9 +509,9 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-min-height` | `text-field.control.min-height.small` | `2rem` |  |
+| `--bs-control-min-height` | `text-field.control.min-height.small` | `1.75rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.small` | `0.5rem` |  |
-| `--bs-control-padding-y` | `space.4` | `0.25rem` | Keeps a small input at its 32px min-height (line 21px). |
+| `--bs-control-padding-y` | `space.4` | `0.25rem` | Keeps a small input at its 28px min-height (line 16.8px + 2 x 4px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.small` (fontSize) | `0.875rem` |  |
 | `--bs-control-line-height` | `text-field.control.typography.small` (lineHeight) | `1.2` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` | Bootstrap gives small controls the small button radius; a Quantum field keeps one radius at every size. |
@@ -520,9 +520,9 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-min-height` | `text-field.control.min-height.large` | `3rem` |  |
+| `--bs-control-min-height` | `text-field.control.min-height.large` | `2.75rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.large` | `1rem` |  |
-| `--bs-control-padding-y` | `space.8` | `0.5rem` | Keeps a large input at its 48px min-height (line 30px). |
+| `--bs-control-padding-y` | `space.10` | `0.625rem` | Keeps a large input at its 44px min-height (line 19.2px + 2 x 10px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.large` (fontSize) | `1rem` |  |
 | `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.2` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
@@ -1000,7 +1000,8 @@ them, and the theme restyles nothing directly.
   column from grid classes in the markup, with no custom property or Sass setting for these gaps,
   so the four gap tokens are not mapped.
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
-  button sizes (28px, 44px), not from Quantum's small and large fields (32px, 48px).
+  button sizes: the same heights (28px, 44px) as Quantum's small and large fields, but the
+  button label's line height and padding, not the field's.
 - **Field padding.** Bootstrap pads inputs and textareas alike, where Quantum centers a field's
   line (no block padding) and pads only the textarea: the block padding is the space step that
   keeps each input at its Quantum height, so a textarea's first line sits a little higher.
