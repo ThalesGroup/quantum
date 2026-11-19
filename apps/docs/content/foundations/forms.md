@@ -14,7 +14,7 @@ order: 10
 
 A form is a set of controls people fill in and submit. Each control has its own page. This
 page says which components are form controls and holds what they share, so that a field
-behaves like its neighbours and the same way on every platform: what a field is made of, how a required field is marked, which validation statuses exist and how they
+behaves like its neighbours and the same way on every platform: what a field is made of, how a required field is marked, which severities a control can show and how they
 look, when a value is checked, how errors are announced and summarised, how fields are spaced
 and how messages are written.
 
@@ -47,8 +47,9 @@ Which rules a control follows is read from its specification, with no list of ex
 - **Every control** follows the anatomy and label rules.
 - **A control that can be required** (it has a required property) also follows the rules on
   required fields.
-- **A control that can report an error** (it has the invalid state) also follows the rules on
-  validation statuses, errors and their announcement, and says its error in text.
+- **A control that can show a severity** (it has a severity property, which sets the error state)
+  also follows the rules on severities, errors and their announcement, and says its severity in
+  text.
 
 The components that follow this page are the ones whose role is marked as an input; the
 foundation's Tokens tab lists them with the rules each follows.
@@ -58,8 +59,8 @@ enter or choose a value with it
 ([WCAG 3.2.2](https://www.w3.org/WAI/WCAG22/Understanding/on-input)). It does not follow this
 page as a control; the rules about the actions of a form, when they are decided, name it.
 
-> **Not decided yet (step 2).** Whether the Search field, which can be required but has no error
-> state, gets one; and whether the label, required and error message guidelines the controls
+> **Not decided yet (step 2b).** Whether the Search field, which can be required but has no
+> severity, gets one; and whether the label, required and message guidelines the controls
 > repeat move into this page.
 
 ### Web
@@ -108,21 +109,56 @@ Apple's guidance draws no required mark: it asks that people understand what is 
 they can go on, for instance by enabling the Next or Continue button only once the required
 fields are filled in.
 
-## Validation statuses
+## Severities
 
-Today a control has one status after validation, **invalid**: its border takes the error color
-and the error message appears. An error is always said in text, next to the control; the color
-adds to the text, never replaces it.
+A form control can show one of three **severities**, none by default:
 
-> **Not decided yet (steps 5 and 6).** Whether a form shows **warnings** (the value is accepted
-> but deserves a second look) and **successes** (the value is confirmed) as well as errors, and
-> how each status renders: border, tinted fill, an icon at the end of the box, the message's
-> color. The contrast table below measures today's error, warning and success colors on every
-> surface level, in both modes; nothing is required of them yet.
+- **Error:** the value is not accepted, and the message says how to fix it.
+- **Warning:** the value is accepted but deserves attention, and the message says what to check.
+- **Success:** the value was checked and confirmed, and the message says what was confirmed.
+
+The word is **error**, not invalid. Every platform's guidance speaks of errors: WCAG calls the
+criterion Error Identification
+([WCAG 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification)), Compose has
+error semantics, Material writes error text. Invalid is the web's technical term (`aria-invalid`,
+`:invalid`, `:user-invalid`), and it stays there. There is no information severity: information
+that holds before any check is the description's job, and no source gives a field an information
+status. The property is `severity`, and one message carries every severity. It is named after
+what component libraries and developers call success, warning and danger alerts, even if the
+word is odd for success; status would clash with a specification's own status and with the
+WCAG status messages, and intent already means a destructive action on the Button.
+
+The Text field, Number field, Textarea and Select take all three. The Checkbox, the Checkbox
+group and the Radio group take the error only: a choice has nothing to confirm or to warn about.
+That is our judgment, not a source's.
+
+The border of the control takes the severity's accent functional border color, and the message
+its functional text color. An error is always said in text, next to the control; a warning and a
+success are said in text the same way, and color or an icon adds to the text, never replaces it.
+
+> **Border contrast.** The accent borders reach the 3:1 a border needs against its surface
+> ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)) on every surface
+> level, in both modes: the Color foundation changed the light warning border and the dark error
+> border for it. One shortfall is accepted knowingly: the light warning border is 2.95:1 on the
+> subtle warning fill that step 6 may use as the fill (issue #119). The table below measures them.
+
+> **Validated, rendered in step 6.** The severity is also shown in the control's fill, in a solid
+> color, never translucent. The severity icon is never drawn inside the area where people type,
+> because browsers add their own elements there (autofill, password managers, reveal and clear
+> buttons, spinners, pickers). It goes after the control, or at the start of the message, or
+> nowhere, and then the message says the severity (**Error: …**); it appears in one place only.
+> Without an icon after it, the control keeps its default width and takes the whole width.
+
+### Web
+
+An error is `aria-invalid="true"` on the control, and `:user-invalid` when the browser validates
+([MDN: aria-invalid](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid#values)).
+That attribute has no value for a warning or a success, so on the web they are the message text
+and the styling, and the component carries the severity as `data-severity`.
 
 ## When a value is checked
 
-A control is never shown as invalid before people used it.
+A control is never shown as in error before people used it.
 
 > **Not decided yet (step 7).** When a value is checked by default: when people submit the
 > form, when they leave the field, or as they type; and whether the submit action stays
@@ -141,8 +177,9 @@ another field, a user name or a password before they leave it.
 
 ### Web
 
-The error message is referenced by the control's `aria-describedby` and the control carries
-`aria-invalid`, so the message is read with the field when people reach it.
+The message is referenced by the control's `aria-describedby` for every severity, and a control
+in error carries `aria-invalid="true"`, so the message is read with the field when people reach
+it.
 
 ### Android
 
@@ -165,8 +202,9 @@ The field exposes its error with the error semantics, so TalkBack reads the erro
 - **The label** is a noun phrase naming the information asked for, in sentence case, without a
   colon.
 - **The description** gives the format, an example or a limit, only when it is not obvious.
-- **The error message** says what is wrong and how to fix it, in plain words and without
-  blame: **Enter an email address with an @**, not **Invalid email**.
+- **The message of an error** says what is wrong and how to fix it, in plain words and without
+  blame: **Enter an email address with an @**, not **Invalid email**. A warning says what to
+  check, and a success what was confirmed.
 
 > **Not decided yet (step 11).** One set of writing rules for every control: how a message
 > names the field in the summary, and whether messages end with a period.
@@ -191,22 +229,23 @@ The field exposes its error with the error semantics, so TalkBack reads the erro
   [ARIA2](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA2),
   [WAI forms tutorial: validation](https://www.w3.org/WAI/tutorials/forms/validation/#validating-required-input)).
 - **Errors are said in text, never by color alone.** The field in error is identified and the
-  error described in text; red borders and icons add to it
+  error described in text; red borders and icons add to it. A warning and a success are said in
+  text too
   ([WCAG 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification),
   [WCAG 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color),
   [WAI forms tutorial: user notification](https://www.w3.org/WAI/tutorials/forms/notifications/)).
   When a fix is known, the message suggests it
   ([WCAG 3.3.3](https://www.w3.org/WAI/WCAG22/Understanding/error-suggestion)).
-- **Invalid only after validation.** Marking an untouched field invalid announces an error
+- **In error only after validation.** Marking an untouched field as in error announces an error
   people have not made ([ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
 - **Status messages are announced.** A count of errors or a confirmation that appears without
   moving focus is exposed as a status message
   ([WCAG 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages)).
 - **Contrast.** The message text needs 4.5:1 against its surface
   ([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)) and a border that
-  identifies an invalid control 3:1
+  identifies a control in error 3:1
   ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)); the table
-  measures them while the statuses are decided.
+  measures them while the severities are rendered.
 
 ### iOS
 

@@ -47,15 +47,15 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 The radio, the option label and its description scale together; the legend keeps one size.
 The exact values are tokens (Tokens tab).
 
-## Legend, descriptions and error
+## Legend, descriptions and message
 
 The legend names the choice and is announced first. A description under the legend helps for
-the whole choice; a description under an option explains that option. When the group is
-invalid, the error message appears last and says what to do; every radio is described by it.
+the whole choice; a description under an option explains that option. When the group shows
+an error, the message appears last and says what to do; every radio is described by it.
 
 ## States
 
-States belong to the options; the group as a whole only passes its disabled and invalid
+States belong to the options; the group as a whole only passes its disabled and severity
 properties down to them.
 
 | State | How it happens | What changes |
@@ -64,7 +64,7 @@ properties down to them.
 | Hover | A pointer rests over a radio or its label. Needs a pointing device: there is no hover on touch. | The empty circle takes a light tint. A checked radio does not change. |
 | Focus visible | Keyboard focus on a radio. | The shared focus ring appears outside it. Pointer focus shows no ring. |
 | Checked | The option's `checked` property, or activation. | The circle fills with the brand color and shows a dot. |
-| Invalid | The group's `invalid` property, after validation. | Every radio border takes the error color; the error message is shown. |
+| Error | The group's `severity` property set to error, after validation. | Every radio border takes the error color; the message is shown, in the error color. A group of choices has no warning or success. |
 | Disabled | The group's `disabled` property, or an option's. | Radio, label and description drop to the shared disabled colors. |
 
 ## Content
@@ -76,7 +76,7 @@ properties down to them.
 - Costs, delays and consequences go to the option's description.
 - Order options logically, and offer a neutral option (**None**, **Not sure**) when people
   may have no preference. Pre-check the most common option only when a default is safe.
-- The error message says what to do: **Choose a delivery method.**
+- The message of an error says what to do: **Choose a delivery method.**
 
 ## Accessibility
 
@@ -91,7 +91,7 @@ This section explains the decisions behind it.
   [APG Radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/),
   [WAI tutorial: Grouping controls](https://www.w3.org/WAI/tutorials/forms/grouping/)).
 - **Labels and instructions.** The visible legend and the visible option labels are the
-  labels the group needs; descriptions and the error message are read as descriptions after an
+  labels the group needs; descriptions and the message are read as descriptions after an
   option's name, not as part of it
   ([WCAG 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html),
   [WCAG 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html),
@@ -130,8 +130,8 @@ This section explains the decisions behind it.
   [HTML: radio button group](https://html.spec.whatwg.org/multipage/input.html#radio-button-group)).
   The browser keeps one option checked and moves the check with the arrow keys. It never sets
   `aria-checked`, which ARIA in HTML forbids on a native radio.
-- Help text and the error message are referenced by `aria-describedby` from every radio
-  ([ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1)); an invalid group sets
+- Help text and the message are referenced by `aria-describedby` from every radio
+  ([ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1)); a group in error sets
   `aria-invalid="true"` on them ([ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
 - Disabling the group uses the fieldset's `disabled` attribute, which disables every radio
   ([HTML: fieldset disabled](https://html.spec.whatwg.org/multipage/form-elements.html#attr-fieldset-disabled)).

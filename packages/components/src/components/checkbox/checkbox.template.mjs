@@ -22,7 +22,7 @@ export function render(props = {}) {
     size = 'medium',
     checked = false,
     disabled = false,
-    invalid = false,
+    severity = 'none',
     required = false,
     state = null,
     id = null,
@@ -35,7 +35,7 @@ export function render(props = {}) {
   const descriptionId = `${inputId}-description`;
   const rootAttrs = ['class="ds-checkbox"', `data-size="${escapeAttr(size)}"`];
   if (disabled) rootAttrs.push('data-disabled');
-  if (invalid) rootAttrs.push('data-invalid');
+  if (severity && severity !== 'none') rootAttrs.push(`data-severity="${escapeAttr(severity)}"`);
   if (state && state !== 'default') rootAttrs.push(`data-state="${escapeAttr(state)}"`);
 
   const inputAttrs = ['type="checkbox"', 'class="ds-checkbox__control"', 'data-part="control"', `id="${escapeAttr(inputId)}"`];
@@ -44,7 +44,7 @@ export function render(props = {}) {
   if (checked) inputAttrs.push('checked');
   if (disabled) inputAttrs.push('disabled');
   if (required) inputAttrs.push('required');
-  if (invalid) inputAttrs.push('aria-invalid="true"');
+  if (severity === 'error') inputAttrs.push('aria-invalid="true"');
   if (description) inputAttrs.push(`aria-describedby="${escapeAttr(descriptionId)}"`);
   for (const [k, v] of Object.entries(extra)) {
     if (v === false || v == null) continue;

@@ -5,12 +5,12 @@
  *
  * Rules:
  *  - Only --textarea-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (label, control, description, error message, stacked); the native
+ *  - The root is a wrapper (label, control, description, message, stacked); the native
  *    textarea is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
- *    spec order: default < hover < focus-visible < invalid < readonly < disabled: hover only tints the
- *    background, invalid only recolors the border, so they combine as the token rule combines them.
+ *    spec order: default < hover < focus-visible < error < warning < success < readonly < disabled: hover only tints the
+ *    background, a severity only recolors the border, so they combine as the token rule combines them.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
@@ -22,6 +22,7 @@
   --_placeholder-color: var(--textarea-control-placeholder-color-default);
   --_label-color: var(--textarea-label-color-default);
   --_description-color: var(--textarea-description-color-default);
+  --_message-color: var(--textarea-message-color-error);
   --_min-height: var(--textarea-control-min-height-medium);
   --_padding-inline: var(--textarea-control-padding-inline-medium);
   --_font-family: var(--textarea-control-typography-medium-font-family);
@@ -113,14 +114,14 @@
   letter-spacing: var(--textarea-description-typography-letter-spacing);
 }
 
-.ds-textarea__error-message {
+.ds-textarea__message {
   margin: 0;
-  color: var(--textarea-error-message-color);
-  font-family: var(--textarea-error-message-typography-font-family);
-  font-size: var(--textarea-error-message-typography-font-size);
-  font-weight: var(--textarea-error-message-typography-font-weight);
-  line-height: var(--textarea-error-message-typography-line-height);
-  letter-spacing: var(--textarea-error-message-typography-letter-spacing);
+  color: var(--_message-color);
+  font-family: var(--textarea-message-typography-font-family);
+  font-size: var(--textarea-message-typography-font-size);
+  font-weight: var(--textarea-message-typography-font-weight);
+  line-height: var(--textarea-message-typography-line-height);
+  letter-spacing: var(--textarea-message-typography-letter-spacing);
 }
 
 /* Multi-line: the block padding sets the inset of the first and last line; the control can be resized vertically. */
@@ -136,9 +137,28 @@
   --_control-background: var(--textarea-control-background-hover);
 }
 
-.ds-textarea:where([data-state="invalid"]) .ds-textarea__control,
+/* Severity: the control's border takes the severity's color and the message its text color. Only the
+   error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
+.ds-textarea:where([data-state="error"], [data-severity="error"]) {
+  --_message-color: var(--textarea-message-color-error);
+}
+.ds-textarea:where([data-state="error"], [data-severity="error"]) .ds-textarea__control,
 .ds-textarea__control[aria-invalid="true"] {
-  --_control-border-color: var(--textarea-control-border-color-invalid);
+  --_control-border-color: var(--textarea-control-border-color-error);
+}
+
+.ds-textarea:where([data-state="warning"], [data-severity="warning"]) {
+  --_message-color: var(--textarea-message-color-warning);
+}
+.ds-textarea:where([data-state="warning"], [data-severity="warning"]) .ds-textarea__control {
+  --_control-border-color: var(--textarea-control-border-color-warning);
+}
+
+.ds-textarea:where([data-state="success"], [data-severity="success"]) {
+  --_message-color: var(--textarea-message-color-success);
+}
+.ds-textarea:where([data-state="success"], [data-severity="success"]) .ds-textarea__control {
+  --_control-border-color: var(--textarea-control-border-color-success);
 }
 
 .ds-textarea:where([data-state="readonly"]) .ds-textarea__control,

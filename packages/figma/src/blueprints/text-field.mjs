@@ -1,13 +1,13 @@
 /**
  * Text field (packages/components/src/components/text-field/text-field.css): a vertical auto layout
- * stacking the label, the control, the description and the error message, separated by the
+ * stacking the label, the control, the description and the message, separated by the
  * container gap. The control is a horizontal auto layout (border, background, min height, inline
  * padding, no block padding) holding its text vertically centered. The web field stretches to its
  * container: here the component is FIELD_WIDTH px wide and every part fills it.
  *
  * The `Content` axis draws the control's text as a value or as the placeholder (its own color).
- * The description is a boolean property (off, as in the template); the error message is drawn in
- * the invalid state only, as the template shows it.
+ * The description is a boolean property (off, as in the template); the message is drawn in
+ * the error, warning and success states only, as the template shows it with a severity.
  *
  * The other field blueprints (textarea, number-field, search-field, select) build on the helpers
  * exported here.
@@ -35,14 +35,16 @@ export const description = {
   bind: { fill: 'description.color', typography: 'description.typography' },
 };
 
-export const errorMessage = {
+export const SEVERITIES = ['error', 'warning', 'success'];
+
+export const message = {
   type: 'text',
-  name: 'error-message',
-  when: (v) => v.state === 'invalid',
-  text: 'Error message',
-  property: 'Error message',
+  name: 'message',
+  when: (v) => SEVERITIES.includes(v.state),
+  text: 'Message',
+  property: 'Message',
   width: 'FILL',
-  bind: { fill: 'error-message.color', typography: 'error-message.typography' },
+  bind: { fill: 'message.color', typography: 'message.typography' },
 };
 
 /** The control's text: the value, or the placeholder in its own color (`Content` axis). */
@@ -87,7 +89,7 @@ export const control = ({ children, bind = {}, counter = 'CENTER' }) => ({
   children,
 });
 
-/** The root: label, control (or field), description, error message, stacked. */
+/** The root: label, control (or field), description, message, stacked. */
 export const container = (children) => ({
   type: 'frame',
   name: 'container',
@@ -102,6 +104,6 @@ export const TRANSITION = { slot: 'control.transition', reason: 'Figma variables
 export default {
   axes: [CONTENT],
   booleans: { 'Show description': false },
-  root: container([label, control({ children: content() }), description, errorMessage]),
+  root: container([label, control({ children: content() }), description, message]),
   notDrawn: [TRANSITION],
 };

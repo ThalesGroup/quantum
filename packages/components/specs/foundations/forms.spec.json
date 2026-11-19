@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -23,7 +23,7 @@
     {
       "id": "tiers",
       "name": "Which rules a control follows",
-      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can report an error (it has the invalid state) also follows the rules on validation statuses, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its invalid state and its error message part, with no list of exceptions. Not decided yet (step 2): whether the Search field, which can be required but has no error state, gets one, and whether the label, required and error message guidelines the controls repeat move into this foundation."
+      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can show a severity (it has the severity property, or the error state it sets) also follows the rules on severities, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its severity property and its message part, with no list of exceptions. Not decided yet (step 2b): whether the Search field, which can be required but has no severity, gets one, and whether the label, required and message guidelines the controls repeat move into this foundation."
     },
     {
       "id": "form-actions",
@@ -33,7 +33,7 @@
     {
       "id": "anatomy",
       "name": "Anatomy of a field",
-      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when validation fails, a message saying what is wrong and how to fix it. A group of checkboxes or radios takes the same parts around its options, with a legend as its label. Today the message is shown under the description; whether it replaces it is not decided yet."
+      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. A group of checkboxes or radios takes the same parts around its options, with a legend as its label. Today the message is shown under the description; whether it replaces it is not decided yet."
     },
     {
       "id": "label",
@@ -47,18 +47,33 @@
     },
     {
       "id": "statuses",
-      "name": "Validation statuses",
-      "text": "Today one status exists, invalid: the control takes the error color and the error message is shown. Whether warning and success statuses exist, and how each renders, is not decided yet."
+      "name": "Severities",
+      "text": "A form control can show one of three severities, none by default: an error says the value is not accepted and how to fix it, a warning says the value is accepted but deserves attention, a success says the value was checked and confirmed. The word is \"error\", not \"invalid\": every platform's guidance speaks of errors (WCAG 3.3.1 Error Identification, the Compose error semantics, Material's error text), while invalid is the web's technical term. There is no information severity: information that holds before any check is the description's job, and no source gives a field an information status. The property is severity, and one message carries every severity. The Checkbox, the Checkbox group and the Radio group have only the error severity: a choice has nothing to confirm or to warn about (our judgment, not a source's). On the web, the error is aria-invalid=\"true\" (and :user-invalid when the browser validates); a warning and a success have no web state, since aria-invalid has no value for them: they are the message text and the styling. The control's border takes the severity's accent functional border color and the message its functional text color. Since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1) the accent borders reach the 3:1 of WCAG 1.4.11 on every surface level; the one shortfall left is the light warning border on the subtle warning fill (2.95:1), which step 6 may use as the fill, accepted knowingly by the team (issue #119)."
+    },
+    {
+      "id": "severity-fill",
+      "name": "Severity in the fill",
+      "text": "Validated, rendered in step 6: the severity is also shown in the control's fill, a solid color, never translucent; perhaps the subtle functional background of the severity (to confirm)."
+    },
+    {
+      "id": "severity-icon",
+      "name": "Severity icon",
+      "text": "Validated, rendered in step 6: the severity icon is never drawn inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). It goes after the control, or at the start of the message, or nowhere, and then the message says the severity (\"Error: …\", \"Warning: …\", \"Success: …\"). It appears in one place only, never both after the control and in the message."
+    },
+    {
+      "id": "severity-width",
+      "name": "Width without the icon",
+      "text": "Validated, rendered in step 6: without the icon after the control, the control keeps its default width and takes the whole width; the place after the control is not reserved."
     },
     {
       "id": "error-in-text",
-      "name": "Errors are said in text",
-      "text": "An error is identified in text next to the control it concerns, associated with that control, and never shown by color alone. The text says what is wrong and, when a fix is known, how to fix it."
+      "name": "A severity is said in text",
+      "text": "An error is identified in text next to the control it concerns, associated with that control, and never shown by color alone. The text says what is wrong and, when a fix is known, how to fix it. A warning and a success are said in text the same way, whatever icon or color accompanies them."
     },
     {
       "id": "timing",
       "name": "When a value is checked",
-      "text": "Not decided yet: on submit, when people leave the field, or as they type. A control is never marked invalid before validation ran."
+      "text": "Not decided yet: on submit, when people leave the field, or as they type. A control is never marked as in error before validation ran."
     },
     {
       "id": "announcement",
@@ -78,7 +93,7 @@
     {
       "id": "web-rendering",
       "name": "Web rendering",
-      "text": "A label element pointing at the control's id; the description and the message referenced by aria-describedby; the required attribute on a required control; aria-invalid on a control that failed validation; a fieldset and its legend around a group of checkboxes or radios.",
+      "text": "A label element pointing at the control's id; the description and the message referenced by aria-describedby for every severity; the required attribute on a required control; aria-invalid=\"true\" on a control in error and only then; data-severity on the component for the three severities; a fieldset and its legend around a group of checkboxes or radios.",
       "platforms": [
         "web"
       ]
@@ -87,7 +102,7 @@
   "contrast": [
     {
       "id": "error-text-on-surfaces",
-      "description": "The error message on every surface level. Measured only while the statuses are being decided (WCAG 1.4.3 asks 4.5:1).",
+      "description": "The message of an error on every surface level. Measured only while the severities are being rendered (WCAG 1.4.3 asks 4.5:1).",
       "foreground": "global.text.on-base.functional.error.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -101,7 +116,7 @@
     },
     {
       "id": "warning-text-on-surfaces",
-      "description": "A warning message, if warnings exist. Measured only.",
+      "description": "The message of a warning on every surface level. Measured only (WCAG 1.4.3 asks 4.5:1).",
       "foreground": "global.text.on-base.functional.warning.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -115,7 +130,7 @@
     },
     {
       "id": "success-text-on-surfaces",
-      "description": "A success message, if successes are shown. Measured only.",
+      "description": "The message of a success on every surface level. Measured only (WCAG 1.4.3 asks 4.5:1).",
       "foreground": "global.text.on-base.functional.success.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -129,8 +144,8 @@
     },
     {
       "id": "error-border-on-surfaces",
-      "description": "The error border that identifies an invalid control. Measured only while the statuses are being decided (WCAG 1.4.11 asks 3:1).",
-      "foreground": "global.border.base.functional.error.default",
+      "description": "The border that identifies a control in error, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1): 6.12 / 5.79 / 6.12 / 5.79:1 in light mode and 4.97 / 4.55 / 4.16 / 3.73:1 in dark mode on levels 0 to 3, since the Color foundation 7.1.0.",
+      "foreground": "global.border.accent.functional.error.default",
       "backgrounds": [
         "global.bg.level.0.default",
         "global.bg.level.1.default",
@@ -143,8 +158,8 @@
     },
     {
       "id": "warning-border-on-surfaces",
-      "description": "A warning border, if warnings exist. Measured only.",
-      "foreground": "global.border.base.functional.warning.default",
+      "description": "The border of a control with a warning, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1): 3.27 / 3.09 / 3.27 / 3.09:1 in light mode and 8.09 / 7.41 / 6.78 / 6.07:1 in dark mode on levels 0 to 3, since the Color foundation 7.1.0. On the subtle warning fill it is 2.95:1 in light mode, a shortfall the team accepted knowingly (issue #119).",
+      "foreground": "global.border.accent.functional.warning.default",
       "backgrounds": [
         "global.bg.level.0.default",
         "global.bg.level.1.default",
@@ -157,8 +172,8 @@
     },
     {
       "id": "success-border-on-surfaces",
-      "description": "A success border, if successes are shown. Measured only.",
-      "foreground": "global.border.base.functional.success.default",
+      "description": "The border of a control with a success, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1).",
+      "foreground": "global.border.accent.functional.success.default",
       "backgrounds": [
         "global.bg.level.0.default",
         "global.bg.level.1.default",
@@ -245,13 +260,31 @@
         ]
       },
       {
+        "text": "A warning and a success are said in text like an error, never by color or an icon alone, and a confirmation that appears without moving focus is exposed as a status message.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag:4.1.3",
+          "wai-forms-notifications"
+        ]
+      },
+      {
+        "text": "Set aria-invalid=\"true\" for an error only: it has no value for a warning or a success, which the message text says.",
+        "refs": [
+          "wcag-aria21",
+          "mdn-aria-invalid"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
         "text": "When a correction is known, the error message suggests it, unless that would jeopardize the security or purpose of the content.",
         "refs": [
           "wcag:3.3.3"
         ]
       },
       {
-        "text": "A control is marked invalid only after its value was validated, not before people used it.",
+        "text": "A control is marked as in error only after its value was validated, not before people used it.",
         "refs": [
           "wcag-aria21"
         ]
@@ -350,6 +383,16 @@
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21"
       },
       {
+        "id": "mdn-aria-invalid",
+        "title": "MDN: aria-invalid, values",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid#values"
+      },
+      {
+        "id": "mdn-pseudo-invalid",
+        "title": "MDN: the :invalid pseudo-class",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid"
+      },
+      {
         "id": "hig-text-fields-best-practices",
         "title": "Apple HIG: Text fields, best practices",
         "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices"
@@ -358,6 +401,11 @@
         "id": "hig-writing-best-practices",
         "title": "Apple HIG: Writing, best practices",
         "url": "https://developer.apple.com/design/human-interface-guidelines/writing#Best-practices"
+      },
+      {
+        "id": "hig-feedback-best-practices",
+        "title": "Apple HIG: Feedback, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/feedback#Best-practices"
       },
       {
         "id": "hig-entering-data-best-practices",
@@ -438,68 +486,135 @@
   },
   "examples": [
     {
-      "id": "text-field-invalid",
-      "name": "Text field, required and invalid",
+      "id": "text-field-error",
+      "name": "Text field, required and error",
       "component": "text-field",
       "props": {
         "size": "medium",
         "label": "Email address",
         "value": "ada.example.com",
         "description": "We will only use it to send your receipt.",
-        "invalid": true,
-        "errorMessage": "Enter an email address with an @.",
+        "severity": "error",
+        "message": "Enter an email address with an @.",
         "required": true
       }
     },
     {
-      "id": "select-invalid",
-      "name": "Select, required and invalid",
+      "id": "text-field-warning",
+      "name": "Text field, warning",
+      "component": "text-field",
+      "props": {
+        "size": "medium",
+        "label": "Email address",
+        "value": "ada@exmaple.com",
+        "severity": "warning",
+        "message": "Warning: check the domain, it looks like a typo of example.com."
+      }
+    },
+    {
+      "id": "text-field-success",
+      "name": "Text field, success",
+      "component": "text-field",
+      "props": {
+        "size": "medium",
+        "label": "Username",
+        "value": "ada.lovelace",
+        "severity": "success",
+        "message": "Success: this username is available."
+      }
+    },
+    {
+      "id": "select-error",
+      "name": "Select, required and error",
       "component": "select",
       "props": {
         "size": "medium",
         "label": "Country",
         "placeholder": "Choose a country",
         "required": true,
-        "invalid": true,
-        "errorMessage": "Choose a country.",
+        "severity": "error",
+        "message": "Choose a country.",
         "options": [
-          { "label": "France", "value": "fr" },
-          { "label": "Germany", "value": "de" }
+          {
+            "label": "France",
+            "value": "fr"
+          },
+          {
+            "label": "Germany",
+            "value": "de"
+          }
         ]
       }
     },
     {
-      "id": "radio-group-invalid",
-      "name": "Radio group, required and invalid",
+      "id": "radio-group-error",
+      "name": "Radio group, required and error",
       "component": "radio-group",
       "props": {
         "orientation": "vertical",
         "size": "medium",
         "label": "Delivery method",
-        "name": "forms-delivery-invalid",
+        "name": "forms-delivery-error",
         "required": true,
-        "invalid": true,
-        "errorMessage": "Choose a delivery method.",
+        "severity": "error",
+        "message": "Choose a delivery method.",
         "options": [
-          { "label": "Standard", "value": "standard" },
-          { "label": "Express", "value": "express" }
+          {
+            "label": "Standard",
+            "value": "standard"
+          },
+          {
+            "label": "Express",
+            "value": "express"
+          }
         ]
       }
     },
     {
-      "id": "checkbox-invalid",
-      "name": "Checkbox, required and invalid",
+      "id": "checkbox-error",
+      "name": "Checkbox, required and error",
       "component": "checkbox",
       "props": {
         "size": "medium",
         "label": "I accept the terms of service",
         "description": "Check the box to continue.",
         "required": true,
-        "invalid": true
+        "severity": "error"
       }
     }
   ],
   "decisions": [
+    {
+      "id": "forms-validation-severities",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "state",
+      "status": "active",
+      "text": "Form controls can show three severities, error, warning and success, set by the severity property (none, error, warning, success; none by default) with one message for every severity. The Text field, the Number field, the Textarea and the Select take all four values; the Checkbox, the Checkbox group and the Radio group take none and error only (our judgment, not a source's). The property and the state invalid and errorMessage are removed, with no alias: the packages are alpha and unreleased, so a clean break (a major change of the specs, 0.x minor). The severity border is the accent functional border, global.border.accent.functional.<severity>.default, and the message color the functional text color, global.text.on-base.functional.<severity>.default. On the web the error is aria-invalid=\"true\" and the severity data-severity; a warning and a success are text and styling only. The accent borders were under 3:1 (the light warning one at 2.13:1 down to 2.01:1, the dark error one, which had no dark value, at 2.82:1 down to 2.11:1), and the team fixed them in the Color foundation 7.1.0 (decision border-accent-functional-3-to-1): warning 500 in light mode, error 400 in dark mode, 3:1 or more on every surface level; the one shortfall left is the light warning border on the subtle warning fill (2.95:1, which step 6 may use as the fill), accepted knowingly by the team (issue #119). Validated, to render in step 6: the severity in the fill, a solid color; the severity icon never inside the typing area, in one place only (after the control, at the start of the message, or nowhere, then the message says the severity); the control keeping its default width without the icon after it.",
+      "rationale": "Options. A: errors only, as Apple and Material do (no source for the other two on a field). B: every status (error, warning, success, information), as Fluent does. C: keep invalid and add a separate status property, two properties for one thing. D: errors and success, as the W3C does (a success confirmation with icon and text). The team validated three severities (B without information, which the description covers; W3C confirms a success, only Fluent has a warning). Name: severity was chosen over status (it clashes with the spec's status and with WCAG status messages), intent (it means a destructive action on the Button) and validation; component libraries and developers use severity for success, danger and warning alerts, even if it is odd for success. \"Error\" over \"invalid\": the platforms say error (WCAG 3.3.1, Compose error semantics, Material text fields guidelines and accessibility), and invalid is the web's technical term (aria-invalid, :invalid, :user-invalid); Understanding 4.1.3 and the Windows Forms page still use invalid as an adjective of the value. The accent border (rather than the base one) was the team's correction. Sources opened: WCAG Understanding 3.3.1, 3.3.3, 4.1.3, 1.4.1, 1.4.11 and 1.1.1, ARIA21, the WAI notifications tutorial, MDN aria-invalid and :invalid, Apple HIG Writing, Feedback, Text fields and Entering data, Compose semantics, Material text fields guidelines and accessibility, Windows Forms, Text box and LiveSetting.",
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:3.3.3",
+        "wcag:4.1.3",
+        "wcag:1.4.1",
+        "wcag:1.4.11",
+        "wcag:1.1.1",
+        "wcag-aria21",
+        "wai-forms-notifications",
+        "mdn-aria-invalid",
+        "mdn-pseudo-invalid",
+        "hig-writing-best-practices",
+        "hig-feedback-best-practices",
+        "hig-text-fields-best-practices",
+        "hig-entering-data-best-practices",
+        "compose-error-components",
+        "material-text-fields-guidelines",
+        "material-text-fields-accessibility",
+        "windows-forms",
+        "windows-text-box",
+        "winui-live-setting"
+      ]
+    },
     {
       "id": "forms-input-components",
       "date": "2026-11-19",
@@ -508,7 +623,13 @@
       "status": "active",
       "text": "A form control is a component through which people enter or choose a value the product keeps (text, a number, one or several options, on or off, a point in a range); it has a visible label and may have a description, and when its value can be missing or wrong it can be marked required and report an error. Whether the value applies at once or with the rest of the form depends on how the control is used, not on the component. A button that submits is a form action, not a form control. The components that follow the foundation are the ones whose role profile is marked as input (roles.json), read from each specification: the rules on anatomy and label for every input, on required fields for those with a required property, on validation for those with the invalid state.",
       "rationale": "Labels and instructions are not limited to forms (WCAG 3.3.2), a submit button is activating a control, not changing a setting (WCAG 3.2.2), and Windows tells instantly updating forms from submitting ones, so a control is defined by what people do with it, not by where it sits. The role profiles already name the roles that require WCAG 3.3.2, so the foundation reads them (input) instead of keeping a list. Also considered: a section in each specification declaring when its value applies (at once or on submit), which writes a web submit model into specifications iOS and Android have no source for; a scope per rule, the most precise and the most work; an explicit list of identifiers, which silently leaves a new component out. Known weak spot: the role group is generic, so a future component with the role group that is not an input would be counted as one; revisit it then. Known gap, set aside until the complex controls are aligned after the Text field: the Checkbox has the invalid state and no error message part (the validator warns).",
-      "refs": ["wcag:3.3.2", "wcag:3.2.2", "windows-forms", "hig-toggles-switches", "whatwg-form-entry-list"]
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:3.2.2",
+        "windows-forms",
+        "hig-toggles-switches",
+        "whatwg-form-entry-list"
+      ]
     },
     {
       "id": "forms-platform-sources",
@@ -518,10 +639,27 @@
       "status": "active",
       "text": "Material's component guidelines (m3.material.io/components/) and Microsoft's Windows app controls guidance and WinUI automation reference are trusted sources, so the form rules for Android and Windows cite those platforms' own guidance.",
       "rationale": "They hold the only Android and Windows guidance on forms (required marking, error text replacing the supporting text, spacing, announcing changes); without them, the foundation could only say these platforms are silent.",
-      "refs": ["material-text-fields-guidelines", "material-text-fields-overview", "material-text-fields-accessibility", "material-checkbox-overview", "material-menus-guidelines", "windows-forms", "windows-text-box", "windows-number-box", "windows-checkbox", "windows-slider", "winui-live-setting"]
+      "refs": [
+        "material-text-fields-guidelines",
+        "material-text-fields-overview",
+        "material-text-fields-accessibility",
+        "material-checkbox-overview",
+        "material-menus-guidelines",
+        "windows-forms",
+        "windows-text-box",
+        "windows-number-box",
+        "windows-checkbox",
+        "windows-slider",
+        "winui-live-setting"
+      ]
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Breaking, decision forms-validation-severities: the invalid status is replaced by three severities, error, warning and success (the severity property, one message for all); the rule on statuses becomes the rule on severities, with the web mapping and the validated rules on the fill, the icon and the width (rendered in step 6); the tiers read the severity property; the measured status borders read the accent functional border. The examples use severity and message, with a warning and a success of the Text field."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-19",

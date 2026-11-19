@@ -296,6 +296,7 @@ for (const { spec, where } of specs) {
     error(where, `missing token file ${spec.tokens.source}`);
   } else if (loaded) {
     const tokens = loaded.all.filter((t) => t.tier === 'component' && t.segments[0] === id);
+    const optionValues = new Set([...spec.properties, ...spec.anatomy.flatMap((p) => p.properties ?? [])].filter((p) => p.type === 'enum').flatMap((p) => p.options.map((o) => o.value)));
     if (tokens.length === 0) error(rel(tokenFile), `defines no tokens under root group "${id}"`);
     const usedParts = new Set();
     for (const t of tokens) {
@@ -304,7 +305,8 @@ for (const { spec, where } of specs) {
       usedParts.add(part);
       if (rest.length === 0) error(rel(tokenFile), `${t.path}: needs a property segment after the part`);
       for (const seg of rest.slice(1)) {
-        if (stateVocabulary.has(seg) && !stateIds.includes(seg)) error(rel(tokenFile), `${t.path}: state "${seg}" is not declared in the spec`);
+        // A word of the state vocabulary that an enum property owns as an option (an intent `error`) is that option.
+        if (stateVocabulary.has(seg) && !stateIds.includes(seg) && !optionValues.has(seg)) error(rel(tokenFile), `${t.path}: state "${seg}" is not declared in the spec`);
         if (enumOptions.has(seg)) continue;
         // A segment that matches an option of NO property but looks like a variant is suspicious only if states/options exist with similar names; keep permissive.
       }
@@ -316,7 +318,9 @@ for (const { spec, where } of specs) {
     // except the options of properties that only affect subcomponent parts (forwarded to that component).
     const segs = new Set(tokens.flatMap((t) => t.segments.slice(2)));
     const forwarded = new Set(spec.properties.filter((p) => p.affects?.length && p.affects.every(inSubcomponent)).map((p) => p.id));
-    for (const [opt, prop] of enumOptions) if (!segs.has(opt) && !forwarded.has(prop)) warn(rel(tokenFile), `option "${opt}" of property "${prop}" never appears in a token path`);
+    // The options of a property whose states carry them (severity: error, warning, success) are the state segments; its default option (none) has no state, so no token.
+    const stateless = new Set(spec.states.filter((s) => s.property && s.value !== undefined).map((s) => `${s.property}.${spec.properties.find((p) => p.id === s.property)?.default}`));
+    for (const [opt, prop] of enumOptions) if (!segs.has(opt) && !forwarded.has(prop) && !stateless.has(`${prop}.${opt}`)) warn(rel(tokenFile), `option "${opt}" of property "${prop}" never appears in a token path`);
     for (const s of stateIds) if (s !== 'default' && !segs.has(s)) warn(rel(tokenFile), `state "${s}" never appears in a token path`);
     // Active-token rule (scripts/lib/token-map.mjs, packages/tokens/AGENTS.md): one token per slot in every configuration.
     const map = checkTokenMap(spec, tokens);
@@ -583,7 +587,7 @@ for (const file of foundationFiles) {
   // Components in the scope of `appliesTo` (role profiles: scripts/lib/foundation-scope.mjs) alias
   // every exact path the foundation owns. The scope input-components is read from the roles, not
   // from token aliases (Forms owns no token): each of its components must also meet what the
-  // foundation asks of an input (a label, an error message part with the `invalid` state).
+  // foundation asks of an input (a label, a message part with a `severity`).
   if (spec.appliesTo && loaded) {
     const required = spec.tokens.filter((p) => !p.endsWith('.*'));
     const inScopeSpecs = componentsInScope(spec.appliesTo, specs.map((s) => s.spec), a11y?.roles ?? {});

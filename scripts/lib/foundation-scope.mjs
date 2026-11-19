@@ -38,20 +38,20 @@ export function componentsInScope(appliesTo, specs, roles) {
 /**
  * The rules of the Forms foundation a control follows, read from its spec, with no list of
  * exceptions: `presentation` for every input, `required` when it declares the `required`
- * property, `validation` when it has the `invalid` state.
+ * property, `validation` when it has the `severity` property or the `error` state.
  */
 export function tiersOf(spec) {
   return [
     'presentation',
     ...((spec.properties ?? []).some((p) => p.id === 'required') ? ['required'] : []),
-    ...((spec.states ?? []).some((s) => s.id === 'invalid') ? ['validation'] : []),
+    ...((spec.properties ?? []).some((p) => p.id === 'severity') || (spec.states ?? []).some((s) => s.id === 'error') ? ['validation'] : []),
   ];
 }
 
 /**
  * What the tiers ask of an input control's anatomy: a visible label part of the whole control
- * (the label of a field, the legend of a group), and, with the `invalid` state, a part to say
- * the error in text. A missing error message part is a warning, not an error: a control
+ * (the label of a field, the legend of a group), and, with a `severity`, a part to say
+ * the message in text. A missing message part is a warning, not an error: a control
  * without one reports an error by color alone (WCAG 3.3.1), a known gap the team has set aside
  * until the complex controls are aligned (decision `forms-input-components`).
  */
@@ -61,7 +61,7 @@ export function checkInputControl(spec) {
   const label = anatomy.find((p) => p.role === 'label' && p.required && !p.parent);
   if (!label) problems.push({ level: 'error', message: 'is an input but has no required part with role "label" (its label, or the legend of a group) that is not inside another part: every input has a visible label' });
   if (tiersOf(spec).includes('validation') && !anatomy.some((p) => p.role === 'errormessage')) {
-    problems.push({ level: 'warn', message: 'has the "invalid" state but no part with role "errormessage": an error cannot be said in text next to the control, only by its color (WCAG 3.3.1); a known gap, set aside until the complex controls are aligned' });
+    problems.push({ level: 'warn', message: 'has a severity but no part with role "errormessage" (the message): an error cannot be said in text next to the control, only by its color (WCAG 3.3.1); a known gap, set aside until the complex controls are aligned' });
   }
   return problems;
 }

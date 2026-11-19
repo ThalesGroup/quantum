@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -97,13 +97,13 @@
       "description": "Optional help text under the option's label."
     },
     {
-      "id": "error-message",
+      "id": "message",
       "role": "errormessage",
       "required": false,
       "visibleIn": [
-        "invalid"
+        "error"
       ],
-      "description": "Text describing the error when the group is invalid (no option chosen in a required group). Associated with every option as a description."
+      "description": "Text saying what is wrong and what to do, associated with every option as a description. Shown only with a severity."
     }
   ],
   "properties": [
@@ -183,11 +183,11 @@
       "description": "The options, in order."
     },
     {
-      "id": "errorMessage",
-      "name": "Error message",
+      "id": "message",
+      "name": "Message",
       "type": "string",
-      "bindsTo": "error-message",
-      "description": "What is wrong and what to do, shown when the group is invalid."
+      "bindsTo": "message",
+      "description": "What is wrong and what to do, shown with a severity. Replaces errorMessage."
     },
     {
       "id": "required",
@@ -197,11 +197,25 @@
       "description": "An option must be chosen to submit the form."
     },
     {
-      "id": "invalid",
-      "name": "Invalid",
-      "type": "boolean",
-      "default": false,
-      "description": "Validation failed: every radio takes the error border and the error message is shown."
+      "id": "severity",
+      "name": "Severity",
+      "type": "enum",
+      "default": "none",
+      "description": "What the check of the value found. A choice has nothing to confirm or to warn about, so only error exists (decision forms-severity).",
+      "affects": [
+        "control",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No severity (default)."
+        },
+        {
+          "value": "error",
+          "description": "Validation failed on the group: every radio takes the error border, the message says what to do and every option is exposed as in error (aria-invalid on the web)."
+        }
+      ]
     },
     {
       "id": "disabled",
@@ -252,13 +266,14 @@
       "description": "The chosen option (the entry's checked property): the circle fills with the brand color and shows a dot."
     },
     {
-      "id": "invalid",
+      "id": "error",
       "trigger": "property",
-      "property": "invalid",
+      "property": "severity",
+      "value": "error",
       "parts": [
         "option"
       ],
-      "description": "Validation failed on the group: every radio border takes the error color and the error message is shown."
+      "description": "Severity error on the group: every radio border takes the error color and the message is shown."
     },
     {
       "id": "disabled",
@@ -277,7 +292,7 @@
     "wrap": false,
     "sizing": "fill",
     "notes": [
-      "The legend comes first, then the description, the options and the error message, separated by container.row-gap.",
+      "The legend comes first, then the description, the options and the message, separated by container.row-gap.",
       "Options stack vertically, or flow on one line and wrap in the horizontal orientation, separated by container.gap for the orientation.",
       "Within an option, the radio sits before the label, centered on its first line; the option's description sits under its label."
     ]
@@ -285,7 +300,7 @@
   "accessibility": {
     "ariaRole": "group",
     "name": {
-      "text": "The group is named by its legend (the fieldset's first legend element on the web). Each option is named by its own label, associated as its label element; descriptions and the error message are exposed as descriptions of the radios, not as part of their names.",
+      "text": "The group is named by its legend (the fieldset's first legend element on the web). Each option is named by its own label, associated as its label element; descriptions and the message are exposed as descriptions of the radios, not as part of their names.",
       "refs": [
         "html-aam-fieldset-name",
         "apg-naming-legends",
@@ -364,7 +379,7 @@
         ]
       },
       {
-        "text": "Help text and the error message are referenced by aria-describedby from every radio, so they are read as descriptions after an option's name.",
+        "text": "Help text and the message are referenced by aria-describedby from every radio, so they are read as descriptions after an option's name.",
         "refs": [
           "wcag-aria1",
           "apg-describing"
@@ -387,7 +402,7 @@
         ]
       },
       {
-        "text": "Each radio is what identifies its option and shows its state, so its border, its fill and its dot contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.78:1 (light) and 11.28:1 (dark) on the default surface; checked fill 5.77:1 and 12.76:1; the dot on the fill 5.72:1 and 13.05:1; the error border 6.12:1 and 3.73:1; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
+        "text": "Each radio is what identifies its option and shows its state, so its border, its fill and its dot contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.78:1 (light) and 11.28:1 (dark) on the default surface; checked fill 5.77:1 and 12.76:1; the dot on the fill 5.72:1 and 13.05:1; the error border (the accent functional border) 6.12:1 and 4.97:1, at least 5.79:1 and 3.73:1 on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -648,7 +663,7 @@
       "Option labels are short, parallel and mutually exclusive: Standard, Express, Pickup. Sentence case, no trailing punctuation.",
       "Put costs, delays and consequences in an option's description, not in its label.",
       "Order options logically (most common first, or a natural scale); offer a neutral option (None, Not sure) when people may have no preference.",
-      "The error message says what to do: Choose a delivery method."
+      "The message of an error says what to do: Choose a delivery method."
     ]
   },
   "examples": [
@@ -759,17 +774,17 @@
       }
     },
     {
-      "id": "vertical-medium-invalid",
-      "name": "Vertical, medium, required and invalid",
-      "description": "No option chosen in a required group; the error message says what to do.",
+      "id": "vertical-medium-error",
+      "name": "Vertical, medium, required and error",
+      "description": "No option chosen in a required group; the message says what to do.",
       "props": {
         "orientation": "vertical",
         "size": "medium",
         "label": "Delivery method",
-        "name": "delivery-invalid",
+        "name": "delivery-error",
         "required": true,
-        "invalid": true,
-        "errorMessage": "Choose a delivery method.",
+        "severity": "error",
+        "message": "Choose a delivery method.",
         "options": [
           {
             "label": "Standard",
@@ -820,7 +835,7 @@
         "orientation": "data-orientation",
         "size": "data-size",
         "disabled": "disabled",
-        "invalid": "data-invalid"
+        "severity": "data-severity"
       },
       "stateAttribute": "data-state",
       "partSelectors": {
@@ -831,7 +846,7 @@
         "control": ".ds-radio-group__control",
         "option-label": ".ds-radio-group__option-label",
         "option-description": ".ds-radio-group__option-description",
-        "error-message": ".ds-radio-group__error-message"
+        "message": ".ds-radio-group__message"
       }
     }
   },
@@ -841,6 +856,24 @@
     "switch"
   ],
   "decisions": [
+    {
+      "id": "forms-severity",
+      "date": "2026-11-19",
+      "version": "0.2.0",
+      "area": "state",
+      "status": "active",
+      "text": "The group shows the error severity, set by the severity property (none by default, error): every box takes the accent functional error border color and the message, shown only with a severity, takes the error text color. Warning and success do not exist for a group of choices: that is our judgment, not a source's. Severity replaces the invalid property and message replaces errorMessage. On the web the error is aria-invalid=\"true\" on every option and data-severity on the root. The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1).",
+      "rationale": "The team validated the Forms foundation's three severities (decision forms-validation-severities) and named the property severity; \"error\" is the word every platform uses (WCAG 3.3.1 Error Identification, Compose error semantics, Material error text), where \"invalid\" is the web's technical term. The clean break is deliberate: the packages are alpha and unreleased, and a deprecated alias would cost a schema field and support in the validator, the bridge and the templates. This amends decisions field-colors and label-description-error, whose text still says invalid and error message.",
+      "tokens": [
+        "radio-group.control.border-color.*",
+        "radio-group.message.color.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.1",
+        "wcag-aria21"
+      ]
+    },
     {
       "id": "group-of-native-radios",
       "date": "2026-10-03",
@@ -898,6 +931,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-19",
+      "note": "Breaking, decision forms-severity: the invalid property is replaced by severity (none, error), errorMessage by message and the part error-message by message, the state invalid by error; the web attribute data-invalid by data-severity. Tokens: control.border-color.invalid is control.border-color.error and reads the accent functional border (global.border.accent.functional.<severity>.default) instead of the base error border; error-message.* is message.*, and message.color.<severity> reads global.text.on-base.functional.<severity>.default. CSS: [data-severity=\"<severity>\"] and [data-state=\"<severity>\"], radio-group__error-message is radio-group__message. The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1)."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

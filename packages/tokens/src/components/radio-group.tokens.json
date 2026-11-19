@@ -2,7 +2,7 @@
   "$description": "Component tokens for Radio group. Path grammar: radio-group.<part>.<property>[.<orientation>|.<size>][.<state>]: colors vary by state only, the gap between options by orientation, control dimensions and type by size. Parts, options and states must exist in packages/components/specs/components/radio-group.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
   "radio-group": {
     "container": {
-      "row-gap": { "$type": "dimension", "$value": "{space.8}", "$description": "Between the legend, the description, the options and the error message." },
+      "row-gap": { "$type": "dimension", "$value": "{space.8}", "$description": "Between the legend, the description, the options and the message." },
       "gap": {
         "$type": "dimension",
         "$description": "Between two options.",
@@ -26,8 +26,13 @@
       },
       "typography": { "$type": "typography", "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
     },
-    "error-message": {
-      "color": { "$type": "color", "$value": "{global.text.on-base.functional.error.default}" },
+    "message": {
+      "color": {
+        "$type": "color",
+        "error": {
+          "$value": "{global.text.on-base.functional.error.default}"
+        }
+      },
       "typography": { "$type": "typography", "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
     },
     "option": {
@@ -55,7 +60,7 @@
         "default": { "$value": "{global.border.accent.neutral.default}" },
         "hover": { "$value": "{global.border.accent.neutral.default}" },
         "checked": { "$value": "{global.border.accent.brand.default}" },
-        "invalid": { "$value": "{global.border.base.functional.error.default}" },
+        "error": { "$value": "{global.border.accent.functional.error.default}" },
         "disabled": { "$value": "{global.border.state.disabled.default}" }
       },
       "color": {

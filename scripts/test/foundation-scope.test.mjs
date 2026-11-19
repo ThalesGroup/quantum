@@ -51,7 +51,7 @@ test('only input-components resolves its followers by scope', () => {
   assert.equal(followedByScope(undefined), false);
 });
 
-test('tiers are read from the spec: required property, invalid state', () => {
+test('tiers are read from the spec: required property, severity property or error state', () => {
   const by = (id) => tiersOf(specs.find((s) => s.id === id));
   assert.deepEqual(by('text-field'), ['presentation', 'required', 'validation']);
   assert.deepEqual(by('search-field'), ['presentation', 'required']);
@@ -77,13 +77,18 @@ test('an input needs a required label part of the whole control', () => {
   assert.deepEqual(checkInputControl(field({ anatomy: [{ id: 'container', role: 'container', required: true }, { id: 'legend', role: 'label', required: true }] })), []);
 });
 
-test('the invalid state needs an error message part, as a warning', () => {
-  const invalid = { states: [{ id: 'default' }, { id: 'invalid' }] };
-  const problems = checkInputControl(field(invalid));
+test('a severity needs a message part, as a warning', () => {
+  const severity = { properties: [{ id: 'severity', type: 'enum' }], states: [{ id: 'default' }, { id: 'error', trigger: 'property', property: 'severity', value: 'error' }] };
+  const problems = checkInputControl(field(severity));
   assert.deepEqual(problems.map((p) => p.level), ['warn']);
   assert.match(problems[0].message, /errormessage/);
-  const withMessage = field({ ...invalid, anatomy: [...field().anatomy, { id: 'error-message', role: 'errormessage', required: false }] });
+  assert.match(problems[0].message, /severity/);
+  const withMessage = field({ ...severity, anatomy: [...field().anatomy, { id: 'message', role: 'errormessage', required: false }] });
   assert.deepEqual(checkInputControl(withMessage), []);
+  // the validation tier reads the severity property or the error state
+  assert.ok(tiersOf({ properties: [{ id: 'severity' }] }).includes('validation'));
+  assert.ok(tiersOf({ states: [{ id: 'error' }] }).includes('validation'));
+  assert.ok(!tiersOf({ states: [{ id: 'invalid' }] }).includes('validation'));
 });
 
 test('today every input has a label, and only the checkbox lacks an error message part', () => {

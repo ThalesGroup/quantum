@@ -152,3 +152,27 @@ test('instance enum properties of a repeated part name options of its tokens', (
   assert.deepEqual(activeTokens(spec, tokens, {}, 'hover').map((a) => a.token.path), ['menu.item.background.neutral.hover']);
   assert.deepEqual(checkTokenMap(spec, tokens).unreachable, []);
 });
+
+test('a state set by an enum value reads as that state, never as the option', () => {
+  const field = {
+    id: 'field',
+    properties: [
+      { id: 'severity', type: 'enum', default: 'none', options: [{ value: 'none' }, { value: 'error' }, { value: 'warning' }] },
+    ],
+    states: [
+      { id: 'default', trigger: 'interaction' },
+      { id: 'error', trigger: 'property', property: 'severity', value: 'error' },
+      { id: 'warning', trigger: 'property', property: 'severity', value: 'warning' },
+    ],
+  };
+  const paths = ['field.control.border-color.default', 'field.control.border-color.error', 'field.control.border-color.warning'];
+  const toks = paths.map(tok);
+  assert.equal(parseTokenPath(field, ['field', 'control', 'border-color', 'error']).state, 'error');
+  assert.deepEqual(parseTokenPath(field, ['field', 'control', 'border-color', 'error']).options, {});
+  assert.deepEqual(effectiveStates(field, { severity: 'warning' }), ['warning']);
+  assert.deepEqual(effectiveStates(field, { severity: 'none' }), []);
+  const pick = (props) => activeTokens(field, toks, props).map((a) => a.token.path);
+  assert.deepEqual(pick({}), ['field.control.border-color.default']);
+  assert.deepEqual(pick({ severity: 'error' }), ['field.control.border-color.error']);
+  assert.deepEqual(checkTokenMap(field, toks).unreachable, []);
+});

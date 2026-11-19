@@ -54,7 +54,7 @@ control's description, after the name.
 | Focus visible | Keyboard focus on the box. | The shared focus ring appears outside the box. Pointer focus shows no ring. |
 | Checked | `checked` property. | The box fills with the brand color and shows a check mark. |
 | Indeterminate | Set by the application when the box stands for a group of options of which some are on. | The box fills and shows a bar instead of a check. Toggling it checks or unchecks the whole group. |
-| Invalid | `invalid` property, after validation. | The box border takes the error color; the form states the error in text. |
+| Error | `severity` property set to error, after validation. | The box border takes the error color; the form states the error in text. A single choice has no warning or success. |
 | Disabled | `disabled` property. | Box, label and description drop to the shared disabled colors, checked or not. |
 
 A checkbox cannot be in two states at once from the tokens' point of view: a checked box keeps
@@ -73,7 +73,7 @@ input, set by script. The reference implementation styles the state; the applica
 - Sentence case, no trailing punctuation. Keep the label to one line; details go to the
   description.
 - A required checkbox says what is agreed to in its label (**I accept the terms of service**),
-  and its error message says what to do (**Check the box to continue**).
+  and the message of its error says what to do (**Check the box to continue**).
 
 ## Accessibility
 
@@ -132,7 +132,7 @@ This section explains the decisions behind it.
 - The partially checked state is the `indeterminate` property, which the browser exposes as the
   mixed checked state
   ([MDN: indeterminate state](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/checkbox#indeterminate_state_checkboxes)).
-- An invalid box carries `aria-invalid="true"`
+- A box in error carries `aria-invalid="true"`
   ([ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)); a required box the
   `required` attribute, with a label or description that says so
   ([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)).

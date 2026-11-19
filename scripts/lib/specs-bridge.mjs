@@ -94,16 +94,20 @@ export function toSpecs(spec, tokensTree) {
   const optionOf = new Map();
   for (const p of spec.properties.filter((p) => p.type === 'enum')) for (const o of p.options) optionOf.set(o.value, p.id);
   const stateById = Object.fromEntries(spec.states.map((s) => [s.id, s]));
-  // A state set through a boolean property is that property; every other state is a value of STATE_PROP.
+  // A state set through a boolean property is that property, and a state set by one option of an
+  // enum property (error, set by severity: error) is that value of the property; every other
+  // state is a value of STATE_PROP.
   const viaBoolean = (s) => s.property && propById[s.property]?.type === 'boolean';
-  const enumStates = spec.states.filter((s) => !viaBoolean(s));
+  const viaValue = (s) => s.property && s.value !== undefined && propById[s.property]?.type === 'enum';
+  const enumStates = spec.states.filter((s) => !viaBoolean(s) && !viaValue(s));
 
   // ---- props: native Specs shape + the full Quantum property in $extensions
   const props = {};
   for (const p of spec.properties) {
     const { id, ...own } = p;
     const st = spec.states.find((s) => viaBoolean(s) && s.property === id);
-    const $extensions = { [EXT]: st ? { ...own, state: st } : own };
+    const valueStates = spec.states.filter((s) => viaValue(s) && s.property === id);
+    const $extensions = { [EXT]: { ...own, ...(st ? { state: st } : {}), ...(valueStates.length ? { valueStates } : {}) } };
     if (p.type === 'enum') props[id] = { type: 'string', enum: p.options.map((o) => o.value), default: p.default ?? p.options[0].value, $extensions };
     else if (p.type === 'boolean') props[id] = { type: 'boolean', default: p.default ?? false, $extensions };
     else if (p.type === 'number') props[id] = { type: 'number', ...(p.default !== undefined ? { default: p.default } : {}), $extensions };
@@ -169,7 +173,8 @@ export function toSpecs(spec, tokensTree) {
     let expressible = !!map && isAlias(t.value) && SPECS_TOKEN_TYPES.has(t.type) && !instanceParts.has(partId);
     // Grammar is <option>…<state>: each enum property takes one segment, so an option value that
     // is also a state id (variant `default` + state `default`) reads as the state once its
-    // property is set. Only one state segment is allowed.
+    // property is set. Only one state segment is allowed. A state set by an enum value
+    // (error: severity = error) is that value of the property: the same configuration.
     let stated = false;
     for (const seg of rest) {
       if (optionOf.has(seg) && !(optionOf.get(seg) in config)) config[optionOf.get(seg)] = seg;
@@ -280,6 +285,7 @@ export function fromSpecs(component, sidecar = {}) {
   const properties = [];
   const enumStates = [];
   const booleanStates = [];
+  const valueStates = [];
   for (const [pid, p] of Object.entries(component.props ?? {})) {
     const e = ext(p);
     if (pid === stateKey) {
@@ -287,9 +293,10 @@ export function fromSpecs(component, sidecar = {}) {
       continue;
     }
     if (e) {
-      const { state, ...own } = e;
+      const { state, valueStates: byValue, ...own } = e;
       properties.push({ id: pid, ...own });
       if (state) booleanStates.push(state);
+      if (byValue) valueStates.push(...byValue);
       continue;
     }
     const base = { id: camel(pid), name: pid };
@@ -306,7 +313,7 @@ export function fromSpecs(component, sidecar = {}) {
     }
   }
   const order = ext(component.props?.[stateKey])?.order;
-  const states = [...enumStates, ...booleanStates];
+  const states = [...enumStates, ...booleanStates, ...valueStates];
   if (order) states.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
   if (!states.some((s) => s.id === 'default')) states.unshift({ id: 'default', trigger: 'interaction' });
 

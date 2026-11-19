@@ -9,7 +9,7 @@ order: 20
 
 A checkbox group is the grouped form of the Checkbox: a legend names the set, each option has
 its own label and can be checked independently, and the group carries the shared help text and
-the error message. It is built like the Radio group, with one difference that matters: any
+the message. It is built like the Radio group, with one difference that matters: any
 number of options can be on, including none.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
@@ -34,7 +34,7 @@ short options; small (16 px boxes) or medium (20 px boxes, the default).
 
 ## States
 
-States belong to the options; the group passes its disabled and invalid properties down to
+States belong to the options; the group passes its disabled and severity properties down to
 them.
 
 | State | How it happens | What changes |
@@ -43,7 +43,7 @@ them.
 | Hover | A pointer rests over a box or its label. Needs a pointing device: there is no hover on touch. | The empty box takes a light tint. A checked box does not change. |
 | Focus visible | Keyboard focus on a box. | The shared focus ring appears outside it. Pointer focus shows no ring. |
 | Checked | The option's `checked` property, or activation. | The box fills with the brand color and shows a check mark. |
-| Invalid | The group's `invalid` property, after validation. | Every box border takes the error color; the error message is shown. |
+| Error | The group's `severity` property set to error, after validation. | Every box border takes the error color; the message is shown, in the error color. A group of choices has no warning or success. |
 | Disabled | The group's `disabled` property, or an option's. | Box, label and description drop to the shared disabled colors. |
 
 ## Content
@@ -51,7 +51,7 @@ them.
 - The legend names the set: **Notifications**, **Which days suit you?**
 - Option labels are short, parallel and positive: **Email**, **Push**, **Text message**.
 - Say when a choice is required or limited in the description: **Choose at least one**,
-  **Choose up to three**. The error message says what to do.
+  **Choose up to three**. The message of an error says what to do.
 
 ## Accessibility
 
@@ -69,7 +69,7 @@ This section explains the decisions behind it.
   ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html),
   [APG keyboard interaction](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/#keyboardinteraction)).
 - **Labels, descriptions and errors** work as in the Radio group: the visible legend and labels
-  are the names, descriptions and the error message are read as descriptions
+  are the names, descriptions and the message are read as descriptions
   ([WCAG 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html),
   [WCAG 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html),
   [WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
@@ -87,8 +87,8 @@ This section explains the decisions behind it.
 ### Web
 
 - The implementation renders a `<fieldset>` with a `<legend>` and `<input type="checkbox">`
-  elements sharing one `name`, each with a `<label for>`; help text and the error message are
-  referenced by `aria-describedby`, an invalid group sets `aria-invalid="true"` on the boxes,
+  elements sharing one `name`, each with a `<label for>`; help text and the message are
+  referenced by `aria-describedby`, a group in error sets `aria-invalid="true"` on the boxes,
   and a required group puts `required` on the first box
   ([ARIA in HTML: fieldset](https://www.w3.org/TR/html-aria/#el-fieldset),
   [ARIA in HTML: input type=checkbox](https://www.w3.org/TR/html-aria/#el-input-checkbox),

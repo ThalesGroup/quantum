@@ -5,13 +5,13 @@
  *
  * Rules:
  *  - Only --checkbox-group-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a fieldset (legend, description, options, error message); each option is a grid of
+ *  - The root is a fieldset (legend, description, options, message); each option is a grid of
  *    a native checkbox (the control, drawn by the component), its label and its description. The check is
  *    a pseudo-element of the input.
  *  - Orientation and size are data attributes on the root; states are native pseudo-classes of the
  *    radio. A state is forced for review with [data-state="<state>"] on the root (every option) or on
  *    one option (the states matrix forces one entry). Precedence follows the spec order:
- *    default < hover < focus-visible < checked < invalid < disabled.
+ *    default < hover < focus-visible < checked < error < disabled.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
@@ -101,14 +101,14 @@
   flex-wrap: wrap;
 }
 
-.ds-checkbox-group__error-message {
+.ds-checkbox-group__message {
   margin: 0;
-  color: var(--checkbox-group-error-message-color);
-  font-family: var(--checkbox-group-error-message-typography-font-family);
-  font-size: var(--checkbox-group-error-message-typography-font-size);
-  font-weight: var(--checkbox-group-error-message-typography-font-weight);
-  line-height: var(--checkbox-group-error-message-typography-line-height);
-  letter-spacing: var(--checkbox-group-error-message-typography-letter-spacing);
+  color: var(--checkbox-group-message-color-error);
+  font-family: var(--checkbox-group-message-typography-font-family);
+  font-size: var(--checkbox-group-message-typography-font-size);
+  font-weight: var(--checkbox-group-message-typography-font-weight);
+  line-height: var(--checkbox-group-message-typography-line-height);
+  letter-spacing: var(--checkbox-group-message-typography-letter-spacing);
 }
 
 /* ---- Option ------------------------------------------------------------- */
@@ -185,7 +185,7 @@
 
 /* ---- States -------------------------------------------------------------- */
 /* Forced on the root (every option) or on one option; native pseudo-classes on the radio.
-   Order matters: hover < checked < invalid < disabled; hover never repaints a checked or disabled radio. */
+   Order matters: hover < checked < error < disabled; hover never repaints a checked or disabled radio. */
 
 :where(.ds-checkbox-group[data-state="hover"], .ds-checkbox-group__option[data-state="hover"]) .ds-checkbox-group__control:not(:checked, :disabled),
 .ds-checkbox-group:not([data-state]) .ds-checkbox-group__option:not([data-state]) .ds-checkbox-group__control:hover:not(:checked, :disabled) {
@@ -204,9 +204,10 @@
   opacity: 1;
 }
 
-:where(.ds-checkbox-group[data-state="invalid"], .ds-checkbox-group__option[data-state="invalid"]) .ds-checkbox-group__control,
+:where(.ds-checkbox-group[data-state="error"], .ds-checkbox-group__option[data-state="error"]) .ds-checkbox-group__control,
+:where(.ds-checkbox-group[data-severity="error"]) .ds-checkbox-group__control,
 .ds-checkbox-group__control[aria-invalid="true"] {
-  --_control-border-color: var(--checkbox-group-control-border-color-invalid);
+  --_control-border-color: var(--checkbox-group-control-border-color-error);
 }
 
 .ds-checkbox-group:where([data-state="disabled"]),

@@ -32,7 +32,7 @@
         "hover": { "$value": "{global.border.accent.neutral.default}" },
         "checked": { "$value": "{global.border.accent.brand.default}" },
         "indeterminate": { "$value": "{global.border.accent.brand.default}" },
-        "invalid": { "$value": "{global.border.base.functional.error.default}" },
+        "error": { "$value": "{global.border.accent.functional.error.default}" },
         "disabled": { "$value": "{global.border.state.disabled.default}" }
       },
       "color": {

@@ -9,7 +9,7 @@
  *    drawn by the component (appearance: none). The mark is a pseudo-element of the input.
  *  - Size is a data attribute on the root; states are native pseudo-classes of the input, and the
  *    root's [data-state="<state>"] forces them for review. Precedence follows the spec order:
- *    default < hover < focus-visible < checked < indeterminate < invalid < disabled, so hover does not
+ *    default < hover < focus-visible < checked < indeterminate < error < disabled, so hover does not
  *    repaint a checked box and disabled wins over everything (packages/tokens/AGENTS.md "Which token applies").
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
@@ -122,7 +122,7 @@
 }
 
 /* ---- States -------------------------------------------------------------- */
-/* Order matters: hover < checked < indeterminate < invalid < disabled. Hover never repaints a checked,
+/* Order matters: hover < checked < indeterminate < error < disabled. Hover never repaints a checked,
    indeterminate or disabled box (the checked token wins over hover, as in the token rule). */
 
 .ds-checkbox:where([data-state="hover"]) .ds-checkbox__control:not(:checked, :indeterminate, :disabled),
@@ -158,9 +158,9 @@
   opacity: 1;
 }
 
-.ds-checkbox:where([data-state="invalid"]) .ds-checkbox__control,
+.ds-checkbox:where([data-state="error"], [data-severity="error"]) .ds-checkbox__control,
 .ds-checkbox__control[aria-invalid="true"] {
-  --_control-border-color: var(--checkbox-control-border-color-invalid);
+  --_control-border-color: var(--checkbox-control-border-color-error);
 }
 
 .ds-checkbox:where([data-state="disabled"]),

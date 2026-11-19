@@ -21,31 +21,32 @@ export function render(props = {}) {
     options = [{ label: 'Option 1', value: '1' }, { label: 'Option 2', value: '2' }],
     placeholder = null,
     description = null,
-    errorMessage = null,
+    message = null,
     size = 'medium',
     required = false,
     disabled = false,
-    invalid = false,
+    severity = 'none',
     state = null,
     id = null,
     name = null,
     attrs: extra = {},
   } = props;
+  const hasMessage = severity !== 'none' && Boolean(message);
 
   const controlId = id ?? `ds-select-${++count}`;
   const descriptionId = `${controlId}-description`;
-  const errorId = `${controlId}-error`;
+  const messageId = `${controlId}-message`;
   const rootAttrs = ['class="ds-select"', `data-size="${escapeAttr(size)}"`];
   if (disabled) rootAttrs.push('data-disabled');
-  if (invalid) rootAttrs.push('data-invalid');
+  if (severity && severity !== 'none') rootAttrs.push(`data-severity="${escapeAttr(severity)}"`);
   if (state && state !== 'default') rootAttrs.push(`data-state="${escapeAttr(state)}"`);
 
   const controlAttrs = ['class="ds-select__control"', 'data-part="control"', `id="${escapeAttr(controlId)}"`];
   if (name) controlAttrs.push(`name="${escapeAttr(name)}"`);
   if (required) controlAttrs.push('required');
   if (disabled) controlAttrs.push('disabled');
-  if (invalid) controlAttrs.push('aria-invalid="true"');
-  const describedBy = [description ? descriptionId : null, invalid && errorMessage ? errorId : null].filter(Boolean);
+  if (severity === 'error') controlAttrs.push('aria-invalid="true"');
+  const describedBy = [description ? descriptionId : null, hasMessage ? messageId : null].filter(Boolean);
   if (describedBy.length) controlAttrs.push(`aria-describedby="${escapeAttr(describedBy.join(' '))}"`);
   for (const [k, v] of Object.entries(extra)) {
     if (v === false || v == null) continue;
@@ -69,6 +70,6 @@ export function render(props = {}) {
     `<div class="ds-select__field" data-part="field"><select ${controlAttrs.join(' ')}>${items.join('')}</select><span class="ds-select__indicator" data-part="indicator" aria-hidden="true">${renderIcon('expand_more')}</span></div>`,
   ];
   if (description) parts.push(`<p class="ds-select__description" data-part="description" id="${escapeAttr(descriptionId)}">${escapeHtml(description)}</p>`);
-  if (invalid && errorMessage) parts.push(`<p class="ds-select__error-message" data-part="error-message" id="${escapeAttr(errorId)}">${escapeHtml(errorMessage)}</p>`);
+  if (hasMessage) parts.push(`<p class="ds-select__message" data-part="message" id="${escapeAttr(messageId)}">${escapeHtml(message)}</p>`);
   return `<div ${rootAttrs.join(' ')}>${parts.join('')}</div>`;
 }

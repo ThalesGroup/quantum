@@ -10,7 +10,8 @@
  * path, else the state
  * when it is a declared state and the path has no state yet, else a key of the property
  * (`transition.duration`). An option value equal to a state id (`default`) therefore reads as the
- * state once its property is set.
+ * state once its property is set. A state set by an enum value (`error`, set by `severity: error`)
+ * is read as that state first: its segment is never an option.
  *
  * Instance enum properties of a repeated part (a menu item's `intent`, spec `anatomy[].properties`)
  * name options of the parts they affect too; they are keyed `<part>.<property>` (`item.intent`)
@@ -73,6 +74,9 @@ const enumProperties = (spec) => [
   ...(spec.anatomy ?? []).flatMap((part) => (part.properties ?? []).filter((p) => p.type === 'enum').map((p) => ({ ...p, key: `${part.id}.${p.id}` }))),
 ];
 
+/** A state set by one option of an enum property (`{ id: "error", property: "severity", value: "error" }`). */
+export const isValueState = (s) => s.trigger === 'property' && Boolean(s.property) && s.value !== undefined;
+
 /**
  * Reads the segments of a component token path.
  * @returns {{ component, part, property, keys: string[], options: Record<string,string>, state: string|null, slot: string, specificity: number }}
@@ -82,11 +86,12 @@ export function parseTokenPath(spec, segments) {
   // Only the properties that affect the part can name its options (`affects` absent: every part).
   const enums = enumProperties(spec).filter((p) => !p.affects || p.affects.includes(part));
   const stateIds = new Set((spec.states ?? []).map((s) => s.id));
+  const valueStates = new Set((spec.states ?? []).filter(isValueState).map((s) => s.id));
   const options = {};
   const keys = [];
   let state = null;
   for (const seg of rest) {
-    const owner = enums.find((p) => !(p.key in options) && p.options.some((o) => o.value === seg));
+    const owner = valueStates.has(seg) && state === null ? null : enums.find((p) => !(p.key in options) && p.options.some((o) => o.value === seg));
     if (owner) options[owner.key] = seg;
     else if (state === null && stateIds.has(seg)) state = seg;
     else keys.push(seg);
@@ -101,14 +106,18 @@ const optionValue = (spec, props, key) => props?.[key] ?? enumProperties(spec).f
 
 /**
  * States holding for `props` and a forced `state`, highest precedence first: the forced state and
- * every state set through a boolean property that is on (`disabled`). When several hold, the one
+ * every state set through a boolean property that is on (`disabled`) or through an enum property
+ * set to the option that names it (`severity: "error"`). When several hold, the one
  * declared last in the spec wins, as the CSS orders its rules (default < hover < active < disabled).
  * `default` is never listed: it is the fallback of every slot.
  */
 export function effectiveStates(spec, props = {}, state = null) {
   const on = new Set();
   if (state && state !== 'default') on.add(state);
-  for (const s of spec.states ?? []) if (s.trigger === 'property' && s.property && props[s.property] === true) on.add(s.id);
+  for (const s of spec.states ?? []) {
+    if (s.trigger !== 'property' || !s.property) continue;
+    if (isValueState(s) ? props[s.property] === s.value : props[s.property] === true) on.add(s.id);
+  }
   return (spec.states ?? []).map((s) => s.id).filter((id) => on.has(id)).reverse();
 }
 

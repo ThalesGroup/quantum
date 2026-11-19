@@ -125,11 +125,11 @@ Which shadcn component and props render each Quantum component (the `COMPONENTS`
 | Breadcrumb | `breadcrumb` | link = `BreadcrumbLink`, current = `BreadcrumbPage`, separator = `BreadcrumbSeparator`. |
 | Pagination | `pagination` | link = `PaginationLink`, current = `isActive`, previous / next = `PaginationPrevious` / `PaginationNext`. |
 | Progress bar | `progress` | no indeterminate state. |
-| Skeleton, Spinner, Switch, Slider, Textarea | `skeleton`, `spinner`, `switch`, `slider`, `textarea` | one to one; invalid = `aria-invalid`, disabled = `disabled`. |
+| Skeleton, Spinner, Switch, Slider, Textarea | `skeleton`, `spinner`, `switch`, `slider`, `textarea` | one to one; error = `aria-invalid`, disabled = `disabled`. |
 | Avatar | `avatar` | circle = `Avatar`, image = `AvatarImage`, initials = `AvatarFallback`; no square shape. |
-| Checkbox | `checkbox` | checked, indeterminate (`checked="indeterminate"`), invalid (`aria-invalid`), disabled. |
+| Checkbox | `checkbox` | checked, indeterminate (`checked="indeterminate"`), error (`aria-invalid`), disabled. |
 | Checkbox group, Radio group | `field` + `checkbox`, `radio-group` | `FieldSet`, `FieldLegend`, `Field orientation="horizontal"`, `FieldError`; `RadioGroupItem`. |
-| Text field | `input` (+ `label`, `field`) | control = `Input`, label = `Label`, description = `FieldDescription`, error message = `FieldError`, invalid = `aria-invalid`, readonly = `readOnly`; one size. |
+| Text field | `input` (+ `label`, `field`) | control = `Input`, label = `Label`, description = `FieldDescription`, message = `FieldError`, error = `aria-invalid`, readonly = `readOnly`; one size. |
 | Number field | `input` | `type="number"`, no stepper buttons. |
 | Search field | `input-group` | `InputGroupInput` with an `InputGroupAddon` icon. |
 | Select | `native-select` | the Quantum Select is native; shadcn's `select` (a Radix listbox) is the custom alternative. |
@@ -169,6 +169,7 @@ them out rather than restyle the components:
 - **The switch.** shadcn's off track is `--input` with a `--background` thumb (dark track, light
   thumb); Quantum's off switch is a level-0 track with a dark thumb.
 - **Placeholders** read `--muted-foreground` (Quantum's secondary text); Quantum draws them tertiary.
+- **Severities shadcn lacks.** Quantum's fields can show a warning and a success as well as an error (`severity`); shadcn has only `aria-invalid`, so the warning and success borders and message colors are not themable.
 - **Intents and levels shadcn lacks**: success, warning and info (badge, alert), neutral accent
   buttons, card level 2, component sizes, the indeterminate progress bar. Adding a variable for
   them would mean adding variants to the components.
