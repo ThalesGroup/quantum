@@ -170,18 +170,20 @@ technology, and nothing relies on color
 [H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90),
 [F81](https://www.w3.org/WAI/WCAG22/Techniques/failures/F81)).
 
-There is no asterisk. An asterisk is a symbol that must be explained before its first use
-([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)); a word needs no key, and marking the
-fewer fields keeps a long form free of repeated marks.
+The generic rule has no asterisk. An asterisk is a symbol that must be explained before its
+first use ([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)); a word needs no key, and
+marking the fewer fields keeps a long form free of repeated marks.
 
-> **Not decided yet (step 4).** How iOS, Android and desktop apply the rule (Material and
-> Windows mark required fields with an asterisk).
+Each platform follows its own guidance where it has some, and the generic rule where it has
+none. Android and Windows ask for an asterisk, so required fields carry one there; iOS and macOS
+give no mark, so they use the words. Each fact is said once: where the platform has a required
+state, the state tells assistive technology and a visible "(required)" is hidden from it.
 
 ### Web
 
-Each fact is said once. "(required)" is hidden from assistive technology: the required attribute
-already makes screen readers say "required", and a parenthetical like this may stay out of the
-accessible name when the state is exposed another way
+"(required)" is hidden from assistive technology: the required attribute already makes screen
+readers say "required", and a parenthetical like this may stay out of the accessible name when
+the state is exposed another way
 ([Understanding 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name),
 [MDN: aria-required](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples)).
 "(optional)" stays part of the label's text, so it is read with the name: no attribute says that
@@ -191,7 +193,29 @@ a field is optional.
 
 Apple's guidance draws no required mark: it asks that people understand what is required before
 they can go on, for instance by enabling the Next or Continue button only once the required
-fields are filled in.
+fields are filled in
+([HIG: Entering data](https://developer.apple.com/design/human-interface-guidelines/entering-data#Best-practices)).
+The generic words apply.
+
+> **Not decided yet.** How "(required)" reaches VoiceOver on iOS and macOS: read in the
+> accessibility label, or hidden behind a required state if the platform has one.
+
+### Android
+
+Material marks each required field with an asterisk after its label, explained once, in
+supporting text or in a note before the first field, and asks that the accessibility label
+include the asterisk
+([Material: text fields, required text indicator](https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145),
+[Material: text fields, accessibility](https://m3.material.io/components/text-fields/accessibility#101b7337-c788-41c8-8027-7884da77bc89)).
+Quantum follows it on Android, whatever the share of optional fields.
+
+### Desktop
+
+On Windows, required input is marked with an asterisk on its label
+([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)),
+explained once before the first field, and the control sets `AutomationProperties.IsRequiredForForm`
+([IsRequiredForForm](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform)).
+On macOS, Apple gives no mark, so the generic words apply, as on iOS.
 
 ## Severities
 

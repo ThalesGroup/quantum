@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -48,7 +48,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. How iOS, Android and desktop apply the rule is not decided yet."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows), the state says the field is required and a visible \"(required)\" is hidden from assistive technology. How \"(required)\" reaches VoiceOver on iOS and macOS is not decided yet."
     },
     {
       "id": "statuses",
@@ -414,6 +414,38 @@
         "platforms": [
           "web"
         ]
+      },
+      {
+        "text": "On Android, each required field ends its label with an asterisk, as Material asks; the asterisk is explained once, in supporting text or in a note before the first field, and the accessibility label includes it.",
+        "refs": [
+          "material-text-fields-required",
+          "material-text-fields-accessibility",
+          "wcag-h90"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm so assistive technology knows it is required.",
+        "refs": [
+          "windows-forms",
+          "winui-is-required-for-form",
+          "wcag-h90"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On iOS and macOS, Apple gives no mark for a required field, so the generic rule applies: \"(optional)\" with a note, or \"(required)\" when most fields are optional.",
+        "refs": [
+          "hig-entering-data-best-practices"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -601,6 +633,16 @@
         "id": "accname-hidden",
         "title": "AccName 1.2: step 2A, hidden nodes are not part of the name",
         "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "winui-is-required-for-form",
+        "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
+        "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
       }
     ]
   },
@@ -704,6 +746,28 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-required-marking-platforms",
+      "date": "2026-11-20",
+      "version": "0.10.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Each platform marks required fields its own way where it has guidance: Android with Material's asterisk, explained once and in the accessibility label; Windows with an asterisk on the label, explained once, and IsRequiredForForm, so the state is said by the platform. iOS and macOS, where Apple gives no mark, apply the generic words.",
+      "rationale": "Options. A: the generic words on every platform, departing from Material and from Windows' Forms guidance. B: each platform's own mark where it has one, the generic rule elsewhere. The team chose B, the rule step 3 set for every platform-specific choice. Material asks for an asterisk explained once and included in the accessibility label; Windows asks to mark required input with an asterisk on the label and exposes the state with IsRequiredForForm; Apple's HIG gives no mark and asks to make clear that required data is needed before people continue (step 7). The asterisk departs from the generic rule on Android and Windows only. How \"(required)\" reaches VoiceOver on iOS and macOS stays open: the API references that would say whether a required state exists there (UIKit, AppKit) are not among the trusted sources yet.",
+      "platforms": [
+        "android",
+        "ios",
+        "desktop"
+      ],
+      "refs": [
+        "material-text-fields-required",
+        "material-text-fields-accessibility",
+        "windows-forms",
+        "winui-is-required-for-form",
+        "hig-entering-data-best-practices",
+        "wcag-h90"
+      ]
+    },
     {
       "id": "forms-required-mark-exposure",
       "date": "2026-11-20",
@@ -874,6 +938,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-marking-platforms: Android and Windows mark required fields with their own asterisk, explained once (Windows also sets IsRequiredForForm); iOS and macOS apply the generic words. The rule on required fields and three platform guidelines say so; how \"(required)\" reaches VoiceOver stays open."
+    },
     {
       "version": "0.9.0",
       "date": "2026-11-20",
