@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.14.4",
+  "version": "0.14.5",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -908,6 +908,15 @@
   ],
   "decisions": [
     {
+      "id": "leading-icon-spacing",
+      "date": "2026-11-20",
+      "version": "0.14.5",
+      "area": "dimension",
+      "status": "active",
+      "text": "The leading icon sits 8 px from the start border at every size (space.8) and 4 / 8 / 8 px from the text (space.4 / 8 / 8), so the text starts at 28 / 36 / 40 px for the small, medium and large sizes, as the Search field's glyph; the end padding stays 8 / 12 / 16 px. The tokens land with the property and the part (#103 step 15, point 5).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 4) among: A, keep the Search field's spacing, the glyph 8 px from the border at every size (space.8) and 4 / 8 / 8 px from the text (space.4 / 8 / 8), the text at 28 / 36 / 40 px (chosen, recommended); B, the Button's leading icon, 6 / 6 / 8 px from the edge (button.container.padding-inline.icon-side) and 2 / 4 / 4 px from the label (button.container.gap), the text at 24 / 30 / 36 px; C, the Figma prototype's spacing on the field's glyph, inset 6 / 8 / 10 and gap 8 / 8 / 12, the text at 30 / 36 / 46 px; D, the glyph at the text inset of a field without icon (8 / 12 / 16) and gap 4 / 8 / 8, the text at 28 / 40 / 48 px. The Figma prototype draws an 18 / 18 / 24 px frame 6 / 8 / 10 px from the border and 8 / 8 / 12 px from the text, its large size varying between variants (gap 8 at rest, inset 8 in error, warning and success). Measured beside a field without icon, the Search field and a Button of the same size, light and dark, surface levels 0 to 3: with A the glyph starts at the text inset of a plain field in small and before it in medium and large, so it reads as the start of the box; nothing moves in the Search field, and the choice follows point 2, which kept the Search field's glyph sizes rather than the Button's. B's spacing is set for the Button's larger icon (2 px gap in small); C and D start the text later and leave the value less room. No new token: every value is on the space scale; the end padding stays the box's inline padding, 8 / 12 / 16 px."
+    },
+    {
       "id": "leading-icon-color",
       "date": "2026-11-20",
       "version": "0.14.4",
@@ -1279,6 +1288,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.5",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-spacing: the leading icon is 8 px from the border and 4 / 8 / 8 px from the text, the text at 28 / 36 / 40 px (#103 step 15, point 4). No token or rendering change yet."
+    },
     {
       "version": "0.14.4",
       "date": "2026-11-20",
