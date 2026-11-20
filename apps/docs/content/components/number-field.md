@@ -86,7 +86,7 @@ This section explains the decisions behind it.
 
 ### iOS
 
-- The recommended minimum text size is 11 pt; the help text at 12 pt is above it
+- The recommended minimum text size is 11 pt; the description at 12 pt and the message at 14 pt are above it
   ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - A stepper is a two-segment control that increases or decreases an incremental value, next to
   a field that shows it: the iOS counterpart of the spin control

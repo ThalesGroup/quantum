@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -312,7 +312,7 @@
         ]
       },
       {
-        "text": "Apple's recommended minimum text size is 11 pt on iOS and iPadOS; the 12 pt text of the description and the message is above it.",
+        "text": "Apple's recommended minimum text size is 11 pt on iOS and iPadOS; the description (12 pt at its smallest) and the message (14 pt at its smallest) are above it.",
         "refs": [
           "hig-typography"
         ],
@@ -397,7 +397,7 @@
         ]
       },
       {
-        "text": "The label, description and message are set from 12 to 16 px, under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text.",
+        "text": "The label, description and message are set from 12 to 16 px (the message from 14), under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text.",
         "refs": [
           "wcag:1.4.4",
           "wcag:1.4.3"
@@ -853,6 +853,22 @@
   ],
   "decisions": [
     {
+      "id": "message-text-size",
+      "date": "2026-11-20",
+      "version": "0.13.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The message takes the size of the label and the value (text-field.message.typography.*: body.size.sm, md, md, so 14 / 16 / 16 px for small, medium and large), no longer the description's (body.size.xs, xs, sm: 12 / 12 / 14 px). The description keeps its size; the weight (medium), the line height (normal, 1.5) and the letter spacing are unchanged. This replaces the message part of the decision label-help-text-sizes.",
+      "rationale": "Decided by the team on 2026-11-20 while reviewing #103 step 12, point 2b (the error icon's size): at 12 px the message was too small for what it carries, what is wrong and how to fix it. Next to 14 and 16 px text the icon in the message is Icon small (16 px), the Icon spec's size for body text. Contrast is unchanged (text 4.5:1, WCAG 1.4.3): the colors do not depend on the size. The box does not move: the message sits under it and the description.",
+      "tokens": [
+        "text-field.message.typography.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.4"
+      ]
+    },
+    {
       "id": "error-fill-subtle",
       "date": "2026-11-20",
       "version": "0.12.0",
@@ -1143,6 +1159,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.13.0",
+      "date": "2026-11-20",
+      "note": "Decision message-text-size: the message (text-field.message.typography.*) is 14 / 16 / 16 px (body.size.sm, md, md), the label's and the value's size, instead of 12 / 12 / 14. The description is unchanged."
+    },
     {
       "version": "0.12.0",
       "date": "2026-11-20",
