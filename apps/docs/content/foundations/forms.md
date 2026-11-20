@@ -276,9 +276,13 @@ After the control, the icon is the size of the Button's icon at the same size (2
 for small, medium and large), 8 px after the control and centred on it, so a field and the
 Button next to it carry the same icon. In the message, it is 16 px, the icon size next to the
 message's 14 and 16 px text, 4 px before the text.
+Its color is the on-base icon color of its severity, the color of the message text (for an
+error #C01619 in light mode and #F88275 in dark mode): it sits on the surface in both places,
+never on the fill, and keeps at least 5.81:1 in light mode and 5.30:1 in dark mode, over the 3:1
+a meaningful icon needs ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)).
 
-> **Not decided yet (step 6).** The fill of a warning and a success, the icon's color, and the
-> message color.
+> **Not decided yet (step 6).** The fill and icon of a warning and a success, and the message
+> color.
 
 ### Web
 
