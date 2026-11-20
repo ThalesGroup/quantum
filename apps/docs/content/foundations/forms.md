@@ -195,10 +195,10 @@ Apple's guidance draws no required mark: it asks that people understand what is 
 they can go on, for instance by enabling the Next or Continue button only once the required
 fields are filled in
 ([HIG: Entering data](https://developer.apple.com/design/human-interface-guidelines/entering-data#Best-practices)).
-The generic words apply.
-
-> **Not decided yet.** How "(required)" reaches VoiceOver on iOS and macOS: read in the
-> accessibility label, or hidden behind a required state if the platform has one.
+The generic words apply. No accessibility trait says that a field is required
+([UIKit: UIAccessibilityTraits](https://developer.apple.com/documentation/uikit/uiaccessibilitytraits),
+[SwiftUI: AccessibilityTraits](https://developer.apple.com/documentation/swiftui/accessibilitytraits)),
+so "(required)" stays in the accessibility label and VoiceOver reads it.
 
 ### Android
 
@@ -215,7 +215,10 @@ On Windows, required input is marked with an asterisk on its label
 ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)),
 explained once before the first field, and the control sets `AutomationProperties.IsRequiredForForm`
 ([IsRequiredForForm](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform)).
-On macOS, Apple gives no mark, so the generic words apply, as on iOS.
+On macOS, Apple gives no mark, so the generic words apply, as on iOS. A required control sets
+`accessibilityRequired`
+([AppKit: isAccessibilityRequired()](https://developer.apple.com/documentation/appkit/nsaccessibilityprotocol/isaccessibilityrequired())),
+so "(required)" is hidden from VoiceOver, as on the web.
 
 ## Severities
 

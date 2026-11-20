@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -48,7 +48,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows), the state says the field is required and a visible \"(required)\" is hidden from assistive technology. How \"(required)\" reaches VoiceOver on iOS and macOS is not decided yet."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
     },
     {
       "id": "statuses",
@@ -446,6 +446,18 @@
           "ios",
           "desktop"
         ]
+      },
+      {
+        "text": "On macOS, a required control sets accessibilityRequired, so VoiceOver knows it is required and a visible \"(required)\" is hidden from it; on iOS, no accessibility trait says required, so \"(required)\" stays in the accessibility label. Each fact is said once.",
+        "refs": [
+          "appkit-accessibility-required",
+          "uikit-accessibility-traits",
+          "swiftui-accessibility-traits"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -643,6 +655,21 @@
         "id": "winui-is-required-for-form",
         "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
         "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
+      },
+      {
+        "id": "appkit-accessibility-required",
+        "title": "AppKit: NSAccessibilityProtocol, isAccessibilityRequired()",
+        "url": "https://developer.apple.com/documentation/appkit/nsaccessibilityprotocol/isaccessibilityrequired()"
+      },
+      {
+        "id": "uikit-accessibility-traits",
+        "title": "UIKit: UIAccessibilityTraits",
+        "url": "https://developer.apple.com/documentation/uikit/uiaccessibilitytraits"
+      },
+      {
+        "id": "swiftui-accessibility-traits",
+        "title": "SwiftUI: AccessibilityTraits",
+        "url": "https://developer.apple.com/documentation/swiftui/accessibilitytraits"
       }
     ]
   },
@@ -746,6 +773,24 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-required-voiceover",
+      "date": "2026-11-20",
+      "version": "0.12.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On macOS, a required control sets accessibilityRequired and a visible \"(required)\" is hidden from VoiceOver; on iOS, \"(required)\" stays in the accessibility label. \"(optional)\" is read on both.",
+      "rationale": "Point 2's principle, each fact said once, applied to Apple's platforms. AppKit's isAccessibilityRequired() tells whether an element must have content for a form to be submitted, so on macOS the state says it, as the required attribute does on the web. UIKit's UIAccessibilityTraits and SwiftUI's AccessibilityTraits have no required trait, so on iOS the word is the only way VoiceOver can say it. Checked on the reference pages, no VoiceOver run.",
+      "platforms": [
+        "ios",
+        "desktop"
+      ],
+      "refs": [
+        "appkit-accessibility-required",
+        "uikit-accessibility-traits",
+        "swiftui-accessibility-traits"
+      ]
+    },
     {
       "id": "forms-apple-api-sources",
       "date": "2026-11-20",
@@ -954,6 +999,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.12.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-voiceover: macOS hides \"(required)\" behind accessibilityRequired, iOS keeps it in the accessibility label. The rule on required fields and an Apple guideline say so."
+    },
     {
       "version": "0.11.0",
       "date": "2026-11-20",
