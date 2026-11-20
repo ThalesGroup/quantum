@@ -1,0 +1,13 @@
+{
+  "pr": 103,
+  "prTitle": "Text field refinement",
+  "issue": 105,
+  "issueTitle": "Forms foundation",
+  "component": "Text field",
+  "steps": ["Field family", "Height and padding", "Value text", "Label and message text", "Spacing", "Corner radius", "Border width", "Fill", "Border color", "Placeholder", "Focus", "Error state", "Warning and success", "Description and message", "Leading icon", "Required mark"],
+  "done": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  "people": [
+    { "login": "julien-deramond", "name": "Julien Déramond", "role": "Driver" },
+    { "login": null, "name": "Design", "role": "Design" }
+  ]
+}
