@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -908,6 +908,20 @@
   ],
   "decisions": [
     {
+      "id": "leading-icon-optional",
+      "date": "2026-11-20",
+      "version": "0.14.2",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Text field offers an optional leading icon before the value, the Button's Leading icon (iconStart, a glyph of the icon set), with no icon unless one is given. The guideline is no leading icon: add one only where a design asks for a more precise rendering, such as a page with a few fields. The icon only illustrates the expected input; it never names the field nor replaces the label.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 1) among: A, keep today (no leading icon, the Search field keeps its own glyph); B, an optional leading icon on the single-line fields, off by default (chosen); C, as B and the Textarea too; D, on by default with a generic glyph, as the Figma prototype's left icon. The team chose B for what the component offers and A for what it advises: the icon must be feasible and optional for designs that want a more precise rendering (a marketing page with a few fields, for example), but the default and the guideline for regular applications is no leading icon, the Search field's glyph being the known exception. D was rejected because a default glyph means nothing for most fields (sell on an email field) and \"on unless switched off\" is the opposite of the Button's leading icon; C because no source and no Figma variant shows an icon in a multi-line field. The icon is decorative: hidden from assistive technology, never the label, which stays visible text (WCAG 1.1.1, 3.3.2, 2.5.3). Material lists a leading icon as optional and Apple lets a text field show an image at its leading end; Windows draws none. Its size, color, gap and accessibility contract are #103 step 15, points 2 to 5, which add the property, the part and its tokens.",
+      "refs": [
+        "wcag:1.1.1",
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
       "id": "message-color-error",
       "date": "2026-11-20",
       "version": "0.14.1",
@@ -1247,6 +1261,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.2",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-optional: an optional leading icon, off by default, no icon advised (#103 step 15, point 1). No token or rendering change yet."
+    },
     {
       "version": "0.14.1",
       "date": "2026-11-20",
