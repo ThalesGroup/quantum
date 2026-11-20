@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.14.3",
+  "version": "0.14.4",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -908,6 +908,15 @@
   ],
   "decisions": [
     {
+      "id": "leading-icon-color",
+      "date": "2026-11-20",
+      "version": "0.14.4",
+      "area": "color",
+      "status": "active",
+      "text": "The leading icon follows the text beside it: global.icon.on-base.neutral.tertiary, the placeholder's role, while the field is empty, and global.icon.on-base.neutral.primary, the value's role, once something is typed; global.icon.state.disabled.default when disabled. Its tokens are the Search field's icon.color (beside the value) and icon.placeholder-color (empty); they land here with the property and the part (#103 step 15, points 4 and 5).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 3) among: A, global.icon.on-base.neutral.tertiary in every state, the placeholder's role and the Search field glyph's until now (recommended); B, follow the text beside it, the placeholder's role (tertiary) while the field is empty and the value's (global.icon.on-base.neutral.primary) once something is typed, as the Figma prototype does (chosen); C, global.icon.on-base.neutral.secondary in every state, the Figma prototype's color at rest. The Figma prototype binds the icon to its own variables carrying its placeholder's and its value's colors: #313131 empty (secondary), #616161 active (tertiary), #0E0E0E filled (primary), #8C8C8C disabled; the repository's placeholder is tertiary in every state (step 10), so the Figma logic on the repository's roles is B. B also matches the Button, whose icon takes its label's color. Measured on the medium Text field and the Search field, empty, filled, focused, in error, warning and success (their subtle fills previewed) and disabled, light and dark, surface levels 0 to 3: with B the icon is the placeholder's color when empty (on the fill 5.43:1 at the lowest in light, on the error fill, and 6.40:1 in dark) and the value's when filled (16.91:1 and 11.29:1 at the lowest). WCAG 1.4.11 asks 3:1 of the parts of graphics required to understand the content and the icon only illustrates, the label naming the field; under WCAG 1.1.1 a pure decoration can be ignored by assistive technology: every option clears 3:1 anyway. Disabled, the icon takes global.icon.state.disabled.default, as the text. No raw or semantic token added."
+    },
+    {
       "id": "leading-icon-size",
       "date": "2026-11-20",
       "version": "0.14.3",
@@ -1270,6 +1279,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.4",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-color: the leading icon follows the text beside it, tertiary while empty, primary once filled (#103 step 15, point 3). No token or rendering change yet."
+    },
     {
       "version": "0.14.3",
       "date": "2026-11-20",

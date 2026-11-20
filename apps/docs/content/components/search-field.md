@@ -31,6 +31,9 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 Sizes follow the Text field (small, medium, large). States are default, hover, focus visible
 and disabled: no invalid, no read-only.
 
+The search glyph follows the text beside it: as light as the placeholder while the field is
+empty, as dark as the value once people type. It never stands out from the text it introduces.
+
 ## Content
 
 - The label says what is searched: **Search**, **Search projects**, **Filter by name**.

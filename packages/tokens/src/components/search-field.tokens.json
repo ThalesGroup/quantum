@@ -244,7 +244,7 @@
       }
     },
     "icon": {
-      "$description": "Search glyph of the icon font over the start edge of the control. Follows the control's placeholder color; only the font and its size are tokenized.",
+      "$description": "Search glyph of the icon font over the start edge of the control. Follows the text beside it: the placeholder's color while the field is empty, the value's once something is typed (decision leading-icon-color).",
       "font-family": {
         "$type": "fontFamily",
         "$value": "{font.icon.family}"
@@ -283,6 +283,17 @@
       },
       "color": {
         "$type": "color",
+        "$description": "Color of the glyph beside a typed value: the value's role (decision leading-icon-color).",
+        "default": {
+          "$value": "{global.icon.on-base.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
+        }
+      },
+      "placeholder-color": {
+        "$type": "color",
+        "$description": "Color of the glyph while the field is empty: the placeholder's role (decision leading-icon-color).",
         "default": {
           "$value": "{global.icon.on-base.neutral.tertiary}"
         },

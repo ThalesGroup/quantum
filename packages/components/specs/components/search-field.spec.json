@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -622,6 +622,22 @@
   ],
   "decisions": [
     {
+      "id": "leading-icon-color",
+      "date": "2026-11-20",
+      "version": "0.10.7",
+      "area": "color",
+      "status": "active",
+      "supersedes": [
+        "field-colors"
+      ],
+      "text": "The search glyph follows the text beside it: search-field.icon.placeholder-color, global.icon.on-base.neutral.tertiary (the placeholder's role), while the field is empty, and search-field.icon.color, global.icon.on-base.neutral.primary (the value's role), once something is typed; both take global.icon.state.disabled.default when disabled. On the web the template always writes a placeholder attribute, empty when there is none, so the CSS tells an empty field with :placeholder-shown. The field family's leading icon takes the same tokens. Supersedes field-colors: the box, its border, the value, the placeholder and the description keep their colors there; only the glyph changes, from the tertiary icon color in every state.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 3) among: A, global.icon.on-base.neutral.tertiary in every state, the placeholder's role and the Search field glyph's until now (recommended); B, follow the text beside it, the placeholder's role (tertiary) while the field is empty and the value's (global.icon.on-base.neutral.primary) once something is typed, as the Figma prototype does (chosen); C, global.icon.on-base.neutral.secondary in every state, the Figma prototype's color at rest. The Figma prototype binds the icon to its own variables carrying its placeholder's and its value's colors: #313131 empty (secondary), #616161 active (tertiary), #0E0E0E filled (primary), #8C8C8C disabled; the repository's placeholder is tertiary in every state (step 10), so the Figma logic on the repository's roles is B. B also matches the Button, whose icon takes its label's color. Measured on the medium Text field and the Search field, empty, filled, focused, in error, warning and success (their subtle fills previewed) and disabled, light and dark, surface levels 0 to 3: with B the icon is the placeholder's color when empty (on the fill 5.43:1 at the lowest in light, on the error fill, and 6.40:1 in dark) and the value's when filled (16.91:1 and 11.29:1 at the lowest). WCAG 1.4.11 asks 3:1 of the parts of graphics required to understand the content and the icon only illustrates, the label naming the field; under WCAG 1.1.1 a pure decoration can be ignored by assistive technology: every option clears 3:1 anyway. Disabled, the icon takes global.icon.state.disabled.default, as the text. No raw or semantic token added.",
+      "tokens": [
+        "search-field.icon.color.*",
+        "search-field.icon.placeholder-color.*"
+      ]
+    },
+    {
       "id": "leading-icon-size",
       "date": "2026-11-20",
       "version": "0.10.6",
@@ -851,7 +867,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "The control follows the Text field's colors: a box on the default surface outlined in the accent neutral border color; hover tints it with the surface hover color and keeps the border; disabled takes the shared disabled colors. Value text is primary, the placeholder tertiary, the description secondary, the glyph the tertiary icon color.",
       "rationale": "The Figma library maps no color to form controls. The accent neutral border is the lightest neutral border that keeps 3:1 against the surface in both modes (WCAG 1.4.11); the hover tint reuses the surface's own hover step.",
       "tokens": [
@@ -908,6 +924,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.7",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-color: the search glyph follows the text beside it, global.icon.on-base.neutral.tertiary while the field is empty (new token search-field.icon.placeholder-color) and global.icon.on-base.neutral.primary once something is typed (search-field.icon.color, was tertiary); the template always writes a placeholder attribute, empty when none is given (#103 step 15, point 3)."
+    },
     {
       "version": "0.10.6",
       "date": "2026-11-20",

@@ -37,7 +37,8 @@ export default {
               type: 'icon',
               name: 'icon',
               glyph: 'search',
-              bind: { fill: 'icon.color', size: 'icon.size', fontFamily: 'icon.font-family', fontWeight: 'icon.font-weight' },
+              // The glyph follows the text beside it (decision leading-icon-color): the value's color, or the placeholder's.
+              bind: { fill: (v) => (v.axes[CONTENT.name] === 'value' ? 'icon.color' : 'icon.placeholder-color'), size: 'icon.size', fontFamily: 'icon.font-family', fontWeight: 'icon.font-weight' },
             },
           ],
         },

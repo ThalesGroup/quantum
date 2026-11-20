@@ -27,6 +27,7 @@
   --_padding-inline-start: var(--search-field-control-padding-inline-start-medium);
   --_icon-size: var(--search-field-icon-size-medium);
   --_icon-color: var(--search-field-icon-color-default);
+  --_icon-placeholder-color: var(--search-field-icon-placeholder-color-default);
   --_font-family: var(--search-field-control-typography-medium-font-family);
   --_font-size: var(--search-field-control-typography-medium-font-size);
   --_font-weight: var(--search-field-control-typography-medium-font-weight);
@@ -125,7 +126,10 @@
   display: inline-grid;
   place-content: center;
   inline-size: var(--_icon-size);
-  color: var(--_icon-color);
+  /* The glyph follows the text beside it: the placeholder's color while the field is empty, the value's once
+     something is typed (decision leading-icon-color). The template always writes a placeholder attribute, empty
+     when there is none, so :placeholder-shown tells an empty field. */
+  color: var(--_icon-placeholder-color);
   font-family: var(--search-field-icon-font-family);
   font-size: var(--_icon-size);
   font-weight: var(--search-field-icon-font-weight);
@@ -142,6 +146,10 @@
   direction: ltr;
   pointer-events: none;
   -webkit-font-smoothing: antialiased;
+}
+
+.ds-search-field:has(.ds-search-field__control:not(:placeholder-shown)) .ds-search-field__icon {
+  color: var(--_icon-color);
 }
 
 .ds-search-field__control {
@@ -209,6 +217,7 @@
 .ds-search-field:where([data-state="disabled"]),
 .ds-search-field:has(.ds-search-field__control:disabled) {
   --_icon-color: var(--search-field-icon-color-disabled);
+  --_icon-placeholder-color: var(--search-field-icon-placeholder-color-disabled);
 }
 
 .ds-search-field__control:focus {
