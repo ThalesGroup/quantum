@@ -90,6 +90,17 @@ A field stacks four parts, top to bottom:
 A group of checkboxes or radios has the same parts around its options, with a legend as its
 label, and the message after the options.
 
+**Every control that can show a severity has a message part**, after its description, so its
+error is said in text next to it and associated with it. A form-wide summary may repeat the
+error, never replace it. The standalone Checkbox has the error severity but no message part
+yet: it gets one with the complex controls (step 2b). A Switch shows no severity, so it has no
+message; a Slider gets one only if it is given a severity. WCAG asks that an error be indicated
+in text ([Understanding 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification#intent)),
+and WAI-ARIA lets a checkbox reference its error message
+([WAI-ARIA 1.2: aria-errormessage](https://www.w3.org/TR/wai-aria-1.2/#aria-errormessage)).
+Material gives the checkbox error states but no error text
+([Material: checkbox](https://m3.material.io/components/checkbox/overview)).
+
 **The message sits under the description, for every severity.** The help and the message are
 both visible, and the control's `aria-describedby` lists the description, then the message, so a
 screen reader reads the name, the help, then the message. The help stays where people need it

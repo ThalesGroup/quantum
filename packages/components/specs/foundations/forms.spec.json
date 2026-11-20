@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -33,7 +33,7 @@
     {
       "id": "anatomy",
       "name": "Anatomy of a field",
-      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10)."
+      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10). Every form control that can show a severity has a message part, after its description: the Checkbox, which has the error severity but no message part yet, gets it with the complex controls (step 2b); until then it is a known gap the validator warns about."
     },
     {
       "id": "label",
@@ -486,6 +486,11 @@
         "id": "winui-live-setting",
         "title": "Windows App SDK: AutomationProperties.LiveSetting",
         "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.livesetting"
+      },
+      {
+        "id": "aria-errormessage",
+        "title": "WAI-ARIA 1.2: aria-errormessage (used in roles: checkbox, textbox, combobox, radiogroup, slider, spinbutton…)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-errormessage"
       }
     ]
   },
@@ -590,6 +595,21 @@
   ],
   "decisions": [
     {
+      "id": "forms-message-part-every-control",
+      "date": "2026-11-20",
+      "version": "0.6.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "Every form control that can show a severity has a message part, after its description (after the options in a group). The Checkbox, which has the error severity and no message part, gets it with the complex controls (step 2b), when the validator's warning about a severity without a message part becomes an error.",
+      "rationale": "Options. A: state the rule now and give the Checkbox its message part in step 2b. B: state the rule and add the Checkbox's message part now. C: keep the Checkbox without a message part, its error said by the form (a summary above the fields). C leaves the error not next to the box and not associated with it, against the error-in-text rule, and relies on a summary that is not decided (step 9). B and A render the same once 2b lands (measured on a medium Checkbox: +23 px for a one-line message, the message 5.82 to 6.13:1 in light and 5.31 to 7.07:1 in dark on levels 0 to 3); A keeps the Checkbox's changes with the other complex-control points of step 2b. Understanding 3.3.1 asks that the error be indicated in text without mandating where; WAI-ARIA 1.2 lists the checkbox among the roles that take aria-invalid and aria-errormessage; Material gives the checkbox error states but no error text. No token, CSS, template or theme changes now.",
+      "refs": [
+        "wcag:3.3.1",
+        "wai-forms-notifications",
+        "aria-errormessage",
+        "material-checkbox-overview"
+      ]
+    },
+    {
       "id": "forms-message-under-description",
       "date": "2026-11-19",
       "version": "0.5.0",
@@ -677,6 +697,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-message-part-every-control: every form control that can show a severity has a message part after its description; the Checkbox gets its message part in step 2b. The rule on the anatomy of a field says so."
+    },
     {
       "version": "0.5.0",
       "date": "2026-11-19",
