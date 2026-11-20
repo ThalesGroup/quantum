@@ -17,6 +17,8 @@ import { fileURLToPath } from 'node:url';
 import { loadAll, flatten, cssVarName } from './lib/dtcg.mjs';
 import { loadScreens, screenComponents } from './lib/screens.mjs';
 import { mirrorsOf } from './lib/mirrors.mjs';
+import { loadA11y } from './lib/a11y.mjs';
+import { followedByScope, componentsInScope } from './lib/foundation-scope.mjs';
 import { PATHS, FILES, artifacts, foundationArtifacts } from './lib/paths.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -59,6 +61,7 @@ const all = (key) => specs.map((s) => artifacts(s.id)[key]);
 // Foundations: global specifications shared by every component (specs/foundations/).
 const foundationsDir = path.join(root, PATHS.specs, 'foundations');
 const foundations = fs.existsSync(foundationsDir) ? fs.readdirSync(foundationsDir).filter((f) => f.endsWith('.spec.json')).map((f) => JSON.parse(fs.readFileSync(path.join(foundationsDir, f), 'utf8'))) : [];
+const a11yRegistry = loadA11y(root);
 // Foundations owning (exactly or through a group pattern) one of the given token paths.
 const ownsPath = (f, p) => f.tokens.some((t) => (t.endsWith('.*') ? p.startsWith(t.slice(0, -1)) : p === t));
 const matchesPath = (pattern, p) => (pattern.endsWith('.*') ? p.startsWith(pattern.slice(0, -1)) : p === pattern);
@@ -160,7 +163,8 @@ const LINKS = [
   [under(PATHS.content, 'components/([a-z0-9-]+)\\.md$'), ([, id]) => [[artifacts(id).spec, 'guidance must not contradict the spec; WCAG links must be cited by the spec']]],
   [under(PATHS.specs, 'foundations/([a-z0-9-]+)\\.spec\\.json$'), ([, id]) => {
     const f = foundations.find((x) => x.id === id);
-    const following = f?.appliesTo ? componentsUsingPaths(f.tokens.filter((t) => !t.endsWith('.*'))) : [];
+    // A scope read from the role profiles (Forms owns no token) lists the components in scope; the others, the components aliasing the tokens.
+    const following = !f?.appliesTo ? [] : followedByScope(f.appliesTo) ? componentsInScope(f.appliesTo, specs, a11yRegistry.roles).map((s) => s.id) : componentsUsingPaths(f.tokens.filter((t) => !t.endsWith('.*')));
     return [
       [foundationArtifacts(id).docs, 'rules, platforms and accessibility sections'],
       [`${PATHS.tokensSrc}/semantic/`, 'the semantic tokens it owns carry its values (and src/modes/, src/platforms/)'],
@@ -222,6 +226,7 @@ const LINKS = [
   [under(PATHS.specs, 'a11y/roles\\.json$'), () => [
     ...all('spec').map((f) => [f, 'role obligations (aria role, keys, focus, required WCAG criteria)']),
     ...all('docs').map((f) => [f, 'Accessibility section explains the obligations']),
+    ...foundations.filter((f) => f.appliesTo).map((f) => [foundationArtifacts(f.id).spec, `appliesTo "${f.appliesTo}" reads the role profiles (focusable, input): its followers change with them`]),
     ['scripts/lib/scaffold.mjs', 'scaffold seeds the contract from the profile'],
   ]],
   [under(PATHS.specs, 'a11y/sources\\.json$'), () => [...all('spec').map((f) => [f, 'references must stay on trusted publishers']), ...all('docs').map((f) => [f, 'Accessibility links must stay trusted']), ...foundations.flatMap((f) => [[foundationArtifacts(f.id).spec, 'references must stay on trusted publishers'], [foundationArtifacts(f.id).docs, 'Accessibility links must stay trusted']]), [`${PATHS.components}/AGENTS.md`, 'specifications: trusted publishers list']]],
@@ -229,6 +234,7 @@ const LINKS = [
   [/^scripts\/lib\/dtcg\.mjs$/, () => [['scripts/test/dtcg.test.mjs', 'a test per new value shape or type'], [`${PATHS.docsSrc}/lib/tokens.ts`, 'uses the library'], ['scripts/AGENTS.md', 'library description']]],
   [new RegExp(`^${esc(FILES.styleDictionaryConfig)}$`), () => [[`${PATHS.penpot}/src/plan.mjs`, 'writes dist/penpot/tokens.json into Penpot files (pnpm test)'], [`${PATHS.tokens}/README.md`, 'the list of generated outputs'], [`${PATHS.tokens}/AGENTS.md`, '"Distribution formats"'], [`${PATHS.tokens}/CHANGELOG.md`, 'a changed output is a change of the package']]],
   [/^scripts\/lib\/specs-bridge\.mjs$/, () => [['scripts/test/specs-bridge.test.mjs', 'a test per mapping'], ['scripts/AGENTS.md', 'bridge description'], ['agents/specs-interop.md', 'Specs interoperability']]],
+  [/^scripts\/lib\/foundation-scope\.mjs$/, () => [['scripts/test/foundation-scope.test.mjs', 'a test per scope and check'], [`${PATHS.docsSrc}/lib/foundations.ts`, 'the site lists the followers through it'], [FILES.foundationSchema, 'the appliesTo enum equals SCOPES'], [`${PATHS.docsSrc}/content.config.ts`, 'the appliesTo enum equals SCOPES'], [`${PATHS.components}/AGENTS.md`, 'foundations: appliesTo'], ['scripts/AGENTS.md', 'library description, what validate.mjs checks']]],
   [/^scripts\/lib\/a11y\.mjs$/, () => [['scripts/test/a11y.test.mjs', 'a test per check'], [`${PATHS.docsSrc}/lib/a11y.ts`, 'site renders citations through it'], ['scripts/AGENTS.md', 'what validate.mjs checks']]],
   [/^scripts\/validate\.mjs$/, () => [['scripts/AGENTS.md', '"What validate.mjs checks" list'], ['agents/workflow.md', '"Definition of done" if a new obligation']]],
   [/^scripts\/(new-component|lib\/scaffold)\.mjs$/, () => [['scripts/test/scaffold.test.mjs', 'the scaffolded blueprint covers every scaffolded token slot'], ['agents/workflow.md', 'the "Add a new component" row'], [`${PATHS.components}/AGENTS.md`, 'Adding a component']]],

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox",
   "name": "Checkbox",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "checkbox",
   "summary": "Lets people turn one option on or off, or pick any number of options from a list.",
@@ -91,11 +91,24 @@
       "description": "The box must be checked to submit the form (accepting terms)."
     },
     {
-      "id": "invalid",
-      "name": "Invalid",
-      "type": "boolean",
-      "default": false,
-      "description": "The value failed validation (a required box left unchecked). The form explains the error in text next to the box or at the top of the form."
+      "id": "severity",
+      "name": "Severity",
+      "type": "enum",
+      "default": "none",
+      "description": "What the check of the value found. A choice has nothing to confirm or to warn about, so only error exists (decision forms-severity).",
+      "affects": [
+        "control"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No severity (default)."
+        },
+        {
+          "value": "error",
+          "description": "Validation failed: the box takes the error border and the control is exposed as in error (aria-invalid on the web). The form says the error in text."
+        }
+      ]
     },
     {
       "id": "disabled",
@@ -139,10 +152,11 @@
       "description": "Partially checked: the box stands for a group of options of which some are on. Set by the application through the platform's API (there is no attribute for it on the web); the box fills and shows a bar instead of a check. Toggling it checks or unchecks the whole group."
     },
     {
-      "id": "invalid",
+      "id": "error",
       "trigger": "property",
-      "property": "invalid",
-      "description": "Validation failed: the box border takes the error color. The error is also stated in text by the form."
+      "property": "severity",
+      "value": "error",
+      "description": "Severity error: the box border takes the error color. The error is also stated in text by the form."
     },
     {
       "id": "disabled",
@@ -278,7 +292,7 @@
         ]
       },
       {
-        "text": "The error border contrasts 6.12:1 (light) and 3.73:1 (dark) with the default surface.",
+        "text": "The error border (the accent functional border) contrasts 6.12:1 (light) and 4.97:1 (dark) with the default surface, and at least 5.79:1 and 3.73:1 on every surface level.",
         "refs": [
           "wcag:1.4.11"
         ]
@@ -306,7 +320,7 @@
         ]
       },
       {
-        "text": "When the value is invalid, say so with aria-invalid on the input and describe the error in text associated with it or listed at the top of the form.",
+        "text": "When the value is in error, say so with aria-invalid on the input and describe the error in text associated with it or listed at the top of the form. A checkbox has only the error severity: a choice has nothing to confirm or to warn about.",
         "refs": [
           "wcag:3.3.1",
           "wcag-aria21",
@@ -578,15 +592,15 @@
       }
     },
     {
-      "id": "medium-required-invalid",
-      "name": "Medium, required and invalid",
+      "id": "medium-required-error",
+      "name": "Medium, required and error",
       "description": "A required consent left unchecked; the form states the error in text.",
       "props": {
         "size": "medium",
         "label": "I accept the terms of service",
         "description": "Check the box to continue.",
         "required": true,
-        "invalid": true
+        "severity": "error"
       }
     },
     {
@@ -614,7 +628,7 @@
       "attributes": {
         "size": "data-size",
         "disabled": "data-disabled",
-        "invalid": "data-invalid"
+        "severity": "data-severity"
       },
       "stateAttribute": "data-state",
       "rolePart": "control",
@@ -631,6 +645,23 @@
     "radio-group"
   ],
   "decisions": [
+    {
+      "id": "forms-severity",
+      "date": "2026-11-19",
+      "version": "0.2.0",
+      "area": "state",
+      "status": "active",
+      "text": "The box shows the error severity, set by the severity property (none by default, error): its border takes the accent functional error border color. Warning and success do not exist for a single choice (our judgment, not a source's). Severity replaces the invalid property. On the web the error is aria-invalid=\"true\" and data-severity on the root. The Checkbox still has no message part: the form says the error in text next to the box (Forms step 2b). The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1).",
+      "rationale": "The team validated the Forms foundation's three severities (decision forms-validation-severities) and named the property severity; \"error\" is the word every platform uses (WCAG 3.3.1 Error Identification, Compose error semantics, Material error text), where \"invalid\" is the web's technical term. The clean break is deliberate: the packages are alpha and unreleased, and a deprecated alias would cost a schema field and support in the validator, the bridge and the templates. This amends decisions field-colors and label-description-error, whose text still says invalid and error message.",
+      "tokens": [
+        "checkbox.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.1",
+        "wcag-aria21"
+      ]
+    },
     {
       "id": "selection-control-colors",
       "date": "2026-10-03",
@@ -690,6 +721,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-19",
+      "note": "Breaking, decision forms-severity: the invalid property is replaced by severity (none, error), errorMessage by message (the Checkbox has no message part), the state invalid by error; the web attribute data-invalid by data-severity. Tokens: control.border-color.invalid is control.border-color.error and reads the accent functional border (global.border.accent.functional.<severity>.default) instead of the base error border. CSS: [data-severity=\"<severity>\"] and [data-state=\"<severity>\"]. The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1)."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

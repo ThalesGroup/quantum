@@ -98,13 +98,13 @@ example that exists only on another platform never needs CSS or template code.
 
 ## Form controls with a wrapper root
 
-- A control whose label, description and error message are parts (Checkbox, Radio group, Switch,
+- A control whose label, description and message are parts (Checkbox, Radio group, Switch,
   Text field, Textarea, Select, Progress bar) has a wrapper root (`div`, `fieldset`) and a native
   control inside it, named by `implementations.web.rolePart`. The root carries the enum options
   (`data-size`) and the forced `data-state`; the native element carries the native attributes
   (`disabled`, `required`, `readonly`, `checked`, `aria-invalid`, `aria-describedby`).
 - The label is a `<label for>` pointing at the control's id (the template takes an `id` prop and
-  numbers instances without one); descriptions and error messages are referenced by
+  numbers instances without one); descriptions and messages are referenced by
   `aria-describedby`. Never `aria-label` when a visible label exists.
 - States are written twice: the native pseudo-class or attribute on the control
   (`:checked`, `:disabled`, `[aria-invalid="true"]`, `[readonly]`), and the forced state on the root

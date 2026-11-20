@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "alert",
   "name": "Alert",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "status": "draft",
   "role": "alert",
   "summary": "A brief, important message that draws attention without interrupting the task.",
@@ -400,6 +400,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.1",
+      "date": "2026-11-19",
+      "note": "Fix, no decision changed: the Color foundation 7.1.0 changes two accent functional border roles; the tokens, CSS and template are unchanged. The warning alert border (container.border-color.warning) is functional warning 500 #BD8107 in light mode (was #DFA700) and the error alert border is functional error 400 #EE5248 in dark mode (was #C01619). The border is decoration next to the text and the icon, which identify the alert."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-05",

@@ -2,7 +2,7 @@
  * Text field — HTML template for the web implementation.
  * Pure function of the spec properties (packages/components/specs/components/text-field.spec.json) -> HTML string.
  * Used by the docs site (server and client side). No DOM, no framework, no script: a native text
- * input named by its label, described by its description and, when invalid, by its error message.
+ * input named by its label, described by its description and, with a severity, by its message.
  *
  * Extra props: `id` names the input (unique in the page; without it instances are numbered in
  * render order); `name` is the form field's; `attrs` adds HTML attributes to the input (autocomplete,
@@ -21,25 +21,26 @@ export function render(props = {}) {
     value = '',
     placeholder = null,
     description = null,
-    errorMessage = null,
+    message = null,
     size = 'medium',
     required = false,
     disabled = false,
     readonly = false,
-    invalid = false,
+    severity = 'none',
     state = null,
     id = null,
     name = null,
     attrs: extra = {},
   } = props;
+  const hasMessage = severity !== 'none' && Boolean(message);
 
   const inputId = id ?? `ds-text-field-${++count}`;
   const descriptionId = `${inputId}-description`;
-  const errorId = `${inputId}-error`;
+  const messageId = `${inputId}-message`;
   const rootAttrs = ['class="ds-text-field"', `data-size="${escapeAttr(size)}"`];
   if (disabled) rootAttrs.push('data-disabled');
   if (readonly) rootAttrs.push('data-readonly');
-  if (invalid) rootAttrs.push('data-invalid');
+  if (severity && severity !== 'none') rootAttrs.push(`data-severity="${escapeAttr(severity)}"`);
   if (state && state !== 'default') rootAttrs.push(`data-state="${escapeAttr(state)}"`);
 
   const inputAttrs = ['type="text"', 'class="ds-text-field__control"', 'data-part="control"', `id="${escapeAttr(inputId)}"`];
@@ -49,8 +50,8 @@ export function render(props = {}) {
   if (required) inputAttrs.push('required');
   if (disabled) inputAttrs.push('disabled');
   if (readonly) inputAttrs.push('readonly');
-  if (invalid) inputAttrs.push('aria-invalid="true"');
-  const describedBy = [description ? descriptionId : null, invalid && errorMessage ? errorId : null].filter(Boolean);
+  if (severity === 'error') inputAttrs.push('aria-invalid="true"');
+  const describedBy = [description ? descriptionId : null, hasMessage ? messageId : null].filter(Boolean);
   if (describedBy.length) inputAttrs.push(`aria-describedby="${escapeAttr(describedBy.join(' '))}"`);
   for (const [k, v] of Object.entries(extra)) {
     if (v === false || v == null) continue;
@@ -62,6 +63,6 @@ export function render(props = {}) {
     `<input ${inputAttrs.join(' ')}>`,
   ];
   if (description) parts.push(`<p class="ds-text-field__description" data-part="description" id="${escapeAttr(descriptionId)}">${escapeHtml(description)}</p>`);
-  if (invalid && errorMessage) parts.push(`<p class="ds-text-field__error-message" data-part="error-message" id="${escapeAttr(errorId)}">${escapeHtml(errorMessage)}</p>`);
+  if (hasMessage) parts.push(`<p class="ds-text-field__message" data-part="message" id="${escapeAttr(messageId)}">${escapeHtml(message)}</p>`);
   return `<div ${rootAttrs.join(' ')}>${parts.join('')}</div>`;
 }

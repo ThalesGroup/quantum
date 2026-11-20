@@ -1,0 +1,1207 @@
+{
+  "$schema": "../schema/foundation.schema.json",
+  "id": "forms",
+  "name": "Forms",
+  "version": "0.17.0",
+  "status": "draft",
+  "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
+  "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
+  "tags": [
+    "accessibility",
+    "content",
+    "forms",
+    "validation"
+  ],
+  "tokens": [],
+  "appliesTo": "input-components",
+  "rules": [
+    {
+      "id": "form-control",
+      "name": "What a form control is",
+      "text": "A form control is a component through which people enter or choose a value the product keeps: text, a number, one or several options, on or off, a point in a range. It has a visible label and may have a description; when its value can be missing or wrong, it can be marked required and report an error. Whether the value applies at once or with the rest of the form depends on how the control is used, not on the component."
+    },
+    {
+      "id": "tiers",
+      "name": "Which rules a control follows",
+      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can show a severity (it has the severity property, or the error state it sets) also follows the rules on severities, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its severity property and its message part, with no list of exceptions. Not decided yet (step 2b): whether the Search field, which can be required but has no severity, gets one, and whether the label, required and message guidelines the controls repeat move into this foundation."
+    },
+    {
+      "id": "form-actions",
+      "name": "Form actions",
+      "text": "A button that submits a form is a form action, not a form control: people activate it, they do not enter or choose a value with it. It does not follow this foundation as a control; the rules about the actions of a form name it in their text."
+    },
+    {
+      "id": "anatomy",
+      "name": "Anatomy of a field",
+      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10). Every form control that can show a severity has a message part, after its description: the Checkbox, which has the error severity but no message part yet, gets it with the complex controls (step 2b); until then it is a known gap the validator warns about."
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "text": "Every control has a visible label that stays visible while people type, associated with the control so assistive technology announces it as the control's name. A placeholder is never the label."
+    },
+    {
+      "id": "label-placement",
+      "name": "Where the label sits",
+      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start, as a choice of its layout (step 10 decides that layout and whether a field exposes it); a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android."
+    },
+    {
+      "id": "required",
+      "name": "Required fields",
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
+    },
+    {
+      "id": "statuses",
+      "name": "Severities",
+      "text": "A form control can show one of three severities, none by default: an error says the value is not accepted and how to fix it, a warning says the value is accepted but deserves attention, a success says the value was checked and confirmed. The word is \"error\", not \"invalid\": every platform's guidance speaks of errors (WCAG 3.3.1 Error Identification, the Compose error semantics, Material's error text), while invalid is the web's technical term. There is no information severity: information that holds before any check is the description's job, and no source gives a field an information status. The property is severity, and one message carries every severity. The Checkbox, the Checkbox group and the Radio group have only the error severity: a choice has nothing to confirm or to warn about (our judgment, not a source's). On the web, the error is aria-invalid=\"true\" (and :user-invalid when the browser validates); a warning and a success have no web state, since aria-invalid has no value for them: they are the message text and the styling. The control's border takes the severity's accent functional border color and the message its functional text color. Since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1) the accent borders reach the 3:1 of WCAG 1.4.11 on every surface level; the one shortfall left is the light warning border on the subtle warning fill (2.95:1), which step 6 may use as the fill, accepted knowingly by the team (issue #119)."
+    },
+    {
+      "id": "severity-fill",
+      "name": "Severity in the fill",
+      "text": "The severity is also shown in the control's fill, a solid color, never translucent: the subtle functional background of the severity, global.bg.subtle.functional.<severity>.default. Decided for the error (step 6, the Text field family as the reference rendering): global.bg.subtle.functional.error.default, at rest and on hover alike. A hover tint does not apply in a severity: the error hover step (global.bg.subtle.functional.error.hover) would bring the placeholder under 4.5:1 in light mode (4.33:1, WCAG 1.4.3). The value and the placeholder keep their colors on the fill. Warning and success: step 6, with #103 step 13."
+    },
+    {
+      "id": "severity-icon",
+      "name": "Severity icon",
+      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it, which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message says the severity (\"Error: …\", \"Warning: …\", \"Success: …\"). The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it, as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is the on-base icon role of its severity, global.icon.on-base.functional.<severity>.default, the role of an icon on a surface, where it sits in both placements (never on the fill), and the color of the message text: for the error #C01619 in light mode, #F88275 in dark mode, 5.81:1 and 5.30:1 at the lowest on the surface levels (WCAG 1.4.11); the Checkbox and the Search field take the property with their message part and severity (step 2b)."
+    },
+    {
+      "id": "severity-width",
+      "name": "Width without the icon",
+      "text": "Without the icon after the control (severityIcon message or none, or a choice control), the control keeps its default width and takes the whole width; the place after the control is not reserved. With after-control, the control gives up the icon and the gap after it."
+    },
+    {
+      "id": "error-in-text",
+      "name": "A severity is said in text",
+      "text": "An error is identified in text next to the control it concerns, associated with that control, and never shown by color alone. The text says what is wrong and, when a fix is known, how to fix it. A warning and a success are said in text the same way, whatever icon or color accompanies them."
+    },
+    {
+      "id": "timing",
+      "name": "When a value is checked",
+      "text": "Not decided yet: on submit, when people leave the field, or as they type. A control is never marked as in error before validation ran."
+    },
+    {
+      "id": "announcement",
+      "name": "How errors are announced",
+      "text": "Not decided yet, for each platform: where focus goes after a failed submit, and how an error that appears without a submit reaches assistive technology."
+    },
+    {
+      "id": "summary",
+      "name": "Error summary",
+      "text": "Not decided yet: whether a form lists its errors above the fields, with a link to each field."
+    },
+    {
+      "id": "spacing",
+      "name": "Spacing",
+      "text": "Not decided yet: the space between fields, between groups of fields and before the form's actions. Today a field spaces its own parts by its container gap, and a group by its row gap."
+    },
+    {
+      "id": "web-rendering",
+      "name": "Web rendering",
+      "text": "A label element pointing at the control's id; the description and the message referenced by aria-describedby for every severity; the required attribute on a required control; aria-invalid=\"true\" on a control in error and only then; data-severity on the component for the three severities; a fieldset and its legend around a group of checkboxes or radios.",
+      "platforms": [
+        "web"
+      ]
+    }
+  ],
+  "contrast": [
+    {
+      "id": "error-text-on-surfaces",
+      "description": "The message of an error on every surface level. Measured only while the severities are being rendered (WCAG 1.4.3 asks 4.5:1).",
+      "foreground": "global.text.on-base.functional.error.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.3"
+      ],
+      "minimum": 4.5
+    },
+    {
+      "id": "warning-text-on-surfaces",
+      "description": "The message of a warning on every surface level. Measured only (WCAG 1.4.3 asks 4.5:1).",
+      "foreground": "global.text.on-base.functional.warning.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "success-text-on-surfaces",
+      "description": "The message of a success on every surface level. Measured only (WCAG 1.4.3 asks 4.5:1).",
+      "foreground": "global.text.on-base.functional.success.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "error-border-on-surfaces",
+      "description": "The border that identifies a control in error, the accent functional border, against every surface level (WCAG 1.4.11 asks 3:1): 6.12 / 5.79 / 6.12 / 5.79:1 in light mode and 4.97 / 4.55 / 4.16 / 3.73:1 in dark mode on levels 0 to 3, since the Color foundation 7.1.0. A requirement since the error rendering was decided (forms-error-fill).",
+      "foreground": "global.border.accent.functional.error.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ],
+      "minimum": 3
+    },
+    {
+      "id": "error-border-on-fill",
+      "description": "The border of a control in error against its own fill, the other color next to it (WCAG 1.4.11 asks 3:1): 5.45:1 in light mode, 5.14:1 in dark mode.",
+      "foreground": "global.border.accent.functional.error.default",
+      "backgrounds": [
+        "global.bg.subtle.functional.error.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "error-value-on-fill",
+      "description": "The value typed in a control in error, on its fill (WCAG 1.4.3 asks 4.5:1): 16.91:1 in light mode, 11.67:1 in dark mode.",
+      "foreground": "global.text.on-base.neutral.primary",
+      "backgrounds": [
+        "global.bg.subtle.functional.error.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "error-placeholder-on-fill",
+      "description": "The placeholder of an empty control in error, on its fill (WCAG 1.4.3 asks 4.5:1): 5.42:1 in light mode, 6.62:1 in dark mode. On the error hover step it would be 4.33:1 in light mode, so the fill does not change on hover.",
+      "foreground": "global.text.on-base.neutral.tertiary",
+      "backgrounds": [
+        "global.bg.subtle.functional.error.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "error-icon-on-surfaces",
+      "description": "The error icon, after the control or in the message, on every surface level (WCAG 1.4.11 asks 3:1 of a graphic that carries meaning): 6.12 / 5.81 / 6.12 / 5.81:1 in light mode and 7.06 / 6.47 / 5.92 / 5.30:1 in dark mode.",
+      "foreground": "global.icon.on-base.functional.error.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "warning-border-on-surfaces",
+      "description": "The border of a control with a warning, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1): 3.27 / 3.09 / 3.27 / 3.09:1 in light mode and 8.09 / 7.41 / 6.78 / 6.07:1 in dark mode on levels 0 to 3, since the Color foundation 7.1.0. On the subtle warning fill it is 2.95:1 in light mode, a shortfall the team accepted knowingly (issue #119).",
+      "foreground": "global.border.accent.functional.warning.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "success-border-on-surfaces",
+      "description": "The border of a control with a success, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1).",
+      "foreground": "global.border.accent.functional.success.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    }
+  ],
+  "accessibility": {
+    "guidelines": [
+      {
+        "text": "A control through which people enter or choose a value has a visible label or instructions whether or not it sits in a form that is submitted; a link or a control not associated with data entry does not.",
+        "refs": [
+          "wcag:3.3.2"
+        ]
+      },
+      {
+        "text": "Activating a button that submits a form is not changing the setting of a control: entering text, checking a box or choosing an option in a list is, and does not submit the form by itself.",
+        "refs": [
+          "wcag:3.2.2"
+        ]
+      },
+      {
+        "text": "A button contributes to the submitted data only when it is the one that submitted the form.",
+        "refs": [
+          "whatwg-form-entry-list"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A form either applies each value at once (a settings page) or collects the values and applies them when people choose to submit; the same input controls serve both.",
+        "refs": [
+          "windows-forms"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On macOS, a switch can sit in a grouped form, where a mini switch controls the setting of a single row.",
+        "refs": [
+          "hig-toggles-switches"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "Every control has a visible label or instructions, associated with it programmatically.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.3.1",
+          "wai-forms-labels"
+        ]
+      },
+      {
+        "text": "Related controls are grouped, and the group has a name: a set of radios always, a set of checkboxes or related fields when it helps.",
+        "refs": [
+          "wcag:1.3.1",
+          "wai-forms-grouping"
+        ]
+      },
+      {
+        "text": "A required field is indicated visibly, not only programmatically and never by color alone; a symbol used to mark it is explained before its first use.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag:1.4.1",
+          "wcag-h90",
+          "wcag-aria2",
+          "wai-forms-validation-required"
+        ]
+      },
+      {
+        "text": "When an input error is detected, the field in error is identified and the error is described in text; color or an icon may add to the text, never replace it.",
+        "refs": [
+          "wcag:3.3.1",
+          "wcag:1.4.1",
+          "wai-forms-notifications"
+        ]
+      },
+      {
+        "text": "A warning and a success are said in text like an error, never by color or an icon alone, and a confirmation that appears without moving focus is exposed as a status message.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag:4.1.3",
+          "wai-forms-notifications"
+        ]
+      },
+      {
+        "text": "Set aria-invalid=\"true\" for an error only: it has no value for a warning or a success, which the message text says.",
+        "refs": [
+          "wcag-aria21",
+          "mdn-aria-invalid"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "When a correction is known, the error message suggests it, unless that would jeopardize the security or purpose of the content.",
+        "refs": [
+          "wcag:3.3.3"
+        ]
+      },
+      {
+        "text": "A control is marked as in error only after its value was validated, not before people used it.",
+        "refs": [
+          "wcag-aria21"
+        ]
+      },
+      {
+        "text": "A message that reports errors or a result without moving focus, such as the number of errors in a form, is exposed as a status message so assistive technology announces it.",
+        "refs": [
+          "wcag:4.1.3"
+        ]
+      },
+      {
+        "text": "Validate fields when it makes sense: an email address when people move to another field, a user name or password before they leave it; show errors right next to the field.",
+        "refs": [
+          "hig-text-fields-best-practices",
+          "hig-writing-best-practices"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "Make sure people understand that they must provide the required data before they can continue, for example by enabling the Next or Continue button only once the required fields are filled in.",
+        "refs": [
+          "hig-entering-data-best-practices"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "Expose an error with the error semantics of the field, so the screen reader reads the error with it; announce content that changes without focus with a polite live region.",
+        "refs": [
+          "compose-error-components",
+          "compose-live-regions"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Error identification, labels or instructions and error suggestion apply to non-web software as they do to web content.",
+        "refs": [
+          "en-301-549-11-3-3"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On the web, the label of most fields sits immediately before the field, above it or to its left (to its right or above it in a right-to-left language), and the label of a checkbox or a radio after it; labels above the fields reduce horizontal scrolling for people who zoom and on small screens.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag-g162",
+          "wai-forms-labels"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, Material's text field label sits inside the container, in the middle while the field is empty and at its top once the field is selected or filled, always visible; a separate adjacent label aligned to the container's leading edge may take its place.",
+        "refs": [
+          "material-text-fields-guidelines"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Apple gives no rule on where a text field's label sits; because a placeholder disappears when people start typing, a separate label describing the field can be useful.",
+        "refs": [
+          "hig-text-fields-best-practices"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "On macOS, a checkbox typically has its title on its trailing side, and a radio button is followed by its label.",
+        "refs": [
+          "hig-toggles-checkboxes"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, labels are left-aligned and placed above the input control, many controls having a Header property for it; a form with labels on the left is shown as what not to do.",
+        "refs": [
+          "windows-forms"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On the web, the form marks the fewer fields: \"(optional)\" in the label or legend of each optional field, with a note before the first field saying the others are required, when most fields are required; \"(required)\" in the label or legend of each required field when most are optional. A required control keeps the required attribute either way.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag-h90",
+          "wai-forms-validation-required",
+          "wai-forms-instructions-overall",
+          "wcag-f81",
+          "wcag:1.4.1"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On the web, a \"(required)\" mark is hidden from assistive technology (aria-hidden), because the required attribute already exposes the state and the parenthetical may stay out of the accessible name; an \"(optional)\" mark stays in the label's text, so it is part of the accessible name, because no attribute exposes that a field is optional. Each fact is said once.",
+        "refs": [
+          "wcag:2.5.3",
+          "wcag:1.3.1",
+          "wcag:4.1.2",
+          "mdn-aria-required",
+          "accname-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, each required field ends its label with an asterisk, as Material asks; the asterisk is explained once, in supporting text or in a note before the first field, and the accessibility label includes it.",
+        "refs": [
+          "material-text-fields-required",
+          "material-text-fields-accessibility",
+          "wcag-h90"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm so assistive technology knows it is required.",
+        "refs": [
+          "windows-forms",
+          "winui-is-required-for-form",
+          "wcag-h90"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On iOS and macOS, Apple gives no mark for a required field, so the generic rule applies: \"(optional)\" with a note, or \"(required)\" when most fields are optional.",
+        "refs": [
+          "hig-entering-data-best-practices"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "On macOS, a required control sets accessibilityRequired, so VoiceOver knows it is required and a visible \"(required)\" is hidden from it; on iOS, no accessibility trait says required, so \"(required)\" stays in the accessibility label. Each fact is said once.",
+        "refs": [
+          "appkit-accessibility-required",
+          "uikit-accessibility-traits",
+          "swiftui-accessibility-traits"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "whatwg-form-entry-list",
+        "title": "HTML Standard: constructing the entry list (form data set)",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#constructing-form-data-set"
+      },
+      {
+        "id": "hig-toggles-switches",
+        "title": "Apple HIG: Toggles, macOS switches (within a grouped form)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Switches"
+      },
+      {
+        "id": "hig-toggles-checkboxes",
+        "title": "Apple HIG: Toggles, macOS checkboxes and radio buttons",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Checkboxes"
+      },
+      {
+        "id": "wai-forms-labels",
+        "title": "WAI tutorials: Forms, labeling controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wcag-g162",
+        "title": "WCAG technique G162: positioning labels to maximize predictability of relationships",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G162"
+      },
+      {
+        "id": "wai-forms-grouping",
+        "title": "WAI tutorials: Forms, grouping controls",
+        "url": "https://www.w3.org/WAI/tutorials/forms/grouping/"
+      },
+      {
+        "id": "wai-forms-validation-required",
+        "title": "WAI tutorials: Forms, validating required input",
+        "url": "https://www.w3.org/WAI/tutorials/forms/validation/#validating-required-input"
+      },
+      {
+        "id": "wai-forms-notifications",
+        "title": "WAI tutorials: Forms, user notification",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
+      },
+      {
+        "id": "accname-description",
+        "title": "Accessible Name and Description Computation 1.2: description",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "wcag-h90",
+        "title": "WCAG technique H90: indicating required form controls using label or legend",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
+      },
+      {
+        "id": "wcag-aria2",
+        "title": "WCAG technique ARIA2: identifying a required field with the aria-required property",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA2"
+      },
+      {
+        "id": "wcag-aria21",
+        "title": "WCAG technique ARIA21: using aria-invalid to indicate an error field",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21"
+      },
+      {
+        "id": "mdn-aria-invalid",
+        "title": "MDN: aria-invalid, values",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-invalid#values"
+      },
+      {
+        "id": "mdn-pseudo-invalid",
+        "title": "MDN: the :invalid pseudo-class",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid"
+      },
+      {
+        "id": "hig-text-fields-best-practices",
+        "title": "Apple HIG: Text fields, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices"
+      },
+      {
+        "id": "hig-writing-best-practices",
+        "title": "Apple HIG: Writing, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/writing#Best-practices"
+      },
+      {
+        "id": "hig-feedback-best-practices",
+        "title": "Apple HIG: Feedback, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/feedback#Best-practices"
+      },
+      {
+        "id": "hig-entering-data-best-practices",
+        "title": "Apple HIG: Entering data, best practices",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/entering-data#Best-practices"
+      },
+      {
+        "id": "compose-error-components",
+        "title": "Android developers: Compose semantics, error components",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components"
+      },
+      {
+        "id": "compose-live-regions",
+        "title": "Android developers: Compose semantics, alerts and pop-ups",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#alerts-pop-ups"
+      },
+      {
+        "id": "en-301-549-11-3-3",
+        "title": "EN 301 549 V3.2.1, clause 11.3.3: input assistance in non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=76"
+      },
+      {
+        "id": "material-text-fields-guidelines",
+        "title": "Material Design 3: Text fields, guidelines",
+        "url": "https://m3.material.io/components/text-fields/guidelines"
+      },
+      {
+        "id": "material-text-fields-overview",
+        "title": "Material Design 3: Text fields, overview",
+        "url": "https://m3.material.io/components/text-fields/overview"
+      },
+      {
+        "id": "material-checkbox-overview",
+        "title": "Material Design 3: Checkbox, overview (error states)",
+        "url": "https://m3.material.io/components/checkbox/overview"
+      },
+      {
+        "id": "material-text-fields-accessibility",
+        "title": "Material Design 3: Text fields, accessibility",
+        "url": "https://m3.material.io/components/text-fields/accessibility"
+      },
+      {
+        "id": "material-menus-guidelines",
+        "title": "Material Design 3: Menus, guidelines (text field dropdown menus)",
+        "url": "https://m3.material.io/components/menus/guidelines"
+      },
+      {
+        "id": "windows-forms",
+        "title": "Windows apps: Forms",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms"
+      },
+      {
+        "id": "windows-text-box",
+        "title": "Windows apps: Text box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "windows-number-box",
+        "title": "Windows apps: Number box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box"
+      },
+      {
+        "id": "windows-checkbox",
+        "title": "Windows apps: Check box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/checkbox"
+      },
+      {
+        "id": "windows-slider",
+        "title": "Windows apps: Slider",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/slider"
+      },
+      {
+        "id": "winui-live-setting",
+        "title": "Windows App SDK: AutomationProperties.LiveSetting",
+        "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.livesetting"
+      },
+      {
+        "id": "aria-errormessage",
+        "title": "WAI-ARIA 1.2: aria-errormessage (used in roles: checkbox, textbox, combobox, radiogroup, slider, spinbutton…)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-errormessage"
+      },
+      {
+        "id": "wai-forms-instructions-overall",
+        "title": "WAI tutorials: Forms, overall instructions (required and optional input)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#overall-instructions"
+      },
+      {
+        "id": "wcag-f81",
+        "title": "WCAG failure F81: required or error fields identified by color only",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
+      },
+      {
+        "id": "mdn-aria-required",
+        "title": "MDN: aria-required (a label that already says required)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: step 2A, hidden nodes are not part of the name",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "winui-is-required-for-form",
+        "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
+        "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
+      },
+      {
+        "id": "appkit-accessibility-required",
+        "title": "AppKit: NSAccessibilityProtocol, isAccessibilityRequired()",
+        "url": "https://developer.apple.com/documentation/appkit/nsaccessibilityprotocol/isaccessibilityrequired()"
+      },
+      {
+        "id": "uikit-accessibility-traits",
+        "title": "UIKit: UIAccessibilityTraits",
+        "url": "https://developer.apple.com/documentation/uikit/uiaccessibilitytraits"
+      },
+      {
+        "id": "swiftui-accessibility-traits",
+        "title": "SwiftUI: AccessibilityTraits",
+        "url": "https://developer.apple.com/documentation/swiftui/accessibilitytraits"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "text-field-error",
+      "name": "Text field, required and error",
+      "component": "text-field",
+      "props": {
+        "size": "medium",
+        "label": "Email address",
+        "value": "ada.example.com",
+        "description": "We will only use it to send your receipt.",
+        "severity": "error",
+        "message": "Enter an email address with an @.",
+        "required": true
+      }
+    },
+    {
+      "id": "text-field-warning",
+      "name": "Text field, warning",
+      "component": "text-field",
+      "props": {
+        "size": "medium",
+        "label": "Email address",
+        "value": "ada@exmaple.com",
+        "severity": "warning",
+        "message": "Warning: check the domain, it looks like a typo of example.com."
+      }
+    },
+    {
+      "id": "text-field-success",
+      "name": "Text field, success",
+      "component": "text-field",
+      "props": {
+        "size": "medium",
+        "label": "Username",
+        "value": "ada.lovelace",
+        "severity": "success",
+        "message": "Success: this username is available."
+      }
+    },
+    {
+      "id": "select-error",
+      "name": "Select, required and error",
+      "component": "select",
+      "props": {
+        "size": "medium",
+        "label": "Country",
+        "placeholder": "Choose a country",
+        "required": true,
+        "severity": "error",
+        "message": "Choose a country.",
+        "options": [
+          {
+            "label": "France",
+            "value": "fr"
+          },
+          {
+            "label": "Germany",
+            "value": "de"
+          }
+        ]
+      }
+    },
+    {
+      "id": "radio-group-error",
+      "name": "Radio group, required and error",
+      "component": "radio-group",
+      "props": {
+        "orientation": "vertical",
+        "size": "medium",
+        "label": "Delivery method",
+        "name": "forms-delivery-error",
+        "required": true,
+        "severity": "error",
+        "message": "Choose a delivery method.",
+        "options": [
+          {
+            "label": "Standard",
+            "value": "standard"
+          },
+          {
+            "label": "Express",
+            "value": "express"
+          }
+        ]
+      }
+    },
+    {
+      "id": "checkbox-error",
+      "name": "Checkbox, required and error",
+      "component": "checkbox",
+      "props": {
+        "size": "medium",
+        "label": "I accept the terms of service",
+        "description": "Check the box to continue.",
+        "required": true,
+        "severity": "error"
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "forms-message-color",
+      "date": "2026-11-20",
+      "version": "0.17.0",
+      "area": "color",
+      "status": "active",
+      "text": "The message keeps the functional text color of its severity, global.text.on-base.functional.<severity>.default (error: #C01619 in light mode, #F88275 in dark mode), the same color as the severity icon. With the error fill, the error border and the icon, this completes the error rendering; warning and success follow the same roles (step 6, with #103 step 13).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 3) among: A, keep the functional error text (chosen); B, the neutral primary text (18.01 / 8.47:1 at the lowest, the red left to the box and the icon); C, the neutral secondary text, the description's color. A is the Figma prototype's color and the icon's; the message stands apart from the description by its color as well as its size and weight, which matters most with no icon, where it starts with \"Error:\" so color is never the only cue (WCAG 1.4.1). It reaches 5.81:1 in light mode and 5.30:1 in dark mode at the lowest on the surface levels 0 to 3 (WCAG 1.4.3).",
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
+      "id": "forms-severity-icon-color",
+      "date": "2026-11-20",
+      "version": "0.16.0",
+      "area": "color",
+      "status": "active",
+      "text": "The severity icon reads global.icon.on-base.functional.<severity>.default, decided for the error (global.icon.on-base.functional.error.default), in both placements: the role of an icon on a surface, the same color as the message text.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 2c) between: A, the on-base error icon (chosen); B, the on-subtle error icon, the Figma prototype's #940E11, the role of an icon on the subtle error fill. In both placements the icon sits on the surface, beside the control or in the message, never on the fill, so the on-base role is the one whose meaning fits; it is what the Icon component draws for color error on a surface, and the icon and the message read in one color. Measured on the Text field (every size, both placements, light and dark, levels 0 to 3): A 5.81 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode; B 8.41 to 8.86:1 and 6.96 to 9.27:1, in a red that differs from its message (1.44:1 light, 1.31:1 dark). Both pass the 3:1 of WCAG 1.4.11. Warning and success follow the same role (step 13).",
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "forms-severity-icon-size",
+      "date": "2026-11-20",
+      "version": "0.15.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "After the control, the severity icon takes the size of the Button's icon at the same size (size.3, size.4, size.4: 20, 24, 24 px for small, medium, large), space.8 after the control, centred on it. In the message, it is 16 px (size.2), space.4 before the text, centred on the first line.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 2b) between: A, the Button's icon size (chosen; also the Figma prototype's 20 / 24 / 24 px); B, one Icon step per field size (16 / 20 / 24 px). A keeps the team's rule that a field lines up with the Button of its size, so a field and a Button carry the same icon; the box gives up 28 / 32 / 32 px. In the message, 16 px is the Icon's size next to 14 and 16 px body text, the message's size since the same review (Text field decision message-text-size). The icon is 5.81:1 (light) and 5.30:1 (dark) at the lowest on the surface (WCAG 1.4.11).",
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "forms-severity-icon-placement",
+      "date": "2026-11-20",
+      "version": "0.14.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The severity icon goes after the control, at the start of the message, or nowhere, as one rule for the whole form: every form control that can show a severity carries severityIcon (after-control, message, none; message by default), set once per form to the same value. Choice controls (Checkbox, Checkbox group, Radio group) never draw it after the control: they offer message and none, and fall back to the message when the form says after-control. Text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 2) among: A, after the control only; B, at the start of the message only (recommended); C, both, chosen per field (chosen, with the team's precisions: no icon stays possible; the choice is made at the form level so that the fields of a form follow one rule; choice controls always put it in the message). Measured on the Text field family (all sizes, light and dark, levels 0 to 3): after the control the box loses 24 / 28 / 32 px (small / medium / large), so its right edge no longer lines up with a field without severity or a Button; in the message the box keeps its full width; the icon reaches 5.81:1 (light) and 5.30:1 (dark) on the surface in both places. One property with the same name and values on every control, set by the form, rather than a form component the system does not have: each control can render on its own (templates, Figma), and the foundation states the form-level rule. message by default, because it is the only placement every control offers and it keeps the control's width. No trusted source ranks one placement over the other; all ask that the error be said in text (WCAG 3.3.1, 1.4.1), which every placement keeps.",
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.1",
+        "wcag:1.4.11",
+        "hig-writing-best-practices",
+        "material-text-fields-guidelines"
+      ]
+    },
+    {
+      "id": "forms-error-fill",
+      "date": "2026-11-20",
+      "version": "0.13.0",
+      "area": "color",
+      "status": "active",
+      "text": "A control in error is filled with global.bg.subtle.functional.error.default, at rest and on hover alike, under its accent error border. The value and the placeholder keep their colors. The Text field family is the reference rendering (#103 step 12, point 1).",
+      "rationale": "The solid fill validated in step 5. Its hover step (global.bg.subtle.functional.error.hover, #FCCDC6) brings the placeholder to 4.33:1 in light mode, under the 4.5:1 of WCAG 1.4.3; with the same fill on hover every pair passes in both modes on every surface level (placeholder 5.42 / 6.62:1, value 16.91 / 11.67:1, border on the fill 5.45 / 5.14:1). Losing the hover tint is cosmetic (1.05:1 from rest today), and the Figma prototype has no hover in error either. Rejected: A, the hover step on hover.",
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "forms-required-voiceover",
+      "date": "2026-11-20",
+      "version": "0.12.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On macOS, a required control sets accessibilityRequired and a visible \"(required)\" is hidden from VoiceOver; on iOS, \"(required)\" stays in the accessibility label. \"(optional)\" is read on both.",
+      "rationale": "Point 2's principle, each fact said once, applied to Apple's platforms. AppKit's isAccessibilityRequired() tells whether an element must have content for a form to be submitted, so on macOS the state says it, as the required attribute does on the web. UIKit's UIAccessibilityTraits and SwiftUI's AccessibilityTraits have no required trait, so on iOS the word is the only way VoiceOver can say it. Checked on the reference pages, no VoiceOver run.",
+      "platforms": [
+        "ios",
+        "desktop"
+      ],
+      "refs": [
+        "appkit-accessibility-required",
+        "uikit-accessibility-traits",
+        "swiftui-accessibility-traits"
+      ]
+    },
+    {
+      "id": "forms-apple-api-sources",
+      "date": "2026-11-20",
+      "version": "0.11.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Apple's developer documentation for its UI frameworks (UIKit, AppKit, SwiftUI) is a trusted source for Apple platform rules, beside the HIG and the Accessibility framework documentation.",
+      "rationale": "The HIG says how a control looks and behaves, not what an element exposes to VoiceOver: whether a required state exists on iOS and macOS is only in the framework references (UIKit's accessibility traits, AppKit's NSAccessibility protocol). The team trusts Apple's developer documentation for Apple development rules. Only the three UI framework paths are added, the narrowest prefixes that hold these rules.",
+      "platforms": [
+        "ios",
+        "desktop"
+      ],
+      "refs": [
+        "hig-entering-data-best-practices"
+      ]
+    },
+    {
+      "id": "forms-required-marking-platforms",
+      "date": "2026-11-20",
+      "version": "0.10.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Each platform marks required fields its own way where it has guidance: Android with Material's asterisk, explained once and in the accessibility label; Windows with an asterisk on the label, explained once, and IsRequiredForForm, so the state is said by the platform. iOS and macOS, where Apple gives no mark, apply the generic words.",
+      "rationale": "Options. A: the generic words on every platform, departing from Material and from Windows' Forms guidance. B: each platform's own mark where it has one, the generic rule elsewhere. The team chose B, the rule step 3 set for every platform-specific choice. Material asks for an asterisk explained once and included in the accessibility label; Windows asks to mark required input with an asterisk on the label and exposes the state with IsRequiredForForm; Apple's HIG gives no mark and asks to make clear that required data is needed before people continue (step 7). The asterisk departs from the generic rule on Android and Windows only. How \"(required)\" reaches VoiceOver on iOS and macOS stays open: the API references that would say whether a required state exists there (UIKit, AppKit) are not among the trusted sources yet.",
+      "platforms": [
+        "android",
+        "ios",
+        "desktop"
+      ],
+      "refs": [
+        "material-text-fields-required",
+        "material-text-fields-accessibility",
+        "windows-forms",
+        "winui-is-required-for-form",
+        "hig-entering-data-best-practices",
+        "wcag-h90"
+      ]
+    },
+    {
+      "id": "forms-required-mark-exposure",
+      "date": "2026-11-20",
+      "version": "0.9.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On the web, \"(required)\" is hidden from assistive technology (aria-hidden) and the required attribute says the field is required, once; \"(optional)\" is read as part of the accessible name, since no attribute says a field is optional.",
+      "rationale": "Options. A: \"(required)\" hidden, \"(optional)\" read. B: both read, so a required field says \"required\" twice (its name, then its state). C: both hidden, so optional is never said and can only be inferred from the missing \"required\" and the note, which is not read when tabbing between fields. The team chose A: each fact is said once. Understanding 2.5.3 lets \"(required)\" stay out of the accessible name when the required state is exposed another way, such as the HTML required attribute; MDN advises against announcing required twice; AccName 1.2 leaves aria-hidden nodes out of the name. The visible label still starts with the accessible name, so speech input by the label works. Names computed on the review sheet by AccName step 2A; no screen reader was run.",
+      "platforms": [
+        "web"
+      ],
+      "refs": [
+        "wcag:2.5.3",
+        "wcag:1.3.1",
+        "wcag:4.1.2",
+        "mdn-aria-required",
+        "accname-hidden"
+      ]
+    },
+    {
+      "id": "forms-required-marking",
+      "date": "2026-11-20",
+      "version": "0.8.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A form marks the fewer fields, in words, never with an asterisk. By default (more required fields than optional ones, or as many), required fields carry no mark, each optional field ends its label or legend with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\". When most fields are optional, each required field ends its label or legend with \"(required)\" and no note is needed. The required attribute stays on every required control. Applied as is on the web; what assistive technology gets from the word and how the other platforms apply the rule are asked next.",
+      "rationale": "Options. A: \"(required)\" in the label (WAI validation tutorial, H90 example 1). B: an asterisk after the label, explained once at the top of the form (H90 example 2, Material, Windows, the Figma library), red as in Figma or in the label's color. C: required by default, \"(optional)\" on the optional fields and a note at the top (WAI instructions tutorial: indicate required and optional input). D: keep today, nothing drawn. The team chose C by default and A when most fields are optional, so a form marks its minority in words and never needs a symbol explained: a sign-up form with only required fields gains one note instead of a mark on every field. Measured on the review sheet, light and dark, surface levels 0 to 3: the word in the label's color 18.02 to 18.98:1 light, 8.47 to 11.29:1 dark; the note 12.14 to 12.79:1 light, 6.65 to 8.86:1 dark. The Figma library's red asterisk (required boolean, on by default) becomes a departure.",
+      "platforms": [
+        "web"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:1.4.1",
+        "wcag:1.3.1",
+        "wcag-h90",
+        "wai-forms-validation-required",
+        "wai-forms-instructions-overall",
+        "wcag-f81",
+        "material-text-fields-guidelines",
+        "windows-forms",
+        "hig-entering-data-best-practices"
+      ]
+    },
+    {
+      "id": "forms-label-placement",
+      "date": "2026-11-20",
+      "version": "0.7.0",
+      "area": "layout",
+      "status": "active",
+      "text": "Where the label sits is a layout choice; the anatomy fixes only the order and the association. The generic rule, applied as is on the web: above a field-like control by default, in a label column at the start when the form's layout asks for it (step 10), after the box of a checkbox, a radio or a switch, never inside the box (no floating label on the web). iOS, Android and desktop follow their platform's own requirements and constraints where there are some, and the generic rule otherwise; a floating label is allowed where it is the platform's standard way, as Material's text fields on Android.",
+      "rationale": "Options. A: above by default, a label column allowed as a form layout, after the box for checkbox, radio and switch, no floating label. B: above only. C: A plus a floating label. The team chose A for the generic rules, as is on the web, and let the other platforms follow their own requirements, so Material's floating label is allowed where it is the standard. W3C places labels above or to the left of fields and after checkboxes and radios (WAI labels tutorial, G162, Understanding 2.5.3); Windows places them above and shows left labels as a Don't; Apple gives no placement rule; Material puts the label inside the container (56 dp) or adjacent to it. On the web a floating label needs a taller box: measured with Material's 56 px box, it stands 20 px above a 36 px Button, and a raised 12 px label and the value need at least 48 px, so they do not fit in 36. Above and in a label column, a field lines up with a Button of the same size (28, 36, 44 px), the label centred on the box. No token, CSS, template or theme change.",
+      "platforms": [
+        "web",
+        "ios",
+        "android",
+        "desktop"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3",
+        "wcag-g162",
+        "wai-forms-labels",
+        "material-text-fields-guidelines",
+        "hig-text-fields-best-practices",
+        "windows-forms"
+      ]
+    },
+    {
+      "id": "forms-message-part-every-control",
+      "date": "2026-11-20",
+      "version": "0.6.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "Every form control that can show a severity has a message part, after its description (after the options in a group). The Checkbox, which has the error severity and no message part, gets it with the complex controls (step 2b), when the validator's warning about a severity without a message part becomes an error.",
+      "rationale": "Options. A: state the rule now and give the Checkbox its message part in step 2b. B: state the rule and add the Checkbox's message part now. C: keep the Checkbox without a message part, its error said by the form (a summary above the fields). C leaves the error not next to the box and not associated with it, against the error-in-text rule, and relies on a summary that is not decided (step 9). B and A render the same once 2b lands (measured on a medium Checkbox: +23 px for a one-line message, the message 5.82 to 6.13:1 in light and 5.31 to 7.07:1 in dark on levels 0 to 3); A keeps the Checkbox's changes with the other complex-control points of step 2b. Understanding 3.3.1 asks that the error be indicated in text without mandating where; WAI-ARIA 1.2 lists the checkbox among the roles that take aria-invalid and aria-errormessage; Material gives the checkbox error states but no error text. No token, CSS, template or theme changes now.",
+      "refs": [
+        "wcag:3.3.1",
+        "wai-forms-notifications",
+        "aria-errormessage",
+        "material-checkbox-overview"
+      ]
+    },
+    {
+      "id": "forms-message-under-description",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The message of a severity sits under the description, for every severity and every control: the description stays visible, and the control's aria-describedby lists the description, then the message. In a group the message sits after the options, as today. The message does not replace the description, the description is not moved above the control, and no line is reserved for the message.",
+      "rationale": "Options. A: under the description. B: replaces the description, as the Figma prototype and Material's guideline do. C: replaces it for errors only. D: the description above the control. E: the message line reserved. B removes the shift only when the field has a one-line description and a one-line message; otherwise the field still moves (with no description +24 px, with a two-line message +18 px, with a two-line description it moves up 36 px), the help disappears when people need it to fix an error (a format, a limit), and in a group it moves the options up 29 px, under the pointer. C hides the help for errors only, the one case where people act, and gives a field two heights. D changes the look decided for the Text field family and every screen with descriptions. E makes every field 24 px taller (85 to 109 px) whether it ever shows a message or not; it may come back as a choice of the form's layout in step 10. A keeps the help where it is needed and reads in the order Material's accessibility page gives (supporting text first, followed by the error text); the cost is a shift when a message appears: on a medium Text field (85 px at rest) the next field moves down 24 px for a one-line message and 42 px for a two-line one, and 29 px under a Radio group. No source asks for B on the web: Understanding 3.3.1 mandates no place for an error, and the AccName computation concatenates every referenced node, so a screen reader reads the description, then the message. Material's text field guidelines say to replace the supporting text, so A departs from that guideline, not from Android's accessibility pages. No token, CSS, template or theme changes.",
+      "refs": [
+        "wcag:3.3.1",
+        "material-text-fields-guidelines",
+        "material-text-fields-accessibility",
+        "hig-writing-best-practices",
+        "windows-forms",
+        "accname-description"
+      ]
+    },
+    {
+      "id": "forms-validation-severities",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "state",
+      "status": "active",
+      "text": "Form controls can show three severities, error, warning and success, set by the severity property (none, error, warning, success; none by default) with one message for every severity. The Text field, the Number field, the Textarea and the Select take all four values; the Checkbox, the Checkbox group and the Radio group take none and error only (our judgment, not a source's). The property and the state invalid and errorMessage are removed, with no alias: the packages are alpha and unreleased, so a clean break (a major change of the specs, 0.x minor). The severity border is the accent functional border, global.border.accent.functional.<severity>.default, and the message color the functional text color, global.text.on-base.functional.<severity>.default. On the web the error is aria-invalid=\"true\" and the severity data-severity; a warning and a success are text and styling only. The accent borders were under 3:1 (the light warning one at 2.13:1 down to 2.01:1, the dark error one, which had no dark value, at 2.82:1 down to 2.11:1), and the team fixed them in the Color foundation 7.1.0 (decision border-accent-functional-3-to-1): warning 500 in light mode, error 400 in dark mode, 3:1 or more on every surface level; the one shortfall left is the light warning border on the subtle warning fill (2.95:1, which step 6 may use as the fill), accepted knowingly by the team (issue #119). Validated, to render in step 6: the severity in the fill, a solid color; the severity icon never inside the typing area, in one place only (after the control, at the start of the message, or nowhere, then the message says the severity); the control keeping its default width without the icon after it.",
+      "rationale": "Options. A: errors only, as Apple and Material do (no source for the other two on a field). B: every status (error, warning, success, information), as Fluent does. C: keep invalid and add a separate status property, two properties for one thing. D: errors and success, as the W3C does (a success confirmation with icon and text). The team validated three severities (B without information, which the description covers; W3C confirms a success, only Fluent has a warning). Name: severity was chosen over status (it clashes with the spec's status and with WCAG status messages), intent (it means a destructive action on the Button) and validation; component libraries and developers use severity for success, danger and warning alerts, even if it is odd for success. \"Error\" over \"invalid\": the platforms say error (WCAG 3.3.1, Compose error semantics, Material text fields guidelines and accessibility), and invalid is the web's technical term (aria-invalid, :invalid, :user-invalid); Understanding 4.1.3 and the Windows Forms page still use invalid as an adjective of the value. The accent border (rather than the base one) was the team's correction. Sources opened: WCAG Understanding 3.3.1, 3.3.3, 4.1.3, 1.4.1, 1.4.11 and 1.1.1, ARIA21, the WAI notifications tutorial, MDN aria-invalid and :invalid, Apple HIG Writing, Feedback, Text fields and Entering data, Compose semantics, Material text fields guidelines and accessibility, Windows Forms, Text box and LiveSetting.",
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:3.3.3",
+        "wcag:4.1.3",
+        "wcag:1.4.1",
+        "wcag:1.4.11",
+        "wcag:1.1.1",
+        "wcag-aria21",
+        "wai-forms-notifications",
+        "mdn-aria-invalid",
+        "mdn-pseudo-invalid",
+        "hig-writing-best-practices",
+        "hig-feedback-best-practices",
+        "hig-text-fields-best-practices",
+        "hig-entering-data-best-practices",
+        "compose-error-components",
+        "material-text-fields-guidelines",
+        "material-text-fields-accessibility",
+        "windows-forms",
+        "windows-text-box",
+        "winui-live-setting"
+      ]
+    },
+    {
+      "id": "forms-input-components",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A form control is a component through which people enter or choose a value the product keeps (text, a number, one or several options, on or off, a point in a range); it has a visible label and may have a description, and when its value can be missing or wrong it can be marked required and report an error. Whether the value applies at once or with the rest of the form depends on how the control is used, not on the component. A button that submits is a form action, not a form control. The components that follow the foundation are the ones whose role profile is marked as input (roles.json), read from each specification: the rules on anatomy and label for every input, on required fields for those with a required property, on validation for those with the invalid state.",
+      "rationale": "Labels and instructions are not limited to forms (WCAG 3.3.2), a submit button is activating a control, not changing a setting (WCAG 3.2.2), and Windows tells instantly updating forms from submitting ones, so a control is defined by what people do with it, not by where it sits. The role profiles already name the roles that require WCAG 3.3.2, so the foundation reads them (input) instead of keeping a list. Also considered: a section in each specification declaring when its value applies (at once or on submit), which writes a web submit model into specifications iOS and Android have no source for; a scope per rule, the most precise and the most work; an explicit list of identifiers, which silently leaves a new component out. Known weak spot: the role group is generic, so a future component with the role group that is not an input would be counted as one; revisit it then. Known gap, set aside until the complex controls are aligned after the Text field: the Checkbox has the invalid state and no error message part (the validator warns).",
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:3.2.2",
+        "windows-forms",
+        "hig-toggles-switches",
+        "whatwg-form-entry-list"
+      ]
+    },
+    {
+      "id": "forms-platform-sources",
+      "date": "2026-11-13",
+      "version": "0.2.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Material's component guidelines (m3.material.io/components/) and Microsoft's Windows app controls guidance and WinUI automation reference are trusted sources, so the form rules for Android and Windows cite those platforms' own guidance.",
+      "rationale": "They hold the only Android and Windows guidance on forms (required marking, error text replacing the supporting text, spacing, announcing changes); without them, the foundation could only say these platforms are silent.",
+      "refs": [
+        "material-text-fields-guidelines",
+        "material-text-fields-overview",
+        "material-text-fields-accessibility",
+        "material-checkbox-overview",
+        "material-menus-guidelines",
+        "windows-forms",
+        "windows-text-box",
+        "windows-number-box",
+        "windows-checkbox",
+        "windows-slider",
+        "winui-live-setting"
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.17.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-message-color: the message keeps the functional text color of its severity (a keep decision); the error rendering is complete."
+    },
+    {
+      "version": "0.16.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-severity-icon-color: the severity icon reads the on-base icon role of its severity (error: global.icon.on-base.functional.error.default), the message text's color, in both placements."
+    },
+    {
+      "version": "0.15.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-severity-icon-size: the severity icon after the control takes the Button's icon size at the same size (20 / 24 / 24 px), space.8 away; in the message it is 16 px, space.4 before the text. Text only: the icon part comes to the components with its color."
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-severity-icon-placement: the severity icon after the control, in the message or nowhere, one rule per form through severityIcon (after-control, message, none; message by default); choice controls offer message and none. Text only: the property, the icon part and its tokens come to the components with the icon size and color (step 6)."
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-error-fill: a control in error is filled with the subtle error background, at rest and on hover. The rule on the fill names the token; the error border and text pairs become requirements, with three new pairs on the fill."
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-voiceover: macOS hides \"(required)\" behind accessibilityRequired, iOS keeps it in the accessibility label. The rule on required fields and an Apple guideline say so."
+    },
+    {
+      "version": "0.11.0",
+      "date": "2026-11-20",
+      "note": "Apple's UIKit, AppKit and SwiftUI references become trusted sources for Apple platform rules (forms-apple-api-sources)."
+    },
+    {
+      "version": "0.10.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-marking-platforms: Android and Windows mark required fields with their own asterisk, explained once (Windows also sets IsRequiredForForm); iOS and macOS apply the generic words. The rule on required fields and three platform guidelines say so; how \"(required)\" reaches VoiceOver stays open."
+    },
+    {
+      "version": "0.9.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-mark-exposure: on the web, \"(required)\" is hidden from assistive technology (the required attribute says it once) and \"(optional)\" is part of the accessible name. The rule on required fields and a web guideline say so."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-marking: a form marks the fewer fields in words, \"(optional)\" on optional fields with a note at the top by default, \"(required)\" on required fields when most fields are optional; no asterisk. The rule on required fields and a web guideline say so."
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-label-placement: where the label sits is a layout choice; the generic rule (above by default, a label column as a form layout, after the box of a checkbox, a radio or a switch, no floating label) applies as is on the web, and the other platforms follow their own requirements, a floating label allowed where it is the platform's standard (Material on Android). New rule label-placement and platform guidelines."
+    },
+    {
+      "version": "0.6.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-message-part-every-control: every form control that can show a severity has a message part after its description; the Checkbox gets its message part in step 2b. The rule on the anatomy of a field says so."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision forms-message-under-description: the message of a severity sits under the description for every severity, the description stays visible and aria-describedby lists the description, then the message; a group puts the message after its options. The rule on the anatomy of a field says so."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Breaking, decision forms-validation-severities: the invalid status is replaced by three severities, error, warning and success (the severity property, one message for all); the rule on statuses becomes the rule on severities, with the web mapping and the validated rules on the fill, the icon and the width (rendered in step 6); the tiers read the severity property; the measured status borders read the accent functional border. The examples use severity and message, with a warning and a success of the Text field."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "A form control is defined by what people do with it, and the foundation applies to every component whose role profile is marked as input; a button that submits is a form action (forms-input-components)."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-11-13",
+      "note": "Material's component guidelines and Microsoft's Windows app controls guidance become trusted sources for the form rules on Android and Windows (forms-platform-sources)."
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-11-12",
+      "note": "First draft of the page, to show how the foundation will be represented: rules describing what the form controls do today and what every trusted source agrees on, the open points named as not decided, the status colors measured on every surface level without a minimum while the statuses are decided. No decision yet."
+    }
+  ]
+}

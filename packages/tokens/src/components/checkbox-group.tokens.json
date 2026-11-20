@@ -5,7 +5,7 @@
       "row-gap": {
         "$type": "dimension",
         "$value": "{space.8}",
-        "$description": "Between the legend, the description, the options and the error message."
+        "$description": "Between the legend, the description, the options and the message."
       },
       "gap": {
         "$type": "dimension",
@@ -60,10 +60,12 @@
         }
       }
     },
-    "error-message": {
+    "message": {
       "color": {
         "$type": "color",
-        "$value": "{global.text.on-base.functional.error.default}"
+        "error": {
+          "$value": "{global.text.on-base.functional.error.default}"
+        }
       },
       "typography": {
         "$type": "typography",
@@ -138,8 +140,8 @@
         "checked": {
           "$value": "{global.border.accent.brand.default}"
         },
-        "invalid": {
-          "$value": "{global.border.base.functional.error.default}"
+        "error": {
+          "$value": "{global.border.accent.functional.error.default}"
         },
         "disabled": {
           "$value": "{global.border.state.disabled.default}"

@@ -9,8 +9,9 @@ order: 13
 
 A text field collects one line of free text: a name, an email address, a search term. It is
 the most common form control, and the one whose details matter most: a visible label above
-the box, help text under it when the expected format is not obvious, and an error message
-that says how to fix the value when validation fails.
+the box, help text under it when the expected format is not obvious, and a message that says
+what to do when validation finds something: how to fix an error, what to check in a warning,
+what was confirmed in a success.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
 sub-heading named after it (Web, iOS, Android, Desktop); everything else holds everywhere.
@@ -51,11 +52,13 @@ type, so it never replaces the label and never carries an instruction people mus
 | Default | Resting. | An outlined box on the default surface. |
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
 | Focus visible | The box has focus, from the keyboard or a pointer. | The shared focus ring appears outside the border. An editable field shows it however it was focused. |
-| Invalid | `invalid` property, after validation. | The border takes the error color and the error message appears under the box. |
+| Error | `severity` property set to error, after validation. | The border takes the error color and the message appears under the box, in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | The border takes the warning color and the message appears under the box, in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | The border takes the success color and the message appears under the box, in the success color. No web state: the message says it. |
 | Read-only | `readonly` property. | The box takes the level 1 surface; the value can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, value, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
-Invalid and hover combine (the hover tint under the error border), and disabled wins over
+A severity and hover combine (the hover tint under the severity border), and disabled wins over
 every other state: the states matrix shows what the tokens decide.
 
 ## Content
@@ -64,7 +67,7 @@ every other state: the states matrix shows what the tokens decide.
   no trailing punctuation.
 - The description gives the format or an example when it is not obvious.
 - The placeholder, when any, is a short example of a valid value (**name@example.com**).
-- The error message says what is wrong and how to fix it: **Enter an email address with an @.**
+- The message of an error says what is wrong and how to fix it: **Enter an email address with an @.** A warning says what to check and a success what was confirmed; say the severity in the words, since a warning and a success have no state to expose it.
 
 ## Accessibility
 
@@ -73,20 +76,21 @@ platform and what is specific to one. Each statement there links the source it c
 This section explains the decisions behind it.
 
 - **Native control first.** The platform's native text input exposes the role, the name, the value
-  and the required, read-only, disabled and invalid states to assistive technology; a custom view has to
+  and the required, read-only, disabled and error states to assistive technology; a custom view has to
   rebuild all of it ([WCAG 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html),
   [WAI-ARIA: textbox role](https://www.w3.org/TR/wai-aria-1.2/#textbox)).
 - **A visible label, always.** The label above the control is its accessible name; help text is
-  the description, read after the name, and so is the error message while the field is invalid.
+  the description, read after the name, and so is the message while the field shows a severity.
   The placeholder is exposed as a placeholder, not as the name, which is one more reason it cannot stand in for the label
   ([WCAG 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html),
   [WCAG 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html),
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/),
   [WAI tutorial: Form instructions](https://www.w3.org/WAI/tutorials/forms/instructions/),
   [APG: describing with aria-describedby](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby)).
-- **Errors are identified in text.** When validation fails, the border turns to the error color
-  and the error message under the control says what is wrong and how to fix it. Color never
-  carries the error alone, and required fields are marked in words
+- **Severities are identified in text.** When validation finds something, the border turns to the
+  severity's color and the message under the control says what is wrong and how to fix it (an
+  error), what to check (a warning) or what was confirmed (a success). Color never carries a
+  severity alone, and required fields are marked in words
   ([WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
   [WAI tutorial: User notifications](https://www.w3.org/WAI/tutorials/forms/notifications/),
@@ -120,8 +124,8 @@ This section explains the decisions behind it.
 ### Web
 
 - The implementation renders an `<input type="text">` in a wrapper with a `<label for>`, a
-  description and an error message referenced by `aria-describedby`, `aria-invalid="true"` when
-  invalid, and the native `required` and `readonly` attributes
+  description and a message referenced by `aria-describedby` for every severity, `aria-invalid="true"`
+  for an error only (the web has no state for a warning or a success), and the native `required` and `readonly` attributes
   ([ARIA in HTML: input type=text](https://www.w3.org/TR/html-aria/#el-input-text),
   [HTML-AAM: input type=text](https://www.w3.org/TR/html-aam-1.0/#el-input-text),
   [ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1),
@@ -150,7 +154,7 @@ This section explains the decisions behind it.
 ### Android
 
 - Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under it
-  today. Expose an invalid value with the error semantics so the message
+  today. Expose an error with the error semantics so the message
   is announced with the field
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),

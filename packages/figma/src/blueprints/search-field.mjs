@@ -1,7 +1,7 @@
 /**
  * Search field (packages/components/src/components/search-field/search-field.css): the text
  * field's stack (src/blueprints/text-field.mjs), FIELD_WIDTH px wide where the web stretches,
- * without an error message (no invalid state).
+ * without a message (no severity).
  *
  * The `field` wraps the control and the search glyph, which the web positions over the start edge
  * of the control (inset by icon.margin-inline) while the control reserves room for it with

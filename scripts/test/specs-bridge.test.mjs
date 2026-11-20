@@ -200,3 +200,26 @@ test('list properties: part instances stay out of Specs props and their tokens g
   assert.deepEqual(back.spec.examples[0].props, menu.examples[0].props);
   assert.deepEqual(flatMap(back.tokens), flat(tree));
 });
+
+test('a state set by an enum value is that value of the property and round-trips', () => {
+  const field = {
+    ...spec,
+    properties: [
+      ...spec.properties,
+      { id: 'severity', name: 'Severity', type: 'enum', default: 'none', options: [{ value: 'none' }, { value: 'error' }, { value: 'warning' }] },
+    ],
+    states: [
+      ...spec.states,
+      { id: 'error', trigger: 'property', property: 'severity', value: 'error' },
+      { id: 'warning', trigger: 'property', property: 'severity', value: 'warning' },
+    ],
+  };
+  const fieldTokens = { chip: { ...tokens.chip, label: { ...tokens.chip.label, color: { ...tokens.chip.label.color, error: { $type: 'color', $value: '{s.error}' } } } } };
+  const { component, sidecar } = toSpecs(field, fieldTokens);
+  assert.deepEqual(component.props.state.enum, ['default', 'hover', 'long-press']);
+  assert.deepEqual(component.props.severity.enum, ['none', 'error', 'warning']);
+  assert.ok(component.variants.some((v) => v.configuration.severity === 'error'));
+  const back = fromSpecs(JSON.parse(JSON.stringify(component)), JSON.parse(JSON.stringify(sidecar)));
+  assert.deepEqual(back.spec.states, field.states);
+  assert.deepEqual(back.spec.properties, field.properties);
+});

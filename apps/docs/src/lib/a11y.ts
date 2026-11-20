@@ -37,3 +37,8 @@ export function criteriaOf(spec: any): Criterion[] {
 export function publisherName(id: string | null): string {
   return id ? getRegistry().sources.publishers[id]?.name ?? id : 'untrusted';
 }
+
+/** Role profiles (`specs/a11y/roles.json`), keyed by component role: what a foundation's `appliesTo` reads. */
+export function roleProfiles(): Record<string, any> {
+  return getRegistry().roles;
+}

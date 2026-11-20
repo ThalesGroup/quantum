@@ -1,21 +1,21 @@
 /**
  * Checkbox group (packages/components/src/components/checkbox-group/checkbox-group.css): a
  * vertical auto layout (the fieldset) stacking the legend, the description, the `options` and the
- * error message, separated by container.row-gap as the spec's layout notes say. `options` (the
+ * message, separated by container.row-gap as the spec's layout notes say. `options` (the
  * web's list) stacks three options vertically, or lines them up in the horizontal orientation,
  * separated by container.gap; the web wraps them when they do not fit, Figma's auto layout here
  * does not. The group hugs its content.
  *
  * Each option is the Checkbox's two rows (src/blueprints/checkbox.mjs): its box, label and
  * description. A forced state applies, as on the web, to the whole group when it is group-wide
- * (invalid, disabled) and to the first option only otherwise (hover, focus, checked): the others
+ * (error, disabled) and to the first option only otherwise (hover, focus, checked): the others
  * stay at rest. The description and the options' descriptions are boolean properties (off, as in
- * the template); the error message is drawn in the invalid state only.
+ * the template); the message is drawn in the error state only.
  */
 import { TRANSITION, checkboxControl, optionRows } from './checkbox.mjs';
 
 /** States that the web forces on the whole group; the others apply to one option. */
-const GROUP_WIDE = new Set(['invalid', 'disabled']);
+const GROUP_WIDE = new Set(['error', 'disabled']);
 
 const option = (control) => (n) =>
   optionRows({
@@ -72,11 +72,11 @@ export const group = (control) => ({
       options(control, 'horizontal', 'HORIZONTAL'),
       {
         type: 'text',
-        name: 'error-message',
-        when: (v) => v.state === 'invalid',
-        text: 'Error message',
-        property: 'Error message',
-        bind: { fill: 'error-message.color', typography: 'error-message.typography' },
+        name: 'message',
+        when: (v) => v.state === 'error',
+        text: 'Message',
+        property: 'Message',
+        bind: { fill: 'message.color', typography: 'message.typography' },
       },
     ],
   },

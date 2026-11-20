@@ -153,6 +153,8 @@ export function checkRegistry(registry) {
   for (const [role, p] of Object.entries(registry.roles)) {
     if (!p.references?.length) error(`roles.json "${role}" cites no references`);
     for (const r of p.references ?? []) if (!trustedPublisher(r.url, registry)) error(`roles.json "${role}" cites ${r.url}, which is not a trusted source`);
+    if (p.input !== undefined && typeof p.input !== 'boolean') error(`roles.json "${role}" input must be true or false`);
+    if (p.input && !p.requiredCriteria?.['3.3.2']) error(`roles.json "${role}" is marked input but does not require 3.3.2 (labels or instructions): an input has a visible label`);
     for (const sc of Object.keys(p.requiredCriteria ?? {})) {
       const c = registry.wcag.criteria[sc];
       if (!c?.inWcag22) error(`roles.json "${role}" requires ${sc}, which is not a WCAG ${registry.wcag.version} success criterion`);

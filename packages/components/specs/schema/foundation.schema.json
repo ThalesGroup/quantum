@@ -22,8 +22,8 @@
       "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }
     },
     "appliesTo": {
-      "enum": ["every-component", "focusable-components"],
-      "description": "Components that must follow the foundation. focusable-components: every component whose role profile is focusable aliases every exact token path of `tokens` (validated). Omit when following it is a choice."
+      "enum": ["every-component", "focusable-components", "input-components"],
+      "description": "Components that must follow the foundation. focusable-components: every component whose role profile is focusable aliases every exact token path of `tokens` (validated). input-components: every component whose role profile is marked `input` (a control through which people enter or choose a value the product keeps) follows the foundation, whether or not it owns tokens: followers are read from the roles, not from token aliases (validated). Omit when following it is a choice."
     },
     "rules": {
       "type": "array",

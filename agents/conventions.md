@@ -38,7 +38,7 @@ button.label.typography.md
 
 ### States vocabulary
 `default`, `hover`, `active`, `focus-visible`, `disabled`, `selected`, `checked`, `unchecked`,
-`indeterminate`, `pressed`, `expanded`, `collapsed`, `invalid`, `readonly`, `loading`,
+`indeterminate`, `pressed`, `expanded`, `collapsed`, `error`, `warning`, `success`, `readonly`, `loading`,
 `dragging`, `visited`, `current`. Every spec declares `default`. A state used in a token path
 must be declared in the spec.
 
@@ -71,7 +71,7 @@ must be declared in the spec.
 
 ### Web implementation
 - Root class `.ds-<id>` on the native element named in `implementations.web.element`. A form
-  control with a label, a description or an error message as parts has a wrapper root and names
+  control with a label, a description or a message as parts has a wrapper root and names
   the native control as `implementations.web.rolePart` (`packages/components/AGENTS.md` "Form controls with a
   wrapper root"); the accessibility checks then apply to that element.
 - Enum properties become `data-<prop>="<option>"` attributes; booleans become native attributes when one exists (`disabled`), otherwise `data-<prop>`.

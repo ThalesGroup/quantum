@@ -5,12 +5,12 @@
  *
  * Rules:
  *  - Only --select-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (label, control, description, error message, stacked); the native
+ *  - The root is a wrapper (label, control, description, message, stacked); the native
  *    select is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
- *    spec order: default < hover < focus-visible < invalid < disabled: hover only tints the
- *    background, invalid only recolors the border, so they combine as the token rule combines them.
+ *    spec order: default < hover < focus-visible < error < warning < success < disabled: hover only tints the
+ *    background, a severity only recolors the border, so they combine as the token rule combines them.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
@@ -21,6 +21,7 @@
   --_control-color: var(--select-control-color-default);
   --_label-color: var(--select-label-color-default);
   --_description-color: var(--select-description-color-default);
+  --_message-color: var(--select-message-color-error);
   --_min-height: var(--select-control-min-height-medium);
   --_padding-inline: var(--select-control-padding-inline-medium);
   --_font-family: var(--select-control-typography-medium-font-family);
@@ -110,14 +111,14 @@
   letter-spacing: var(--select-description-typography-letter-spacing);
 }
 
-.ds-select__error-message {
+.ds-select__message {
   margin: 0;
-  color: var(--select-error-message-color);
-  font-family: var(--select-error-message-typography-font-family);
-  font-size: var(--select-error-message-typography-font-size);
-  font-weight: var(--select-error-message-typography-font-weight);
-  line-height: var(--select-error-message-typography-line-height);
-  letter-spacing: var(--select-error-message-typography-letter-spacing);
+  color: var(--_message-color);
+  font-family: var(--select-message-typography-font-family);
+  font-size: var(--select-message-typography-font-size);
+  font-weight: var(--select-message-typography-font-weight);
+  line-height: var(--select-message-typography-line-height);
+  letter-spacing: var(--select-message-typography-letter-spacing);
 }
 
 /* The field wraps the select and the chevron drawn over its end edge. */
@@ -165,9 +166,28 @@
   --_control-background: var(--select-control-background-hover);
 }
 
-.ds-select:where([data-state="invalid"]) .ds-select__control,
+/* Severity: the control's border takes the severity's color and the message its text color. Only the
+   error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
+.ds-select:where([data-state="error"], [data-severity="error"]) {
+  --_message-color: var(--select-message-color-error);
+}
+.ds-select:where([data-state="error"], [data-severity="error"]) .ds-select__control,
 .ds-select__control[aria-invalid="true"] {
-  --_control-border-color: var(--select-control-border-color-invalid);
+  --_control-border-color: var(--select-control-border-color-error);
+}
+
+.ds-select:where([data-state="warning"], [data-severity="warning"]) {
+  --_message-color: var(--select-message-color-warning);
+}
+.ds-select:where([data-state="warning"], [data-severity="warning"]) .ds-select__control {
+  --_control-border-color: var(--select-control-border-color-warning);
+}
+
+.ds-select:where([data-state="success"], [data-severity="success"]) {
+  --_message-color: var(--select-message-color-success);
+}
+.ds-select:where([data-state="success"], [data-severity="success"]) .ds-select__control {
+  --_control-border-color: var(--select-control-border-color-success);
 }
 
 .ds-select:where([data-state="disabled"]),

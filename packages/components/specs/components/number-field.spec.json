@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -17,7 +17,7 @@
       "id": "container",
       "role": "container",
       "required": true,
-      "description": "Root. Stacks the label, the control, the description and the error message; carries the size and the forced state."
+      "description": "Root. Stacks the label, the control, the description and the message; carries the size and the forced state."
     },
     {
       "id": "label",
@@ -38,13 +38,15 @@
       "description": "Optional help text under the control (format, example, consequence), associated with it as its description."
     },
     {
-      "id": "error-message",
+      "id": "message",
       "role": "errormessage",
       "required": false,
       "visibleIn": [
-        "invalid"
+        "error",
+        "warning",
+        "success"
       ],
-      "description": "Text describing the error when the field is invalid, associated with the control as a description. Shown only while invalid."
+      "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), associated with the control as a description. Shown only with a severity."
     }
   ],
   "properties": [
@@ -53,7 +55,7 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, inline padding and text size scale together; label, description and error keep their size.",
+      "description": "Control height, inline padding and text size scale together; label, description and message keep their size.",
       "affects": [
         "control"
       ],
@@ -119,11 +121,11 @@
       "description": "Help text: expected format, example, or what the value is used for."
     },
     {
-      "id": "errorMessage",
-      "name": "Error message",
+      "id": "message",
+      "name": "Message",
       "type": "string",
-      "bindsTo": "error-message",
-      "description": "What is wrong and how to fix it, shown when the field is invalid."
+      "bindsTo": "message",
+      "description": "What the severity means: what is wrong and how to fix it, what to check, or what was confirmed. Shown with a severity, in the color of that severity, and replaces errorMessage."
     },
     {
       "id": "required",
@@ -140,11 +142,33 @@
       "description": "The value can be read, focused and copied but not edited (a generated identifier)."
     },
     {
-      "id": "invalid",
-      "name": "Invalid",
-      "type": "boolean",
-      "default": false,
-      "description": "The value failed validation: the border takes the error color and the error message is shown."
+      "id": "severity",
+      "name": "Severity",
+      "type": "enum",
+      "default": "none",
+      "description": "What the check of the value found. Replaces the invalid boolean: error, warning and success are the three severities of a form control (decision forms-severity); information that holds before any check is the description's job.",
+      "affects": [
+        "control",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No severity: nothing was checked, or there is nothing to say (default)."
+        },
+        {
+          "value": "error",
+          "description": "The value is not accepted: the border takes the error color, the message says what is wrong and how to fix it, and the control is exposed as in error (aria-invalid on the web)."
+        },
+        {
+          "value": "warning",
+          "description": "The value is accepted but deserves attention: the border takes the warning color and the message says what to check. No web state: said in the message text."
+        },
+        {
+          "value": "success",
+          "description": "The value was checked and confirmed: the border takes the success color and the message says what was confirmed. No web state: said in the message text."
+        }
+      ]
     },
     {
       "id": "disabled",
@@ -174,10 +198,25 @@
       "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
     },
     {
-      "id": "invalid",
+      "id": "error",
       "trigger": "property",
-      "property": "invalid",
-      "description": "Validation failed: the border takes the error color and the error message is shown under the control."
+      "property": "severity",
+      "value": "error",
+      "description": "Severity error: the border takes the error color and the message is shown under the control, in the error color."
+    },
+    {
+      "id": "warning",
+      "trigger": "property",
+      "property": "severity",
+      "value": "warning",
+      "description": "Severity warning: the border takes the warning color and the message is shown under the control, in the warning color. No web state beyond the data attribute."
+    },
+    {
+      "id": "success",
+      "trigger": "property",
+      "property": "severity",
+      "value": "success",
+      "description": "Severity success: the border takes the success color and the message is shown under the control, in the success color. No web state beyond the data attribute."
     },
     {
       "id": "readonly",
@@ -199,7 +238,7 @@
     "wrap": false,
     "sizing": "fill",
     "notes": [
-      "Label, control, description and error message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
+      "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
       "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change.",
       "The browser's spin control keeps its native look and sits at the end edge of the control."
     ]
@@ -207,7 +246,7 @@
   "accessibility": {
     "ariaRole": "spinbutton",
     "name": {
-      "text": "Computed from the label, associated with the control as its label element on the web. The value, the minimum and the maximum are exposed as the spinbutton's value and bounds. The description and the error message are exposed as the accessible description.",
+      "text": "Computed from the label, associated with the control as its label element on the web. The value, the minimum and the maximum are exposed as the spinbutton's value and bounds. The description and the message are exposed as the accessible description.",
       "refs": [
         "wai-labels",
         "html-aam-name-input",
@@ -252,7 +291,7 @@
     ],
     "guidelines": [
       {
-        "text": "Expose the spinbutton role, the name, the value and its bounds, and the required, read-only, disabled and invalid states through the platform's native numeric control, so assistive technology receives them without extra work.",
+        "text": "Expose the spinbutton role, the name, the value and its bounds, and the required, read-only, disabled and error states through the platform's native numeric control, so assistive technology receives them without extra work.",
         "refs": [
           "wcag:4.1.2",
           "aria-spinbutton",
@@ -282,7 +321,7 @@
         ]
       },
       {
-        "text": "Associate the label with a label element whose for attribute names the control's id; reference the description and the error message with aria-describedby, so they are read after the name.",
+        "text": "Associate the label with a label element whose for attribute names the control's id; reference the description and the message with aria-describedby, so they are read after the name.",
         "refs": [
           "wcag-h44",
           "wcag-aria1",
@@ -313,15 +352,16 @@
         ]
       },
       {
-        "text": "When the value is invalid, identify the field and describe the error in text next to it: the error message names what is wrong and how to fix it, and is associated with the control.",
+        "text": "Say the severity in text next to the field, whatever it is: the message names what is wrong and how to fix it for an error, what to check for a warning and what was confirmed for a success, and is associated with the control. Color is never the only sign of a severity.",
         "refs": [
           "wcag:3.3.1",
           "wai-notifications",
-          "wcag-g83"
+          "wcag-g83",
+          "wcag:1.4.1"
         ]
       },
       {
-        "text": "Say that the value is invalid with aria-invalid on the control, and that a field is required with the required attribute, which the browser exposes as required.",
+        "text": "Say that the value is in error with aria-invalid=\"true\" on the control, for the error severity only, and that a field is required with the required attribute, which the browser exposes as required. The web has no state for a warning or a success: the message says them, and aria-invalid is never set for them.",
         "refs": [
           "wcag-aria21",
           "aria-invalid",
@@ -342,13 +382,13 @@
         ]
       },
       {
-        "text": "Label, value, description and error text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, error text 6.12:1 and 7.06:1 (5.77:1 on a level 1 surface in light mode). Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the error border 6.12:1 and 3.73:1; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -398,7 +438,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today. Expose an invalid value with the error semantics so the message is announced with the field.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today. Expose an error with the error semantics so the message is announced with the field.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -619,7 +659,7 @@
       "The label names the quantity and its unit when it has one: Quantity, Weight (kg), Year.",
       "The description gives the bounds or the step when they matter: Between 1 and 99.",
       "The placeholder, when any, is an example value, never the label.",
-      "The error message says what is wrong and how to fix it: Enter a number between 1 and 99."
+      "The message of an error says what is wrong and how to fix it: Enter a number between 1 and 99."
     ]
   },
   "examples": [
@@ -671,17 +711,17 @@
       }
     },
     {
-      "id": "medium-invalid",
-      "name": "Medium, invalid",
-      "description": "The value is out of bounds; the error message says how to fix it.",
+      "id": "medium-error",
+      "name": "Medium, error",
+      "description": "The value is out of bounds; the message says how to fix it.",
       "props": {
         "size": "medium",
         "label": "Quantity",
         "value": 120,
         "min": 1,
         "max": 99,
-        "invalid": true,
-        "errorMessage": "Enter a number between 1 and 99."
+        "severity": "error",
+        "message": "Enter a number between 1 and 99."
       }
     },
     {
@@ -718,7 +758,7 @@
       "attributes": {
         "size": "data-size",
         "disabled": "data-disabled",
-        "invalid": "data-invalid",
+        "severity": "data-severity",
         "readonly": "data-readonly"
       },
       "stateAttribute": "data-state",
@@ -728,7 +768,7 @@
         "label": ".ds-number-field__label",
         "control": ".ds-number-field__control",
         "description": ".ds-number-field__description",
-        "error-message": ".ds-number-field__error-message"
+        "message": ".ds-number-field__message"
       }
     }
   },
@@ -737,6 +777,25 @@
     "slider"
   ],
   "decisions": [
+    {
+      "id": "forms-severity",
+      "date": "2026-11-19",
+      "version": "0.2.0",
+      "area": "state",
+      "status": "active",
+      "text": "The control shows one of three severities, set by the severity property (none by default, error, warning, success): its border takes the severity's accent functional border color and the message, the message property shown only with a severity, takes the severity's functional text color. A message carries every severity, in the same part; severity replaces the invalid property and message replaces errorMessage. On the web the error is aria-invalid=\"true\" (and :user-invalid when the browser validates) and the severity is also data-severity; warning and success have no web state and are said in the message text. The fill, the icon and the message wording of each severity are rendered in Forms step 6. The accent borders reach 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1); the light warning border is 2.95:1 on the subtle warning fill, which step 6 may use as the fill, a shortfall the team accepted knowingly (issue #119).",
+      "rationale": "The team validated the Forms foundation's three severities (decision forms-validation-severities) and named the property severity; \"error\" is the word every platform uses (WCAG 3.3.1 Error Identification, Compose error semantics, Material error text), where \"invalid\" is the web's technical term. The clean break is deliberate: the packages are alpha and unreleased, and a deprecated alias would cost a schema field and support in the validator, the bridge and the templates. This amends decisions field-colors and label-description-error, whose text still says invalid and error message.",
+      "tokens": [
+        "number-field.control.border-color.*",
+        "number-field.message.color.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.1",
+        "wcag-aria21",
+        "aria-invalid"
+      ]
+    },
     {
       "id": "field-colors",
       "date": "2026-10-03",
@@ -798,6 +857,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.0",
+      "date": "2026-11-19",
+      "note": "Breaking, decision forms-severity: the invalid property is replaced by severity (none, error, warning, success), errorMessage by message and the part error-message by message, the state invalid by error, warning and success; the web attribute data-invalid by data-severity. Tokens: control.border-color.invalid is control.border-color.error, with warning and success and reads the accent functional border (global.border.accent.functional.<severity>.default) instead of the base error border; error-message.* is message.*, and message.color.<severity> reads global.text.on-base.functional.<severity>.default. CSS: [data-severity=\"<severity>\"] and [data-state=\"<severity>\"], number-field__error-message is number-field__message. The accent borders reach 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1); the light warning border is 2.95:1 on the subtle warning fill, which step 6 may use as the fill, a shortfall the team accepted knowingly (issue #119)."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",
