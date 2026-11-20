@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.5",
+  "version": "0.10.6",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -622,6 +622,18 @@
   ],
   "decisions": [
     {
+      "id": "leading-icon-size",
+      "date": "2026-11-20",
+      "version": "0.10.6",
+      "area": "size",
+      "status": "active",
+      "text": "The search glyph keeps 16 / 20 / 24 px for the small, medium and large sizes (search-field.icon.size, size.2 / 3 / 4): the size of the field family's leading icon, which the Text field and the Number field take.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 2) among: A, keep the Search field's glyph sizes, one Icon step per field size, 16 / 20 / 24 px (chosen); B, the Button's and the Icon button's icon at the same size, 20 / 24 / 24 px (size.3 / 4 / 4), the severity icon's after the control; C, the Icon next to 14 and 16 px text, 16 px at every size (size.2). The Figma prototype draws a 20 / 24 / 28 px glyph in an 18 / 18 / 24 px frame, off the size scale. Measured with A, beside an Icon button and a Button of the same size: the glyph leaves 6 / 8 / 10 px above and below it in the 28 / 36 / 44 px box, 1.14 / 1.25 / 1.50 times the value text, 4 px smaller than the Icon button's glyph in small and medium; with the Search field's gap today (8 px inset, 4 / 8 / 8 px to the text), the text starts at 28 / 36 / 40 px. No new token.",
+      "tokens": [
+        "search-field.icon.size.*"
+      ]
+    },
+    {
       "id": "leading-icon-optional",
       "date": "2026-11-20",
       "version": "0.10.5",
@@ -896,6 +908,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.6",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-size: the leading icon is 16 / 20 / 24 px, the Search field's glyph sizes (#103 step 15, point 2). No token or rendering change (a keep decision)."
+    },
     {
       "version": "0.10.5",
       "date": "2026-11-20",
