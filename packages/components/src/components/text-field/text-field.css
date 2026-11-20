@@ -5,7 +5,7 @@
  *
  * Rules:
  *  - Only --text-field-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (label, control, description, message, stacked); the native
+ *  - The root is a wrapper (label, control or field box with the leading icon, description, message, stacked); the native
  *    single-line text input is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
@@ -28,6 +28,10 @@
   --_severity-icon-size: var(--text-field-severity-icon-size-after-control-medium);
   --_border-radius: var(--text-field-control-border-radius-medium);
   --_padding-inline: var(--text-field-control-padding-inline-medium);
+  --_padding-inline-start: var(--text-field-control-padding-inline-start-medium);
+  --_icon-size: var(--text-field-icon-size-medium);
+  --_icon-color: var(--text-field-icon-color-default);
+  --_icon-placeholder-color: var(--text-field-icon-placeholder-color-default);
   --_font-family: var(--text-field-control-typography-medium-font-family);
   --_font-size: var(--text-field-control-typography-medium-font-size);
   --_font-weight: var(--text-field-control-typography-medium-font-weight);
@@ -65,6 +69,8 @@
   --_severity-icon-size: var(--text-field-severity-icon-size-after-control-small);
   --_border-radius: var(--text-field-control-border-radius-small);
   --_padding-inline: var(--text-field-control-padding-inline-small);
+  --_padding-inline-start: var(--text-field-control-padding-inline-start-small);
+  --_icon-size: var(--text-field-icon-size-small);
   --_font-family: var(--text-field-control-typography-small-font-family);
   --_font-size: var(--text-field-control-typography-small-font-size);
   --_font-weight: var(--text-field-control-typography-small-font-weight);
@@ -92,6 +98,8 @@
   --_severity-icon-size: var(--text-field-severity-icon-size-after-control-large);
   --_border-radius: var(--text-field-control-border-radius-large);
   --_padding-inline: var(--text-field-control-padding-inline-large);
+  --_padding-inline-start: var(--text-field-control-padding-inline-start-large);
+  --_icon-size: var(--text-field-icon-size-large);
   --_font-family: var(--text-field-control-typography-large-font-family);
   --_font-size: var(--text-field-control-typography-large-font-size);
   --_font-weight: var(--text-field-control-typography-large-font-weight);
@@ -173,6 +181,53 @@
   letter-spacing: var(--_message-letter-spacing);
 }
 
+/* ---- Leading icon ----------------------------------------------------------
+   Optional (iconStart), decorative and hidden from assistive technology. The field box wraps the control
+   and the glyph drawn over its start edge, 8 px in; the control reserves control.padding-inline-start for
+   it (the Search field's). The glyph follows the text beside it: the placeholder's color while the field
+   is empty, the value's once something is typed (the template then always writes a placeholder attribute,
+   so :placeholder-shown tells an empty field). */
+
+.ds-text-field__field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.ds-text-field__field > .ds-text-field__control {
+  flex: 1;
+  min-inline-size: 0;
+  padding-inline-start: var(--_padding-inline-start);
+}
+
+.ds-text-field__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--text-field-icon-margin-inline);
+  display: inline-grid;
+  place-content: center;
+  inline-size: var(--_icon-size);
+  color: var(--_icon-placeholder-color);
+  font-family: var(--text-field-icon-font-family);
+  font-size: var(--_icon-size);
+  font-weight: var(--text-field-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--text-field-icon-fill),
+    "GRAD" var(--text-field-icon-grade),
+    "opsz" var(--text-field-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+}
+.ds-text-field__field:has(> .ds-text-field__control:not(:placeholder-shown)) > .ds-text-field__icon {
+  color: var(--_icon-color);
+}
+
 /* ---- Severity icon ---------------------------------------------------------
    One placement per form (severityIcon). After the control, the root becomes a two-column grid: the
    control fills the first column and the icon follows it at the severity-icon gap; every other part
@@ -188,7 +243,8 @@
 .ds-text-field[data-severity-icon="after-control"] > * {
   grid-column: 1 / -1;
 }
-.ds-text-field[data-severity-icon="after-control"] > .ds-text-field__control {
+.ds-text-field[data-severity-icon="after-control"] > .ds-text-field__control,
+.ds-text-field[data-severity-icon="after-control"] > .ds-text-field__field {
   grid-column: 1;
 }
 .ds-text-field[data-severity-icon="after-control"] > .ds-text-field__severity-icon {
@@ -273,6 +329,8 @@
 .ds-text-field:has(.ds-text-field__control:disabled) {
   --_label-color: var(--text-field-label-color-disabled);
   --_description-color: var(--text-field-description-color-disabled);
+  --_icon-color: var(--text-field-icon-color-disabled);
+  --_icon-placeholder-color: var(--text-field-icon-placeholder-color-disabled);
 }
 .ds-text-field:where([data-state="disabled"]) .ds-text-field__control,
 .ds-text-field__control:disabled {

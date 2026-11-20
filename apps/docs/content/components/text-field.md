@@ -45,6 +45,18 @@ description, under the box, gives the format, an example or what the value is us
 placeholder is a hint inside the empty box, in a lighter color: it disappears as soon as people
 type, so it never replaces the label and never carries an instruction people must remember.
 
+## Leading icon
+
+A field can show an icon before its value (**Leading icon**), but none is the default and regular
+applications should not use one: a column of plain fields reads faster, and the label already says
+what is asked. The icon is there for designs that want a more precise rendering, such as a
+marketing page with a few fields. It is the Search field's glyph: the same size, 8 px from the border,
+in the placeholder's color while the field is empty and the value's once people type.
+
+The icon only illustrates. Whatever it suggests is said in text: the label reads **Amount in
+euros**, not **Amount** next to a euro glyph. It is never a button; an action next to the value
+(a location or a calendar picker) is an Icon button beside the field.
+
 ## States
 
 | State | How it happens | What changes |
@@ -121,6 +133,11 @@ This section explains the decisions behind it.
   hover alike: the value keeps 16.91:1 in light mode and 11.67:1 in dark on it, the placeholder
   5.42:1 and 6.62:1, and the error border 5.45:1 and 5.14:1 against it. Its hover step would bring
   the placeholder to 4.33:1 in light mode, so the fill does not change on hover.
+- **The leading icon is decoration.** It is hidden from assistive technology on every platform
+  and never names the field, so it needs no text alternative of its own; what it suggests must
+  already be in the label or the description, as for any image whose information is given by the
+  text next to it ([WCAG 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html),
+  [WAI tutorial: Decorative images](https://www.w3.org/WAI/tutorials/images/decorative/)).
 - **Text size.** The label and the help text are set from 12 to 16 px. WCAG sets no minimum text
   size: it asks that text can be resized up to 200 % without loss of content or functionality, and
   the box height is a minimum, so it grows with larger text

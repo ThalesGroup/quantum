@@ -5,7 +5,7 @@
  *
  * Rules:
  *  - Only --number-field-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (label, control, description, message, stacked); the native
+ *  - The root is a wrapper (label, control or field box with the leading icon, description, message, stacked); the native
  *    number input is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
@@ -28,6 +28,10 @@
   --_severity-icon-size: var(--number-field-severity-icon-size-after-control-medium);
   --_border-radius: var(--number-field-control-border-radius-medium);
   --_padding-inline: var(--number-field-control-padding-inline-medium);
+  --_padding-inline-start: var(--number-field-control-padding-inline-start-medium);
+  --_icon-size: var(--number-field-icon-size-medium);
+  --_icon-color: var(--number-field-icon-color-default);
+  --_icon-placeholder-color: var(--number-field-icon-placeholder-color-default);
   --_font-family: var(--number-field-control-typography-medium-font-family);
   --_font-size: var(--number-field-control-typography-medium-font-size);
   --_font-weight: var(--number-field-control-typography-medium-font-weight);
@@ -65,6 +69,8 @@
   --_severity-icon-size: var(--number-field-severity-icon-size-after-control-small);
   --_border-radius: var(--number-field-control-border-radius-small);
   --_padding-inline: var(--number-field-control-padding-inline-small);
+  --_padding-inline-start: var(--number-field-control-padding-inline-start-small);
+  --_icon-size: var(--number-field-icon-size-small);
   --_font-family: var(--number-field-control-typography-small-font-family);
   --_font-size: var(--number-field-control-typography-small-font-size);
   --_font-weight: var(--number-field-control-typography-small-font-weight);
@@ -92,6 +98,8 @@
   --_severity-icon-size: var(--number-field-severity-icon-size-after-control-large);
   --_border-radius: var(--number-field-control-border-radius-large);
   --_padding-inline: var(--number-field-control-padding-inline-large);
+  --_padding-inline-start: var(--number-field-control-padding-inline-start-large);
+  --_icon-size: var(--number-field-icon-size-large);
   --_font-family: var(--number-field-control-typography-large-font-family);
   --_font-size: var(--number-field-control-typography-large-font-size);
   --_font-weight: var(--number-field-control-typography-large-font-weight);
@@ -178,6 +186,53 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ---- Leading icon ----------------------------------------------------------
+   Optional (iconStart), decorative and hidden from assistive technology. The field box wraps the control
+   and the glyph drawn over its start edge, 8 px in; the control reserves control.padding-inline-start for
+   it (the Search field's). The glyph follows the text beside it: the placeholder's color while the field
+   is empty, the value's once something is typed (the template then always writes a placeholder attribute,
+   so :placeholder-shown tells an empty field). */
+
+.ds-number-field__field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.ds-number-field__field > .ds-number-field__control {
+  flex: 1;
+  min-inline-size: 0;
+  padding-inline-start: var(--_padding-inline-start);
+}
+
+.ds-number-field__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--number-field-icon-margin-inline);
+  display: inline-grid;
+  place-content: center;
+  inline-size: var(--_icon-size);
+  color: var(--_icon-placeholder-color);
+  font-family: var(--number-field-icon-font-family);
+  font-size: var(--_icon-size);
+  font-weight: var(--number-field-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--number-field-icon-fill),
+    "GRAD" var(--number-field-icon-grade),
+    "opsz" var(--number-field-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+}
+.ds-number-field__field:has(> .ds-number-field__control:not(:placeholder-shown)) > .ds-number-field__icon {
+  color: var(--_icon-color);
+}
+
 /* ---- Severity icon ---------------------------------------------------------
    One placement per form (severityIcon). After the control, the root becomes a two-column grid: the
    control fills the first column and the icon follows it at the severity-icon gap; every other part
@@ -193,7 +248,8 @@
 .ds-number-field[data-severity-icon="after-control"] > * {
   grid-column: 1 / -1;
 }
-.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__control {
+.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__control,
+.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__field {
   grid-column: 1;
 }
 .ds-number-field[data-severity-icon="after-control"] > .ds-number-field__severity-icon {
@@ -278,6 +334,8 @@
 .ds-number-field:has(.ds-number-field__control:disabled) {
   --_label-color: var(--number-field-label-color-disabled);
   --_description-color: var(--number-field-description-color-disabled);
+  --_icon-color: var(--number-field-icon-color-disabled);
+  --_icon-placeholder-color: var(--number-field-icon-placeholder-color-disabled);
 }
 .ds-number-field:where([data-state="disabled"]) .ds-number-field__control,
 .ds-number-field__control:disabled {

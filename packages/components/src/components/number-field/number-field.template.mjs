@@ -28,6 +28,7 @@ export function render(props = {}) {
     max = null,
     step = null,
     placeholder = null,
+    iconStart = null,
     description = null,
     message = null,
     size = 'medium',
@@ -61,7 +62,9 @@ export function render(props = {}) {
   const inputAttrs = ['type="number"', 'class="ds-number-field__control"', 'data-part="control"', `id="${escapeAttr(inputId)}"`];
   if (name) inputAttrs.push(`name="${escapeAttr(name)}"`);
   if (value !== '' && value != null) inputAttrs.push(`value="${escapeAttr(value)}"`);
-  if (placeholder) inputAttrs.push(`placeholder="${escapeAttr(placeholder)}"`);
+  // With a leading icon, always a placeholder attribute (empty when there is none): the icon's color reads
+  // :placeholder-shown to tell an empty field (decision leading-icon-color).
+  if (placeholder || iconStart) inputAttrs.push(`placeholder="${escapeAttr(placeholder ?? '')}"`);
   if (min != null && min !== '') inputAttrs.push(`min="${escapeAttr(min)}"`);
   if (max != null && max !== '') inputAttrs.push(`max="${escapeAttr(max)}"`);
   if (step != null && step !== '') inputAttrs.push(`step="${escapeAttr(step)}"`);
@@ -80,7 +83,8 @@ export function render(props = {}) {
   const icon = (where) => `<span class="ds-number-field__severity-icon" data-part="severity-icon" data-place="${where}"${where === 'after-control' ? ` id="${escapeAttr(iconId)}"` : ''} role="img" aria-label="${escapeAttr(iconLabel)}">${renderIcon(glyph)}</span>`;
   const parts = [
     `<label class="ds-number-field__label" data-part="label" for="${escapeAttr(inputId)}">${escapeHtml(label)}</label>`,
-    `<input ${inputAttrs.join(' ')}>${iconPlace === 'after-control' ? icon('after-control') : ''}`,
+    // The leading icon is decorative: hidden from assistive technology, never the name (decision leading-icon-decorative).
+    `${iconStart ? `<div class="ds-number-field__field" data-part="field"><span class="ds-number-field__icon" data-part="icon" aria-hidden="true">${renderIcon(iconStart)}</span><input ${inputAttrs.join(' ')}></div>` : `<input ${inputAttrs.join(' ')}>`}${iconPlace === 'after-control' ? icon('after-control') : ''}`,
   ];
   if (description) parts.push(`<p class="ds-number-field__description" data-part="description" id="${escapeAttr(descriptionId)}">${escapeHtml(description)}</p>`);
   if (hasMessage) parts.push(`<p class="ds-number-field__message" data-part="message" id="${escapeAttr(messageId)}">${iconPlace === 'message' ? icon('message') : ''}${escapeHtml(message)}</p>`);

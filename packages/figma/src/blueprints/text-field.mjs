@@ -12,6 +12,9 @@
  * the message, by the `severityIcon` variant; the web lays the control and the icon out on a grid
  * row without a wrapper.
  *
+ * The `Leading icon` axis (iconStart) wraps the control in a `field` frame with the decorative glyph over
+ * its start edge, the control reserving control.padding-inline-start, as the Search field's.
+ *
  * The other field blueprints (textarea, number-field, search-field, select) build on the helpers
  * exported here.
  */
@@ -79,8 +82,52 @@ export const withSeverityIcon = (controlNode, counter = 'CENTER') => ({
   align: { primary: 'MIN', counter },
   width: 'FILL',
   bind: { gap: (v) => (v.props.severityIcon === 'after-control' ? 'severity-icon.gap' : null) },
-  children: [controlNode, severityIcon('after-control')],
+  children: [...[].concat(controlNode), severityIcon('after-control')],
 });
+
+/** The `Leading icon` axis: a variant axis, as the Button's, because the control's start padding depends on it. */
+export const LEADING_ICON = { name: 'Leading icon', values: [false, true] };
+
+/**
+ * The leading icon (iconStart, decorative): a frame positioned absolutely at the field's start edge and
+ * vertically centered, whose left padding is icon.margin-inline, holding the glyph. The glyph follows the
+ * text beside it: icon.color next to a value, icon.placeholder-color next to the placeholder.
+ */
+export const leadingIcon = (glyph, property = null) => ({
+  type: 'frame',
+  name: 'icon-inset',
+  layout: 'HORIZONTAL',
+  align: { primary: 'MIN', counter: 'CENTER' },
+  absolute: { x: 0, y: 'center' },
+  bind: { paddingLeft: 'icon.margin-inline' },
+  children: [
+    {
+      type: 'icon',
+      name: 'icon',
+      glyph,
+      ...(property ? { property } : {}),
+      bind: { fill: (v) => (v.axes[CONTENT.name] === 'value' ? 'icon.color' : 'icon.placeholder-color'), size: 'icon.size', fontFamily: 'icon.font-family', fontWeight: 'icon.font-weight' },
+    },
+  ],
+});
+
+/** The field box: the control, reserving control.padding-inline-start, and the leading icon over its start edge. */
+export const field = (children, glyph, property = null) => ({
+  type: 'frame',
+  name: 'field',
+  layout: 'HORIZONTAL',
+  width: 'FILL',
+  children: [
+    control({ bind: { paddingX: null, paddingLeft: 'control.padding-inline-start', paddingRight: 'control.padding-inline' }, children }),
+    leadingIcon(glyph, property),
+  ],
+});
+
+/** The control, or the field box when the `Leading icon` axis is on. */
+export const withLeadingIcon = (children, glyph = 'sell') => [
+  { ...control({ children }), when: (v) => !v.axes[LEADING_ICON.name] },
+  { ...field(children, glyph, 'Leading icon glyph'), when: (v) => v.axes[LEADING_ICON.name] },
+];
 
 /** The control's text: the value, or the placeholder in its own color (`Content` axis). */
 export const content = ({ value = 'Value', placeholder = 'Placeholder' } = {}) => [
@@ -139,9 +186,12 @@ export const TRANSITION = { slot: 'control.transition', reason: 'Figma variables
 // upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
 export const SEVERITY_ICON_AXES = { slot: 'severity-icon.fill, severity-icon.grade, severity-icon.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' };
 
+// upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
+export const ICON_AXES = { slot: 'icon.fill, icon.grade, icon.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' };
+
 export default {
-  axes: [CONTENT],
+  axes: [CONTENT, LEADING_ICON],
   booleans: { 'Show description': false },
-  root: container([label, withSeverityIcon(control({ children: content() })), description, message]),
-  notDrawn: [TRANSITION, SEVERITY_ICON_AXES],
+  root: container([label, withSeverityIcon(withLeadingIcon(content(), 'mail')), description, message]),
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES],
 };
