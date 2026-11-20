@@ -25,6 +25,7 @@
   --_description-color: var(--textarea-description-color-default);
   --_message-color: var(--textarea-message-color-error);
   --_min-height: var(--textarea-control-min-height-medium);
+  --_severity-icon-size: var(--textarea-severity-icon-size-after-control-medium);
   --_border-radius: var(--textarea-control-border-radius-medium);
   --_padding-inline: var(--textarea-control-padding-inline-medium);
   --_font-family: var(--textarea-control-typography-medium-font-family);
@@ -62,6 +63,7 @@
 
 .ds-textarea[data-size="small"] {
   --_min-height: var(--textarea-control-min-height-small);
+  --_severity-icon-size: var(--textarea-severity-icon-size-after-control-small);
   --_border-radius: var(--textarea-control-border-radius-small);
   --_padding-inline: var(--textarea-control-padding-inline-small);
   --_font-family: var(--textarea-control-typography-small-font-family);
@@ -89,6 +91,7 @@
 
 .ds-textarea[data-size="large"] {
   --_min-height: var(--textarea-control-min-height-large);
+  --_severity-icon-size: var(--textarea-severity-icon-size-after-control-large);
   --_border-radius: var(--textarea-control-border-radius-large);
   --_padding-inline: var(--textarea-control-padding-inline-large);
   --_font-family: var(--textarea-control-typography-large-font-family);
@@ -177,6 +180,69 @@
 .ds-textarea__control {
   padding-block: var(--_padding-block);
   resize: vertical;
+}
+
+/* ---- Severity icon ---------------------------------------------------------
+   One placement per form (severityIcon). After the control, the root becomes a two-column grid: the
+   control fills the first column and the icon follows it at the severity-icon gap; every other part
+   spans both. At the start of the message, the message becomes a row: the icon, then the text. */
+
+.ds-textarea[data-severity-icon="after-control"] {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--textarea-severity-icon-gap-after-control);
+  row-gap: var(--textarea-container-gap);
+  align-items: center;
+}
+.ds-textarea[data-severity-icon="after-control"] > * {
+  grid-column: 1 / -1;
+}
+.ds-textarea[data-severity-icon="after-control"] > .ds-textarea__control {
+  grid-column: 1;
+}
+.ds-textarea[data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+  grid-column: 2;
+}
+
+/* In a textarea the icon stays level with the first line rather than the middle of the box. */
+.ds-textarea[data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+  align-self: start;
+  margin-block-start: var(--_padding-block);
+}
+
+.ds-textarea__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--_severity-icon-size);
+  block-size: var(--_severity-icon-size);
+  color: var(--textarea-severity-icon-color-error);
+  font-family: var(--textarea-severity-icon-font-family);
+  font-size: var(--_severity-icon-size);
+  font-weight: var(--textarea-severity-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--textarea-severity-icon-fill),
+    "GRAD" var(--textarea-severity-icon-grade),
+    "opsz" var(--textarea-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_severity-icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-textarea__message:has(> .ds-textarea__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--textarea-severity-icon-gap-message);
+}
+/* In the message the icon is centred on the first line. */
+.ds-textarea__severity-icon[data-place="message"] {
+  --_severity-icon-size: var(--textarea-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
 }
 
 /* ---- States -------------------------------------------------------------- */

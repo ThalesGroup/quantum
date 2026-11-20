@@ -7,7 +7,10 @@
  *
  * The `Content` axis draws the control's text as a value or as the placeholder (its own color).
  * The description is a boolean property (off, as in the template); the message is drawn in
- * the error, warning and success states only, as the template shows it with a severity.
+ * the error, warning and success states only, as the template shows it with a severity. The
+ * severity icon (error only for now) sits after the control, in `control-row`, or at the start of
+ * the message, by the `severityIcon` variant; the web lays the control and the icon out on a grid
+ * row without a wrapper.
  *
  * The other field blueprints (textarea, number-field, search-field, select) build on the helpers
  * exported here.
@@ -37,15 +40,47 @@ export const description = {
 
 export const SEVERITIES = ['error', 'warning', 'success'];
 
+/** The severity icon: drawn for the error only (warning and success with #103 step 13), after the control or at the start of the message (`severityIcon`). */
+const severityIcon = (place) => ({
+  type: 'icon',
+  name: 'severity-icon',
+  glyph: 'error',
+  when: (v) => v.state === 'error' && v.props.severityIcon === place,
+  bind: { fill: 'severity-icon.color', size: 'severity-icon.size', fontFamily: 'severity-icon.font-family', fontWeight: 'severity-icon.font-weight' },
+});
+
+/** The message: its text, after the severity icon when the form places it there. */
 export const message = {
-  type: 'text',
+  type: 'frame',
   name: 'message',
+  layout: 'HORIZONTAL',
+  align: { primary: 'MIN', counter: 'MIN' },
   when: (v) => SEVERITIES.includes(v.state),
-  text: 'Message',
-  property: 'Message',
   width: 'FILL',
-  bind: { fill: 'message.color', typography: 'message.typography' },
+  bind: { gap: (v) => (v.props.severityIcon === 'message' ? 'severity-icon.gap' : null) },
+  children: [
+    severityIcon('message'),
+    {
+      type: 'text',
+      name: 'message-text',
+      text: 'Message',
+      property: 'Message',
+      width: 'FILL',
+      bind: { fill: 'message.color', typography: 'message.typography' },
+    },
+  ],
 };
+
+/** The control and, when the form places it there, the severity icon after it (the web lays them out on a grid row). */
+export const withSeverityIcon = (controlNode, counter = 'CENTER') => ({
+  type: 'frame',
+  name: 'control-row',
+  layout: 'HORIZONTAL',
+  align: { primary: 'MIN', counter },
+  width: 'FILL',
+  bind: { gap: (v) => (v.props.severityIcon === 'after-control' ? 'severity-icon.gap' : null) },
+  children: [controlNode, severityIcon('after-control')],
+});
 
 /** The control's text: the value, or the placeholder in its own color (`Content` axis). */
 export const content = ({ value = 'Value', placeholder = 'Placeholder' } = {}) => [
@@ -101,9 +136,12 @@ export const container = (children) => ({
 
 export const TRANSITION = { slot: 'control.transition', reason: 'Figma variables have no duration or easing.' };
 
+// upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
+export const SEVERITY_ICON_AXES = { slot: 'severity-icon.fill, severity-icon.grade, severity-icon.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' };
+
 export default {
   axes: [CONTENT],
   booleans: { 'Show description': false },
-  root: container([label, control({ children: content() }), description, message]),
-  notDrawn: [TRANSITION],
+  root: container([label, withSeverityIcon(control({ children: content() })), description, message]),
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES],
 };

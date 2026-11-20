@@ -25,6 +25,7 @@
   --_description-color: var(--number-field-description-color-default);
   --_message-color: var(--number-field-message-color-error);
   --_min-height: var(--number-field-control-min-height-medium);
+  --_severity-icon-size: var(--number-field-severity-icon-size-after-control-medium);
   --_border-radius: var(--number-field-control-border-radius-medium);
   --_padding-inline: var(--number-field-control-padding-inline-medium);
   --_font-family: var(--number-field-control-typography-medium-font-family);
@@ -61,6 +62,7 @@
 
 .ds-number-field[data-size="small"] {
   --_min-height: var(--number-field-control-min-height-small);
+  --_severity-icon-size: var(--number-field-severity-icon-size-after-control-small);
   --_border-radius: var(--number-field-control-border-radius-small);
   --_padding-inline: var(--number-field-control-padding-inline-small);
   --_font-family: var(--number-field-control-typography-small-font-family);
@@ -87,6 +89,7 @@
 
 .ds-number-field[data-size="large"] {
   --_min-height: var(--number-field-control-min-height-large);
+  --_severity-icon-size: var(--number-field-severity-icon-size-after-control-large);
   --_border-radius: var(--number-field-control-border-radius-large);
   --_padding-inline: var(--number-field-control-padding-inline-large);
   --_font-family: var(--number-field-control-typography-large-font-family);
@@ -173,6 +176,63 @@
 /* The browser's spin buttons keep their native look (no portable way to draw them from tokens). */
 .ds-number-field__control {
   font-variant-numeric: tabular-nums;
+}
+
+/* ---- Severity icon ---------------------------------------------------------
+   One placement per form (severityIcon). After the control, the root becomes a two-column grid: the
+   control fills the first column and the icon follows it at the severity-icon gap; every other part
+   spans both. At the start of the message, the message becomes a row: the icon, then the text. */
+
+.ds-number-field[data-severity-icon="after-control"] {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--number-field-severity-icon-gap-after-control);
+  row-gap: var(--number-field-container-gap);
+  align-items: center;
+}
+.ds-number-field[data-severity-icon="after-control"] > * {
+  grid-column: 1 / -1;
+}
+.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__control {
+  grid-column: 1;
+}
+.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__severity-icon {
+  grid-column: 2;
+}
+
+.ds-number-field__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--_severity-icon-size);
+  block-size: var(--_severity-icon-size);
+  color: var(--number-field-severity-icon-color-error);
+  font-family: var(--number-field-severity-icon-font-family);
+  font-size: var(--_severity-icon-size);
+  font-weight: var(--number-field-severity-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--number-field-severity-icon-fill),
+    "GRAD" var(--number-field-severity-icon-grade),
+    "opsz" var(--number-field-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_severity-icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-number-field__message:has(> .ds-number-field__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--number-field-severity-icon-gap-message);
+}
+/* In the message the icon is centred on the first line. */
+.ds-number-field__severity-icon[data-place="message"] {
+  --_severity-icon-size: var(--number-field-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
 }
 
 /* ---- States -------------------------------------------------------------- */

@@ -6,11 +6,11 @@
  * Not drawn: the browser's spin buttons, which keep their native look on the web (no token), and
  * the tabular figures of the value (font-variant-numeric, not a token).
  */
-import { CONTENT, TRANSITION, container, content, control, description, message, label } from './text-field.mjs';
+import { CONTENT, TRANSITION, container, content, control, description, message, label, withSeverityIcon, SEVERITY_ICON_AXES } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
   booleans: { 'Show description': false },
-  root: container([label, control({ children: content({ value: '0' }) }), description, message]),
-  notDrawn: [TRANSITION],
+  root: container([label, withSeverityIcon(control({ children: content({ value: '0' }) })), description, message]),
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES],
 };

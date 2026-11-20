@@ -61,6 +61,18 @@ type, so it never replaces the label and never carries an instruction people mus
 A severity and hover combine (the hover tint under the severity outline; an error keeps its fill on hover), and disabled wins over
 every other state: the states matrix shows what the tokens decide.
 
+### Severity icon
+
+An error can also show an icon, set by `severityIcon`, a choice the form makes once for all its
+fields ([Forms foundation](/foundations/forms/guidelines)). By default (`message`) it starts the
+message, 16 px, and the box keeps its full width. With `after-control` it follows the box, at
+the size of the Button's icon of the same size (20, 24 and 24 px), and the box gives up the icon
+and an 8 px gap, so it no longer lines up with a full-width field or Button. With `none` there is
+no icon, and the message says the severity in words. The icon is never drawn inside the box,
+where browsers add their own controls. It takes the message's color and is named after the
+severity ("Error"), so the description reads "Error" and then the message. Warning and success get
+their icons later.
+
 ## Content
 
 - The label is a noun phrase: **Email address**, **Company name**. Sentence case, no colon,
