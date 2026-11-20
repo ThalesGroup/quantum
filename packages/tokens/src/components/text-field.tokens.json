@@ -279,11 +279,11 @@
       },
       "typography": {
         "$type": "typography",
-        "$description": "Message text: the helper size, smaller than the label and the value (body.size.xs, xs, sm), medium weight, the normal line height and the normal letter spacing (Typography foundation).",
+        "$description": "Message text: the label's and the value's size (body.size.sm, md, md), larger than the description, so the message that says what to fix reads as easily as the field itself; medium weight, the normal line height and the normal letter spacing (Typography foundation).",
         "small": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.xs}",
+            "fontSize": "{body.size.sm}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -292,7 +292,7 @@
         "medium": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.xs}",
+            "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -301,7 +301,7 @@
         "large": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.sm}",
+            "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"

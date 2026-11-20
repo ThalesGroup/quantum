@@ -34,7 +34,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Large | A prominent single field, such as a search page or a sign-in form: 44 px high with 16 px text. |
 
 Height, text size and inline padding are those of the Button of the same size, so a field and a
-button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), and the description and the message are smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form.
+button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), the message that says what to fix takes that size too, and the description is smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form.
 
 ## Rows
 
@@ -139,7 +139,7 @@ This section explains the decisions behind it.
 
 ### iOS
 
-- The recommended minimum text size is 11 pt; the help text at 12 pt is above it
+- The recommended minimum text size is 11 pt; the description at 12 pt and the message at 14 pt are above it
   ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - Show a hint to help communicate the purpose of a text field, and include a separate label
   because placeholder text disappears when people start typing
