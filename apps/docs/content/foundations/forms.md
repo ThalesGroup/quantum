@@ -262,12 +262,19 @@ not darken on hover: the error hover step would bring the placeholder to 4.33:1 
 under the 4.5:1 text needs ([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)).
 The border, not the fill, identifies the control.
 
-> **Not decided yet (step 6).** The fill of a warning and a success, the icon, and the message
-> color. Validated so far: the severity icon is never drawn inside the area where people type,
-> because browsers add their own elements there (autofill, password managers, reveal and clear
-> buttons, spinners, pickers). It goes after the control, or at the start of the message, or
-> nowhere, and then the message says the severity (**Error: …**); it appears in one place only.
-> Without an icon after it, the control keeps its default width and takes the whole width.
+**The icon.** The severity icon is optional and appears in one place only, never inside the
+area where people type: browsers add their own elements there (autofill, password managers,
+reveal and clear buttons, spinners, pickers). It goes **after the control**, which then gives up
+the icon and its gap, **at the start of the message**, the control keeping its full width, or
+**nowhere**, and then the message says the severity (**Error: …**). The placement is a rule of
+the form: every control that can show a severity carries the same property, `severityIcon`
+(`after-control`, `message`, `none`; `message` by default), and a form sets it once, to the same
+value, for all its controls, so its fields never mix two placements. A checkbox, a radio button
+or a group never draws the icon after its control, where its label or its options sit: it offers
+`message` and `none`, and a form set to `after-control` shows its icon in the message.
+
+> **Not decided yet (step 6).** The fill of a warning and a success, the icon's size and color,
+> and the message color.
 
 ### Web
 
