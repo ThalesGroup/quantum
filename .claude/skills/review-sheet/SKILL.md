@@ -49,11 +49,16 @@ The shell lays every sheet out the same way, top to bottom:
 
 - **Toolbar** (sticky, one line): logo, component, pull request and issue, step, question,
   progress dots, participants' avatars, and the **Compare** button.
-- **Hero**: the question, what is already decided, the participants, the progress, one tile per
-  option (its light and dark color when color is the question, the recommended one outlined).
+- **Hero**: the question, the participants, the progress, one tile per option (its light and
+  dark color when color is the question), on one row as wide as the options need; the tiles share
+  their rows (tags, name, title, colors), so the same content lines up from tile to tile.
+- **Decision marks**, the same on the tiles, the table and the sub-headers: while the question is
+  open, the recommended option is outlined in blue with a blue "Recommended" tag; once the team
+  has chosen (`chosen` on the sheet, see "Recording the decision"), the chosen option is outlined
+  in green with a green check tag, and "Recommended" turns neutral and loses its outline.
 - **Sidebar** (sticky): the steps, the current one highlighted, and the anchors of the view.
 - **Options and reasons**: the summary table you share in the session reply, one row per option,
-  its token, values and why; then what this sheet does not decide.
+  its token, values and why.
 - **Renderings**: one sticky sub-header per option (letter, title, token, recommended), the
   surface levels as columns, light then dark.
 
@@ -79,8 +84,6 @@ What goes in it:
   copy it with "Copy link to this view". Never put controls on the page itself.
 - `transition: none !important` on the component: the hidden preview pane freezes transitions,
   so a sheet would otherwise show colors halfway.
-- **Already decided** and **not decided here** in the hero and under the table: what stays
-  fixed in this question, and which later question settles the rest.
 
 Token comparison sheets (a table of every token, today's value, the option's value, a "differs"
 filter) work the same way for structural questions.
@@ -93,6 +96,13 @@ URL without a query) at 1440 px wide and tall enough for the whole page: the ent
 posted, header included. Use them in the step comment of the pull request
 (`gh pr comment … --attach`) and in issues (`gh issue create … --attach`); for checking
 yourself, the browser pane works too (`computer` screenshot, `javascript_tool` to measure).
+
+## Recording the decision
+
+When the step is committed, set `chosen` on the sheet to the id of the option the team chose, add
+the step to `done` in `build/review/session.json`, rebuild the sheet and take its screenshot
+again: that screenshot, with the decision marked, is the "after" posted in the step comment
+(skill `stepwise-pr`, "Record").
 
 ## Asking the question
 

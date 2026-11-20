@@ -15,8 +15,7 @@ const icon = await tpl('icon');
 const sheet = {
   step: 12, point: '2c', stepTitle: 'Error state',
   question: 'Which color for the error icon?',
-  decided: 'The icon goes after the control (20 / 24 / 24 px) or in the message (16 px), one rule per form; the message is 14 / 16 / 16 px. In both placements the icon sits on the surface, never on the fill.',
-  notHere: 'Whether the message keeps the word "Error:" next to the icon is #105 step 11.',
+  // chosen: 'A',  // set when the step is committed, then rebuild and re-shoot the sheet
 };
 const options = [
   { id: 'reference', short: 'Ref', name: 'Reference', title: 'Figma prototype: icon inside the box', token: 'global.icon.on-subtle.functional.error.default', light: '#940E11', dark: null, darkNote: 'The Figma prototype has no dark values.', why: 'Figma draws the icon inside the box, on the subtle fill; ruled out on the web by #105 step 5.' },

@@ -1,6 +1,6 @@
 // The shared shell of every review sheet: a slim sticky toolbar (Quantum logo, component, pull request and
 // issue, step, question, progress dots, participants' GitHub avatars, a Compare button), a centred hero (the
-// question, what is already decided, the participants, the progress, one tile per option), a sidebar (the
+// question, the participants, the progress, one tile per option, the recommended and the chosen one marked), a sidebar (the
 // steps, the anchors), the summary table of options and reasons, then the renderings: one sticky sub-header
 // per option, the surface levels as columns, light then dark.
 //
@@ -16,7 +16,10 @@
 //   const session = loadSession(repo);                   // build/review/session.json
 //   const html = await renderSheet({ repo, session, sheet, options, variants, cell, summary, measure, css });
 //
-// - sheet: { step, point, stepTitle, question, decided (HTML), notHere (HTML, optional), component (optional) }
+// - sheet: { step, point, stepTitle, question, component (optional), chosen (optional) }
+//   chosen: the id of the option the team chose, set when the step is committed; the sheet is rebuilt and
+//   its screenshot posted with the step comment, so the decision shows in the tiles, the table and the
+//   sub-headers (the recommended one in blue until then; the chosen one in green with a check).
 // - options: [{ id, short, name, title, recommended, why (HTML), token, light, dark, darkNote }]
 //   light / dark: the colors shown on the tile and in the table (CSS colors), dark null when there is none;
 //   darkNote: the text shown instead of the dark renderings (for a reference without dark values).
@@ -45,14 +48,21 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
 export async function renderSheet({ repo, session: S, sheet: Q, options, variants, cell, summary, measure = null, css = '', levels = [0, 1, 2, 3], modes = ['light', 'dark'] }) {
   repo = path.resolve(repo);
   const tpl = async (id) => (await import(pathToFileURL(path.join(repo, 'packages/components/src/components', id, `${id}.template.mjs`)).href)).render;
-  const T = Object.fromEntries(await Promise.all(['avatar', 'badge', 'progress-bar', 'select', 'checkbox', 'switch', 'button'].map(async (id) => [id, await tpl(id)])));
+  const T = Object.fromEntries(await Promise.all(['avatar', 'badge', 'icon', 'progress-bar', 'select', 'checkbox', 'switch', 'button'].map(async (id) => [id, await tpl(id)])));
   const fsUrl = (p) => '/@fs' + path.join(repo, p);
   const component = Q.component || S.component;
   const steps = S.steps || [];
   const done = S.done || [];
   const people = S.people || [];
   const stepCls = (i) => (done.includes(i + 1) ? 'd' : i + 1 === Q.step ? 'c' : '');
-  const rec = T.badge({ label: 'Recommended', intent: 'success', emphasis: 'subtle', size: 'small' });
+  // "Recommended" is blue while the question is open, neutral once the team has chosen.
+  const decided = Boolean(Q.chosen);
+  const rec = T.badge({ label: 'Recommended', intent: decided ? 'neutral' : 'brand', emphasis: 'subtle', size: 'small' });
+  // The chosen option's tag: a success badge holding the check icon, named "Chosen".
+  const chosen = T.badge({ label: 'Chosen', intent: 'success', emphasis: 'subtle', size: 'small' })
+    .replace(/(<span class="ds-badge__label"[^>]*>)Chosen(<\/span>)/, `$1${T.icon({ name: 'check', size: 'small', label: 'Chosen' })}$2`);
+  const mark = (o) => `${o.id === Q.chosen ? ' sel' : ''}${o.recommended ? ' rec' : ''}`;
+  const tags = (o) => `${o.recommended ? rec : ''}${o.id === Q.chosen ? chosen : ''}`;
   const avatar = (p) => T.avatar({ name: p.name || p.login, src: p.login ? `https://github.com/${p.login}.png?size=96` : null, size: 'small' });
   const stepLabel = `${Q.step}${Q.point ? '.' + Q.point : ''}`;
   const swatch = (c) => (c ? `<span class="x-sw" style="background:${c}"></span>${esc(c)}` : '<i>none</i>');
@@ -89,10 +99,9 @@ export async function renderSheet({ repo, session: S, sheet: Q, options, variant
   const hero = `<section class="x-hero">
   ${T.badge({ label: `${component} · step ${Q.step}${Q.stepTitle ? ', ' + Q.stepTitle : ''}${Q.point ? ' · point ' + Q.point : ''}`, intent: 'brand', emphasis: 'accent', size: 'small' })}
   <h1>${esc(Q.question)}</h1>
-  ${Q.decided ? `<p class="x-decided"><b>Already decided:</b> ${Q.decided}</p>` : ''}
   ${people.length ? `<div class="x-who"><span class="x-people">${people.map((p) => `<span>${avatar(p)}</span>`).join('')}</span><span>${people.map((p) => `${esc(p.name || '@' + p.login)}${p.role ? ` <small>(${esc(p.role)})</small>` : ''}`).join(', ')}</span></div>` : ''}
   ${steps.length ? `<div class="x-progress">${T['progress-bar']({ label: `Steps decided: ${done.length} of ${steps.length}`, value: done.length, max: steps.length, showValue: true, size: 'small' })}</div>` : ''}
-  <div class="x-tiles" style="grid-template-columns:repeat(${options.length},minmax(0,1fr))">${options.map((o) => `<a class="x-tile${o.recommended ? ' rec' : ''}" href="#${modes[0]}-${o.id}"><span class="x-tl"><b>${esc(o.name)}</b>${o.recommended ? rec : ''}</span><span>${esc(o.title)}</span>${o.light || o.dark ? `<span class="x-chips"><span style="background:${o.light || 'transparent'}" class="${o.light ? '' : 'none'}" title="light ${esc(o.light || 'none')}"></span><span style="background:${o.dark || 'transparent'}" class="${o.dark ? '' : 'none'}" title="dark ${esc(o.dark || 'none')}"></span></span>` : ''}</a>`).join('')}</div>
+  <div class="x-tiles${decided ? ' decided' : ''}" style="--x-n:${options.length}">${options.map((o) => `<a class="x-tile${mark(o)}" href="#${modes[0]}-${o.id}"><span class="x-tags">${tags(o)}</span><b class="x-tl">${esc(o.name)}</b><span>${esc(o.title)}</span>${o.light || o.dark ? `<span class="x-chips"><span style="background:${o.light || 'transparent'}" class="${o.light ? '' : 'none'}" title="light ${esc(o.light || 'none')}"></span><span style="background:${o.dark || 'transparent'}" class="${o.dark ? '' : 'none'}" title="dark ${esc(o.dark || 'none')}"></span></span>` : ''}</a>`).join('')}</div>
 </section>`;
 
   const sidebar = `<aside class="x-side">
@@ -102,8 +111,7 @@ export async function renderSheet({ repo, session: S, sheet: Q, options, variant
 
   const table = `<section class="x-summary"><h2 class="x-h">Options and reasons</h2>
   <table class="x-sum"><thead><tr><th>Option</th>${columns.map((c) => `<th>${c.label}</th>`).join('')}</tr></thead>
-  <tbody>${options.map((o) => `<tr${o.recommended ? ' class="rec"' : ''}><td><b>${esc(o.name)}</b>${o.recommended ? '<br>' + rec : ''}</td>${columns.map((c) => `<td>${c.cell(o)}</td>`).join('')}</tr>`).join('')}</tbody></table>
-  ${Q.notHere ? `<p class="x-note">${Q.notHere}</p>` : ''}
+  <tbody class="${decided ? 'decided' : ''}">${options.map((o) => `<tr class="${mark(o).trim()}"><td><b>${esc(o.name)}</b>${tags(o) ? `<span class="x-tags">${tags(o)}</span>` : ''}</td>${columns.map((c) => `<td>${c.cell(o)}</td>`).join('')}</tr>`).join('')}</tbody></table>
 </section>`;
 
   const drawer = `<aside id="drawer" class="x-drawer" hidden aria-label="Compare">
@@ -124,7 +132,7 @@ const CELLS=${JSON.stringify(CELLS)};
 const OPTS=${JSON.stringify(options.map(({ id, short, name, title, token, recommended, darkNote }) => ({ id, short: short || id, name, title, token, recommended, darkNote })))};
 const VARS=${JSON.stringify(variants)};
 const LEVELS=${JSON.stringify(levels.map(String))},MODES=${JSON.stringify(modes)};
-const REC=${JSON.stringify(rec)};
+const REC=${JSON.stringify(rec)},CHOSEN=${JSON.stringify(chosen)},PICK=${JSON.stringify(Q.chosen || null)};
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const checked=(g)=>$$('input[name="'+g+'"]').filter(i=>i.checked).map(i=>i.value);
 const cap=(s)=>s[0].toUpperCase()+s.slice(1);
@@ -136,7 +144,7 @@ const stack=(o,st)=>st.vars.map(v=>'<div class="x-f"><span class="x-ft">'+v.labe
 const cell=(o,mode,lvl,st,caption)=>{
   if(mode==='dark'&&o.darkNote)return '<div class="x-cell x-none" data-theme="dark">'+o.darkNote+'</div>';
   return '<div class="x-cell" data-theme="'+mode+'" style="background:var(--global-bg-level-'+lvl+'-default)"><span class="x-cap">'+(caption||('surface level '+lvl))+'</span><div class="x-zoom">'+stack(o,st)+'</div></div>';};
-const sub=(o,extra,id)=>'<div class="x-sub'+(o.recommended?' rec':'')+'"'+(id?' id="'+id+'"':'')+'><span class="x-letter">'+o.short+'</span><p class="x-st">'+o.name+': '+o.title+'</p>'+(o.recommended?REC:'')+'<span class="x-tok">'+(o.token?'<code>'+o.token+'</code>':'')+(extra?' · '+extra:'')+'</span></div>';
+const sub=(o,extra,id)=>'<div class="x-sub'+(o.recommended?' rec':'')+(o.id===PICK?' sel':'')+(PICK?' decided':'')+'"'+(id?' id="'+id+'"':'')+'><span class="x-letter">'+o.short+'</span><p class="x-st">'+o.name+': '+o.title+'</p>'+(o.recommended?REC:'')+(o.id===PICK?CHOSEN:'')+'<span class="x-tok">'+(o.token?'<code>'+o.token+'</code>':'')+(extra?' · '+extra:'')+'</span></div>';
 const cols=(n)=>'style="grid-template-columns:repeat('+n+',minmax(0,1fr))"';
 const views={
   overview(st,nav){return st.mode.map(m=>{nav.push('<b>'+cap(m)+'</b>');return '<section class="x-mode"><h2 class="x-mtitle">'+cap(m)+'</h2>'+st.opt.map(o=>{nav.push('<a href="#'+m+'-'+o.id+'">'+o.name+'</a>');return sub(o,cap(m),m+'-'+o.id)+'<div class="x-grid" '+cols(st.lvl.length)+'>'+st.lvl.map(l=>cell(o,m,l,st)).join('')+'</div>';}).join('')+'</section>';}).join('');},
@@ -204,7 +212,7 @@ a{color:var(--global-text-on-base-brand-default)}
 .x-ids{display:inline-flex;gap:var(--space-8);align-items:center}
 .x-sep{width:1px;height:20px;background:var(--global-border-level-on-level-1)}
 .x-q{font-weight:var(--body-weight-medium);overflow:hidden;text-overflow:ellipsis;min-width:0}
-.x-dots{display:flex;gap:3px}.x-dots i{width:8px;height:8px;border-radius:50%;background:var(--global-bg-base-neutral-2)}.x-dots .d{background:var(--global-bg-accent-functional-success-default)}.x-dots .c{background:var(--global-bg-accent-brand-default);outline:2px solid var(--global-border-accent-brand-default);outline-offset:1px}
+.x-dots{display:flex;gap:3px}.x-dots i{width:8px;height:8px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--global-border-accent-neutral-default);opacity:.45}.x-dots .d,.x-dots .c{box-shadow:none;opacity:1}.x-dots .d{background:var(--global-bg-accent-functional-success-default)}.x-dots .c{background:var(--global-bg-accent-brand-default);outline:2px solid var(--global-border-accent-brand-default);outline-offset:1px}
 .x-people{display:flex}.x-people>span{margin-inline-start:-4px;border-radius:50%;box-shadow:0 0 0 2px var(--global-bg-level-1-default);display:inline-flex}.x-people>span:first-child{margin:0}
 .x-bar .x-people{margin-inline-start:auto}
 .x-cmpstate{font-size:var(--body-size-xs);padding:2px 8px;border-radius:var(--corner-radius-full);background:var(--global-bg-subtle-brand-default);color:var(--global-text-on-subtle-brand-default)}
@@ -218,13 +226,20 @@ a{color:var(--global-text-on-base-brand-default)}
 /* hero */
 .x-hero{text-align:center;padding:var(--space-40) var(--space-24) var(--space-32);background:var(--global-bg-level-1-default);border-bottom:1px solid var(--global-border-level-on-level-1);display:grid;justify-items:center;gap:var(--space-12)}
 .x-hero h1{margin:0;font-size:var(--heading-size-md);line-height:1.1}
-.x-decided{margin:0;max-width:820px;color:var(--global-text-on-base-neutral-secondary)}
 .x-who{display:inline-flex;gap:var(--space-8);align-items:center;font-size:var(--body-size-xs)}.x-who small{color:var(--global-text-on-base-neutral-secondary)}
 .x-progress{width:420px;max-width:100%}
-.x-tiles{display:grid;gap:var(--space-16);width:100%;max-width:1100px;margin-top:var(--space-12);text-align:start}
-.x-tile{display:grid;gap:var(--space-8);align-content:start;padding:var(--space-16);border:1px solid var(--global-border-level-on-level-1);border-radius:var(--corner-radius-md);text-decoration:none;color:inherit;background:var(--global-bg-level-0-default)}
-.x-tile.rec{border:2px solid var(--global-border-accent-functional-success-default)}
-.x-tl{display:flex;gap:var(--space-8);align-items:center;font-size:var(--body-size-lg)}
+/* one row of tiles, about 280 px each, up to the hero's full width (more than four options get the room they need) */
+.x-tiles{display:grid;grid-template-columns:repeat(var(--x-n),minmax(0,1fr));grid-template-rows:auto auto auto auto;column-gap:var(--space-12);row-gap:0;width:100%;max-width:max(1100px,calc(var(--x-n) * 280px));margin-top:var(--space-12);text-align:start}
+.x-tile{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:var(--space-8);padding:var(--space-16);border:2px solid var(--global-border-level-on-level-1);border-radius:var(--corner-radius-md);text-decoration:none;color:inherit;background:var(--global-bg-level-0-default)}
+.x-tiles:not(.decided) .x-tile.rec{border-color:var(--global-border-base-brand-default)}
+.x-tile.sel{border-color:var(--global-border-base-functional-success-default)}
+.x-tags{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center}
+/* every tile has the same four rows (tags, name, title, colors), shared across tiles through subgrid, so the
+   same content lines up from tile to tile whether a tile has tags or not */
+.x-tile .x-tags{min-height:var(--badge-container-min-height-small)}
+.x-tile .x-chips{align-self:end}
+.x-tags .ds-icon,.x-sub .ds-icon{display:inline-flex}
+.x-tl{font-size:var(--body-size-lg)}
 .x-chips{display:grid;grid-template-columns:1fr 1fr;height:24px;border-radius:var(--corner-radius-xs);overflow:hidden;border:1px solid var(--global-border-level-on-level-0)}
 .x-chips .none{background:repeating-linear-gradient(45deg,transparent 0 4px,var(--global-border-level-on-level-0) 4px 5px)!important}
 /* sidebar + main */
@@ -240,14 +255,16 @@ a{color:var(--global-text-on-base-brand-default)}
 .x-sum{border-collapse:collapse;width:100%;font-size:var(--body-size-xs)}
 .x-sum th,.x-sum td{text-align:left;padding:var(--space-6) var(--space-8);border-bottom:1px solid var(--global-border-level-on-level-0);vertical-align:top}
 .x-sum th{color:var(--global-text-on-base-neutral-secondary);font-weight:var(--body-weight-medium)}
-.x-sum tr.rec td{background:var(--global-bg-subtle-functional-success-default)}
+.x-sum tbody:not(.decided) tr.rec td{background:var(--global-bg-subtle-brand-default)}
+.x-sum tr.sel td{background:var(--global-bg-subtle-functional-success-default)}
+.x-sum td .x-tags{display:inline-flex;vertical-align:middle;margin-inline-start:var(--space-8)}
 .x-sw{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-2px;margin-inline-end:6px;border:1px solid var(--global-border-level-on-level-0)}
-.x-note{margin:var(--space-8) 0 0;font-size:var(--body-size-xs);color:var(--global-text-on-base-neutral-secondary)}
 /* renderings */
 .x-mode{margin-top:var(--space-24)}
 .x-mtitle{font-size:var(--heading-size-xs);margin:0 0 var(--space-12)}
 .x-sub{position:sticky;top:var(--x-bar,48px);z-index:3;display:flex;align-items:center;gap:var(--space-12);padding:var(--space-8) var(--space-12);margin:var(--space-16) 0 var(--space-8);background:var(--global-bg-level-1-default);border:1px solid var(--global-border-level-on-level-1);border-inline-start:4px solid var(--global-border-accent-neutral-default);border-radius:var(--corner-radius-xs)}
-.x-sub.rec{border-inline-start-color:var(--global-border-accent-functional-success-default)}
+.x-sub.rec:not(.decided){border-inline-start-color:var(--global-border-base-brand-default)}
+.x-sub.sel{border-inline-start-color:var(--global-border-base-functional-success-default)}
 .x-letter{font:700 var(--body-size-sm) var(--mono-family),monospace;padding:2px 8px;background:var(--global-bg-accent-neutral-default);color:var(--global-text-on-accent-neutral-primary);border-radius:var(--corner-radius-xs)}
 .x-st{margin:0;font-weight:var(--heading-weight-semi-bold)}.x-tok{font-size:var(--body-size-xs);color:var(--global-text-on-base-neutral-secondary);margin-inline-start:auto}
 .x-grid{display:grid;border:1px solid var(--global-border-level-on-level-0)}
