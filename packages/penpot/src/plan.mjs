@@ -276,7 +276,7 @@ export function penpotComponent(component, values, types) {
       };
     }
     if (node.focusRing) {
-      out.focusRing = { width: valueOf(node.focusRing.strokeWeight), offset: valueOf(node.focusRing.offset), color: valueOf(node.focusRing.stroke) };
+      out.focusRing = { width: valueOf(node.focusRing.strokeWeight), offset: typeof node.focusRing.offset === 'number' ? node.focusRing.offset : valueOf(node.focusRing.offset), color: valueOf(node.focusRing.stroke) };
     }
     for (const key of ['text', 'glyph']) if (node[key] !== undefined) out[key] = node[key];
     if (node.textProperty) {

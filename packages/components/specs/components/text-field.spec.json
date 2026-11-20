@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.2.0",
+  "version": "0.15.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -26,10 +26,24 @@
       "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
     },
     {
+      "id": "field",
+      "role": "container",
+      "required": false,
+      "description": "With a leading icon only: box holding the control and the icon drawn over its start edge, as the Search field's."
+    },
+    {
       "id": "control",
       "role": "value",
       "required": true,
       "description": "The editable box: the native single-line text input, drawn by the component. Receives focus, holds the value and shows the placeholder while empty."
+    },
+    {
+      "id": "icon",
+      "role": "icon",
+      "required": false,
+      "decorative": true,
+      "parent": "field",
+      "description": "Leading icon (iconStart), a glyph of the icon font over the start edge of the control, 16 / 20 / 24 px, 8 px from the border, 4 / 8 / 8 px from the text; the placeholder's color while the field is empty, the value's once filled. Decorative and hidden from assistive technology: it never names the field and is never a button. Off by default and not advised for regular applications."
     },
     {
       "id": "description",
@@ -47,6 +61,15 @@
         "success"
       ],
       "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), associated with the control as a description. Shown only with a severity."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\"). Placed by severityIcon: after the control, centred on it, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements. Shown for the error; warning and success take theirs with step 13."
     }
   ],
   "properties": [
@@ -55,22 +78,27 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, inline padding and text size scale together; label, description and message keep their size.",
+      "description": "Control height, value text and inline padding take the height, the text size and the inline padding of the Button of the same size; the label takes the text size of the value; the description and the message take the helper sizes.",
       "affects": [
-        "control"
+        "control",
+        "label",
+        "description",
+        "message",
+        "severity-icon",
+        "icon"
       ],
       "options": [
         {
           "value": "small",
-          "description": "Dense forms, toolbars, table rows (32 px high)."
+          "description": "Dense forms, toolbars, table rows (28 px high)."
         },
         {
           "value": "medium",
-          "description": "Default (40 px)."
+          "description": "Default (36 px)."
         },
         {
           "value": "large",
-          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+          "description": "Prominent, single fields: a search page, a sign-in form (44 px)."
         }
       ]
     },
@@ -96,6 +124,13 @@
       "description": "Short hint shown while the field is empty, in a lighter color. It disappears when people type: never the label, never an instruction people must remember."
     },
     {
+      "id": "iconStart",
+      "name": "Leading icon",
+      "type": "icon",
+      "bindsTo": "icon",
+      "description": "Optional glyph before the value, decorative: it illustrates what the field expects and never replaces the label. None by default, and none advised for regular applications; for designs that want a more precise rendering (a marketing page with a few fields, for example)."
+    },
+    {
       "id": "description",
       "name": "Description",
       "type": "string",
@@ -110,6 +145,32 @@
       "description": "What the severity means: what is wrong and how to fix it, what to check, or what was confirmed. Shown with a severity, in the color of that severity, and replaces errorMessage."
     },
     {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-severity-icon-placement).",
+      "affects": [
+        "control",
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px; the control keeps its full width (default)."
+        },
+        {
+          "value": "after-control",
+          "description": "After the control, centred on it, at the size of the Button's icon of the same size; the control gives up the icon and the gap."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message says the severity in words (\"Error: …\")."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
@@ -121,7 +182,7 @@
       "name": "Read-only",
       "type": "boolean",
       "default": false,
-      "description": "The value can be read, focused and copied but not edited (a generated identifier)."
+      "description": "The value can be read, focused and copied but not edited (a generated identifier). Say so in the label or the description."
     },
     {
       "id": "severity",
@@ -131,7 +192,8 @@
       "description": "What the check of the value found. Replaces the invalid boolean: error, warning and success are the three severities of a form control (decision forms-severity); information that holds before any check is the description's job.",
       "affects": [
         "control",
-        "message"
+        "message",
+        "severity-icon"
       ],
       "options": [
         {
@@ -177,28 +239,28 @@
     {
       "id": "focus-visible",
       "trigger": "interaction",
-      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the focus color as a 2.4 px outline drawn flush over its border however it was focused; the border and the text do not move."
     },
     {
       "id": "error",
       "trigger": "property",
       "property": "severity",
       "value": "error",
-      "description": "Severity error: the border takes the error color and the message is shown under the control, in the error color."
+      "description": "Severity error: the box is filled with the subtle error background, on hover too, an outline in the error color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the error color."
     },
     {
       "id": "warning",
       "trigger": "property",
       "property": "severity",
       "value": "warning",
-      "description": "Severity warning: the border takes the warning color and the message is shown under the control, in the warning color. No web state beyond the data attribute."
+      "description": "Severity warning: an outline in the warning color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the warning color. No web state beyond the data attribute."
     },
     {
       "id": "success",
       "trigger": "property",
       "property": "severity",
       "value": "success",
-      "description": "Severity success: the border takes the success color and the message is shown under the control, in the success color. No web state beyond the data attribute."
+      "description": "Severity success: an outline in the success color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the success color. No web state beyond the data attribute."
     },
     {
       "id": "readonly",
@@ -221,7 +283,9 @@
     "sizing": "fill",
     "notes": [
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
-      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change."
+      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
+      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap.",
+      "With iconStart, the control and the icon share a field box: the icon sits over the start edge of the control, which reserves control.padding-inline-start (28 / 36 / 40 px) in place of its inline padding."
     ]
   },
   "accessibility": {
@@ -309,6 +373,15 @@
         ]
       },
       {
+        "text": "Apple's recommended minimum text size is 11 pt on iOS and iPadOS; the description (12 pt at its smallest) and the message (14 pt at its smallest) are above it.",
+        "refs": [
+          "hig-typography"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
         "text": "Say the severity in text next to the field, whatever it is: the message names what is wrong and how to fix it for an error, what to check for a warning and what was confirmed for a success, and is associated with the control. Color is never the only sign of a severity.",
         "refs": [
           "wcag:3.3.1",
@@ -339,38 +412,56 @@
         ]
       },
       {
-        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). On the error fill (global.bg.subtle.functional.error.default, at rest and on hover), the value is 16.91:1 and 11.67:1 and the placeholder 5.42:1 and 6.62:1. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
         "refs": [
           "wcag:1.4.11",
-          "understanding-non-text-contrast-boundaries"
+          "understanding-non-text-contrast-boundaries",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
+        "text": "A visible focus indicator appears when the control receives focus: a 2.4 px outline in the focus color drawn flush over the border, at every size, so focus is visible by pointer and keyboard alike (WCAG 2.4.7). WCAG 2.4.13 Focus Appearance (AAA) is not met at 1x and 2x, because the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, and the fields do not claim it.",
         "refs": [
           "wcag:2.4.7",
-          "wcag:2.4.13"
+          "wcag:2.4.13",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
+        "text": "The focus outline is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard. It is a CSS outline, never a box-shadow, so forced colors mode repaints it in a system color.",
         "refs": [
-          "mdn-focus-visible"
+          "mdn-focus-visible",
+          "mdn-forced-colors"
         ],
         "platforms": [
           "web"
         ]
       },
       {
-        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "text": "The severity outline (1.2 px) and the focus outline (2.4 px) differ by width, so a field with a severity is not mistaken for a focused one, in forced colors too, where both take the same system color. At 1x the severity outline is as wide as the 1 px border at rest: the severity's color and the message say what the severity is, never the color alone.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag-f78",
+          "wcag-f81"
+        ]
+      },
+      {
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 28, 36 and 44 pixels.",
         "refs": [
           "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The label, description and message are set from 12 to 16 px (the message from 14), under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text.",
+        "refs": [
+          "wcag:1.4.4",
+          "wcag:1.4.3"
         ]
       },
       {
@@ -396,7 +487,15 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (32 and 40 pt) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "A read-only field looks almost the same as an editable one (its fill is 1.05:1 in light and 1.09:1 in dark from the resting fill, the same as the hover fill): say that it is read-only in the label or the description, not by the fill alone.",
+        "refs": [
+          "material-text-fields-read-only",
+          "windows-text-box-read-only",
+          "html-readonly-attribute"
+        ]
+      },
+      {
+        "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (28 and 36 pt) fall under it on iOS today and the large size (44 pt) reaches it: the Figma library has no platform heights.",
         "refs": [
           "hig-accessibility-mobility"
         ],
@@ -405,7 +504,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today. Expose an error with the error semantics so the message is announced with the field.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp; all three sizes (28, 36 and 44 dp) fall under it on Android today. Expose an error with the error semantics so the message is announced with the field.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -420,6 +519,55 @@
         "refs": [
           "wcag:2.3.3",
           "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (error 5.81:1 light, 5.30:1 dark, at the lowest).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The leading icon is decorative on every platform: it illustrates the field and adds nothing to its name or description. Whatever it suggests is said in text, in the label or the description (\"Amount in euros\", not \"Amount\" with a euro glyph); it is never a button.",
+        "refs": [
+          "wcag:1.1.1",
+          "wai-images-decorative"
+        ]
+      },
+      {
+        "text": "Hide the leading icon with aria-hidden=\"true\": an icon-font glyph is written as its ligature name, which would otherwise be read with the value.",
+        "refs": [
+          "wcag:1.1.1",
+          "aria-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Exclude the leading icon from VoiceOver, as a purely decorative image.",
+        "refs": [
+          "hig-voiceover-descriptions"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "Pass null as the leading icon's contentDescription, or hide it with hideFromAccessibility, as a decorative graphic.",
+        "refs": [
+          "compose-graphic-elements",
+          "compose-hide-semantics"
+        ],
+        "platforms": [
+          "android"
         ]
       }
     ],
@@ -590,6 +738,11 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
       },
       {
+        "id": "hig-typography",
+        "title": "Apple HIG: Typography, specifications (minimum sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Specifications"
+      },
+      {
         "id": "android-large-controls",
         "title": "Android accessibility: use large, simple controls",
         "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
@@ -603,6 +756,101 @@
         "id": "compose-error-components",
         "title": "Jetpack Compose accessibility: error semantics of components",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components"
+      },
+      {
+        "id": "understanding-focus-contrast",
+        "title": "Understanding 1.4.11 Non-text Contrast: relationship with Focus Visible",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus"
+      },
+      {
+        "id": "wcag-f78",
+        "title": "WCAG failure F78: a focus indicator that is not visible, or looks the same as another outline",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F78"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      },
+      {
+        "id": "material-text-fields",
+        "title": "Material Design 3: Text fields, specs",
+        "url": "https://m3.material.io/components/text-fields/specs"
+      },
+      {
+        "id": "understanding-non-text-contrast-adjacent-colors",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: adjacent colors",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast#adjacent-colors"
+      },
+      {
+        "id": "understanding-contrast-minimum",
+        "title": "Understanding WCAG 1.4.3 Contrast (Minimum)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum"
+      },
+      {
+        "id": "material-text-fields-guidelines",
+        "title": "Material Design 3: Text fields, guidelines",
+        "url": "https://m3.material.io/components/text-fields/guidelines"
+      },
+      {
+        "id": "windows-text-box",
+        "title": "Windows apps: Text box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "mdn-placeholder",
+        "title": "MDN: ::placeholder, accessibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#accessibility"
+      },
+      {
+        "id": "hig-color",
+        "title": "Apple HIG: Color, system colors (placeholder text)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+      },
+      {
+        "id": "material-text-fields-read-only",
+        "title": "Material Design 3: Text fields, guidelines, read-only fields",
+        "url": "https://m3.material.io/components/text-fields/guidelines#f572b53d-1a15-4ede-881a-80adbbdc24a5"
+      },
+      {
+        "id": "windows-text-box-read-only",
+        "title": "Windows apps: Text box, make a text box read-only",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#make-a-text-box-read-only"
+      },
+      {
+        "id": "html-readonly-attribute",
+        "title": "HTML: the readonly attribute",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#the-readonly-attribute"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "wai-images-decorative",
+        "title": "WAI tutorials: Decorative images (an empty alt)",
+        "url": "https://www.w3.org/WAI/tutorials/images/decorative/"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (describe meaningful images, exclude decorative ones)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-hide-semantics",
+        "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
       }
     ]
   },
@@ -654,6 +902,16 @@
       }
     },
     {
+      "id": "medium-leading-icon",
+      "name": "Medium, with a leading icon (not advised for regular applications)",
+      "props": {
+        "size": "medium",
+        "label": "Email address",
+        "placeholder": "name@example.com",
+        "iconStart": "mail"
+      }
+    },
+    {
       "id": "medium-error",
       "name": "Medium, error",
       "description": "Validation failed: the message says how to fix it.",
@@ -697,7 +955,7 @@
         "size": "medium",
         "label": "Workspace identifier",
         "value": "ws_8f3a2c",
-        "description": "Generated when the workspace was created.",
+        "description": "Read-only: generated when the workspace was created.",
         "readonly": true
       }
     },
@@ -733,7 +991,9 @@
       "partSelectors": {
         "container": ".ds-text-field",
         "label": ".ds-text-field__label",
+        "field": ".ds-text-field__field",
         "control": ".ds-text-field__control",
+        "icon": ".ds-text-field__icon",
         "description": ".ds-text-field__description",
         "message": ".ds-text-field__message"
       }
@@ -744,6 +1004,321 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "leading-icon-decorative",
+      "date": "2026-11-20",
+      "version": "0.15.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Text field lands its leading icon: the property iconStart (a glyph of the icon set, none by default) and the decorative part icon, in a field box with the control, with the tokens icon.* and control.padding-inline-start.*, the Search field's (decisions leading-icon-optional, leading-icon-size, leading-icon-color, leading-icon-spacing). The icon is always decorative: hidden from assistive technology on every platform, never a name, never a button; whatever it suggests is said in the label or the description.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 5) among: A, always decorative, hidden from assistive technology on every platform and never a name, whatever it suggests said in the label or the description (chosen, recommended); B, decorative by default with an optional name (iconStartLabel) that makes it an image referenced from the input's description, which then needs a text alternative (WCAG 1.1.1) and 3:1 against the fill (WCAG 1.4.11, met at 5.43:1); C, as B and the icon may be an action, a button inside the box (iconStartAction), with its own focus, keyboard, name and target (WCAG 2.1.1, 2.4.7, 4.1.2, 2.5.8, the 16 / 20 px glyph under 24 px). Measured on the sheet, from the rendered page: with A the field keeps one tab stop and one name, the label, and is read as the label, the role, the value and the description; with B a named icon repeats the label (\"Email, edit text, Email\") or carries what the visible text lacks, read after the value; with C the field gets two tab stops. A is the contract of the Search field's glyph, the Button's icons and a decorative Icon. Sources: WCAG 1.1.1, a pure decoration can be ignored by assistive technology; WAI decorative images, an image whose information is already given by adjacent text gets a null text alternative; Apple HIG VoiceOver, exclude purely decorative images; Jetpack Compose, a null contentDescription for decorative graphics. An action at the start of a field is an Icon button next to it, out of this part.",
+      "tokens": [
+        "text-field.icon.*",
+        "text-field.control.padding-inline-start.*"
+      ]
+    },
+    {
+      "id": "leading-icon-spacing",
+      "date": "2026-11-20",
+      "version": "0.14.5",
+      "area": "dimension",
+      "status": "active",
+      "text": "The leading icon sits 8 px from the start border at every size (space.8) and 4 / 8 / 8 px from the text (space.4 / 8 / 8), so the text starts at 28 / 36 / 40 px for the small, medium and large sizes, as the Search field's glyph; the end padding stays 8 / 12 / 16 px. The tokens land with the property and the part (#103 step 15, point 5).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 4) among: A, keep the Search field's spacing, the glyph 8 px from the border at every size (space.8) and 4 / 8 / 8 px from the text (space.4 / 8 / 8), the text at 28 / 36 / 40 px (chosen, recommended); B, the Button's leading icon, 6 / 6 / 8 px from the edge (button.container.padding-inline.icon-side) and 2 / 4 / 4 px from the label (button.container.gap), the text at 24 / 30 / 36 px; C, the Figma prototype's spacing on the field's glyph, inset 6 / 8 / 10 and gap 8 / 8 / 12, the text at 30 / 36 / 46 px; D, the glyph at the text inset of a field without icon (8 / 12 / 16) and gap 4 / 8 / 8, the text at 28 / 40 / 48 px. The Figma prototype draws an 18 / 18 / 24 px frame 6 / 8 / 10 px from the border and 8 / 8 / 12 px from the text, its large size varying between variants (gap 8 at rest, inset 8 in error, warning and success). Measured beside a field without icon, the Search field and a Button of the same size, light and dark, surface levels 0 to 3: with A the glyph starts at the text inset of a plain field in small and before it in medium and large, so it reads as the start of the box; nothing moves in the Search field, and the choice follows point 2, which kept the Search field's glyph sizes rather than the Button's. B's spacing is set for the Button's larger icon (2 px gap in small); C and D start the text later and leave the value less room. No new token: every value is on the space scale; the end padding stays the box's inline padding, 8 / 12 / 16 px."
+    },
+    {
+      "id": "leading-icon-color",
+      "date": "2026-11-20",
+      "version": "0.14.4",
+      "area": "color",
+      "status": "active",
+      "text": "The leading icon follows the text beside it: global.icon.on-base.neutral.tertiary, the placeholder's role, while the field is empty, and global.icon.on-base.neutral.primary, the value's role, once something is typed; global.icon.state.disabled.default when disabled. Its tokens are the Search field's icon.color (beside the value) and icon.placeholder-color (empty); they land here with the property and the part (#103 step 15, points 4 and 5).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 3) among: A, global.icon.on-base.neutral.tertiary in every state, the placeholder's role and the Search field glyph's until now (recommended); B, follow the text beside it, the placeholder's role (tertiary) while the field is empty and the value's (global.icon.on-base.neutral.primary) once something is typed, as the Figma prototype does (chosen); C, global.icon.on-base.neutral.secondary in every state, the Figma prototype's color at rest. The Figma prototype binds the icon to its own variables carrying its placeholder's and its value's colors: #313131 empty (secondary), #616161 active (tertiary), #0E0E0E filled (primary), #8C8C8C disabled; the repository's placeholder is tertiary in every state (step 10), so the Figma logic on the repository's roles is B. B also matches the Button, whose icon takes its label's color. Measured on the medium Text field and the Search field, empty, filled, focused, in error, warning and success (their subtle fills previewed) and disabled, light and dark, surface levels 0 to 3: with B the icon is the placeholder's color when empty (on the fill 5.43:1 at the lowest in light, on the error fill, and 6.40:1 in dark) and the value's when filled (16.91:1 and 11.29:1 at the lowest). WCAG 1.4.11 asks 3:1 of the parts of graphics required to understand the content and the icon only illustrates, the label naming the field; under WCAG 1.1.1 a pure decoration can be ignored by assistive technology: every option clears 3:1 anyway. Disabled, the icon takes global.icon.state.disabled.default, as the text. No raw or semantic token added."
+    },
+    {
+      "id": "leading-icon-size",
+      "date": "2026-11-20",
+      "version": "0.14.3",
+      "area": "size",
+      "status": "active",
+      "text": "The leading icon is 16 / 20 / 24 px for the small, medium and large sizes (size.2 / 3 / 4), the Search field's glyph sizes: one Icon step per field size. It lands with the property and its tokens (#103 step 15, points 3 to 5).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 2) among: A, keep the Search field's glyph sizes, one Icon step per field size, 16 / 20 / 24 px (chosen); B, the Button's and the Icon button's icon at the same size, 20 / 24 / 24 px (size.3 / 4 / 4), the severity icon's after the control; C, the Icon next to 14 and 16 px text, 16 px at every size (size.2). The Figma prototype draws a 20 / 24 / 28 px glyph in an 18 / 18 / 24 px frame, off the size scale. Measured with A, beside an Icon button and a Button of the same size: the glyph leaves 6 / 8 / 10 px above and below it in the 28 / 36 / 44 px box, 1.14 / 1.25 / 1.50 times the value text, 4 px smaller than the Icon button's glyph in small and medium; with the Search field's gap today (8 px inset, 4 / 8 / 8 px to the text), the text starts at 28 / 36 / 40 px. No new token."
+    },
+    {
+      "id": "leading-icon-optional",
+      "date": "2026-11-20",
+      "version": "0.14.2",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Text field offers an optional leading icon before the value, the Button's Leading icon (iconStart, a glyph of the icon set), with no icon unless one is given. The guideline is no leading icon: add one only where a design asks for a more precise rendering, such as a page with a few fields. The icon only illustrates the expected input; it never names the field nor replaces the label.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 1) among: A, keep today (no leading icon, the Search field keeps its own glyph); B, an optional leading icon on the single-line fields, off by default (chosen); C, as B and the Textarea too; D, on by default with a generic glyph, as the Figma prototype's left icon. The team chose B for what the component offers and A for what it advises: the icon must be feasible and optional for designs that want a more precise rendering (a marketing page with a few fields, for example), but the default and the guideline for regular applications is no leading icon, the Search field's glyph being the known exception. D was rejected because a default glyph means nothing for most fields (sell on an email field) and \"on unless switched off\" is the opposite of the Button's leading icon; C because no source and no Figma variant shows an icon in a multi-line field. The icon is decorative: hidden from assistive technology, never the label, which stays visible text (WCAG 1.1.1, 3.3.2, 2.5.3). Material lists a leading icon as optional and Apple lets a text field show an image at its leading end; Windows draws none. Its size, color, gap and accessibility contract are #103 step 15, points 2 to 5, which add the property, the part and its tokens.",
+      "refs": [
+        "wcag:1.1.1",
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "message-color-error",
+      "date": "2026-11-20",
+      "version": "0.14.1",
+      "area": "color",
+      "status": "active",
+      "text": "The message of an error keeps text-field.message.color.error, global.text.on-base.functional.error.default (#C01619 in light mode, #F88275 in dark mode), the color of the severity icon (Forms decision forms-message-color).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 3) among: A, keep the functional error text (chosen); B, the neutral primary text; C, the neutral secondary text, the description's color. A is the Figma prototype's color and the icon's, and sets the message apart from the description by its color too, which matters most with no icon. Measured on the surface levels 0 to 3: 5.81 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode (WCAG 1.4.3).",
+      "tokens": [
+        "text-field.message.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
+      "id": "severity-icon",
+      "date": "2026-11-20",
+      "version": "0.14.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Text field gets a severity icon (part severity-icon) and the property severityIcon (message by default, after-control, none), as the Forms foundation decided (forms-severity-icon-placement, -size, -color). At the start of the message it is 16 px (text-field.severity-icon.size.message: size.2), text-field.severity-icon.gap.message (space.4) before the text; after the control it is the size of the Button's icon at the same size (text-field.severity-icon.size.after-control.*: size.3, 4, 4), text-field.severity-icon.gap.after-control (space.8) after the control. Its color is text-field.severity-icon.color.error, global.icon.on-base.functional.error.default. Shown for the error; warning and success follow with step 13. The Number field and the Textarea follow through the mirror check; the Search field takes it with its severity (Forms step 2b).",
+      "rationale": "Decided by the team on 2026-11-20 in #103 step 12, points 2 (C with the team's precisions: both placements and none, one rule per form, choice controls in the message), 2b (A, the Button's icon size) and 2c (A, the on-base role, the message's color). Measured on the field family: after the control the box gives up 28 / 32 / 32 px; the icon is 5.81 to 6.12:1 in light mode and 5.30 to 7.06:1 in dark mode on the surface levels 0 to 3. The icon is named so that the severity is in text for assistive technology wherever it sits (AccName 1.2 computes the description from the referenced nodes, the icon's name included); the message keeps saying what is wrong, so the icon is never the only cue (WCAG 1.4.1).",
+      "tokens": [
+        "text-field.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.1",
+        "accname-description"
+      ]
+    },
+    {
+      "id": "message-text-size",
+      "date": "2026-11-20",
+      "version": "0.13.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The message takes the size of the label and the value (text-field.message.typography.*: body.size.sm, md, md, so 14 / 16 / 16 px for small, medium and large), no longer the description's (body.size.xs, xs, sm: 12 / 12 / 14 px). The description keeps its size; the weight (medium), the line height (normal, 1.5) and the letter spacing are unchanged. This replaces the message part of the decision label-help-text-sizes.",
+      "rationale": "Decided by the team on 2026-11-20 while reviewing #103 step 12, point 2b (the error icon's size): at 12 px the message was too small for what it carries, what is wrong and how to fix it. Next to 14 and 16 px text the icon in the message is Icon small (16 px), the Icon spec's size for body text. Contrast is unchanged (text 4.5:1, WCAG 1.4.3): the colors do not depend on the size. The box does not move: the message sits under it and the description.",
+      "tokens": [
+        "text-field.message.typography.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.4"
+      ]
+    },
+    {
+      "id": "error-fill-subtle",
+      "date": "2026-11-20",
+      "version": "0.12.0",
+      "area": "color",
+      "status": "active",
+      "text": "The box of a field in error is filled with global.bg.subtle.functional.error.default (text-field.control.background.error): #FEECEA in light mode, #2B0B08 in dark mode, at rest and on hover alike, under the error border and outline. Read-only and disabled keep their own fills. The value, the placeholder, the label, the description and the message keep their colors. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 1, also the reference rendering of the Forms foundation step 6) between two options, measured on every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, global.bg.subtle.functional.error.default at rest and its hover step global.bg.subtle.functional.error.hover on hover; B, the subtle error fill at rest and on hover alike (chosen). In light mode A's hover fill (#FCCDC6) brings the placeholder to 4.33:1, under the 4.5:1 of WCAG 1.4.3; with B every pair passes: placeholder 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border and outline against the fill 5.45:1 and 5.14:1, against the surface levels 5.79:1 and 3.73:1 at the lowest. The fill is solid, as the team validated in the Forms foundation step 5; the hover tint it gives up was 1.05:1 from rest, and the Figma prototype, whose error fill is the same #FEECEA, has no hover in error. The value and the placeholder keep their roles (global.text.on-base.neutral.primary and .tertiary): the on-subtle neutral role has a single step, which cannot tell the placeholder from the value.",
+      "tokens": [
+        "text-field.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "variants-modeled-differently",
+      "date": "2026-11-19",
+      "version": "0.11.0",
+      "area": "variant",
+      "status": "active",
+      "text": "The Text field keeps its own model of variants and states, and records where it departs from the Figma prototype's \"Form - text input\" set: the `filled` state and the `text filled` axis become the `value` property, which combines with every state (hover, focus, the severities, read-only, disabled), because content is not a state; `active` is the focus state, drawn on pointer and keyboard focus alike (decision focus-outline, step 7); the drawn \"Typer line\" caret is the platform's own text caret, which the component does not draw; `error` is the `severity` property set to `error`, with `message`; `show helper` is the `description`, shown when it is set; `show label` is dropped, the label is always visible (where it sits belongs to the Forms foundation, #105 step 3); `select` is the Select component; Figma has no read-only state, the repository keeps `readonly`. Owned by other steps, not decided here: the warning and success states (step 13, #105 step 5), the status fill and icon (step 12), the left icon (step 15), the required mark (step 16), the message that replaces the description in a status (step 14) and the default size (step 21: Figma small, repository medium). Measured: the read-only fill global.bg.level.1.default is 1.05:1 in light and 1.09:1 in dark from the resting fill, and it is the same value as the editable field's hover fill, so it qualifies what the decision fill-page-level says about the read-only fill: it differs from an editable field, but weakly. A guideline therefore asks to say that a field is read-only in its label or description, and the read-only example and the readonly property say so. The Number field and the Textarea follow through the mirror check (decision field-family-mirrors); the Search field has no read-only.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the model and record the departures; B, A plus a guideline that says read-only in text (chosen); C, style read-only as rest, Material's way, rejected because it would remove the token text-field.control.background.readonly, the only visual cue of a read-only field, which is a breaking change (and Windows warns that a read-only text box that looks like an editable one \"might be confusing to a user\"). A alone is rejected too: it records the departures but leaves a weak cue unexplained. Reasons for B: nothing Figma has is missing (each option is the same, decided in an earlier step, owned by a later one or modeled as another component); Material styles a read-only field like a regular one and \"clearly labeled as read-only\", and Windows says it looks the same as a read/write one; no source asks for a distinct look, so the statement is the guideline, with no token, CSS or template change.",
+      "tokens": [
+        "text-field.control.background.readonly"
+      ],
+      "refs": [
+        "material-text-fields-read-only",
+        "windows-text-box-read-only",
+        "html-readonly-attribute"
+      ]
+    },
+    {
+      "id": "placeholder-tertiary",
+      "date": "2026-11-19",
+      "version": "0.10.1",
+      "area": "color",
+      "status": "active",
+      "text": "The placeholder is global.text.on-base.neutral.tertiary in every enabled state (text-field.control.placeholder-color.default; there is no hover, focus or severity member), and global.text.state.disabled.default when disabled. Tertiary is #616161 in light and #9C9C9C in dark, against the value's #0E0E0E and #CFCFCF. The decision keeps the tokens as they were: no token changes. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Departs from Figma, which draws the placeholder #313131 (secondary) at rest, on hover and invalid and lightens it to #616161 on focus; the disabled color is as Figma's.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep tertiary in every enabled state (chosen); B, Figma's placeholder: global.text.on-base.neutral.secondary (#313131) at rest, on hover and invalid, tertiary (#616161) on focus, which adds a focus-visible member that Bootstrap and shadcn cannot theme; C, secondary in every state. Reasons for A: the distance from the typed value, which is what keeps a placeholder from being taken for entered data (MDN asks for enough of a difference between the placeholder and the input text): tertiary is 3.12:1 from the value in light and 1.76:1 in dark, secondary only 1.48:1 and 1.27:1, and secondary is also the help text's color (tertiary stays distinct from it, 2.10:1 and 1.38:1); contrast does not decide it, since every option passes WCAG 1.4.3 (tertiary's lowest is 5.75:1 in light and 5.86:1 in dark, on the hover and read-only fills, and 6.08:1 and 6.40:1 at rest); Material 3 and Apple's HIG keep one placeholder color for every state, and no source asks for a change on focus. Departs from Figma, which draws #313131 at rest, on hover and invalid and #616161 on focus.",
+      "tokens": [
+        "text-field.control.placeholder-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "understanding-contrast-minimum",
+        "mdn-placeholder",
+        "wai-instructions-placeholder",
+        "html-placeholder",
+        "material-text-fields",
+        "hig-color",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "border-base-neutral-5",
+      "date": "2026-11-19",
+      "version": "0.10.0",
+      "area": "color",
+      "status": "active",
+      "text": "The resting border of the box is global.border.base.neutral.5 (text-field.control.border-color.default), not the accent neutral border: #8C8C8C in light and #9C9C9C in dark, 3.30:1 and 6.40:1 on the page, 3.12:1 and 4.80:1 at the lowest on the surface levels 0 to 3. Hover keeps this border (there is no hover border token: hover only tints the fill) and so does read-only (it only moves the fill to level 1); disabled, the focus outline and the severity outlines are unchanged. The dark value of global.border.base.neutral.5 moves from dark base 400 (#767676, 2.90:1 on dark level 3, under the 3:1 of Understanding 1.4.11) to dark base 300 (#9C9C9C): a departure from the Figma library recorded by the Color foundation (decision border-base-neutral-5-dark). The Select, Checkbox, Radio group and Switch keep the accent neutral border until the complex controls are refined, so the field family's border is now lighter than theirs. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). This replaces the border part of the decision field-colors.",
+      "rationale": "Decided by the team on 2026-11-19 among options: 9A, keep global.border.accent.neutral.default (#313131 light / #CFCFCF dark: 12.78 / 11.28:1 on level 0, 8.47:1 at the lowest in dark); 9B, Figma's global.border.base.neutral.3 (#D5D5D5 / #303030: 1.44:1 at best in light and 1.33:1 in dark, so it fails 1.4.11 on every surface, Figma's own pairing included); 9C, global.border.base.neutral.5 (chosen); 9D, a new semantic role, which would be an addition to ask for; global.border.accent.neutral.active also passes (#616161 / #9C9C9C) but it is the pressed step of the accent border, so reading it for a resting border is rejected by the semantic-role rule. 9C was weighed three ways: A, fix its dark value (chosen); B, keep it with a known failure on dark level 3 (2.90:1); C, back to 9A. Why the border must reach 3:1: it is what identifies an empty field, which has no other visible content (Understanding 1.4.11, boundaries: a text input's complete border must meet 3:1, Figures 31, 32 and 45), and no fill can do it (decision fill-page-level: the best neutral fill reaches 1.43:1). Material 3's outlined text field draws a 4.52:1 outline on white, so a mid-grey border is the common reading. Measured on the resolved tokens (border against the surface level, 0 / 1 / 2 / 3): light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1. Against the hover fill: light 3.12 / 2.79 / 3.12 / 3.12:1 and dark 5.86 / 5.36 / 4.80 / 4.80:1; the boundary is checked against the surface around the field, as the box's own fill is not the adjacent color. Apple's HIG and the Windows text box guidance say nothing on a text field's border color.",
+      "tokens": [
+        "text-field.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-non-text-contrast-boundaries",
+        "material-text-fields",
+        "hig-text-fields",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "fill-page-level",
+      "date": "2026-11-19",
+      "version": "0.9.1",
+      "area": "color",
+      "status": "active",
+      "text": "The fill of the box is the page's own level, not a level above it: at rest global.bg.level.0.default, on hover global.bg.level.0.hover, and when read-only global.bg.level.1.default, the next level, which is how a read-only field differs from an editable one, on every platform. The fill does not identify the field, the border does (WCAG 1.4.11 asks 3:1 for a fill that identifies a text input, and no neutral fill reaches 1.5:1 against the surface; the border color is decided separately). The fill is the one every form control reads (Select, Checkbox, Radio, Switch). The decision keeps the tokens as they were: no token changes. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Not decided here: the disabled fill (global.bg.state.disabled.default, translucent). The team may revisit it after the Text field for every component, and every form control reads that one token, so it changes in one place.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the page level (chosen); B, Figma's level 1 (#F7F7F7 at rest, #EAEAEA on hover: global.bg.level.1.default and .hover, read-only moved to level 0), rejected because on the light level 1 and 3 surfaces the fill equals the surface, so the field would change look by surface, and it would split the field family from the Select, Checkbox, Radio and Switch, which all read level 0; C, the default Button's translucent global.bg.subtle.neutral.default and .hover, rejected because it fails WCAG 1.4.3 in dark: the placeholder on the hover fill measures 4.46, 4.08, 3.83 and 3.49:1 on levels 0 to 3, and 4.33:1 at rest on level 3 (placeholder and text shown on hover are in scope of Understanding 1.4.3). Reasons for A: no neutral fill can identify the field, the best reaches 1.43:1 against the surface, under the 3:1 of Understanding 1.4.11 (Figure 34), so the border identifies it; Material 3 says its filled and outlined text fields provide the same functionality; one fill rule for every form control; a read-only field must stay distinct from an editable one, as the Windows text box guidance warns that a read-only box that looks editable confuses people. Measured on the resolved tokens at rest on level 0: value 19.03:1 light, 11.28:1 dark; placeholder 6.08:1 light, 6.40:1 dark; lowest over levels 0 to 3, placeholder 5.75:1 light, 5.86:1 dark.",
+      "tokens": [
+        "text-field.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.3",
+        "understanding-non-text-contrast-adjacent-colors",
+        "understanding-contrast-minimum",
+        "material-text-fields-guidelines",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "state-outline-flush",
+      "date": "2026-11-19",
+      "version": "0.9.0",
+      "area": "state",
+      "status": "active",
+      "text": "A field draws its focus and severity indicators as outlines flush over its border, never as a thicker border: the border stays stroke-width.sm (0.6 px) in every state, so the text never moves. Focus (:focus-visible, which an editable field matches for pointer and keyboard focus alike) is an outline of focus.ring.width (2.4 px) in color.focus.ring; a severity (error, warning or success) at rest is an outline of stroke-width.md (1.2 px) in the severity's border color (global.border.accent.functional.<severity>.default); a severity with focus is an outline of focus.ring.width in the severity's color, not the focus color. The outline offset is minus the border width, computed in the CSS as calc(-1 * border-width) because a DTCG alias cannot negate a token, so the outline covers the border exactly and the visible line is 2.4 px (focus, a severity with focus) or 1.2 px (a severity at rest), growing outward. There is no separate ring with a gap any more: the four fields no longer read focus.ring.offset, and text-field.control.outline-offset.focus-visible is removed. The Number field, the Search field (focus only: it has no severity) and the Textarea follow through the mirror check (decision field-family-mirrors). The Focus foundation records the exception (decision text-entry-flush, Focus 0.3.0).",
+      "rationale": "Decided by the team on 2026-11-19 among options: A, keep the 0.6 px border and the ring at a gap (today); B, the Figma library's 1.2 px border on focus and invalid; C, 1.2 px on invalid only; D, 1.2 px in every state; E1 and E3, a thicker border (or an inset outline) on focus, rejected because the text moves with the border and a border change is not repainted in forced colors as an outline is; E4, an outline over the border at offset 0 or minus the border width, colored (a) in the error color or (b) in the focus color when invalid. Chosen: E4a at offset minus 0.6 px. The text never moves, outlines are repainted in system colors in forced colors mode (MDN, forced-colors), and there is one focus width, 2.4 px, as the Button's. Material 3 draws the same pattern, a 1 dp outline at rest and a thicker one in primary on focus, and in the error color when invalid, with no color of its own for the focused error. Known consequences: (1) the severity outlines read the accent functional borders (decision forms-severity), which reach 3:1 against every surface level (Color foundation decision border-accent-functional-3-to-1), so they meet WCAG 1.4.11 where the base error border first chosen was 2.80:1 against surface level 3 in dark. (2) At offset minus 0.6 px, WCAG 2.4.13 Focus Appearance (AAA, information only) is not met at 1x and 2x: the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, so the qualifying band is the outward 1 to 1.5 px, under the area the criterion asks for; the fields drop the Focus foundation's 2.4.13 claim, and 2.4.7 and 1.4.11 are still met. (3) At 1x, a severity at rest draws a 1 px line, as at rest (the outline covers the 1 px border): the color and the message are the cues, never the color alone (1.4.1). (4) The focus outline in the severity's color of a field with a severity breaks the Focus foundation's single focus color; the foundation records the exception. The severity outline stays distinguishable from the focus one by width (1.2 against 2.4 px), including in forced colors (F78).",
+      "tokens": [
+        "text-field.control.outline-width.*",
+        "text-field.control.outline-color.*",
+        "text-field.control.border-width"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11",
+        "wcag:2.4.13",
+        "wcag:1.4.1",
+        "understanding-focus-contrast",
+        "wcag-f78",
+        "mdn-forced-colors",
+        "mdn-focus-visible",
+        "material-text-fields"
+      ]
+    },
+    {
+      "id": "radius-button",
+      "date": "2026-11-19",
+      "version": "0.8.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "A field takes the corner radius of the Button of the same size, the Shape foundation's rule for controls: small 2 px (corner-radius.2xs), medium and large 4 px (corner-radius.xs), on every platform. text-field.control.border-radius becomes one value per size, as the Button's container.border-radius; the radius is the same in every state. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Changes the single 4 px radius of the Figma-library import (decision sizes); everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep corner-radius.xs (4 px) at every size, which breaks the Shape foundation at small (a small field would be rounder than the small Button next to it); B, the Shape foundation, the same radius as the Button of the same size, chosen; C, Figma's 4 px read as corner-radius.2xs at every size, which would change the Shape foundation, make the Button differ at medium and large, and keep shadcn's shared rounded-md from following. B keeps one rule for every control and puts a field and a button side by side with the same corners.",
+      "tokens": [
+        "text-field.control.border-radius.*"
+      ]
+    },
+    {
+      "id": "part-gap-6",
+      "date": "2026-11-19",
+      "version": "0.7.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The parts of a field are 6 px apart: label and box, box and description, description and message, at every size and in every state (text-field.container.gap, space.4 to space.6), on every platform. It is one token, so the box never moves when the state changes: the message, the description and the label are stacked at the same distance whether or not they are shown (Shape foundation, same box rule). The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Changes the 4 px gap that the decision sizes and the Figma-library import state; everything else they state is unchanged. Left for later: the gap between the label and its required mark (Figma 2 / 4 / 4 px) is its own step, and the Checkbox group and Radio group legends (container.row-gap, space.8) follow with the complex controls (#105).",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep space.4 (4 px); B, Figma's resting variants (label to box 6 px at every size, box to description to message 4 / 6 / 8 px, two tokens); C, Figma's validation variants (label to box 6 / 8 / 10 px, the rest 4 / 6 / 8 px); D, one step more everywhere, 6 px, chosen. Figma contradicts itself: the label to box distance is 6 px in the resting variants but 6 / 8 / 10 px in the error, warning, success and disabled ones, which would move the box when the state changes, against the Shape foundation's same-box rule. One token at 6 px gives the label and the help text room to breathe without that.",
+      "tokens": [
+        "text-field.container.gap"
+      ]
+    },
+    {
+      "id": "label-help-text-sizes",
+      "date": "2026-11-19",
+      "version": "0.6.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The label scales with the field and the help text is smaller. The label takes the text size of the value and of the Button of the same size: small 14 px, medium 16 px, large 16 px (body.size.sm, md and md), in medium weight, with the tight line height (1.2) of single lines and the normal letter spacing. The description and the message take the helper sizes: small 12 px, medium 12 px, large 14 px (body.size.xs, xs and sm), with the normal line height (1.5) and the normal letter spacing; their weights are unchanged (regular for the description, medium for the message). Each part is a typography token per size (text-field.label.typography.<size>, text-field.description.typography.<size>, text-field.message.typography.<size>), as text-field.control.typography is, on every platform. The Number field, the Search field (which has no message) and the Textarea follow through the mirror check (decision field-family-mirrors). Changes the single 14 px style (and the 1.5 line height of the label) that the decisions sizes and value-text-button-size state for the label, the description and the message; everything else they state is unchanged. Left for later: the Checkbox group and Radio group legends and the Slider label use the same 14 px style today and follow with the complex controls (#105).",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep the single 14 px style for the label, the description and the message; B, the label follows the field (14 / 16 / 16 px) and the help text stays 14 px; C, the label follows the field and the help text takes Figma's helper sizes (12 / 12 / 14 px), chosen; D, Figma's sizes (label 12 / 14 / 16 px, help text 12 / 12 / 14 px, compact line height), rejected because the label would be smaller than the value at the small size and the Typography foundation would need an exception. A label above a field reads at the field's own size, and the help text is secondary to what it describes.",
+      "tokens": [
+        "text-field.label.typography.*",
+        "text-field.description.typography.*",
+        "text-field.message.typography.*"
+      ]
+    },
+    {
+      "id": "padding-inline-button",
+      "date": "2026-11-19",
+      "version": "0.5.1",
+      "area": "dimension",
+      "status": "active",
+      "text": "The inline padding of the box is the inline padding of the Button without an icon, size for size: small 8 px, medium 12 px, large 16 px (space.8, space.12 and space.16, the semantic tokens button.container.padding-inline reads at the same size), on every platform. A field and a Button of the same size start their text at the same inset. The decision keeps the values the box already had: no token changes. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors).",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the inline padding of the Button without an icon (8 / 12 / 16 px), chosen; B, Figma's 6 / 8 / 10 px; C, the Button's label-side padding (8 / 8 / 10 px), rejected here because it belongs to the question of a leading icon in the field. A field and a Button of the same size start their text at the same inset.",
+      "tokens": [
+        "text-field.control.padding-inline.*"
+      ]
+    },
+    {
+      "id": "box-height-button",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The minimum height of the box takes the height of the Button of the same size: small 28 px, medium 36 px, large 44 px (space.28, space.36 and space.44, the semantic tokens button.container.min-height reads at the same size), on every platform. The box keeps its inline padding and has no block padding: the line of text is centred in the height. A field and a Button of the same size are as tall. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Changes the 32 / 40 / 48 px minimum heights that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep 32 / 40 / 48 px (one step taller than the Button of the same size); B, the Button's heights 28 / 36 / 44 px, chosen; C, the height Figma's padding gives with the new text (33.6 / 40 / 44 px), which matches neither the Button nor today's; D, Figma's heights rounded up (36 / 40 / 44 px). A field and a Button of the same size line up (a search field next to its button, a form row), and the large size reaches the 44 pt that Apple recommends. The hit region of the small and medium sizes is a later step, as for the Button.",
+      "tokens": [
+        "text-field.control.min-height.*"
+      ]
+    },
+    {
+      "id": "value-text-button-size",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "typography",
+      "status": "active",
+      "supersedes": [
+        "sizes"
+      ],
+      "text": "The value and placeholder text of a field takes the text size of the Button of the same size: small 14 px, medium 16 px, large 16 px (body.size.sm, md and md, the semantic tokens of button.label.typography at the same size), on every platform. The rest of its style is the Typography foundation's single-line style: regular weight, normal letter spacing and the tight line height (1.2); it is not the Button label's own style (medium weight, compact line height, tight letter spacing). The rule is enforced by pnpm validate (scripts/lib/text-size-rules.mjs): text-field.control.typography.<size> and button.label.typography.<size> must alias the same font size token. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors). Supersedes sizes: the 32 / 40 / 48 px minimum heights, the 8 / 12 / 16 px inline padding, the 0.6 px border, the 4 px corners and the 14 px label, description and error message of that decision are unchanged here; only the text of the large size changes, from 20 to 16 px, and the line height from 1.5 to 1.2.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep today's text (small 14, medium 16, large 20 px, line height 1.5: the large size breaks the rule); B, the Button's whole label style (medium weight, compact line height 1.0, tight letter spacing), rejected because people's content would look like a control label, descenders and accents would touch the line, and the Typography foundation would need an exception; C, the Button's text size with the Typography foundation's single-line style (regular weight, normal letter spacing, tight line height 1.2), chosen; D, the Button's text size with the line height 1.5, rejected because that line height is meant for running text. The Textarea, which holds several lines, takes the same 1.2 line height by team decision (step 3b, option A; rejected: B, its own line height 1.5, the foundation's running-text value), the mirror staying whole.",
+      "tokens": [
+        "text-field.control.typography.*"
+      ]
+    },
+    {
+      "id": "field-family-mirrors",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Number field, the Search field and the Textarea render the same box as the Text field of the same size and state: height, inline padding, text, border, corners, colors, focus ring, label, description, message and motion are the Text field's, in every platform and mode. A decision on the Text field's box applies to the three in the same change, and pnpm validate fails when a token they share differs (MIRRORS in scripts/lib/mirrors.mjs). What a field has alone is declared, not compared: the Search field's glyph and its start padding, which is a sum (glyph margin + glyph size + the gap before the text) and is recomputed whenever the box's inline padding or the glyph changes; the Textarea's block padding. What a field lacks is declared too: the Search field has no read-only state, no severity and no message. The mirror covers rendering only: a contract decision (keyboard, target size, text size, default) is asked for each of the four. The Select is not mirrored.",
+      "rationale": "Nothing tied the three plain fields to the Text field: a decision on its box left them behind. Mirroring them lets every rendering step of the Text field refinement change the four in the same commit, and pnpm validate prove they agree, where the alternatives (the Text field alone, with a closing step per sibling or an issue for the others) leave the siblings out of step in between. The Select is not mirrored now (the team considered mirroring it too, as Figma draws its chevron in the Text field's resting variants): its listbox makes it one of the complex controls, which get their own step once the Text field is settled.",
+      "tokens": [
+        "text-field.container.*",
+        "text-field.control.*",
+        "text-field.label.*",
+        "text-field.description.*",
+        "text-field.message.*"
+      ]
+    },
     {
       "id": "forms-severity",
       "date": "2026-11-19",
@@ -785,7 +1360,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "size",
-      "status": "active",
+      "status": "superseded",
       "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
       "tokens": [
         "text-field.control.min-height.*",
@@ -823,6 +1398,111 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.15.0",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-decorative: new property iconStart and parts field and icon, new tokens icon.* (font, 16 / 20 / 24 px size, 8 px margin, color beside the value primary, placeholder-color tertiary, disabled) and control.padding-inline-start.* (28 / 36 / 40 px); the icon is decorative on every platform (#103 step 15, point 5, landing points 1 to 4)."
+    },
+    {
+      "version": "0.14.5",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-spacing: the leading icon is 8 px from the border and 4 / 8 / 8 px from the text, the text at 28 / 36 / 40 px (#103 step 15, point 4). No token or rendering change yet."
+    },
+    {
+      "version": "0.14.4",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-color: the leading icon follows the text beside it, tertiary while empty, primary once filled (#103 step 15, point 3). No token or rendering change yet."
+    },
+    {
+      "version": "0.14.3",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-size: the leading icon is 16 / 20 / 24 px, the Search field's glyph sizes (#103 step 15, point 2). No token or rendering change yet."
+    },
+    {
+      "version": "0.14.2",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-optional: an optional leading icon, off by default, no icon advised (#103 step 15, point 1). No token or rendering change yet."
+    },
+    {
+      "version": "0.14.1",
+      "date": "2026-11-20",
+      "note": "Decision message-color-error: the error message keeps the functional error text color (a keep decision). No token change."
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-11-20",
+      "note": "Decision severity-icon: new part severity-icon and property severityIcon (message by default, after-control, none). New tokens text-field.severity-icon.* (icon font, size 20 / 24 / 24 px after the control, gap space.8, color error the on-base error icon), and in the message text-field.severity-icon.size.message (16 px), text-field.severity-icon.gap.message (space.4)."
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-11-20",
+      "note": "Decision message-text-size: the message (text-field.message.typography.*) is 14 / 16 / 16 px (body.size.sm, md, md), the label's and the value's size, instead of 12 / 12 / 14. The description is unchanged."
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-11-20",
+      "note": "Decision error-fill-subtle: a field in error is filled with global.bg.subtle.functional.error.default (new token text-field.control.background.error), at rest and on hover alike; it kept the page-level fill before. Placeholder on the fill 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border against it 5.45:1 and 5.14:1."
+    },
+    {
+      "version": "0.11.0",
+      "date": "2026-11-19",
+      "note": "Decision variants-modeled-differently: records every departure from the Figma prototype (filled state and text filled axis as the value property, active as focus, the platform's caret, error as the severity error, show helper as description, show label as an always visible label, select as the Select component, read-only kept) and what steps 12 to 16, 21 and #105 own. New guideline: a read-only field's fill is 1.05:1 in light and 1.09:1 in dark from the resting fill, the same as the hover fill, so say that it is read-only in the label or the description. The readonly property and the read-only example say so. No token or rendering change."
+    },
+    {
+      "version": "0.10.1",
+      "date": "2026-11-19",
+      "note": "Decision placeholder-tertiary: the placeholder (text-field.control.placeholder-color.*) stays global.text.on-base.neutral.tertiary in every enabled state, rather than Figma's secondary at rest. Distance from the value, light / dark: 3.12:1 / 1.76:1 (secondary 1.48:1 / 1.27:1); contrast against the fill at rest 6.08:1 / 6.40:1 (lowest 5.75:1 / 5.86:1). Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.10.0",
+      "date": "2026-11-19",
+      "note": "Decision border-base-neutral-5: the resting border of the box (text-field.control.border-color.default) is global.border.base.neutral.5 instead of global.border.accent.neutral.default: #8C8C8C in light (was #313131) and #9C9C9C in dark (was #CFCFCF), over a dark value of that semantic token fixed from #767676 (Color foundation 7.2.0). Contrast of the border on the surface levels 0 / 1 / 2 / 3: light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1 (was 12.78 / 12.09 / 12.78 / 12.09:1 and 11.28 / 10.33 / 9.46 / 8.47:1). Hover and read-only keep the border; disabled, focus and the severities are unchanged. The field family's border is now lighter than the Select, Checkbox, Radio group and Switch."
+    },
+    {
+      "version": "0.9.1",
+      "date": "2026-11-19",
+      "note": "Decision fill-page-level: the box keeps the page's level as its fill (text-field.control.background.*: global.bg.level.0.default at rest, .hover on hover, global.bg.level.1.default when read-only), rather than Figma's level 1 or the Button's translucent subtle fill (fails 1.4.3 for the placeholder in dark). Contrast at rest on level 0, light / dark: value 19.03:1 / 11.28:1, placeholder 6.08:1 / 6.40:1 (lowest over levels 0 to 3: 5.75:1 / 5.86:1). Kept as it was: no token or rendering change. The disabled fill is out of this decision."
+    },
+    {
+      "version": "0.9.0",
+      "date": "2026-11-19",
+      "note": "Decision state-outline-flush: focus is an outline of 2.4 px (focus.ring.width, color.focus.ring) drawn flush over the 0.6 px border, offset minus the border width, instead of a ring 4 px away; a severity (error, warning, success) is an outline of 1.2 px (stroke-width.md) in the severity's border color (global.border.accent.functional.<severity>.default), 2.4 px in that color with focus; the border and the text never change; outline-offset.focus-visible removed. Contrast, light / dark: focus outline 5.77:1 / 12.76:1 on the default surface (5.45 / 9.58 on level 3); severity outlines as the severity borders, on the default surface and at least on every surface level: error 6.12:1 / 4.97:1 and 5.79 / 3.73, warning 3.27:1 / 8.09:1 and 3.09 / 6.07, success 7.87:1 / 6.08:1 and 7.44 / 4.57. WCAG 2.4.13 is no longer claimed."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-19",
+      "note": "Decision radius-button: the corner radius of the box is the Button's at the same size (text-field.control.border-radius per size: small corner-radius.2xs, 2 px; medium and large corner-radius.xs, 4 px; it was corner-radius.xs, 4 px, at every size). Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-11-19",
+      "note": "Decision part-gap-6: the parts of the field are 6 px apart at every size and in every state (text-field.container.gap: space.4 to space.6, 4 px to 6 px between the label, the box, the description and the message). The box never moves between states. Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.6.0",
+      "date": "2026-11-19",
+      "note": "Decision label-help-text-sizes: the label scales with the field (14 / 16 / 16 px) and the help text shrinks (12 / 12 / 14 px) (text-field.label.typography: one 14 px style becomes small, medium and large, font size body.size.sm to sm / md / md, line height normal 1.5 to tight 1.2; text-field.description.typography and text-field.message.typography: body.size.sm to xs / xs / sm, so 14 px becomes 12 / 12 / 14 px; weights, normal line height and letter spacing kept). The Size property now affects the label, the description and the message. pnpm validate now fails when the label and the value alias different font size tokens. Colors unchanged; contrast re-measured on levels 0 to 3: description 12.78:1 (levels 0 and 2) and 12.09:1 (levels 1 and 3) in light mode, 8.86:1, 8.11:1, 7.43:1 and 6.65:1 on levels 0 to 3 in dark mode; error text 6.12:1 and 5.79:1 (levels 0 and 2, then 1 and 3) in light mode, 7.06:1, 6.47:1, 5.92:1 and 5.30:1 in dark mode, the same on every platform; 4.5:1 required (WCAG 1.4.3), the lowest being 6.65:1 (description) and 5.30:1 (error text)."
+    },
+    {
+      "version": "0.5.1",
+      "date": "2026-11-19",
+      "note": "Decision padding-inline-button: the inline padding of the box (text-field.control.padding-inline.*, space.8 / 12 / 16) is recorded as the Button's inline padding without an icon at the same size, so a field and a Button start their text at the same inset. Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision box-height-button: the minimum height of the box takes the height of the Button of the same size (text-field.control.min-height.*: small space.32 to space.28, medium space.40 to space.36, large space.48 to space.44, so 32 / 40 / 48 px become 28 / 36 / 44 px); inline padding unchanged, no block padding. Target size (WCAG 2.5.8): every size stays above 24 x 24 CSS px; the iOS and Android guidelines now say the sizes under the 44 pt hit region and the 48 dp touch target. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Decision value-text-button-size: the value and placeholder text takes the text size of the Button of the same size (small 14, medium 16, large 16 px, body.size.sm / md / md; the large size was 20 px) with regular weight, normal letter spacing and the tight line height (text-field.control.typography.*: large font size body.size.lg to body.size.md, line height normal 1.5 to tight 1.2 at every size). pnpm validate now fails when text-field.control.typography.<size> and button.label.typography.<size> alias different font size tokens. Supersedes sizes. Colors unchanged, so contrast is unchanged (placeholder 6.08:1 light and 6.40:1 dark, value 19.03:1 light and 11.28:1 dark, on the default surface)."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "Decision field-family-mirrors: the Number field, the Search field and the Textarea are mirrors of the Text field (scripts/lib/mirrors.mjs), so a decision on its box changes the four in one commit and pnpm validate fails when they differ. The Select is not mirrored yet. No token, CSS or template change: the shared tokens already resolve to the same values in every platform and mode, so sizes, colors and contrast are unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-19",

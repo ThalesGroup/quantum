@@ -22,14 +22,18 @@ single place.
 The Figma library is kept with its errors and limitations on purpose: it is the starting point the
 system evolves from, one decision at a time. Since its POC2 export (November 2026) its error
 colors pass the contrast minimum everywhere, and since its export of 2026-11-12 its warning icon
-does too. The design system departs from it in two values so far, both accent functional borders
-(`global.border.accent.functional.<intent>.default`), which identify an alert, a badge, a button or a form control: in
-light mode the warning one is functional warning 500 / 600 / 700 (#BD8107 for the default), not 400 / 500 / 600 (#DFA700), so it
-reaches 3:1 on every surface level (it was 2.01:1 on level 1), and in dark mode the error one is
-functional error 400 / 500 / 600 (#EE5248 for the default), not 600 / 700 / 800 (#C01619), so it reaches 3:1 on every dark surface
+does too. The design system departs from it in three values so far. Two are accent functional
+borders (`global.border.accent.functional.<intent>.default`), which identify an alert, a badge, a
+button or a form control: in light mode the warning one is functional warning 500 / 600 / 700
+(#BD8107 for the default), not 400 / 500 / 600 (#DFA700), so it reaches 3:1 on every surface level
+(it was 2.01:1 on level 1), and in dark mode the error one is functional error 400 / 500 / 600
+(#EE5248 for the default), not 600 / 700 / 800 (#C01619), so it reaches 3:1 on every dark surface
 level (it was 2.11:1 on level 3). The light warning border still falls to 2.95:1 on the subtle
 warning fill, a shortfall the team accepted knowingly: the scale has no step between warning 500
-and 600 (issue #119). The few colors the design system adds live apart, in `tokens/additions/`.
+and 600 (issue #119). The third is `global.border.base.neutral.5` in dark mode: dark base 300
+(#9C9C9C), not base 400 (#767676), so the border that identifies a text field reaches 3:1 on every
+dark surface level (it was 2.90:1 on level 3). The few colors the design system adds live apart,
+in `tokens/additions/`.
 
 ## Palettes
 

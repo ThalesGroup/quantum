@@ -111,6 +111,49 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   assert.deepEqual(plan.variables.skipped, ['button/container/transition/duration', 'button/container/transition/easing']);
 });
 
+test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const ring = (severity, state) => plan.variants.find((v) => v.name === `Size=medium, Severity icon=message, Severity=${severity}, Content=value, Leading icon=false, State=${state}`).root.children.find((c) => c.name === 'control-row').children.find((c) => c.name === 'control').focusRing;
+  assert.deepEqual(ring('none', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible', offset: -0.6, stroke: 'text-field/control/outline-color/focus-visible' });
+  assert.deepEqual(ring('error', 'default'), { strokeWeight: 'text-field/control/outline-width/error', offset: -0.6, stroke: 'text-field/control/outline-color/error' });
+  assert.deepEqual(ring('warning', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible', offset: -0.6, stroke: 'text-field/control/outline-color/warning' });
+  assert.equal(ring('none', 'default'), undefined);
+  assert.equal(ring('success', 'disabled'), undefined);
+});
+
+test('the Text field draws the severity icon after the control or at the start of the message, for the error', () => {
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const variant = (size, place, state) => plan.variants.find((v) => v.name === `Size=${size}, Severity icon=${place}, Severity=error, Content=value, Leading icon=false, State=${state}`).root;
+  const iconIn = (node) => (node?.children ?? []).find((c) => c.name === 'severity-icon');
+  const row = (root) => root.children.find((c) => c.name === 'control-row');
+  const msg = (root) => root.children.find((c) => c.name === 'message');
+  const after = variant('small', 'after-control', 'error');
+  assert.equal(iconIn(row(after)).bind.width, 'text-field/severity-icon/size/after-control/small');
+  assert.equal(iconIn(row(after)).fills, 'text-field/severity-icon/color/error');
+  assert.equal(row(after).bind.itemSpacing, 'text-field/severity-icon/gap/after-control');
+  assert.equal(iconIn(msg(after)), undefined);
+  const inMessage = variant('large', 'message', 'error');
+  assert.equal(iconIn(msg(inMessage)).bind.width, 'text-field/severity-icon/size/message');
+  assert.equal(msg(inMessage).bind.itemSpacing, 'text-field/severity-icon/gap/message');
+  assert.equal(iconIn(row(inMessage)), undefined);
+  assert.equal(iconIn(row(variant('medium', 'none', 'error'))), undefined);
+  assert.equal(iconIn(msg(variant('medium', 'none', 'error'))), undefined);
+});
+
+test('the Text field draws its leading icon over the start of the control, in the color of the text beside it', () => {
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const root = (content, icon, state = 'default') => plan.variants.find((v) => v.name === `Size=small, Severity icon=message, Severity=none, Content=${content}, Leading icon=${icon}, State=${state}`).root;
+  const row = (r) => r.children.find((c) => c.name === 'control-row');
+  const glyph = (r) => row(r).children.find((c) => c.name === 'field')?.children.find((c) => c.name === 'icon-inset').children[0];
+  const control = (r) => row(r).children.find((c) => c.name === 'field').children.find((c) => c.name === 'control');
+  assert.equal(row(root('value', false)).children.find((c) => c.name === 'field'), undefined);
+  assert.equal(glyph(root('value', true)).fills, 'text-field/icon/color/default');
+  assert.equal(glyph(root('placeholder', true)).fills, 'text-field/icon/placeholder-color/default');
+  assert.equal(glyph(root('placeholder', true, 'disabled')).fills, 'text-field/icon/placeholder-color/disabled');
+  assert.equal(glyph(root('value', true)).bind.width, 'text-field/icon/size/small');
+  assert.equal(control(root('value', true)).bind.paddingLeft, 'text-field/control/padding-inline-start/small');
+});
+
 test('the Icon draws its current color as neutral on each surface', () => {
   const icon = JSON.parse(fs.readFileSync(path.join(ROOT, artifacts('icon').spec), 'utf8'));
   const plan = figmaComponent(loaded, icon, BLUEPRINTS.icon);

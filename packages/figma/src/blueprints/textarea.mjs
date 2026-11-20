@@ -9,20 +9,20 @@
  * is three lines tall in every size. Designers set the number of rows by the number of lines.
  * The vertical resize handle is not drawn.
  */
-import { CONTENT, TRANSITION, container, content, control, description, message, label } from './text-field.mjs';
+import { CONTENT, TRANSITION, container, content, control, description, message, label, withSeverityIcon, SEVERITY_ICON_AXES } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
   booleans: { 'Show description': false },
   root: container([
     label,
-    control({
+    withSeverityIcon(control({
       counter: 'MIN',
       bind: { paddingY: 'control.padding-block' },
       children: content({ value: 'Value\n\n', placeholder: 'Placeholder\n\n' }),
-    }),
+    }), 'MIN'),
     description,
     message,
   ]),
-  notDrawn: [TRANSITION],
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES],
 };

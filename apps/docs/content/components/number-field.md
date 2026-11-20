@@ -31,9 +31,10 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 ## Sizes, states and content
 
 Sizes (small, medium, large), states (default, hover, focus visible, error, warning, success, read-only,
-disabled) and the label, description and message follow the Text field. The label names
+disabled), the label, description and message, and the severity icon follow the Text field. The label names
 the quantity and its unit when it has one (**Weight (kg)**); the description gives the bounds
-(**Between 1 and 99**); the message of an error says how to fix the value.
+(**Between 1 and 99**); the message of an error says how to fix the value. The optional leading icon follows the Text field too: decorative, not advised for regular
+applications, and never the only place a unit or a currency is said.
 
 ## Accessibility
 
@@ -53,11 +54,11 @@ This section explains the decisions behind it.
   [WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/)).
-- **Contrast, focus and target size** follow the Text field
-  ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
+- **Contrast, text size, focus and target size** follow the Text field
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text),
+  [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
   [WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html),
   [WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
-  [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html),
   [WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html),
   [WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
   [WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)).
@@ -75,15 +76,19 @@ This section explains the decisions behind it.
   [ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
 - MDN's advice for non-numeric values: a text input with `inputmode="numeric"` and a pattern
   ([MDN: input type=number, accessibility](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/number#accessibility)).
-- The focus ring uses `:focus-visible`
+- The focus outline uses `:focus-visible`
   ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   a read-only field keeps its value reachable, a disabled one leaves the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
+- Say that a field is read-only in its label or description: its fill barely differs from an
+  editable one's ([Material 3: Read-only fields](https://m3.material.io/components/text-fields/guidelines#f572b53d-1a15-4ede-881a-80adbbdc24a5), [Windows: Make a text box read-only](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#make-a-text-box-read-only)).
 - The color transitions of the control are switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
 
 ### iOS
 
+- The recommended minimum text size is 11 pt; the description at 12 pt and the message at 14 pt are above it
+  ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - A stepper is a two-segment control that increases or decreases an incremental value, next to
   a field that shows it: the iOS counterpart of the spin control
   ([Apple HIG: Steppers](https://developer.apple.com/design/human-interface-guidelines/steppers)).
@@ -92,7 +97,7 @@ This section explains the decisions behind it.
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under
+- Interactive elements need a 48 by 48 dp touch target; every size falls under
   it today. Expose an error with the error semantics
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),

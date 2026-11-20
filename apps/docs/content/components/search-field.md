@@ -31,6 +31,9 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 Sizes follow the Text field (small, medium, large). States are default, hover, focus visible
 and disabled: no invalid, no read-only.
 
+The search glyph follows the text beside it: as light as the placeholder while the field is
+empty, as dark as the value once people type. It never stands out from the text it introduces.
+
 ## Content
 
 - The label says what is searched: **Search**, **Search projects**, **Filter by name**.
@@ -54,11 +57,11 @@ This section explains the decisions behind it.
   [WCAG 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html),
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/),
   [WAI tutorial: placeholder text](https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text)).
-- **Contrast, focus and target size** follow the Text field
-  ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
+- **Contrast, text size, focus and target size** follow the Text field
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text),
+  [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
   [WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html),
   [WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
-  [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html),
   [WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html),
   [WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
   [WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)).
@@ -73,7 +76,7 @@ This section explains the decisions behind it.
   [HTML: the Search state](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)),
   [MDN: input type=search, labels and accessibility](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#search_form_labels_and_accessibility),
   [WAI-ARIA: aria-hidden](https://www.w3.org/TR/wai-aria-1.2/#aria-hidden)).
-- The focus ring uses `:focus-visible`
+- The focus outline uses `:focus-visible`
   ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   a disabled field leaves the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
@@ -82,6 +85,8 @@ This section explains the decisions behind it.
 
 ### iOS
 
+- The recommended minimum text size is 11 pt; the help text at 12 pt is above it
+  ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - A search field displays a search icon, a clear button and placeholder text; use the
   placeholder to help people know what they can search for
   ([Apple HIG: Search fields](https://developer.apple.com/design/human-interface-guidelines/search-fields)).
@@ -90,7 +95,7 @@ This section explains the decisions behind it.
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under
+- Interactive elements need a 48 by 48 dp touch target; every size falls under
   it today
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).

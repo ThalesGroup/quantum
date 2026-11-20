@@ -22,15 +22,27 @@
   --_label-color: var(--search-field-label-color-default);
   --_description-color: var(--search-field-description-color-default);
   --_min-height: var(--search-field-control-min-height-medium);
+  --_border-radius: var(--search-field-control-border-radius-medium);
   --_padding-inline: var(--search-field-control-padding-inline-medium);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-medium);
   --_icon-size: var(--search-field-icon-size-medium);
   --_icon-color: var(--search-field-icon-color-default);
+  --_icon-placeholder-color: var(--search-field-icon-placeholder-color-default);
   --_font-family: var(--search-field-control-typography-medium-font-family);
   --_font-size: var(--search-field-control-typography-medium-font-size);
   --_font-weight: var(--search-field-control-typography-medium-font-weight);
   --_line-height: var(--search-field-control-typography-medium-line-height);
   --_letter-spacing: var(--search-field-control-typography-medium-letter-spacing);
+  --_label-font-family: var(--search-field-label-typography-medium-font-family);
+  --_label-font-size: var(--search-field-label-typography-medium-font-size);
+  --_label-font-weight: var(--search-field-label-typography-medium-font-weight);
+  --_label-line-height: var(--search-field-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--search-field-label-typography-medium-letter-spacing);
+  --_description-font-family: var(--search-field-description-typography-medium-font-family);
+  --_description-font-size: var(--search-field-description-typography-medium-font-size);
+  --_description-font-weight: var(--search-field-description-typography-medium-font-weight);
+  --_description-line-height: var(--search-field-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--search-field-description-typography-medium-letter-spacing);
 
   box-sizing: border-box;
   display: inline-flex;
@@ -45,6 +57,7 @@
 
 .ds-search-field[data-size="small"] {
   --_min-height: var(--search-field-control-min-height-small);
+  --_border-radius: var(--search-field-control-border-radius-small);
   --_padding-inline: var(--search-field-control-padding-inline-small);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-small);
   --_icon-size: var(--search-field-icon-size-small);
@@ -53,10 +66,21 @@
   --_font-weight: var(--search-field-control-typography-small-font-weight);
   --_line-height: var(--search-field-control-typography-small-line-height);
   --_letter-spacing: var(--search-field-control-typography-small-letter-spacing);
+  --_label-font-family: var(--search-field-label-typography-small-font-family);
+  --_label-font-size: var(--search-field-label-typography-small-font-size);
+  --_label-font-weight: var(--search-field-label-typography-small-font-weight);
+  --_label-line-height: var(--search-field-label-typography-small-line-height);
+  --_label-letter-spacing: var(--search-field-label-typography-small-letter-spacing);
+  --_description-font-family: var(--search-field-description-typography-small-font-family);
+  --_description-font-size: var(--search-field-description-typography-small-font-size);
+  --_description-font-weight: var(--search-field-description-typography-small-font-weight);
+  --_description-line-height: var(--search-field-description-typography-small-line-height);
+  --_description-letter-spacing: var(--search-field-description-typography-small-letter-spacing);
 }
 
 .ds-search-field[data-size="large"] {
   --_min-height: var(--search-field-control-min-height-large);
+  --_border-radius: var(--search-field-control-border-radius-large);
   --_padding-inline: var(--search-field-control-padding-inline-large);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-large);
   --_icon-size: var(--search-field-icon-size-large);
@@ -65,17 +89,27 @@
   --_font-weight: var(--search-field-control-typography-large-font-weight);
   --_line-height: var(--search-field-control-typography-large-line-height);
   --_letter-spacing: var(--search-field-control-typography-large-letter-spacing);
+  --_label-font-family: var(--search-field-label-typography-large-font-family);
+  --_label-font-size: var(--search-field-label-typography-large-font-size);
+  --_label-font-weight: var(--search-field-label-typography-large-font-weight);
+  --_label-line-height: var(--search-field-label-typography-large-line-height);
+  --_label-letter-spacing: var(--search-field-label-typography-large-letter-spacing);
+  --_description-font-family: var(--search-field-description-typography-large-font-family);
+  --_description-font-size: var(--search-field-description-typography-large-font-size);
+  --_description-font-weight: var(--search-field-description-typography-large-font-weight);
+  --_description-line-height: var(--search-field-description-typography-large-line-height);
+  --_description-letter-spacing: var(--search-field-description-typography-large-letter-spacing);
 }
 
 /* ---- Parts --------------------------------------------------------------- */
 
 .ds-search-field__label {
   color: var(--_label-color);
-  font-family: var(--search-field-label-typography-font-family);
-  font-size: var(--search-field-label-typography-font-size);
-  font-weight: var(--search-field-label-typography-font-weight);
-  line-height: var(--search-field-label-typography-line-height);
-  letter-spacing: var(--search-field-label-typography-letter-spacing);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
 }
 
 /* The field wraps the input and the search glyph drawn over its start edge. */
@@ -92,7 +126,10 @@
   display: inline-grid;
   place-content: center;
   inline-size: var(--_icon-size);
-  color: var(--_icon-color);
+  /* The glyph follows the text beside it: the placeholder's color while the field is empty, the value's once
+     something is typed (decision leading-icon-color). The template always writes a placeholder attribute, empty
+     when there is none, so :placeholder-shown tells an empty field. */
+  color: var(--_icon-placeholder-color);
   font-family: var(--search-field-icon-font-family);
   font-size: var(--_icon-size);
   font-weight: var(--search-field-icon-font-weight);
@@ -111,6 +148,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
+.ds-search-field:has(.ds-search-field__control:not(:placeholder-shown)) .ds-search-field__icon {
+  color: var(--_icon-color);
+}
+
 .ds-search-field__control {
   box-sizing: border-box;
   inline-size: 100%;
@@ -120,7 +161,7 @@
   padding-inline: var(--_padding-inline);
   padding-inline-start: var(--_padding-inline-start);
   border: var(--search-field-control-border-width) solid var(--_control-border-color);
-  border-radius: var(--search-field-control-border-radius);
+  border-radius: var(--_border-radius);
   background-color: var(--_control-background);
   color: var(--_control-color);
   font-family: var(--_font-family);
@@ -143,11 +184,11 @@
 .ds-search-field__description {
   margin: 0;
   color: var(--_description-color);
-  font-family: var(--search-field-description-typography-font-family);
-  font-size: var(--search-field-description-typography-font-size);
-  font-weight: var(--search-field-description-typography-font-weight);
-  line-height: var(--search-field-description-typography-line-height);
-  letter-spacing: var(--search-field-description-typography-letter-spacing);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
 }
 
 
@@ -176,16 +217,20 @@
 .ds-search-field:where([data-state="disabled"]),
 .ds-search-field:has(.ds-search-field__control:disabled) {
   --_icon-color: var(--search-field-icon-color-disabled);
+  --_icon-placeholder-color: var(--search-field-icon-placeholder-color-disabled);
 }
 
 .ds-search-field__control:focus {
   outline: none;
 }
 
+/* Focus is an outline drawn flush over the border: the offset is minus the border width, so the
+   border keeps its width and the text never moves (as the Text field's, which also draws a severity
+   this way; the Search field has none). */
 .ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control,
 .ds-search-field__control:focus-visible {
   outline: var(--search-field-control-outline-width-focus-visible) solid var(--search-field-control-outline-color-focus-visible);
-  outline-offset: var(--search-field-control-outline-offset-focus-visible);
+  outline-offset: calc(-1 * var(--search-field-control-border-width));
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "focus",
   "name": "Focus ring",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "status": "draft",
   "summary": "The one visible focus indicator every focusable component shows on keyboard focus.",
   "description": "People who move through an interface with a keyboard, a switch or another assistive input need to see which component will receive their next action. The focus ring is the system's single answer: the same solid ring, in the same color, at the same distance, around every focusable component, on every surface and in every mode. Components do not design their own focus indicator; they draw this one from their focus-visible tokens, which alias the tokens below.",
@@ -26,12 +26,12 @@
     {
       "id": "shape",
       "name": "Shape",
-      "text": "A continuous solid line around the whole component, following its corner radius. Never dashed, dotted, partial or inside the component."
+      "text": "A continuous solid line around the whole component, following its corner radius. Never dashed, dotted, partial or inside the component. The text-entry controls are the exception below: their ring covers their border."
     },
     {
       "id": "placement",
       "name": "Placement",
-      "text": "Outside the component, separated from its edge by the focus offset, so the surface shows between the component and the ring. The component's fill, border and label do not change.",
+      "text": "Outside the component, separated from its edge by the focus offset, so the surface shows between the component and the ring. The component's fill, border and label do not change. Exception: see the rule on text-entry controls.",
       "tokens": [
         "focus.ring.offset"
       ]
@@ -47,7 +47,7 @@
     {
       "id": "color",
       "name": "Color",
-      "text": "The focus color, the brand accent fill of each mode (brand 600 in light mode, brand dark 200 in dark mode). The same on every component whatever its emphasis or intent, so the ring never reads as a variant. The Figma library has no focus color: it is the design system’s addition (tokens/additions/), like the ring width and offset tokens.",
+      "text": "The focus color, the brand accent fill of each mode (brand 600 in light mode, brand dark 200 in dark mode). The same on every component whatever its emphasis or intent, so the ring never reads as a variant. The Figma library has no focus color: it is the design system’s addition (tokens/additions/), like the ring width and offset tokens. Exception: a text-entry control with a severity draws its ring in the severity's color.",
       "tokens": [
         "color.focus.ring"
       ]
@@ -55,7 +55,20 @@
     {
       "id": "components",
       "name": "In components",
-      "text": "Every focusable component draws the ring from its own focus-visible tokens (<component>.<root part>.outline-width / outline-offset / outline-color.focus-visible), which alias the tokens of this foundation. A component never defines another ring or another focus color."
+      "text": "Every focusable component draws the ring from its own focus-visible tokens (<component>.<root part>.outline-width / outline-offset / outline-color.focus-visible), which alias the tokens of this foundation. A component never defines another ring or another focus color. The text-entry controls read the width and the color only, and draw them flush."
+    },
+    {
+      "id": "text-entry",
+      "name": "Text-entry controls",
+      "text": "The text-entry controls (Text field, Number field, Search field, Textarea) draw the ring flush over their border instead of at a gap: an outline of the ring width with an offset of minus the border width, so the border keeps its width, the ring covers it and the text never moves. Focus reaches an editable field from the pointer as well as the keyboard, so their ring shows on both. When such a control has a severity (error, warning, success), the ring is drawn in the severity's color, not the focus color, and a control with a severity at rest draws a thinner outline of the same kind. They read focus.ring.width and color.focus.ring through their own outline-width and outline-color tokens and have no offset token: the offset is computed from their border width, since a DTCG alias cannot negate a token.",
+      "tokens": [
+        "focus.ring.width",
+        "color.focus.ring"
+      ],
+      "exempts": {
+        "components": ["text-field", "number-field", "search-field", "textarea"],
+        "tokens": ["focus.ring.offset"]
+      }
     },
     {
       "id": "web-rendering",
@@ -94,14 +107,14 @@
         ]
       },
       {
-        "text": "The ring is drawn outside the component, so it contrasts at least 3:1 with the surface the component sits on, on every surface and in every mode.",
+        "text": "The ring is drawn outside the component, so it contrasts at least 3:1 with the surface the component sits on, on every surface and in every mode. The text-entry controls draw it over their border and outward, and the outward part is checked against the surface the same way; their ring with a severity is drawn in the severity's accent functional border color, which reaches 3:1 on every surface level (Color foundation decision border-accent-functional-3-to-1).",
         "refs": [
           "wcag:1.4.11",
           "understanding-focus-contrast"
         ]
       },
       {
-        "text": "The ring is a solid perimeter of 2.4 px, more than the 2 CSS pixel thick perimeter of the unfocused component, and its pixels contrast at least 3:1 with the same pixels unfocused (the surface), as WCAG 2.4.13 Focus Appearance asks (AAA, adopted as extra quality).",
+        "text": "The ring is a solid perimeter of 2.4 px, more than the 2 CSS pixel thick perimeter of the unfocused component, and its pixels contrast at least 3:1 with the same pixels unfocused (the surface), as WCAG 2.4.13 Focus Appearance asks (AAA, adopted as extra quality). The text-entry controls do not claim it: their ring covers their border, and the part over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, so the area test fails at 1x and 2x.",
         "refs": [
           "wcag:2.4.13"
         ]
@@ -258,6 +271,26 @@
   ],
   "decisions": [
     {
+      "id": "text-entry-flush",
+      "date": "2026-11-19",
+      "version": "0.3.1",
+      "area": "accessibility",
+      "status": "active",
+      "text": "The text-entry controls (Text field, Number field, Search field, Textarea) draw the ring flush over their border, at an offset of minus the border width, and in the severity's color when they have a severity, instead of at the focus offset in the focus color. They no longer alias focus.ring.offset, and the validator no longer requires it of every focusable component (focus.ring.* in tokens). Every other component keeps the ring at a gap in the focus color.",
+      "rationale": "Decided by the team on 2026-11-19 for the Text field (its decision state-outline-flush holds the options and the rationale): the border stays 0.6 px in every state, so the text never moves, and one focus width, 2.4 px, shows focus. Known consequences: the 2.4.13 claim does not hold for them at 1x and 2x; the focus color is not the single focus color of a field with a severity. The severity colors are the accent functional borders, which reach 3:1 against every surface level (1.4.11).",
+      "tokens": [
+        "focus.ring.width",
+        "focus.ring.offset",
+        "color.focus.ring"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11",
+        "wcag:2.4.13",
+        "understanding-focus-contrast"
+      ]
+    },
+    {
       "id": "focus-ring-strong",
       "date": "2026-10-01",
       "version": "0.1.0",
@@ -290,6 +323,16 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.1",
+      "date": "2026-11-19",
+      "note": "The foundation lists focus.ring.offset again, so every focusable component must alias it; the text-entry rule exempts the Text field, Number field, Search field and Textarea from it (new rule field exempts), instead of the focus.ring.* wildcard that stopped requiring the offset of every component. Tokens unchanged."
+    },
+    {
+      "version": "0.3.1",
+      "date": "2026-11-19",
+      "note": "Decision text-entry-flush: the Text field, Number field, Search field and Textarea draw the ring flush over their border (offset minus the border width), in the severity's color when they have a severity, and no longer claim WCAG 2.4.13; the other components are unchanged. The foundation lists focus.ring.* instead of focus.ring.offset, so the offset is not required of the text-entry controls. Tokens unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-10-02",

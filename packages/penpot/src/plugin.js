@@ -650,7 +650,7 @@ function decorate(drawn) {
 }
 
 function drawFocusRing(shape, ring) {
-  const offset = valueOf(ring.offset);
+  const offset = typeof ring.offset === 'number' ? ring.offset : valueOf(ring.offset);
   const radius = typeof shape.borderRadiusTopLeft === 'number' ? shape.borderRadiusTopLeft : 0;
   const rect = penpot.createRectangle();
   rect.name = 'focus-ring';

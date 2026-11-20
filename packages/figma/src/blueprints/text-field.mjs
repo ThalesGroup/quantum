@@ -7,7 +7,13 @@
  *
  * The `Content` axis draws the control's text as a value or as the placeholder (its own color).
  * The description is a boolean property (off, as in the template); the message is drawn in
- * the error, warning and success states only, as the template shows it with a severity.
+ * the error, warning and success states only, as the template shows it with a severity. The
+ * severity icon (error only for now) sits after the control, in `control-row`, or at the start of
+ * the message, by the `severityIcon` variant; the web lays the control and the icon out on a grid
+ * row without a wrapper.
+ *
+ * The `Leading icon` axis (iconStart) wraps the control in a `field` frame with the decorative glyph over
+ * its start edge, the control reserving control.padding-inline-start, as the Search field's.
  *
  * The other field blueprints (textarea, number-field, search-field, select) build on the helpers
  * exported here.
@@ -37,15 +43,91 @@ export const description = {
 
 export const SEVERITIES = ['error', 'warning', 'success'];
 
+/** The severity icon: drawn for the error only (warning and success with #103 step 13), after the control or at the start of the message (`severityIcon`). */
+const severityIcon = (place) => ({
+  type: 'icon',
+  name: 'severity-icon',
+  glyph: 'error',
+  when: (v) => v.state === 'error' && v.props.severityIcon === place,
+  bind: { fill: 'severity-icon.color', size: 'severity-icon.size', fontFamily: 'severity-icon.font-family', fontWeight: 'severity-icon.font-weight' },
+});
+
+/** The message: its text, after the severity icon when the form places it there. */
 export const message = {
-  type: 'text',
+  type: 'frame',
   name: 'message',
+  layout: 'HORIZONTAL',
+  align: { primary: 'MIN', counter: 'MIN' },
   when: (v) => SEVERITIES.includes(v.state),
-  text: 'Message',
-  property: 'Message',
   width: 'FILL',
-  bind: { fill: 'message.color', typography: 'message.typography' },
+  bind: { gap: (v) => (v.props.severityIcon === 'message' ? 'severity-icon.gap' : null) },
+  children: [
+    severityIcon('message'),
+    {
+      type: 'text',
+      name: 'message-text',
+      text: 'Message',
+      property: 'Message',
+      width: 'FILL',
+      bind: { fill: 'message.color', typography: 'message.typography' },
+    },
+  ],
 };
+
+/** The control and, when the form places it there, the severity icon after it (the web lays them out on a grid row). */
+export const withSeverityIcon = (controlNode, counter = 'CENTER') => ({
+  type: 'frame',
+  name: 'control-row',
+  layout: 'HORIZONTAL',
+  align: { primary: 'MIN', counter },
+  width: 'FILL',
+  bind: { gap: (v) => (v.props.severityIcon === 'after-control' ? 'severity-icon.gap' : null) },
+  children: [...[].concat(controlNode), severityIcon('after-control')],
+});
+
+/** The `Leading icon` axis: a variant axis, as the Button's, because the control's start padding depends on it. */
+export const LEADING_ICON = { name: 'Leading icon', values: [false, true] };
+
+/**
+ * The leading icon (iconStart, decorative): a frame positioned absolutely at the field's start edge and
+ * vertically centered, whose left padding is icon.margin-inline, holding the glyph. The glyph follows the
+ * text beside it: icon.color next to a value, icon.placeholder-color next to the placeholder.
+ */
+export const leadingIcon = (glyph, property = null) => ({
+  type: 'frame',
+  name: 'icon-inset',
+  layout: 'HORIZONTAL',
+  align: { primary: 'MIN', counter: 'CENTER' },
+  absolute: { x: 0, y: 'center' },
+  bind: { paddingLeft: 'icon.margin-inline' },
+  children: [
+    {
+      type: 'icon',
+      name: 'icon',
+      glyph,
+      ...(property ? { property } : {}),
+      bind: { fill: (v) => (v.axes[CONTENT.name] === 'value' ? 'icon.color' : 'icon.placeholder-color'), size: 'icon.size', fontFamily: 'icon.font-family', fontWeight: 'icon.font-weight' },
+    },
+  ],
+});
+
+/** The field box: the control, reserving control.padding-inline-start, and the leading icon over its start edge. */
+export const field = (children, glyph, property = null) => ({
+  type: 'frame',
+  name: 'field',
+  layout: 'HORIZONTAL',
+  width: 'FILL',
+  children: [
+    control({ bind: { paddingX: null, paddingLeft: 'control.padding-inline-start', paddingRight: 'control.padding-inline' }, children }),
+    leadingIcon(glyph, property),
+  ],
+});
+
+/** The control, or the field box when the `Leading icon` axis is on. */
+export const withLeadingIcon = (children, glyph = 'sell') => [
+  { ...control({ children }), when: (v) => !v.axes[LEADING_ICON.name] },
+  { ...field(children, glyph, 'Leading icon glyph'), when: (v) => v.axes[LEADING_ICON.name] },
+];
 
 /** The control's text: the value, or the placeholder in its own color (`Content` axis). */
 export const content = ({ value = 'Value', placeholder = 'Placeholder' } = {}) => [
@@ -69,7 +151,7 @@ export const content = ({ value = 'Value', placeholder = 'Placeholder' } = {}) =
   },
 ];
 
-/** The editable box: its border, background, min height and inline padding, the focus ring outside it. */
+/** The editable box: its border, background, min height and inline padding, the focus outline over it (flush, drawn from its outline slots). */
 export const control = ({ children, bind = {}, counter = 'CENTER' }) => ({
   type: 'frame',
   name: 'control',
@@ -101,9 +183,15 @@ export const container = (children) => ({
 
 export const TRANSITION = { slot: 'control.transition', reason: 'Figma variables have no duration or easing.' };
 
+// upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
+export const SEVERITY_ICON_AXES = { slot: 'severity-icon.fill, severity-icon.grade, severity-icon.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' };
+
+// upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
+export const ICON_AXES = { slot: 'icon.fill, icon.grade, icon.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' };
+
 export default {
-  axes: [CONTENT],
+  axes: [CONTENT, LEADING_ICON],
   booleans: { 'Show description': false },
-  root: container([label, control({ children: content() }), description, message]),
-  notDrawn: [TRANSITION],
+  root: container([label, withSeverityIcon(withLeadingIcon(content(), 'mail')), description, message]),
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES],
 };

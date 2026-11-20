@@ -4,8 +4,8 @@
     "container": {
       "gap": {
         "$type": "dimension",
-        "$value": "{space.4}",
-        "$description": "Between the label, the control, the description and the message."
+        "$value": "{space.6}",
+        "$description": "Between the label, the control, the description and the message: one value at every size and state, so the box never moves."
       }
     },
     "label": {
@@ -20,12 +20,33 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.medium}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Label text: scales with the field, the text size of the value and of the Button of the same size (body.size.sm, md, md), medium weight, the tight line height of single lines and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
         }
       }
     },
@@ -33,14 +54,15 @@
       "$description": "The editable box: the native number input, drawn by the component. The browser's spin buttons keep their native look.",
       "min-height": {
         "$type": "dimension",
+        "$description": "Height of the box: the height of the Button of the same size (space.28, 36, 44).",
         "small": {
-          "$value": "{space.32}"
+          "$value": "{space.28}"
         },
         "medium": {
-          "$value": "{space.40}"
+          "$value": "{space.36}"
         },
         "large": {
-          "$value": "{space.48}"
+          "$value": "{space.44}"
         }
       },
       "padding-inline": {
@@ -57,7 +79,16 @@
       },
       "border-radius": {
         "$type": "dimension",
-        "$value": "{corner-radius.xs}"
+        "$description": "The Button's corner radius at the same size (Shape foundation): 2 px at small, 4 px at medium and large.",
+        "small": {
+          "$value": "{corner-radius.2xs}"
+        },
+        "medium": {
+          "$value": "{corner-radius.xs}"
+        },
+        "large": {
+          "$value": "{corner-radius.xs}"
+        }
       },
       "border-width": {
         "$type": "dimension",
@@ -71,6 +102,10 @@
         "hover": {
           "$value": "{global.bg.level.0.hover}"
         },
+        "error": {
+          "$value": "{global.bg.subtle.functional.error.default}",
+          "$description": "The fill of a control in error, at rest and on hover alike: the subtle error background (Forms foundation, decision forms-error-fill). Its hover step would bring the placeholder under 4.5:1 in light mode."
+        },
         "readonly": {
           "$value": "{global.bg.level.1.default}"
         },
@@ -81,7 +116,7 @@
       "border-color": {
         "$type": "color",
         "default": {
-          "$value": "{global.border.accent.neutral.default}"
+          "$value": "{global.border.base.neutral.5}"
         },
         "error": {
           "$value": "{global.border.accent.functional.error.default}"
@@ -117,12 +152,13 @@
       },
       "typography": {
         "$type": "typography",
+        "$description": "Value and placeholder text: the text size of the Button of the same size (body.size.sm, md, md), regular weight, the tight line height of single lines and the normal letter spacing (Typography foundation).",
         "small": {
           "$value": {
             "fontFamily": "{body.family}",
             "fontSize": "{body.size.sm}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         },
@@ -131,16 +167,16 @@
             "fontFamily": "{body.family}",
             "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         },
         "large": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.lg}",
+            "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         }
@@ -149,18 +185,30 @@
         "$type": "dimension",
         "focus-visible": {
           "$value": "{focus.ring.width}"
-        }
-      },
-      "outline-offset": {
-        "$type": "dimension",
-        "focus-visible": {
-          "$value": "{focus.ring.offset}"
+        },
+        "error": {
+          "$value": "{stroke-width.md}"
+        },
+        "warning": {
+          "$value": "{stroke-width.md}"
+        },
+        "success": {
+          "$value": "{stroke-width.md}"
         }
       },
       "outline-color": {
         "$type": "color",
         "focus-visible": {
           "$value": "{color.focus.ring}"
+        },
+        "error": {
+          "$value": "{global.border.accent.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.border.accent.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.border.accent.functional.success.default}"
         }
       },
       "transition": {
@@ -171,6 +219,78 @@
         "easing": {
           "$type": "cubicBezier",
           "$value": "{easing.standard}"
+        }
+      },
+      "padding-inline-start": {
+        "$type": "dimension",
+        "$description": "With a leading icon (iconStart): room for it at the start edge, in place of the inline padding; icon.margin-inline + icon.size + the gap to the text (8 + 16 + 4, 8 + 20 + 8, 8 + 24 + 8), the Search field's (decision leading-icon-spacing).",
+        "small": {
+          "$value": "{space.28}"
+        },
+        "medium": {
+          "$value": "{space.36}"
+        },
+        "large": {
+          "$value": "{space.40}"
+        }
+      }
+    },
+    "icon": {
+      "$description": "Leading icon (iconStart), a glyph of the icon font over the start edge of the control, decorative. The Search field's glyph: 16 / 20 / 24 px, 8 px from the border; it follows the text beside it, the placeholder's color while the field is empty, the value's once something is typed (decisions leading-icon-size, leading-icon-spacing, leading-icon-color).",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.24}"
+      },
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.2}"
+        },
+        "medium": {
+          "$value": "{size.3}"
+        },
+        "large": {
+          "$value": "{size.4}"
+        }
+      },
+      "margin-inline": {
+        "$type": "dimension",
+        "$value": "{space.8}"
+      },
+      "color": {
+        "$type": "color",
+        "$description": "Color of the glyph beside a typed value: the value's role (decision leading-icon-color).",
+        "default": {
+          "$value": "{global.icon.on-base.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
+        }
+      },
+      "placeholder-color": {
+        "$type": "color",
+        "$description": "Color of the glyph while the field is empty: the placeholder's role (decision leading-icon-color).",
+        "default": {
+          "$value": "{global.icon.on-base.neutral.tertiary}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
         }
       }
     },
@@ -186,12 +306,93 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.regular}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Description text: the helper size, smaller than the label and the value (body.size.xs, xs, sm), regular weight, the normal line height and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      }
+    },
+    "severity-icon": {
+      "$description": "The severity icon, a glyph of the icon font, after the control or at the start of the message (severityIcon; Forms decisions forms-severity-icon-placement, -size, -color). Only the font, the sizes, the gaps and the color are tokenized.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.24}"
+      },
+      "size": {
+        "$type": "dimension",
+        "after-control": {
+          "$description": "After the control: the size of the Button's icon at the same size (button.icon.size.small, medium, large: 20, 24, 24 px).",
+          "small": {
+            "$value": "{size.3}"
+          },
+          "medium": {
+            "$value": "{size.4}"
+          },
+          "large": {
+            "$value": "{size.4}"
+          }
+        },
+        "message": {
+          "$description": "At the start of the message: the Icon's size next to 14 and 16 px body text (16 px).",
+          "$value": "{size.2}"
+        }
+      },
+      "gap": {
+        "$type": "dimension",
+        "after-control": {
+          "$description": "Between the control and the icon.",
+          "$value": "{space.8}"
+        },
+        "message": {
+          "$description": "Between the icon and the message text.",
+          "$value": "{space.4}"
+        }
+      },
+      "color": {
+        "$type": "color",
+        "$description": "The on-base icon role of the severity: the icon sits on the surface, beside the control or in the message, and takes the message text's color.",
+        "error": {
+          "$value": "{global.icon.on-base.functional.error.default}"
         }
       }
     },
@@ -210,12 +411,33 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.medium}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Message text: the label's and the value's size (body.size.sm, md, md), larger than the description, so the message that says what to fix reads as easily as the field itself; medium weight, the normal line height and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
         }
       }
     }

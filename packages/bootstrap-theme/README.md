@@ -320,7 +320,7 @@ Radii, on root; Sass `$radii`. Bootstrap rounds buttons and inputs with radius-5
 | `--bs-radius-2` | `corner-radius.2xs` | `0.125rem` |  |
 | `--bs-radius-3` | `corner-radius.2xs` | `0.125rem` | Bootstrap's placeholder and kbd radius: the Skeleton text radius. |
 | `--bs-radius-4` | `corner-radius.xs` | `0.25rem` |  |
-| `--bs-radius-5` | `corner-radius.xs` | `0.25rem` | button.container.border-radius.medium and text-field.control.border-radius. |
+| `--bs-radius-5` | `corner-radius.xs` | `0.25rem` | button.container.border-radius.medium and text-field.control.border-radius.medium. |
 | `--bs-radius-6` | `corner-radius.sm` | `0.5rem` |  |
 | `--bs-radius-7` | `corner-radius.sm` | `0.5rem` | card.container.border-radius, alert.container.border-radius, dropdown.menu.border-radius. |
 | `--bs-radius-8` | `corner-radius.md` | `0.75rem` |  |
@@ -397,7 +397,7 @@ Overlay easing, on root; Sass `$root-tokens`.
 
 #### Button
 
-Button and input sizes (root), on root; Sass `$root-tokens`. Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights differ (32, 40, 48), get their own values on .form-control below.
+Button and input sizes (root), on root; Sass `$root-tokens`. Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights are those of the Button (28, 36, 44) but whose text style and block padding are their own, get their own values on .form-control below.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
@@ -487,16 +487,16 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-min-height` | `text-field.control.min-height.medium` | `2.5rem` |  |
+| `--bs-control-min-height` | `text-field.control.min-height.medium` | `2.25rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.medium` | `0.75rem` |  |
-| `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum centers a field's line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 40px min-height (line 24px + 2 x 7px + borders). |
+| `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum centers a field's line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.medium` (fontSize) | `1rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.5` |  |
+| `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.2` |  |
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
-| `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.default` | `#8C8C8C` / `#9C9C9C` | The base neutral 5 border: the field's border is lighter than the Quantum borders of the checkbox, radio and switch (accent neutral) until those are refined. |
+| `--bs-control-border-radius` | `text-field.control.border-radius.medium` | `0.25rem` |  |
 | `--bs-control-box-shadow` | `none` (rule `effects.shadow`) | `none` | No shadow is drawn in Quantum: no inset shadow on fields. |
 | `--bs-control-transition-duration` | `text-field.control.transition.duration` | `150ms` |  |
 | `--bs-control-transition-timing` | `text-field.control.transition.easing` | `cubic-bezier(0.2, 0, 0, 1)` |  |
@@ -509,41 +509,43 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-min-height` | `text-field.control.min-height.small` | `2rem` |  |
+| `--bs-control-min-height` | `text-field.control.min-height.small` | `1.75rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.small` | `0.5rem` |  |
-| `--bs-control-padding-y` | `space.4` | `0.25rem` | Keeps a small input at its 32px min-height (line 21px). |
+| `--bs-control-padding-y` | `space.4` | `0.25rem` | Keeps a small input at its 28px min-height (line 16.8px + 2 x 4px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.small` (fontSize) | `0.875rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.small` (lineHeight) | `1.5` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` | Bootstrap gives small controls the small button radius; a Quantum field keeps one radius at every size. |
+| `--bs-control-line-height` | `text-field.control.typography.small` (lineHeight) | `1.2` |  |
+| `--bs-control-border-radius` | `text-field.control.border-radius.small` | `0.125rem` |  |
 
 .form-control-lg (large), on `.form-control-lg`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-min-height` | `text-field.control.min-height.large` | `3rem` |  |
+| `--bs-control-min-height` | `text-field.control.min-height.large` | `2.75rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.large` | `1rem` |  |
-| `--bs-control-padding-y` | `space.8` | `0.5rem` | Keeps a large input at its 48px min-height (line 30px). |
-| `--bs-control-font-size` | `text-field.control.typography.large` (fontSize) | `1.25rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.5` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
+| `--bs-control-padding-y` | `space.10` | `0.625rem` | Keeps a large input at its 44px min-height (line 19.2px + 2 x 10px + borders). |
+| `--bs-control-font-size` | `text-field.control.typography.large` (fontSize) | `1rem` |  |
+| `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.2` |  |
+| `--bs-control-border-radius` | `text-field.control.border-radius.large` | `0.25rem` |  |
 
-Focus ring offset, on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use.
+Focus ring offset (flush), on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use. Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap keeps its own focus ring color for a control in error and draws no outline at rest, so the 1.2 px and 2.4 px severity outlines of a Quantum field are not themable.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-focus-ring-offset` | `text-field.control.outline-offset.focus-visible` | `4px` |  |
+| `--bs-focus-ring-offset` | `calc(-1 * {text-field.control.border-width})` | `calc(-1 * 0.6px)` | The ring covers the 0.6px border exactly (a token alias cannot negate a token). |
 
 Error (.is-invalid), on `.form-control.is-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-control-border-color` | `text-field.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-control-bg` | `text-field.control.background.error` | `#FEECEA` / `#2B0B08` | The subtle error fill, at rest and on hover alike (decision error-fill-subtle). |
 
 Error (:user-invalid), on `[data-bs-validate] .form-control:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-control-border-color` | `text-field.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-control-bg` | `text-field.control.background.error` | `#FEECEA` / `#2B0B08` | The subtle error fill, at rest and on hover alike (decision error-fill-subtle). |
 
 Success (.is-valid), on `.form-control.is-valid`; Sass: written after the @use.
 
@@ -564,23 +566,23 @@ Success (:user-valid), on `[data-bs-validate~=valid] .form-control:user-valid`; 
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
-| `--bs-control-border-color` | `text-field.control.border-color.default` | `#313131` / `#CFCFCF` |  |
-| `--bs-control-border-radius` | `text-field.control.border-radius` | `0.25rem` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.default` | `#8C8C8C` / `#9C9C9C` | The base neutral 5 border: the field's border is lighter than the Quantum borders of the checkbox, radio and switch (accent neutral) until those are refined. |
+| `--bs-control-border-radius` | `text-field.control.border-radius.medium` | `0.25rem` |  |
 
-Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label.
+Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-label-color` | `text-field.label.color.default` | `#0E0E0E` / `#CFCFCF` |  |
-| `--bs-label-font-size` | `text-field.label.typography` (fontSize) | `0.875rem` |  |
-| `--bs-label-font-weight` | `text-field.label.typography` (fontWeight) | `500` |  |
+| `--bs-label-font-size` | `text-field.label.typography.medium` (fontSize) | `1rem` |  |
+| `--bs-label-font-weight` | `text-field.label.typography.medium` (fontWeight) | `500` |  |
 
-Description (.form-text), on `.form-text`; Sass `$form-text-tokens`.
+Description (.form-text), on `.form-text`; Sass `$form-text-tokens`. A Quantum description is smaller with its field; Bootstrap has one description size, so it takes the medium one (12px).
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-form-text-margin-top` | `text-field.container.gap` | `0.25rem` |  |
-| `--bs-form-text-font-size` | `text-field.description.typography` (fontSize) | `0.875rem` |  |
+| `--bs-form-text-margin-top` | `text-field.container.gap` | `0.375rem` |  |
+| `--bs-form-text-font-size` | `text-field.description.typography.medium` (fontSize) | `0.75rem` |  |
 | `--bs-form-text-color` | `text-field.description.color.default` | `#313131` / `#B8B8B8` |  |
 
 
@@ -986,8 +988,15 @@ them, and the theme restyles nothing directly.
   from its Sass `$validation-states` map, which the CSS-variable theme does not reach, so the
   warning border and message (`text-field.control.border-color.warning`, `text-field.message.color.warning`)
   are not mapped.
+- **Label and help text sizes.** A Quantum label scales with its field (14, 16 and 16px) and the
+  description and the message are smaller (12, 12 and 14px). Bootstrap has one label size
+  and one description size on every field, so the theme sets the medium ones
+  (`text-field.label.typography.medium`, `text-field.description.typography.medium`);
+  `.col-form-label-sm` and `.col-form-label-lg` keep Bootstrap's own sizes, and so does the
+  message (`.invalid-feedback`, `.valid-feedback`).
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
-  button sizes (28px, 44px), not from Quantum's small and large fields (32px, 48px).
+  button sizes: the same heights (28px, 44px) as Quantum's small and large fields, but the
+  button label's line height and padding, not the field's.
 - **Field padding.** Bootstrap pads inputs and textareas alike, where Quantum centers a field's
   line (no block padding) and pads only the textarea: the block padding is the space step that
   keeps each input at its Quantum height, so a textarea's first line sits a little higher.

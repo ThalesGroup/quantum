@@ -429,7 +429,7 @@ function finish(drawn) {
 }
 
 function drawFocusRing(node, ring) {
-  var offset = valueOf(ring.offset);
+  var offset = typeof ring.offset === 'number' ? ring.offset : valueOf(ring.offset);
   var radius = typeof node.topLeftRadius === 'number' ? node.topLeftRadius : 0;
   var frame = figma.createFrame();
   frame.name = 'focus-ring';

@@ -4,8 +4,8 @@
     "container": {
       "gap": {
         "$type": "dimension",
-        "$value": "{space.4}",
-        "$description": "Between the label, the control, the description and the error message."
+        "$value": "{space.6}",
+        "$description": "Between the label, the control, the description and the message: one value at every size and state, so the box never moves."
       }
     },
     "label": {
@@ -20,12 +20,33 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.medium}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Label text: scales with the field, the text size of the value and of the Button of the same size (body.size.sm, md, md), medium weight, the tight line height of single lines and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.medium}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
         }
       }
     },
@@ -33,14 +54,15 @@
       "$description": "The editable box: the native search input, drawn by the component, with the search glyph drawn over its start edge.",
       "min-height": {
         "$type": "dimension",
+        "$description": "Height of the box: the height of the Button of the same size (space.28, 36, 44).",
         "small": {
-          "$value": "{space.32}"
+          "$value": "{space.28}"
         },
         "medium": {
-          "$value": "{space.40}"
+          "$value": "{space.36}"
         },
         "large": {
-          "$value": "{space.48}"
+          "$value": "{space.44}"
         }
       },
       "padding-inline": {
@@ -57,7 +79,16 @@
       },
       "border-radius": {
         "$type": "dimension",
-        "$value": "{corner-radius.xs}"
+        "$description": "The Button's corner radius at the same size (Shape foundation): 2 px at small, 4 px at medium and large.",
+        "small": {
+          "$value": "{corner-radius.2xs}"
+        },
+        "medium": {
+          "$value": "{corner-radius.xs}"
+        },
+        "large": {
+          "$value": "{corner-radius.xs}"
+        }
       },
       "border-width": {
         "$type": "dimension",
@@ -78,7 +109,7 @@
       "border-color": {
         "$type": "color",
         "default": {
-          "$value": "{global.border.accent.neutral.default}"
+          "$value": "{global.border.base.neutral.5}"
         },
         "disabled": {
           "$value": "{global.border.state.disabled.default}"
@@ -105,12 +136,13 @@
       },
       "typography": {
         "$type": "typography",
+        "$description": "Value and placeholder text: the text size of the Button of the same size (body.size.sm, md, md), regular weight, the tight line height of single lines and the normal letter spacing (Typography foundation).",
         "small": {
           "$value": {
             "fontFamily": "{body.family}",
             "fontSize": "{body.size.sm}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         },
@@ -119,16 +151,16 @@
             "fontFamily": "{body.family}",
             "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         },
         "large": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.lg}",
+            "fontSize": "{body.size.md}",
             "fontWeight": "{body.weight.regular}",
-            "lineHeight": "{font.line-height.normal}",
+            "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
           }
         }
@@ -137,12 +169,6 @@
         "$type": "dimension",
         "focus-visible": {
           "$value": "{focus.ring.width}"
-        }
-      },
-      "outline-offset": {
-        "$type": "dimension",
-        "focus-visible": {
-          "$value": "{focus.ring.offset}"
         }
       },
       "outline-color": {
@@ -163,7 +189,7 @@
       },
       "padding-inline-start": {
         "$type": "dimension",
-        "$description": "Room for the search glyph at the start edge, in place of the inline padding.",
+        "$description": "Room for the search glyph at the start edge, in place of the inline padding; icon.margin-inline + icon.size + the gap to the text, the leading icon's of the Text field (decision leading-icon-spacing).",
         "small": {
           "$value": "{space.28}"
         },
@@ -187,17 +213,38 @@
       },
       "typography": {
         "$type": "typography",
-        "$value": {
-          "fontFamily": "{body.family}",
-          "fontSize": "{body.size.sm}",
-          "fontWeight": "{body.weight.regular}",
-          "lineHeight": "{font.line-height.normal}",
-          "letterSpacing": "{font.letter-spacing.normal}"
+        "$description": "Description text: the helper size, smaller than the label and the value (body.size.xs, xs, sm), regular weight, the normal line height and the normal letter spacing (Typography foundation).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.xs}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.normal}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
         }
       }
     },
     "icon": {
-      "$description": "Search glyph of the icon font over the start edge of the control. Follows the control's placeholder color; only the font and its size are tokenized.",
+      "$description": "Search glyph of the icon font over the start edge of the control. Follows the text beside it: the placeholder's color while the field is empty, the value's once something is typed (decision leading-icon-color).",
       "font-family": {
         "$type": "fontFamily",
         "$value": "{font.icon.family}"
@@ -236,6 +283,17 @@
       },
       "color": {
         "$type": "color",
+        "$description": "Color of the glyph beside a typed value: the value's role (decision leading-icon-color).",
+        "default": {
+          "$value": "{global.icon.on-base.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
+        }
+      },
+      "placeholder-color": {
+        "$type": "color",
+        "$description": "Color of the glyph while the field is empty: the placeholder's role (decision leading-icon-color).",
         "default": {
           "$value": "{global.icon.on-base.neutral.tertiary}"
         },

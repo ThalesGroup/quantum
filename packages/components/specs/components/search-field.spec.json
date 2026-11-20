@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.2.0",
+  "version": "0.10.9",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -60,23 +60,25 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, inline padding and text size scale together; label, description and error keep their size.",
+      "description": "Control height, value text and inline padding take the height, the text size and the inline padding of the Button of the same size; the label takes the text size of the value; the description takes the helper sizes.",
       "affects": [
         "control",
-        "icon"
+        "icon",
+        "label",
+        "description"
       ],
       "options": [
         {
           "value": "small",
-          "description": "Dense forms, toolbars, table rows (32 px high)."
+          "description": "Dense forms, toolbars, table rows (28 px high)."
         },
         {
           "value": "medium",
-          "description": "Default (40 px)."
+          "description": "Default (36 px)."
         },
         {
           "value": "large",
-          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+          "description": "Prominent, single fields: a search page, a sign-in form (44 px)."
         }
       ]
     },
@@ -140,7 +142,7 @@
     {
       "id": "focus-visible",
       "trigger": "interaction",
-      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the focus color as a 2.4 px outline drawn flush over its border however it was focused; the border and the text do not move."
     },
     {
       "id": "disabled",
@@ -157,7 +159,7 @@
     "sizing": "fill",
     "notes": [
       "Label, control, description and error message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
-      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change.",
+      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
       "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start."
     ]
   },
@@ -264,32 +266,42 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the focus outline 5.77:1 and 12.76:1 on the default surface. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
-          "understanding-non-text-contrast-boundaries"
+          "understanding-non-text-contrast-boundaries",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
+        "text": "A visible focus indicator appears when the control receives focus: a 2.4 px outline in the focus color drawn flush over the border, at every size, so focus is visible by pointer and keyboard alike (WCAG 2.4.7). WCAG 2.4.13 Focus Appearance (AAA) is not met at 1x and 2x, because the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, and the fields do not claim it.",
         "refs": [
           "wcag:2.4.7",
-          "wcag:2.4.13"
+          "wcag:2.4.13",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
+        "text": "The focus outline is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard. It is a CSS outline, never a box-shadow, so forced colors mode repaints it in a system color.",
         "refs": [
-          "mdn-focus-visible"
+          "mdn-focus-visible",
+          "mdn-forced-colors"
         ],
         "platforms": [
           "web"
         ]
       },
       {
-        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 28, 36 and 44 pixels.",
         "refs": [
           "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The label and description are set from 12 to 16 px, under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text.",
+        "refs": [
+          "wcag:1.4.4",
+          "wcag:1.4.3"
         ]
       },
       {
@@ -303,7 +315,7 @@
         ]
       },
       {
-        "text": "A search field is an editable text field that displays a search icon, a clear button and placeholder text; use placeholder text to help people know what they can search for. The small and medium sizes (32 and 40 pt) fall under the 44 x 44 pt hit region on iOS today.",
+        "text": "A search field is an editable text field that displays a search icon, a clear button and placeholder text; use placeholder text to help people know what they can search for. The small and medium sizes (28 and 36 pt) fall under the 44 x 44 pt hit region on iOS today; the large size (44 pt) reaches it.",
         "refs": [
           "hig-search-fields",
           "hig-accessibility-mobility"
@@ -313,7 +325,16 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today.",
+        "text": "Apple's recommended minimum text size is 11 pt on iOS and iPadOS; the 12 pt text of the description is above it.",
+        "refs": [
+          "hig-typography"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp; all three sizes (28, 36 and 44 dp) fall under it on Android today.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes"
@@ -327,6 +348,26 @@
         "refs": [
           "wcag:2.3.3",
           "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "Exclude the search glyph from VoiceOver, as a purely decorative image.",
+        "refs": [
+          "hig-voiceover-descriptions"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "Pass null as the search glyph's contentDescription, or hide it with hideFromAccessibility, as a decorative graphic.",
+        "refs": [
+          "compose-graphic-elements",
+          "compose-hide-semantics"
+        ],
+        "platforms": [
+          "android"
         ]
       }
     ],
@@ -417,6 +458,11 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
       },
       {
+        "id": "hig-typography",
+        "title": "Apple HIG: Typography, specifications (minimum sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Specifications"
+      },
+      {
         "id": "android-large-controls",
         "title": "Android accessibility: use large, simple controls",
         "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
@@ -455,6 +501,71 @@
         "id": "aria-hidden",
         "title": "WAI-ARIA 1.2: aria-hidden",
         "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "understanding-focus-contrast",
+        "title": "Understanding 1.4.11 Non-text Contrast: relationship with Focus Visible",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      },
+      {
+        "id": "understanding-non-text-contrast-adjacent-colors",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: adjacent colors",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast#adjacent-colors"
+      },
+      {
+        "id": "understanding-contrast-minimum",
+        "title": "Understanding WCAG 1.4.3 Contrast (Minimum)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum"
+      },
+      {
+        "id": "material-text-fields-guidelines",
+        "title": "Material Design 3: Text fields, guidelines",
+        "url": "https://m3.material.io/components/text-fields/guidelines"
+      },
+      {
+        "id": "windows-text-box",
+        "title": "Windows apps: Text box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "material-text-fields",
+        "title": "Material Design 3: Text fields, specs",
+        "url": "https://m3.material.io/components/text-fields/specs"
+      },
+      {
+        "id": "hig-text-fields",
+        "title": "Apple HIG: Text fields",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields"
+      },
+      {
+        "id": "mdn-placeholder",
+        "title": "MDN: ::placeholder, accessibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#accessibility"
+      },
+      {
+        "id": "hig-color",
+        "title": "Apple HIG: Color, system colors (placeholder text)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+      },
+      {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (describe meaningful images, exclude decorative ones)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-hide-semantics",
+        "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
       }
     ]
   },
@@ -546,11 +657,277 @@
   ],
   "decisions": [
     {
+      "id": "leading-icon-decorative",
+      "date": "2026-11-20",
+      "version": "0.10.9",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The search glyph keeps its contract, the field family's leading icon's: decorative on every platform, hidden from assistive technology (aria-hidden on the web, excluded from VoiceOver, a null contentDescription on Android), never a name; the label names the field. The Text field and the Number field now draw the same part with the same tokens, so the mirror check compares icon.* and control.padding-inline-start.* with theirs.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 5) among: A, always decorative, hidden from assistive technology on every platform and never a name, whatever it suggests said in the label or the description (chosen, recommended); B, decorative by default with an optional name (iconStartLabel) that makes it an image referenced from the input's description, which then needs a text alternative (WCAG 1.1.1) and 3:1 against the fill (WCAG 1.4.11, met at 5.43:1); C, as B and the icon may be an action, a button inside the box (iconStartAction), with its own focus, keyboard, name and target (WCAG 2.1.1, 2.4.7, 4.1.2, 2.5.8, the 16 / 20 px glyph under 24 px). Measured on the sheet, from the rendered page: with A the field keeps one tab stop and one name, the label, and is read as the label, the role, the value and the description; with B a named icon repeats the label (\"Email, edit text, Email\") or carries what the visible text lacks, read after the value; with C the field gets two tab stops. A is the contract of the Search field's glyph, the Button's icons and a decorative Icon. Sources: WCAG 1.1.1, a pure decoration can be ignored by assistive technology; WAI decorative images, an image whose information is already given by adjacent text gets a null text alternative; Apple HIG VoiceOver, exclude purely decorative images; Jetpack Compose, a null contentDescription for decorative graphics. An action at the start of a field is an Icon button next to it, out of this part.",
+      "tokens": [
+        "search-field.icon.*"
+      ]
+    },
+    {
+      "id": "leading-icon-spacing",
+      "date": "2026-11-20",
+      "version": "0.10.8",
+      "area": "dimension",
+      "status": "active",
+      "text": "The search glyph keeps its spacing: 8 px from the start border at every size (search-field.icon.margin-inline, space.8) and 4 / 8 / 8 px from the text, the text starting at 28 / 36 / 40 px (search-field.control.padding-inline-start); the spacing of the field family's leading icon, which the Text field and the Number field take.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 4) among: A, keep the Search field's spacing, the glyph 8 px from the border at every size (space.8) and 4 / 8 / 8 px from the text (space.4 / 8 / 8), the text at 28 / 36 / 40 px (chosen, recommended); B, the Button's leading icon, 6 / 6 / 8 px from the edge (button.container.padding-inline.icon-side) and 2 / 4 / 4 px from the label (button.container.gap), the text at 24 / 30 / 36 px; C, the Figma prototype's spacing on the field's glyph, inset 6 / 8 / 10 and gap 8 / 8 / 12, the text at 30 / 36 / 46 px; D, the glyph at the text inset of a field without icon (8 / 12 / 16) and gap 4 / 8 / 8, the text at 28 / 40 / 48 px. The Figma prototype draws an 18 / 18 / 24 px frame 6 / 8 / 10 px from the border and 8 / 8 / 12 px from the text, its large size varying between variants (gap 8 at rest, inset 8 in error, warning and success). Measured beside a field without icon, the Search field and a Button of the same size, light and dark, surface levels 0 to 3: with A the glyph starts at the text inset of a plain field in small and before it in medium and large, so it reads as the start of the box; nothing moves in the Search field, and the choice follows point 2, which kept the Search field's glyph sizes rather than the Button's. B's spacing is set for the Button's larger icon (2 px gap in small); C and D start the text later and leave the value less room. No new token: every value is on the space scale; the end padding stays the box's inline padding, 8 / 12 / 16 px.",
+      "tokens": [
+        "search-field.icon.margin-inline",
+        "search-field.control.padding-inline-start.*"
+      ]
+    },
+    {
+      "id": "leading-icon-color",
+      "date": "2026-11-20",
+      "version": "0.10.7",
+      "area": "color",
+      "status": "active",
+      "supersedes": [
+        "field-colors"
+      ],
+      "text": "The search glyph follows the text beside it: search-field.icon.placeholder-color, global.icon.on-base.neutral.tertiary (the placeholder's role), while the field is empty, and search-field.icon.color, global.icon.on-base.neutral.primary (the value's role), once something is typed; both take global.icon.state.disabled.default when disabled. On the web the template always writes a placeholder attribute, empty when there is none, so the CSS tells an empty field with :placeholder-shown. The field family's leading icon takes the same tokens. Supersedes field-colors: the box, its border, the value, the placeholder and the description keep their colors there; only the glyph changes, from the tertiary icon color in every state.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 3) among: A, global.icon.on-base.neutral.tertiary in every state, the placeholder's role and the Search field glyph's until now (recommended); B, follow the text beside it, the placeholder's role (tertiary) while the field is empty and the value's (global.icon.on-base.neutral.primary) once something is typed, as the Figma prototype does (chosen); C, global.icon.on-base.neutral.secondary in every state, the Figma prototype's color at rest. The Figma prototype binds the icon to its own variables carrying its placeholder's and its value's colors: #313131 empty (secondary), #616161 active (tertiary), #0E0E0E filled (primary), #8C8C8C disabled; the repository's placeholder is tertiary in every state (step 10), so the Figma logic on the repository's roles is B. B also matches the Button, whose icon takes its label's color. Measured on the medium Text field and the Search field, empty, filled, focused, in error, warning and success (their subtle fills previewed) and disabled, light and dark, surface levels 0 to 3: with B the icon is the placeholder's color when empty (on the fill 5.43:1 at the lowest in light, on the error fill, and 6.40:1 in dark) and the value's when filled (16.91:1 and 11.29:1 at the lowest). WCAG 1.4.11 asks 3:1 of the parts of graphics required to understand the content and the icon only illustrates, the label naming the field; under WCAG 1.1.1 a pure decoration can be ignored by assistive technology: every option clears 3:1 anyway. Disabled, the icon takes global.icon.state.disabled.default, as the text. No raw or semantic token added.",
+      "tokens": [
+        "search-field.icon.color.*",
+        "search-field.icon.placeholder-color.*"
+      ]
+    },
+    {
+      "id": "leading-icon-size",
+      "date": "2026-11-20",
+      "version": "0.10.6",
+      "area": "size",
+      "status": "active",
+      "text": "The search glyph keeps 16 / 20 / 24 px for the small, medium and large sizes (search-field.icon.size, size.2 / 3 / 4): the size of the field family's leading icon, which the Text field and the Number field take.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 2) among: A, keep the Search field's glyph sizes, one Icon step per field size, 16 / 20 / 24 px (chosen); B, the Button's and the Icon button's icon at the same size, 20 / 24 / 24 px (size.3 / 4 / 4), the severity icon's after the control; C, the Icon next to 14 and 16 px text, 16 px at every size (size.2). The Figma prototype draws a 20 / 24 / 28 px glyph in an 18 / 18 / 24 px frame, off the size scale. Measured with A, beside an Icon button and a Button of the same size: the glyph leaves 6 / 8 / 10 px above and below it in the 28 / 36 / 44 px box, 1.14 / 1.25 / 1.50 times the value text, 4 px smaller than the Icon button's glyph in small and medium; with the Search field's gap today (8 px inset, 4 / 8 / 8 px to the text), the text starts at 28 / 36 / 40 px. No new token.",
+      "tokens": [
+        "search-field.icon.size.*"
+      ]
+    },
+    {
+      "id": "leading-icon-optional",
+      "date": "2026-11-20",
+      "version": "0.10.5",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Search field's search glyph is the leading icon of the field family, always on and always search: the known exception to the guideline of no leading icon. When the Text field's leading icon lands (#103 step 15, points 2 to 5), the glyph becomes that same part, with one size, color and gap for every field.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 1) among: A, keep today (no leading icon, the Search field keeps its own glyph); B, an optional leading icon on the single-line fields, off by default (chosen); C, as B and the Textarea too; D, on by default with a generic glyph, as the Figma prototype's left icon. The team chose B for what the component offers and A for what it advises: the icon must be feasible and optional for designs that want a more precise rendering (a marketing page with a few fields, for example), but the default and the guideline for regular applications is no leading icon, the Search field's glyph being the known exception. D was rejected because a default glyph means nothing for most fields (sell on an email field) and \"on unless switched off\" is the opposite of the Button's leading icon; C because no source and no Figma variant shows an icon in a multi-line field. The icon is decorative: hidden from assistive technology, never the label, which stays visible text (WCAG 1.1.1, 3.3.2, 2.5.3). Material lists a leading icon as optional and Apple lets a text field show an image at its leading end; Windows draws none. Its size, color, gap and accessibility contract are #103 step 15, points 2 to 5, which add the property, the part and its tokens.",
+      "refs": [
+        "wcag:1.1.1",
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "severity-icon",
+      "date": "2026-11-20",
+      "version": "0.10.4",
+      "area": "anatomy",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms step 2b), it takes the Text field's severity icon and the property severityIcon (message by default, after-control, none) with the same tokens. No token today: the mirror check ignores severity-icon.* (scripts/lib/mirrors.mjs).",
+      "rationale": "The Text field decision severity-icon (#103 step 12, points 2, 2b and 2c); the Search field mirrors the Text field but has no severity yet."
+    },
+    {
+      "id": "error-fill-subtle",
+      "date": "2026-11-20",
+      "version": "0.10.3",
+      "area": "color",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms foundation step 2b), its box in error takes the fill of the Text field: global.bg.subtle.functional.error.default, at rest and on hover alike. No token today: the Search field has no severity yet, so the mirror check ignores control.background.error (scripts/lib/mirrors.mjs).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 1, also the reference rendering of the Forms foundation step 6) between two options, measured on every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, global.bg.subtle.functional.error.default at rest and its hover step global.bg.subtle.functional.error.hover on hover; B, the subtle error fill at rest and on hover alike (chosen). In light mode A's hover fill (#FCCDC6) brings the placeholder to 4.33:1, under the 4.5:1 of WCAG 1.4.3; with B every pair passes: placeholder 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border and outline against the fill 5.45:1 and 5.14:1, against the surface levels 5.79:1 and 3.73:1 at the lowest. The fill is solid, as the team validated in the Forms foundation step 5; the hover tint it gives up was 1.05:1 from rest, and the Figma prototype, whose error fill is the same #FEECEA, has no hover in error. The value and the placeholder keep their roles (global.text.on-base.neutral.primary and .tertiary): the on-subtle neutral role has a single step, which cannot tell the placeholder from the value."
+    },
+    {
+      "id": "variants-modeled-differently",
+      "date": "2026-11-19",
+      "version": "0.10.2",
+      "area": "variant",
+      "status": "active",
+      "text": "The Search field follows the Text field's decision variants-modeled-differently, which holds the departures from the Figma prototype (the value property instead of the filled state, the platform's caret, severity with message, the description, an always visible label) and the options. The Search field has no read-only, so it takes no guideline. No token changes.",
+      "rationale": "Decided by the team on 2026-11-19 (option B of three, see the Text field's decision): the model is kept and the departures are recorded."
+    },
+    {
+      "id": "placeholder-tertiary",
+      "date": "2026-11-19",
+      "version": "0.10.1",
+      "area": "color",
+      "status": "active",
+      "text": "The placeholder of the Search field is global.text.on-base.neutral.tertiary in every enabled state (search-field.control.placeholder-color.default) and global.text.state.disabled.default when disabled, as the Text field's (decision placeholder-tertiary of the Text field, which holds the rule, the options and the measurements). The decision keeps the values the control already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep tertiary in every enabled state (chosen); B, Figma's secondary at rest and tertiary on focus; C, secondary in every state, rejected because it is too close to the typed value and the same color as the help text. See the Text field's decision for the measurements.",
+      "tokens": [
+        "search-field.control.placeholder-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "understanding-contrast-minimum",
+        "mdn-placeholder",
+        "wai-instructions-placeholder",
+        "html-placeholder",
+        "material-text-fields",
+        "hig-color",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "border-base-neutral-5",
+      "date": "2026-11-19",
+      "version": "0.10.0",
+      "area": "color",
+      "status": "active",
+      "text": "The resting border of the box is global.border.base.neutral.5, as the Text field's (decision border-base-neutral-5 of the Text field, which holds the rule, the options and the measurements): #8C8C8C in light and #9C9C9C in dark, 3.30:1 and 6.40:1 on the page, 3.12:1 and 4.80:1 at the lowest on the surface levels. Hover keeps it. Disabled, the focus outline and the severity outlines are unchanged.",
+      "tokens": [
+        "search-field.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-non-text-contrast-boundaries",
+        "material-text-fields",
+        "hig-text-fields",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "fill-page-level",
+      "date": "2026-11-19",
+      "version": "0.9.1",
+      "area": "color",
+      "status": "active",
+      "text": "The fill of the box of the Search field is the page's own level, as the Text field's (decision fill-page-level of the Text field, which holds the rule and its rationale): global.bg.level.0.default at rest, global.bg.level.0.hover on hover. The decision keeps the values the box already had: no token changes. The disabled fill is not decided here.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the page level (chosen); B, Figma's level 1; C, the default Button's translucent subtle fill, rejected because the placeholder fails WCAG 1.4.3 in dark. The fill does not identify the field, the border does. Every form control reads the same fill.",
+      "tokens": [
+        "search-field.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.3",
+        "understanding-non-text-contrast-adjacent-colors",
+        "understanding-contrast-minimum",
+        "material-text-fields-guidelines",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "state-outline-flush",
+      "date": "2026-11-19",
+      "version": "0.9.0",
+      "area": "state",
+      "status": "active",
+      "text": "The Search field draws focus as the Text field does (decision state-outline-flush of the Text field, which holds the rule and its rationale): the border stays 0.6 px in every state and the outline is drawn flush over it, offset minus the border width, so the text never moves. Focus is an outline of focus.ring.width (2.4 px) in color.focus.ring. search-field.control.outline-offset.focus-visible is removed. pnpm validate compares the shared tokens with the Text field's through the mirror check. The Search field has no severity (decision no-error-state), so it has the focus part only.",
+      "rationale": "Decided by the team on 2026-11-19 (E4a at offset minus 0.6 px); see the Text field's decision for the options, the rationale and the known consequences (2.4.13 not met at 1x and 2x).",
+      "tokens": [
+        "search-field.control.outline-width.*",
+        "search-field.control.outline-color.*"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11",
+        "wcag:2.4.13",
+        "understanding-focus-contrast",
+        "mdn-forced-colors"
+      ]
+    },
+    {
+      "id": "radius-button",
+      "date": "2026-11-19",
+      "version": "0.8.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The Search field takes the corner radius of the Button of the same size, as the Text field's (decision radius-button of the Text field, which holds the rule and its rationale): small 2 px, medium and large 4 px (search-field.control.border-radius per size). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the single 4 px radius of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among three options (A, keep 4 px at every size; B, the Shape foundation's radius per size, chosen; C, 2 px at every size); see the Text field's decision for the rationale.",
+      "tokens": [
+        "search-field.control.border-radius.*"
+      ]
+    },
+    {
+      "id": "part-gap-6",
+      "date": "2026-11-19",
+      "version": "0.7.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The parts of the Search field are 6 px apart at every size and in every state (search-field.container.gap, space.4 to space.6), as the Text field's (decision part-gap-6 of the Text field, which holds the rule and its rationale). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the 4 px gap of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options (A, keep 4 px; B and C, Figma's two inconsistent sets of gaps; D, 6 px everywhere, chosen); see the Text field's decision for the rationale.",
+      "tokens": [
+        "search-field.container.gap"
+      ]
+    },
+    {
+      "id": "label-help-text-sizes",
+      "date": "2026-11-19",
+      "version": "0.6.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The label of the Search field takes the text size of the value, and the description the helper sizes, as the Text field's (decision label-help-text-sizes of the Text field, which holds the rule and its rationale): label small 14 px, medium 16 px, large 16 px; description small 12 px, medium 12 px, large 14 px. Each is a typography token per size. pnpm validate compares search-field.label.typography.*, search-field.description.typography.* with the Text field's. Changes the single 14 px style that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep the single 14 px style for the label, the description and the message; B, the label follows the field (14 / 16 / 16 px) and the help text stays 14 px; C, the label follows the field and the help text takes Figma's helper sizes (12 / 12 / 14 px), chosen; D, Figma's sizes (label 12 / 14 / 16 px, help text 12 / 12 / 14 px, compact line height), rejected because the label would be smaller than the value at the small size and the Typography foundation would need an exception. A label above a field reads at the field's own size, and the help text is secondary to what it describes.",
+      "tokens": [
+        "search-field.label.typography.*",
+        "search-field.description.typography.*"
+      ]
+    },
+    {
+      "id": "padding-inline-button",
+      "date": "2026-11-19",
+      "version": "0.5.1",
+      "area": "dimension",
+      "status": "active",
+      "text": "The inline padding of the box of the Search field is the inline padding of the Button without an icon, as the Text field's (decision padding-inline-button of the Text field, which holds the rule and its rationale): small 8 px, medium 12 px, large 16 px, at the end of the text. The start padding that clears the glyph (28, 36 and 40 px) is the Search field's own and sums the glyph's margin, size and gap. The decision keeps the values the box already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the inline padding of the Button without an icon (8 / 12 / 16 px), chosen; B, Figma's 6 / 8 / 10 px; C, the Button's label-side padding (8 / 8 / 10 px), rejected here because it belongs to the question of a leading icon in the field. A field and a Button of the same size start their text at the same inset.",
+      "tokens": [
+        "search-field.control.padding-inline.*"
+      ]
+    },
+    {
+      "id": "box-height-button",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The minimum height of the box of the Search field takes the height of the Button of the same size, as the Text field's (decision box-height-button of the Text field, which holds the rule and its rationale): small 28 px, medium 36 px, large 44 px, so a search field and the button next to it line up. pnpm validate compares search-field.control.min-height.* with the Text field's. The search glyph (16, 20, 24 px) stays centred in the height, and the start padding that clears it is unchanged. Changes the 32 / 40 / 48 px minimum heights that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep 32 / 40 / 48 px (one step taller than the Button of the same size); B, the Button's heights 28 / 36 / 44 px, chosen; C, the height Figma's padding gives with the new text (33.6 / 40 / 44 px), which matches neither the Button nor today's; D, Figma's heights rounded up (36 / 40 / 44 px). A field and a Button of the same size line up (a search field next to its button, a form row), and the large size reaches the 44 pt that Apple recommends. The hit region of the small and medium sizes is a later step, as for the Button.",
+      "tokens": [
+        "search-field.control.min-height.*"
+      ]
+    },
+    {
+      "id": "value-text-button-size",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "typography",
+      "status": "active",
+      "supersedes": [
+        "sizes"
+      ],
+      "text": "The value and placeholder text of the Search field takes the text size of the Button of the same size, as the Text field's (decision value-text-button-size of the Text field, which holds the rule and its rationale): small 14 px, medium 16 px, large 16 px, regular weight, normal letter spacing and the tight line height (1.2). pnpm validate compares search-field.control.typography.* with the Text field's. The search glyph's size is its own tokens (16, 20, 24 px), so the 28 / 36 / 40 px start padding that clears it is unchanged. Supersedes sizes: the heights, inline padding, border, corners and the 14 px label and description of that decision are unchanged here; only the text of the large size (20 to 16 px) and the line height (1.5 to 1.2) change.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep today's text (small 14, medium 16, large 20 px, line height 1.5: the large size breaks the rule); B, the Button's whole label style (medium weight, compact line height 1.0, tight letter spacing), rejected because people's content would look like a control label, descenders and accents would touch the line, and the Typography foundation would need an exception; C, the Button's text size with the Typography foundation's single-line style (regular weight, normal letter spacing, tight line height 1.2), chosen; D, the Button's text size with the line height 1.5, rejected because that line height is meant for running text.",
+      "tokens": [
+        "search-field.control.typography.*"
+      ]
+    },
+    {
+      "id": "same-box-as-text-field",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Search field always renders the same box as the Text field of the same size and state: height, inline padding, text, border, corners, colors, focus ring, label, description and motion are the Text field's (it has no severity, message or read-only state: decision no-error-state). A Text field decision on any of these applies to the Search field in the same change: pnpm validate fails when a Search field token differs from the Text field token at the same place (MIRRORS in scripts/lib/mirrors.mjs, decision field-family-mirrors of the Text field). The glyph and the start padding that clears it are its own: the start padding (control.padding-inline-start.*) is a sum, glyph margin + glyph size + the gap before the text (28, 36, 40 px today), so a step that changes the box's inline padding, the glyph size or the glyph margin recomputes it. The mirror covers rendering only: a contract decision is asked for the Search field too.",
+      "rationale": "Nothing tied the three plain fields to the Text field: a decision on its box left them behind. Mirroring them lets every rendering step of the Text field refinement change the four in the same commit, and pnpm validate prove they agree, where the alternatives (the Text field alone, with a closing step per sibling or an issue for the others) leave the siblings out of step in between. The Select is not mirrored now: it gets its own step later, with the complex controls.",
+      "tokens": [
+        "search-field.container.*",
+        "search-field.control.*",
+        "search-field.label.*",
+        "search-field.description.*",
+        "search-field.icon.*"
+      ]
+    },
+    {
       "id": "field-colors",
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "The control follows the Text field's colors: a box on the default surface outlined in the accent neutral border color; hover tints it with the surface hover color and keeps the border; disabled takes the shared disabled colors. Value text is primary, the placeholder tertiary, the description secondary, the glyph the tertiary icon color.",
       "rationale": "The Figma library maps no color to form controls. The accent neutral border is the lightest neutral border that keeps 3:1 against the surface in both modes (WCAG 1.4.11); the hover tint reuses the surface's own hover step.",
       "tokens": [
@@ -568,7 +945,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "size",
-      "status": "active",
+      "status": "superseded",
       "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
       "tokens": [
         "search-field.control.min-height.*",
@@ -607,6 +984,101 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.9",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-decorative: the search glyph is decorative on every platform (VoiceOver and Android guidelines added); its tokens are now mirrored from the Text field's leading icon (#103 step 15, point 5). No token or rendering change."
+    },
+    {
+      "version": "0.10.8",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-spacing: the search glyph keeps 8 px from the border and 4 / 8 / 8 px from the text, the spacing of the field family's leading icon (#103 step 15, point 4). No token or rendering change (a keep decision)."
+    },
+    {
+      "version": "0.10.7",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-color: the search glyph follows the text beside it, global.icon.on-base.neutral.tertiary while the field is empty (new token search-field.icon.placeholder-color) and global.icon.on-base.neutral.primary once something is typed (search-field.icon.color, was tertiary); the template always writes a placeholder attribute, empty when none is given (#103 step 15, point 3)."
+    },
+    {
+      "version": "0.10.6",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-size: the leading icon is 16 / 20 / 24 px, the Search field's glyph sizes (#103 step 15, point 2). No token or rendering change (a keep decision)."
+    },
+    {
+      "version": "0.10.5",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-optional: records that the search glyph is the field family's leading icon, always on (#103 step 15, point 1). No token or rendering change yet."
+    },
+    {
+      "version": "0.10.4",
+      "date": "2026-11-20",
+      "note": "Decision severity-icon: records that the Search field takes the Text field's severity icon with its severity (Forms step 2b). No token or rendering change."
+    },
+    {
+      "version": "0.10.3",
+      "date": "2026-11-20",
+      "note": "Decision error-fill-subtle: records that the box takes the subtle error fill once the Search field has a severity (Forms step 2b). No token or rendering change."
+    },
+    {
+      "version": "0.10.2",
+      "date": "2026-11-19",
+      "note": "Decision variants-modeled-differently (Text field decision of the same name): the departures from the Figma prototype are recorded (the Search field has no read-only). No token or rendering change."
+    },
+    {
+      "version": "0.10.1",
+      "date": "2026-11-19",
+      "note": "Decision placeholder-tertiary (Text field decision of the same name): the placeholder (search-field.control.placeholder-color.*) stays global.text.on-base.neutral.tertiary in every enabled state, rather than Figma's secondary at rest. Distance from the value, light / dark: 3.12:1 / 1.76:1 (secondary 1.48:1 / 1.27:1); contrast against the fill at rest 6.08:1 / 6.40:1 (lowest 5.75:1 / 5.86:1). Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.10.0",
+      "date": "2026-11-19",
+      "note": "Decision border-base-neutral-5 (Text field decision of the same name): the resting border of the box (search-field.control.border-color.default) is global.border.base.neutral.5 instead of global.border.accent.neutral.default: #8C8C8C in light (was #313131) and #9C9C9C in dark (was #CFCFCF). Contrast of the border on the surface levels 0 / 1 / 2 / 3: light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1 (was 12.78 / 12.09 / 12.78 / 12.09:1 and 11.28 / 10.33 / 9.46 / 8.47:1). Disabled, focus and invalid are unchanged."
+    },
+    {
+      "version": "0.9.1",
+      "date": "2026-11-19",
+      "note": "Decision fill-page-level (Text field decision of the same name): the fill of the box (search-field.control.background.*) stays the page's level, global.bg.level.0.default at rest and .hover on hover. Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.9.0",
+      "date": "2026-11-19",
+      "note": "Decision state-outline-flush: focus is an outline of 2.4 px (focus.ring.width, color.focus.ring) drawn flush over the 0.6 px border, offset minus the border width, instead of a ring 4 px away; the border and the text never change; outline-offset.focus-visible removed. Contrast, light / dark: focus outline 5.77:1 / 12.76:1 on the default surface (5.45 / 9.58 on level 3); WCAG 2.4.13 is no longer claimed."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-19",
+      "note": "Decision radius-button: the corner radius of the box is the Button's at the same size (search-field.control.border-radius per size: small corner-radius.2xs, 2 px; medium and large corner-radius.xs, 4 px; it was corner-radius.xs, 4 px, at every size). Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-11-19",
+      "note": "Decision part-gap-6: the parts of the field are 6 px apart at every size and in every state (search-field.container.gap: space.4 to space.6, 4 px to 6 px between the label, the box, the description and the message). The box never moves between states. Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.6.0",
+      "date": "2026-11-19",
+      "note": "Decision label-help-text-sizes (Text field decision of the same name): the label scales with the field (14 / 16 / 16 px) and the help text shrinks (12 / 12 / 14 px) (search-field.label.typography: one 14 px style becomes small, medium and large, font size body.size.sm to sm / md / md, line height normal 1.5 to tight 1.2; search-field.description.typography: body.size.sm to xs / xs / sm, so 14 px becomes 12 / 12 / 14 px; weights, normal line height and letter spacing kept). The Size property now affects the label, the description. pnpm validate now fails when the label and the value alias different font size tokens. Colors unchanged; contrast re-measured on levels 0 to 3: description 12.78:1 (levels 0 and 2) and 12.09:1 (levels 1 and 3) in light mode, 8.86:1, 8.11:1, 7.43:1 and 6.65:1 on levels 0 to 3 in dark mode, the same on every platform; 4.5:1 required (WCAG 1.4.3), the lowest being 6.65:1."
+    },
+    {
+      "version": "0.5.1",
+      "date": "2026-11-19",
+      "note": "Decision padding-inline-button (Text field decision of the same name): the inline padding (search-field.control.padding-inline.*) is the Button's inline padding without an icon at the same size. Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision box-height-button (Text field decision of the same name): the minimum height takes the height of the Button of the same size (search-field.control.min-height.*: 32 / 40 / 48 px become 28 / 36 / 44 px). The glyph and the start padding that clears it are unchanged. Target size (WCAG 2.5.8): every size stays above 24 x 24 CSS px. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Decision value-text-button-size (Text field decision of the same name): the value and placeholder text takes the text size of the Button of the same size (small 14, medium 16, large 16 px; the large size was 20 px), with the tight line height (search-field.control.typography.*: large font size body.size.lg to body.size.md, line height normal to tight). The glyph does not depend on the text size: the start padding sums are unchanged. Supersedes sizes. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "Decision same-box-as-text-field (Text field decision field-family-mirrors): the Search field is a mirror of the Text field, so every Text field decision on the box applies here in the same change and pnpm validate compares the tokens; its glyph tokens and start padding are declared as its own, and the start padding is a sum to recompute with the box. No token, CSS or template change: the tokens already resolve to the Text field's values in every platform and mode, so sizes, colors and contrast are unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-05",
