@@ -10,13 +10,14 @@
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
  *    spec order: default < hover < focus-visible < error < warning < success < readonly < disabled: hover only tints the
- *    background, a severity only recolors the border, so they combine as the token rule combines them.
+ *    background, a severity recolors the border (and the error, the fill, which hover keeps), so they combine as the token rule combines them.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
 .ds-textarea {
   /* Defaults = size "medium", state "default". */
   --_control-background: var(--textarea-control-background-default);
+  --_control-background-hover: var(--textarea-control-background-hover);
   --_control-border-color: var(--textarea-control-border-color-default);
   --_control-color: var(--textarea-control-color-default);
   --_placeholder-color: var(--textarea-control-placeholder-color-default);
@@ -182,13 +183,16 @@
 
 .ds-textarea:where([data-state="hover"]) .ds-textarea__control:not(:disabled, [readonly]),
 .ds-textarea:not([data-state]) .ds-textarea__control:hover:not(:disabled, [readonly]) {
-  --_control-background: var(--textarea-control-background-hover);
+  --_control-background: var(--_control-background-hover);
 }
 
-/* Severity: the control's border takes the severity's color and the message its text color. Only the
+/* Severity: the control's border takes the severity's color, the message its text color and, for the error, the fill. Only the
    error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
 .ds-textarea:where([data-state="error"], [data-severity="error"]) {
   --_message-color: var(--textarea-message-color-error);
+  /* The error fill holds on hover: its hover step would bring the placeholder under 4.5:1. */
+  --_control-background: var(--textarea-control-background-error);
+  --_control-background-hover: var(--textarea-control-background-error);
 }
 .ds-textarea:where([data-state="error"], [data-severity="error"]) .ds-textarea__control,
 .ds-textarea__control[aria-invalid="true"] {

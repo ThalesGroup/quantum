@@ -507,12 +507,12 @@ export default {
     {
       id: 'form-control-error', section: 'Text field', component: 'text-field', title: 'Error (.is-invalid)', tier: 'component',
       selector: '.form-control.is-invalid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle).'] },
     },
     {
       id: 'form-control-user-error', section: 'Text field', component: 'text-field', title: 'Error (:user-invalid)', tier: 'component',
       selector: '[data-bs-validate] .form-control:user-invalid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle).'] },
     },
     {
       id: 'form-control-success', section: 'Text field', component: 'text-field', title: 'Success (.is-valid)', tier: 'component',

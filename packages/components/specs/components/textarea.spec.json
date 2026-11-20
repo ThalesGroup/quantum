@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -194,7 +194,7 @@
       "trigger": "property",
       "property": "severity",
       "value": "error",
-      "description": "Severity error: an outline in the error color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the error color."
+      "description": "Severity error: the box is filled with the subtle error background, on hover too, an outline in the error color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the error color."
     },
     {
       "id": "warning",
@@ -361,13 +361,13 @@
         ]
       },
       {
-        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). On the error fill (global.bg.subtle.functional.error.default, at rest and on hover), the value is 16.91:1 and 11.67:1 and the placeholder 5.42:1 and 6.62:1. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries",
@@ -852,6 +852,22 @@
   ],
   "decisions": [
     {
+      "id": "error-fill-subtle",
+      "date": "2026-11-20",
+      "version": "0.12.0",
+      "area": "color",
+      "status": "active",
+      "text": "The box of a field in error is filled with global.bg.subtle.functional.error.default (textarea.control.background.error): #FEECEA in light mode, #2B0B08 in dark mode, at rest and on hover alike, under the error border and outline. Read-only and disabled keep their own fills. The value, the placeholder, the label, the description and the message keep their colors. It follows the Text field (decision same-box-as-text-field).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 1, also the reference rendering of the Forms foundation step 6) between two options, measured on every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, global.bg.subtle.functional.error.default at rest and its hover step global.bg.subtle.functional.error.hover on hover; B, the subtle error fill at rest and on hover alike (chosen). In light mode A's hover fill (#FCCDC6) brings the placeholder to 4.33:1, under the 4.5:1 of WCAG 1.4.3; with B every pair passes: placeholder 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border and outline against the fill 5.45:1 and 5.14:1, against the surface levels 5.79:1 and 3.73:1 at the lowest. The fill is solid, as the team validated in the Forms foundation step 5; the hover tint it gives up was 1.05:1 from rest, and the Figma prototype, whose error fill is the same #FEECEA, has no hover in error. The value and the placeholder keep their roles (global.text.on-base.neutral.primary and .tertiary): the on-subtle neutral role has a single step, which cannot tell the placeholder from the value.",
+      "tokens": [
+        "textarea.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "variants-modeled-differently",
       "date": "2026-11-19",
       "version": "0.11.0",
@@ -1123,6 +1139,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.12.0",
+      "date": "2026-11-20",
+      "note": "Decision error-fill-subtle: a field in error is filled with global.bg.subtle.functional.error.default (new token textarea.control.background.error), at rest and on hover alike; it kept the page-level fill before. Placeholder on the fill 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border against it 5.45:1 and 5.14:1."
+    },
     {
       "version": "0.11.0",
       "date": "2026-11-19",

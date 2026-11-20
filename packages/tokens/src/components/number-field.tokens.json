@@ -102,6 +102,10 @@
         "hover": {
           "$value": "{global.bg.level.0.hover}"
         },
+        "error": {
+          "$value": "{global.bg.subtle.functional.error.default}",
+          "$description": "The fill of a control in error, at rest and on hover alike: the subtle error background (Forms foundation, decision forms-error-fill). Its hover step would bring the placeholder under 4.5:1 in light mode."
+        },
         "readonly": {
           "$value": "{global.bg.level.1.default}"
         },
