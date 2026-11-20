@@ -174,9 +174,18 @@ There is no asterisk. An asterisk is a symbol that must be explained before its 
 ([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)); a word needs no key, and marking the
 fewer fields keeps a long form free of repeated marks.
 
-> **Not decided yet (step 4).** What assistive technology gets from "(required)" and
-> "(optional)", and how iOS, Android and desktop apply the rule (Material and Windows mark
-> required fields with an asterisk).
+> **Not decided yet (step 4).** How iOS, Android and desktop apply the rule (Material and
+> Windows mark required fields with an asterisk).
+
+### Web
+
+Each fact is said once. "(required)" is hidden from assistive technology: the required attribute
+already makes screen readers say "required", and a parenthetical like this may stay out of the
+accessible name when the state is exposed another way
+([Understanding 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name),
+[MDN: aria-required](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples)).
+"(optional)" stays part of the label's text, so it is read with the name: no attribute says that
+a field is optional.
 
 ### iOS
 

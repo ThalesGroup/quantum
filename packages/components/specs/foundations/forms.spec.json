@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -48,7 +48,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. What assistive technology gets from the word, and how iOS, Android and desktop apply the rule, are not decided yet."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. How iOS, Android and desktop apply the rule is not decided yet."
     },
     {
       "id": "statuses",
@@ -401,6 +401,19 @@
         "platforms": [
           "web"
         ]
+      },
+      {
+        "text": "On the web, a \"(required)\" mark is hidden from assistive technology (aria-hidden), because the required attribute already exposes the state and the parenthetical may stay out of the accessible name; an \"(optional)\" mark stays in the label's text, so it is part of the accessible name, because no attribute exposes that a field is optional. Each fact is said once.",
+        "refs": [
+          "wcag:2.5.3",
+          "wcag:1.3.1",
+          "wcag:4.1.2",
+          "mdn-aria-required",
+          "accname-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
       }
     ],
     "references": [
@@ -578,6 +591,16 @@
         "id": "wcag-f81",
         "title": "WCAG failure F81: required or error fields identified by color only",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
+      },
+      {
+        "id": "mdn-aria-required",
+        "title": "MDN: aria-required (a label that already says required)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: step 2A, hidden nodes are not part of the name",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
       }
     ]
   },
@@ -681,6 +704,25 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-required-mark-exposure",
+      "date": "2026-11-20",
+      "version": "0.9.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On the web, \"(required)\" is hidden from assistive technology (aria-hidden) and the required attribute says the field is required, once; \"(optional)\" is read as part of the accessible name, since no attribute says a field is optional.",
+      "rationale": "Options. A: \"(required)\" hidden, \"(optional)\" read. B: both read, so a required field says \"required\" twice (its name, then its state). C: both hidden, so optional is never said and can only be inferred from the missing \"required\" and the note, which is not read when tabbing between fields. The team chose A: each fact is said once. Understanding 2.5.3 lets \"(required)\" stay out of the accessible name when the required state is exposed another way, such as the HTML required attribute; MDN advises against announcing required twice; AccName 1.2 leaves aria-hidden nodes out of the name. The visible label still starts with the accessible name, so speech input by the label works. Names computed on the review sheet by AccName step 2A; no screen reader was run.",
+      "platforms": [
+        "web"
+      ],
+      "refs": [
+        "wcag:2.5.3",
+        "wcag:1.3.1",
+        "wcag:4.1.2",
+        "mdn-aria-required",
+        "accname-hidden"
+      ]
+    },
     {
       "id": "forms-required-marking",
       "date": "2026-11-20",
@@ -832,6 +874,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-mark-exposure: on the web, \"(required)\" is hidden from assistive technology (the required attribute says it once) and \"(optional)\" is part of the accessible name. The rule on required fields and a web guideline say so."
+    },
     {
       "version": "0.8.0",
       "date": "2026-11-20",
