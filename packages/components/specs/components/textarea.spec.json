@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -907,6 +907,22 @@
   ],
   "decisions": [
     {
+      "id": "message-color-error",
+      "date": "2026-11-20",
+      "version": "0.14.1",
+      "area": "color",
+      "status": "active",
+      "text": "The message of an error keeps textarea.message.color.error, global.text.on-base.functional.error.default (#C01619 in light mode, #F88275 in dark mode), the color of the severity icon (Forms decision forms-message-color).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 3) among: A, keep the functional error text (chosen); B, the neutral primary text; C, the neutral secondary text, the description's color. A is the Figma prototype's color and the icon's, and sets the message apart from the description by its color too, which matters most with no icon. Measured on the surface levels 0 to 3: 5.81 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode (WCAG 1.4.3).",
+      "tokens": [
+        "textarea.message.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
       "id": "severity-icon",
       "date": "2026-11-20",
       "version": "0.14.0",
@@ -1227,6 +1243,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.1",
+      "date": "2026-11-20",
+      "note": "Decision message-color-error: the error message keeps the functional error text color (a keep decision). No token change."
+    },
     {
       "version": "0.14.0",
       "date": "2026-11-20",
