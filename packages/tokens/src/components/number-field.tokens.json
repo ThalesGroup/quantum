@@ -220,6 +220,78 @@
           "$type": "cubicBezier",
           "$value": "{easing.standard}"
         }
+      },
+      "padding-inline-start": {
+        "$type": "dimension",
+        "$description": "With a leading icon (iconStart): room for it at the start edge, in place of the inline padding; icon.margin-inline + icon.size + the gap to the text (8 + 16 + 4, 8 + 20 + 8, 8 + 24 + 8), the Search field's (decision leading-icon-spacing).",
+        "small": {
+          "$value": "{space.28}"
+        },
+        "medium": {
+          "$value": "{space.36}"
+        },
+        "large": {
+          "$value": "{space.40}"
+        }
+      }
+    },
+    "icon": {
+      "$description": "Leading icon (iconStart), a glyph of the icon font over the start edge of the control, decorative. The Search field's glyph: 16 / 20 / 24 px, 8 px from the border; it follows the text beside it, the placeholder's color while the field is empty, the value's once something is typed (decisions leading-icon-size, leading-icon-spacing, leading-icon-color).",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.24}"
+      },
+      "size": {
+        "$type": "dimension",
+        "small": {
+          "$value": "{size.2}"
+        },
+        "medium": {
+          "$value": "{size.3}"
+        },
+        "large": {
+          "$value": "{size.4}"
+        }
+      },
+      "margin-inline": {
+        "$type": "dimension",
+        "$value": "{space.8}"
+      },
+      "color": {
+        "$type": "color",
+        "$description": "Color of the glyph beside a typed value: the value's role (decision leading-icon-color).",
+        "default": {
+          "$value": "{global.icon.on-base.neutral.primary}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
+        }
+      },
+      "placeholder-color": {
+        "$type": "color",
+        "$description": "Color of the glyph while the field is empty: the placeholder's role (decision leading-icon-color).",
+        "default": {
+          "$value": "{global.icon.on-base.neutral.tertiary}"
+        },
+        "disabled": {
+          "$value": "{global.icon.state.disabled.default}"
+        }
       }
     },
     "description": {

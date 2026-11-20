@@ -189,7 +189,7 @@
       },
       "padding-inline-start": {
         "$type": "dimension",
-        "$description": "Room for the search glyph at the start edge, in place of the inline padding.",
+        "$description": "Room for the search glyph at the start edge, in place of the inline padding; icon.margin-inline + icon.size + the gap to the text, the leading icon's of the Text field (decision leading-icon-spacing).",
         "small": {
           "$value": "{space.28}"
         },

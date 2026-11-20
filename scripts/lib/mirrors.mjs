@@ -47,17 +47,19 @@ export const MIRRORS = [
     paths: [],
     // A search field has no severity and no read-only state, so no message (decision no-error-state).
     ignore: ['control.background.readonly', 'control.background.error', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'control.outline-width.error', 'control.outline-width.warning', 'control.outline-width.success', 'control.outline-color.error', 'control.outline-color.warning', 'control.outline-color.success', 'message.*', 'severity-icon.*'],
-    // The glyph, and the start padding that clears it. control.padding-inline-start.* is a SUM, not an
+    // The search glyph is the Text field's leading icon (decision leading-icon-optional): icon.* and
+    // control.padding-inline-start.* are compared like the rest. padding-inline-start is a SUM, not an
     // independent value: icon.margin-inline + icon.size + the gap before the text (8 + 16 + 4,
-    // 8 + 20 + 8, 8 + 24 + 8 = 28 / 36 / 40 today). Any step that changes the box's inline padding,
-    // the glyph size or the glyph margin must recompute it, or the text runs under the glyph.
-    own: ['control.padding-inline-start.*', 'icon.*'],
+    // 8 + 20 + 8, 8 + 24 + 8 = 28 / 36 / 40 today). Any step that changes the glyph size or margin
+    // must recompute it, or the text runs under the glyph.
+    own: [],
   },
   {
     component: 'textarea',
     of: 'text-field',
     paths: [],
-    ignore: [],
+    // No leading icon in a multi-line field (decision leading-icon-optional).
+    ignore: ['icon.*', 'control.padding-inline-start.*'],
     // The block padding that keeps the first line off the top edge: the Text field centers one line
     // in its min-height, a textarea of several rows cannot (decision rows-and-resize).
     own: ['control.padding-block.*'],

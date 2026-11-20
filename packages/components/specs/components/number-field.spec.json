@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.14.5",
+  "version": "0.15.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -26,10 +26,24 @@
       "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
     },
     {
+      "id": "field",
+      "role": "container",
+      "required": false,
+      "description": "With a leading icon only: box holding the control and the icon drawn over its start edge, as the Search field's."
+    },
+    {
       "id": "control",
       "role": "value",
       "required": true,
       "description": "The editable box: the native number input, drawn by the component. Receives focus, holds the value, steps it with the arrow keys and the browser's spin control, and shows the placeholder while empty."
+    },
+    {
+      "id": "icon",
+      "role": "icon",
+      "required": false,
+      "decorative": true,
+      "parent": "field",
+      "description": "Leading icon (iconStart), a glyph of the icon font over the start edge of the control, 16 / 20 / 24 px, 8 px from the border, 4 / 8 / 8 px from the text; the placeholder's color while the field is empty, the value's once filled. Decorative and hidden from assistive technology: it never names the field and is never a button. Off by default and not advised for regular applications."
     },
     {
       "id": "description",
@@ -70,7 +84,8 @@
         "label",
         "description",
         "message",
-        "severity-icon"
+        "severity-icon",
+        "icon"
       ],
       "options": [
         {
@@ -125,6 +140,13 @@
       "name": "Placeholder",
       "type": "string",
       "description": "Short hint shown while the field is empty (an example value). Never the label."
+    },
+    {
+      "id": "iconStart",
+      "name": "Leading icon",
+      "type": "icon",
+      "bindsTo": "icon",
+      "description": "Optional glyph before the value, decorative: it illustrates what the field expects and never replaces the label. None by default, and none advised for regular applications; for designs that want a more precise rendering (a marketing page with a few fields, for example)."
     },
     {
       "id": "description",
@@ -281,7 +303,8 @@
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
       "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
       "The browser's spin control keeps its native look and sits at the end edge of the control.",
-      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap."
+      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap.",
+      "With iconStart, the control and the icon share a field box: the icon sits over the start edge of the control, which reserves control.padding-inline-start (28 / 36 / 40 px) in place of its inline padding."
     ]
   },
   "accessibility": {
@@ -541,6 +564,43 @@
         ],
         "platforms": [
           "web"
+        ]
+      },
+      {
+        "text": "The leading icon is decorative on every platform: it illustrates the field and adds nothing to its name or description. Whatever it suggests is said in text, in the label or the description (\"Amount in euros\", not \"Amount\" with a euro glyph); it is never a button.",
+        "refs": [
+          "wcag:1.1.1",
+          "wai-images-decorative"
+        ]
+      },
+      {
+        "text": "Hide the leading icon with aria-hidden=\"true\": an icon-font glyph is written as its ligature name, which would otherwise be read with the value.",
+        "refs": [
+          "wcag:1.1.1",
+          "aria-hidden"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Exclude the leading icon from VoiceOver, as a purely decorative image.",
+        "refs": [
+          "hig-voiceover-descriptions"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "Pass null as the leading icon's contentDescription, or hide it with hideFromAccessibility, as a decorative graphic.",
+        "refs": [
+          "compose-graphic-elements",
+          "compose-hide-semantics"
+        ],
+        "platforms": [
+          "android"
         ]
       }
     ],
@@ -819,6 +879,31 @@
         "id": "accname-description",
         "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
         "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "wai-images-decorative",
+        "title": "WAI tutorials: Decorative images (an empty alt)",
+        "url": "https://www.w3.org/WAI/tutorials/images/decorative/"
+      },
+      {
+        "id": "aria-hidden",
+        "title": "WAI-ARIA 1.2: aria-hidden",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (describe meaningful images, exclude decorative ones)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-hide-semantics",
+        "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
       }
     ]
   },
@@ -879,6 +964,16 @@
       }
     },
     {
+      "id": "medium-leading-icon",
+      "name": "Medium, with a leading icon (not advised for regular applications)",
+      "props": {
+        "size": "medium",
+        "label": "Amount in euros",
+        "value": "120",
+        "iconStart": "euro"
+      }
+    },
+    {
       "id": "medium-error",
       "name": "Medium, error",
       "description": "The value is out of bounds; the message says how to fix it.",
@@ -935,7 +1030,9 @@
       "partSelectors": {
         "container": ".ds-number-field",
         "label": ".ds-number-field__label",
+        "field": ".ds-number-field__field",
         "control": ".ds-number-field__control",
+        "icon": ".ds-number-field__icon",
         "description": ".ds-number-field__description",
         "message": ".ds-number-field__message"
       }
@@ -946,6 +1043,19 @@
     "slider"
   ],
   "decisions": [
+    {
+      "id": "leading-icon-decorative",
+      "date": "2026-11-20",
+      "version": "0.15.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Number field lands its leading icon: the property iconStart (a glyph of the icon set, none by default) and the decorative part icon, in a field box with the control, with the tokens icon.* and control.padding-inline-start.*, the Search field's (decisions leading-icon-optional, leading-icon-size, leading-icon-color, leading-icon-spacing). The icon is always decorative: hidden from assistive technology on every platform, never a name, never a button; whatever it suggests is said in the label or the description.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 5) among: A, always decorative, hidden from assistive technology on every platform and never a name, whatever it suggests said in the label or the description (chosen, recommended); B, decorative by default with an optional name (iconStartLabel) that makes it an image referenced from the input's description, which then needs a text alternative (WCAG 1.1.1) and 3:1 against the fill (WCAG 1.4.11, met at 5.43:1); C, as B and the icon may be an action, a button inside the box (iconStartAction), with its own focus, keyboard, name and target (WCAG 2.1.1, 2.4.7, 4.1.2, 2.5.8, the 16 / 20 px glyph under 24 px). Measured on the sheet, from the rendered page: with A the field keeps one tab stop and one name, the label, and is read as the label, the role, the value and the description; with B a named icon repeats the label (\"Email, edit text, Email\") or carries what the visible text lacks, read after the value; with C the field gets two tab stops. A is the contract of the Search field's glyph, the Button's icons and a decorative Icon. Sources: WCAG 1.1.1, a pure decoration can be ignored by assistive technology; WAI decorative images, an image whose information is already given by adjacent text gets a null text alternative; Apple HIG VoiceOver, exclude purely decorative images; Jetpack Compose, a null contentDescription for decorative graphics. An action at the start of a field is an Icon button next to it, out of this part.",
+      "tokens": [
+        "number-field.icon.*",
+        "number-field.control.padding-inline-start.*"
+      ]
+    },
     {
       "id": "leading-icon-spacing",
       "date": "2026-11-20",
@@ -1322,6 +1432,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.15.0",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-decorative: new property iconStart and parts field and icon, new tokens icon.* (font, 16 / 20 / 24 px size, 8 px margin, color beside the value primary, placeholder-color tertiary, disabled) and control.padding-inline-start.* (28 / 36 / 40 px); the icon is decorative on every platform (#103 step 15, point 5, landing points 1 to 4)."
+    },
     {
       "version": "0.14.5",
       "date": "2026-11-20",

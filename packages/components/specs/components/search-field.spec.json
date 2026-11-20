@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.8",
+  "version": "0.10.9",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -349,6 +349,26 @@
           "wcag:2.3.3",
           "mdn-reduced-motion"
         ]
+      },
+      {
+        "text": "Exclude the search glyph from VoiceOver, as a purely decorative image.",
+        "refs": [
+          "hig-voiceover-descriptions"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "Pass null as the search glyph's contentDescription, or hide it with hideFromAccessibility, as a decorative graphic.",
+        "refs": [
+          "compose-graphic-elements",
+          "compose-hide-semantics"
+        ],
+        "platforms": [
+          "android"
+        ]
       }
     ],
     "references": [
@@ -531,6 +551,21 @@
         "id": "hig-color",
         "title": "Apple HIG: Color, system colors (placeholder text)",
         "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+      },
+      {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (describe meaningful images, exclude decorative ones)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-hide-semantics",
+        "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
       }
     ]
   },
@@ -621,6 +656,18 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "leading-icon-decorative",
+      "date": "2026-11-20",
+      "version": "0.10.9",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The search glyph keeps its contract, the field family's leading icon's: decorative on every platform, hidden from assistive technology (aria-hidden on the web, excluded from VoiceOver, a null contentDescription on Android), never a name; the label names the field. The Text field and the Number field now draw the same part with the same tokens, so the mirror check compares icon.* and control.padding-inline-start.* with theirs.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 5) among: A, always decorative, hidden from assistive technology on every platform and never a name, whatever it suggests said in the label or the description (chosen, recommended); B, decorative by default with an optional name (iconStartLabel) that makes it an image referenced from the input's description, which then needs a text alternative (WCAG 1.1.1) and 3:1 against the fill (WCAG 1.4.11, met at 5.43:1); C, as B and the icon may be an action, a button inside the box (iconStartAction), with its own focus, keyboard, name and target (WCAG 2.1.1, 2.4.7, 4.1.2, 2.5.8, the 16 / 20 px glyph under 24 px). Measured on the sheet, from the rendered page: with A the field keeps one tab stop and one name, the label, and is read as the label, the role, the value and the description; with B a named icon repeats the label (\"Email, edit text, Email\") or carries what the visible text lacks, read after the value; with C the field gets two tab stops. A is the contract of the Search field's glyph, the Button's icons and a decorative Icon. Sources: WCAG 1.1.1, a pure decoration can be ignored by assistive technology; WAI decorative images, an image whose information is already given by adjacent text gets a null text alternative; Apple HIG VoiceOver, exclude purely decorative images; Jetpack Compose, a null contentDescription for decorative graphics. An action at the start of a field is an Icon button next to it, out of this part.",
+      "tokens": [
+        "search-field.icon.*"
+      ]
+    },
     {
       "id": "leading-icon-spacing",
       "date": "2026-11-20",
@@ -937,6 +984,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.9",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-decorative: the search glyph is decorative on every platform (VoiceOver and Android guidelines added); its tokens are now mirrored from the Text field's leading icon (#103 step 15, point 5). No token or rendering change."
+    },
     {
       "version": "0.10.8",
       "date": "2026-11-20",

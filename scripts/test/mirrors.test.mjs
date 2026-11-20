@@ -73,11 +73,14 @@ test('the field family: each mirror is the Text field with its own tokens and it
   const byId = Object.fromEntries(MIRRORS.map((m) => [m.component, m]));
   assert.deepEqual(byId['number-field'].own.concat(byId['number-field'].ignore), []);
   assert.deepEqual(byId['textarea'].own, ['control.padding-block.*']);
-  assert.deepEqual(byId['search-field'].own, ['control.padding-inline-start.*', 'icon.*']);
+  // No leading icon in a multi-line field.
+  assert.deepEqual(byId['textarea'].ignore, ['icon.*', 'control.padding-inline-start.*']);
+  // The search glyph is the Text field's leading icon: compared like the rest.
+  assert.deepEqual(byId['search-field'].own, []);
   assert.deepEqual(byId['search-field'].ignore, ['control.background.readonly', 'control.background.error', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'control.outline-width.error', 'control.outline-width.warning', 'control.outline-width.success', 'control.outline-color.error', 'control.outline-color.warning', 'control.outline-color.success', 'message.*', 'severity-icon.*']);
   // The Select is not mirrored yet (it comes with the complex controls).
   assert.equal(byId.select, undefined);
-  const field = [tok('space.8', '8px'), tok('space.28', '28px'), tok('text-field.control.padding-inline.small', '{space.8}'), tok('text-field.control.border-color.error', '{space.8}'), tok('text-field.message.color.error', '{space.8}')];
+  const field = [tok('space.8', '8px'), tok('space.28', '28px'), tok('text-field.control.padding-inline.small', '{space.8}'), tok('text-field.control.border-color.error', '{space.8}'), tok('text-field.message.color.error', '{space.8}'), tok('text-field.control.padding-inline-start.small', '{space.28}'), tok('text-field.icon.size.small', '{space.8}')];
   const search = [tok('search-field.control.padding-inline.small', '{space.8}'), tok('search-field.control.padding-inline-start.small', '{space.28}'), tok('search-field.icon.size.small', '{space.8}')];
   assert.deepEqual(checkMirror(byId['search-field'], [context([...field, ...search])]), []);
   const wider = search.map((t) => (t.path === 'search-field.control.padding-inline.small' ? tok(t.path, '{space.28}') : t));
