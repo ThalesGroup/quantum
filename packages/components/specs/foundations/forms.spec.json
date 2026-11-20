@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -58,7 +58,7 @@
     {
       "id": "severity-fill",
       "name": "Severity in the fill",
-      "text": "Validated, rendered in step 6: the severity is also shown in the control's fill, a solid color, never translucent; perhaps the subtle functional background of the severity (to confirm)."
+      "text": "The severity is also shown in the control's fill, a solid color, never translucent: the subtle functional background of the severity, global.bg.subtle.functional.<severity>.default. Decided for the error (step 6, the Text field family as the reference rendering): global.bg.subtle.functional.error.default, at rest and on hover alike. A hover tint does not apply in a severity: the error hover step (global.bg.subtle.functional.error.hover) would bring the placeholder under 4.5:1 in light mode (4.33:1, WCAG 1.4.3). The value and the placeholder keep their colors on the fill. Warning and success: step 6, with #103 step 13."
     },
     {
       "id": "severity-icon",
@@ -117,7 +117,8 @@
       ],
       "refs": [
         "wcag:1.4.3"
-      ]
+      ],
+      "minimum": 4.5
     },
     {
       "id": "warning-text-on-surfaces",
@@ -149,7 +150,7 @@
     },
     {
       "id": "error-border-on-surfaces",
-      "description": "The border that identifies a control in error, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1): 6.12 / 5.79 / 6.12 / 5.79:1 in light mode and 4.97 / 4.55 / 4.16 / 3.73:1 in dark mode on levels 0 to 3, since the Color foundation 7.1.0.",
+      "description": "The border that identifies a control in error, the accent functional border, against every surface level (WCAG 1.4.11 asks 3:1): 6.12 / 5.79 / 6.12 / 5.79:1 in light mode and 4.97 / 4.55 / 4.16 / 3.73:1 in dark mode on levels 0 to 3, since the Color foundation 7.1.0. A requirement since the error rendering was decided (forms-error-fill).",
       "foreground": "global.border.accent.functional.error.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -159,6 +160,43 @@
       ],
       "refs": [
         "wcag:1.4.11"
+      ],
+      "minimum": 3
+    },
+    {
+      "id": "error-border-on-fill",
+      "description": "The border of a control in error against its own fill, the other color next to it (WCAG 1.4.11 asks 3:1): 5.45:1 in light mode, 5.14:1 in dark mode.",
+      "foreground": "global.border.accent.functional.error.default",
+      "backgrounds": [
+        "global.bg.subtle.functional.error.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "error-value-on-fill",
+      "description": "The value typed in a control in error, on its fill (WCAG 1.4.3 asks 4.5:1): 16.91:1 in light mode, 11.67:1 in dark mode.",
+      "foreground": "global.text.on-base.neutral.primary",
+      "backgrounds": [
+        "global.bg.subtle.functional.error.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "error-placeholder-on-fill",
+      "description": "The placeholder of an empty control in error, on its fill (WCAG 1.4.3 asks 4.5:1): 5.42:1 in light mode, 6.62:1 in dark mode. On the error hover step it would be 4.33:1 in light mode, so the fill does not change on hover.",
+      "foreground": "global.text.on-base.neutral.tertiary",
+      "backgrounds": [
+        "global.bg.subtle.functional.error.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
       ]
     },
     {
@@ -774,6 +812,19 @@
   ],
   "decisions": [
     {
+      "id": "forms-error-fill",
+      "date": "2026-11-20",
+      "version": "0.13.0",
+      "area": "color",
+      "status": "active",
+      "text": "A control in error is filled with global.bg.subtle.functional.error.default, at rest and on hover alike, under its accent error border. The value and the placeholder keep their colors. The Text field family is the reference rendering (#103 step 12, point 1).",
+      "rationale": "The solid fill validated in step 5. Its hover step (global.bg.subtle.functional.error.hover, #FCCDC6) brings the placeholder to 4.33:1 in light mode, under the 4.5:1 of WCAG 1.4.3; with the same fill on hover every pair passes in both modes on every surface level (placeholder 5.42 / 6.62:1, value 16.91 / 11.67:1, border on the fill 5.45 / 5.14:1). Losing the hover tint is cosmetic (1.05:1 from rest today), and the Figma prototype has no hover in error either. Rejected: A, the hover step on hover.",
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "forms-required-voiceover",
       "date": "2026-11-20",
       "version": "0.12.0",
@@ -999,6 +1050,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.13.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-error-fill: a control in error is filled with the subtle error background, at rest and on hover. The rule on the fill names the token; the error border and text pairs become requirements, with three new pairs on the fill."
+    },
     {
       "version": "0.12.0",
       "date": "2026-11-20",

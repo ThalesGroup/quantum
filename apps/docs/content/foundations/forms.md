@@ -253,8 +253,17 @@ success are said in text the same way, and color or an icon adds to the text, ne
 > border for it. One shortfall is accepted knowingly: the light warning border is 2.95:1 on the
 > subtle warning fill that step 6 may use as the fill (issue #119). The table below measures them.
 
-> **Validated, rendered in step 6.** The severity is also shown in the control's fill, in a solid
-> color, never translucent. The severity icon is never drawn inside the area where people type,
+**The fill.** A control with a severity is also filled with a solid color, never translucent: the
+subtle functional background of its severity. For an error it is
+`global.bg.subtle.functional.error.default`, at rest and on hover alike. The value and the
+placeholder keep their colors on it: the placeholder is 5.42:1 in light mode and 6.62:1 in dark
+mode, the value 16.91:1 and 11.67:1, the border 5.45:1 and 5.14:1 against the fill. The fill does
+not darken on hover: the error hover step would bring the placeholder to 4.33:1 in light mode,
+under the 4.5:1 text needs ([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)).
+The border, not the fill, identifies the control.
+
+> **Not decided yet (step 6).** The fill of a warning and a success, the icon, and the message
+> color. Validated so far: the severity icon is never drawn inside the area where people type,
 > because browsers add their own elements there (autofill, password managers, reveal and clear
 > buttons, spinners, pickers). It goes after the control, or at the start of the message, or
 > nowhere, and then the message says the severity (**Error: …**); it appears in one place only.
