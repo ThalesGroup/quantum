@@ -158,10 +158,25 @@ standard way.
 A required field tells people before they submit, in a way that does not rely on color, and
 tells assistive technology that the field is required.
 
-> **Not decided yet (step 4).** How the mark looks: the word "required" in the label, an
-> asterisk explained once at the top of the form, or marking the optional fields instead; the
-> asterisk's color; whether assistive technology reads the asterisk or only the required state.
-> Today no mark is drawn: the words are left to the author.
+**A form marks the fewer fields, in words.** Most forms ask for more than they leave optional,
+so by default required fields carry no mark: each optional field ends its label, or its group's
+legend, with "(optional)", and a note before the first field says "All fields are required
+unless marked optional." When most fields of a form are optional, it is the other way round:
+each required field ends its label or legend with "(required)", and no note is needed, since the
+word explains itself. Either way the required control keeps its required state for assistive
+technology, and nothing relies on color
+([WAI forms tutorial: instructions](https://www.w3.org/WAI/tutorials/forms/instructions/#overall-instructions),
+[WAI forms tutorial: validation](https://www.w3.org/WAI/tutorials/forms/validation/#validating-required-input),
+[H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90),
+[F81](https://www.w3.org/WAI/WCAG22/Techniques/failures/F81)).
+
+There is no asterisk. An asterisk is a symbol that must be explained before its first use
+([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)); a word needs no key, and marking the
+fewer fields keeps a long form free of repeated marks.
+
+> **Not decided yet (step 4).** What assistive technology gets from "(required)" and
+> "(optional)", and how iOS, Android and desktop apply the rule (Material and Windows mark
+> required fields with an asterisk).
 
 ### iOS
 

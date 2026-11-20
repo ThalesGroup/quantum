@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -48,7 +48,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology and marked visibly before people submit, never by color alone. Today the words are left to the author (in the label or the description) and no mark is drawn; the mark itself is not decided yet."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. What assistive technology gets from the word, and how iOS, Android and desktop apply the rule, are not decided yet."
     },
     {
       "id": "statuses",
@@ -387,6 +387,20 @@
         "platforms": [
           "desktop"
         ]
+      },
+      {
+        "text": "On the web, the form marks the fewer fields: \"(optional)\" in the label or legend of each optional field, with a note before the first field saying the others are required, when most fields are required; \"(required)\" in the label or legend of each required field when most are optional. A required control keeps the required attribute either way.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag-h90",
+          "wai-forms-validation-required",
+          "wai-forms-instructions-overall",
+          "wcag-f81",
+          "wcag:1.4.1"
+        ],
+        "platforms": [
+          "web"
+        ]
       }
     ],
     "references": [
@@ -554,6 +568,16 @@
         "id": "aria-errormessage",
         "title": "WAI-ARIA 1.2: aria-errormessage (used in roles: checkbox, textbox, combobox, radiogroup, slider, spinbutton…)",
         "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-errormessage"
+      },
+      {
+        "id": "wai-forms-instructions-overall",
+        "title": "WAI tutorials: Forms, overall instructions (required and optional input)",
+        "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#overall-instructions"
+      },
+      {
+        "id": "wcag-f81",
+        "title": "WCAG failure F81: required or error fields identified by color only",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
       }
     ]
   },
@@ -657,6 +681,30 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-required-marking",
+      "date": "2026-11-20",
+      "version": "0.8.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A form marks the fewer fields, in words, never with an asterisk. By default (more required fields than optional ones, or as many), required fields carry no mark, each optional field ends its label or legend with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\". When most fields are optional, each required field ends its label or legend with \"(required)\" and no note is needed. The required attribute stays on every required control. Applied as is on the web; what assistive technology gets from the word and how the other platforms apply the rule are asked next.",
+      "rationale": "Options. A: \"(required)\" in the label (WAI validation tutorial, H90 example 1). B: an asterisk after the label, explained once at the top of the form (H90 example 2, Material, Windows, the Figma library), red as in Figma or in the label's color. C: required by default, \"(optional)\" on the optional fields and a note at the top (WAI instructions tutorial: indicate required and optional input). D: keep today, nothing drawn. The team chose C by default and A when most fields are optional, so a form marks its minority in words and never needs a symbol explained: a sign-up form with only required fields gains one note instead of a mark on every field. Measured on the review sheet, light and dark, surface levels 0 to 3: the word in the label's color 18.02 to 18.98:1 light, 8.47 to 11.29:1 dark; the note 12.14 to 12.79:1 light, 6.65 to 8.86:1 dark. The Figma library's red asterisk (required boolean, on by default) becomes a departure.",
+      "platforms": [
+        "web"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:1.4.1",
+        "wcag:1.3.1",
+        "wcag-h90",
+        "wai-forms-validation-required",
+        "wai-forms-instructions-overall",
+        "wcag-f81",
+        "material-text-fields-guidelines",
+        "windows-forms",
+        "hig-entering-data-best-practices"
+      ]
+    },
     {
       "id": "forms-label-placement",
       "date": "2026-11-20",
@@ -784,6 +832,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.8.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-required-marking: a form marks the fewer fields in words, \"(optional)\" on optional fields with a note at the top by default, \"(required)\" on required fields when most fields are optional; no asterisk. The rule on required fields and a web guideline say so."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-20",
