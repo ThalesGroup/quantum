@@ -80,9 +80,9 @@
       "prefixes": ["https://www.etsi.org/"]
     },
     "apple-hig": {
-      "name": "Apple Human Interface Guidelines and accessibility documentation",
+      "name": "Apple Human Interface Guidelines, accessibility documentation and UI framework references",
       "kind": "platform",
-      "prefixes": ["https://developer.apple.com/design/human-interface-guidelines/", "https://developer.apple.com/documentation/accessibility/"]
+      "prefixes": ["https://developer.apple.com/design/human-interface-guidelines/", "https://developer.apple.com/documentation/accessibility/", "https://developer.apple.com/documentation/uikit/", "https://developer.apple.com/documentation/appkit/", "https://developer.apple.com/documentation/swiftui/"]
     },
     "android": {
       "name": "Android accessibility documentation",

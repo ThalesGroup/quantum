@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -747,6 +747,22 @@
   ],
   "decisions": [
     {
+      "id": "forms-apple-api-sources",
+      "date": "2026-11-20",
+      "version": "0.11.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Apple's developer documentation for its UI frameworks (UIKit, AppKit, SwiftUI) is a trusted source for Apple platform rules, beside the HIG and the Accessibility framework documentation.",
+      "rationale": "The HIG says how a control looks and behaves, not what an element exposes to VoiceOver: whether a required state exists on iOS and macOS is only in the framework references (UIKit's accessibility traits, AppKit's NSAccessibility protocol). The team trusts Apple's developer documentation for Apple development rules. Only the three UI framework paths are added, the narrowest prefixes that hold these rules.",
+      "platforms": [
+        "ios",
+        "desktop"
+      ],
+      "refs": [
+        "hig-entering-data-best-practices"
+      ]
+    },
+    {
       "id": "forms-required-marking-platforms",
       "date": "2026-11-20",
       "version": "0.10.0",
@@ -938,6 +954,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.11.0",
+      "date": "2026-11-20",
+      "note": "Apple's UIKit, AppKit and SwiftUI references become trusted sources for Apple platform rules (forms-apple-api-sources)."
+    },
     {
       "version": "0.10.0",
       "date": "2026-11-20",
