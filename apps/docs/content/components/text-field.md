@@ -52,13 +52,13 @@ type, so it never replaces the label and never carries an instruction people mus
 | Default | Resting. | An outlined box on the default surface. |
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
 | Focus visible | The box has focus, from the keyboard or a pointer. | The focus color as a 2.4 px outline drawn flush over the border, which keeps its width, so the text does not move. An editable field shows it however it was focused. |
-| Error | `severity` property set to error, after validation. | An outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
+| Error | `severity` property set to error, after validation. | The box takes the subtle error fill, on hover too; an outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
 | Warning | `severity` property set to warning. | An outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
 | Success | `severity` property set to success. | An outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
 | Read-only | `readonly` property. | The box takes the level 1 surface, which is close to the resting one, so say in the description that it is read-only; the value can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, value, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
-A severity and hover combine (the hover tint under the severity outline), and disabled wins over
+A severity and hover combine (the hover tint under the severity outline; an error keeps its fill on hover), and disabled wins over
 every other state: the states matrix shows what the tokens decide.
 
 ## Content
@@ -105,6 +105,10 @@ This section explains the decisions behind it.
   Text needs 4.5:1 ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
   the error text passes on every surface since the Figma library's POC2 export moved it to a
   darker step (5.79:1 on the level 1 surface in light mode, the lowest).
+  In error the box is filled with the subtle error background, a solid color, at rest and on
+  hover alike: the value keeps 16.91:1 in light mode and 11.67:1 in dark on it, the placeholder
+  5.42:1 and 6.62:1, and the error border 5.45:1 and 5.14:1 against it. Its hover step would bring
+  the placeholder to 4.33:1 in light mode, so the fill does not change on hover.
 - **Text size.** The label and the help text are set from 12 to 16 px. WCAG sets no minimum text
   size: it asks that text can be resized up to 200 % without loss of content or functionality, and
   the box height is a minimum, so it grows with larger text

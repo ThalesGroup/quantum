@@ -538,12 +538,14 @@ Error (.is-invalid), on `.form-control.is-invalid`; Sass: written after the @use
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-control-border-color` | `text-field.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-control-bg` | `text-field.control.background.error` | `#FEECEA` / `#2B0B08` | The subtle error fill, at rest and on hover alike (decision error-fill-subtle). |
 
 Error (:user-invalid), on `[data-bs-validate] .form-control:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-control-border-color` | `text-field.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-control-bg` | `text-field.control.background.error` | `#FEECEA` / `#2B0B08` | The subtle error fill, at rest and on hover alike (decision error-fill-subtle). |
 
 Success (.is-valid), on `.form-control.is-valid`; Sass: written after the @use.
 

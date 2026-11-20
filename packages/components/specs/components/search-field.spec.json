@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -622,6 +622,15 @@
   ],
   "decisions": [
     {
+      "id": "error-fill-subtle",
+      "date": "2026-11-20",
+      "version": "0.10.3",
+      "area": "color",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms foundation step 2b), its box in error takes the fill of the Text field: global.bg.subtle.functional.error.default, at rest and on hover alike. No token today: the Search field has no severity yet, so the mirror check ignores control.background.error (scripts/lib/mirrors.mjs).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 1, also the reference rendering of the Forms foundation step 6) between two options, measured on every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, global.bg.subtle.functional.error.default at rest and its hover step global.bg.subtle.functional.error.hover on hover; B, the subtle error fill at rest and on hover alike (chosen). In light mode A's hover fill (#FCCDC6) brings the placeholder to 4.33:1, under the 4.5:1 of WCAG 1.4.3; with B every pair passes: placeholder 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border and outline against the fill 5.45:1 and 5.14:1, against the surface levels 5.79:1 and 3.73:1 at the lowest. The fill is solid, as the team validated in the Forms foundation step 5; the hover tint it gives up was 1.05:1 from rest, and the Figma prototype, whose error fill is the same #FEECEA, has no hover in error. The value and the placeholder keep their roles (global.text.on-base.neutral.primary and .tertiary): the on-subtle neutral role has a single step, which cannot tell the placeholder from the value."
+    },
+    {
       "id": "variants-modeled-differently",
       "date": "2026-11-19",
       "version": "0.10.2",
@@ -864,6 +873,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.3",
+      "date": "2026-11-20",
+      "note": "Decision error-fill-subtle: records that the box takes the subtle error fill once the Search field has a severity (Forms step 2b). No token or rendering change."
+    },
     {
       "version": "0.10.2",
       "date": "2026-11-19",
