@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -39,6 +39,11 @@
       "id": "label",
       "name": "Label",
       "text": "Every control has a visible label that stays visible while people type, associated with the control so assistive technology announces it as the control's name. A placeholder is never the label."
+    },
+    {
+      "id": "label-placement",
+      "name": "Where the label sits",
+      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start, as a choice of its layout (step 10 decides that layout and whether a field exposes it); a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android."
     },
     {
       "id": "required",
@@ -334,6 +339,54 @@
         "platforms": [
           "desktop"
         ]
+      },
+      {
+        "text": "On the web, the label of most fields sits immediately before the field, above it or to its left (to its right or above it in a right-to-left language), and the label of a checkbox or a radio after it; labels above the fields reduce horizontal scrolling for people who zoom and on small screens.",
+        "refs": [
+          "wcag:3.3.2",
+          "wcag-g162",
+          "wai-forms-labels"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, Material's text field label sits inside the container, in the middle while the field is empty and at its top once the field is selected or filled, always visible; a separate adjacent label aligned to the container's leading edge may take its place.",
+        "refs": [
+          "material-text-fields-guidelines"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Apple gives no rule on where a text field's label sits; because a placeholder disappears when people start typing, a separate label describing the field can be useful.",
+        "refs": [
+          "hig-text-fields-best-practices"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "On macOS, a checkbox typically has its title on its trailing side, and a radio button is followed by its label.",
+        "refs": [
+          "hig-toggles-checkboxes"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, labels are left-aligned and placed above the input control, many controls having a Header property for it; a form with labels on the left is shown as what not to do.",
+        "refs": [
+          "windows-forms"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -348,9 +401,19 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Switches"
       },
       {
+        "id": "hig-toggles-checkboxes",
+        "title": "Apple HIG: Toggles, macOS checkboxes and radio buttons",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/toggles#Checkboxes"
+      },
+      {
         "id": "wai-forms-labels",
         "title": "WAI tutorials: Forms, labeling controls",
         "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wcag-g162",
+        "title": "WCAG technique G162: positioning labels to maximize predictability of relationships",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G162"
       },
       {
         "id": "wai-forms-grouping",
@@ -595,6 +658,30 @@
   ],
   "decisions": [
     {
+      "id": "forms-label-placement",
+      "date": "2026-11-20",
+      "version": "0.7.0",
+      "area": "layout",
+      "status": "active",
+      "text": "Where the label sits is a layout choice; the anatomy fixes only the order and the association. The generic rule, applied as is on the web: above a field-like control by default, in a label column at the start when the form's layout asks for it (step 10), after the box of a checkbox, a radio or a switch, never inside the box (no floating label on the web). iOS, Android and desktop follow their platform's own requirements and constraints where there are some, and the generic rule otherwise; a floating label is allowed where it is the platform's standard way, as Material's text fields on Android.",
+      "rationale": "Options. A: above by default, a label column allowed as a form layout, after the box for checkbox, radio and switch, no floating label. B: above only. C: A plus a floating label. The team chose A for the generic rules, as is on the web, and let the other platforms follow their own requirements, so Material's floating label is allowed where it is the standard. W3C places labels above or to the left of fields and after checkboxes and radios (WAI labels tutorial, G162, Understanding 2.5.3); Windows places them above and shows left labels as a Don't; Apple gives no placement rule; Material puts the label inside the container (56 dp) or adjacent to it. On the web a floating label needs a taller box: measured with Material's 56 px box, it stands 20 px above a 36 px Button, and a raised 12 px label and the value need at least 48 px, so they do not fit in 36. Above and in a label column, a field lines up with a Button of the same size (28, 36, 44 px), the label centred on the box. No token, CSS, template or theme change.",
+      "platforms": [
+        "web",
+        "ios",
+        "android",
+        "desktop"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3",
+        "wcag-g162",
+        "wai-forms-labels",
+        "material-text-fields-guidelines",
+        "hig-text-fields-best-practices",
+        "windows-forms"
+      ]
+    },
+    {
       "id": "forms-message-part-every-control",
       "date": "2026-11-20",
       "version": "0.6.0",
@@ -697,6 +784,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-label-placement: where the label sits is a layout choice; the generic rule (above by default, a label column as a form layout, after the box of a checkbox, a radio or a switch, no floating label) applies as is on the web, and the other platforms follow their own requirements, a floating label allowed where it is the platform's standard (Material on Android). New rule label-placement and platform guidelines."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-20",

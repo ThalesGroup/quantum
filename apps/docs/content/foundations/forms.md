@@ -120,6 +120,39 @@ WCAG does not mandate any place for an error
 and Apple only asks to show it right next to the field
 ([HIG: Writing](https://developer.apple.com/design/human-interface-guidelines/writing#Best-practices)).
 
+**Where the label sits is a layout choice.** The anatomy fixes the order and the association,
+not the placement. The generic rule, applied as is on the web:
+
+- **Above** a field-like control (Text field, Number field, Search field, Textarea, Select), by
+  default. Labels above the fields reduce horizontal scrolling for people who zoom and on small
+  screens ([WAI forms tutorial: visual position](https://www.w3.org/WAI/tutorials/forms/labels/#visual-position-of-label-text)).
+- **In a column at the start**, when the form's layout asks for it: labels before the fields are
+  as predictable as labels above them ([G162](https://www.w3.org/WAI/WCAG22/Techniques/general/G162)).
+  The column, its width and whether a field exposes the placement are the form's layout (step 10).
+- **After the box** of a checkbox, a radio or a switch.
+- **Never inside the box.** No floating label on the web: it needs a taller box (Material's is
+  56 px, 20 px taller than a medium Button), and a raised label and the value do not fit in the
+  36 px a field shares with the Button.
+
+Above and in a column, a field lines up with a Button of the same size (28, 36 or 44 px), and a
+label in a column is centred on the box.
+
+The other platforms follow their own requirements and constraints where they have some, and
+the generic rule where they have none. A floating label is allowed where it is the platform's
+standard way.
+
+- **Android.** Material's text field label sits inside the container, in the middle while the
+  field is empty and at its top once it is selected or filled, always visible; an adjacent label
+  aligned to the container's leading edge may take its place
+  ([Material: text fields guidelines](https://m3.material.io/components/text-fields/guidelines)).
+- **iOS and macOS.** Apple gives no rule on where a text field's label sits; since a placeholder
+  disappears when people type, a separate label can be useful
+  ([HIG: Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
+  On macOS a checkbox has its title on its trailing side, and a radio button is followed by its
+  label ([HIG: Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles#Checkboxes)).
+- **Windows.** Labels are left-aligned and placed above the input control; labels on the left
+  are shown as what not to do ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#labels)).
+
 ## Required fields
 
 A required field tells people before they submit, in a way that does not rely on color, and
