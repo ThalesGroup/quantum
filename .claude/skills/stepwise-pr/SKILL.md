@@ -94,10 +94,12 @@ Issues opened along the way.
    - Rewrite the description (status line, tick the box with the outcome, "What changes",
      "Departures", "How to review"): `gh pr edit <n> --repo ThalesGroup/quantum --body-file <file>`.
      Write the body file from `gh pr view <n> --json body -q .body`, never from memory.
-   - Post one comment for the step with its before and after screenshots and the question
-     asked, so the decision can be reviewed later without the chat; first rebuild the sheet
-     with the chosen option marked (skill `review-sheet`, "Recording the decision"):
-     `gh pr comment <n> --repo ThalesGroup/quantum --body-file step-N.md --attach './before.png#Step N before' --attach './after.png#Step N after'`.
+   - Post one comment for the step with the question asked, what was decided and its status
+     (decision id, commit, versions), and one screenshot: the sheet rebuilt with the chosen
+     option marked (skill `review-sheet`, "Recording the decision"). That screenshot still shows
+     the recommendation, so the decision can be reviewed later without the chat and no "before"
+     screenshot of the sheet is posted:
+     `gh pr comment <n> --repo ThalesGroup/quantum --body-file step-N.md --attach './sheet.png#Step N review sheet, <option> chosen'`.
    - Push.
 8. **Report** in the chat: what was decided, the commit, contrast ratios, and the exact line to
    start the next step in a new session:

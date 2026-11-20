@@ -101,8 +101,9 @@ yourself, the browser pane works too (`computer` screenshot, `javascript_tool` t
 
 When the step is committed, set `chosen` on the sheet to the id of the option the team chose, add
 the step to `done` in `build/review/session.json`, rebuild the sheet and take its screenshot
-again: that screenshot, with the decision marked, is the "after" posted in the step comment
-(skill `stepwise-pr`, "Record").
+again: that screenshot, with the decision marked and the recommendation still visible, is the
+only screenshot of the sheet posted in the step comment (skill `stepwise-pr`, "Record"); the
+sheet as it was asked is not posted again.
 
 ## Asking the question
 
