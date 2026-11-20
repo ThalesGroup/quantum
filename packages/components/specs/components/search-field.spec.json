@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -622,6 +622,15 @@
   ],
   "decisions": [
     {
+      "id": "severity-icon",
+      "date": "2026-11-20",
+      "version": "0.10.4",
+      "area": "anatomy",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms step 2b), it takes the Text field's severity icon and the property severityIcon (message by default, after-control, none) with the same tokens. No token today: the mirror check ignores severity-icon.* (scripts/lib/mirrors.mjs).",
+      "rationale": "The Text field decision severity-icon (#103 step 12, points 2, 2b and 2c); the Search field mirrors the Text field but has no severity yet."
+    },
+    {
       "id": "error-fill-subtle",
       "date": "2026-11-20",
       "version": "0.10.3",
@@ -873,6 +882,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.4",
+      "date": "2026-11-20",
+      "note": "Decision severity-icon: records that the Search field takes the Text field's severity icon with its severity (Forms step 2b). No token or rendering change."
+    },
     {
       "version": "0.10.3",
       "date": "2026-11-20",

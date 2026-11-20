@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -47,6 +47,15 @@
         "success"
       ],
       "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), associated with the control as a description. Shown only with a severity."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\"). Placed by severityIcon: after the control, centred on it, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements. Shown for the error; warning and success take theirs with step 13."
     }
   ],
   "properties": [
@@ -60,7 +69,8 @@
         "control",
         "label",
         "description",
-        "message"
+        "message",
+        "severity-icon"
       ],
       "options": [
         {
@@ -113,6 +123,32 @@
       "description": "What the severity means: what is wrong and how to fix it, what to check, or what was confirmed. Shown with a severity, in the color of that severity, and replaces errorMessage."
     },
     {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-severity-icon-placement).",
+      "affects": [
+        "control",
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px; the control keeps its full width (default)."
+        },
+        {
+          "value": "after-control",
+          "description": "After the control, centred on it, at the size of the Button's icon of the same size; the control gives up the icon and the gap."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message says the severity in words (\"Error: …\")."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
@@ -134,7 +170,8 @@
       "description": "What the check of the value found. Replaces the invalid boolean: error, warning and success are the three severities of a form control (decision forms-severity); information that holds before any check is the description's job.",
       "affects": [
         "control",
-        "message"
+        "message",
+        "severity-icon"
       ],
       "options": [
         {
@@ -224,7 +261,8 @@
     "sizing": "fill",
     "notes": [
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
-      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change."
+      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
+      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap."
     ]
   },
   "accessibility": {
@@ -458,6 +496,18 @@
         "refs": [
           "wcag:2.3.3",
           "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (error 5.81:1 light, 5.30:1 dark, at the lowest).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
         ]
       }
     ],
@@ -711,6 +761,11 @@
         "id": "html-readonly-attribute",
         "title": "HTML: the readonly attribute",
         "url": "https://html.spec.whatwg.org/multipage/input.html#the-readonly-attribute"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
       }
     ]
   },
@@ -852,6 +907,23 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "severity-icon",
+      "date": "2026-11-20",
+      "version": "0.14.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Text field gets a severity icon (part severity-icon) and the property severityIcon (message by default, after-control, none), as the Forms foundation decided (forms-severity-icon-placement, -size, -color). At the start of the message it is 16 px (text-field.severity-icon.size.message: size.2), text-field.severity-icon.gap.message (space.4) before the text; after the control it is the size of the Button's icon at the same size (text-field.severity-icon.size.after-control.*: size.3, 4, 4), text-field.severity-icon.gap.after-control (space.8) after the control. Its color is text-field.severity-icon.color.error, global.icon.on-base.functional.error.default. Shown for the error; warning and success follow with step 13. The Number field and the Textarea follow through the mirror check; the Search field takes it with its severity (Forms step 2b).",
+      "rationale": "Decided by the team on 2026-11-20 in #103 step 12, points 2 (C with the team's precisions: both placements and none, one rule per form, choice controls in the message), 2b (A, the Button's icon size) and 2c (A, the on-base role, the message's color). Measured on the field family: after the control the box gives up 28 / 32 / 32 px; the icon is 5.81 to 6.12:1 in light mode and 5.30 to 7.06:1 in dark mode on the surface levels 0 to 3. The icon is named so that the severity is in text for assistive technology wherever it sits (AccName 1.2 computes the description from the referenced nodes, the icon's name included); the message keeps saying what is wrong, so the icon is never the only cue (WCAG 1.4.1).",
+      "tokens": [
+        "text-field.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.1",
+        "accname-description"
+      ]
+    },
     {
       "id": "message-text-size",
       "date": "2026-11-20",
@@ -1159,6 +1231,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.0",
+      "date": "2026-11-20",
+      "note": "Decision severity-icon: new part severity-icon and property severityIcon (message by default, after-control, none). New tokens text-field.severity-icon.* (icon font, size 20 / 24 / 24 px after the control, gap space.8, color error the on-base error icon), and in the message text-field.severity-icon.size.message (16 px), text-field.severity-icon.gap.message (space.4)."
+    },
     {
       "version": "0.13.0",
       "date": "2026-11-20",

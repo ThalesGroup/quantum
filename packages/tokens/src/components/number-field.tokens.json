@@ -264,6 +264,66 @@
         }
       }
     },
+    "severity-icon": {
+      "$description": "The severity icon, a glyph of the icon font, after the control or at the start of the message (severityIcon; Forms decisions forms-severity-icon-placement, -size, -color). Only the font, the sizes, the gaps and the color are tokenized.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.24}"
+      },
+      "size": {
+        "$type": "dimension",
+        "after-control": {
+          "$description": "After the control: the size of the Button's icon at the same size (button.icon.size.small, medium, large: 20, 24, 24 px).",
+          "small": {
+            "$value": "{size.3}"
+          },
+          "medium": {
+            "$value": "{size.4}"
+          },
+          "large": {
+            "$value": "{size.4}"
+          }
+        },
+        "message": {
+          "$description": "At the start of the message: the Icon's size next to 14 and 16 px body text (16 px).",
+          "$value": "{size.2}"
+        }
+      },
+      "gap": {
+        "$type": "dimension",
+        "after-control": {
+          "$description": "Between the control and the icon.",
+          "$value": "{space.8}"
+        },
+        "message": {
+          "$description": "Between the icon and the message text.",
+          "$value": "{space.4}"
+        }
+      },
+      "color": {
+        "$type": "color",
+        "$description": "The on-base icon role of the severity: the icon sits on the surface, beside the control or in the message, and takes the message text's color.",
+        "error": {
+          "$value": "{global.icon.on-base.functional.error.default}"
+        }
+      }
+    },
     "message": {
       "color": {
         "$type": "color",
