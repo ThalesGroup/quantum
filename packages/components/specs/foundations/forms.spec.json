@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -63,7 +63,7 @@
     {
       "id": "severity-icon",
       "name": "Severity icon",
-      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it, which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message says the severity (\"Error: …\", \"Warning: …\", \"Success: …\"). The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. The icon size and color are decided in step 6; the Checkbox and the Search field take the property with their message part and severity (step 2b)."
+      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it, which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message says the severity (\"Error: …\", \"Warning: …\", \"Success: …\"). The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it, as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is decided in step 6; the Checkbox and the Search field take the property with their message part and severity (step 2b)."
     },
     {
       "id": "severity-width",
@@ -812,6 +812,18 @@
   ],
   "decisions": [
     {
+      "id": "forms-severity-icon-size",
+      "date": "2026-11-20",
+      "version": "0.15.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "After the control, the severity icon takes the size of the Button's icon at the same size (size.3, size.4, size.4: 20, 24, 24 px for small, medium, large), space.8 after the control, centred on it. In the message, it is 16 px (size.2), space.4 before the text, centred on the first line.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 2b) between: A, the Button's icon size (chosen; also the Figma prototype's 20 / 24 / 24 px); B, one Icon step per field size (16 / 20 / 24 px). A keeps the team's rule that a field lines up with the Button of its size, so a field and a Button carry the same icon; the box gives up 28 / 32 / 32 px. In the message, 16 px is the Icon's size next to 14 and 16 px body text, the message's size since the same review (Text field decision message-text-size). The icon is 5.81:1 (light) and 5.30:1 (dark) at the lowest on the surface (WCAG 1.4.11).",
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "forms-severity-icon-placement",
       "date": "2026-11-20",
       "version": "0.14.0",
@@ -1066,6 +1078,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.15.0",
+      "date": "2026-11-20",
+      "note": "Decision forms-severity-icon-size: the severity icon after the control takes the Button's icon size at the same size (20 / 24 / 24 px), space.8 away; in the message it is 16 px, space.4 before the text. Text only: the icon part comes to the components with its color."
+    },
     {
       "version": "0.14.0",
       "date": "2026-11-20",

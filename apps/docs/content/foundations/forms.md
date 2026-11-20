@@ -272,9 +272,13 @@ the form: every control that can show a severity carries the same property, `sev
 value, for all its controls, so its fields never mix two placements. A checkbox, a radio button
 or a group never draws the icon after its control, where its label or its options sit: it offers
 `message` and `none`, and a form set to `after-control` shows its icon in the message.
+After the control, the icon is the size of the Button's icon at the same size (20, 24 and 24 px
+for small, medium and large), 8 px after the control and centred on it, so a field and the
+Button next to it carry the same icon. In the message, it is 16 px, the icon size next to the
+message's 14 and 16 px text, 4 px before the text.
 
-> **Not decided yet (step 6).** The fill of a warning and a success, the icon's size and color,
-> and the message color.
+> **Not decided yet (step 6).** The fill of a warning and a success, the icon's color, and the
+> message color.
 
 ### Web
 
