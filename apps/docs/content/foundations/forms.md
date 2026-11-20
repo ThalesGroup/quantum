@@ -281,8 +281,12 @@ error #C01619 in light mode and #F88275 in dark mode): it sits on the surface in
 never on the fill, and keeps at least 5.81:1 in light mode and 5.30:1 in dark mode, over the 3:1
 a meaningful icon needs ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)).
 
-> **Not decided yet (step 6).** The fill and icon of a warning and a success, and the message
-> color.
+**The message** keeps the text color of its severity, the icon's color: for an error #C01619 in
+light mode and #F88275 in dark mode, at least 5.81:1 and 5.30:1 on every surface level
+([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)). Its color sets it
+apart from the description as well as its size, which matters most when there is no icon.
+
+> **Not decided yet (step 6).** The fill and icon of a warning and a success.
 
 ### Web
 
