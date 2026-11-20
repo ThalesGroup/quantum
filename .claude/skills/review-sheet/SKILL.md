@@ -9,14 +9,30 @@ The team decides by looking. Every question gets its own page, which isolates it
 aspect being decided varies, everything else stays at today's values. Then the question is
 asked alone, with the URLs right next to it. Proven on an earlier step-by-step pull request (about 40 sheets).
 
+## Session
+
+Every sheet carries the same header: the Quantum logo, the component, the pull request and issue
+numbers, the step, the question, the progress through the steps and the participants' GitHub
+avatars. At the start of the session, before the first sheet, ask who takes part (GitHub logins,
+and a role each), then write `build/review/session.json` in the worktree (shape:
+[reference/session.example.json](reference/session.example.json)): the pull request and issue
+numbers and titles, the component, the steps of the pull request description in order, the ones
+already decided, and the people (`name` from `gh api users/<login> -q .name`; `login: null` for
+someone without an account, drawn with initials). Update `done` after each decided step.
+
 ## Where things live
 
 - Sheets: `build/review/<step>-<question>.html` in the worktree (`build/` is git-ignored and,
   unlike the session scratchpad, survives between sessions).
 - Generators: `build/review/tools/*.mjs`, one small Node script per kind of sheet, re-run after
-  every change. Start from [reference/colorsheet.mjs](reference/colorsheet.mjs) (the button
-  color sheet: reference replica / today / candidate rows, page, card and checkerboard, light and
-  dark, live label contrast) and its config [reference/colorsheet.example.json](reference/colorsheet.example.json).
+  every change. Every generator builds its page with the shared shell
+  [reference/sheet-shell.mjs](reference/sheet-shell.mjs) (`renderSheet`, imported by absolute
+  path from the worktree's `.claude/skills/`): it only describes the question, the options, the
+  variants, how to draw one cell and what to measure; the shell draws the header, the hero, the
+  table and every view. Start from [reference/shell.example.mjs](reference/shell.example.mjs)
+  (the Text field's error icon color). [reference/colorsheet.mjs](reference/colorsheet.mjs)
+  (the button color sheet, with its config [reference/colorsheet.example.json](reference/colorsheet.example.json))
+  predates the shell: reuse its Figma replica and checkerboard, not its page.
 - A fixed "before": snapshot the files before changing them,
   `mkdir -p build/review/before && cp -R packages/tokens/dist packages/components/src build/review/before/`
   (the generated token CSS, the web implementation and the read-only exports), and point the
@@ -29,25 +45,42 @@ asked alone, with the URLs right next to it. Proven on an earlier step-by-step p
 
 ## What a sheet shows
 
-- **Rows:** the reference (a replica drawn from the export's raw values, when there is one),
-  `today`, then one row per option (`A. Keep today`, `B. …`). Options are review-only CSS in
-  the sheet that override the component's private `--_*` properties; never edit the component
-  to show an option.
-- **Columns:** the states (`default`, `hover`, `active`, `disabled`) rendered with the
-  component's own template (`render({ …, state })`), and the sizes when the question is about
-  dimensions.
-- **Surfaces and modes** when color is involved: page (level 0) and card (level 1), in light and
-  dark (`data-theme` on each block), plus a **checkerboard** that reveals translucency. Say when
-  the reference has no dark values.
+The shell lays every sheet out the same way, top to bottom:
+
+- **Toolbar** (sticky, one line): logo, component, pull request and issue, step, question,
+  progress dots, participants' avatars, and the **Compare** button.
+- **Hero**: the question, what is already decided, the participants, the progress, one tile per
+  option (its light and dark color when color is the question, the recommended one outlined).
+- **Sidebar** (sticky): the steps, the current one highlighted, and the anchors of the view.
+- **Options and reasons**: the summary table you share in the session reply, one row per option,
+  its token, values and why; then what this sheet does not decide.
+- **Renderings**: one sticky sub-header per option (letter, title, token, recommended), the
+  surface levels as columns, light then dark.
+
+What goes in it:
+
+- **Options:** the reference (a replica drawn from the export's raw values, when there is one;
+  `darkNote` when it has no dark values), `today` when it differs from every option, then one
+  option each (`A. Keep today`, `B. …`). Options are review-only CSS in the sheet that override
+  the component's private `--_*` properties; never edit the component to show an option.
+- **Variants:** the stack inside each cell, rendered with the component's own template
+  (`render({ …, state })`): the states (`default`, `hover`, `active`, `disabled`), the sizes when
+  the question is about dimensions, the placements.
+- **Surfaces and modes:** levels 0 to 3, light and dark, set by the shell (`data-theme` and the
+  level's background on each cell). A checkerboard that reveals translucency goes in the cell.
 - **Measurements in the page**, computed by a script from the rendered elements, never typed by
   hand: contrast under each element (fill over the surface, red under the WCAG minimum, disabled
   exempt), sizes and insets, offsets against a neighbour (a dashed line at a shared edge).
-- **Toggles** (checkboxes at the top) for what helps reading: outline the boxes being decided,
-  highlight the area in question, show or hide sample glyphs, "only what differs" in token tables.
-- **Zoom** (`body { zoom: 1.5 }` to `2.5`) for sub-pixel borders; say so in the note.
+- **Compare panel**, hidden until the Compare button or the C key opens it, so the page and its
+  screenshot stay clean: views (Overview, the screenshot; options side by side; light next to
+  dark; a wipe of one option over another), filters (modes, options, levels, variants), the
+  measurements and the zoom (100 to 300 %, for sub-pixel borders). Its state goes in the URL
+  query: link a specific view in the reply when it shows the point better (`?view=wipe&…`), and
+  copy it with "Copy link to this view". Never put controls on the page itself.
 - `transition: none !important` on the component: the hidden preview pane freezes transitions,
   so a sheet would otherwise show colors halfway.
-- A short **note** at the top: what to look at, what each row is, which tokens each option uses.
+- **Already decided** and **not decided here** in the hero and under the table: what stays
+  fixed in this question, and which later question settles the rest.
 
 Token comparison sheets (a table of every token, today's value, the option's value, a "differs"
 filter) work the same way for structural questions.
@@ -55,7 +88,9 @@ filter) work the same way for structural questions.
 ## Screenshots
 
 `sh .claude/skills/review-sheet/scripts/shot.sh <url> <out.png> [width] [height]` takes a 2x
-headless screenshot that exits by itself. Use them in the step comment of the pull request
+headless screenshot that exits by itself. The screenshot shared is always the default view (the
+URL without a query) at 1440 px wide and tall enough for the whole page: the entire page is
+posted, header included. Use them in the step comment of the pull request
 (`gh pr comment … --attach`) and in issues (`gh issue create … --attach`); for checking
 yourself, the browser pane works too (`computer` screenshot, `javascript_tool` to measure).
 
