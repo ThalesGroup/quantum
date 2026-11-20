@@ -39,7 +39,8 @@ export function render(props = {}) {
   const inputAttrs = ['type="search"', 'class="ds-search-field__control"', 'data-part="control"', `id="${escapeAttr(inputId)}"`];
   if (name) inputAttrs.push(`name="${escapeAttr(name)}"`);
   if (value !== '' && value != null) inputAttrs.push(`value="${escapeAttr(value)}"`);
-  if (placeholder) inputAttrs.push(`placeholder="${escapeAttr(placeholder)}"`);
+  // Always a placeholder attribute, empty when there is none: the glyph's color reads :placeholder-shown to tell an empty field.
+  inputAttrs.push(`placeholder="${escapeAttr(placeholder ?? '')}"`);
   if (required) inputAttrs.push('required');
   if (disabled) inputAttrs.push('disabled');
   const describedBy = [description ? descriptionId : null].filter(Boolean);
