@@ -185,6 +185,9 @@
           "blackout": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.19212526082992554,0.19212526082992554,0.19212526082992554],"alpha":0.699999988079071,"hex":"#313131"},"$description":"light-switch.base.800 at opacity.70: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}
         }
       },
+      "code": {
+        "surface": {"$type":"color","$value":"{global.bg.subtle.neutral.default}"}
+      },
       "state": {
         "skeleton": {
           "default": {"$type":"color","$value":{"colorSpace":"srgb","components":[0.8667503595352173,0.8667503595352173,0.8667503595352173],"alpha":0.4000000059604645,"hex":"#DDDDDD"},"$description":"light-switch.base.200 at opacity.40: the Figma library composes them, DTCG cannot, so the resulting color is written as is"}

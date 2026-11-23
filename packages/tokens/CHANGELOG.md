@@ -22,6 +22,10 @@ The tokens are rewritten for the next major version of Quantum. The package is b
 - The colored sunken fills and their roles follow the Figma library, which deletes them: removed `global.bg.sunken.*`, `global.text.on-sunken.*` and `global.icon.on-sunken.*` (brand, functional and extended families, both modes). The sunken surface level, `global.bg.level.sunken.*`, and its edge stay (see the Color foundation 6.0.0 changelog).
 - The brand group names follow the Figma library, which drops `-colors` from them: `brand.palettes.core-colors.*` is `brand.palettes.core.*`, `brand.palettes.tint-colors.*` is `brand.palettes.tint.*`, `brand.identity.core-colors.*` is `brand.identity.core.*` and `brand.identity.tint-colors.*` is `brand.identity.tint.*`. No value changes (see the Color foundation 7.0.0 changelog).
 
+### Added
+
+- `global.bg.code.surface`, the background of a block of code, from the Figma library: it aliases the translucent `global.bg.subtle.neutral.default` in both modes. `dist/shiki-theme.json` paints its editor background with it. In dark mode, `global.text.code.comment` moves from `dark-switch.base.300` to `dark-switch.base.200` so comments reach 4.5:1 on it over every surface level (see the Code foundation 0.3.0 changelog).
+
 ## 1.10.0
 
 ### Added

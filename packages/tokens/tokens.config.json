@@ -57,7 +57,7 @@
     "name": "quantum",
     "displayName": "Quantum",
     "foreground": "global.text.on-base.neutral.primary",
-    "background": "global.bg.level.1.default",
+    "background": "global.bg.code.surface",
     "covers": "global.text.code.*",
     "rules": [
       {

@@ -14,7 +14,7 @@
     "bg": {
       "code": {
         "$type": "color",
-        "$description": "Backgrounds of marked lines in a block of code. Each one also carries a marker (+, -, a bar): never color alone.",
+        "$description": "Backgrounds of marked lines in a block of code, drawn over the code surface (global.bg.code.surface, from the Figma library). Each one also carries a marker (+, -, a bar): never color alone.",
         "highlighted": { "$value": "{global.bg.subtle.brand.default}", "$description": "A line the author points out." },
         "inserted": { "$value": "{global.bg.subtle.functional.success.default}", "$description": "A line an example adds." },
         "deleted": { "$value": "{global.bg.subtle.functional.error.default}", "$description": "A line an example removes." },

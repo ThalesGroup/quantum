@@ -1,7 +1,7 @@
 ---
 foundation: code
 title: Code
-summary: The syntax highlighting colors of code, one per category, readable on every surface in every mode.
+summary: The syntax highlighting colors of code, one per category, the surface of a block of code and the states of marked lines, readable on every surface in every mode.
 order: 9
 ---
 
@@ -57,7 +57,7 @@ already show them.
 
 An example can point at whole lines: a line to look at (highlighted), lines it adds or removes,
 a line in error or with a warning. Each state has a background, a subtle fill of the matching
-hue, and a **marker** that does not need color: a bar on the side of a highlighted line, `+` and
+hue drawn over the code surface, and a **marker** that does not need color: a bar on the side of a highlighted line, `+` and
 `-` before inserted and deleted lines, `×` and `!` before errors and warnings. The backgrounds
 are faint on purpose, so every syntax color stays readable on them; the marker is what tells the
 states apart.
@@ -67,15 +67,16 @@ what the error is, and the example's description does too.
 
 ## On every surface
 
-A block of code is a surface like any other. By default it is a level 1 surface raised on the
-page; inside a panel or a menu it takes the level of the area around it. Every color is checked
-against every surface level and sunken, in every mode and on every platform, so a block can sit
-anywhere. The computed ratios are on the Specification section of this page.
+A block of code sits on its own surface, the **code surface**. It is the neutral subtle fill,
+translucent: laid over the area around it, whatever its level, it shows the block by the same
+small step, on a page, in a panel or in a menu alike, without picking a level for the block. Every
+color is checked against the code surface and every line background, laid over every surface
+level and sunken, in every mode and on every platform, so a block can sit anywhere. The computed
+ratios are on the Specification section of this page.
 
-Where the Figma library picked a step that does not reach the minimum on a surface, the color moved
-to the nearest step of the same hue that does: the hue, and with it the category, stays
-recognizable. These are the only code colors that differ from the Figma library.
-
+Every code color is the Figma library's own step, except the comment color in dark mode: the
+library's step reaches only 4.33:1 on a block of code over level 3, so comments take the next
+lighter grey.
 ## Modes
 
 Each category has a light and a dark value. Light mode uses the dark steps of each hue, dark
@@ -115,9 +116,9 @@ lines from the `global.bg.code.*` tokens, as the reference implementation's
 - Highlight code with the system's colors, never with a third-party theme: on the web, with the
   generated Shiki theme.
 - Set code in the mono family. Highlighting changes the color only, never the font.
-- Put a block of code on a surface token, never on a color of its own: the contrast is only
-  guaranteed on the surfaces and the line backgrounds.
-- Inline code sits on the neutral subtle fill; line numbers, when a block shows them, use the
+- Put a block of code on the code surface, never on a level or a color of its own: the contrast
+  is only guaranteed on the code surface and the line backgrounds.
+- Inline code sits on the neutral subtle fill, the same fill as the code surface; line numbers, when a block shows them, use the
   tertiary text color. Neither needs a code color.
 - Mark only the lines the explanation talks about, and say in the text why they are marked.
 - Do not give a category a meaning beyond the code. An error in a code sample is said in words
@@ -126,7 +127,7 @@ lines from the `global.bg.code.*` tokens, as the reference implementation's
 ## Accessibility
 
 - **Code is text.** Every code color, comments, diff and link colors included, reaches 4.5:1
-  against every surface and every line background in every mode, like any other text
+  against the code surface and every line background, over every surface, in every mode, like any other text
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
   Comments are not faded: people read them.
 - **Color is a help, not the information.** The categories are already visible in the code
@@ -148,6 +149,7 @@ lines from the `global.bg.code.*` tokens, as the reference implementation's
 ## Related
 
 - Typography: the mono family and its sizes.
-- Color: the surface levels code blocks sit on, and the primary text color of plain code. Its
+- Color: the surface levels the code surface is laid over, the neutral subtle fill it aliases,
+  and the primary text color of plain code. Its
   specimens list the code colors among the text roles; this page specifies them.
 - Modes: the same tokens in another context.
