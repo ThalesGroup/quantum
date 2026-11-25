@@ -319,6 +319,12 @@ This section explains the decisions behind it.
 - On Windows, Tab follows the tab order, the order the controls are added, and skips a disabled
   field; Shift+Tab goes back; in the field the arrow keys move the caret, since every key goes to
   the text first ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements), [Windows: keyboard interactions, navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation), [text entry](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry)).
+- On Windows, a required field ends its label with an asterisk, explained once before the first
+  field, and the asterisk stays in its accessible name: Microsoft asks that the UI Automation name
+  be the label as shown ("Full name*"), and the control also sets `IsRequiredForForm`
+  ([Windows: forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms),
+  [UI Automation: UIA_NamePropertyId](https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids),
+  [WinUI: IsRequiredForForm](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform)).
 - macOS does not support Dynamic Type: there the field keeps its size, as text does
   ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 - On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.27.2",
+  "version": "0.27.3",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -906,6 +906,26 @@
         "platforms": [
           "web"
         ]
+      },
+      {
+        "text": "On Android, a required field ends its label with an asterisk, in the error text color, whenever markedFields is optional or required (none draws no mark), and an optional field carries none; the asterisk is explained once, in a note before the first field or in supporting text, and the field's accessibility label includes it.",
+        "refs": [
+          "material-text-fields-required"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, a required field ends its label with an asterisk, explained once before the first field, which stays in the UI Automation Name: the Name is the label as shown (\"Full name*\"), and the control also sets AutomationProperties.IsRequiredForForm.",
+        "refs": [
+          "windows-forms",
+          "uia-name-property",
+          "winui-is-required-for-form"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -1208,6 +1228,11 @@
         "id": "winui-is-required-for-form",
         "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
         "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
+      },
+      {
+        "id": "uia-name-property",
+        "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
       },
       {
         "id": "accname-hidden",
@@ -2231,6 +2256,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.27.3",
+      "date": "2026-11-25",
+      "note": "Fix: the accessibility contract states the Android and Windows asterisk the decisions asterisk-style and required-windows-name already set: an Android guideline (Material's asterisk, explained once, in the accessibility label) and a Windows one (the asterisk in the UI Automation Name, as Microsoft asks, and IsRequiredForForm), citing Material, Windows Forms, the UIA_NamePropertyId page and IsRequiredForForm. No new rule, no rendering change."
+    },
     {
       "version": "0.27.2",
       "date": "2026-11-25",
