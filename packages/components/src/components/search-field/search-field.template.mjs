@@ -44,6 +44,8 @@ export function render(props = {}) {
   if (state && state !== 'default') rootAttrs.push(`data-state="${escapeAttr(state)}"`);
 
   const inputAttrs = ['type="search"', 'class="ds-search-field__control"', 'data-part="control"', `id="${escapeAttr(inputId)}"`];
+  // The return key says search wherever the field sits (decision search-own-key); attrs.enterkeyhint replaces it.
+  if (!('enterkeyhint' in extra)) inputAttrs.push('enterkeyhint="search"');
   if (name) inputAttrs.push(`name="${escapeAttr(name)}"`);
   if (value !== '' && value != null) inputAttrs.push(`value="${escapeAttr(value)}"`);
   // Always a placeholder attribute, empty when there is none: the glyph's color reads :placeholder-shown to tell an empty field.

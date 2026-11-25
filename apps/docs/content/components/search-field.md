@@ -72,18 +72,23 @@ This section explains the decisions behind it.
   text control provides this, so the keys are the platform's
   ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html), [WCAG 2.1.2 No Keyboard Trap](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent), [EN 301 549, 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70) for native software).
   The keys are listed per platform below, from each platform's own documentation.
-- **Enter and the return key.** Enter never adds a line to this single-line field: it goes to the
-  form, which submits or runs the return key's action
-  ([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission),
-  [Jetpack Compose: line limits](https://developer.android.com/develop/ui/compose/text/user-input#line-limits),
-  [Windows: multi-line text box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input)).
-  The return key's label (next, done…) depends on the field's place in the form, so the form sets it
-  through each platform's own setting: `enterkeyhint` on the web, passed through the template's
-  `attrs`; `returnKeyType` or `submitLabel` on iOS; the IME action on Android, where Next moves focus
-  by default ([HTML: enterkeyhint](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint),
-  [UIKit: returnKeyType](https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype),
-  [SwiftUI: onSubmit](https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)),
-  [Jetpack Compose: keyboard options](https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options)).
+- **Enter and the return key.** Enter runs the search on every platform. A search field's action
+  is always search, so it labels its own return key for search wherever it sits: the template writes
+  `enterkeyhint="search"` (`attrs` can replace it), iOS uses the search return key type, as Apple
+  suggests when an app starts a search, and Windows the Search input scope, whose touch keyboard shows
+  a Search key instead of Enter
+  ([HTML: enterkeyhint](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint),
+  [UIKit: UIReturnKeyType](https://developer.apple.com/documentation/uikit/uireturnkeytype),
+  [Apple HIG: Virtual keyboards](https://developer.apple.com/design/human-interface-guidelines/virtual-keyboards#Best-practices),
+  [UIKit: searchBarSearchButtonClicked](https://developer.apple.com/documentation/uikit/uisearchbardelegate/searchbarsearchbuttonclicked(_:)),
+  [Windows: AutoSuggestBox, query submitted](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/auto-suggest-box#query-submitted),
+  [Windows: input scope Search](https://learn.microsoft.com/en-us/windows/apps/develop/input/use-input-scope-to-change-the-touch-keyboard#search)).
+  Alone in its search form, as in a header or a sidebar, it needs no submit button: a form whose
+  only field is this one submits on Enter
+  ([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission)).
+- **Escape.** Chrome clears the term on Escape, as the clear cross some browsers draw does; other
+  browsers keep it. The component leaves the browser's behaviour as it is
+  ([MDN: input type=search](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#differences_between_search_and_text_types)).
 
 ### Web
 
@@ -139,6 +144,8 @@ This section explains the decisions behind it.
 - On Windows, Tab follows the tab order, the order the controls are added, and skips a disabled
   field; Shift+Tab goes back; in the field the arrow keys move the caret, since every key goes to
   the text first ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements), [Windows: keyboard interactions, navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation), [text entry](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry)).
+- On macOS, Option-Command-F moves focus to the product's main search field, a standard shortcut
+  ([Apple HIG: standard keyboard shortcuts](https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts)).
 
 ## Related
 

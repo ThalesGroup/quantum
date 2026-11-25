@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -230,9 +230,9 @@
       },
       {
         "key": "Escape",
-        "action": "In browsers that provide a clear control, clears the term.",
+        "action": "Clears the term in Chrome, as the clear cross the browser may draw does; other browsers keep the term.",
         "refs": [
-          "mdn-input-search"
+          "mdn-input-search-escape"
         ],
         "platforms": [
           "web"
@@ -240,7 +240,7 @@
       },
       {
         "key": "Enter",
-        "action": "Adds no line. Submits the form through its default button (implicit submission), when the browser supports it; what the form does with it is the Forms foundation's.",
+        "action": "Runs the search: a search form whose only field is this one submits on Enter, with or without a submit button (implicit submission).",
         "refs": [
           "html-implicit-submission"
         ],
@@ -261,10 +261,10 @@
       },
       {
         "key": "Return",
-        "action": "The hardware or on-screen Return key triggers the field's submit action; its label is the return key type the form sets.",
+        "action": "Runs the search: the keyboard's Search button begins it.",
         "refs": [
-          "swiftui-on-submit",
-          "uikit-return-key-type"
+          "uikit-search-button-clicked",
+          "uikit-return-key-type-cases"
         ],
         "platforms": [
           "ios"
@@ -312,10 +312,10 @@
       },
       {
         "key": "Enter, IME action",
-        "action": "Adds no line to a single-line field; runs the IME action the form sets: Next and Previous move focus by default, Done dismisses the keyboard.",
+        "action": "Runs the search through the IME action the field sets; a single-line field adds no line.",
         "refs": [
-          "compose-line-limits",
-          "compose-keyboard-options"
+          "compose-keyboard-options",
+          "compose-line-limits"
         ],
         "platforms": [
           "android"
@@ -344,9 +344,19 @@
       },
       {
         "key": "Return",
-        "action": "On macOS, sends the field's action to its target.",
+        "action": "On macOS, runs the search, the field's action.",
         "refs": [
           "appkit-text-field"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Option-Command-F",
+        "action": "On macOS, moves focus to the search field: a standard shortcut, for the product's main search field.",
+        "refs": [
+          "hig-keyboards-shortcuts"
         ],
         "platforms": [
           "desktop"
@@ -385,9 +395,9 @@
       },
       {
         "key": "Enter",
-        "action": "On Windows, adds no line: a text box takes newline characters only when AcceptsReturn is set.",
+        "action": "On Windows, submits the query, as the AutoSuggestBox Windows uses for search does.",
         "refs": [
-          "windows-text-box-multi-line"
+          "windows-auto-suggest-box-query"
         ],
         "platforms": [
           "desktop"
@@ -510,13 +520,14 @@
         ]
       },
       {
-        "text": "The label of the on-screen keyboard's return key (next, done…) depends on the field's place in the form, so the form sets it through the platform's own setting: enterkeyhint on the web (through the template's attrs), returnKeyType or submitLabel on iOS, the IME action on Android; Windows' touch keyboard follows the input scope. The field has no property for it; unset, the platform picks its default.",
+        "text": "The Search field labels its own return key for search, wherever it sits: enterkeyhint=\"search\" on the web, written by the template (attrs can override it); the search return key type on iOS; the Search input scope, which puts a Search key instead of Enter on Windows' touch keyboard; on Android the field sets its IME action. Standing alone, the only field of its search form, it needs no submit button: Enter runs the search.",
         "refs": [
           "html-enterkeyhint",
-          "uikit-return-key-type",
-          "swiftui-submit-label",
+          "uikit-return-key-type-cases",
+          "hig-virtual-keyboards",
+          "windows-input-scope-search",
           "compose-keyboard-options",
-          "windows-text-box-keyboard"
+          "html-implicit-submission"
         ]
       },
       {
@@ -941,11 +952,6 @@
         "url": "https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)"
       },
       {
-        "id": "swiftui-submit-label",
-        "title": "SwiftUI: submitLabel(_:)",
-        "url": "https://developer.apple.com/documentation/swiftui/view/submitlabel(_:)"
-      },
-      {
         "id": "uikit-return-key-type",
         "title": "UIKit: UITextInputTraits.returnKeyType",
         "url": "https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype"
@@ -971,9 +977,34 @@
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input"
       },
       {
-        "id": "windows-text-box-keyboard",
-        "title": "Windows apps: text box, choose the right keyboard (InputScope)",
-        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#choose-the-right-keyboard-for-your-text-control"
+        "id": "uikit-return-key-type-cases",
+        "title": "UIKit: UIReturnKeyType (search: the Return key indicates a search)",
+        "url": "https://developer.apple.com/documentation/uikit/uireturnkeytype"
+      },
+      {
+        "id": "hig-virtual-keyboards",
+        "title": "Apple HIG: Virtual keyboards, best practices (a search Return key type when the app initiates a search)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/virtual-keyboards#Best-practices"
+      },
+      {
+        "id": "uikit-search-button-clicked",
+        "title": "UIKit: UISearchBarDelegate.searchBarSearchButtonClicked(_:) (begin the search)",
+        "url": "https://developer.apple.com/documentation/uikit/uisearchbardelegate/searchbarsearchbuttonclicked(_:)"
+      },
+      {
+        "id": "windows-auto-suggest-box-query",
+        "title": "Windows apps: AutoSuggestBox, query submitted (Enter in the text box)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/auto-suggest-box#query-submitted"
+      },
+      {
+        "id": "windows-input-scope-search",
+        "title": "Windows apps: input scope Search (the Search key instead of Enter on the touch keyboard)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/use-input-scope-to-change-the-touch-keyboard#search"
+      },
+      {
+        "id": "mdn-input-search-escape",
+        "title": "MDN: input type=search, differences from text (the clear cross; Escape clears in Chrome)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#differences_between_search_and_text_types"
       }
     ]
   },
@@ -1066,11 +1097,33 @@
   ],
   "decisions": [
     {
+      "id": "search-own-key",
+      "date": "2026-11-25",
+      "version": "0.15.0",
+      "area": "accessibility",
+      "status": "active",
+      "supersedes": [
+        "enter-by-field-kind"
+      ],
+      "text": "Enter (Return) runs the search on every platform and never adds a line: on the web a search form whose only field is this one submits on Enter, with or without a button; iOS begins the search on the keyboard's Search button; Android runs the field's IME action; macOS sends the field's action; Windows submits the query, as its AutoSuggestBox does. Unlike the other fields, the Search field labels its own return key for search wherever it sits, since its action is always search: enterkeyhint=\"search\" on the web, written by the template (attrs can override it); the search return key type on iOS, as Apple suggests when an app initiates a search; the Search input scope on Windows' touch keyboard; on Android the field sets its IME action, with no label stated. Standing alone, it needs no submit button (forms-search-alone). Escape clears the term in Chrome only, the browser's behaviour, which the component leaves as it is. On macOS, Option-Command-F moves focus to the product's main search field.",
+      "refs": [
+        "html-implicit-submission",
+        "html-enterkeyhint",
+        "uikit-search-button-clicked",
+        "uikit-return-key-type-cases",
+        "hig-virtual-keyboards",
+        "windows-auto-suggest-box-query",
+        "windows-input-scope-search",
+        "mdn-input-search-escape",
+        "hig-keyboards-shortcuts"
+      ]
+    },
+    {
       "id": "enter-by-field-kind",
       "date": "2026-11-25",
       "version": "0.14.0",
       "area": "accessibility",
-      "status": "active",
+      "status": "superseded",
       "text": "Enter (Return) never adds a line to a single-line field: it goes to the form, which submits or runs the return key's action (the Forms foundation says what the form does). The return key's label depends on the field's place in the form (next, done…), so the form sets it through each platform's own setting: enterkeyhint on the web, passed through the template's attrs; returnKeyType or submitLabel on iOS; the IME action on Android; Windows' touch keyboard follows the input scope. The field adds no property for it; unset, the platform picks its default.",
       "refs": [
         "html-implicit-submission",
@@ -1542,6 +1595,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.15.0",
+      "date": "2026-11-25",
+      "note": "Decision search-own-key (#103 step 19, point 3), superseding enter-by-field-kind here: Enter runs the search on every platform, the field labels its own return key for search (the template writes enterkeyhint=\"search\"), no submit button needed when it stands alone, Escape corrected (clears in Chrome only), macOS Option-Command-F. Template: enterkeyhint=\"search\" on the input. No token, CSS or rendering change."
+    },
     {
       "version": "0.14.0",
       "date": "2026-11-25",
