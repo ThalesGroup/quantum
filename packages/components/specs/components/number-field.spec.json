@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.19.2",
+  "version": "0.19.3",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -1047,6 +1047,19 @@
   ],
   "decisions": [
     {
+      "id": "mark-style",
+      "date": "2026-11-25",
+      "version": "0.19.3",
+      "area": "typography",
+      "status": "active",
+      "text": "The Number field's required mark (\"(optional)\" or \"(required)\", from marked-fields) follows the label's text after a word space, at the label's size (14 / 16 / 16 px for small, medium, large), in the regular weight (body.weight.regular) and the description's color (global.text.on-base.neutral.secondary); disabled, the label's disabled color (global.text.state.disabled.default). 12.09 to 12.78:1 in light mode, 6.65 to 8.86:1 in dark mode on levels 0 to 3.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 2) among: the Figma prototype's red asterisk (reference: global.text.on-base.functional.error.default, the label's size and weight, 4 px after it, 2 px in small); A, the label's own style; B, the label's size, regular, the description's color (chosen, recommended); C, the label's size and color, regular; D, the description's style (12 / 12 / 14 px). The team hesitated between B and D and chose B: a smaller mark, the only element of a different size, draws the eye before the label itself. Applies the Forms decision forms-mark-style. The word space measures 3.5 px at 14 px and 4.0 px at 16 px, near Figma's 4 px. Departs from Figma (red asterisk). The tokens (mark.color.*, mark.typography.*) land with point 4.",
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
       "id": "marked-fields",
       "date": "2026-11-25",
       "version": "0.19.2",
@@ -1536,6 +1549,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.19.3",
+      "date": "2026-11-25",
+      "note": "Decision mark-style: the required mark at the label's size, regular, in the description's color (global.text.on-base.neutral.secondary), the disabled text color when disabled; 12.09 to 12.78:1 light, 6.65 to 8.86:1 dark (#103 step 16, point 2). No token or rendering change yet."
+    },
     {
       "version": "0.19.2",
       "date": "2026-11-25",
