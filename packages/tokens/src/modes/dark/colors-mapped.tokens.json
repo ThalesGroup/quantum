@@ -271,7 +271,7 @@
         "class-and-type": {"$type":"color","$value":"{extended.amber.400}"},
         "string": {"$type":"color","$value":"{extended.forest.400}"},
         "number": {"$type":"color","$value":"{extended.coral.400}"},
-        "comment": {"$type":"color","$value":"{dark-switch.base.300}"}
+        "comment": {"$type":"color","$value":"{dark-switch.base.200}"}
       },
       "state": {
         "skeleton": {

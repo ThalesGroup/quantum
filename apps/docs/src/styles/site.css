@@ -45,7 +45,7 @@ body.site {
 .site h4 { font-size: var(--heading-size-3xs); margin: var(--space-24) 0 var(--space-8); }
 .site code, .site pre, .site kbd { font-family: var(--mono-family); font-size: var(--mono-size-sm); font-weight: var(--mono-weight-regular); letter-spacing: var(--font-letter-spacing-normal); }
 .site code { background: var(--global-bg-subtle-neutral-default); border: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); padding: 0.1em 0.4em; border-radius: var(--corner-radius-xs); }
-.site pre { color: var(--global-text-on-base-neutral-primary); background: var(--global-bg-level-1-default); border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-1); padding: 0.85rem 1rem; border-radius: var(--corner-radius-xs); overflow: auto; max-height: 32rem; line-height: var(--font-line-height-normal); }
+.site pre { color: var(--global-text-on-base-neutral-primary); background: var(--global-bg-code-surface); border: var(--stroke-width-sm) solid var(--global-border-level-edge-level-1); padding: 0.85rem 1rem; border-radius: var(--corner-radius-xs); overflow: auto; max-height: 32rem; line-height: var(--font-line-height-normal); }
 .site pre code { background: none; border: 0; padding: 0; }
 .site kbd { border: var(--stroke-width-sm) solid var(--global-border-base-neutral-4); border-bottom-width: var(--focus-ring-width); border-radius: var(--corner-radius-xs); padding: 0.05em 0.45em; background: var(--global-bg-level-0-default); }
 .site :focus-visible { outline: var(--focus-ring-width) solid var(--color-focus-ring); outline-offset: var(--focus-ring-offset); }
@@ -385,7 +385,7 @@ td.site-cite a { margin-inline-end: 0.75em; }
 .site-playground__code { grid-column: 1 / -1; display: flex; flex-direction: column; max-block-size: 400px; border-top: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }
 .site-playground__code-bar { display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.75rem; background: var(--global-bg-level-1-default); border-bottom: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }
 .site-playground__copy-status { margin-left: auto; color: var(--global-text-on-base-neutral-tertiary); }
-.site .site-playground__code pre { flex: 1 1 auto; min-block-size: 0; max-height: none; margin: 0; border: 0; border-radius: 0; background: var(--global-bg-level-0-default); overflow: auto; overscroll-behavior: contain; white-space: pre; }
+.site .site-playground__code pre { flex: 1 1 auto; min-block-size: 0; max-height: none; margin: 0; border: 0; border-radius: 0; background: var(--global-bg-code-surface); overflow: auto; overscroll-behavior: contain; white-space: pre; }
 .site-playground__toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem; padding: 0.5rem 0.75rem; border-bottom: var(--stroke-width-sm) solid var(--global-border-level-on-level-0); }
 /* The simulations of the stage (vision, text size) lead the toolbar; Inspect tokens stays at its end. */
 .site-playground__simulations { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-right: auto; }
