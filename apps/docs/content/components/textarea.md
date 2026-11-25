@@ -104,10 +104,9 @@ This section explains the decisions behind it.
   darker step (5.79:1 on the level 1 surface in light mode, the lowest).
   With a severity the box is filled with the subtle background of that severity, a solid color,
   at rest and on hover alike: the value keeps at least 16.91:1 in light mode and 11.43:1 in dark
-  on it, the placeholder 5.42:1 and 6.48:1. The error and success borders keep at least 5.14:1 and
-  6.16:1 against their fill; the light warning border is 2.95:1 against its fill, a known shortfall
-  tracked in issue #119, and 3.09:1 against the surface, which is what identifies the field. The
-  error hover step would bring the placeholder to 4.33:1 in light mode, so no severity fill changes
+  on it, the placeholder 5.42:1 and 6.48:1. Every severity border keeps at least 5.14:1 against its
+  fill (error 5.14:1, warning 5.86:1 since it reads warning 600 in light mode, success 6.16:1) and
+  3:1 against the surface, which is what identifies the field. The error hover step would bring the placeholder to 4.33:1 in light mode, so no severity fill changes
   on hover.
 - **Text size.** The label and the help text are set from 12 to 16 px. WCAG sets no minimum text
   size: it asks that text can be resized up to 200 % without loss of content or functionality, and

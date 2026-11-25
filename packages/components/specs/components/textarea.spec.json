@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -407,7 +407,7 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. Against the warning fill the warning border is 2.95:1 in light mode, a known shortfall (issue #119; Color foundation pair border-accent-warning-on-fill), and 8.27:1 in dark mode; against the success fill the success border is 7.17:1 and 6.16:1.",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 6.49:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 6.16:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. Against the warning fill the warning border is 5.86:1 in light mode and 8.27:1 in dark mode; against the success fill the success border is 7.17:1 and 6.16:1.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries",
@@ -909,6 +909,22 @@
   ],
   "decisions": [
     {
+      "id": "warning-border-text-step",
+      "date": "2026-11-25",
+      "version": "0.18.0",
+      "area": "color",
+      "status": "active",
+      "text": "The border and outline of a field with a warning keep textarea.control.border-color.warning and textarea.control.outline-color.warning, global.border.accent.functional.warning.default, which the Color foundation sets in light mode to the warning text's step, warning 600 (#765818; decision border-accent-warning-600): the warning's border, outline, icon and message read one color, as the error's and the success's do, and every pair of the warning and success rendering passes WCAG 2.2 AA in both modes. No component token changes.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 4, the closing WCAG check of the warning and success rendering, also the Forms foundation step 6, forms-warning-border-600) between: A, close as landed, the light warning border at warning 500 (2.95:1 on the subtle warning fill, under the 3:1 of WCAG 1.4.11, issue #119); B, the light warning border at its text step, warning 600 (chosen), as the error and success borders take their text's step. Every other pair of the warning and success rendering passed (measured on the Text field, the Number field and the Textarea, light and dark, levels 0 to 3). With B the warning border and outline are 6.49 / 6.16 / 6.49 / 6.16:1 on the light levels (was 3.27 / 3.09:1) and 5.86:1 on the warning fill (was 2.95:1); dark mode unchanged (8.27:1 on its fill, 6.07:1 at the lowest).",
+      "tokens": [
+        "textarea.control.border-color.warning",
+        "textarea.control.outline-color.warning"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "warning-one-color",
       "date": "2026-11-25",
       "version": "0.17.0",
@@ -1308,6 +1324,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.18.0",
+      "date": "2026-11-25",
+      "note": "Decision warning-border-text-step: the light warning border and outline are warning 600 #765818 through the Color foundation's decision border-accent-warning-600 (no component token changes): 6.49:1 on the default surface and 6.16:1 at the lowest (was 3.27:1 and 3.09:1), 5.86:1 on the warning fill (was 2.95:1, under 3:1); dark mode unchanged."
+    },
     {
       "version": "0.17.0",
       "date": "2026-11-25",
