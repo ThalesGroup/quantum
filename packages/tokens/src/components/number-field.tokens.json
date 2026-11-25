@@ -401,6 +401,12 @@
         "$description": "The on-base icon role of the severity: the icon sits on the surface, beside the control or in the message, and takes the message text's color.",
         "error": {
           "$value": "{global.icon.on-base.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.icon.on-base.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.icon.on-base.functional.success.default}"
         }
       }
     },

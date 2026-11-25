@@ -8,7 +8,7 @@
  * The `Content` axis draws the control's text as a value or as the placeholder (its own color).
  * The description is a boolean property (off, as in the template); the message is drawn in
  * the error, warning and success states only, as the template shows it with a severity. The
- * severity icon (error only for now) sits after the control, in `control-row`, or at the start of
+ * severity icon (the Alert's glyph of each severity) sits after the control, in `control-row`, or at the start of
  * the message, by the `severityIcon` variant; the web lays the control and the icon out on a grid
  * row without a wrapper.
  *
@@ -43,12 +43,15 @@ export const description = {
 
 export const SEVERITIES = ['error', 'warning', 'success'];
 
-/** The severity icon: drawn for the error only (warning and success with #103 step 13), after the control or at the start of the message (`severityIcon`). */
+/** The glyph of each severity's icon, the template's (decision severity-icon-glyphs). */
+export const SEVERITY_GLYPHS = { error: 'error', warning: 'warning', success: 'check_circle' };
+
+/** The severity icon of every severity, after the control or at the start of the message (`severityIcon`). */
 const severityIcon = (place) => ({
   type: 'icon',
   name: 'severity-icon',
-  glyph: 'error',
-  when: (v) => v.state === 'error' && v.props.severityIcon === place,
+  glyph: (v) => SEVERITY_GLYPHS[v.state],
+  when: (v) => SEVERITIES.includes(v.state) && v.props.severityIcon === place,
   bind: { fill: 'severity-icon.color', size: 'severity-icon.size', fontFamily: 'severity-icon.font-family', fontWeight: 'severity-icon.font-weight' },
 });
 

@@ -6,13 +6,13 @@
  *
  * Extra props: `id` names the control (unique in the page; without it instances are numbered in
  * render order); `name` is the form field's; `attrs` adds HTML attributes to the control.
- * `severityIconLabel` names the severity icon (default "Error"), for another language.
+ * `severityIconLabel` names the severity icon (default "Error", "Warning" or "Success"), for another language.
  * Extra sandbox-only prop: `state` forces a visual state through data-state on the root.
  */
 import { escapeHtml, escapeAttr, renderIcon } from '../../lib/template-utils.mjs';
 
 /** The glyph of each severity's icon and its default name (the name says the severity; pass severityIconLabel to translate it). */
-const SEVERITY_GLYPHS = { error: 'error' };
+const SEVERITY_GLYPHS = { error: 'error', warning: 'warning', success: 'check_circle' };
 const SEVERITY_LABELS = { error: 'Error', warning: 'Warning', success: 'Success' };
 
 export const meta = { id: 'textarea', selector: '.ds-textarea' };
@@ -40,7 +40,7 @@ export function render(props = {}) {
     attrs: extra = {},
   } = props;
   const hasMessage = severity !== 'none' && Boolean(message);
-  // The severity icon: only the error has one today (warning and success with #103 step 13).
+  // The severity icon: the Alert's glyph of the severity (decision severity-icon-glyphs).
   const glyph = SEVERITY_GLYPHS[severity] ?? null;
   const iconPlace = glyph ? (severityIcon === 'after-control' ? 'after-control' : severityIcon === 'message' && hasMessage ? 'message' : null) : null;
 

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -67,9 +67,11 @@
       "role": "icon",
       "required": false,
       "visibleIn": [
-        "error"
+        "error",
+        "warning",
+        "success"
       ],
-      "description": "Glyph of the icon font saying the severity, named after it (\"Error\"). Placed by severityIcon: after the control, centred on it, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements. Shown for the error; warning and success take theirs with step 13."
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\", \"Warning\", \"Success\"): error, warning or check_circle, the Alert's glyphs. Placed by severityIcon: after the control, centred on it, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements."
     }
   ],
   "properties": [
@@ -555,7 +557,7 @@
         ]
       },
       {
-        "text": "The severity icon is named after the severity (\"Error\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (error 5.81:1 light, 5.30:1 dark, at the lowest).",
+        "text": "The severity icon is named after the severity (\"Error\", \"Warning\", \"Success\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 light, 5.30:1 dark; warning 3.09:1 and 8.38:1; success 7.44:1 and 5.92:1).",
         "refs": [
           "accname-description",
           "wcag:1.1.1",
@@ -1044,6 +1046,22 @@
   ],
   "decisions": [
     {
+      "id": "severity-icon-glyphs",
+      "date": "2026-11-25",
+      "version": "0.17.0",
+      "area": "content",
+      "status": "active",
+      "text": "The severity icon is drawn for every severity: error for an error, warning for a warning, check_circle for a success (the Alert's glyphs), named \"Error\", \"Warning\" or \"Success\" (severityIconLabel translates it), in the on-base icon role of its severity: number-field.severity-icon.color.warning (global.icon.on-base.functional.warning.default, #BD8107 in light mode, #FFC61C in dark mode) and number-field.severity-icon.color.success (global.icon.on-base.functional.success.default, #075D33 and #11C772). Its place and size do not change.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 2, also the Forms foundation step 6, forms-severity-icon-glyphs) among: A, the Alert's glyphs, warning and check_circle (chosen); B, a plain check for the success; C, no success icon. A is the Figma prototype's and the Alert's glyphs: the three severities differ by shape as well as color, and the message still says the severity in text (WCAG 1.4.1). B departs from the Alert and from Figma and reuses the Checkbox's glyph, thinner at 16 px; C draws icons on some fields and not others under one placement rule, and after the control a field would change width or keep an empty gap when it passes. The color follows the rule decided for the error (forms-severity-icon-color), the on-base icon role of the severity. Measured on the Text field (every size, both placements, light and dark, levels 0 to 3): the warning icon 3.09 to 3.27:1 in light mode and 8.38 to 11.17:1 in dark mode, the success icon 7.44 to 7.87:1 and 5.92 to 7.89:1 (WCAG 1.4.11 asks 3:1).",
+      "tokens": [
+        "number-field.severity-icon.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "severity-fill-subtle",
       "date": "2026-11-25",
       "version": "0.16.0",
@@ -1448,6 +1466,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.17.0",
+      "date": "2026-11-25",
+      "note": "Decision severity-icon-glyphs: the severity icon is drawn for a warning (warning, \"Warning\") and a success (check_circle, \"Success\") too, in the on-base icon role of the severity (new tokens severity-icon.color.warning and .success). Warning icon 3.09:1 (light) and 8.38:1 (dark) at the lowest on the surface levels, success 7.44:1 and 5.92:1."
+    },
     {
       "version": "0.16.0",
       "date": "2026-11-25",

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.10",
+  "version": "0.10.11",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -657,6 +657,15 @@
   ],
   "decisions": [
     {
+      "id": "severity-icon-glyphs",
+      "date": "2026-11-25",
+      "version": "0.10.11",
+      "area": "content",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms foundation step 2b), its severity icon draws the Text field's glyphs: error, warning or check_circle, named \"Error\", \"Warning\" or \"Success\", in the on-base icon role of its severity. No token today: the mirror check ignores severity-icon.* (scripts/lib/mirrors.mjs).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 2, also the Forms foundation step 6, forms-severity-icon-glyphs) among: A, the Alert's glyphs, warning and check_circle (chosen); B, a plain check for the success; C, no success icon. A is the Figma prototype's and the Alert's glyphs: the three severities differ by shape as well as color, and the message still says the severity in text (WCAG 1.4.1). B departs from the Alert and from Figma and reuses the Checkbox's glyph, thinner at 16 px; C draws icons on some fields and not others under one placement rule, and after the control a field would change width or keep an empty gap when it passes. The color follows the rule decided for the error (forms-severity-icon-color), the on-base icon role of the severity. Measured on the Text field (every size, both placements, light and dark, levels 0 to 3): the warning icon 3.09 to 3.27:1 in light mode and 8.38 to 11.17:1 in dark mode, the success icon 7.44 to 7.87:1 and 5.92 to 7.89:1 (WCAG 1.4.11 asks 3:1)."
+    },
+    {
       "id": "severity-fill-subtle",
       "date": "2026-11-25",
       "version": "0.10.10",
@@ -993,6 +1002,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.11",
+      "date": "2026-11-25",
+      "note": "Decision severity-icon-glyphs: records the warning and success glyphs of the severity icon for when the Search field has a severity (Forms step 2b). No token or rendering change."
+    },
     {
       "version": "0.10.10",
       "date": "2026-11-25",

@@ -55,8 +55,9 @@ when they write more. The box never resizes horizontally: it fills the width the
 | Read-only | `readonly` property. | The box takes the level 1 surface, which is close to the resting one, so say in the description that it is read-only; the text can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, text, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
-An error can also show its icon, chosen once per form by `severityIcon`, as for the Text field: at the start of the
-message by default, or after the box, level with the first line of text, or not at all.
+A severity can also show its icon (the Alert's `error`, `warning` or `check_circle`), chosen once per form by
+`severityIcon`, as for the Text field: at the start of the message by default, or after the box, level with the first
+line of text, or not at all.
 
 ## Content
 

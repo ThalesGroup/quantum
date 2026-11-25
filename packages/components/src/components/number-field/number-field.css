@@ -24,6 +24,7 @@
   --_label-color: var(--number-field-label-color-default);
   --_description-color: var(--number-field-description-color-default);
   --_message-color: var(--number-field-message-color-error);
+  --_severity-icon-color: var(--number-field-severity-icon-color-error);
   --_min-height: var(--number-field-control-min-height-medium);
   --_severity-icon-size: var(--number-field-severity-icon-size-after-control-medium);
   --_border-radius: var(--number-field-control-border-radius-medium);
@@ -262,7 +263,7 @@
   place-content: center;
   inline-size: var(--_severity-icon-size);
   block-size: var(--_severity-icon-size);
-  color: var(--number-field-severity-icon-color-error);
+  color: var(--_severity-icon-color);
   font-family: var(--number-field-severity-icon-font-family);
   font-size: var(--_severity-icon-size);
   font-weight: var(--number-field-severity-icon-font-weight);
@@ -313,6 +314,7 @@
 
 .ds-number-field:where([data-state="warning"], [data-severity="warning"]) {
   --_message-color: var(--number-field-message-color-warning);
+  --_severity-icon-color: var(--number-field-severity-icon-color-warning);
   /* The warning fill holds on hover, as the error's. */
   --_control-background: var(--number-field-control-background-warning);
   --_control-background-hover: var(--number-field-control-background-warning);
@@ -323,6 +325,7 @@
 
 .ds-number-field:where([data-state="success"], [data-severity="success"]) {
   --_message-color: var(--number-field-message-color-success);
+  --_severity-icon-color: var(--number-field-severity-icon-color-success);
   /* The success fill holds on hover, as the error's. */
   --_control-background: var(--number-field-control-background-success);
   --_control-background-hover: var(--number-field-control-background-success);

@@ -121,7 +121,7 @@ test('the Text field draws its outline flush, a severity at its own width at res
   assert.equal(ring('success', 'disabled'), undefined);
 });
 
-test('the Text field draws the severity icon after the control or at the start of the message, for the error', () => {
+test('the Text field draws the severity icon after the control or at the start of the message, for every severity', () => {
   const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
   const variant = (size, place, state) => plan.variants.find((v) => v.name === `Size=${size}, Severity icon=${place}, Severity=error, Content=value, Leading icon=false, State=${state}`).root;
   const iconIn = (node) => (node?.children ?? []).find((c) => c.name === 'severity-icon');
@@ -138,6 +138,12 @@ test('the Text field draws the severity icon after the control or at the start o
   assert.equal(iconIn(row(inMessage)), undefined);
   assert.equal(iconIn(row(variant('medium', 'none', 'error'))), undefined);
   assert.equal(iconIn(msg(variant('medium', 'none', 'error'))), undefined);
+  // Warning and success draw their own glyph in their own color (decision severity-icon-glyphs).
+  const sev = (severity, place) => plan.variants.find((v) => v.name === `Size=medium, Severity icon=${place}, Severity=${severity}, Content=value, Leading icon=false, State=${severity}`).root;
+  assert.equal(iconIn(row(sev('warning', 'after-control'))).glyph, 'warning');
+  assert.equal(iconIn(row(sev('warning', 'after-control'))).fills, 'text-field/severity-icon/color/warning');
+  assert.equal(iconIn(msg(sev('success', 'message'))).glyph, 'check_circle');
+  assert.equal(iconIn(msg(sev('success', 'message'))).fills, 'text-field/severity-icon/color/success');
 });
 
 test('the Text field draws its leading icon over the start of the control, in the color of the text beside it', () => {
