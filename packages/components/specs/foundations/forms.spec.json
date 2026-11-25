@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.27.0",
+  "version": "0.28.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -74,6 +74,11 @@
       "id": "error-in-text",
       "name": "A severity is said in text",
       "text": "An error is identified in text next to the control it concerns, associated with that control, and never shown by color alone. The text says what is wrong and, when a fix is known, how to fix it. A warning and a success are said in text the same way, whatever icon or color accompanies them."
+    },
+    {
+      "id": "message-wording",
+      "name": "A message says the fix",
+      "text": "A message tells people what to do, in plain words, the same way for every control and every severity. An error is the instruction that fixes it: the control's verb (enter, choose, check) and the thing asked for, with the format or the limit that fixes it when there is one (\"Enter an email address with an @.\", \"Enter a quantity between 1 and 99.\", \"Choose a delivery method.\"), rather than a statement of what is wrong. An empty required field gets a message like any other error (\"Enter your full name.\"), never \"This field is required\": the form already said which fields are required. A warning says what to check (\"Check the domain: did you mean example.com?\") and a success what was confirmed (\"This username is available.\"). A message addresses people as you, without blame, without robotic words such as invalid, without interjections such as oops, without please and without we. Not decided yet (step 11, points 2 to 4): the severity word, the punctuation and the length, and how a message names its field in an error summary."
     },
     {
       "id": "timing",
@@ -465,6 +470,15 @@
         "text": "When a correction is known, the error message suggests it, unless that would jeopardize the security or purpose of the content.",
         "refs": [
           "wcag:3.3.3"
+        ]
+      },
+      {
+        "text": "An error message tells people how to fix the error, close to the field and without blame, rather than only saying what is wrong; a warning says what to check and a success what was confirmed.",
+        "refs": [
+          "wcag:3.3.3",
+          "hig-writing-best-practices",
+          "material-text-fields-guidelines",
+          "wai-forms-notifications"
         ]
       },
       {
@@ -1090,6 +1104,21 @@
   ],
   "decisions": [
     {
+      "id": "forms-message-says-the-fix",
+      "date": "2026-11-25",
+      "version": "0.28.0",
+      "area": "content",
+      "status": "active",
+      "text": "Every form control's message says the fix, for every severity: an error is the instruction that fixes it (the control's verb and the thing asked for, with the format or the limit when there is one), an empty required field reads like any other error (\"Enter your full name.\", not \"This field is required\"), a warning says what to check and a success what was confirmed. It addresses people as you, without blame, robotic words (invalid), interjections, please or we.",
+      "rationale": "Decided by the team on 2026-11-25 (#105 step 11, point 1) among: A, say the fix; B, the problem, then the fix, in two sentences (twice as long, five of eight messages on two lines at the field's width); C, state the rule (\"Full name is required.\"), which repeats what the form's marking already says.",
+      "refs": [
+        "wcag:3.3.3",
+        "hig-writing-best-practices",
+        "material-text-fields-guidelines",
+        "wai-forms-notifications"
+      ]
+    },
+    {
       "id": "forms-search-alone",
       "date": "2026-11-25",
       "version": "0.27.0",
@@ -1527,6 +1556,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-message-says-the-fix (#105 step 11, point 1): a new rule message-wording and a guideline: a message says the fix for every severity, an empty required field reads like any other error, a warning says what to check and a success what was confirmed."
+    },
     {
       "version": "0.27.0",
       "date": "2026-11-25",

@@ -427,12 +427,27 @@ of the on-screen keyboard's return key, because only the form knows which field 
 - **The label** is a noun phrase naming the information asked for, in sentence case, without a
   colon.
 - **The description** gives the format, an example or a limit, only when it is not obvious.
-- **The message of an error** says what is wrong and how to fix it, in plain words and without
-  blame: **Enter an email address with an @**, not **Invalid email**. A warning says what to
-  check, and a success what was confirmed.
+- **The message says the fix**, the same way for every control and every severity. An error is
+  the instruction that fixes it: the control's verb and the thing asked for, with the format or
+  the limit when there is one, **Enter an email address with an @**, **Enter a quantity between
+  1 and 99**, **Choose a delivery method**, not **Invalid email**. An empty required field reads
+  like any other error, **Enter your full name**, never **This field is required**: the form
+  already said which fields are required. A warning says what to check, **Check the domain: did
+  you mean example.com?**, and a success what was confirmed, **This username is available**.
+- **Plain words, no blame.** A message speaks to people as you, without robotic words such as
+  invalid, interjections, please or we. Apple asks to say how to fix an error, without blame,
+  and to avoid robotic messages
+  ([HIG: Writing](https://developer.apple.com/design/human-interface-guidelines/writing#Best-practices));
+  Material's error text describes how to avoid the error
+  ([Material: text fields](https://m3.material.io/components/text-fields/guidelines)); WCAG asks
+  for the correction when it is known
+  ([WCAG 3.3.3](https://www.w3.org/WAI/WCAG22/Understanding/error-suggestion)). A problem stated
+  before the fix doubles the length and wraps most messages to a second line, which pushes the
+  next field down; the value usually shows the problem already.
 
-> **Not decided yet (step 11).** One set of writing rules for every control: how a message
-> names the field in the summary, and whether messages end with a period.
+> **Not decided yet (step 11).** The severity word ("Error: …") and who writes it, whether
+> messages end with a period and how long they may be, and how a message names its field in an
+> error summary.
 
 ## Accessibility
 
