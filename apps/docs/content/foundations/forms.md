@@ -374,6 +374,53 @@ The field exposes its error with the error semantics, so TalkBack reads the erro
 > the form's actions, and whether they become tokens. Today each control spaces only its own
 > parts: a field by its container gap, a group by its row gap.
 
+## Keyboard in a form
+
+People move through the fields in their reading order, the order that keeps their meaning, from a
+physical or an assistive keyboard on every platform
+([WCAG 2.4.3 Focus Order](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html#intent)).
+A form that is submitted has a submit button, and Enter in a single-line field submits it; the
+Textarea takes Enter as a new line. Each field says what Enter does in it; the form sets the label
+of the on-screen keyboard's return key, because only the form knows which field comes last.
+
+### Web
+
+- Enter in a single-line field submits the form through its first submit button. A form without
+  one and with two fields or more cannot be submitted with Enter, so a form that is submitted
+  always has its submit button
+  ([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission),
+  [H32: Providing submit buttons](https://www.w3.org/WAI/WCAG22/Techniques/html/H32)).
+- `enterkeyhint` changes only the label of the key, and Enter submits from every single-line field,
+  so a form that sets it names its action on every field (go, send, search, done), never next
+  ([HTML: enterkeyhint](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint)).
+
+### iOS
+
+- Tabbing between fields moves in a logical sequence. Every field but the last shows the next
+  return key and moves focus to the next field in its submit action, with a focus state; the last
+  field names the form's action (done, go, send, search) and submits the form
+  ([Apple HIG: Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices),
+  [Apple HIG: Virtual keyboards](https://developer.apple.com/design/human-interface-guidelines/virtual-keyboards#Best-practices),
+  [UIKit: returnKeyType](https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype),
+  [SwiftUI: onSubmit](https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)),
+  [SwiftUI: FocusState](https://developer.apple.com/documentation/swiftui/focusstate)).
+
+### Android
+
+- Tab follows the order the fields appear in. Every field but the last sets the Next IME action,
+  which moves focus to the next field by default; the last field sets the form's action (Done,
+  Go, Send, Search) and submits the form
+  ([Jetpack Compose: focus traversal](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-traversal),
+  [Jetpack Compose: keyboard options](https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options)).
+
+### Desktop
+
+- On macOS, the key view loop follows the fields' reading order, and Return in a field sends its
+  action ([AppKit: nextKeyView](https://developer.apple.com/documentation/appkit/nsview/nextkeyview),
+  [AppKit: NSTextField](https://developer.apple.com/documentation/appkit/nstextfield)). On Windows,
+  the tab order, by default the order the controls are added, follows the reading order
+  ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements)).
+
 ## Writing messages
 
 - **The label** is a noun phrase naming the information asked for, in sentence case, without a

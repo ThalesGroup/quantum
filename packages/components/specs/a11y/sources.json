@@ -85,9 +85,9 @@
       "prefixes": ["https://developer.apple.com/design/human-interface-guidelines/", "https://developer.apple.com/documentation/accessibility/", "https://developer.apple.com/documentation/uikit/", "https://developer.apple.com/documentation/appkit/", "https://developer.apple.com/documentation/swiftui/"]
     },
     "android": {
-      "name": "Android accessibility documentation",
+      "name": "Android accessibility documentation and the Compose focus, keyboard and text input guides",
       "kind": "platform",
-      "prefixes": ["https://developer.android.com/guide/topics/ui/accessibility", "https://developer.android.com/develop/ui/compose/accessibility"]
+      "prefixes": ["https://developer.android.com/guide/topics/ui/accessibility", "https://developer.android.com/develop/ui/compose/accessibility", "https://developer.android.com/develop/ui/compose/touch-input/", "https://developer.android.com/develop/ui/compose/text/"]
     },
     "material": {
       "name": "Material Design 3 foundations and component guidelines",
@@ -95,9 +95,9 @@
       "prefixes": ["https://m3.material.io/foundations/", "https://m3.material.io/components/"]
     },
     "windows": {
-      "name": "Microsoft Windows app controls guidance, accessibility guidance, WinUI automation and UI Automation property references",
+      "name": "Microsoft Windows app controls guidance, input guidance, accessibility guidance, WinUI automation and UI Automation property references",
       "kind": "platform",
-      "prefixes": ["https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/", "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.", "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/", "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"]
+      "prefixes": ["https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/", "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.", "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/", "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids", "https://learn.microsoft.com/en-us/windows/apps/develop/input/"]
     },
     "orange": {
       "name": "Orange accessibility guidelines",

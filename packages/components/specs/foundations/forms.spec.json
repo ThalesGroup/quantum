@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -94,6 +94,11 @@
       "id": "spacing",
       "name": "Spacing",
       "text": "Not decided yet: the space between fields, between groups of fields and before the form's actions. Today a field spaces its own parts by its container gap, and a group by its row gap."
+    },
+    {
+      "id": "keyboard",
+      "name": "Keyboard in a form",
+      "text": "People move through a form's fields from the keyboard in their reading order, on every platform. A form that is submitted has a submit button, and Enter (Return) in a single-line field submits it; a multi-line field takes Enter as a new line. The label of the on-screen keyboard's return key is the form's, set on each single-line field through the platform's own setting for its place in the form: on the web, where Enter submits from every single-line field and enterkeyhint changes only the label, it names the form's action (go, send, search, done) and never next; on iOS and Android, next on every field but the last, whose return key names the form's action and submits the form (Android's Next moves focus by itself, iOS moves it in the field's submit action). Desktop keyboards have no on-screen return key."
     },
     {
       "id": "web-rendering",
@@ -632,6 +637,68 @@
           "ios",
           "desktop"
         ]
+      },
+      {
+        "text": "The fields of a form take keyboard focus in their reading order, on every platform, so the order keeps their meaning.",
+        "refs": [
+          "wcag:2.4.3",
+          "understanding-focus-order"
+        ]
+      },
+      {
+        "text": "A form that is submitted has a submit button: Enter in a single-line field submits the form through its first submit button (implicit submission); a form without one and with two fields or more cannot be submitted with Enter.",
+        "refs": [
+          "html-implicit-submission",
+          "wcag-h32"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Enter submits from every single-line field and enterkeyhint changes only the key's label, so when a form sets it, it names the form's action (go, send, search, done) on every single-line field, never next.",
+        "refs": [
+          "html-enterkeyhint",
+          "html-implicit-submission"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Tabbing between fields moves in a logical sequence. Every field but the last shows the next return key and moves focus to the next field in its submit action (a focus state); the last field names the form's action (done, go, send, search) and submits the form.",
+        "refs": [
+          "hig-text-fields-best-practices",
+          "uikit-return-key-type",
+          "swiftui-on-submit",
+          "swiftui-focus-state",
+          "hig-virtual-keyboards"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Tab follows the order the fields appear in. Every field but the last sets the Next IME action, which moves focus to the next field by default; the last field sets the form's action (Done, Go, Send, Search) and submits the form.",
+        "refs": [
+          "compose-focus-traversal",
+          "compose-keyboard-options"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, the key view loop follows the fields' reading order and Return in a field sends its action; on Windows, the tab order, by default the order the controls are added, follows the reading order.",
+        "refs": [
+          "appkit-next-key-view",
+          "appkit-text-field",
+          "windows-keyboard-accessibility",
+          "wcag:2.4.3"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -854,6 +921,71 @@
         "id": "windows-accessible-name",
         "title": "Windows apps: Expose basic accessibility information (accessible name)",
         "url": "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/basic-accessibility-information#accessible-name"
+      },
+      {
+        "id": "understanding-focus-order",
+        "title": "Understanding WCAG 2.2: 2.4.3 Focus Order, intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html#intent"
+      },
+      {
+        "id": "html-implicit-submission",
+        "title": "HTML: implicit submission (Enter submits through the default button; without one, a form of several fields is not submitted)",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission"
+      },
+      {
+        "id": "wcag-h32",
+        "title": "WCAG 2.2 Technique H32: Providing submit buttons",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H32"
+      },
+      {
+        "id": "html-enterkeyhint",
+        "title": "HTML: the enterkeyhint attribute (the label of the enter key)",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint"
+      },
+      {
+        "id": "uikit-return-key-type",
+        "title": "UIKit: UITextInputTraits.returnKeyType",
+        "url": "https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype"
+      },
+      {
+        "id": "swiftui-on-submit",
+        "title": "SwiftUI: onSubmit(of:_:) (text fields and secure fields, on the return key)",
+        "url": "https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)"
+      },
+      {
+        "id": "swiftui-focus-state",
+        "title": "SwiftUI: FocusState (moving focus to a field)",
+        "url": "https://developer.apple.com/documentation/swiftui/focusstate"
+      },
+      {
+        "id": "hig-virtual-keyboards",
+        "title": "Apple HIG: Virtual keyboards, best practices (the Return key type)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/virtual-keyboards#Best-practices"
+      },
+      {
+        "id": "compose-focus-traversal",
+        "title": "Android Developers, Compose: focus traversal (Tab in appearance order)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/focus-traversal"
+      },
+      {
+        "id": "compose-keyboard-options",
+        "title": "Android Developers, Compose: keyboard options and the IME action (Next moves focus by default)",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options"
+      },
+      {
+        "id": "appkit-next-key-view",
+        "title": "AppKit: NSView.nextKeyView (the key view loop)",
+        "url": "https://developer.apple.com/documentation/appkit/nsview/nextkeyview"
+      },
+      {
+        "id": "appkit-text-field",
+        "title": "AppKit: NSTextField (sends its action when people press Return)",
+        "url": "https://developer.apple.com/documentation/appkit/nstextfield"
+      },
+      {
+        "id": "windows-keyboard-accessibility",
+        "title": "Windows apps: keyboard accessibility, navigation among UI elements (tab order)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements"
       }
     ]
   },
@@ -957,6 +1089,25 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-keyboard",
+      "date": "2026-11-25",
+      "version": "0.26.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Keyboard in a form, on every platform: the fields take focus in their reading order (WCAG 2.4.3); a form that is submitted has a submit button, and Enter (Return) in a single-line field submits it, while a multi-line field takes Enter as a new line; the form sets the return key's label for each single-line field's place, through the platform's own setting. On the web, where Enter submits from every single-line field (implicit submission) and enterkeyhint changes only the label, the label names the form's action (go, send, search, done) and never next. On iOS and Android, next on every field but the last, whose return key names the form's action and submits; Android's Next IME action moves focus by default, iOS moves it in the field's submit action with a focus state. Desktop keyboards have no on-screen return key. Android Developers' Compose focus and keyboard guides (develop/ui/compose/touch-input/) and text input guides (develop/ui/compose/text/), and Windows' input guidance (windows/apps/develop/input/), join the trusted sources.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 19, point 2b) among: A, nothing in the Forms foundation; B, focus order, a submit button and the return key's label per platform; C, as B but next on the way on the web too, with script moving focus on Enter instead of submitting; D, B without the label rule. The fields say what Enter does by their kind and leave the label to the form (enter-by-field-kind, #103 step 19, point 2).",
+      "refs": [
+        "wcag:2.4.3",
+        "html-implicit-submission",
+        "wcag-h32",
+        "html-enterkeyhint",
+        "uikit-return-key-type",
+        "swiftui-focus-state",
+        "compose-keyboard-options",
+        "compose-focus-traversal"
+      ]
+    },
     {
       "id": "forms-required-windows-name",
       "date": "2026-11-25",
@@ -1363,6 +1514,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.26.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-keyboard (#103 step 19, point 2b): the rule keyboard (focus in reading order, a submit button that Enter submits, the return key's label per platform: the form's action on the web, next on the way on iOS and Android) and its web, iOS, Android and desktop guidelines. Android Developers' Compose focus, keyboard and text guides and Windows' input guidance become trusted sources (a11y/sources.json)."
+    },
     {
       "version": "0.25.0",
       "date": "2026-11-25",
