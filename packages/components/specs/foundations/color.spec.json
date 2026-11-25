@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -367,6 +367,22 @@
       "id": "text-error",
       "description": "Error text on every surface.",
       "foreground": "global.text.on-base.functional.error.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default",
+        "global.bg.level.sunken.default"
+      ],
+      "minimum": 4.5,
+      "refs": [
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "text-warning",
+      "description": "Warning text on every surface.",
+      "foreground": "global.text.on-base.functional.warning.default",
       "backgrounds": [
         "global.bg.level.0.default",
         "global.bg.level.1.default",
@@ -776,7 +792,7 @@
   "accessibility": {
     "guidelines": [
       {
-        "text": "Text contrasts at least 4.5:1 with what it sits on, in every mode, family and enabled state: on-base text on every surface level and on sunken, on-accent and on-subtle text on their fills. Since the Figma library’s POC2 export the error roles pass everywhere, and since its export of 2026-11-12 the on-base warning icon reaches 3:1 in light mode too (3.09:1 at the lowest, the pair icon-warning).",
+        "text": "Text contrasts at least 4.5:1 with what it sits on, in every mode, family and enabled state: on-base text on every surface level and on sunken, on-accent and on-subtle text on their fills. Since the Figma library’s POC2 export the error roles pass everywhere, and the on-base warning text and icon read warning 600 in light mode (decision warning-on-base-600): 6.16:1 at the lowest, the pairs text-warning and icon-warning.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -960,6 +976,23 @@
   ],
   "decisions": [
     {
+      "id": "warning-on-base-600",
+      "date": "2026-11-25",
+      "version": "7.2.0",
+      "area": "color",
+      "status": "active",
+      "text": "In light mode, the on-base warning text, global.text.on-base.functional.warning.default, is functional warning 600 (#765818), the lightest step of the scale that passes 4.5:1 on every surface level, not the Figma library's warning 800 (#3E2D0C); and the on-base warning icon, global.icon.on-base.functional.warning.default, aliases the warning text role, as the error and success icon roles alias theirs, not the Figma library's warning 500 (#BD8107). Dark mode is unchanged: both read warning 300 (#FFC61C), the icon now through the text role. Two departures from the Figma library.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 3) among: A, keep the two roles as the Figma library maps them (icon warning 500 #BD8107, text warning 800 #3E2D0C, 3.97:1 apart); B, the field's warning icon in the text color; C, the message in the icon color (3.09:1, under 4.5:1); D, the text at warning 600 with the icon at 500; F, the text at warning 600 with the icon in the same color (chosen, the team asking that it work like the error and success mappings); E, the field's message on the on-subtle text role. Warning 800 gave 12.36:1 at the lowest, two steps darker than text needs; warning 600 is the lightest step that passes 4.5:1 (warning 500 gives 3.10:1). In light mode, on the levels 0 / 1 / 2 / 3 / sunken: 6.49 / 6.16 / 6.49 / 6.16 / 6.16:1 for the text and the icon (WCAG 1.4.3 and 1.4.11; the icon was 3.27 to 3.09:1), 5.86:1 on the subtle warning fill. Dark mode is unchanged: warning 300 for both, 8.38:1 at the lowest. Read by the Icon (color warning on a surface), the field family's and the Select's warning message and severity icon, the dataviz roles warning-base and the docs site's coverage note.",
+      "tokens": [
+        "global.text.on-base.functional.warning.default",
+        "global.icon.on-base.functional.warning.default"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "border-accent-functional-3-to-1",
       "date": "2026-11-19",
       "version": "7.1.0",
@@ -1068,6 +1101,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "7.2.0",
+      "date": "2026-11-25",
+      "note": "Decision warning-on-base-600, two departures from the Figma library: in light mode global.text.on-base.functional.warning.default is functional warning 600 #765818 (was warning 800 #3E2D0C): 6.49 / 6.16 / 6.49 / 6.16 / 6.16:1 on the levels 0 to 3 and sunken (was 13.02 / 12.36:1); global.icon.on-base.functional.warning.default aliases it, as the error and success icon roles alias their text role (was warning 500 #BD8107, 3.27 / 3.09:1; dark warning 300, now through the text role, unchanged). New pair text-warning. Read by the Icon, the field family, the Select and the docs site's coverage note."
+    },
     {
       "version": "7.1.0",
       "date": "2026-11-19",

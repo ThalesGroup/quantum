@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -398,7 +398,7 @@
         ]
       },
       {
-        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 6.49:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 6.16:1 and 8.38:1, success 7.44:1 and 5.92:1). Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -920,6 +920,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.1",
+      "date": "2026-11-25",
+      "note": "Fix, no decision of the Select changed: the Color foundation's decision warning-on-base-600 sets the warning text to warning 600 #765818 in light mode (was warning 800 #3E2D0C): message.color.warning is 6.49:1 on the default surface and 6.16:1 at the lowest (was 13.01:1 and 12.30:1); dark mode is unchanged. The tokens, CSS and template are unchanged."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-19",

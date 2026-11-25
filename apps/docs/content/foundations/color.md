@@ -29,7 +29,12 @@ reaches 3:1 on every surface level (it was 2.01:1 on level 1), and in dark mode 
 functional error 400 / 500 / 600 (#EE5248 for the default), not 600 / 700 / 800 (#C01619), so it reaches 3:1 on every dark surface
 level (it was 2.11:1 on level 3). The light warning border still falls to 2.95:1 on the subtle
 warning fill, a shortfall the team accepted knowingly: the scale has no step between warning 500
-and 600 (issue #119). The few colors the design system adds live apart, in `tokens/additions/`.
+and 600 (issue #119). It also departs in the warning text and icon on the page in light mode:
+`global.text.on-base.functional.warning.default` is warning 600 (#765818), the lightest step that
+passes 4.5:1 on every surface level, not 800 (#3E2D0C, 12.36:1, two steps darker than text needs),
+and `global.icon.on-base.functional.warning.default` aliases it, as the error and success icon roles
+alias their text role, not warning 500 (#BD8107). The few colors the design system adds live apart,
+in `tokens/additions/`.
 
 ## Palettes
 
@@ -136,12 +141,12 @@ increased-contrast variant yet (see Accessibility).
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
   The Specification section shows every ratio, computed from the tokens; the validator fails
   when one drops under the minimum.
-- **The warning icon reaches 3:1.** Since the Figma library's export of 2026-11-12 the warning
-  icon on the page (`global.icon.on-base.functional.warning.default`) reads warning 500 in light
-  mode, darkened for it: 3.09:1 at the lowest on the surface levels, over the 3:1 of
+- **The warning text and icon share one color.** On the page in light mode, the warning text and
+  icon read warning 600, as the error and the success read one color each: 6.16:1 at the lowest
+  on the surface levels, over the 4.5:1 of text and the 3:1 of
   [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
-  It read warning 300 before, the step that fixed dark mode, which gave 1.54:1 on the page in
-  light mode. The error roles, which missed the minimum before the POC2 export, pass everywhere
+  The Figma library maps the text to warning 800 (12.36:1) and the icon to warning 500 (3.09:1);
+  before its export of 2026-11-12 the icon read warning 300, 1.54:1 on the page in light mode. The error roles, which missed the minimum before the POC2 export, pass everywhere
   too.
 - **Measured as people see it.** Contrast is measured against the background the text is
   rendered over. The subtle neutral fill is translucent, so it is composited over each surface

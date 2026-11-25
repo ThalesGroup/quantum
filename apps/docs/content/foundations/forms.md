@@ -286,7 +286,7 @@ message's 14 and 16 px text, 4 px before the text.
 Its color is the on-base icon color of its severity, the color of the message text (for an
 error #C01619 in light mode and #F88275 in dark mode): it sits on the surface in both places,
 never on the fill, and keeps at least 5.81:1 in light mode and 5.30:1 in dark mode for an error,
-3.09:1 and 8.38:1 for a warning, 7.44:1 and 5.92:1 for a success, over the 3:1 a meaningful icon
+6.16:1 and 8.38:1 for a warning, 7.44:1 and 5.92:1 for a success, over the 3:1 a meaningful icon
 needs ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)).
 
 **The message** keeps the text color of its severity, the icon's color: for an error #C01619 in
@@ -294,8 +294,9 @@ light mode and #F88275 in dark mode, at least 5.81:1 and 5.30:1 on every surface
 ([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)). Its color sets it
 apart from the description as well as its size, which matters most when there is no icon.
 
-> **Not decided yet (step 6).** Whether the warning icon keeps its own role while the warning
-> message reads a darker text role (#BD8107 against #3E2D0C in light mode).
+For a warning, the icon and the message read warning 600 (#765818) in light mode and warning 300
+(#FFC61C) in dark mode: the Color foundation maps the warning icon role to the warning text, as
+it does for the error and the success, so each severity reads one color.
 
 ### Web
 

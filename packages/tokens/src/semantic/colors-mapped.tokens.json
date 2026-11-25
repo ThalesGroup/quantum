@@ -209,7 +209,7 @@
             "default": {"$type":"color","$value":"{functional.success.700}"}
           },
           "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.800}"}
+            "default": {"$type":"color","$value":"{functional.warning.600}","$description":"Warning 600 in light mode, not the Figma library's 800: the lightest step of the scale that passes 4.5:1 on every surface level (Color foundation, decision warning-on-base-600)."}
           },
           "severe": {
             "default": {"$type":"color","$value":"{functional.severe.700}"}
@@ -358,7 +358,7 @@
             "default": {"$type":"color","$value":"{global.text.on-base.functional.success.default}"}
           },
           "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.500}"}
+            "default": {"$type":"color","$value":"{global.text.on-base.functional.warning.default}","$description":"The warning text role, as the error and success icon roles alias theirs, not the Figma library's warning 500 (Color foundation, decision warning-on-base-600)."}
           },
           "severe": {
             "default": {"$type":"color","$value":"{global.text.on-base.functional.severe.default}"}
