@@ -67,6 +67,11 @@ This section explains the decisions behind it.
   [WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html),
   [WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
   [WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)).
+- **Keyboard on every platform.** People reach, edit and leave the field from a keyboard,
+  physical or assistive, on every platform, and focus is never trapped in it: the platform's native
+  text control provides this, so the keys are the platform's
+  ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html), [WCAG 2.1.2 No Keyboard Trap](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent), [EN 301 549, 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70) for native software).
+  The keys are listed per platform below, from each platform's own documentation.
 
 ### Web
 
@@ -95,6 +100,10 @@ This section explains the decisions behind it.
   Every size reaches a 44 by 44 pt hit region as on the Text field: it extends above and below the
   box, over the field's own label and help text, which keep their 6 pt
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
+- With a hardware keyboard on iPadOS 15 and later, Tab moves focus among focus groups, and
+  iPadOS supports keyboard navigation in text fields and text views, unlike buttons. On iPhone,
+  Full Keyboard Access reaches the field: use the native text field and test with it on
+  ([Apple HIG: Focus and selection, iPadOS](https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS), [Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices), [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
 
 ### Android
 
@@ -103,6 +112,21 @@ This section explains the decisions behind it.
   and the box does not take `minimumInteractiveComponentSize`, which would move the label
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
+- With a hardware keyboard, a D-pad or Switch Access, focus navigation reaches the field in a
+  logical order and can always leave it. Tab moves focus to the next focus target; Shift+Tab moves back; the arrow keys and the
+  D-pad move the caret, then move focus at the start or end of the text; Shift with the arrows
+  selects, Ctrl+A selects all ([Orange: Android keyboard navigation](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order), [Jetpack Compose: focus in text fields](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#one-dimensional-focus-traversal),
+  [two-dimensional traversal](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#two-dimensional-focus-traversal), [Jetpack Compose: keyboard commands](https://developer.android.com/develop/ui/compose/touch-input/keyboard-input/commands)).
+
+### Desktop
+
+- On macOS, Full Keyboard Access lets people navigate to the field and use it with the keyboard
+  alone; Tab and Shift-Tab move through the key view loop and Command-A selects all the text.
+  Use the native control and keep the standard keyboard shortcuts ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices),
+  [Apple HIG: standard keyboard shortcuts](https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts), [AppKit: nextKeyView](https://developer.apple.com/documentation/appkit/nsview/nextkeyview)).
+- On Windows, Tab follows the tab order, the order the controls are added, and skips a disabled
+  field; Shift+Tab goes back; in the field the arrow keys move the caret, since every key goes to
+  the text first ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements), [Windows: keyboard interactions, navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation), [text entry](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry)).
 
 ## Related
 

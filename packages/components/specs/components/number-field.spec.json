@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -394,6 +394,109 @@
         "platforms": [
           "web"
         ]
+      },
+      {
+        "key": "Tab",
+        "action": "On iPadOS 15 and later with a hardware keyboard, moves focus among focus groups, the field included: iPadOS supports keyboard navigation in text fields and text views.",
+        "refs": [
+          "hig-focus-ipados",
+          "hig-keyboards-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "Moves focus to the next focus target.",
+        "refs": [
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Shift+Tab",
+        "action": "Moves focus to the previous focus target.",
+        "refs": [
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Arrow keys, D-pad",
+        "action": "Move the caret; at the start or the end of the text (on the first or the last line) they move focus to the adjacent focus target.",
+        "refs": [
+          "compose-focus-text-fields-2d"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Shift+arrow keys, Ctrl+A",
+        "action": "Select characters, select all: the system handles them for a text field with a hardware keyboard.",
+        "refs": [
+          "compose-keyboard-commands"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Tab, Shift-Tab",
+        "action": "On macOS, move focus to the next or the previous view of the key view loop.",
+        "refs": [
+          "appkit-next-key-view",
+          "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Command-A",
+        "action": "On macOS, selects all the characters in the field.",
+        "refs": [
+          "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "On Windows, moves focus in the tab order, which follows the order the controls are added; a disabled field is removed from it.",
+        "refs": [
+          "windows-keyboard-accessibility"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Shift+Tab",
+        "action": "On Windows, moves focus in reverse tab order.",
+        "refs": [
+          "windows-keyboard-navigation"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Arrow keys",
+        "action": "On Windows, move the caret inside the field: in a text field every key goes to entering or navigating the text first.",
+        "refs": [
+          "windows-keyboard-navigation",
+          "windows-keyboard-text-entry"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "guidelines": [
@@ -509,6 +612,46 @@
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries",
           "understanding-focus-contrast"
+        ]
+      },
+      {
+        "text": "The field can be reached, edited and left from a keyboard, physical or assistive, on every platform, through the platform's native text control and its keyboard services, and focus is never trapped in it; the keys are the platform's.",
+        "refs": [
+          "wcag:2.1.1",
+          "en-301-549-keyboard",
+          "wcag:2.1.2",
+          "understanding-no-keyboard-trap"
+        ]
+      },
+      {
+        "text": "Use the native text field so Full Keyboard Access reaches it, and test the app with Full Keyboard Access on. Unlike buttons, text fields and text views have keyboard navigation on iPadOS.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "With a hardware keyboard, a D-pad or Switch Access, focus navigation reaches the field and highlights it, in a logical order, and focus can always move away from it: by default Compose does not trap focus in a text field.",
+        "refs": [
+          "orange-android-focus-access",
+          "orange-android-focus-order",
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, Full Keyboard Access lets people navigate to the field and use it with the keyboard alone: use the native control and keep the standard keyboard shortcuts.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -984,6 +1127,81 @@
         "id": "mdn-aria-required",
         "title": "MDN: aria-required (a label that already says required)",
         "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples"
+      },
+      {
+        "id": "en-301-549-keyboard",
+        "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
+      },
+      {
+        "id": "understanding-no-keyboard-trap",
+        "title": "Understanding WCAG 2.2: 2.1.2 No Keyboard Trap, intent (standard exit methods)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent"
+      },
+      {
+        "id": "hig-keyboards-best-practices",
+        "title": "Apple HIG: Keyboards, best practices (Full Keyboard Access; iPadOS keyboard navigation in text fields and text views)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices"
+      },
+      {
+        "id": "hig-keyboards-shortcuts",
+        "title": "Apple HIG: Keyboards, standard keyboard shortcuts (Shift-Tab, Command-A)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts"
+      },
+      {
+        "id": "hig-accessibility-speech",
+        "title": "Apple HIG: Accessibility, speech (keyboard alone, Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech"
+      },
+      {
+        "id": "hig-focus-ipados",
+        "title": "Apple HIG: Focus and selection, iPadOS (Tab moves focus among focus groups)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS"
+      },
+      {
+        "id": "appkit-next-key-view",
+        "title": "AppKit: NSView.nextKeyView (the key view loop)",
+        "url": "https://developer.apple.com/documentation/appkit/nsview/nextkeyview"
+      },
+      {
+        "id": "orange-android-focus-access",
+        "title": "Orange accessibility guidelines, Android: access to interactive elements (keyboard navigation)",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-order",
+        "title": "Orange accessibility guidelines, Android: keyboard navigation order",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order"
+      },
+      {
+        "id": "compose-focus-text-fields",
+        "title": "Android Developers, Compose: focus in text fields (Tab, Shift+Tab, arrow keys)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#one-dimensional-focus-traversal"
+      },
+      {
+        "id": "compose-focus-text-fields-2d",
+        "title": "Android Developers, Compose: focus in text fields, two-dimensional traversal (arrow keys, D-pad)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#two-dimensional-focus-traversal"
+      },
+      {
+        "id": "compose-keyboard-commands",
+        "title": "Android Developers, Compose: keyboard commands (default shortcuts of a text field)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/keyboard-input/commands"
+      },
+      {
+        "id": "windows-keyboard-accessibility",
+        "title": "Windows apps: keyboard accessibility, navigation among UI elements (tab order)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements"
+      },
+      {
+        "id": "windows-keyboard-navigation",
+        "title": "Windows apps: keyboard interactions, navigation (Shift+Tab, the caret in a text box)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation"
+      },
+      {
+        "id": "windows-keyboard-text-entry",
+        "title": "Windows apps: keyboard interactions, text entry",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry"
       }
     ]
   },
@@ -1125,6 +1343,24 @@
     "slider"
   ],
   "decisions": [
+    {
+      "id": "keyboard-on-every-platform",
+      "date": "2026-11-25",
+      "version": "0.22.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Being reached, edited and left from a keyboard is a requirement on every platform (WCAG 2.1.1 on the web, EN 301 549 11.2.1.1.1 for native software), met, as on the Button, through the platform's native text control and its keyboard services, and focus is never trapped in the field (WCAG 2.1.2). Unlike the Button, the keys are named on every platform whose own documentation names them for text entry: Tab on the web; on iPadOS, Tab among focus groups (iPadOS supports keyboard navigation in text fields and text views, so the Button's line against keyboard navigation of one's own is not carried) and Full Keyboard Access; on Android, Shift+Tab back, the arrow keys and the D-pad moving the caret then leaving at the edge of the text, the system's selection keys, and on Android Tab moves to the next focus target from this single-line field (a multi-line one takes it as a character); on macOS, Tab and Shift-Tab through the key view loop and Command-A; on Windows, the tab order, Shift+Tab and the arrow keys moving the caret. Each platform keeps its own behaviour. Three prefixes join the trusted sources for it: Android Developers' Compose focus and keyboard pages (develop/ui/compose/touch-input/) and text pages (develop/ui/compose/text/), and Windows' input pages (windows/apps/develop/input/).",
+      "refs": [
+        "wcag:2.1.1",
+        "wcag:2.1.2",
+        "en-301-549-keyboard",
+        "hig-keyboards-best-practices",
+        "hig-focus-ipados",
+        "compose-focus-text-fields",
+        "appkit-next-key-view",
+        "windows-keyboard-accessibility"
+      ]
+    },
     {
       "id": "touch-target-hit-region",
       "date": "2026-11-25",
@@ -1697,6 +1933,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.22.0",
+      "date": "2026-11-25",
+      "note": "Decision keyboard-on-every-platform (#103 step 19, point 1): keyboard access stated on every platform, with the keys each platform's own documentation names for text entry (iPadOS, Android, macOS, Windows) in the keyboard contract, and the generic, iOS, Android and macOS guidelines; Android Developers' Compose focus, keyboard and text pages and Windows' input pages join the trusted sources. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.21.0",
       "date": "2026-11-25",
