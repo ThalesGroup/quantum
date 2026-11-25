@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.27.1",
+  "version": "0.27.2",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -218,7 +218,7 @@
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "The field must be filled to submit the form. It draws the mark that markedFields asks for (\"(required)\" on a required field, \"(optional)\" on one that is not), and the asterisk on Android and Windows."
+      "description": "The field must be filled to submit the form. It draws the mark that markedFields asks for (\"(required)\" on a required field, \"(optional)\" on one that is not), and the asterisk on Android and Windows. Ignored on a read-only field, which people cannot fill: the field then has neither the required state nor a mark."
     },
     {
       "id": "readonly",
@@ -799,12 +799,13 @@
         ]
       },
       {
-        "text": "A read-only field keeps its value focusable and selectable and is exposed as read-only; a disabled field leaves the focus order. Prefer read-only when people may need to read or copy the value.",
+        "text": "A read-only field keeps its value focusable and selectable and is exposed as read-only; a disabled field leaves the focus order. Prefer read-only when people may need to read or copy the value. A read-only field is never required: the required attribute is not permitted with readonly and has no effect there, so the template leaves it out, and the mark with it.",
         "refs": [
           "html-readonly",
           "html-aam-readonly",
           "html-disabled",
-          "apg-disabled-focus"
+          "apg-disabled-focus",
+          "mdn-readonly-interactions"
         ],
         "platforms": [
           "web"
@@ -972,6 +973,11 @@
         "id": "html-readonly",
         "title": "HTML: the readonly attribute",
         "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-readonly"
+      },
+      {
+        "id": "mdn-readonly-interactions",
+        "title": "MDN: the readonly attribute, attribute interactions (required has no effect on a read-only field)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/readonly#attribute_interactions"
       },
       {
         "id": "html-required",
@@ -2225,6 +2231,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.27.2",
+      "date": "2026-11-25",
+      "note": "Fix: a read-only field is never required. The required property says it is ignored with readonly, the web guideline on read-only says why and cites MDN (attribute interactions), and the template writes neither the required attribute nor a mark when both are set. No example or screen sets both; nothing else renders differently."
+    },
     {
       "version": "0.27.1",
       "date": "2026-11-25",

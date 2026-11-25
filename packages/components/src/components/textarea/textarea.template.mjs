@@ -49,7 +49,9 @@ export function render(props = {}) {
 
   // The required mark the form asks for (decision marked-fields): "(optional)" on a field that is not required,
   // "(required)" on a required one, hidden from assistive technology since the required attribute says it (mark-part).
-  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
+  // A read-only field is never required: required has no effect with readonly (MDN), so neither the attribute nor a mark.
+  const isRequired = required && !readonly;
+  const mark = readonly && required ? null : markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
 
   const controlId = id ?? `ds-textarea-${++count}`;
   const descriptionId = `${controlId}-description`;
@@ -65,7 +67,7 @@ export function render(props = {}) {
   const controlAttrs = ['class="ds-textarea__control"', 'data-part="control"', `id="${escapeAttr(controlId)}"`, `rows="${escapeAttr(Math.max(1, Number(rows) || 3))}"`];
   if (name) controlAttrs.push(`name="${escapeAttr(name)}"`);
   if (placeholder) controlAttrs.push(`placeholder="${escapeAttr(placeholder)}"`);
-  if (required) controlAttrs.push('required');
+  if (isRequired) controlAttrs.push('required');
   if (disabled) controlAttrs.push('disabled');
   if (readonly) controlAttrs.push('readonly');
   if (severity === 'error') controlAttrs.push('aria-invalid="true"');

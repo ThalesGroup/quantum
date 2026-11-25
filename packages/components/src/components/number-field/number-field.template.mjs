@@ -53,7 +53,9 @@ export function render(props = {}) {
 
   // The required mark the form asks for (decision marked-fields): "(optional)" on a field that is not required,
   // "(required)" on a required one, hidden from assistive technology since the required attribute says it (mark-part).
-  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
+  // A read-only field is never required: required has no effect with readonly (MDN), so neither the attribute nor a mark.
+  const isRequired = required && !readonly;
+  const mark = readonly && required ? null : markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
 
   const inputId = id ?? `ds-number-field-${++count}`;
   const descriptionId = `${inputId}-description`;
@@ -75,7 +77,7 @@ export function render(props = {}) {
   if (min != null && min !== '') inputAttrs.push(`min="${escapeAttr(min)}"`);
   if (max != null && max !== '') inputAttrs.push(`max="${escapeAttr(max)}"`);
   if (step != null && step !== '') inputAttrs.push(`step="${escapeAttr(step)}"`);
-  if (required) inputAttrs.push('required');
+  if (isRequired) inputAttrs.push('required');
   if (disabled) inputAttrs.push('disabled');
   if (readonly) inputAttrs.push('readonly');
   if (severity === 'error') inputAttrs.push('aria-invalid="true"');

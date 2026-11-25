@@ -50,7 +50,9 @@ export function render(props = {}) {
 
   // The required mark the form asks for (decision marked-fields): "(optional)" on a field that is not required,
   // "(required)" on a required one, hidden from assistive technology since the required attribute says it (mark-part).
-  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
+  // A read-only field is never required: required has no effect with readonly (MDN), so neither the attribute nor a mark.
+  const isRequired = required && !readonly;
+  const mark = readonly && required ? null : markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
 
   const inputId = id ?? `ds-text-field-${++count}`;
   const descriptionId = `${inputId}-description`;
@@ -69,7 +71,7 @@ export function render(props = {}) {
   // With a leading icon, always a placeholder attribute (empty when there is none): the icon's color reads
   // :placeholder-shown to tell an empty field (decision leading-icon-color).
   if (placeholder || iconStart) inputAttrs.push(`placeholder="${escapeAttr(placeholder ?? '')}"`);
-  if (required) inputAttrs.push('required');
+  if (isRequired) inputAttrs.push('required');
   if (disabled) inputAttrs.push('disabled');
   if (readonly) inputAttrs.push('readonly');
   if (severity === 'error') inputAttrs.push('aria-invalid="true"');
