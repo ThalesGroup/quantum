@@ -99,13 +99,15 @@ This section explains the decisions behind it.
 - A stepper is a two-segment control that increases or decreases an incremental value, next to
   a field that shows it: the iOS counterpart of the spin control
   ([Apple HIG: Steppers](https://developer.apple.com/design/human-interface-guidelines/steppers)).
-  The small and medium sizes fall under the 44 by 44 pt hit region today
+  Every size reaches a 44 by 44 pt hit region as on the Text field: it extends above and below the
+  box, over the field's own label and help text, which keep their 6 pt
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; every size falls under
-  it today. Expose an error with the error semantics
+- Interactive elements need a 48 by 48 dp touch target, and every size reaches it as on the Text
+  field: the touch target extends above and below the box, over the field's own label and help text,
+  and the box does not take `minimumInteractiveComponentSize`, which would move the label. Expose an error with the error semantics
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Jetpack Compose: error semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components)).

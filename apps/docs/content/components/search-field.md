@@ -28,7 +28,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 ## Sizes and states
 
-Sizes follow the Text field (small, medium, large). States are default, hover, focus visible
+Sizes follow the Text field (small, medium, large), their touch targets on iOS and Android included. States are default, hover, focus visible
 and disabled: no invalid, no read-only.
 
 The search glyph follows the text beside it: as light as the placeholder while the field is
@@ -92,13 +92,15 @@ This section explains the decisions behind it.
 - A search field displays a search icon, a clear button and placeholder text; use the
   placeholder to help people know what they can search for
   ([Apple HIG: Search fields](https://developer.apple.com/design/human-interface-guidelines/search-fields)).
-  The small and medium sizes fall under the 44 by 44 pt hit region today
+  Every size reaches a 44 by 44 pt hit region as on the Text field: it extends above and below the
+  box, over the field's own label and help text, which keep their 6 pt
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; every size falls under
-  it today
+- Interactive elements need a 48 by 48 dp touch target, and every size reaches it as on the Text
+  field: the touch target extends above and below the box, over the field's own label and help text,
+  and the box does not take `minimumInteractiveComponentSize`, which would move the label
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
 

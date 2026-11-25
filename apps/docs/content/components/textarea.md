@@ -36,6 +36,11 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 Height, text size and inline padding are those of the Button of the same size, so a field and a
 button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), the message that says what to fix takes that size too, and the description is smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form.
 
+On iOS and Android the sizes are drawn the same: each reaches the platform's touch target (44 by 44 pt,
+48 by 48 dp) with a hit region centered on the box, which may cover the field's own label and help
+text. Below a field without help text, keep the next control or label at least that far away: 8 pt or
+10 dp at small, 4 pt or 6 dp at medium, 2 dp at large (iOS and Android below).
+
 ## Rows
 
 The `rows` property sets how many lines are visible before the box scrolls; three by default.
@@ -121,6 +126,7 @@ This section explains the decisions behind it.
   and Tab reaches the control ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)).
 - **Target size.** Every size is at least 28 px high, above the 24 px minimum
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
+  On iOS and Android a hit region centered on the box reaches the platform's target (below).
 - **Read-only before disabled.** A read-only textarea keeps its text reachable and copyable; a
   disabled one leaves the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
@@ -158,15 +164,20 @@ This section explains the decisions behind it.
 - Show a hint to help communicate the purpose of a text field, and include a separate label
   because placeholder text disappears when people start typing
   ([Apple HIG: Text fields, best practices](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
-- A control needs a 44 by 44 pt hit region; the small and medium sizes fall under it today
- 
+- Apple's default control size on iOS is 44 by 44 pt, and every size has a hit region of at least
+  that: the small and medium boxes keep their drawn size and the hit region extends 8 and 4 pt above
+  and below them, over the field's own label and help text, which are not targets and keep their 6 pt;
+  keep other controls and the next field's label out of it. The large box is the hit region
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; every size falls under it
-  today. Expose an error with the error semantics so the message
-  is announced with the field
+- Interactive elements need a 48 by 48 dp touch target, and every size reaches it without growing:
+  the touch target extends 10, 6 or 2 dp above and below the box, over the field's own label and help
+  text, which keep their 6 dp; keep other controls and the next field's label out of it. Compose
+  extends a small clickable's touch target outside its bounds by itself: do not give the box
+  `minimumInteractiveComponentSize`, which would reserve that space and move the label. Expose an
+  error with the error semantics so the message is announced with the field
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Jetpack Compose: error semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components)).

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -571,7 +571,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (28 and 36 pt) fall under it on iOS today and the large size (44 pt) reaches it: the Figma library has no platform heights.",
+        "text": "Apple's default control size on iOS is 44 x 44 pt, and every size has a hit region of at least that: the small and medium boxes (28 and 36 pt high) keep their drawn size and the hit region extends 8 and 4 pt above and below them, centered, over its own label, description and message, which keep their 6 pt; the layout keeps it clear of other controls and of another field's label. The large box (44 pt) is the hit region.",
         "refs": [
           "hig-accessibility-mobility"
         ],
@@ -580,7 +580,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; all three sizes (28, 36 and 44 dp) fall under it on Android today. Expose an error with the error semantics so the message is announced with the field.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp, and every size reaches it without growing: the box (28, 36 or 44 dp high) keeps its drawn size and its touch target extends 10, 6 or 2 dp above and below it, centered, over its own label, description and message, which keep their 6 dp; the layout keeps it clear of other controls and of another field's label. Compose extends a small clickable's touch target outside its bounds by itself, so the box does not take the minimumInteractiveComponentSize modifier, which would reserve that space and move the label. Expose an error with the error semantics so the message is announced with the field.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -1125,6 +1125,24 @@
     "slider"
   ],
   "decisions": [
+    {
+      "id": "touch-target-hit-region",
+      "date": "2026-11-25",
+      "version": "0.21.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "As on the Button, on iOS and Android every size reaches the platform's touch target without growing: the hit region is at least 44 x 44 pt on iOS and 48 x 48 dp on Android, centered on the box. It may extend over its own label, description and message, which are not targets, so the 6 px between the parts stays on every platform; the layout keeps it clear of every other control and of another field's label. Above and below the box it extends 8, 4 and 0 pt on iOS and 10, 6 and 2 dp on Android at the small, medium and large sizes. On Android, Compose extends a small clickable's touch target outside its bounds by itself; the box does not take minimumInteractiveComponentSize, which would reserve the space around it and move the label. The drawn field, its parts and its tokens stay the same on every platform, as in Figma; the web (WCAG 2.5.8, 24 x 24 CSS px) and desktop already meet their targets with the box.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 18, point 1) among: A, the Button's rule as is, the hit region reserved all around the box (on iOS and Android the label would sit 14, 10 and 6 pt or 16, 12 and 8 dp from the box instead of 6, unlike the web and Figma); B, the hit region over the field's own text, reserved only against other controls and other fields' labels (recommended, chosen); C, the whole field as the target, a tap on the label or the help text focusing the field (no platform documents it, and selecting text in a description would focus the field); D, platform heights of 44 pt and 48 dp (a semantic addition; the three sizes would look the same on mobile and no longer line up with the Button, undoing box-height-button there). No trusted source says that tapping a field's label focuses it on iOS or Android, so the label does not count as part of the target. Measured on the review sheet: with 16 px between fields nothing has to be kept; with none, the next small field is kept 8 pt (iOS) or 10 dp (Android) lower; a small Search field 8 px above navigation items keeps 2 dp more on Android.",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "refs": [
+        "hig-accessibility-mobility",
+        "android-large-controls",
+        "compose-target-sizes"
+      ]
+    },
     {
       "id": "mark-part",
       "date": "2026-11-25",
@@ -1679,6 +1697,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.21.0",
+      "date": "2026-11-25",
+      "note": "Decision touch-target-hit-region (#103 step 18, point 1): on iOS every size has a hit region of at least 44 x 44 pt and on Android a touch target of at least 48 x 48 dp, centered on the box, extending over the field's own text (its 6 px part gap kept) and kept clear of other controls and of other fields' labels; the drawn field is unchanged. The iOS and Android guidelines state how each size reaches the target instead of the shortfall. No token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.20.0",
       "date": "2026-11-25",
