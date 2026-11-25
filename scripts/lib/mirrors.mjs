@@ -46,7 +46,7 @@ export const MIRRORS = [
     of: 'text-field',
     paths: [],
     // A search field has no severity and no read-only state, so no message (decision no-error-state).
-    ignore: ['control.background.readonly', 'control.background.error', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'control.outline-width.error', 'control.outline-width.warning', 'control.outline-width.success', 'control.outline-color.error', 'control.outline-color.warning', 'control.outline-color.success', 'message.*', 'severity-icon.*'],
+    ignore: ['control.background.readonly', 'control.background.error', 'control.background.warning', 'control.background.success', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'control.outline-width.error', 'control.outline-width.warning', 'control.outline-width.success', 'control.outline-color.error', 'control.outline-color.warning', 'control.outline-color.success', 'message.*', 'severity-icon.*'],
     // The search glyph is the Text field's leading icon (decision leading-icon-optional): icon.* and
     // control.padding-inline-start.* are compared like the rest. padding-inline-start is a SUM, not an
     // independent value: icon.margin-inline + icon.size + the gap before the text (8 + 16 + 4,

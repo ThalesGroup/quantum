@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.9",
+  "version": "0.10.10",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -657,6 +657,15 @@
   ],
   "decisions": [
     {
+      "id": "severity-fill-subtle",
+      "date": "2026-11-25",
+      "version": "0.10.10",
+      "area": "color",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms foundation step 2b), its box with a warning or a success takes the fill of the Text field: the subtle functional background of the severity (global.bg.subtle.functional.warning.default, global.bg.subtle.functional.success.default), at rest and on hover alike, as in error. No token today: the Search field has no severity yet, so the mirror check ignores control.background.warning and control.background.success (scripts/lib/mirrors.mjs).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 1, also the reference rendering of the Forms foundation step 6, forms-severity-fill) among three options, measured at every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, keep the page-level fill for warning and success, only the error tinted; B, the error's rule for every severity, the subtle fill of the severity at rest and on hover alike (chosen); C, the subtle fill at rest and its hover step on hover. B is the Figma prototype's fill (#FFF1C7, #DBFAE6) and one rule for the three severities. On the fills, light / dark: placeholder 5.50 / 6.55:1 (warning) and 5.55 / 6.48:1 (success), value 17.15 / 11.54:1 and 17.30 / 11.43:1 (WCAG 1.4.3); success border on its fill 7.17 / 6.16:1; the light warning border is 2.95:1 on its fill, the shortfall accepted in the Forms foundation step 5b (issue #119), and keeps 3.09:1 against the surface (WCAG 1.4.11). C would make the severities differ on hover and bring the light warning border to 2.66:1 on the hover fill."
+    },
+    {
       "id": "leading-icon-decorative",
       "date": "2026-11-20",
       "version": "0.10.9",
@@ -984,6 +993,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.10",
+      "date": "2026-11-25",
+      "note": "Decision severity-fill-subtle: records that the box takes the subtle warning or success fill once the Search field has a severity (Forms step 2b). No token or rendering change."
+    },
     {
       "version": "0.10.9",
       "date": "2026-11-20",

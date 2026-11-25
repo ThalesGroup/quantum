@@ -65,12 +65,12 @@ euros**, not **Amount** next to a euro glyph. It is never a button; an action ne
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
 | Focus visible | The box has focus, from the keyboard or a pointer. | The focus color as a 2.4 px outline drawn flush over the border, which keeps its width, so the text does not move. An editable field shows it however it was focused. |
 | Error | `severity` property set to error, after validation. | The box takes the subtle error fill, on hover too; an outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
-| Warning | `severity` property set to warning. | An outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
-| Success | `severity` property set to success. | An outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
+| Warning | `severity` property set to warning. | The box takes the subtle warning fill, on hover too; an outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | The box takes the subtle success fill, on hover too; an outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
 | Read-only | `readonly` property. | The box takes the level 1 surface, which is close to the resting one, so say in the description that it is read-only; the value can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, value, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
-A severity and hover combine (the hover tint under the severity outline; an error keeps its fill on hover), and disabled wins over
+A severity and hover combine (the severity outline over the box; a severity keeps its fill on hover), and disabled wins over
 every other state: the states matrix shows what the tokens decide.
 
 ### Severity icon
@@ -129,10 +129,13 @@ This section explains the decisions behind it.
   Text needs 4.5:1 ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
   the error text passes on every surface since the Figma library's POC2 export moved it to a
   darker step (5.79:1 on the level 1 surface in light mode, the lowest).
-  In error the box is filled with the subtle error background, a solid color, at rest and on
-  hover alike: the value keeps 16.91:1 in light mode and 11.67:1 in dark on it, the placeholder
-  5.42:1 and 6.62:1, and the error border 5.45:1 and 5.14:1 against it. Its hover step would bring
-  the placeholder to 4.33:1 in light mode, so the fill does not change on hover.
+  With a severity the box is filled with the subtle background of that severity, a solid color,
+  at rest and on hover alike: the value keeps at least 16.91:1 in light mode and 11.43:1 in dark
+  on it, the placeholder 5.42:1 and 6.48:1. The error and success borders keep at least 5.14:1 and
+  6.16:1 against their fill; the light warning border is 2.95:1 against its fill, a known shortfall
+  tracked in issue #119, and 3.09:1 against the surface, which is what identifies the field. The
+  error hover step would bring the placeholder to 4.33:1 in light mode, so no severity fill changes
+  on hover.
 - **The leading icon is decoration.** It is hidden from assistive technology on every platform
   and never names the field, so it needs no text alternative of its own; what it suggests must
   already be in the label or the description, as for any image whose information is given by the

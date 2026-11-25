@@ -104,7 +104,15 @@
         },
         "error": {
           "$value": "{global.bg.subtle.functional.error.default}",
-          "$description": "The fill of a control in error, at rest and on hover alike: the subtle error background (Forms foundation, decision forms-error-fill). Its hover step would bring the placeholder under 4.5:1 in light mode."
+          "$description": "The fill of a control in error, at rest and on hover alike: the subtle error background (Forms foundation, decision forms-severity-fill). Its hover step would bring the placeholder under 4.5:1 in light mode."
+        },
+        "warning": {
+          "$value": "{global.bg.subtle.functional.warning.default}",
+          "$description": "The fill of a control with a warning, at rest and on hover alike: the subtle warning background (Forms foundation, decision forms-severity-fill), as in error."
+        },
+        "success": {
+          "$value": "{global.bg.subtle.functional.success.default}",
+          "$description": "The fill of a control with a success, at rest and on hover alike: the subtle success background (Forms foundation, decision forms-severity-fill), as in error."
         },
         "readonly": {
           "$value": "{global.bg.level.1.default}"

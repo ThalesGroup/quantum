@@ -507,22 +507,22 @@ export default {
     {
       id: 'form-control-error', section: 'Text field', component: 'text-field', title: 'Error (.is-invalid)', tier: 'component',
       selector: '.form-control.is-invalid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle).'] },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle; every severity: severity-fill-subtle).'] },
     },
     {
       id: 'form-control-user-error', section: 'Text field', component: 'text-field', title: 'Error (:user-invalid)', tier: 'component',
       selector: '[data-bs-validate] .form-control:user-invalid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle).'] },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle; every severity: severity-fill-subtle).'] },
     },
     {
       id: 'form-control-success', section: 'Text field', component: 'text-field', title: 'Success (.is-valid)', tier: 'component',
       selector: '.form-control.is-valid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success', '--bs-control-bg': ['text-field.control.background.success', 'The subtle success fill, at rest and on hover alike (decision severity-fill-subtle).'] },
     },
     {
       id: 'form-control-user-success', section: 'Text field', component: 'text-field', title: 'Success (:user-valid)', tier: 'component',
       selector: '[data-bs-validate~=valid] .form-control:user-valid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success', '--bs-control-bg': ['text-field.control.background.success', 'The subtle success fill, at rest and on hover alike (decision severity-fill-subtle).'] },
     },
     {
       id: 'chip-input', section: 'Text field', component: 'text-field', title: '.chip-input', tier: 'component',

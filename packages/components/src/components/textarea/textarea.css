@@ -10,7 +10,7 @@
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
  *    spec order: default < hover < focus-visible < error < warning < success < readonly < disabled: hover only tints the
- *    background, a severity recolors the border (and the error, the fill, which hover keeps), so they combine as the token rule combines them.
+ *    background, a severity recolors the border and the fill, which hover keeps, so they combine as the token rule combines them.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
@@ -252,7 +252,7 @@
   --_control-background: var(--_control-background-hover);
 }
 
-/* Severity: the control's border takes the severity's color, the message its text color and, for the error, the fill. Only the
+/* Severity: the control's border takes the severity's color, the message its text color, and the box the severity's subtle fill. Only the
    error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
 .ds-textarea:where([data-state="error"], [data-severity="error"]) {
   --_message-color: var(--textarea-message-color-error);
@@ -267,6 +267,9 @@
 
 .ds-textarea:where([data-state="warning"], [data-severity="warning"]) {
   --_message-color: var(--textarea-message-color-warning);
+  /* The warning fill holds on hover, as the error's. */
+  --_control-background: var(--textarea-control-background-warning);
+  --_control-background-hover: var(--textarea-control-background-warning);
 }
 .ds-textarea:where([data-state="warning"], [data-severity="warning"]) .ds-textarea__control {
   --_control-border-color: var(--textarea-control-border-color-warning);
@@ -274,6 +277,9 @@
 
 .ds-textarea:where([data-state="success"], [data-severity="success"]) {
   --_message-color: var(--textarea-message-color-success);
+  /* The success fill holds on hover, as the error's. */
+  --_control-background: var(--textarea-control-background-success);
+  --_control-background-hover: var(--textarea-control-background-success);
 }
 .ds-textarea:where([data-state="success"], [data-severity="success"]) .ds-textarea__control {
   --_control-border-color: var(--textarea-control-border-color-success);

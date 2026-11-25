@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -253,14 +253,14 @@
       "trigger": "property",
       "property": "severity",
       "value": "warning",
-      "description": "Severity warning: an outline in the warning color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the warning color. No web state beyond the data attribute."
+      "description": "Severity warning: the box is filled with the subtle warning background, on hover too, an outline in the warning color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the warning color. No web state beyond the data attribute."
     },
     {
       "id": "success",
       "trigger": "property",
       "property": "severity",
       "value": "success",
-      "description": "Severity success: an outline in the success color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the success color. No web state beyond the data attribute."
+      "description": "Severity success: the box is filled with the subtle success background, on hover too, an outline in the success color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the success color. No web state beyond the data attribute."
     },
     {
       "id": "readonly",
@@ -412,13 +412,13 @@
         ]
       },
       {
-        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). On the error fill (global.bg.subtle.functional.error.default, at rest and on hover), the value is 16.91:1 and 11.67:1 and the placeholder 5.42:1 and 6.62:1. Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). On the severity fills (global.bg.subtle.functional.<severity>.default, at rest and on hover), the value is at least 16.91:1 (light) and 11.43:1 (dark) and the placeholder 5.42:1 and 6.48:1: error 16.91 / 11.67:1 and 5.42 / 6.62:1, warning 17.15 / 11.54:1 and 5.50 / 6.55:1, success 17.30 / 11.43:1 and 5.55 / 6.48:1. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. Against the warning fill the warning border is 2.95:1 in light mode, a known shortfall (issue #119; Color foundation pair border-accent-warning-on-fill), and 8.27:1 in dark mode; against the success fill the success border is 7.17:1 and 6.16:1.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries",
@@ -1005,6 +1005,22 @@
   ],
   "decisions": [
     {
+      "id": "severity-fill-subtle",
+      "date": "2026-11-25",
+      "version": "0.16.0",
+      "area": "color",
+      "status": "active",
+      "text": "The box of a field with a warning or a success is filled like the box in error, with the subtle functional background of its severity, at rest and on hover alike: global.bg.subtle.functional.warning.default (text-field.control.background.warning, #FFF1C7 in light mode, #1F1504 in dark mode) and global.bg.subtle.functional.success.default (text-field.control.background.success, #DBFAE6 and #011C16), under the severity border and outline. Read-only and disabled keep their own fills. The value, the placeholder, the label, the description and the message keep their colors. The Number field, the Search field and the Textarea follow through the mirror check (decision field-family-mirrors).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 1, also the reference rendering of the Forms foundation step 6, forms-severity-fill) among three options, measured at every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, keep the page-level fill for warning and success, only the error tinted; B, the error's rule for every severity, the subtle fill of the severity at rest and on hover alike (chosen); C, the subtle fill at rest and its hover step on hover. B is the Figma prototype's fill (#FFF1C7, #DBFAE6) and one rule for the three severities. On the fills, light / dark: placeholder 5.50 / 6.55:1 (warning) and 5.55 / 6.48:1 (success), value 17.15 / 11.54:1 and 17.30 / 11.43:1 (WCAG 1.4.3); success border on its fill 7.17 / 6.16:1; the light warning border is 2.95:1 on its fill, the shortfall accepted in the Forms foundation step 5b (issue #119), and keeps 3.09:1 against the surface (WCAG 1.4.11). C would make the severities differ on hover and bring the light warning border to 2.66:1 on the hover fill.",
+      "tokens": [
+        "text-field.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "leading-icon-decorative",
       "date": "2026-11-20",
       "version": "0.15.0",
@@ -1398,6 +1414,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.16.0",
+      "date": "2026-11-25",
+      "note": "Decision severity-fill-subtle: a field with a warning or a success is filled with the subtle background of its severity (new tokens control.background.warning and .success), at rest and on hover alike, as the error is; it kept the page-level fill before. Placeholder on the fills 5.50:1 and 5.55:1 (light), 6.55:1 and 6.48:1 (dark); value 17.15:1 and 17.30:1, 11.54:1 and 11.43:1; success border on its fill 7.17:1 and 6.16:1; the light warning border is 2.95:1 on its fill (known, issue #119)."
+    },
     {
       "version": "0.15.0",
       "date": "2026-11-20",
