@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.27.3",
+  "version": "0.27.4",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -1507,7 +1507,7 @@
         "label": "Email address",
         "value": "ada@exmaple.com",
         "severity": "warning",
-        "message": "Warning: check the domain, it looks like a typo of example.com."
+        "message": "Check the domain: did you mean example.com?"
       }
     },
     {
@@ -1519,7 +1519,7 @@
         "label": "Username",
         "value": "ada.lovelace",
         "severity": "success",
-        "message": "Success: this username is available."
+        "message": "This username is available."
       }
     },
     {
@@ -2256,6 +2256,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.27.4",
+      "date": "2026-11-25",
+      "note": "Fix: the warning and success examples carry only what to check or what was confirmed (\"Check the domain: did you mean example.com?\", \"This username is available.\"), no longer the severity word, which the Forms decision forms-severity-word leaves to the component; their icon, in the message by default, is named after the severity. The texts that still put the word on the author (the severityIcon option none, the docs' content guidance) change with the templates that will write it."
+    },
     {
       "version": "0.27.3",
       "date": "2026-11-25",
