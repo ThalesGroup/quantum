@@ -238,6 +238,12 @@ On Windows, required input is marked with an asterisk on its label
 explained once before the first field, and drawn as on Android (red, the label's size and weight,
 4 px after it); the control sets `AutomationProperties.IsRequiredForForm`
 ([IsRequiredForForm](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform)).
+The asterisk stays in the control's accessible name: Microsoft asks that the UI Automation name
+be the label as shown, not a modified version of it
+([UI Automation: UIA_NamePropertyId](https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids),
+[Windows: accessible name](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/basic-accessibility-information#accessible-name)),
+and no page says that Narrator announces `IsRequiredForForm`, so hiding the asterisk could leave
+"required" unsaid.
 On macOS, Apple gives no mark, so the generic words apply, as on iOS. A required control sets
 `accessibilityRequired`
 ([AppKit: isAccessibilityRequired()](https://developer.apple.com/documentation/appkit/nsaccessibilityprotocol/isaccessibilityrequired())),

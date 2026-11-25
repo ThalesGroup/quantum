@@ -185,9 +185,11 @@ trusted source for it in `a11y/sources.json`.
 Trusted publishers today: W3C WCAG 2.2 and WAI Understanding/Techniques, WAI-ARIA, APG,
 AccName, HTML-AAM, Core-AAM, ARIA in HTML, WAI tutorials, WHATWG HTML, MDN, RGAA, ETSI EN 301 549,
 Apple HIG, accessibility docs and UI framework references (UIKit, AppKit, SwiftUI), Android accessibility docs, Material Design 3 foundations
-and component guidelines, Windows app controls guidance and the WinUI automation reference,
+and component guidelines, Windows app controls guidance, Windows accessibility guidance, the WinUI automation reference and the UI Automation property identifiers,
 Orange accessibility guidelines. Material's component guidelines and the Windows pages were added
 on 2026-11-13 (Forms foundation, decision `forms-platform-sources`): they hold the only Android
 and Windows guidance on forms. Apple's UIKit, AppKit and SwiftUI references were added on
 2026-11-20 (decision `forms-apple-api-sources`): only they say what an element exposes to VoiceOver,
-such as whether a required state exists.
+such as whether a required state exists. Windows' accessibility guidance (`windows/apps/design/accessibility/`) and the UI Automation
+property identifiers page were added on 2026-11-25 (decision `forms-required-windows-name`): only they
+say what a Windows control's accessible name must be.

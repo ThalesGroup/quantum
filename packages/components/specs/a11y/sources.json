@@ -95,9 +95,9 @@
       "prefixes": ["https://m3.material.io/foundations/", "https://m3.material.io/components/"]
     },
     "windows": {
-      "name": "Microsoft Windows app controls guidance and WinUI automation reference",
+      "name": "Microsoft Windows app controls guidance, accessibility guidance, WinUI automation and UI Automation property references",
       "kind": "platform",
-      "prefixes": ["https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/", "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation."]
+      "prefixes": ["https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/", "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.", "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/", "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"]
     },
     "orange": {
       "name": "Orange accessibility guidelines",
