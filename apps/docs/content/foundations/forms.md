@@ -298,7 +298,10 @@ not the fill, identifies the control.
 area where people type: browsers add their own elements there (autofill, password managers,
 reveal and clear buttons, spinners, pickers). It goes **after the control**, which then gives up
 the icon and its gap, **at the start of the message**, the control keeping its full width, or
-**nowhere**, and then the message says the severity (**Error: …**). The placement is a rule of
+**nowhere**, and then the component starts the message with the severity's word (**Error: …**),
+as the WAI tutorial shows it
+([WAI forms tutorial: user notification](https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit)).
+The placement is a rule of
 the form: every control that can show a severity carries the same property, `severityIcon`
 (`after-control`, `message`, `none`; `message` by default), and a form sets it once, to the same
 value, for all its controls, so its fields never mix two placements. A checkbox, a radio button
@@ -492,9 +495,15 @@ of the on-screen keyboard's return key, because only the form knows which field 
   before the fix doubles the length and wraps most messages to a second line, which pushes the
   next field down; the value usually shows the problem already.
 
-> **Not decided yet (step 11).** The severity word ("Error: …") and who writes it, whether
-> messages end with a period and how long they may be, and how a message names its field in an
-> error summary.
+- **No severity word in the text.** The author writes only the fix. When the form shows no
+  icon, the component starts the message with the severity's word, the icon's name in the form's
+  language followed by that language's colon (**Error: Enter an email address with an @**,
+  **Erreur : …** in French), in the message's color and weight. When an icon shows, its name says
+  the severity, so a typed **Warning:** next to it would be said twice, on screen and to a screen
+  reader. A form can then change where its icons go without rewriting a message.
+
+> **Not decided yet (step 11).** Whether messages end with a period and how long they may be,
+> and how a message names its field in an error summary.
 
 ## Accessibility
 

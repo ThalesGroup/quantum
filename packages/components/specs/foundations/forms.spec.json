@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.29.0",
+  "version": "0.30.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -63,7 +63,7 @@
     {
       "id": "severity-icon",
       "name": "Severity icon",
-      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it, which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message says the severity (\"Error: …\", \"Warning: …\", \"Success: …\"). The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its glyph says the severity, the Alert's intent icons and the Figma prototype's: error for an error, warning for a warning, check_circle for a success, so the three severities differ by shape as well as color; it is named after its severity (\"Error\", \"Warning\", \"Success\"), translated with the form's language. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it, as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is the on-base icon role of its severity, global.icon.on-base.functional.<severity>.default, the role of an icon on a surface, where it sits in both placements (never on the fill), and the color of the message text: for the error #C01619 in light mode, #F88275 in dark mode, 5.81:1 and 5.30:1 at the lowest on the surface levels; for the warning #765818 and #FFC61C, 6.16:1 and 8.38:1; for the success #075D33 and #11C772, 7.44:1 and 5.92:1 (WCAG 1.4.11); the Checkbox and the Search field take the property with their message part and severity (step 2b)."
+      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it, which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the component starts the message with the severity's word (\"Error: …\", \"Warning: …\", \"Success: …\"), the icon's name followed by a colon as the form's language writes it (\"Erreur : …\" in French), in the message's color and weight. The author writes only the fix (message-wording) and never types the word: with an icon, the icon's name says the severity, so the word would be said twice; without one, the component says it, so it is never forgotten when a form changes its placement. The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its glyph says the severity, the Alert's intent icons and the Figma prototype's: error for an error, warning for a warning, check_circle for a success, so the three severities differ by shape as well as color; it is named after its severity (\"Error\", \"Warning\", \"Success\"), translated with the form's language. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it, as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is the on-base icon role of its severity, global.icon.on-base.functional.<severity>.default, the role of an icon on a surface, where it sits in both placements (never on the fill), and the color of the message text: for the error #C01619 in light mode, #F88275 in dark mode, 5.81:1 and 5.30:1 at the lowest on the surface levels; for the warning #765818 and #FFC61C, 6.16:1 and 8.38:1; for the success #075D33 and #11C772, 7.44:1 and 5.92:1 (WCAG 1.4.11); the Checkbox and the Search field take the property with their message part and severity (step 2b)."
     },
     {
       "id": "severity-width",
@@ -78,7 +78,7 @@
     {
       "id": "message-wording",
       "name": "A message says the fix",
-      "text": "A message tells people what to do, in plain words, the same way for every control and every severity. An error is the instruction that fixes it: the control's verb (enter, choose, check) and the thing asked for, with the format or the limit that fixes it when there is one (\"Enter an email address with an @.\", \"Enter a quantity between 1 and 99.\", \"Choose a delivery method.\"), rather than a statement of what is wrong. An empty required field gets a message like any other error (\"Enter your full name.\"), never \"This field is required\": the form already said which fields are required. A warning says what to check (\"Check the domain: did you mean example.com?\") and a success what was confirmed (\"This username is available.\"). A message addresses people as you, without blame, without robotic words such as invalid, without interjections such as oops, without please and without we. Not decided yet (step 11, points 2 to 4): the severity word, the punctuation and the length, and how a message names its field in an error summary."
+      "text": "A message tells people what to do, in plain words, the same way for every control and every severity. An error is the instruction that fixes it: the control's verb (enter, choose, check) and the thing asked for, with the format or the limit that fixes it when there is one (\"Enter an email address with an @.\", \"Enter a quantity between 1 and 99.\", \"Choose a delivery method.\"), rather than a statement of what is wrong. An empty required field gets a message like any other error (\"Enter your full name.\"), never \"This field is required\": the form already said which fields are required. A warning says what to check (\"Check the domain: did you mean example.com?\") and a success what was confirmed (\"This username is available.\"). A message addresses people as you, without blame, without robotic words such as invalid, without interjections such as oops, without please and without we. The message holds only these words: the severity's word, when no icon says it, is the component's (severity-icon). Not decided yet (step 11, points 3 and 4): the punctuation and the length, and how a message names its field in an error summary."
     },
     {
       "id": "timing",
@@ -1134,7 +1134,7 @@
         "label": "Email address",
         "value": "ada@exmaple.com",
         "severity": "warning",
-        "message": "Warning: check the domain, it looks like a typo of example.com."
+        "message": "Check the domain: did you mean example.com?"
       }
     },
     {
@@ -1146,7 +1146,7 @@
         "label": "Username",
         "value": "ada.lovelace",
         "severity": "success",
-        "message": "Success: this username is available."
+        "message": "This username is available."
       }
     },
     {
@@ -1210,6 +1210,19 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-severity-word",
+      "date": "2026-11-25",
+      "version": "0.30.0",
+      "area": "content",
+      "status": "active",
+      "text": "The severity's word is the component's, never the author's: with severityIcon none, the component starts the message with the icon's name (severityIconLabel, translated with the form's language) and a colon as that language writes it (\"Error: …\", \"Erreur : …\"), in the message's color and weight; with an icon, after the control or in the message, no word is shown, since the icon's name says the severity. The author writes only the fix.",
+      "rationale": "Decided by the team on 2026-11-25 (#105 step 11, point 2) among: A, the component writes it without an icon; D, as A with the word in the semibold weight (the WAI tutorial's strong); B, the author types it without an icon (every message then depends on the form's placement); C, always the word (said twice next to the icon, \"Error, Error: …\"). Today's warning and success examples typed it next to the icon.",
+      "refs": [
+        "wai-forms-notifications",
+        "wcag:1.4.1"
+      ]
+    },
     {
       "id": "forms-validation-timing",
       "date": "2026-11-25",
@@ -1682,6 +1695,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.30.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-severity-word (#105 step 11, point 2): the rules severity-icon and message-wording say that with severityIcon none the component writes the severity's word (the icon's translated name and the language's colon) and that the author never types it; the warning and success examples drop their typed word."
+    },
     {
       "version": "0.29.0",
       "date": "2026-11-25",
