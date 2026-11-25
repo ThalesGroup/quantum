@@ -180,6 +180,14 @@ author only writes the note. `none` is for a control outside a form, such as a t
 a setting applied at once, and it is the Search field's default, since a search box usually
 stands alone.
 
+**The mark is a qualifier of the name.** It follows the label, or the legend, after a word space,
+at the label's size, in the regular weight and the description's color, so the name stays the
+strongest text of the field; a disabled control draws it in the disabled text color, as its
+label. It keeps the label's size on purpose: a smaller mark, the only text of another size next
+to the name, draws the eye before the name does. The word says what it means, so neither its
+color nor its weight carries meaning
+([WCAG 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color)).
+
 The generic rule has no asterisk. An asterisk is a symbol that must be explained before its
 first use ([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)); a word needs no key, and
 marking the fewer fields keeps a long form free of repeated marks.

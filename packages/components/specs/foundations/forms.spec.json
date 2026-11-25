@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -48,7 +48,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. The mark follows the label (or the legend) after a word space, at its size, in the regular weight and the description's color, the disabled text color when the control is disabled. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
     },
     {
       "id": "statuses",
@@ -347,6 +347,21 @@
         "wcag:1.4.11"
       ],
       "minimum": 3
+    },
+    {
+      "id": "mark-on-surfaces",
+      "description": "The required mark, \"(optional)\" or \"(required)\", in the description's color on every surface level (WCAG 1.4.3 asks 4.5:1): 12.78 / 12.09 / 12.78 / 12.09:1 in light mode and 8.86 / 8.11 / 7.43 / 6.65:1 in dark mode (decision forms-mark-style).",
+      "foreground": "global.text.on-base.neutral.secondary",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "refs": [
+        "wcag:1.4.3"
+      ],
+      "minimum": 4.5
     }
   ],
   "accessibility": {
@@ -933,6 +948,19 @@
   ],
   "decisions": [
     {
+      "id": "forms-mark-style",
+      "date": "2026-11-25",
+      "version": "0.23.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The required mark (\"(optional)\" or \"(required)\") sits in the label's (or the legend's) text after a word space, at the label's size, in the regular weight and the description's color (global.text.on-base.neutral.secondary), so the name stays the strongest text and the mark reads as a qualifier; a disabled control draws it in the disabled text color (global.text.state.disabled.default), as its label. The word, not its color or weight, says what it means. Measured on levels 0 to 3 and the sunken level: 12.09 to 12.78:1 in light mode, 6.65 to 9.28:1 in dark mode (text, 4.5:1).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 2) among: Figma's red asterisk (reference only, rejected by forms-required-marking; red is the form's error color); A, the label's own style (neutral primary, medium); B, the label's size, regular weight, the description's color (chosen, recommended); C, the label's size and color, regular weight; D, the description's style (12 / 12 / 14 px, regular, neutral secondary). The team hesitated between B and D and chose B: when the mark is smaller than the label, the eye goes to it before the label itself, since it is the only element of a different size. A weighs the mark as much as the name; C sets it apart by the weight only (500 against 400), subtle at 14 px. Two cues set B's mark apart, neither needed to understand it, since the word says it (WCAG 1.4.1). The word space keeps the label and its mark one phrase in the accessible name; it measures 3.5 px at 14 px and 4.0 px at 16 px, near the prototype's 4 px, so no gap token.",
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
       "id": "forms-marked-fields",
       "date": "2026-11-25",
       "version": "0.22.0",
@@ -1292,6 +1320,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.23.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-mark-style: the required mark is at the label's size, regular, in the description's color (global.text.on-base.neutral.secondary), the disabled text color when disabled; 12.09 to 12.78:1 light, 6.65 to 9.28:1 dark on levels 0 to 3 and sunken."
+    },
     {
       "version": "0.22.0",
       "date": "2026-11-25",
