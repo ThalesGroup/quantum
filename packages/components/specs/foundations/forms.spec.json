@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -63,7 +63,7 @@
     {
       "id": "severity-icon",
       "name": "Severity icon",
-      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it, which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message says the severity (\"Error: …\", \"Warning: …\", \"Success: …\"). The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it, as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is the on-base icon role of its severity, global.icon.on-base.functional.<severity>.default, the role of an icon on a surface, where it sits in both placements (never on the fill), and the color of the message text: for the error #C01619 in light mode, #F88275 in dark mode, 5.81:1 and 5.30:1 at the lowest on the surface levels (WCAG 1.4.11); the Checkbox and the Search field take the property with their message part and severity (step 2b)."
+      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it, which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message says the severity (\"Error: …\", \"Warning: …\", \"Success: …\"). The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its glyph says the severity, the Alert's intent icons and the Figma prototype's: error for an error, warning for a warning, check_circle for a success, so the three severities differ by shape as well as color; it is named after its severity (\"Error\", \"Warning\", \"Success\"), translated with the form's language. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it, as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is the on-base icon role of its severity, global.icon.on-base.functional.<severity>.default, the role of an icon on a surface, where it sits in both placements (never on the fill), and the color of the message text: for the error #C01619 in light mode, #F88275 in dark mode, 5.81:1 and 5.30:1 at the lowest on the surface levels; for the warning #BD8107 and #FFC61C, 3.09:1 and 8.38:1; for the success #075D33 and #11C772, 7.44:1 and 5.92:1 (WCAG 1.4.11); the Checkbox and the Search field take the property with their message part and severity (step 2b)."
     },
     {
       "id": "severity-width",
@@ -274,6 +274,36 @@
       "id": "error-icon-on-surfaces",
       "description": "The error icon, after the control or in the message, on every surface level (WCAG 1.4.11 asks 3:1 of a graphic that carries meaning): 6.12 / 5.81 / 6.12 / 5.81:1 in light mode and 7.06 / 6.47 / 5.92 / 5.30:1 in dark mode.",
       "foreground": "global.icon.on-base.functional.error.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "warning-icon-on-surfaces",
+      "description": "The warning icon, after the control or in the message, on every surface level (WCAG 1.4.11 asks 3:1 of a graphic that carries meaning): 3.27 / 3.09 / 3.27 / 3.09:1 in light mode and 11.17 / 10.23 / 9.36 / 8.38:1 in dark mode.",
+      "foreground": "global.icon.on-base.functional.warning.default",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "success-icon-on-surfaces",
+      "description": "The success icon, after the control or in the message, on every surface level (WCAG 1.4.11 asks 3:1 of a graphic that carries meaning): 7.87 / 7.44 / 7.87 / 7.44:1 in light mode and 7.89 / 7.23 / 6.62 / 5.92:1 in dark mode.",
+      "foreground": "global.icon.on-base.functional.success.default",
       "backgrounds": [
         "global.bg.level.0.default",
         "global.bg.level.1.default",
@@ -898,6 +928,19 @@
   ],
   "decisions": [
     {
+      "id": "forms-severity-icon-glyphs",
+      "date": "2026-11-25",
+      "version": "0.19.0",
+      "area": "content",
+      "status": "active",
+      "text": "The severity icon draws error for an error, warning for a warning and check_circle for a success, the Alert's intent icons, and is named after its severity (\"Error\", \"Warning\", \"Success\"). Its color follows forms-severity-icon-color: the on-base icon role of its severity.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 2) among: A, the Alert's glyphs, warning and check_circle (chosen); B, a plain check for the success; C, no success icon. A is the Figma prototype's and the Alert's: the system already says these meanings with these shapes, and the three severities differ by shape as well as color, while the message still says the severity in text (WCAG 1.4.1). B departs from the Alert and from Figma and reuses the Checkbox's glyph, thinner at 16 px; C draws icons on some fields and not others under one placement rule, and after the control a field would change width or keep an empty gap when it passes. Measured on the Text field (every size, both placements, light and dark, levels 0 to 3): the warning icon 3.09 to 3.27:1 in light mode and 8.38 to 11.17:1 in dark mode, the success icon 7.44 to 7.87:1 and 5.92 to 7.89:1 (WCAG 1.4.11 asks 3:1).",
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "forms-severity-fill",
       "date": "2026-11-25",
       "version": "0.18.0",
@@ -1205,6 +1248,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.19.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-severity-icon-glyphs: the warning icon draws warning and the success icon check_circle, the Alert's intent icons; two new required pairs, warning-icon-on-surfaces and success-icon-on-surfaces (3:1)."
+    },
     {
       "version": "0.18.0",
       "date": "2026-11-25",

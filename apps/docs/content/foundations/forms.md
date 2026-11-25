@@ -276,21 +276,26 @@ the form: every control that can show a severity carries the same property, `sev
 value, for all its controls, so its fields never mix two placements. A checkbox, a radio button
 or a group never draws the icon after its control, where its label or its options sit: it offers
 `message` and `none`, and a form set to `after-control` shows its icon in the message.
+Its glyph says the severity, as the Alert's icons do: `error` for an error, `warning` for a
+warning, `check_circle` for a success, so the three differ by shape as well as color. It is named
+after its severity ("Error", "Warning", "Success"), in the form's language.
 After the control, the icon is the size of the Button's icon at the same size (20, 24 and 24 px
 for small, medium and large), 8 px after the control and centred on it, so a field and the
 Button next to it carry the same icon. In the message, it is 16 px, the icon size next to the
 message's 14 and 16 px text, 4 px before the text.
 Its color is the on-base icon color of its severity, the color of the message text (for an
 error #C01619 in light mode and #F88275 in dark mode): it sits on the surface in both places,
-never on the fill, and keeps at least 5.81:1 in light mode and 5.30:1 in dark mode, over the 3:1
-a meaningful icon needs ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)).
+never on the fill, and keeps at least 5.81:1 in light mode and 5.30:1 in dark mode for an error,
+3.09:1 and 8.38:1 for a warning, 7.44:1 and 5.92:1 for a success, over the 3:1 a meaningful icon
+needs ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)).
 
 **The message** keeps the text color of its severity, the icon's color: for an error #C01619 in
 light mode and #F88275 in dark mode, at least 5.81:1 and 5.30:1 on every surface level
 ([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)). Its color sets it
 apart from the description as well as its size, which matters most when there is no icon.
 
-> **Not decided yet (step 6).** The icon of a warning and a success.
+> **Not decided yet (step 6).** Whether the warning icon keeps its own role while the warning
+> message reads a darker text role (#BD8107 against #3E2D0C in light mode).
 
 ### Web
 
