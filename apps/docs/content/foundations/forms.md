@@ -337,14 +337,61 @@ and the styling, and the component carries the severity as `data-severity`.
 
 A control is never shown as in error before people used it.
 
-> **Not decided yet (step 7).** When a value is checked by default: when people submit the
-> form, when they leave the field, or as they type; and whether the submit action stays
-> available while required fields are empty.
+The recommended default is **late to show, early to clear**:
+
+- A field shows an error when people **leave it after changing it**, and every field is checked
+  when people **submit** the form, so a required field people skipped shows its error only then.
+- A field never shows a new error **while people type** in it: an email address or a date is
+  wrong until it is complete, and checking it on every keystroke "would display error messages
+  most of the time" ([WAI: on focus change](https://www.w3.org/WAI/tutorials/forms/notifications/#on-focus-change)).
+- An error **clears as people type**, as soon as the value is right; a new error then waits
+  until they leave the field again.
+- A choice (a checkbox, a radio, an option in a list) is checked when people make it, since
+  choosing commits the value.
+- A check people try values against, such as an available user name or password rules, may run
+  as they type ([WAI: during typing](https://www.w3.org/WAI/tutorials/forms/notifications/#during-typing)).
+
+This is the experience the system recommends, not an obligation: some use cases cannot follow it
+(a check only the server can make, a value checked as it is entered by its nature). They choose
+another timing, and still never mark a control as in error before people used it
+([ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
+
+> **Not decided yet (step 7).** When a warning or a success shows, and whether the submit action
+> stays available while required fields are empty.
+
+### Web
+
+A control's user validity turns true when people commit a change, by leaving the field, or
+submit the form ([HTML: user validity](https://html.spec.whatwg.org/multipage/input.html#common-input-element-events)),
+and [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) then
+follows the value as people type, both ways. Styled with `:user-invalid` alone, a field that was
+checked shows an error again at the first keystroke of an edit; to follow the default, the
+product keeps a cleared error hidden until people leave the field.
 
 ### iOS
 
 Apple validates when it makes sense for the field: an email address when people move to
-another field, a user name or a password before they leave it.
+another field, a user name or a password before they leave it
+([HIG: Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
+It gives feedback as soon as it detects a problem, so people can correct it right away
+([HIG: Entering data](https://developer.apple.com/design/human-interface-guidelines/entering-data#Best-practices)):
+the default checks a field when people leave it and clears its error as soon as it is fixed.
+
+### Android
+
+A field can be checked as people move on from it, in the action of the keyboard's Next key,
+which keeps moving focus to the next field
+([Compose: keyboard interaction logic](https://developer.android.com/develop/ui/compose/text/user-input#define-logic)).
+Material's text field guidelines say nothing about when a value is checked.
+
+### Desktop
+
+macOS follows Apple's guidance above. On Windows, a number box evaluates its value on loss of
+focus or Enter ([Number box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box#enabling-input-validation)),
+a password box is validated as people type or once they finish
+([Password box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/password-box#create-a-password-box)),
+and a submitted form marks the controls whose input is invalid
+([Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)).
 
 ## How errors are announced
 

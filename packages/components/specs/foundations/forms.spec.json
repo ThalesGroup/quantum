@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -83,7 +83,7 @@
     {
       "id": "timing",
       "name": "When a value is checked",
-      "text": "Not decided yet: on submit, when people leave the field, or as they type. A control is never marked as in error before validation ran."
+      "text": "By default, as the recommended experience: a field shows an error when people leave it after changing it, and every field is checked when people submit the form, so a required field people skipped shows its error only then; a field never shows a new error while people are typing in it, and an error clears as people type, as soon as the value is right; a new error then waits until they leave the field again. A choice (a checkbox, a radio, an option in a list) is checked when people make it, since choosing commits the value. A check people try values against, such as an available user name or password rules, may run as they type. Some use cases cannot follow the default (a check only the server can make, a value checked as it is entered by its nature); they choose another timing, and still never mark a control as in error before people used it or before validation ran. Not decided yet: when a warning or a success shows, and whether the submit action stays available while required fields are empty."
     },
     {
       "id": "announcement",
@@ -485,6 +485,58 @@
         "text": "A control is marked as in error only after its value was validated, not before people used it.",
         "refs": [
           "wcag-aria21"
+        ]
+      },
+      {
+        "text": "By default, a field shows an error when people leave it after changing it, and every field is checked on submit; checking a format while people type would show an error most of the time, so a new error waits until they leave the field, while an error clears as soon as the value is right. A check people try values against, such as an available user name, may run as they type.",
+        "refs": [
+          "wai-forms-on-focus-change",
+          "wai-forms-after-submit",
+          "wai-forms-during-typing",
+          "wcag-aria21"
+        ]
+      },
+      {
+        "platforms": [
+          "web"
+        ],
+        "text": "A control's user validity turns true when people commit a change (they leave the field) or submit the form, and :user-invalid then follows the value as they type, both ways; so a product that styles errors with :user-invalid alone shows one again mid-typing, and keeps a cleared error hidden until people leave the field to follow the default.",
+        "refs": [
+          "html-user-validity-commit",
+          "html-form-submission",
+          "html-user-invalid",
+          "mdn-user-invalid"
+        ]
+      },
+      {
+        "platforms": [
+          "ios",
+          "desktop"
+        ],
+        "text": "Apple validates when it makes sense for the field, an email address when people switch to another field, and gives feedback as soon as it detects a problem so people can correct it right away: the default checks a field when people leave it and clears its error as soon as the value is right.",
+        "refs": [
+          "hig-text-fields-best-practices",
+          "hig-entering-data-best-practices"
+        ]
+      },
+      {
+        "platforms": [
+          "android"
+        ],
+        "text": "On Android, a field can be checked as people move on from it, in the action of the keyboard's Next key, which keeps moving focus to the next field.",
+        "refs": [
+          "compose-keyboard-action-logic"
+        ]
+      },
+      {
+        "platforms": [
+          "desktop"
+        ],
+        "text": "On Windows, a number box evaluates its value on loss of focus or Enter, a password box is validated as people type or once they finish, and a submitted form marks the controls whose input is invalid; the default applies, a field checked when people leave it and every field on submit.",
+        "refs": [
+          "windows-number-box-validation",
+          "windows-password-box",
+          "windows-forms-submitting"
         ]
       },
       {
@@ -1000,6 +1052,61 @@
         "id": "windows-keyboard-accessibility",
         "title": "Windows apps: keyboard accessibility, navigation among UI elements (tab order)",
         "url": "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements"
+      },
+      {
+        "id": "wai-forms-after-submit",
+        "title": "WAI Forms tutorial: user notification, after submit",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit"
+      },
+      {
+        "id": "wai-forms-during-typing",
+        "title": "WAI Forms tutorial: user notification, during typing",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/#during-typing"
+      },
+      {
+        "id": "wai-forms-on-focus-change",
+        "title": "WAI Forms tutorial: user notification, on focus change",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/#on-focus-change"
+      },
+      {
+        "id": "html-user-validity-commit",
+        "title": "HTML: common input element events (user validity when the user commits a change)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#common-input-element-events"
+      },
+      {
+        "id": "html-form-submission",
+        "title": "HTML: form submission algorithm (user validity of every field on submit)",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#form-submission-algorithm"
+      },
+      {
+        "id": "html-user-invalid",
+        "title": "HTML: the :user-invalid pseudo-class",
+        "url": "https://html.spec.whatwg.org/multipage/semantics-other.html#selector-user-invalid"
+      },
+      {
+        "id": "mdn-user-invalid",
+        "title": "MDN: :user-invalid",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid"
+      },
+      {
+        "id": "compose-keyboard-action-logic",
+        "title": "Android Developers: Compose text input, define keyboard interaction logic",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#define-logic"
+      },
+      {
+        "id": "windows-number-box-validation",
+        "title": "Windows: Number box, enabling input validation",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box#enabling-input-validation"
+      },
+      {
+        "id": "windows-password-box",
+        "title": "Windows: Password box, create a password box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/password-box#create-a-password-box"
+      },
+      {
+        "id": "windows-forms-submitting",
+        "title": "Windows: Forms, submitting with button",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button"
       }
     ]
   },
@@ -1103,6 +1210,25 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-validation-timing",
+      "date": "2026-11-25",
+      "version": "0.29.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "By default, a form control shows an error when people leave it after changing it, and every control is checked when people submit the form; it never shows a new error while people type in it, and an error clears as they type, as soon as the value is right, a new one waiting until they leave the control again (late to show, early to clear). A choice is checked when people make it; a check people try values against may run as they type. This is the recommended experience, not an obligation: a use case that cannot follow it chooses another timing, and never marks a control as in error before people used it.",
+      "rationale": "Decided by the team on 2026-11-25 (#105 step 7, point 1), as the recommended default in terms of experience, acknowledging that some use cases cannot follow it, among: A, on submit only (Windows Forms; a fixed field keeps its error until the next submit); B, on leaving then live, the web's own :user-invalid (an error comes back at the first keystroke when people edit a checked field); C, late to show, early to clear; D, as people type (an email is wrong until it is complete).",
+      "refs": [
+        "wai-forms-on-focus-change",
+        "wai-forms-after-submit",
+        "wai-forms-during-typing",
+        "wcag-aria21",
+        "hig-text-fields-best-practices",
+        "hig-entering-data-best-practices",
+        "compose-keyboard-action-logic",
+        "windows-number-box-validation"
+      ]
+    },
     {
       "id": "forms-message-says-the-fix",
       "date": "2026-11-25",
@@ -1556,6 +1682,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.29.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-validation-timing (#105 step 7, point 1): the rule timing gives the default, recommended timing (an error shows when people leave a field they changed and on submit, never mid-typing, and clears as soon as the value is right), with five guidelines (every platform, web, Apple, Android, Windows); a use case that cannot follow it chooses another timing."
+    },
     {
       "version": "0.28.0",
       "date": "2026-11-25",
