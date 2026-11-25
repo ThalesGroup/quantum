@@ -457,7 +457,7 @@ export default {
       tokens: {
         '--bs-control-min-height': 'text-field.control.min-height.medium',
         '--bs-control-padding-x': 'text-field.control.padding-inline.medium',
-        '--bs-control-padding-y': ['space.7', 'Bootstrap pads inputs and textareas alike; Quantum centers a field\'s line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders).'],
+        '--bs-control-padding-y': ['space.7', 'Bootstrap pads inputs and textareas alike; Quantum keeps a minimum block padding on a field (text-field.control.padding-block, 3 / 5 / 8px) that shows only once the text outgrows the min-height, and pads the textarea more. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders).'],
         '--bs-control-font-size': { token: 'text-field.control.typography.medium', member: 'fontSize' },
         '--bs-control-line-height': { token: 'text-field.control.typography.medium', member: 'lineHeight' },
         '--bs-control-fg': 'text-field.control.color.default',

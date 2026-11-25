@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -201,7 +201,8 @@
     "notes": [
       "Label, control, description and error message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
       "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
-      "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start."
+      "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start.",
+      "The control keeps control.padding-block (3 / 5 / 8 px, the Button's) above and below its line as a minimum: at the default text size the minimum height sets the height; when people raise the text size and the line outgrows it, the box grows and keeps that space (decision grows-with-text-size)."
     ]
   },
   "accessibility": {
@@ -555,10 +556,48 @@
         ]
       },
       {
-        "text": "The label and description are set from 12 to 16 px, under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text.",
+        "text": "The label and description are set from 12 to 16 px, under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text and keeps its block padding.",
         "refs": [
           "wcag:1.4.4",
           "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: zoom enlarges the text and the box together, which meets Resize Text.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding, as Apple asks that layouts adapt to all font sizes.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, the field keeps its size, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize with it: the box grows with it and keeps its block padding.",
+        "refs": [
+          "windows-text-scaling"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -1005,6 +1044,36 @@
         "id": "mdn-input-search-escape",
         "title": "MDN: input type=search, differences from text (the clear cross; Escape clears in Chrome)",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#differences_between_search_and_text_types"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "windows-text-scaling",
+        "title": "Windows: text scaling, UX guidance",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance"
       }
     ]
   },
@@ -1096,6 +1165,24 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "grows-with-text-size",
+      "date": "2026-11-25",
+      "version": "0.16.0",
+      "area": "size",
+      "status": "active",
+      "text": "The Search field grows with the text size as the Text field does (decision grows-with-text-size of the Text field, which holds the rule and the options rejected): its text grows, and the box keeps its minimum height (28 / 36 / 44) and a minimum block padding, the Button's (space.3 / 5 / 8), which shows only once the line outgrows the minimum height. pnpm validate compares search-field.control.padding-block.* with the Text field's. Where nothing scales the text (macOS), and on the web, where zoom scales text and box together, the field keeps its size.",
+      "tokens": [
+        "search-field.control.padding-block.*",
+        "search-field.control.min-height.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type",
+        "windows-text-scaling"
+      ]
+    },
     {
       "id": "search-own-key",
       "date": "2026-11-25",
@@ -1595,6 +1682,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.16.0",
+      "date": "2026-11-25",
+      "note": "Decision grows-with-text-size (#103 step 20, point 1): new search-field.control.padding-block.small / medium / large (space.3 / 5 / 8, the Button's minimum block padding), read by the control's padding-block (was 0). Nothing moves at the default text size (28 / 36 / 44 px); when the text outgrows the minimum height, the box grows and keeps that space. Platform guidelines for the web (zoom), iOS (Dynamic Type), macOS and Windows (text scaling). Contrast unchanged."
+    },
     {
       "version": "0.15.0",
       "date": "2026-11-25",

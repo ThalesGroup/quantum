@@ -134,6 +134,19 @@
           "$value": "{space.44}"
         }
       },
+      "padding-block": {
+        "$type": "dimension",
+        "$description": "Minimum space above and below the value's line, the Button's (space.3, 5, 8). At the default text size the minimum height sets the height; this padding shows when the text outgrows it (decision grows-with-text-size).",
+        "small": {
+          "$value": "{space.3}"
+        },
+        "medium": {
+          "$value": "{space.5}"
+        },
+        "large": {
+          "$value": "{space.8}"
+        }
+      },
       "padding-inline": {
         "$type": "dimension",
         "small": {

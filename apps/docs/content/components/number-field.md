@@ -36,6 +36,8 @@ the quantity and its unit when it has one (**Weight (kg)**); the description giv
 (**Between 1 and 99**); the message of an error says how to fix the value. The optional leading icon follows the Text field too: decorative, not advised for regular
 applications, and never the only place a unit or a currency is said. The required mark follows
 the Text field too: "(optional)" or "(required)" after the label, as the form marks its fields.
+When people raise the text size the box grows as the Text field's does, keeping the Button's
+minimum space above and below the text.
 
 ## Accessibility
 
@@ -114,6 +116,10 @@ This section explains the decisions behind it.
   document them and the template adds no script, so they keep the browser's behaviour
   ([MDN: spinbutton role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/spinbutton_role#description),
   [APG: spinbutton keyboard](https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/#keyboardinteraction)).
+- Text sizes are px lengths today, so a browser's text-only size setting does not enlarge the
+  field's text, while zoom enlarges the text and the box together, which meets Resize Text
+  ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
 
 ### iOS
 
@@ -133,6 +139,9 @@ This section explains the decisions behind it.
   the content; no key steps the value, the stepper beside the field does
   ([UIKit: UIKeyboardType](https://developer.apple.com/documentation/uikit/uikeyboardtype),
   [Apple HIG: Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
+- The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
+  Apple asks that layouts adapt to all font sizes
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
@@ -166,6 +175,10 @@ This section explains the decisions behind it.
   [calculation](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box#enable-calculation-support)).
   On macOS a stepper beside the field changes the value
   ([Apple HIG: Steppers](https://developer.apple.com/design/human-interface-guidelines/steppers)).
+- macOS does not support Dynamic Type: there the field keeps its size, as text does
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
+- On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
+  with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
 
 ## Related
 

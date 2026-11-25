@@ -64,6 +64,22 @@ test('own lists what only the mirror has: not compared, never hiding a token the
   assert.match(differ[0], /min-height\.small is 32px but button\.container\.min-height\.small is 28px/);
 });
 
+test('differs lists what both have but the mirror sets on purpose: not compared, never without a counterpart', () => {
+  const withDiffers = { ...MIRROR, differs: ['container.gap.*'] };
+  const gap = (v) => tok('icon-button.container.gap.small', v);
+  // A different value is accepted for a differs token, the rest is still compared.
+  assert.deepEqual(checkMirror({ ...withDiffers, ignore: ['label.typography.*'] }, [context([...semantic, ...button, ...iconButton(), gap('{space.32}')])]), []);
+  const still = checkMirror({ ...withDiffers, ignore: ['label.typography.*'] }, [context([...semantic, ...button, ...iconButton('{space.32}'), gap('{space.32}')])]).map((p) => p.message);
+  assert.equal(still.length, 2);
+  assert.match(still[0], /min-height\.small is 32px/);
+  // Without a counterpart it belongs in own.
+  const lone = checkMirror({ ...MIRROR, differs: ['icon.glyph.*'] }, [context([...semantic, ...button, ...iconButton(), tok('icon-button.icon.glyph.small', '{space.28}')])]).map((p) => p.message);
+  assert.deepEqual(lone, ['icon-button.icon.glyph.small is listed in differs (scripts/lib/mirrors.mjs) but button has no button.icon.glyph.small: list it in own when it places what button lacks']);
+  // A pattern that matches nothing is stale.
+  const stale = checkMirror({ ...MIRROR, differs: ['icon.glyph.*'] }, [context([...semantic, ...button, ...iconButton()])]).map((p) => p.message);
+  assert.deepEqual(stale, ['differs "icon.glyph.*" of icon-button (scripts/lib/mirrors.mjs) matches no token: remove it']);
+});
+
 test('a mirror without an own list still works', () => {
   const { own, ...noOwn } = MIRROR;
   assert.deepEqual(checkMirror(noOwn, [context([...semantic, ...button, ...iconButton()])]), []);
@@ -72,7 +88,9 @@ test('a mirror without an own list still works', () => {
 test('the field family: each mirror is the Text field with its own tokens and its missing parts declared', () => {
   const byId = Object.fromEntries(MIRRORS.map((m) => [m.component, m]));
   assert.deepEqual(byId['number-field'].own.concat(byId['number-field'].ignore), []);
-  assert.deepEqual(byId['textarea'].own, ['control.padding-block.*']);
+  assert.deepEqual(byId['textarea'].own, []);
+  // Its block padding is larger than the field's minimum on purpose (decisions rows-and-resize, grows-with-text-size).
+  assert.deepEqual(byId['textarea'].differs, ['control.padding-block.*']);
   // No leading icon in a multi-line field.
   assert.deepEqual(byId['textarea'].ignore, ['icon.*', 'control.padding-inline-start.*']);
   // The search glyph is the Text field's leading icon: compared like the rest.

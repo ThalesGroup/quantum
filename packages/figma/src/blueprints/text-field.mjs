@@ -2,7 +2,7 @@
  * Text field (packages/components/src/components/text-field/text-field.css): a vertical auto layout
  * stacking the label, the control, the description and the message, separated by the
  * container gap. The control is a horizontal auto layout (border, background, min height, inline
- * padding, no block padding) holding its text vertically centered. The web field stretches to its
+ * padding, a minimum block padding) holding its text vertically centered. The web field stretches to its
  * container: here the component is FIELD_WIDTH px wide and every part fills it.
  *
  * The `Content` axis draws the control's text as a value or as the placeholder (its own color).
@@ -187,7 +187,7 @@ export const content = ({ value = 'Value', placeholder = 'Placeholder' } = {}) =
   },
 ];
 
-/** The editable box: its border, background, min height and inline padding, the focus outline over it (flush, drawn from its outline slots). */
+/** The editable box: its border, background, min height, inline padding and minimum block padding (decision grows-with-text-size), the focus outline over it (flush, drawn from its outline slots). */
 export const control = ({ children, bind = {}, counter = 'CENTER' }) => ({
   type: 'frame',
   name: 'control',
@@ -202,6 +202,7 @@ export const control = ({ children, bind = {}, counter = 'CENTER' }) => ({
     radius: 'control.border-radius',
     minHeight: 'control.min-height',
     paddingX: 'control.padding-inline',
+    paddingY: 'control.padding-block',
     ...bind,
   },
   children,

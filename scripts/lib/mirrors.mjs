@@ -24,6 +24,10 @@ import { resolveValue } from './dtcg.mjs';
  *   mirror has (the search glyph, the textarea's block padding). They are not compared. A pattern
  *   that matches a token the original also has, or no token at all, is an error: `own` never
  *   hides a value that must agree.
+ * - `differs`: patterns (paths of the mirror without its id) that both components have but that the
+ *   mirror sets on purpose to its own value, a decision saying so (the textarea's block padding, larger
+ *   than the field's minimum). They are not compared. A pattern without a counterpart in the original
+ *   (list it in own instead) or matching no token is an error.
  */
 export const MIRRORS = [
   {
@@ -60,9 +64,11 @@ export const MIRRORS = [
     paths: [],
     // No leading icon in a multi-line field (decision leading-icon-optional).
     ignore: ['icon.*', 'control.padding-inline-start.*'],
-    // The block padding that keeps the first line off the top edge: the Text field centers one line
-    // in its min-height, a textarea of several rows cannot (decision rows-and-resize).
-    own: ['control.padding-block.*'],
+    own: [],
+    // The block padding that keeps the first line off the top edge (decision rows-and-resize): larger
+    // than the Text field's minimum block padding (decision grows-with-text-size), which a textarea of
+    // several rows needs from its first line on.
+    differs: ['control.padding-block.*'],
   },
 ];
 
@@ -88,7 +94,7 @@ export const mirrorsOf = (id) => MIRRORS.filter((m) => m.of === id);
 
 /**
  * Compare a mirror with its original in every context.
- * @param {{ component: string, of: string, paths: [string, string][], ignore: string[], own?: string[] }} mirror
+ * @param {{ component: string, of: string, paths: [string, string][], ignore: string[], own?: string[], differs?: string[] }} mirror
  * @param {{ platform: string|null, mode: string|null, index: { all: object[], byPath: Map } }[]} contexts resolved token indexes (contrast.mjs allContexts)
  * @returns {{ message: string }[]} one problem per token: missing counterpart, or the first context where the values differ
  */
@@ -104,10 +110,19 @@ export function checkMirror(mirror, contexts) {
   const covered = new Set();
   const own = mirror.own ?? [];
   const ownHits = new Set();
+  const differs = mirror.differs ?? [];
+  const differsHits = new Set();
   for (const t of mine) {
     const l = local(t, mirror.component);
     const o = `${mirror.of}.${originalPath(mirror, l)}`;
     const counterpart = theirs.some((x) => x.path === o);
+    const differsPattern = differs.find((p) => matches(p, l));
+    if (differsPattern !== undefined) {
+      differsHits.add(differsPattern);
+      if (!counterpart) problems.push({ message: `${t.path} is listed in differs (scripts/lib/mirrors.mjs) but ${mirror.of} has no ${o}: list it in own when it places what ${mirror.of} lacks` });
+      else covered.add(o);
+      continue;
+    }
     const ownPattern = own.find((p) => matches(p, l));
     if (ownPattern !== undefined) {
       ownHits.add(ownPattern);
@@ -123,6 +138,7 @@ export function checkMirror(mirror, contexts) {
     if (!covered.has(t.path) && !mirror.ignore.some((p) => matches(p, l))) problems.push({ message: `${t.path} has no counterpart in ${mirror.component}: add the token, or list it in ignore (scripts/lib/mirrors.mjs) when it places what ${mirror.component} lacks` });
   }
   for (const p of own) if (!ownHits.has(p)) problems.push({ message: `own "${p}" of ${mirror.component} (scripts/lib/mirrors.mjs) matches no token: remove it` });
+  for (const p of differs) if (!differsHits.has(p)) problems.push({ message: `differs "${p}" of ${mirror.component} (scripts/lib/mirrors.mjs) matches no token: remove it` });
   for (const [a, b] of pairs) {
     for (const { platform, mode, index } of contexts) {
       let va;

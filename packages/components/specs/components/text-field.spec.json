@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -328,7 +328,8 @@
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
       "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
       "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap.",
-      "With iconStart, the control and the icon share a field box: the icon sits over the start edge of the control, which reserves control.padding-inline-start (28 / 36 / 40 px) in place of its inline padding."
+      "With iconStart, the control and the icon share a field box: the icon sits over the start edge of the control, which reserves control.padding-inline-start (28 / 36 / 40 px) in place of its inline padding.",
+      "The control keeps control.padding-block (3 / 5 / 8 px, the Button's) above and below its line as a minimum: at the default text size the minimum height sets the height; when people raise the text size and the line outgrows it, the box grows and keeps that space (decision grows-with-text-size)."
     ]
   },
   "accessibility": {
@@ -706,10 +707,48 @@
         ]
       },
       {
-        "text": "The label, description and message are set from 12 to 16 px (the message from 14), under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text.",
+        "text": "The label, description and message are set from 12 to 16 px (the message from 14), under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text and keeps its block padding.",
         "refs": [
           "wcag:1.4.4",
           "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: zoom enlarges the text and the box together, which meets Resize Text.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding, as Apple asks that layouts adapt to all font sizes.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, the field keeps its size, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize with it: the box grows with it and keeps its block padding.",
+        "refs": [
+          "windows-text-scaling"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -1261,6 +1300,36 @@
         "id": "windows-text-box-keyboard",
         "title": "Windows apps: text box, choose the right keyboard (InputScope)",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#choose-the-right-keyboard-for-your-text-control"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "windows-text-scaling",
+        "title": "Windows: text scaling, UX guidance",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance"
       }
     ]
   },
@@ -1427,6 +1496,24 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "grows-with-text-size",
+      "date": "2026-11-25",
+      "version": "0.24.0",
+      "area": "size",
+      "status": "active",
+      "text": "The field grows with the text size on every platform that lets people raise it, by the Button's rule (its decision grows-with-text-size): the value, the placeholder, the label and the help text grow with the text, and the box keeps its minimum height (28 / 36 / 44) and a minimum block padding, the Button's (space.3 / 5 / 8). At the default text size the minimum height sets the height and nothing moves; when the value's line outgrows it, the box grows and keeps that space above and below the line. Its other dimensions (inline padding, gaps, corner radius, border) do not scale. Beside a Button of the same size the field is then 2 to 10 px taller, since its line is 1.2 times its size and the Button's 1.0. Where nothing scales the text (macOS), and on the web, where text and box are px lengths that zoom scales together, the field keeps its size. Rejected: A, a minimum height only (once the text outgrows it the box hugs the line, 1 to 3 px between the tallest letters and the border at 200 % and above); C, a block padding of 5 / 7 / 10, the largest that keeps today's heights (the box grows from the first step up, taller than the Button at every enlarged size); D, every dimension scaled with the text (against Android's advice not to size padding or heights with the text).",
+      "tokens": [
+        "text-field.control.padding-block.*",
+        "text-field.control.min-height.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type",
+        "windows-text-scaling"
+      ]
+    },
     {
       "id": "enter-by-field-kind",
       "date": "2026-11-25",
@@ -2040,6 +2127,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.24.0",
+      "date": "2026-11-25",
+      "note": "Decision grows-with-text-size (#103 step 20, point 1): new text-field.control.padding-block.small / medium / large (space.3 / 5 / 8, the Button's minimum block padding), read by the control's padding-block (was 0). Nothing moves at the default text size (28 / 36 / 44 px); when the text outgrows the minimum height, the box grows and keeps that space. Platform guidelines for the web (zoom), iOS (Dynamic Type), macOS and Windows (text scaling). Contrast unchanged."
+    },
     {
       "version": "0.23.0",
       "date": "2026-11-25",

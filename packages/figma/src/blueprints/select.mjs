@@ -24,7 +24,8 @@ export default {
       width: 'FILL',
       children: [
         control({
-          bind: { paddingX: null, paddingLeft: 'control.padding-inline', paddingRight: 'control.padding-inline-end' },
+          // The Select is not in the field family yet: no minimum block padding (Text field decision grows-with-text-size).
+          bind: { paddingX: null, paddingY: null, paddingLeft: 'control.padding-inline', paddingRight: 'control.padding-inline-end' },
           children: [
             {
               type: 'text',

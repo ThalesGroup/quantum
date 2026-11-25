@@ -489,7 +489,7 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | --- | --- | --- | --- |
 | `--bs-control-min-height` | `text-field.control.min-height.medium` | `2.25rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.medium` | `0.75rem` |  |
-| `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum centers a field's line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders). |
+| `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum keeps a minimum block padding on a field (text-field.control.padding-block, 3 / 5 / 8px) that shows only once the text outgrows the min-height, and pads the textarea more. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.medium` (fontSize) | `1rem` |  |
 | `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.2` |  |
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |

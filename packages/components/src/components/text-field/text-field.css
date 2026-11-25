@@ -27,6 +27,7 @@
   --_message-color: var(--text-field-message-color-error);
   --_severity-icon-color: var(--text-field-severity-icon-color-error);
   --_min-height: var(--text-field-control-min-height-medium);
+  --_padding-block: var(--text-field-control-padding-block-medium);
   --_severity-icon-size: var(--text-field-severity-icon-size-after-control-medium);
   --_border-radius: var(--text-field-control-border-radius-medium);
   --_padding-inline: var(--text-field-control-padding-inline-medium);
@@ -73,6 +74,7 @@
 
 .ds-text-field[data-size="small"] {
   --_min-height: var(--text-field-control-min-height-small);
+  --_padding-block: var(--text-field-control-padding-block-small);
   --_severity-icon-size: var(--text-field-severity-icon-size-after-control-small);
   --_border-radius: var(--text-field-control-border-radius-small);
   --_padding-inline: var(--text-field-control-padding-inline-small);
@@ -107,6 +109,7 @@
 
 .ds-text-field[data-size="large"] {
   --_min-height: var(--text-field-control-min-height-large);
+  --_padding-block: var(--text-field-control-padding-block-large);
   --_severity-icon-size: var(--text-field-severity-icon-size-after-control-large);
   --_border-radius: var(--text-field-control-border-radius-large);
   --_padding-inline: var(--text-field-control-padding-inline-large);
@@ -165,7 +168,8 @@
   inline-size: 100%;
   min-height: var(--_min-height);
   margin: 0;
-  padding-block: 0;
+  /* A minimum: the min-height sets the height until the text outgrows it (decision grows-with-text-size). */
+  padding-block: var(--_padding-block);
   padding-inline: var(--_padding-inline);
   border: var(--text-field-control-border-width) solid var(--_control-border-color);
   border-radius: var(--_border-radius);

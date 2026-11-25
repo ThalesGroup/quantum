@@ -23,6 +23,7 @@
   --_mark-color: var(--search-field-mark-color-default);
   --_description-color: var(--search-field-description-color-default);
   --_min-height: var(--search-field-control-min-height-medium);
+  --_padding-block: var(--search-field-control-padding-block-medium);
   --_border-radius: var(--search-field-control-border-radius-medium);
   --_padding-inline: var(--search-field-control-padding-inline-medium);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-medium);
@@ -63,6 +64,7 @@
 
 .ds-search-field[data-size="small"] {
   --_min-height: var(--search-field-control-min-height-small);
+  --_padding-block: var(--search-field-control-padding-block-small);
   --_border-radius: var(--search-field-control-border-radius-small);
   --_padding-inline: var(--search-field-control-padding-inline-small);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-small);
@@ -91,6 +93,7 @@
 
 .ds-search-field[data-size="large"] {
   --_min-height: var(--search-field-control-min-height-large);
+  --_padding-block: var(--search-field-control-padding-block-large);
   --_border-radius: var(--search-field-control-border-radius-large);
   --_padding-inline: var(--search-field-control-padding-inline-large);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-large);
@@ -183,7 +186,8 @@
   inline-size: 100%;
   min-height: var(--_min-height);
   margin: 0;
-  padding-block: 0;
+  /* A minimum: the min-height sets the height until the text outgrows it (decision grows-with-text-size). */
+  padding-block: var(--_padding-block);
   padding-inline: var(--_padding-inline);
   padding-inline-start: var(--_padding-inline-start);
   border: var(--search-field-control-border-width) solid var(--_control-border-color);

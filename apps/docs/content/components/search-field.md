@@ -29,7 +29,8 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 ## Sizes and states
 
 Sizes follow the Text field (small, medium, large), their touch targets on iOS and Android included. States are default, hover, focus visible
-and disabled: no invalid, no read-only.
+and disabled: no invalid, no read-only. When people raise the text size the box grows as the
+Text field's does, keeping the Button's minimum space above and below the text.
 
 The search glyph follows the text beside it: as light as the placeholder while the field is
 empty, as dark as the value once people type. It never stands out from the text it introduces.
@@ -106,6 +107,10 @@ This section explains the decisions behind it.
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
 - The color transitions of the control are switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+- Text sizes are px lengths today, so a browser's text-only size setting does not enlarge the
+  field's text, while zoom enlarges the text and the box together, which meets Resize Text
+  ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
 
 ### iOS
 
@@ -121,6 +126,9 @@ This section explains the decisions behind it.
   iPadOS supports keyboard navigation in text fields and text views, unlike buttons. On iPhone,
   Full Keyboard Access reaches the field: use the native text field and test with it on
   ([Apple HIG: Focus and selection, iPadOS](https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS), [Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices), [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
+- The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
+  Apple asks that layouts adapt to all font sizes
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
@@ -146,6 +154,10 @@ This section explains the decisions behind it.
   the text first ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements), [Windows: keyboard interactions, navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation), [text entry](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry)).
 - On macOS, Option-Command-F moves focus to the product's main search field, a standard shortcut
   ([Apple HIG: standard keyboard shortcuts](https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts)).
+- macOS does not support Dynamic Type: there the field keeps its size, as text does
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
+- On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
+  with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
 
 ## Related
 
