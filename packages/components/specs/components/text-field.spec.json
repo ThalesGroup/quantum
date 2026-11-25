@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.19.3",
+  "version": "0.19.4",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -853,6 +853,16 @@
         "id": "compose-hide-semantics",
         "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
+      },
+      {
+        "id": "windows-forms",
+        "title": "Windows apps: Forms",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
       }
     ]
   },
@@ -1007,6 +1017,24 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "asterisk-style",
+      "date": "2026-11-25",
+      "version": "0.19.4",
+      "area": "color",
+      "status": "active",
+      "text": "On Android and Windows, the Text field marks a required field with an asterisk at the end of its label, whatever markedFields says when it is optional or required (nothing with none), and draws nothing on an optional field. The asterisk is the color of the error message and of the error icon (global.text.on-base.functional.error.default), at the label's size and weight (14 / 16 / 16 px, medium), 4 px after the label (2 px in small), with no word space; disabled, the label's disabled color (global.text.state.disabled.default). 5.79 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode on levels 0 to 3. The words of the other platforms keep mark-style.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 3) among: A, the mark's own look (mark-style; recommended); B, the label's style; C, the Figma prototype's red asterisk (chosen). The team chose C because a reddish asterisk is the most common rendering of a required field in interfaces, and asked that its red be the color of the severity message and of the severity icon. Applies the Forms decision forms-asterisk-style. Matches the Figma prototype on Android and Windows (its asterisk, color, weight and gap); the words of the web, iOS and macOS stay a departure. The asterisk gets its own tokens (component tokens are never forked per platform), which land with point 4.",
+      "platforms": [
+        "android",
+        "desktop"
+      ],
+      "refs": [
+        "material-text-fields-required",
+        "windows-forms",
+        "wcag:1.4.3"
+      ]
+    },
     {
       "id": "mark-style",
       "date": "2026-11-25",
@@ -1515,6 +1543,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.19.4",
+      "date": "2026-11-25",
+      "note": "Decision asterisk-style: on Android and Windows, the required asterisk in the error message's red (global.text.on-base.functional.error.default), the label's size and weight, 4 px after the label (2 px in small); 5.79 to 6.12:1 light, 5.30 to 7.06:1 dark (#103 step 16, point 3). No token or rendering change yet."
+    },
     {
       "version": "0.19.3",
       "date": "2026-11-25",
