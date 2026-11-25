@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -414,7 +414,7 @@
         ]
       },
       {
-        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). On the severity fills (global.bg.subtle.functional.<severity>.default, at rest and on hover), the value is at least 16.91:1 (light) and 11.43:1 (dark) and the placeholder 5.42:1 and 6.48:1: error 16.91 / 11.67:1 and 5.42 / 6.62:1, warning 17.15 / 11.54:1 and 5.50 / 6.55:1, success 17.30 / 11.43:1 and 5.55 / 6.48:1. Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 6.49:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 6.16:1 and 8.38:1, success 7.44:1 and 5.92:1). On the severity fills (global.bg.subtle.functional.<severity>.default, at rest and on hover), the value is at least 16.91:1 (light) and 11.43:1 (dark) and the placeholder 5.42:1 and 6.48:1: error 16.91 / 11.67:1 and 5.42 / 6.62:1, warning 17.15 / 11.54:1 and 5.50 / 6.55:1, success 17.30 / 11.43:1 and 5.55 / 6.48:1. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -524,7 +524,7 @@
         ]
       },
       {
-        "text": "The severity icon is named after the severity (\"Error\", \"Warning\", \"Success\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 light, 5.30:1 dark; warning 3.09:1 and 8.38:1; success 7.44:1 and 5.92:1).",
+        "text": "The severity icon is named after the severity (\"Error\", \"Warning\", \"Success\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 light, 5.30:1 dark; warning 6.16:1 and 8.38:1; success 7.44:1 and 5.92:1).",
         "refs": [
           "accname-description",
           "wcag:1.1.1",
@@ -1007,6 +1007,23 @@
   ],
   "decisions": [
     {
+      "id": "warning-one-color",
+      "date": "2026-11-25",
+      "version": "0.18.0",
+      "area": "color",
+      "status": "active",
+      "text": "The warning severity icon and the warning message read one color, as the error's and the success's do: the tokens keep their roles (text-field.severity-icon.color.warning, global.icon.on-base.functional.warning.default; text-field.message.color.warning, global.text.on-base.functional.warning.default), and the Color foundation maps the warning icon role to the warning text, warning 600 (#765818) in light mode and warning 300 (#FFC61C) in dark mode (decision warning-on-base-600). No component token changes.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 3, also the Forms foundation step 6, forms-warning-one-color) among: A, keep the two roles as the Figma library maps them in light mode (icon warning 500 #BD8107, message warning 800 #3E2D0C, 3.97:1 apart); B, the warning icon in the text color; C, the message in the icon color (3.09:1, under the 4.5:1 of WCAG 1.4.3); D, the message at warning 600 with the icon at 500; F, the message at warning 600 and the icon in the same color (chosen); E, the message on the on-subtle text role. The team asked that the warning work like the error and the success, whose icon role aliases their text role: the Color foundation's decision warning-on-base-600 maps the warning text to warning 600, the lightest step that passes 4.5:1, and the warning icon role to the warning text. Measured on the Text field (every size, both icon placements, light and dark, levels 0 to 3): icon and message 6.49 / 6.16 / 6.49 / 6.16:1 in light mode (the message was 13.02 / 12.36:1, the icon 3.27 / 3.09:1), 11.17 / 10.23 / 9.36 / 8.38:1 in dark mode, unchanged.",
+      "tokens": [
+        "text-field.severity-icon.color.warning",
+        "text-field.message.color.warning"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "severity-icon-glyphs",
       "date": "2026-11-25",
       "version": "0.17.0",
@@ -1432,6 +1449,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.18.0",
+      "date": "2026-11-25",
+      "note": "Decision warning-one-color: the warning icon and message read one color, warning 600 #765818 in light mode, through the Color foundation's decision warning-on-base-600 (no component token changes): the message 6.49:1 on the default surface and 6.16:1 at the lowest (was 13.01:1 and 12.30:1), the icon 6.16:1 at the lowest (was 3.09:1); dark mode unchanged (11.17:1 and 8.38:1)."
+    },
     {
       "version": "0.17.0",
       "date": "2026-11-25",

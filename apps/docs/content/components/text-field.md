@@ -83,8 +83,9 @@ and an 8 px gap, so it no longer lines up with a full-width field or Button. Wit
 no icon, and the message says the severity in words. The icon is never drawn inside the box,
 where browsers add their own controls. It draws the Alert's glyph of the severity (`error`,
 `warning`, `check_circle`), so the three differ by shape as well as color, in the on-base icon
-color of the severity, and is named after it ("Error", "Warning", "Success"), so the description
-reads the severity and then the message.
+color of the severity, the color of its message (for a warning, warning 600 in light mode, 6.16:1
+at the lowest), and is named after it ("Error", "Warning", "Success"), so the description reads
+the severity and then the message.
 
 ## Content
 
