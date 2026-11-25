@@ -24,6 +24,12 @@ export function form(...children) {
   return el('form', { class: 'scr-form', action: '#', method: 'post' }, ...children);
 }
 
+/**
+ * The note before the first field of a form whose fields are all required: the Forms rule marks the
+ * fewer fields, so required fields carry no mark and the note says it once (forms-required-marking).
+ */
+export const requiredNote = () => el('p', { class: 'scr-hint' }, text('All fields are required unless marked optional.'));
+
 /** A vertical stack of fields and buttons; buttons stretch to its width. */
 export const stack = (...children) => el('div', { class: 'scr-stack' }, ...children);
 
@@ -90,4 +96,5 @@ export const CHANGES = {
   forgot: '"Forgot your password?" sits under the password field: the Text field owns its label row.',
   cover: 'The cover image is a token-drawn placeholder.',
   heading: 'The card title is an h2: the Card heading level goes from 2 to 6.',
+  required: 'A note before the first field says "All fields are required unless marked optional.": every field is required, and the Forms rule marks the fewer fields (the original marks none).',
 };

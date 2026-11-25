@@ -22,6 +22,7 @@
   --_control-color: var(--text-field-control-color-default);
   --_placeholder-color: var(--text-field-control-placeholder-color-default);
   --_label-color: var(--text-field-label-color-default);
+  --_mark-color: var(--text-field-mark-color-default);
   --_description-color: var(--text-field-description-color-default);
   --_message-color: var(--text-field-message-color-error);
   --_severity-icon-color: var(--text-field-severity-icon-color-error);
@@ -43,6 +44,11 @@
   --_label-font-weight: var(--text-field-label-typography-medium-font-weight);
   --_label-line-height: var(--text-field-label-typography-medium-line-height);
   --_label-letter-spacing: var(--text-field-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--text-field-mark-typography-medium-font-family);
+  --_mark-font-size: var(--text-field-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--text-field-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--text-field-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--text-field-mark-typography-medium-letter-spacing);
   --_description-font-family: var(--text-field-description-typography-medium-font-family);
   --_description-font-size: var(--text-field-description-typography-medium-font-size);
   --_description-font-weight: var(--text-field-description-typography-medium-font-weight);
@@ -82,6 +88,11 @@
   --_label-font-weight: var(--text-field-label-typography-small-font-weight);
   --_label-line-height: var(--text-field-label-typography-small-line-height);
   --_label-letter-spacing: var(--text-field-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--text-field-mark-typography-small-font-family);
+  --_mark-font-size: var(--text-field-mark-typography-small-font-size);
+  --_mark-font-weight: var(--text-field-mark-typography-small-font-weight);
+  --_mark-line-height: var(--text-field-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--text-field-mark-typography-small-letter-spacing);
   --_description-font-family: var(--text-field-description-typography-small-font-family);
   --_description-font-size: var(--text-field-description-typography-small-font-size);
   --_description-font-weight: var(--text-field-description-typography-small-font-weight);
@@ -111,6 +122,11 @@
   --_label-font-weight: var(--text-field-label-typography-large-font-weight);
   --_label-line-height: var(--text-field-label-typography-large-line-height);
   --_label-letter-spacing: var(--text-field-label-typography-large-letter-spacing);
+  --_mark-font-family: var(--text-field-mark-typography-large-font-family);
+  --_mark-font-size: var(--text-field-mark-typography-large-font-size);
+  --_mark-font-weight: var(--text-field-mark-typography-large-font-weight);
+  --_mark-line-height: var(--text-field-mark-typography-large-line-height);
+  --_mark-letter-spacing: var(--text-field-mark-typography-large-letter-spacing);
   --_description-font-family: var(--text-field-description-typography-large-font-family);
   --_description-font-size: var(--text-field-description-typography-large-font-size);
   --_description-font-weight: var(--text-field-description-typography-large-font-weight);
@@ -132,6 +148,16 @@
   font-weight: var(--_label-font-weight);
   line-height: var(--_label-line-height);
   letter-spacing: var(--_label-letter-spacing);
+}
+
+/* The required mark, inside the label after a word space (markedFields; decisions mark-style, mark-part). */
+.ds-text-field__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 
 .ds-text-field__control {
@@ -337,6 +363,7 @@
 .ds-text-field:where([data-state="disabled"]),
 .ds-text-field:has(.ds-text-field__control:disabled) {
   --_label-color: var(--text-field-label-color-disabled);
+  --_mark-color: var(--text-field-mark-color-disabled);
   --_description-color: var(--text-field-description-color-disabled);
   --_icon-color: var(--text-field-icon-color-disabled);
   --_icon-placeholder-color: var(--text-field-icon-placeholder-color-disabled);

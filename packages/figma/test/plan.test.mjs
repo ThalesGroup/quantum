@@ -188,6 +188,36 @@ test('a checked box in error binds the token for both states, its brand fill', (
   }
 });
 
+test('the fields draw the required mark with a BOOLEAN and a TEXT, markedFields out of the variant axes, never the asterisk', () => {
+  const counts = { 'text-field': 1152, 'number-field': 1152, textarea: 576, 'search-field': 24 };
+  for (const [id, count] of Object.entries(counts)) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    assert.equal(plan.variants.length, count, `${id}: markedFields adds no variant`);
+    assert.ok(!plan.properties.some((p) => p.name === 'Marked fields'), `${id}: no Marked fields axis`);
+    assert.deepEqual(plan.properties.find((p) => p.name === 'Mark text'), { name: 'Mark text', kind: 'TEXT', default: '(optional)' });
+    assert.deepEqual(plan.properties.find((p) => p.name === 'Mark'), { name: 'Mark', kind: 'BOOLEAN', default: id !== 'search-field' });
+    assert.ok(!JSON.stringify(plan.variants).includes('"name":"asterisk"'), `${id}: the asterisk is not drawn`);
+    assert.ok(plan.notDrawn.some((n) => n.slot === 'asterisk'), `${id}: the asterisk is listed as not drawn`);
+  }
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const row = (size, state = 'default') => plan.variants.find((v) => v.name === `Size=${size}, Severity icon=message, Severity=none, Content=value, Leading icon=false, State=${state}`).root.children.find((c) => c.name === 'label-row');
+  const mark = (size, state) => row(size, state).children.find((c) => c.name === 'mark');
+  assert.deepEqual(row('small').children.map((c) => c.name), ['label', 'mark']);
+  assert.equal(mark('small').visibleProperty, 'Mark');
+  assert.equal(mark('small').fills, 'text-field/mark/color/default');
+  assert.equal(mark('small', 'disabled').fills, 'text-field/mark/color/disabled');
+  assert.equal(mark('large').typography.fontWeight, 'text-field/mark/typography/large/font-weight');
+  // The word space: a quarter of the mark's font size, as the web measures it (3.5 px at 14 px, 4 px at 16 px).
+  assert.equal(row('small').set.itemSpacing, 3.5);
+  assert.equal(row('medium').set.itemSpacing, 4);
+});
+
+test('figmaComponent refuses a fixed property that is no enum of the spec, or a value that is not one of its options', () => {
+  const blueprint = { root: { type: 'frame' }, fixed: { tone: 'loud' } };
+  assert.throws(() => figmaComponent(loaded, button, blueprint), /fixed names "tone", which is no enum property/);
+  assert.throws(() => figmaComponent(loaded, button, { root: { type: 'frame' }, fixed: { size: 'huge' } }), /fixed sets size to "huge"/);
+});
+
 test('figmaComponent refuses a slot the component has no token for', () => {
   const blueprint = { root: { type: 'frame', bind: { fill: 'container.backgroud' } } };
   assert.throws(() => figmaComponent(loaded, button, blueprint), /"container.backgroud", which no token of the component has/);

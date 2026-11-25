@@ -50,6 +50,75 @@
         }
       }
     },
+    "mark": {
+      "$description": "The required mark, \"(optional)\" or \"(required)\" at the end of the label (markedFields; decision mark-style).",
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.secondary}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$description": "The label's size (body.size.sm, md, md), the regular weight, the label's line height and letter spacing.",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.sm}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{body.size.md}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      }
+    },
+    "asterisk": {
+      "$description": "Android and Windows only: the asterisk of a required field, in place of the mark (decision asterisk-style). It takes the label's typography (label.typography.*). Neither the web reference rendering nor the Figma component draws it.",
+      "color": {
+        "$type": "color",
+        "default": {
+          "$description": "The error message's and the error icon's red.",
+          "$value": "{global.text.on-base.functional.error.default}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "margin-inline-start": {
+        "$type": "dimension",
+        "$description": "Between the label and the asterisk, with no word space.",
+        "small": {
+          "$value": "{space.2}"
+        },
+        "medium": {
+          "$value": "{space.4}"
+        },
+        "large": {
+          "$value": "{space.4}"
+        }
+      }
+    },
     "control": {
       "$description": "The editable box: a native single-line text input drawn by the component.",
       "min-height": {

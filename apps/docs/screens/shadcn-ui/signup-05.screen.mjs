@@ -1,5 +1,5 @@
 import { ds, slot, el, screen } from '../lib/ds.mjs';
-import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, GAPS, CHANGES } from '../lib/auth.mjs';
+import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, requiredNote, GAPS, CHANGES } from '../lib/auth.mjs';
 
 /** shadcn/ui block signup-05: A simple signup form with social providers. */
 export const meta = {
@@ -7,7 +7,7 @@ export const meta = {
   name: 'Sign up with social providers',
   section: 'signup',
   description: 'A simple signup form with social providers.',
-  changes: [CHANGES.brandIcons],
+  changes: [CHANGES.required, CHANGES.brandIcons],
   gaps: [GAPS.link, GAPS.separator],
 };
 
@@ -17,6 +17,7 @@ export function render() {
       form(stack(
         el('div', { class: 'scr-auth__brand' }, brand()),
         heading('Welcome to Acme Inc.', hint('Already have an account?', 'Sign in')),
+        requiredNote(),
         emailField('signup-05-email'),
         submit('Create Account'),
         separator('Or'),

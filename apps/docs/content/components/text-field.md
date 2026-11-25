@@ -51,6 +51,23 @@ description, then the message. Without a description, the message sits under the
 message never takes the place of the description, as the
 [Forms foundation](/foundations/forms/guidelines) asks of every control.
 
+## Required mark
+
+A form says once which of its fields carry a mark (**Marked fields**), the same for all its
+controls, and each field draws its own from **Required**. By default the form marks the fewer
+fields, the optional ones: an optional field ends its label with "(optional)", a required one
+carries nothing, and the form says once, before its first field, "All fields are required unless
+marked optional." When most fields are optional, the form marks the required ones with
+"(required)" instead. A field outside a form, such as a table's filter or a setting applied at
+once, carries no mark. The rule is the [Forms foundation](/foundations/forms/guidelines)'s: words
+need no symbol explained, and a required field never says "(optional)".
+
+The mark follows the label after a word space, at the label's size but regular and in the
+description's color, so it reads as a qualifier of the name rather than part of it. Android and
+Windows mark each required field with an asterisk instead, in the error message's red, as their
+own guidelines ask; the web, iOS and macOS keep the words. In Figma the component draws the web's
+mark: **Mark** shows it and **Mark text** holds its words.
+
 ## Leading icon
 
 A field can show an icon before its value (**Leading icon**), but none is the default and regular
@@ -197,6 +214,12 @@ This section explains the decisions behind it.
   explains why: it disappears when people start typing
   ([HTML: placeholder](https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder),
   [WAI tutorial: placeholder text](https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text)).
+- "(required)" is hidden from assistive technology with `aria-hidden="true"`, since the `required`
+  attribute already says it; "(optional)" stays in the `<label>`, so the name ends with it, as no
+  attribute says that a field is optional. The visible label still starts with the name
+  ([WCAG 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html),
+  [AccName 1.2: hidden nodes](https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced),
+  [MDN: aria-required](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples)).
 - The input type (`email`, `tel`, `url`) and the `autocomplete` token are passed through the
   template's extra attributes; they change the keyboard and the browser's help, not the look.
 - The focus outline uses `:focus-visible`, which browsers match whenever an editable field has
@@ -223,6 +246,9 @@ This section explains the decisions behind it.
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Jetpack Compose: error semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components)).
+- A required field ends its label with an asterisk, explained once before the first field, and
+  the asterisk is part of its accessibility label; optional fields carry no mark
+  ([Material: text fields, required](https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145)).
 
 ## Related
 

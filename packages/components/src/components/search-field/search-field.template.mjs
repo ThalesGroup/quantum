@@ -7,6 +7,7 @@
  * Extra props: `id` names the input (unique in the page; without it instances are numbered in
  * render order); `name` is the form field's; `attrs` adds HTML attributes to the input (autocomplete,
  * inputmode, maxlength…).
+ * `markLabel` replaces the words of the required mark ("(optional)" or "(required)"), for another language.
  * Extra sandbox-only prop: `state` forces a visual state through data-state on the root.
  */
 import { escapeHtml, escapeAttr, renderIcon } from '../../lib/template-utils.mjs';
@@ -23,12 +24,18 @@ export function render(props = {}) {
     description = null,
     size = 'medium',
     required = false,
+    markedFields = 'none',
+    markLabel = null,
     disabled = false,
     state = null,
     id = null,
     name = null,
     attrs: extra = {},
   } = props;
+
+  // The required mark the form asks for (decision marked-fields): "(optional)" on a field that is not required,
+  // "(required)" on a required one, hidden from assistive technology since the required attribute says it (mark-part).
+  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
 
   const inputId = id ?? `ds-search-field-${++count}`;
   const descriptionId = `${inputId}-description`;
@@ -51,7 +58,7 @@ export function render(props = {}) {
   }
 
   const parts = [
-    `<label class="ds-search-field__label" data-part="label" for="${escapeAttr(inputId)}">${escapeHtml(label)}</label>`,
+    `<label class="ds-search-field__label" data-part="label" for="${escapeAttr(inputId)}">${escapeHtml(label)}${mark ? ` <span class="ds-search-field__mark" data-part="mark"${mark === 'required' ? ' aria-hidden="true"' : ''}>${escapeHtml(markLabel ?? `(${mark})`)}</span>` : ''}</label>`,
     `<div class="ds-search-field__field" data-part="field"><span class="ds-search-field__icon" data-part="icon" aria-hidden="true">${renderIcon('search')}</span><input ${inputAttrs.join(' ')}></div>`,
   ];
   if (description) parts.push(`<p class="ds-search-field__description" data-part="description" id="${escapeAttr(descriptionId)}">${escapeHtml(description)}</p>`);

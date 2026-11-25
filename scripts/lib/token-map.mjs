@@ -39,7 +39,7 @@ export const KINDS = [
  * `pnpm validate` warns on a property that falls into `other`: extend the table.
  */
 export const PROPERTY_KINDS = {
-  spacing: ['offset', 'padding', 'padding-inline', 'padding-block', 'padding-inline-start', 'padding-inline-end', 'padding-block-start', 'padding-block-end', 'margin', 'margin-inline', 'margin-block', 'gap', 'row-gap', 'column-gap', 'outline-offset'],
+  spacing: ['offset', 'padding', 'padding-inline', 'padding-block', 'padding-inline-start', 'padding-inline-end', 'padding-block-start', 'padding-block-end', 'margin', 'margin-inline', 'margin-inline-start', 'margin-inline-end', 'margin-block', 'gap', 'row-gap', 'column-gap', 'outline-offset'],
   size: ['size', 'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'inline-size', 'block-size'],
   border: ['border-width', 'border-radius', 'border-style', 'outline-width', 'outline-style'],
   // Icon font axes (Material Symbols FILL, GRAD, opsz) are typography: the icon is a glyph.

@@ -1,5 +1,5 @@
 import { ds, slot, el, screen } from '../lib/ds.mjs';
-import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, GAPS, CHANGES } from '../lib/auth.mjs';
+import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, requiredNote, GAPS, CHANGES } from '../lib/auth.mjs';
 
 /** shadcn/ui block signup-03: A signup page with a muted background color. */
 export const meta = {
@@ -7,7 +7,7 @@ export const meta = {
   name: 'Sign up with a muted background',
   section: 'signup',
   description: 'A signup page with a muted background color.',
-  changes: [CHANGES.heading, 'The shared hint under the two password fields is the description of the confirmation field: a description belongs to one field.'],
+  changes: [CHANGES.required, CHANGES.heading, 'The shared hint under the two password fields is the description of the confirmation field: a description belongs to one field.'],
   gaps: [GAPS.password, GAPS.card, GAPS.link],
 };
 
@@ -15,6 +15,7 @@ export function render() {
   const card = slot(
     ds.card({ title: 'Create your account', description: 'Enter your email below to create your account', headingLevel: 2 }),
     form(stack(
+      requiredNote(),
       nameField('signup-03-name'),
       emailField('signup-03-email'),
       columns(

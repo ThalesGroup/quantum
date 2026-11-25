@@ -34,7 +34,8 @@ Sizes (small, medium, large), states (default, hover, focus visible, error, warn
 disabled), the label, description and message, and the severity icon follow the Text field. The label names
 the quantity and its unit when it has one (**Weight (kg)**); the description gives the bounds
 (**Between 1 and 99**); the message of an error says how to fix the value. The optional leading icon follows the Text field too: decorative, not advised for regular
-applications, and never the only place a unit or a currency is said.
+applications, and never the only place a unit or a currency is said. The required mark follows
+the Text field too: "(optional)" or "(required)" after the label, as the form marks its fields.
 
 ## Accessibility
 
@@ -65,6 +66,12 @@ This section explains the decisions behind it.
 
 ### Web
 
+- "(required)" is hidden from assistive technology with `aria-hidden="true"`, since the `required`
+  attribute already says it; "(optional)" stays in the `<label>`, so the name ends with it, as no
+  attribute says that a field is optional. The visible label still starts with the name
+  ([WCAG 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html),
+  [AccName 1.2: hidden nodes](https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced),
+  [MDN: aria-required](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples)).
 - The implementation renders an `<input type="number">` with `min`, `max` and `step`, a
   `<label for>`, a description and a message referenced by `aria-describedby`, and
   `aria-invalid="true"` for an error only. The spin control keeps its native look: there is no

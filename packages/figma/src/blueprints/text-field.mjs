@@ -12,6 +12,12 @@
  * the message, by the `severityIcon` variant; the web lays the control and the icon out on a grid
  * row without a wrapper.
  *
+ * The required mark (markedFields) is not a variant axis (decision mark-part): the form sets it once, so the
+ * component draws the web's default, "(optional)" after the label, which the BOOLEAN `Mark` hides and whose
+ * TEXT `Mark text` a designer types "(required)" in a form that marks required fields. The word space before
+ * it is a quarter of its font size, as the web measures it. The asterisk of Android and Windows is not drawn:
+ * the component draws the web specification.
+ *
  * The `Leading icon` axis (iconStart) wraps the control in a `field` frame with the decorative glyph over
  * its start edge, the control reserving control.padding-inline-start, as the Search field's.
  *
@@ -30,6 +36,33 @@ export const label = {
   width: 'FILL',
   bind: { fill: 'label.color', typography: 'label.typography' },
 };
+
+/** The required mark (decisions mark-style, mark-part): "(optional)" by default, shown by the BOOLEAN `Mark`. */
+export const mark = {
+  type: 'text',
+  name: 'mark',
+  text: '(optional)',
+  property: 'Mark text',
+  visibleProperty: 'Mark',
+  bind: { fill: 'mark.color', typography: 'mark.typography' },
+};
+
+/** The label and, after a word space (a quarter of the mark's font size), the required mark. */
+export const labelRow = {
+  type: 'frame',
+  name: 'label-row',
+  layout: 'HORIZONTAL',
+  align: { primary: 'MIN', counter: 'MIN' },
+  width: 'FILL',
+  derive: { gap: ['mark.typography', 0.25] },
+  children: [{ ...label, width: 'HUG' }, mark],
+};
+
+/** The form setting markedFields, drawn by `Mark` and `Mark text` instead of a variant axis (decision mark-part). */
+export const MARKED_FIELDS = { markedFields: 'optional' };
+
+/** The asterisk is Android's and Windows' (decision asterisk-style): the component draws the web specification. */
+export const ASTERISK = { slot: 'asterisk', reason: 'Drawn on Android and Windows only (decision asterisk-style); the Figma component draws the web specification (decision mark-part).' };
 
 export const description = {
   type: 'text',
@@ -194,7 +227,8 @@ export const ICON_AXES = { slot: 'icon.fill, icon.grade, icon.optical-size', rea
 
 export default {
   axes: [CONTENT, LEADING_ICON],
-  booleans: { 'Show description': false },
-  root: container([label, withSeverityIcon(withLeadingIcon(content(), 'mail')), description, message]),
-  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES],
+  fixed: MARKED_FIELDS,
+  booleans: { Mark: true, 'Show description': false },
+  root: container([labelRow, withSeverityIcon(withLeadingIcon(content(), 'mail')), description, message]),
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES, ASTERISK],
 };

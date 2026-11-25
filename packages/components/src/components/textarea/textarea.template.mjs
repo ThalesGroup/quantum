@@ -7,6 +7,7 @@
  * Extra props: `id` names the control (unique in the page; without it instances are numbered in
  * render order); `name` is the form field's; `attrs` adds HTML attributes to the control.
  * `severityIconLabel` names the severity icon (default "Error", "Warning" or "Success"), for another language.
+ * `markLabel` replaces the words of the required mark ("(optional)" or "(required)"), for another language.
  * Extra sandbox-only prop: `state` forces a visual state through data-state on the root.
  */
 import { escapeHtml, escapeAttr, renderIcon } from '../../lib/template-utils.mjs';
@@ -29,6 +30,8 @@ export function render(props = {}) {
     rows = 3,
     size = 'medium',
     required = false,
+    markedFields = 'optional',
+    markLabel = null,
     disabled = false,
     readonly = false,
     severity = 'none',
@@ -43,6 +46,10 @@ export function render(props = {}) {
   // The severity icon: the Alert's glyph of the severity (decision severity-icon-glyphs).
   const glyph = SEVERITY_GLYPHS[severity] ?? null;
   const iconPlace = glyph ? (severityIcon === 'after-control' ? 'after-control' : severityIcon === 'message' && hasMessage ? 'message' : null) : null;
+
+  // The required mark the form asks for (decision marked-fields): "(optional)" on a field that is not required,
+  // "(required)" on a required one, hidden from assistive technology since the required attribute says it (mark-part).
+  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
 
   const controlId = id ?? `ds-textarea-${++count}`;
   const descriptionId = `${controlId}-description`;
@@ -72,7 +79,7 @@ export function render(props = {}) {
   const iconLabel = severityIconLabel ?? SEVERITY_LABELS[severity];
   const icon = (where) => `<span class="ds-textarea__severity-icon" data-part="severity-icon" data-place="${where}"${where === 'after-control' ? ` id="${escapeAttr(iconId)}"` : ''} role="img" aria-label="${escapeAttr(iconLabel)}">${renderIcon(glyph)}</span>`;
   const parts = [
-    `<label class="ds-textarea__label" data-part="label" for="${escapeAttr(controlId)}">${escapeHtml(label)}</label>`,
+    `<label class="ds-textarea__label" data-part="label" for="${escapeAttr(controlId)}">${escapeHtml(label)}${mark ? ` <span class="ds-textarea__mark" data-part="mark"${mark === 'required' ? ' aria-hidden="true"' : ''}>${escapeHtml(markLabel ?? `(${mark})`)}</span>` : ''}</label>`,
     `<textarea ${controlAttrs.join(' ')}>${escapeHtml(value ?? '')}</textarea>${iconPlace === 'after-control' ? icon('after-control') : ''}`,
   ];
   if (description) parts.push(`<p class="ds-textarea__description" data-part="description" id="${escapeAttr(descriptionId)}">${escapeHtml(description)}</p>`);

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.10.15",
+  "version": "0.11.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -25,6 +25,20 @@
       "role": "label",
       "required": true,
       "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
+    },
+    {
+      "id": "mark",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "The required mark of the Forms rule, at the end of the label after a word space: \"(optional)\" on a field that is not required when the form marks optional fields, \"(required)\" on a required field when it marks required fields (markedFields), nothing otherwise. The label's size, regular, the description's color (decision mark-style). On the web \"(required)\" is hidden from assistive technology, the required attribute saying it, and \"(optional)\" is part of the name."
+    },
+    {
+      "id": "asterisk",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "On Android and Windows only, in place of the mark: an asterisk at the end of the label of a required field, 4 px after it (2 px in small), at the label's size and weight (label.typography), in the error message's red (decision asterisk-style), kept in the accessible name. Never drawn on the web, iOS and macOS, so neither the reference rendering nor the Figma component draws it."
     },
     {
       "id": "field",
@@ -65,6 +79,8 @@
         "control",
         "icon",
         "label",
+        "mark",
+        "asterisk",
         "description"
       ],
       "options": [
@@ -111,11 +127,36 @@
       "description": "Help text: expected format, example, or what the value is used for."
     },
     {
+      "id": "markedFields",
+      "name": "Marked fields",
+      "type": "enum",
+      "default": "none",
+      "description": "Which fields carry the required mark. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-marked-fields); the field draws its mark from its own required.",
+      "affects": [
+        "mark",
+        "asterisk"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No mark (default): a search field usually stands alone, outside a form."
+        },
+        {
+          "value": "optional",
+          "description": "\"(optional)\" on the field when it is not required, nothing when it is: in a form that marks its optional fields."
+        },
+        {
+          "value": "required",
+          "description": "\"(required)\" on the field when it is required, nothing when it is not: in a form where most fields are optional."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "The field must be filled to submit the form."
+      "description": "The field must be filled to submit the form. It draws the mark that markedFields asks for (\"(required)\" on a required field, \"(optional)\" on one that is not), and the asterisk on Android and Windows."
     },
     {
       "id": "disabled",
@@ -369,6 +410,18 @@
         "platforms": [
           "android"
         ]
+      },
+      {
+        "text": "Hide \"(required)\" with aria-hidden=\"true\": the required attribute says the field is required, once. \"(optional)\" stays in the label element, so the name ends with it (\"Company (optional)\"): no attribute says that a field is optional. The visible label still starts with the name, so speech input by the label works.",
+        "refs": [
+          "wcag:2.5.3",
+          "wcag:1.3.1",
+          "accname-hidden",
+          "mdn-aria-required"
+        ],
+        "platforms": [
+          "web"
+        ]
       }
     ],
     "references": [
@@ -581,6 +634,16 @@
         "id": "winui-is-required-for-form",
         "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
         "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
+      },
+      {
+        "id": "accname-hidden",
+        "title": "AccName 1.2: step 2A, hidden nodes are not part of the name",
+        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
+      },
+      {
+        "id": "mdn-aria-required",
+        "title": "MDN: aria-required (a label that already says required)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples"
       }
     ]
   },
@@ -659,6 +722,7 @@
       "partSelectors": {
         "container": ".ds-search-field",
         "label": ".ds-search-field__label",
+        "mark": ".ds-search-field__mark",
         "field": ".ds-search-field__field",
         "icon": ".ds-search-field__icon",
         "control": ".ds-search-field__control",
@@ -671,6 +735,23 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "mark-part",
+      "date": "2026-11-25",
+      "version": "0.11.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Search field draws the required mark as the mark part, inside the label after a word space, and keeps the asterisk part for Android and Windows. The web template takes markedFields (none by default) and markLabel, to translate the words; \"(required)\" is aria-hidden. In Figma the component draws the web rendering only: a BOOLEAN \"Mark\" (off by default) shows the mark, whose TEXT \"Mark text\" is \"(optional)\" and is typed \"(required)\" when the form marks required fields; markedFields is not a variant axis and the asterisk is not drawn. Tokens: mark.color.* and mark.typography.* (mark-style); asterisk.color.* and asterisk.margin-inline-start.* (asterisk-style), the asterisk taking label.typography.*.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 4) among: A, a BOOLEAN and a TEXT for the mark and a BOOLEAN for the asterisk, markedFields kept out of the variant axes (recommended); B, markedFields and required as variant axes, six times the variants (6912 for the Text field); C, the Figma prototype's single BOOLEAN drawing the asterisk, the words typed into the label. The team chose A without the asterisk: the Figma components draw the current web specification, not every platform's rendering, so Figma shows \"(optional)\", \"(required)\" or no mark, never the asterisk. Variant counts are unchanged (Text field 1152, Number field 1152, Textarea 576, Search field 24). Departs from the Figma prototype, whose BOOLEAN \"required\" (on by default) draws a red asterisk. The word space before the mark is a quarter of the font size in Figma (3.5 px at 14 px, 4 px at 16 px), as measured on the web.",
+      "tokens": [
+        "search-field.mark.*",
+        "search-field.asterisk.*"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
     {
       "id": "required-windows-name",
       "date": "2026-11-25",
@@ -1077,6 +1158,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.11.0",
+      "date": "2026-11-25",
+      "note": "Decision mark-part: the required mark lands (#103 step 16, point 4). Parts mark and asterisk (Android and Windows) inside the label; property markedFields (none by default); tokens mark.color.*, mark.typography.*, asterisk.color.* and asterisk.margin-inline-start.*; the web template draws the mark, \"(required)\" aria-hidden, and takes markLabel to translate it; the Figma component gains the BOOLEAN \"Mark\" and the TEXT \"Mark text\", no variant axis, and never draws the asterisk."
+    },
     {
       "version": "0.10.15",
       "date": "2026-11-25",

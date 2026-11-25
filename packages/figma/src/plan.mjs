@@ -202,13 +202,14 @@ export function figmaVariables(loaded, paths) {
  * scripts/lib/token-map.mjs names them) that drives each field. It holds no value: each variant binds the
  * token its slot makes active for that configuration, exactly as the CSS reads it.
  *
- *   { root, axes?, booleans?, uses?, notDrawn? }
+ *   { root, axes?, fixed?, booleans?, uses?, notDrawn? }
  *
  * - `root`: the component's node (a frame). Every node has a `type` and optionally `name`,
  *   `when(v)` (drawn only when true), `visibleProperty` (the BOOLEAN property showing it),
  *   `context(v)` (`{ props, state }` merged into the configuration of its subtree: a current
  *   page, an expanded item, a menu item's intent), `bind` (key -> slot, or `(v) => slot | null`),
- *   `derive` (key -> `[slot, factor]`: a value computed from a token, set without a variable),
+ *   `derive` (key -> `[slot, factor]`: a value computed from a token, set without a variable; a
+ *   typography slot gives its font size, so `['mark.typography', 0.25]` is a quarter of it),
  *   `width` / `height` (`'HUG'`, `'FILL'` or px) and `absolute` (`{ x, y }` in px or `'center'`).
  *   These layout keys (and `layout`, `align`, `arc`, `path`, `textDecoration`) may also
  *   be `(v) => value`.
@@ -229,6 +230,8 @@ export function figmaVariables(loaded, paths) {
  *   An opacity variable holds a percentage (0-100), as Figma reads it.
  * - `axes`: variant properties beyond the spec's enum properties and its states, each
  *   `{ name, values }`, read in `v.axes[name]` (the button's icon slots, whose padding differs).
+ * - `fixed`: enum properties of the spec kept out of the variant axes, id -> the value every variant
+ *   draws (a form setting such as `markedFields`, which a BOOLEAN and a TEXT property show instead).
  * - `booleans`: BOOLEAN properties, name -> default.
  * - `notDrawn`: `[{ slot, reason }]`, the token slots Figma cannot draw. Every slot of the
  *   component is bound by the blueprint or listed here (`uncovered` lists the others).
@@ -370,7 +373,9 @@ export function figmaComponent(loaded, spec, blueprint) {
       const path = active.get(slot);
       if (!path) continue;
       out.set ??= {};
-      for (const f of FIELDS[key]) out.set[f] = +(px(resolved(path)) * factor).toFixed(3);
+      const value = resolved(path);
+      const base = value && typeof value === 'object' && 'fontSize' in value ? value.fontSize : value;
+      for (const f of FIELDS[key]) out.set[f] = +(px(base) * factor).toFixed(3);
     }
     if (node.focusRing) {
       // A part without an `outline-offset` slot draws its ring flush over its border: the offset is
@@ -412,9 +417,15 @@ export function figmaComponent(loaded, spec, blueprint) {
     return out;
   };
 
+  const fixed = blueprint.fixed ?? {};
+  for (const [id, value] of Object.entries(fixed)) {
+    const property = spec.properties.find((p) => p.id === id && p.type === 'enum');
+    if (!property) throw new Error(`${spec.id}: fixed names "${id}", which is no enum property of the spec`);
+    if (!property.options.some((o) => o.value === value)) throw new Error(`${spec.id}: fixed sets ${id} to "${value}", which is not one of its options`);
+  }
   const enums = spec.properties.filter((p) => p.type === 'enum');
   const axes = [
-    ...enums.map((p) => ({ name: p.name, key: p.id, values: defaultFirst(p) })),
+    ...enums.filter((p) => !(p.id in fixed)).map((p) => ({ name: p.name, key: p.id, values: defaultFirst(p) })),
     ...(blueprint.axes ?? []).map((a) => ({ name: a.name, key: a.name, values: a.values, extra: true })),
     { name: 'State', key: 'state', values: spec.states.map((s) => s.id) },
   ];
@@ -423,7 +434,7 @@ export function figmaComponent(loaded, spec, blueprint) {
 
   const variants = combinations(axes).map((combo) => {
     const v = {
-      props: Object.fromEntries(enums.map((p) => [p.id, combo[p.id]])),
+      props: Object.fromEntries(enums.map((p) => [p.id, p.id in fixed ? fixed[p.id] : combo[p.id]])),
       axes: Object.fromEntries(axes.filter((a) => a.extra).map((a) => [a.name, combo[a.key]])),
       state: combo.state,
     };

@@ -22,6 +22,7 @@
   --_control-color: var(--textarea-control-color-default);
   --_placeholder-color: var(--textarea-control-placeholder-color-default);
   --_label-color: var(--textarea-label-color-default);
+  --_mark-color: var(--textarea-mark-color-default);
   --_description-color: var(--textarea-description-color-default);
   --_message-color: var(--textarea-message-color-error);
   --_severity-icon-color: var(--textarea-severity-icon-color-error);
@@ -39,6 +40,11 @@
   --_label-font-weight: var(--textarea-label-typography-medium-font-weight);
   --_label-line-height: var(--textarea-label-typography-medium-line-height);
   --_label-letter-spacing: var(--textarea-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--textarea-mark-typography-medium-font-family);
+  --_mark-font-size: var(--textarea-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--textarea-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--textarea-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--textarea-mark-typography-medium-letter-spacing);
   --_description-font-family: var(--textarea-description-typography-medium-font-family);
   --_description-font-size: var(--textarea-description-typography-medium-font-size);
   --_description-font-weight: var(--textarea-description-typography-medium-font-weight);
@@ -77,6 +83,11 @@
   --_label-font-weight: var(--textarea-label-typography-small-font-weight);
   --_label-line-height: var(--textarea-label-typography-small-line-height);
   --_label-letter-spacing: var(--textarea-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--textarea-mark-typography-small-font-family);
+  --_mark-font-size: var(--textarea-mark-typography-small-font-size);
+  --_mark-font-weight: var(--textarea-mark-typography-small-font-weight);
+  --_mark-line-height: var(--textarea-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--textarea-mark-typography-small-letter-spacing);
   --_description-font-family: var(--textarea-description-typography-small-font-family);
   --_description-font-size: var(--textarea-description-typography-small-font-size);
   --_description-font-weight: var(--textarea-description-typography-small-font-weight);
@@ -105,6 +116,11 @@
   --_label-font-weight: var(--textarea-label-typography-large-font-weight);
   --_label-line-height: var(--textarea-label-typography-large-line-height);
   --_label-letter-spacing: var(--textarea-label-typography-large-letter-spacing);
+  --_mark-font-family: var(--textarea-mark-typography-large-font-family);
+  --_mark-font-size: var(--textarea-mark-typography-large-font-size);
+  --_mark-font-weight: var(--textarea-mark-typography-large-font-weight);
+  --_mark-line-height: var(--textarea-mark-typography-large-line-height);
+  --_mark-letter-spacing: var(--textarea-mark-typography-large-letter-spacing);
   --_description-font-family: var(--textarea-description-typography-large-font-family);
   --_description-font-size: var(--textarea-description-typography-large-font-size);
   --_description-font-weight: var(--textarea-description-typography-large-font-weight);
@@ -127,6 +143,16 @@
   font-weight: var(--_label-font-weight);
   line-height: var(--_label-line-height);
   letter-spacing: var(--_label-letter-spacing);
+}
+
+/* The required mark, inside the label after a word space (markedFields; decisions mark-style, mark-part). */
+.ds-textarea__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 
 .ds-textarea__control {
@@ -296,6 +322,7 @@
 .ds-textarea:where([data-state="disabled"]),
 .ds-textarea:has(.ds-textarea__control:disabled) {
   --_label-color: var(--textarea-label-color-disabled);
+  --_mark-color: var(--textarea-mark-color-disabled);
   --_description-color: var(--textarea-description-color-disabled);
 }
 .ds-textarea:where([data-state="disabled"]) .ds-textarea__control,

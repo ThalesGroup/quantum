@@ -65,6 +65,8 @@ line of text, or not at all.
 - The description says what to include or a length limit: **Up to 500 characters.**
 - The message of an error says what is wrong and how to fix it: **Enter a message of at least 20
   characters.** It goes under the description, which stays, so the limit is still in view while people fix the text.
+- The required mark follows the Text field's: "(optional)" or "(required)" after the label, as
+  the form marks its fields.
 
 ## Accessibility
 
@@ -142,6 +144,12 @@ This section explains the decisions behind it.
   ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   the transition is switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+- "(required)" is hidden from assistive technology with `aria-hidden="true"`, since the `required`
+  attribute already says it; "(optional)" stays in the `<label>`, so the name ends with it, as no
+  attribute says that a field is optional. The visible label still starts with the name
+  ([WCAG 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html),
+  [AccName 1.2: hidden nodes](https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced),
+  [MDN: aria-required](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples)).
 
 ### iOS
 

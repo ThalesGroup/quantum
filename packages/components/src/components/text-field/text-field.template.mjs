@@ -8,6 +8,7 @@
  * render order); `name` is the form field's; `attrs` adds HTML attributes to the input (autocomplete,
  * inputmode, maxlength…).
  * `severityIconLabel` names the severity icon (default "Error", "Warning" or "Success"), for another language.
+ * `markLabel` replaces the words of the required mark ("(optional)" or "(required)"), for another language.
  * Extra sandbox-only prop: `state` forces a visual state through data-state on the root.
  */
 import { escapeHtml, escapeAttr, renderIcon } from '../../lib/template-utils.mjs';
@@ -30,6 +31,8 @@ export function render(props = {}) {
     message = null,
     size = 'medium',
     required = false,
+    markedFields = 'optional',
+    markLabel = null,
     disabled = false,
     readonly = false,
     severity = 'none',
@@ -44,6 +47,10 @@ export function render(props = {}) {
   // The severity icon: the Alert's glyph of the severity (decision severity-icon-glyphs).
   const glyph = SEVERITY_GLYPHS[severity] ?? null;
   const iconPlace = glyph ? (severityIcon === 'after-control' ? 'after-control' : severityIcon === 'message' && hasMessage ? 'message' : null) : null;
+
+  // The required mark the form asks for (decision marked-fields): "(optional)" on a field that is not required,
+  // "(required)" on a required one, hidden from assistive technology since the required attribute says it (mark-part).
+  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
 
   const inputId = id ?? `ds-text-field-${++count}`;
   const descriptionId = `${inputId}-description`;
@@ -76,7 +83,7 @@ export function render(props = {}) {
   const iconLabel = severityIconLabel ?? SEVERITY_LABELS[severity];
   const icon = (where) => `<span class="ds-text-field__severity-icon" data-part="severity-icon" data-place="${where}"${where === 'after-control' ? ` id="${escapeAttr(iconId)}"` : ''} role="img" aria-label="${escapeAttr(iconLabel)}">${renderIcon(glyph)}</span>`;
   const parts = [
-    `<label class="ds-text-field__label" data-part="label" for="${escapeAttr(inputId)}">${escapeHtml(label)}</label>`,
+    `<label class="ds-text-field__label" data-part="label" for="${escapeAttr(inputId)}">${escapeHtml(label)}${mark ? ` <span class="ds-text-field__mark" data-part="mark"${mark === 'required' ? ' aria-hidden="true"' : ''}>${escapeHtml(markLabel ?? `(${mark})`)}</span>` : ''}</label>`,
     // The leading icon is decorative: hidden from assistive technology, never the name (decision leading-icon-decorative).
     `${iconStart ? `<div class="ds-text-field__field" data-part="field"><span class="ds-text-field__icon" data-part="icon" aria-hidden="true">${renderIcon(iconStart)}</span><input ${inputAttrs.join(' ')}></div>` : `<input ${inputAttrs.join(' ')}>`}${iconPlace === 'after-control' ? icon('after-control') : ''}`,
   ];

@@ -39,6 +39,8 @@ empty, as dark as the value once people type. It never stands out from the text 
 - The label says what is searched: **Search**, **Search projects**, **Filter by name**.
 - The placeholder gives an example or the scope (**Name, email or role**), never the label.
 - An empty result is reported next to the results, with what to try next.
+- A search field usually stands alone, so it carries no required mark by default. Inside a form
+  that marks its fields, it takes the form's **Marked fields**, as the Text field does.
 
 ## Accessibility
 

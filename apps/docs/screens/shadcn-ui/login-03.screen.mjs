@@ -1,5 +1,5 @@
 import { ds, slot, el, screen } from '../lib/ds.mjs';
-import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, GAPS, CHANGES } from '../lib/auth.mjs';
+import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, requiredNote, GAPS, CHANGES } from '../lib/auth.mjs';
 
 /** shadcn/ui block login-03: A login page with a muted background color. */
 export const meta = {
@@ -7,7 +7,7 @@ export const meta = {
   name: 'Login with a muted background',
   section: 'login',
   description: 'A login page with a muted background color.',
-  changes: [CHANGES.forgot, CHANGES.brandIcons, CHANGES.heading],
+  changes: [CHANGES.required, CHANGES.forgot, CHANGES.brandIcons, CHANGES.heading],
   gaps: [GAPS.password, GAPS.card, GAPS.link, GAPS.separator],
 };
 
@@ -18,6 +18,7 @@ export function render() {
       secondary('Login with Apple'),
       secondary('Login with Google'),
       separator('Or continue with'),
+      requiredNote(),
       emailField('login-03-email'),
       passwordField('login-03-password'),
       forgotPassword(),
