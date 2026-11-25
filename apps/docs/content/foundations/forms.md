@@ -225,13 +225,18 @@ supporting text or in a note before the first field, and asks that the accessibi
 include the asterisk
 ([Material: text fields, required text indicator](https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145),
 [Material: text fields, accessibility](https://m3.material.io/components/text-fields/accessibility#101b7337-c788-41c8-8027-7884da77bc89)).
-Quantum follows it on Android, whatever the share of optional fields.
+Quantum follows it on Android, whatever the share of optional fields. The asterisk is red, the
+color of the error message and of the error icon, at the label's size and weight, 4 px after the
+label (2 px in the small size); the asterisk of the note that explains it is the same red, as
+Material asks of the text that explains it. Red is the most common rendering of a required field;
+the asterisk, not its color, says what it means.
 
 ### Desktop
 
 On Windows, required input is marked with an asterisk on its label
 ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)),
-explained once before the first field, and the control sets `AutomationProperties.IsRequiredForForm`
+explained once before the first field, and drawn as on Android (red, the label's size and weight,
+4 px after it); the control sets `AutomationProperties.IsRequiredForForm`
 ([IsRequiredForForm](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform)).
 On macOS, Apple gives no mark, so the generic words apply, as on iOS. A required control sets
 `accessibilityRequired`

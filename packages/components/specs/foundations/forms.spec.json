@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -48,7 +48,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. The mark follows the label (or the legend) after a word space, at its size, in the regular weight and the description's color, the disabled text color when the control is disabled. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. The mark follows the label (or the legend) after a word space, at its size, in the regular weight and the description's color, the disabled text color when the control is disabled. On Android and Windows the asterisk is red, the color of the error message and icon, at the label's size and weight, 4 px after the label (2 px in small), and so is the asterisk of the note that explains it. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
     },
     {
       "id": "statuses",
@@ -107,7 +107,7 @@
   "contrast": [
     {
       "id": "error-text-on-surfaces",
-      "description": "The message of an error on every surface level. Measured only while the severities are being rendered (WCAG 1.4.3 asks 4.5:1).",
+      "description": "The message of an error on every surface level. Measured only while the severities are being rendered (WCAG 1.4.3 asks 4.5:1). It is also the required asterisk on Android and Windows (decision forms-asterisk-style): 6.12 / 5.79 / 6.12 / 5.79:1 in light mode and 7.06 / 6.47 / 5.92 / 5.30:1 in dark mode.",
       "foreground": "global.text.on-base.functional.error.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -948,6 +948,21 @@
   ],
   "decisions": [
     {
+      "id": "forms-asterisk-style",
+      "date": "2026-11-25",
+      "version": "0.24.0",
+      "area": "color",
+      "status": "active",
+      "text": "On Android and Windows, the required asterisk is red: the error text color, global.text.on-base.functional.error.default, the color of the error message and of the error icon (global.icon.on-base.functional.error.default has the same value), at the label's size and weight, 4 px after the label (2 px in small), with no word space; the asterisk of the note that explains it is the same red; a disabled control draws it in the disabled text color, as its label. The words of the generic rule keep forms-mark-style. 5.79 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode on levels 0 to 3 (text, 4.5:1).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 3) among: A, the mark's own look (forms-mark-style: regular, the description's color, after a word space; recommended); B, the label's style (neutral primary, medium); C, the Figma prototype's red asterisk (chosen). The team chose C because a reddish asterisk is the most common rendering of a required field in interfaces, and asked that its red be exactly the color of the error message and of the severity icon. Material asks that the asterisk take the color of the text that explains it (\"If required text has a particular color, use the same color for the asterisk\"), hence the note's asterisk in the same red; Windows says nothing of its color. Noted on the sheet: red is also the color of an error, so a required field shares its mark's color with the error message next to it; the word or the asterisk, not the color, says what it means (WCAG 1.4.1). The asterisk gets its own tokens, since component tokens are never forked per platform and the words keep their look.",
+      "refs": [
+        "material-text-fields-required",
+        "windows-forms",
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
       "id": "forms-mark-style",
       "date": "2026-11-25",
       "version": "0.23.0",
@@ -1320,6 +1335,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.24.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-asterisk-style: on Android and Windows the required asterisk is the error text color (the error message's and the error icon's), the label's size and weight, 4 px after the label (2 px in small), the note's asterisk the same red; 5.79 to 6.12:1 light, 5.30 to 7.06:1 dark. The contrast pair error-text-on-surfaces covers it."
+    },
     {
       "version": "0.23.0",
       "date": "2026-11-25",
