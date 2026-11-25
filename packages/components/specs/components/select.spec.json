@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -207,7 +207,7 @@
       "name": "Disabled",
       "type": "boolean",
       "default": false,
-      "description": "Non-interactive and skipped by the keyboard; the value stays visible. Prefer read-only when people may need to read or copy the value."
+      "description": "Non-interactive and skipped by the keyboard; the value stays visible. A select has no read-only state."
     }
   ],
   "states": [
@@ -920,6 +920,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.3",
+      "date": "2026-11-25",
+      "note": "Fix: the disabled property no longer advises read-only, which a select does not have: the readonly attribute is not relevant to the select element (MDN: the readonly attribute). No rendering change."
+    },
     {
       "version": "0.3.2",
       "date": "2026-11-25",
