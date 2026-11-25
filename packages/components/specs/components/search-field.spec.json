@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.19.0",
+  "version": "0.19.1",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -163,7 +163,7 @@
       "name": "Disabled",
       "type": "boolean",
       "default": false,
-      "description": "Non-interactive and skipped by the keyboard; the value stays visible. Prefer read-only when people may need to read or copy the value."
+      "description": "Non-interactive and skipped by the keyboard; the value stays visible. The Search field has no read-only state."
     }
   ],
   "states": [
@@ -1778,6 +1778,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.19.1",
+      "date": "2026-11-25",
+      "note": "Fix: the disabled property no longer advises read-only, which the Search field does not have (decision no-error-state); the docs say it has no severity rather than no invalid state, the property invalid having become severity. No rendering change."
+    },
     {
       "version": "0.19.0",
       "date": "2026-11-25",

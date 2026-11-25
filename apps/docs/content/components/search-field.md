@@ -29,7 +29,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 ## Sizes and states
 
 Sizes follow the Text field (small, medium, large; medium when none is set), their touch targets on iOS and Android included. States are default, hover, focus visible
-and disabled: no invalid, no read-only. When people raise the text size the box grows as the
+and disabled: no severity (error, warning or success), no read-only. When people raise the text size the box grows as the
 Text field's does, keeping the Button's minimum space above and below the text; the glyph keeps
 its size, so the search text keeps its room. The label and the description wrap, even inside a
 long word, and the search text scrolls.
