@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -341,11 +341,33 @@
         ]
       },
       {
+        "key": "Enter",
+        "action": "Inserts a new line in this multi-line edit control.",
+        "refs": [
+          "html-textarea",
+          "html-enterkeyhint"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
         "key": "Tab",
         "action": "On iPadOS 15 and later with a hardware keyboard, moves focus among focus groups, the field included: iPadOS supports keyboard navigation in text fields and text views.",
         "refs": [
           "hig-focus-ipados",
           "hig-keyboards-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "key": "Return",
+        "action": "Goes into the text of the text view, which edits multi-line text; the submit action is triggered by text fields and secure fields only.",
+        "refs": [
+          "swiftui-text-editor",
+          "swiftui-on-submit"
         ],
         "platforms": [
           "ios"
@@ -387,6 +409,16 @@
         "action": "Select characters, select all: the system handles them for a text field with a hardware keyboard.",
         "refs": [
           "compose-keyboard-commands"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "Inserts a new line: only a single-line field refuses new lines.",
+        "refs": [
+          "compose-line-limits"
         ],
         "platforms": [
           "android"
@@ -439,6 +471,16 @@
         "refs": [
           "windows-keyboard-navigation",
           "windows-keyboard-text-entry"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "On Windows, inserts a new line: the Textarea's text box sets AcceptsReturn, which lets it take newline characters.",
+        "refs": [
+          "windows-text-box-multi-line"
         ],
         "platforms": [
           "desktop"
@@ -597,6 +639,14 @@
         ],
         "platforms": [
           "desktop"
+        ]
+      },
+      {
+        "text": "Enter adds a line in the Textarea on every platform, so its return key keeps the platform's default label for a new line (enter on the web); the form does not set it.",
+        "refs": [
+          "html-enterkeyhint",
+          "compose-line-limits",
+          "windows-text-box-multi-line"
         ]
       },
       {
@@ -1085,6 +1135,31 @@
         "id": "windows-keyboard-text-entry",
         "title": "Windows apps: keyboard interactions, text entry",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry"
+      },
+      {
+        "id": "html-enterkeyhint",
+        "title": "HTML: the enterkeyhint attribute (the label of the enter key)",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint"
+      },
+      {
+        "id": "swiftui-on-submit",
+        "title": "SwiftUI: onSubmit(of:_:) (text fields and secure fields, on the return key)",
+        "url": "https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)"
+      },
+      {
+        "id": "swiftui-text-editor",
+        "title": "SwiftUI: TextEditor (multiline text)",
+        "url": "https://developer.apple.com/documentation/swiftui/texteditor"
+      },
+      {
+        "id": "compose-line-limits",
+        "title": "Android Developers, Compose: line limits (a single-line field allows no new lines)",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#line-limits"
+      },
+      {
+        "id": "windows-text-box-multi-line",
+        "title": "Windows apps: text box, enable multi-line input (AcceptsReturn)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input"
       }
     ]
   },
@@ -1207,6 +1282,21 @@
     "text-field"
   ],
   "decisions": [
+    {
+      "id": "enter-by-field-kind",
+      "date": "2026-11-25",
+      "version": "0.22.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Enter (Return) adds a line in the Textarea on every platform, as a multi-line edit control; the return key keeps the platform's default label for a new line, and the form does not set it. A single-line field passes Enter to the form instead (the Forms foundation says what the form does).",
+      "refs": [
+        "html-textarea",
+        "html-enterkeyhint",
+        "swiftui-text-editor",
+        "compose-line-limits",
+        "windows-text-box-multi-line"
+      ]
+    },
     {
       "id": "keyboard-on-every-platform",
       "date": "2026-11-25",
@@ -1759,6 +1849,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.22.0",
+      "date": "2026-11-25",
+      "note": "Decision enter-by-field-kind (#103 step 19, point 2): Enter adds a line on every platform and the return key keeps its default label. Keyboard entries for Enter / Return per platform and a guideline. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.21.0",
       "date": "2026-11-25",

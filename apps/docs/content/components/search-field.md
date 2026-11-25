@@ -72,6 +72,18 @@ This section explains the decisions behind it.
   text control provides this, so the keys are the platform's
   ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html), [WCAG 2.1.2 No Keyboard Trap](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent), [EN 301 549, 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70) for native software).
   The keys are listed per platform below, from each platform's own documentation.
+- **Enter and the return key.** Enter never adds a line to this single-line field: it goes to the
+  form, which submits or runs the return key's action
+  ([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission),
+  [Jetpack Compose: line limits](https://developer.android.com/develop/ui/compose/text/user-input#line-limits),
+  [Windows: multi-line text box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input)).
+  The return key's label (next, done…) depends on the field's place in the form, so the form sets it
+  through each platform's own setting: `enterkeyhint` on the web, passed through the template's
+  `attrs`; `returnKeyType` or `submitLabel` on iOS; the IME action on Android, where Next moves focus
+  by default ([HTML: enterkeyhint](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint),
+  [UIKit: returnKeyType](https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype),
+  [SwiftUI: onSubmit](https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)),
+  [Jetpack Compose: keyboard options](https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options)).
 
 ### Web
 

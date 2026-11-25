@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -239,11 +239,32 @@
         ]
       },
       {
+        "key": "Enter",
+        "action": "Adds no line. Submits the form through its default button (implicit submission), when the browser supports it; what the form does with it is the Forms foundation's.",
+        "refs": [
+          "html-implicit-submission"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
         "key": "Tab",
         "action": "On iPadOS 15 and later with a hardware keyboard, moves focus among focus groups, the field included: iPadOS supports keyboard navigation in text fields and text views.",
         "refs": [
           "hig-focus-ipados",
           "hig-keyboards-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "key": "Return",
+        "action": "The hardware or on-screen Return key triggers the field's submit action; its label is the return key type the form sets.",
+        "refs": [
+          "swiftui-on-submit",
+          "uikit-return-key-type"
         ],
         "platforms": [
           "ios"
@@ -290,6 +311,17 @@
         ]
       },
       {
+        "key": "Enter, IME action",
+        "action": "Adds no line to a single-line field; runs the IME action the form sets: Next and Previous move focus by default, Done dismisses the keyboard.",
+        "refs": [
+          "compose-line-limits",
+          "compose-keyboard-options"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
         "key": "Tab, Shift-Tab",
         "action": "On macOS, move focus to the next or the previous view of the key view loop.",
         "refs": [
@@ -305,6 +337,16 @@
         "action": "On macOS, selects all the characters in the field.",
         "refs": [
           "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Return",
+        "action": "On macOS, sends the field's action to its target.",
+        "refs": [
+          "appkit-text-field"
         ],
         "platforms": [
           "desktop"
@@ -336,6 +378,16 @@
         "refs": [
           "windows-keyboard-navigation",
           "windows-keyboard-text-entry"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "On Windows, adds no line: a text box takes newline characters only when AcceptsReturn is set.",
+        "refs": [
+          "windows-text-box-multi-line"
         ],
         "platforms": [
           "desktop"
@@ -455,6 +507,16 @@
         ],
         "platforms": [
           "desktop"
+        ]
+      },
+      {
+        "text": "The label of the on-screen keyboard's return key (next, done…) depends on the field's place in the form, so the form sets it through the platform's own setting: enterkeyhint on the web (through the template's attrs), returnKeyType or submitLabel on iOS, the IME action on Android; Windows' touch keyboard follows the input scope. The field has no property for it; unset, the platform picks its default.",
+        "refs": [
+          "html-enterkeyhint",
+          "uikit-return-key-type",
+          "swiftui-submit-label",
+          "compose-keyboard-options",
+          "windows-text-box-keyboard"
         ]
       },
       {
@@ -862,6 +924,56 @@
         "id": "windows-keyboard-text-entry",
         "title": "Windows apps: keyboard interactions, text entry",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry"
+      },
+      {
+        "id": "html-implicit-submission",
+        "title": "HTML: implicit submission (Enter in a text control submits through the default button)",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission"
+      },
+      {
+        "id": "html-enterkeyhint",
+        "title": "HTML: the enterkeyhint attribute (the label of the enter key)",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint"
+      },
+      {
+        "id": "swiftui-on-submit",
+        "title": "SwiftUI: onSubmit(of:_:) (text fields and secure fields, on the return key)",
+        "url": "https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)"
+      },
+      {
+        "id": "swiftui-submit-label",
+        "title": "SwiftUI: submitLabel(_:)",
+        "url": "https://developer.apple.com/documentation/swiftui/view/submitlabel(_:)"
+      },
+      {
+        "id": "uikit-return-key-type",
+        "title": "UIKit: UITextInputTraits.returnKeyType",
+        "url": "https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype"
+      },
+      {
+        "id": "compose-line-limits",
+        "title": "Android Developers, Compose: line limits (a single-line field allows no new lines)",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#line-limits"
+      },
+      {
+        "id": "compose-keyboard-options",
+        "title": "Android Developers, Compose: keyboard options and the IME action",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options"
+      },
+      {
+        "id": "appkit-text-field",
+        "title": "AppKit: NSTextField (sends its action when people press Return)",
+        "url": "https://developer.apple.com/documentation/appkit/nstextfield"
+      },
+      {
+        "id": "windows-text-box-multi-line",
+        "title": "Windows apps: text box, enable multi-line input (AcceptsReturn)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input"
+      },
+      {
+        "id": "windows-text-box-keyboard",
+        "title": "Windows apps: text box, choose the right keyboard (InputScope)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#choose-the-right-keyboard-for-your-text-control"
       }
     ]
   },
@@ -953,6 +1065,24 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "enter-by-field-kind",
+      "date": "2026-11-25",
+      "version": "0.14.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Enter (Return) never adds a line to a single-line field: it goes to the form, which submits or runs the return key's action (the Forms foundation says what the form does). The return key's label depends on the field's place in the form (next, done…), so the form sets it through each platform's own setting: enterkeyhint on the web, passed through the template's attrs; returnKeyType or submitLabel on iOS; the IME action on Android; Windows' touch keyboard follows the input scope. The field adds no property for it; unset, the platform picks its default.",
+      "refs": [
+        "html-implicit-submission",
+        "html-enterkeyhint",
+        "swiftui-on-submit",
+        "uikit-return-key-type",
+        "compose-line-limits",
+        "compose-keyboard-options",
+        "appkit-text-field",
+        "windows-text-box-multi-line"
+      ]
+    },
     {
       "id": "keyboard-on-every-platform",
       "date": "2026-11-25",
@@ -1412,6 +1542,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.14.0",
+      "date": "2026-11-25",
+      "note": "Decision enter-by-field-kind (#103 step 19, point 2): Enter never adds a line and goes to the form; the form sets the return key's label through each platform's own setting (enterkeyhint through attrs on the web), no new property. Keyboard entries for Enter / Return per platform and a guideline. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.13.0",
       "date": "2026-11-25",

@@ -140,6 +140,14 @@ This section explains the decisions behind it.
   multi-line text control provides this, so the keys are the platform's
   ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html), [WCAG 2.1.2 No Keyboard Trap](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent), [EN 301 549, 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70) for native software).
   The keys are listed per platform below, from each platform's own documentation.
+- **Enter and the return key.** Enter adds a line in the Textarea on every platform, so its return
+  key keeps the platform's default label for a new line, and the form does not set it; a
+  single-line field passes Enter to the form instead
+  ([HTML: textarea](https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element),
+  [HTML: enterkeyhint](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint),
+  [SwiftUI: TextEditor](https://developer.apple.com/documentation/swiftui/texteditor),
+  [Jetpack Compose: line limits](https://developer.android.com/develop/ui/compose/text/user-input#line-limits),
+  [Windows: multi-line text box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input)).
 
 ### Web
 
