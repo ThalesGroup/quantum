@@ -29,9 +29,9 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 | Size | Use for |
 | --- | --- |
-| Small | Dense forms, toolbars and table rows: 28 px high with 14 px text. |
-| Medium | Forms, the default: 36 px high with 16 px text. |
-| Large | A prominent single field, such as a search page or a sign-in form: 44 px high with 16 px text. |
+| Small | Dense forms: at least 28 px high, with 14 px text. |
+| Medium | Forms, the default: at least 36 px high, with 16 px text. |
+| Large | A prominent form, such as a contact or feedback form: at least 44 px high, with 16 px text. |
 
 Height, text size and inline padding are those of the Button of the same size, so a field and a
 button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), the message that says what to fix takes that size too, and the description is smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form. A field without a size is medium, like every control with sizes, so fields and buttons that set none line up.
@@ -46,8 +46,10 @@ cut, so keep it a short example.
 
 On iOS and Android the sizes are drawn the same: each reaches the platform's touch target (44 by 44 pt,
 48 by 48 dp) with a hit region centered on the box, which may cover the field's own label and help
-text. Below a field without help text, keep the next control or label at least that far away: 8 pt or
-10 dp at small, 4 pt or 6 dp at medium, 2 dp at large (iOS and Android below).
+text. The rows make the box taller than these minimums, so it lacks less: at the default three rows it
+reaches both targets by itself. Below a Textarea of one or two rows without help text, keep the next
+control or label as far away as the hit region extends, at most 8 pt or 10 dp at small, 4 pt or 6 dp
+at medium, 2 dp at large (iOS and Android below).
 
 ## Rows
 
@@ -190,8 +192,9 @@ This section explains the decisions behind it.
   because placeholder text disappears when people start typing
   ([Apple HIG: Text fields, best practices](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
 - Apple's default control size on iOS is 44 by 44 pt, and every size has a hit region of at least
-  that: the small and medium boxes keep their drawn size and the hit region extends 8 and 4 pt above
-  and below them, over the field's own label and help text, which are not targets and keep their 6 pt;
+  that: the box keeps its drawn size and the hit region extends above and below it by what it lacks,
+  at most 8 and 4 pt at the small and medium minimum heights and nothing at the default three rows,
+  over the field's own label and help text, which are not targets and keep their 6 pt;
   keep other controls and the next field's label out of it. The large box is the hit region
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 - With a hardware keyboard on iPadOS 15 and later, Tab moves focus among focus groups, and
@@ -207,7 +210,8 @@ This section explains the decisions behind it.
 ### Android
 
 - Interactive elements need a 48 by 48 dp touch target, and every size reaches it without growing:
-  the touch target extends 10, 6 or 2 dp above and below the box, over the field's own label and help
+  the touch target extends above and below the box by what it lacks, at most 10, 6 or 2 dp at the
+  minimum heights and nothing at the default three rows, over the field's own label and help
   text, which keep their 6 dp; keep other controls and the next field's label out of it. Compose
   extends a small clickable's touch target outside its bounds by itself: do not give the box
   `minimumInteractiveComponentSize`, which would reserve that space and move the label. Expose an

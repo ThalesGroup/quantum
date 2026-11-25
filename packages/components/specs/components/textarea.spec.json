@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.26.3",
+  "version": "0.26.4",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -71,7 +71,7 @@
         "warning",
         "success"
       ],
-      "description": "Glyph of the icon font saying the severity, named after it (\"Error\", \"Warning\", \"Success\"): error, warning or check_circle, the Alert's glyphs. Placed by severityIcon: after the control, centred on it, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements."
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\", \"Warning\", \"Success\"): error, warning or check_circle, the Alert's glyphs. Placed by severityIcon: after the control, level with its first line, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements."
     }
   ],
   "properties": [
@@ -93,15 +93,15 @@
       "options": [
         {
           "value": "small",
-          "description": "Dense forms, toolbars, table rows (28 px high)."
+          "description": "Dense forms (at least 28 px high)."
         },
         {
           "value": "medium",
-          "description": "Default (36 px)."
+          "description": "Default (at least 36 px high)."
         },
         {
           "value": "large",
-          "description": "Prominent, single fields: a search page, a sign-in form (44 px)."
+          "description": "Prominent forms (at least 44 px high)."
         }
       ]
     },
@@ -165,7 +165,7 @@
         },
         {
           "value": "after-control",
-          "description": "After the control, centred on it, at the size of the Button's icon of the same size; the control gives up the icon and the gap."
+          "description": "After the control, level with its first line, at the size of the Button's icon of the same size; the control gives up the icon and the gap."
         },
         {
           "value": "none",
@@ -313,7 +313,7 @@
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
       "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
       "The block padding sets the inset of the first and last lines; the control grows with the rows property and can be resized vertically.",
-      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap.",
+      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap, level with the control's first line.",
       "When people raise the text size the lines grow and the control grows with them, keeping its own block padding (control.padding-block, 6 / 8 / 12 px) above and below the text (decision grows-with-text-size)."
     ]
   },
@@ -787,7 +787,7 @@
         ]
       },
       {
-        "text": "Apple's default control size on iOS is 44 x 44 pt, and every size has a hit region of at least that: the small and medium boxes (28 and 36 pt high) keep their drawn size and the hit region extends 8 and 4 pt above and below them, centered, over its own label, description and message, which keep their 6 pt; the layout keeps it clear of other controls and of another field's label. The large box (44 pt) is the hit region.",
+        "text": "Apple's default control size on iOS is 44 x 44 pt, and every size has a hit region of at least that: the box keeps its drawn size and the hit region extends above and below it, centered, by what the box lacks of 44 pt (at most 8 and 4 pt at the small and medium minimum heights, nothing at the default three rows), over its own label, description and message, which keep their 6 pt; the layout keeps it clear of other controls and of another field's label. The large box (44 pt) is the hit region.",
         "refs": [
           "hig-accessibility-mobility"
         ],
@@ -796,7 +796,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp, and every size reaches it without growing: the box (28, 36 or 44 dp high) keeps its drawn size and its touch target extends 10, 6 or 2 dp above and below it, centered, over its own label, description and message, which keep their 6 dp; the layout keeps it clear of other controls and of another field's label. Compose extends a small clickable's touch target outside its bounds by itself, so the box does not take the minimumInteractiveComponentSize modifier, which would reserve that space and move the label. Expose an error with the error semantics so the message is announced with the field.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp, and every size reaches it without growing: the box keeps its drawn size and its touch target extends above and below it, centered, by what the box lacks of 48 dp (at most 10, 6 or 2 dp at the minimum heights of 28, 36 and 44 dp, nothing at the default three rows), over its own label, description and message, which keep their 6 dp; the layout keeps it clear of other controls and of another field's label. Compose extends a small clickable's touch target outside its bounds by itself, so the box does not take the minimumInteractiveComponentSize modifier, which would reserve that space and move the label. Expose an error with the error semantics so the message is announced with the field.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -2048,6 +2048,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.26.4",
+      "date": "2026-11-25",
+      "note": "Fix: texts copied from the Text field now describe a Textarea. The sizes are minimum heights (28, 36, 44 px), the large one for a prominent form rather than a search page or a sign-in form; on iOS and Android the hit region extends only by what the box lacks, at most the Text field's 8 / 4 pt and 10 / 6 / 2 dp and nothing at the default three rows (decision touch-target-hit-region); the severity icon after the control sits level with the first line, as the CSS and the docs already draw it, not centred. No rendering change."
+    },
     {
       "version": "0.26.3",
       "date": "2026-11-25",
