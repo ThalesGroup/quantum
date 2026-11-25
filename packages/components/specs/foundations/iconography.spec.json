@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -41,7 +41,7 @@
     {
       "id": "text-size",
       "name": "Text size",
-      "text": "When people raise the text size, icons grow with it, on every platform that lets them: next to text, an icon keeps the size of that text at every text size, and an icon that carries meaning on its own grows with the text around it. A component's size tokens give the size at the default text size; the platform scales it by the factor it applies to the text it goes with."
+      "text": "When people raise the text size, icons grow with it, on every platform that lets them: next to text, an icon keeps the size of that text at every text size, and an icon that carries meaning on its own grows with the text around it. A component's size tokens give the size at the default text size; the platform scales it by the factor it applies to the text it goes with. One exception: the decorative leading icon of a text field keeps its size, and so does the inset before the value, so the value keeps its room (decision field-leading-icon-keeps-size)."
     },
     {
       "id": "color",
@@ -272,6 +272,11 @@
         "id": "material-bidirectionality-rtl",
         "title": "Material 3: Bidirectionality & RTL",
         "url": "https://m3.material.io/foundations/layout/bidirectionality-rtl"
+      },
+      {
+        "id": "windows-text-scaling-icons",
+        "title": "Windows: text scaling, don't scale font-based icons or symbols",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols"
       }
     ]
   },
@@ -323,6 +328,23 @@
   ],
   "decisions": [
     {
+      "id": "field-leading-icon-keeps-size",
+      "date": "2026-11-25",
+      "version": "0.6.0",
+      "area": "size",
+      "status": "active",
+      "text": "An exception to icons-follow-text-size: the decorative leading icon of the field family (Text field, Number field, Search field) keeps its size when people raise the text size, and so does the inset that places the value after it. Growing with the value, it would take the value's room when room is scarcest (measured at iOS AX5 in a 255 px wide field: 42 px left for a large field's value, 144 px when the icon keeps its size). It carries no meaning, which is what Apple asks to grow, and Windows asks not to scale font icons used for decoration. The fields' severity icon, which is named, follows the rule. Decided in the Text field refinement (#103 step 20, point 2, option B; Text field decision icons-at-text-size).",
+      "tokens": [
+        "text-field.icon.size.*",
+        "number-field.icon.size.*",
+        "search-field.icon.size.*"
+      ],
+      "refs": [
+        "hig-typography-dynamic-type",
+        "windows-text-scaling-icons"
+      ]
+    },
+    {
       "id": "glyphs-follow-reading-direction",
       "date": "2026-11-06",
       "version": "0.5.0",
@@ -366,6 +388,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.0",
+      "date": "2026-11-25",
+      "note": "Decision field-leading-icon-keeps-size (#103 step 20, point 2): an exception to icons-follow-text-size for the decorative leading icon of the Text field, Number field and Search field, which keeps its size, and its inset with it, when people raise the text size; the rule text-size names it. The fields' severity icon follows the rule. No token change."
+    },
     {
       "version": "0.5.2",
       "date": "2026-11-25",

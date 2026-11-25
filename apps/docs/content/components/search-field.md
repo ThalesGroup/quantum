@@ -30,7 +30,8 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 Sizes follow the Text field (small, medium, large), their touch targets on iOS and Android included. States are default, hover, focus visible
 and disabled: no invalid, no read-only. When people raise the text size the box grows as the
-Text field's does, keeping the Button's minimum space above and below the text.
+Text field's does, keeping the Button's minimum space above and below the text; the glyph keeps
+its size, so the search text keeps its room.
 
 The search glyph follows the text beside it: as light as the placeholder while the field is
 empty, as dark as the value once people type. It never stands out from the text it introduces.
@@ -129,6 +130,9 @@ This section explains the decisions behind it.
 - The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
   Apple asks that layouts adapt to all font sizes
   ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- The search glyph, decorative, keeps its size, and so does the inset before the text, so the
+  search text keeps its room; Apple asks to grow the icons that carry meaning
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
@@ -158,6 +162,9 @@ This section explains the decisions behind it.
   ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 - On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
   with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
+- On Windows, the search glyph keeps its size when text scales (`IsTextScaleFactorEnabled` set to
+  false), as Windows asks of font icons used for decoration
+  ([Windows: don't scale font-based icons or symbols](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols)).
 
 ## Related
 

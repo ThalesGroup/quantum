@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -734,6 +734,15 @@
         ]
       },
       {
+        "text": "The severity icon grows with Dynamic Type with the text it goes with, as Apple asks of meaningful icons; the decorative leading icon and the inset before the value keep their size, so the value keeps its room.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
         "text": "macOS does not support Dynamic Type: on macOS, the field keeps its size, as text does.",
         "refs": [
           "hig-typography-macos"
@@ -746,6 +755,15 @@
         "text": "On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize with it: the box grows with it and keeps its block padding.",
         "refs": [
           "windows-text-scaling"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, the leading glyph keeps its size when text scales (IsTextScaleFactorEnabled set to false), as Windows asks of font icons used for decoration; the severity icon scales with the text.",
+        "refs": [
+          "windows-text-scaling-icons"
         ],
         "platforms": [
           "desktop"
@@ -1330,6 +1348,11 @@
         "id": "windows-text-scaling",
         "title": "Windows: text scaling, UX guidance",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance"
+      },
+      {
+        "id": "windows-text-scaling-icons",
+        "title": "Windows: text scaling, don't scale font-based icons or symbols",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols"
       }
     ]
   },
@@ -1496,6 +1519,23 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "icons-at-text-size",
+      "date": "2026-11-25",
+      "version": "0.25.0",
+      "area": "size",
+      "status": "active",
+      "text": "When people raise the text size, the severity icon, which is named, grows with the text it goes with (the message, or the value when it follows the box), as the Iconography foundation asks (icons-follow-text-size); the decorative leading icon keeps its size (16 / 20 / 24) and so does the inset before the value (control.padding-inline-start, 28 / 36 / 40), so the value keeps its room (Iconography decision field-leading-icon-keeps-size). Measured at iOS AX5 in a 255 px wide field: the value keeps 184 / 160 / 144 px (small / medium / large), against 116 / 76 / 42 px if the icon grew. Where nothing scales the text (macOS), and on the web, where zoom scales everything, both keep their proportions. Rejected: A, every icon grows (the Iconography rule as it stood: 116 / 76 / 42 px left for the value at AX5); C, A except on Windows, which asks not to scale decorative font icons (iOS and Android keep A's cost); D, no icon grows (the severity icon carries meaning, which Apple asks to grow).",
+      "tokens": [
+        "text-field.icon.size.*",
+        "text-field.control.padding-inline-start.*",
+        "text-field.severity-icon.size.*"
+      ],
+      "refs": [
+        "hig-typography-dynamic-type",
+        "windows-text-scaling-icons"
+      ]
+    },
     {
       "id": "grows-with-text-size",
       "date": "2026-11-25",
@@ -2127,6 +2167,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.25.0",
+      "date": "2026-11-25",
+      "note": "Decision icons-at-text-size (#103 step 20, point 2): when people raise the text size, the severity icon grows with its text, the decorative leading icon and its inset keep their size (Iconography 0.6.0, field-leading-icon-keeps-size). iOS guideline and a Windows guideline. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
     {
       "version": "0.24.0",
       "date": "2026-11-25",

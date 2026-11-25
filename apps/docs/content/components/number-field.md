@@ -37,7 +37,8 @@ the quantity and its unit when it has one (**Weight (kg)**); the description giv
 applications, and never the only place a unit or a currency is said. The required mark follows
 the Text field too: "(optional)" or "(required)" after the label, as the form marks its fields.
 When people raise the text size the box grows as the Text field's does, keeping the Button's
-minimum space above and below the text.
+minimum space above and below the text; the leading icon keeps its size, so the value keeps its room,
+and the severity icon grows with its text.
 
 ## Accessibility
 
@@ -142,6 +143,9 @@ This section explains the decisions behind it.
 - The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
   Apple asks that layouts adapt to all font sizes
   ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- The severity icon grows with the text it goes with, as Apple asks of meaningful icons; the
+  decorative leading icon and the inset before the value keep their size, so the value keeps its room
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
@@ -179,6 +183,9 @@ This section explains the decisions behind it.
   ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 - On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
   with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
+- On Windows, the leading glyph keeps its size when text scales (`IsTextScaleFactorEnabled` set to
+  false), as Windows asks of font icons used for decoration; the severity icon scales with the text
+  ([Windows: don't scale font-based icons or symbols](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols)).
 
 ## Related
 

@@ -37,7 +37,8 @@ Height, text size and inline padding are those of the Button of the same size, s
 button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), the message that says what to fix takes that size too, and the description is smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form.
 
 When people raise the text size, the lines grow and the Textarea grows with them, keeping its own
-space above and below the text (6, 8 and 12 px), larger than the Text field's minimum.
+space above and below the text (6, 8 and 12 px), larger than the Text field's minimum; the
+severity icon grows with its text.
 
 On iOS and Android the sizes are drawn the same: each reaches the platform's touch target (44 by 44 pt,
 48 by 48 dp) with a hit region centered on the box, which may cover the field's own label and help
@@ -195,6 +196,8 @@ This section explains the decisions behind it.
   ([Apple HIG: Focus and selection, iPadOS](https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS), [Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices), [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
 - The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with its lines and keeps its own block padding:
   Apple asks that layouts adapt to all font sizes
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- The severity icon grows with the text it goes with, as Apple asks of meaningful icons
   ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android

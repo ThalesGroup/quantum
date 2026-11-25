@@ -32,7 +32,9 @@ the whole variable font, twice as heavy.
 - **Text size**: when people raise the text size, icons grow with it. Next to text, an icon
   keeps the size of that text at every text size, and an icon that carries meaning on its own
   grows with the text around it. The sizes in a component's tokens are those at the default
-  text size: each platform scales them by the factor it applies to the text they go with.
+  text size: each platform scales them by the factor it applies to the text they go with. One
+  exception: the decorative leading icon of a text field keeps its size, so the value next to it
+  keeps its room when room is scarcest.
 - **Color** follows the text: an icon takes the color of the label next to it, or the icon role
   of its context (`global.icon.*`, which aliases that text color). It changes with the
   emphasis, the intent, the state and the mode.

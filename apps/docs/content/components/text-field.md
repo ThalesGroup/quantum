@@ -89,7 +89,9 @@ in the placeholder's color while the field is empty and the value's once people 
 
 The icon only illustrates. Whatever it suggests is said in text: the label reads **Amount in
 euros**, not **Amount** next to a euro glyph. It is never a button; an action next to the value
-(a location or a calendar picker) is an Icon button beside the field.
+(a location or a calendar picker) is an Icon button beside the field. When people raise the text
+size, the icon keeps its size and the value its start, so the value keeps its room when room is
+scarcest; the severity icon, which says something, grows with its text.
 
 ## States
 
@@ -279,6 +281,9 @@ This section explains the decisions behind it.
 - The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
   Apple asks that layouts adapt to all font sizes
   ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- The severity icon grows with the text it goes with, as Apple asks of meaningful icons; the
+  decorative leading icon and the inset before the value keep their size, so the value keeps its room
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
@@ -313,6 +318,9 @@ This section explains the decisions behind it.
   ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
 - On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
   with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
+- On Windows, the leading glyph keeps its size when text scales (`IsTextScaleFactorEnabled` set to
+  false), as Windows asks of font icons used for decoration; the severity icon scales with the text
+  ([Windows: don't scale font-based icons or symbols](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols)).
 
 ## Related
 
