@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.27.0",
+  "version": "0.28.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -1663,6 +1663,18 @@
   ],
   "decisions": [
     {
+      "id": "default-size-medium",
+      "date": "2026-11-25",
+      "version": "0.28.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Without a size, a number field is medium (36 px high), like every component with sizes (the Button's and the Icon button's decision default-size-medium); it mirrors the Text field (the Text field's decision field-family-mirrors). The Figma prototype's \"Form - text input\" set defaults to small (28 px): Figma takes the top-left variant of a set as its default, and small is the set's left column (Figma, Create and use variants); the repository keeps medium, a departure recorded for the closing Figma issue.",
+      "rationale": "A field is the Button of the same size (decision box-height-button), so a form whose fields and Buttons set no size lines up at 36 px, as the login and signup screens do; all 21 specs with a size default to medium. Measured: a small default puts 28 px fields under 36 px Buttons, doubles the hit region a default field needs above and below its box on iOS and Android (8 pt and 10 dp instead of 4 and 6, decision touch-target-hit-region), and is a breaking change for every consumer relying on the default. Rejected: B, small for the fields only, as Figma; C, small for every control (still not Figma, whose Button set defaults to xsmall, and a breaking change for every sized component).",
+      "tokens": [
+        "number-field.control.min-height.medium"
+      ]
+    },
+    {
       "id": "long-text-wraps",
       "date": "2026-11-25",
       "version": "0.27.0",
@@ -2338,6 +2350,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.0",
+      "date": "2026-11-25",
+      "note": "Decision default-size-medium (#103 step 21): without a size the field stays medium (36 px), like the Button and every component with sizes; Figma's small default (the top-left variant of its set) is recorded as a departure. Nothing renders differently."
+    },
     {
       "version": "0.27.0",
       "date": "2026-11-25",

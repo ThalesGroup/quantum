@@ -36,7 +36,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Large | A prominent single field, such as a search page or a sign-in form: 44 px high with 16 px text. |
 
 Height, text size and inline padding are those of the Button of the same size, so a field and a
-button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), the message that says what to fix takes that size too, and the description is smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form.
+button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), the message that says what to fix takes that size too, and the description is smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form. A field without a size is medium, like every control with sizes, so fields and buttons that set none line up.
 
 When people raise the text size, the text grows and the box grows with it. The minimum height
 sets the height at the default size; once the text outgrows it, the box keeps the Button's minimum

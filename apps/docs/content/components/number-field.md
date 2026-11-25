@@ -30,7 +30,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 ## Sizes, states and content
 
-Sizes (small, medium, large), states (default, hover, focus visible, error, warning, success, read-only,
+Sizes (small, medium, large; medium when none is set), states (default, hover, focus visible, error, warning, success, read-only,
 disabled), the label, description and message, and the severity icon follow the Text field. The label names
 the quantity and its unit when it has one (**Weight (kg)**); the description gives the bounds
 (**Between 1 and 99**); the message of an error says how to fix the value. The optional leading icon follows the Text field too: decorative, not advised for regular
