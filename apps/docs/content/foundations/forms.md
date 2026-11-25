@@ -387,7 +387,8 @@ of the on-screen keyboard's return key, because only the form knows which field 
 
 - Enter in a single-line field submits the form through its first submit button. A form without
   one and with two fields or more cannot be submitted with Enter, so a form that is submitted
-  always has its submit button
+  always has its submit button. A search field that stands alone, the only field of its search
+  form, is the exception: Enter submits it, with or without a button
   ([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission),
   [H32: Providing submit buttons](https://www.w3.org/WAI/WCAG22/Techniques/html/H32)).
 - `enterkeyhint` changes only the label of the key, and Enter submits from every single-line field,

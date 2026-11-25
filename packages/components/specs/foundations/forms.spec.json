@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -98,7 +98,7 @@
     {
       "id": "keyboard",
       "name": "Keyboard in a form",
-      "text": "People move through a form's fields from the keyboard in their reading order, on every platform. A form that is submitted has a submit button, and Enter (Return) in a single-line field submits it; a multi-line field takes Enter as a new line. The label of the on-screen keyboard's return key is the form's, set on each single-line field through the platform's own setting for its place in the form: on the web, where Enter submits from every single-line field and enterkeyhint changes only the label, it names the form's action (go, send, search, done) and never next; on iOS and Android, next on every field but the last, whose return key names the form's action and submits the form (Android's Next moves focus by itself, iOS moves it in the field's submit action). Desktop keyboards have no on-screen return key."
+      "text": "People move through a form's fields from the keyboard in their reading order, on every platform. A form that is submitted has a submit button, and Enter (Return) in a single-line field submits it; a multi-line field takes Enter as a new line. A search field that stands alone, the only field of its search form, needs no submit button: Enter runs the search, and the Search field labels its own return key for search. The label of the on-screen keyboard's return key is the form's, set on each single-line field through the platform's own setting for its place in the form: on the web, where Enter submits from every single-line field and enterkeyhint changes only the label, it names the form's action (go, send, search, done) and never next; on iOS and Android, next on every field but the last, whose return key names the form's action and submits the form (Android's Next moves focus by itself, iOS moves it in the field's submit action). Desktop keyboards have no on-screen return key."
     },
     {
       "id": "web-rendering",
@@ -646,7 +646,7 @@
         ]
       },
       {
-        "text": "A form that is submitted has a submit button: Enter in a single-line field submits the form through its first submit button (implicit submission); a form without one and with two fields or more cannot be submitted with Enter.",
+        "text": "A form that is submitted has a submit button: Enter in a single-line field submits the form through its first submit button (implicit submission); a form without one and with two fields or more cannot be submitted with Enter. A search form whose only field is the Search field needs none: Enter submits it, with or without a button.",
         "refs": [
           "html-implicit-submission",
           "wcag-h32"
@@ -1090,6 +1090,19 @@
   ],
   "decisions": [
     {
+      "id": "forms-search-alone",
+      "date": "2026-11-25",
+      "version": "0.27.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A search field that stands alone, the only field of its search form (a header or sidebar search), needs no submit button: Enter runs the search on every platform. On the web, a form whose only field blocks implicit submission submits on Enter without a button; Windows submits the query on Enter; iOS begins the search on the keyboard's Search button. The Search field labels its own return key for search (its decision search-own-key), so the form sets no label for it. Every other submitted form keeps the submit button of forms-keyboard.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 19, point 3) among: A, the Search field follows the other fields (the form sets its label, a submit button), only its Escape line corrected; B, the Search field labels its own return key and needs no button when it stands alone; C, as B but every search form keeps a search button.",
+      "refs": [
+        "html-implicit-submission",
+        "wcag-h32"
+      ]
+    },
+    {
       "id": "forms-keyboard",
       "date": "2026-11-25",
       "version": "0.26.0",
@@ -1514,6 +1527,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.27.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-search-alone (#103 step 19, point 3): the rule keyboard and its web guideline exempt a search field that stands alone (the only field of its search form) from the submit button: Enter runs the search."
+    },
     {
       "version": "0.26.0",
       "date": "2026-11-25",
