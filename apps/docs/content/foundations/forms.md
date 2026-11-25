@@ -105,7 +105,7 @@ Material gives the checkbox error states but no error text
 both visible, and the control's `aria-describedby` lists the description, then the message, so a
 screen reader reads the name, the help, then the message. The help stays where people need it
 most: a format or a limit is what they need to fix an error. The cost is a shift when a message
-appears: the next field moves down 24 px for a one-line message and 42 px for a two-line one on
+appears: the next field moves down 30 px for a one-line message and 54 px for a two-line one on
 a medium Text field (85 px at rest), and 29 px under a Radio group. A message appears after
 validation, not while people type (step 7 decides when). The description is not replaced, not
 moved above the control, and no line is reserved for the message, which may come back as a
@@ -311,8 +311,8 @@ Its glyph says the severity, as the Alert's icons do: `error` for an error, `war
 warning, `check_circle` for a success, so the three differ by shape as well as color. It is named
 after its severity ("Error", "Warning", "Success"), in the form's language.
 After the control, the icon is the size of the Button's icon at the same size (20, 24 and 24 px
-for small, medium and large), 8 px after the control and centred on it, so a field and the
-Button next to it carry the same icon. In the message, it is 16 px, the icon size next to the
+for small, medium and large), 8 px after the control and centred on it (on the first line of a
+Textarea), so a field and the Button next to it carry the same icon. In the message, it is 16 px, the icon size next to the
 message's 14 and 16 px text, 4 px before the text.
 Its color is the on-base icon color of its severity, the color of the message text (for an
 error #C01619 in light mode and #F88275 in dark mode): it sits on the surface in both places,
