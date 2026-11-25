@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -48,7 +48,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
     },
     {
       "id": "statuses",
@@ -933,6 +933,20 @@
   ],
   "decisions": [
     {
+      "id": "forms-marked-fields",
+      "date": "2026-11-25",
+      "version": "0.22.0",
+      "area": "content",
+      "status": "active",
+      "text": "Which fields a form marks is a rule of the form, not of each field: every form control that can be marked required carries the same property, markedFields (optional, required, none), and a form sets it once, to the same value, for all its controls. Each control draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none, so a mark never contradicts the required state. optional is the default, the rule's default (forms-required-marking): a form that sets nothing follows it, and only the note before the first field is left to its author. none is for a control outside a form (a filter, a setting applied at once); the Search field, which usually stands alone, defaults to none.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 1) among: A, a form setting, optional by default (chosen, recommended); B, the same setting, none by default; C, a mark chosen per field (none, optional, required), with nothing tying it to required; D, no property, the author writing \"(optional)\" or \"(required)\" into the label. A is the only option where a form that sets nothing still follows the rule, and where a required field can never say \"(optional)\"; it is the pattern the team chose for the severity icon (forms-severity-icon-placement): one property with the same name and values on every control, set by the form, rather than a form component the system does not have. B makes the rule opt-in: a form that forgets it marks no field, against WCAG 3.3.2 and H90, which ask that required input be identified. C lets two marks of one form disagree. D cannot apply forms-required-mark-exposure (on the web \"(required)\" in the label is read with the name, then \"required\" again) nor forms-required-marking-platforms (Android and Windows cannot swap the words for their asterisk). The cost of A: a control outside a form shows \"(optional)\" until its author sets none; measured on the docs examples of the Text field family, 21 of the 25 Text field, Number field and Textarea examples are not required and gain \"(optional)\", the 5 Search field examples nothing.",
+      "refs": [
+        "wcag:3.3.2",
+        "wcag-h90",
+        "wai-forms-instructions-overall"
+      ]
+    },
+    {
       "id": "forms-warning-border-600",
       "date": "2026-11-25",
       "version": "0.21.0",
@@ -1278,6 +1292,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.22.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-marked-fields: which fields a form marks is set once per form, markedFields (optional by default, required, none) on every control that can be marked required; each control draws its mark from its own required. The Text field family carries it from #103 step 16; the Checkbox, the groups and the Select with step 2b."
+    },
     {
       "version": "0.21.0",
       "date": "2026-11-25",

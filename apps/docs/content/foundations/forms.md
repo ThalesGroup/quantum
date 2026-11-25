@@ -170,6 +170,16 @@ technology, and nothing relies on color
 [H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90),
 [F81](https://www.w3.org/WAI/WCAG22/Techniques/failures/F81)).
 
+**The form says which fields it marks, once.** Every control that can be marked required carries
+the same property, `markedFields` (`optional`, `required`, `none`; `optional` by default), and a
+form sets it once, to the same value, for all its controls. Each control then draws its own mark
+from its `required` state: "(optional)" when the form marks optional fields and the control is
+not required, "(required)" when the form marks required fields and the control is required, so
+a mark never contradicts the state. A form that sets nothing follows the default rule; its
+author only writes the note. `none` is for a control outside a form, such as a table's filter or
+a setting applied at once, and it is the Search field's default, since a search box usually
+stands alone.
+
 The generic rule has no asterisk. An asterisk is a symbol that must be explained before its
 first use ([H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)); a word needs no key, and
 marking the fewer fields keeps a long form free of repeated marks.
