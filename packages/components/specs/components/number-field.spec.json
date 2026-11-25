@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.19.1",
+  "version": "0.19.2",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -1047,6 +1047,19 @@
   ],
   "decisions": [
     {
+      "id": "marked-fields",
+      "date": "2026-11-25",
+      "version": "0.19.2",
+      "area": "content",
+      "status": "active",
+      "text": "The Number field draws the required mark of the Forms rule from a form setting: it carries markedFields (optional, required, none; optional by default), which a form sets once, to the same value, for all its controls, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none. A required number field never says \"(optional)\". none is for a field outside a form, such as a table's filter or a setting applied at once.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 1) among: A, a form setting, optional by default (chosen, recommended); B, the same setting, none by default; C, a mark chosen per field, nothing tying it to required; D, no property, the words typed into the label. Applies the Forms decision forms-marked-fields: a form that sets nothing follows the Forms rule (forms-required-marking), a mark can never contradict required, and on the web \"(required)\" can stay hidden from assistive technology (forms-required-mark-exposure) while Android and Windows swap it for their asterisk (forms-required-marking-platforms). The Figma prototype marks each required field with a red asterisk, shown by default: a departure. The mark's look, the platforms' asterisk and the part, its tokens and the Figma axis are #103 step 16, points 2 to 4.",
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:1.3.1"
+      ]
+    },
+    {
       "id": "message-under-description",
       "date": "2026-11-25",
       "version": "0.19.1",
@@ -1523,6 +1536,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.19.2",
+      "date": "2026-11-25",
+      "note": "Decision marked-fields: the form setting markedFields (optional by default) says which fields carry a mark; the field draws its mark from its own required (#103 step 16, point 1). No token or rendering change yet."
+    },
     {
       "version": "0.19.1",
       "date": "2026-11-25",
