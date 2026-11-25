@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.27.0",
+  "version": "0.27.1",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -1539,7 +1539,8 @@
         "control": ".ds-text-field__control",
         "icon": ".ds-text-field__icon",
         "description": ".ds-text-field__description",
-        "message": ".ds-text-field__message"
+        "message": ".ds-text-field__message",
+        "severity-icon": ".ds-text-field__severity-icon"
       }
     }
   },
@@ -2224,6 +2225,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.27.1",
+      "date": "2026-11-25",
+      "note": "Fix: implementations.web lists the severity-icon part selector (.ds-text-field__severity-icon), which the CSS and the template have used since the severity icon landed, so the playground's token inspector and the anatomy can point at the icon. No rendering change. In the decision variants-modeled-differently, \"decision focus-outline, step 7\" means state-outline-flush."
+    },
     {
       "version": "0.27.0",
       "date": "2026-11-25",

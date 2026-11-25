@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.26.0",
+  "version": "0.26.1",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -1381,7 +1381,8 @@
         "mark": ".ds-textarea__mark",
         "control": ".ds-textarea__control",
         "description": ".ds-textarea__description",
-        "message": ".ds-textarea__message"
+        "message": ".ds-textarea__message",
+        "severity-icon": ".ds-textarea__severity-icon"
       }
     }
   },
@@ -2016,6 +2017,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.26.1",
+      "date": "2026-11-25",
+      "note": "Fix: implementations.web lists the severity-icon part selector (.ds-textarea__severity-icon), which the CSS and the template have used since the severity icon landed, so the playground's token inspector and the anatomy can point at the icon. No rendering change."
+    },
     {
       "version": "0.26.0",
       "date": "2026-11-25",

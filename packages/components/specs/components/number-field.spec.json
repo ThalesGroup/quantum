@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.28.0",
+  "version": "0.28.1",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -1653,7 +1653,8 @@
         "control": ".ds-number-field__control",
         "icon": ".ds-number-field__icon",
         "description": ".ds-number-field__description",
-        "message": ".ds-number-field__message"
+        "message": ".ds-number-field__message",
+        "severity-icon": ".ds-number-field__severity-icon"
       }
     }
   },
@@ -2350,6 +2351,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.1",
+      "date": "2026-11-25",
+      "note": "Fix: implementations.web lists the severity-icon part selector (.ds-number-field__severity-icon), which the CSS and the template have used since the severity icon landed, so the playground's token inspector and the anatomy can point at the icon. No rendering change."
+    },
     {
       "version": "0.28.0",
       "date": "2026-11-25",
