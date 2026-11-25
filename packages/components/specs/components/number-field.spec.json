@@ -2,11 +2,11 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.28.2",
+  "version": "0.28.3",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
-  "description": "A number field collects a numeric value within optional bounds and steps: a quantity, a percentage, a year. It is a Text field for numbers, with the platform's own stepping control (arrow keys, a spin control) and validation of the bounds. A value whose exact figure matters less than its position in a range is a Slider; a phone number or a postal code is text, not a number: use a Text field.",
+  "description": "A number field collects a numeric value within optional bounds and steps: a quantity, a percentage, a year. It is a Text field for numbers, with each platform's own stepping (Up, Down and a spin control on the web; Up, Down, Page Up and Page Down on Windows; a stepper beside the field on iOS and macOS) and validation of the bounds. A value whose exact figure matters less than its position in a range is a Slider; a phone number or a postal code is text, not a number: use a Text field.",
   "tags": [
     "form",
     "input",
@@ -1535,7 +1535,7 @@
       "The label names the quantity and its unit when it has one: Quantity, Weight (kg), Year.",
       "The description gives the bounds or the step when they matter: Between 1 and 99.",
       "The placeholder, when any, is an example value, never the label.",
-      "The message of an error says what is wrong and how to fix it: Enter a number between 1 and 99."
+      "The message of an error says what is wrong and how to fix it: Enter a quantity between 1 and 99."
     ]
   },
   "examples": [
@@ -1608,7 +1608,7 @@
         "max": 99,
         "description": "Between 1 and 99 per order.",
         "severity": "error",
-        "message": "Enter a number between 1 and 99."
+        "message": "Enter a quantity between 1 and 99."
       }
     },
     {
@@ -2357,6 +2357,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.3",
+      "date": "2026-11-25",
+      "note": "Fix: the description and the docs name each platform's own stepping (decision stepping-keys-per-platform) instead of arrow keys everywhere: Up, Down and the spin control on the web, Up, Down, Page Up and Page Down on Windows, a stepper on iOS and macOS. The error example names the quantity (\"Enter a quantity between 1 and 99.\", Forms decision forms-message-says-the-fix), and the docs say label, description and message. No rendering change."
+    },
     {
       "version": "0.28.2",
       "date": "2026-11-25",

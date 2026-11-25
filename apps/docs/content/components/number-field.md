@@ -8,8 +8,9 @@ order: 21
 ## Overview
 
 A number field collects a numeric value within optional bounds and steps: a quantity, a number
-of seats, a year. It looks like the Text field and adds the platform's stepping: arrow keys and
-a spin control, which keeps its native look. The browser validates the bounds; the field shows
+of seats, a year. It looks like the Text field and adds each platform's own stepping: Up, Down and a
+spin control on the web, the spin control keeping its native look; Up, Down, Page Up and Page Down
+on Windows; a stepper beside the field on iOS and macOS (Accessibility below). The browser validates the bounds; the field shows
 the message the form gives it.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
@@ -48,12 +49,12 @@ platform and what is specific to one. Each statement there links the source it c
 This section explains the decisions behind it.
 
 - **A spinbutton, by name.** The platform's native numeric control exposes the spinbutton role,
-  the name, the value and its bounds, and steps the value with the arrow keys; assistive
+  the name, the value and its bounds, and on the web and Windows steps the value with Up and Down; assistive
   technology announces it as such, which is why values that are not numbers must not use it
   ([WCAG 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html),
   [WAI-ARIA: spinbutton role](https://www.w3.org/TR/wai-aria-1.2/#spinbutton),
   [APG Spinbutton pattern](https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/)).
-- **Label, description and error** follow the Text field
+- **Label, description and message** follow the Text field
   ([WCAG 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html),
   [WCAG 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html),
   [WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
