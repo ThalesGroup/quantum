@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.19.4",
+  "version": "0.19.5",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -863,6 +863,11 @@
         "id": "material-text-fields-required",
         "title": "Material Design 3: Text fields, guidelines (required text indicator)",
         "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "winui-is-required-for-form",
+        "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
+        "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
       }
     ]
   },
@@ -1017,6 +1022,22 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "required-windows-name",
+      "date": "2026-11-25",
+      "version": "0.19.5",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On Windows, a required Text field keeps its asterisk in its accessible name: the UI Automation Name is the label as shown (\"Full name*\"), and the control sets AutomationProperties.IsRequiredForForm. The words keep their exposure on the other platforms (hidden on the web and macOS, read on iOS).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 3b) among: A, hide the asterisk from Narrator and let IsRequiredForForm alone say required; B, keep it in the Name (chosen, recommended). The team asked to follow the Windows recommendation for Windows specificities: Microsoft asks that the UI Automation Name be the label on screen, not a modified version of it, and no Microsoft page says Narrator announces IsRequiredForForm, so A could leave required unsaid while B at worst says it twice. Applies the Forms decision forms-required-windows-name, which cites the UI Automation property identifiers and Windows' accessible name guidance.",
+      "platforms": [
+        "desktop"
+      ],
+      "refs": [
+        "winui-is-required-for-form",
+        "wcag:2.5.3"
+      ]
+    },
     {
       "id": "asterisk-style",
       "date": "2026-11-25",
@@ -1543,6 +1564,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.19.5",
+      "date": "2026-11-25",
+      "note": "Decision required-windows-name: on Windows the asterisk stays in the accessible name, with IsRequiredForForm (#103 step 16, point 3b). No token or rendering change."
+    },
     {
       "version": "0.19.4",
       "date": "2026-11-25",
