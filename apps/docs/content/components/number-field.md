@@ -38,7 +38,8 @@ applications, and never the only place a unit or a currency is said. The require
 the Text field too: "(optional)" or "(required)" after the label, as the form marks its fields.
 When people raise the text size the box grows as the Text field's does, keeping the Button's
 minimum space above and below the text; the leading icon keeps its size, so the value keeps its room,
-and the severity icon grows with its text.
+and the severity icon grows with its text. The label and the help text wrap, even inside a long
+word, and the value scrolls.
 
 ## Accessibility
 

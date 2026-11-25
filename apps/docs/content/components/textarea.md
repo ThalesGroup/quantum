@@ -40,6 +40,10 @@ When people raise the text size, the lines grow and the Textarea grows with them
 space above and below the text (6, 8 and 12 px), larger than the Text field's minimum; the
 severity icon grows with its text.
 
+When people raise the text size, the label, description and message wrap onto as many lines as
+they need, even inside a long word, and the value wraps onto the rows. Only the placeholder can be
+cut, so keep it a short example.
+
 On iOS and Android the sizes are drawn the same: each reaches the platform's touch target (44 by 44 pt,
 48 by 48 dp) with a hit region centered on the box, which may cover the field's own label and help
 text. Below a field without help text, keep the next control or label at least that far away: 8 pt or

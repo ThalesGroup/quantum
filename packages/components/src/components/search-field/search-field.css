@@ -123,6 +123,7 @@
 /* ---- Parts --------------------------------------------------------------- */
 
 .ds-search-field__label {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   color: var(--_label-color);
   font-family: var(--_label-font-family);
   font-size: var(--_label-font-size);
@@ -212,6 +213,7 @@
 }
 
 .ds-search-field__description {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   margin: 0;
   color: var(--_description-color);
   font-family: var(--_description-font-family);

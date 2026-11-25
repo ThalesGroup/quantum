@@ -31,7 +31,8 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 Sizes follow the Text field (small, medium, large), their touch targets on iOS and Android included. States are default, hover, focus visible
 and disabled: no invalid, no read-only. When people raise the text size the box grows as the
 Text field's does, keeping the Button's minimum space above and below the text; the glyph keeps
-its size, so the search text keeps its room.
+its size, so the search text keeps its room. The label and the description wrap, even inside a
+long word, and the search text scrolls.
 
 The search glyph follows the text beside it: as light as the placeholder while the field is
 empty, as dark as the value once people type. It never stands out from the text it introduces.

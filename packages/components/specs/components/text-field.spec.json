@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -714,6 +714,25 @@
         ]
       },
       {
+        "text": "At every text size the label, the description and the message wrap onto as many lines as they need, a word longer than the line breaking, and are never truncated; the value of the single-line field scrolls, its whole content available as people move the caret. The placeholder may be cut at the box's edge, so it never holds what people need.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text",
+          "hig-typography-dynamic-type",
+          "windows-text-scaling-wrap",
+          "mdn-placeholder"
+        ]
+      },
+      {
+        "text": "Set overflow-wrap: anywhere on the label, the description and the message: a word longer than the line breaks instead of spilling past the field.",
+        "refs": [
+          "mdn-overflow-wrap"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
         "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: zoom enlarges the text and the box together, which meets Resize Text.",
         "refs": [
           "wcag:1.4.4",
@@ -1353,6 +1372,16 @@
         "id": "windows-text-scaling-icons",
         "title": "Windows: text scaling, don't scale font-based icons or symbols",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols"
+      },
+      {
+        "id": "windows-text-scaling-wrap",
+        "title": "Windows: text scaling, use text wrapping",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#use-text-wrapping"
+      },
+      {
+        "id": "mdn-overflow-wrap",
+        "title": "MDN: overflow-wrap",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow-wrap"
       }
     ]
   },
@@ -1519,6 +1548,22 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "long-text-wraps",
+      "date": "2026-11-25",
+      "version": "0.26.0",
+      "area": "content",
+      "status": "active",
+      "text": "When people raise the text size, the label, the description and the message wrap onto as many lines as they need, a word longer than the line breaking rather than spilling past the field, and are never truncated; the value of a single-line field scrolls, as on every platform; the placeholder, a single line, is cut at the box's edge, so it stays a short example that nothing depends on (the label and the description say what people need). Measured in a 343 px wide field (an iPhone's width less its margins) at iOS AX5: before, a word longer than the line made the label, the description and the message spill 68 to 111 px past the field; a short example placeholder (Smith) fits at every size, an email example shows 70 % of itself at 200 % and at AX5. Rejected: B, A with an ellipsis at the end of a cut placeholder (Windows prefers clipping, as an ellipsis takes room itself); C, the label, description and message on one line, truncated with an ellipsis (people lose the end of what they need when they enlarged the text to read it).",
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type",
+        "windows-text-scaling-wrap",
+        "compose-line-limits",
+        "mdn-placeholder"
+      ]
+    },
     {
       "id": "icons-at-text-size",
       "date": "2026-11-25",
@@ -2167,6 +2212,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.26.0",
+      "date": "2026-11-25",
+      "note": "Decision long-text-wraps (#103 step 20, point 3): the label, the description and the message wrap at every text size and break a word longer than the line (CSS overflow-wrap: anywhere; before, such a word spilled 68 to 111 px past a 343 px field at iOS AX5); the value scrolls; the placeholder may be cut, so it stays a short example. Two guidelines. Nothing changes at the default size; contrast unchanged."
+    },
     {
       "version": "0.25.0",
       "date": "2026-11-25",

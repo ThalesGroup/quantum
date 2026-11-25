@@ -44,6 +44,11 @@ space above and below the line (3, 5 and 8 px), so the text never touches the bo
 Button of the same size the field is then a few pixels taller (2 to 10 px), since its line is 1.2
 times its text size and the Button's 1.0.
 
+When people raise the text size, the label, description and message wrap onto as many lines as
+they need, even inside a long word such as an email address, and are never cut; the value scrolls
+inside the box. Only the placeholder can be cut at the box's edge, so keep it a short example:
+**Smith**, not an instruction.
+
 On iOS and Android the sizes are drawn the same: each reaches the platform's touch target (44 by 44 pt,
 48 by 48 dp) with a hit region centered on the box, which may cover the field's own label and help
 text. Below a field without help text, keep the next control or label at least that far away: 8 pt or
