@@ -146,6 +146,28 @@ test('the Text field draws the severity icon after the control or at the start o
   assert.equal(iconIn(msg(sev('success', 'message'))).fills, 'text-field/severity-icon/color/success');
 });
 
+test('the fields draw the message and the severity icon of the severity property, not only of the severity states', () => {
+  for (const id of ['text-field', 'number-field', 'textarea']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const find = (severity, state, place = 'message') => plan.variants.find((v) => v.name.includes(`Severity icon=${place}, Severity=${severity},`) && v.name.endsWith(`State=${state}`) && !v.name.includes('Leading icon=true')).root;
+    const msg = (root) => root.children.find((c) => c.name === 'message');
+    const icon = (node) => (node?.children ?? []).find((c) => c.name === 'severity-icon');
+    // The severity property alone, in any state: the message and its icon, as the template draws them.
+    for (const state of ['default', 'hover', 'focus-visible', 'readonly', 'disabled']) {
+      assert.ok(msg(find('error', state)), `${id}: Severity=error, State=${state} draws the message`);
+      assert.equal(icon(msg(find('error', state))).glyph, 'error', `${id}: Severity=error, State=${state}`);
+    }
+    assert.equal(icon(msg(find('success', 'focus-visible'))).glyph, 'check_circle');
+    const row = find('warning', 'default', 'after-control').children.find((c) => c.name === 'control-row');
+    assert.equal(icon(row).glyph, 'warning');
+    // Neither: no message. Both: the later declared severity, as the tokens (effectiveStates).
+    assert.equal(msg(find('none', 'default')), undefined);
+    assert.equal(icon(msg(find('error', 'warning'))).glyph, 'warning');
+    assert.equal(icon(msg(find('success', 'error'))).glyph, 'check_circle');
+    assert.equal(icon(msg(find('error', 'warning'))).fills, `${id}/severity-icon/color/warning`);
+  }
+});
+
 test('the Text field draws its leading icon over the start of the control, in the color of the text beside it', () => {
   const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
   const root = (content, icon, state = 'default') => plan.variants.find((v) => v.name === `Size=small, Severity icon=message, Severity=none, Content=${content}, Leading icon=${icon}, State=${state}`).root;

@@ -6,8 +6,9 @@
  * container: here the component is FIELD_WIDTH px wide and every part fills it.
  *
  * The `Content` axis draws the control's text as a value or as the placeholder (its own color).
- * The description is a boolean property (off, as in the template); the message is drawn in
- * the error, warning and success states only, as the template shows it with a severity. The
+ * The description is a boolean property (off, as in the template); the message is drawn
+ * whenever the variant has a severity, from its State or its `severity` property, as the template
+ * shows it with a severity (`severityOf`: the later declared severity wins, as in the tokens). The
  * severity icon (the Alert's glyph of each severity) sits after the control, in `control-row`, or at the start of
  * the message, by the `severityIcon` variant; the web lays the control and the icon out on a grid
  * row without a wrapper.
@@ -76,6 +77,13 @@ export const description = {
 
 export const SEVERITIES = ['error', 'warning', 'success'];
 
+/**
+ * The severity a variant shows, from its State or its `severity` property: when both name one, the
+ * later declared wins (success, then warning, then error), as `effectiveStates` makes the tokens do,
+ * so the message and the icon always match the fill, the border and the outline.
+ */
+export const severityOf = (v) => [...SEVERITIES].reverse().find((s) => v.state === s || v.props?.severity === s) ?? null;
+
 /** The glyph of each severity's icon, the template's (decision severity-icon-glyphs). */
 export const SEVERITY_GLYPHS = { error: 'error', warning: 'warning', success: 'check_circle' };
 
@@ -83,8 +91,8 @@ export const SEVERITY_GLYPHS = { error: 'error', warning: 'warning', success: 'c
 const severityIcon = (place) => ({
   type: 'icon',
   name: 'severity-icon',
-  glyph: (v) => SEVERITY_GLYPHS[v.state],
-  when: (v) => SEVERITIES.includes(v.state) && v.props.severityIcon === place,
+  glyph: (v) => SEVERITY_GLYPHS[severityOf(v)],
+  when: (v) => severityOf(v) !== null && v.props.severityIcon === place,
   bind: { fill: 'severity-icon.color', size: 'severity-icon.size', fontFamily: 'severity-icon.font-family', fontWeight: 'severity-icon.font-weight' },
 });
 
@@ -94,7 +102,7 @@ export const message = {
   name: 'message',
   layout: 'HORIZONTAL',
   align: { primary: 'MIN', counter: 'MIN' },
-  when: (v) => SEVERITIES.includes(v.state),
+  when: (v) => severityOf(v) !== null,
   width: 'FILL',
   bind: { gap: (v) => (v.props.severityIcon === 'message' ? 'severity-icon.gap' : null) },
   children: [
