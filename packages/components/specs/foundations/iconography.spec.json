@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "iconography",
   "name": "Iconography",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "status": "draft",
   "summary": "The icon font, the one style every icon is drawn in, its sizes and colors, and when an icon needs a name.",
   "description": "Icons are glyphs of Material Symbols Outlined, an icon font: a component names an icon by its ligature name and the font draws it. The font is variable; the system fixes its axes (fill, weight, grade, optical size) to a single style, so every icon looks the same in every component. The Figma library has no icon tokens: the font and its axes (font.icon.*) are the design system's additions, read directly by components. Icons take their size from the size scale and their color from the text next to them.",
@@ -328,6 +328,21 @@
   ],
   "decisions": [
     {
+      "id": "decorative-icons-keep-growing",
+      "date": "2026-11-25",
+      "version": "0.6.1",
+      "area": "size",
+      "status": "active",
+      "text": "A keep decision: outside the field family, decorative icons keep growing with the text size as icons-follow-text-size says (the Button's icon next to its label, an Icon next to text); the exception field-leading-icon-keeps-size stays the fields' own. The fields' reason, the value's room, does not hold for a button, whose label is short and which grows with it; growing, the Button's icon stays as high as the Icon button's glyph, so a Button and an Icon button of the same size keep lining up at every text size (Button decision grows-with-text-size). Rejected: B, every decorative icon keeps its size in every component (the Button 7 to 25 px shorter than an Icon button of the same size from ×1.35 to AX5, the Button's and the Icon's decisions superseded); C, B on Windows only, following Windows' guidance on decorative font icons (the two no longer line up on Windows). Decided in the Text field refinement (#103 step 20, point 2b, option A).",
+      "tokens": [
+        "size.*"
+      ],
+      "refs": [
+        "hig-typography-dynamic-type",
+        "windows-text-scaling-icons"
+      ]
+    },
+    {
       "id": "field-leading-icon-keeps-size",
       "date": "2026-11-25",
       "version": "0.6.0",
@@ -388,6 +403,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.1",
+      "date": "2026-11-25",
+      "note": "Decision decorative-icons-keep-growing (#103 step 20, point 2b), a keep decision: the exception field-leading-icon-keeps-size stays the field family's own; the Button's icon and a decorative Icon keep growing with the text. No rule, token or rendering change."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-25",
