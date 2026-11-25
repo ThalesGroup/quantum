@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "badge",
   "name": "Badge",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "status": "draft",
   "role": "presentation",
   "summary": "A short piece of text that qualifies the item next to it: a status, a count, a category.",
@@ -394,6 +394,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.3",
+      "date": "2026-11-25",
+      "note": "Fix, no decision of the Badge changed: the Color foundation's decision border-accent-warning-600 sets the light accent warning border to the warning text's step; the accent warning badge's border (container.border-color.accent.warning) is warning 600 #765818 in light mode (was 500 #BD8107): 4.19:1 on its accent warning fill (was 2.11:1). Dark mode, the tokens, CSS and template are unchanged."
+    },
     {
       "version": "0.1.2",
       "date": "2026-11-19",

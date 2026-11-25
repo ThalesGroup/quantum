@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -404,7 +404,7 @@
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 6.49:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 6.16:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. Against the subtle warning fill the warning border is 5.86:1 in light mode and 8.27:1 in dark mode.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -920,6 +920,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.2",
+      "date": "2026-11-25",
+      "note": "Fix, no decision of the Select changed: the Color foundation's decision border-accent-warning-600 sets the light warning border to warning 600 #765818 (was 500 #BD8107): 6.49:1 on the default surface, 6.16:1 at the lowest (was 3.27:1 and 3.09:1), 5.86:1 on the subtle warning fill. Tokens, CSS and template unchanged."
+    },
     {
       "version": "0.3.1",
       "date": "2026-11-25",

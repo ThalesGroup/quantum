@@ -250,9 +250,9 @@ success are said in text the same way, and color or an icon adds to the text, ne
 > **Border contrast.** The accent borders reach the 3:1 a border needs against its surface
 > ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)) on every surface
 > level, in both modes: the Color foundation changed the light warning border and the dark error
-> border for it. One shortfall is accepted knowingly: the light warning border is 2.95:1 on the
-> subtle warning fill (issue #119), while it keeps 3.09:1 against the surface. The table below
-> measures them.
+> border for it, and the light warning border reads the warning text's step, warning 600, as the
+> error and success borders read theirs: 6.16:1 at the lowest on the surfaces and 5.86:1 on the
+> subtle warning fill. The table below measures them.
 
 **The fill.** A control with a severity is also filled with a solid color, never translucent: the
 subtle functional background of its severity, `global.bg.subtle.functional.<severity>.default`
@@ -262,9 +262,8 @@ is 5.42:1 in light mode and 6.48:1 in dark mode, the value 16.91:1 and 11.43:1. 
 darken on hover, whatever the severity: the error hover step would bring the placeholder to 4.33:1
 in light mode, under the 4.5:1 text needs
 ([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)). The error and success
-borders keep at least 5.14:1 and 6.16:1 against their fill; the light warning border is 2.95:1
-against its fill (issue #119) and 3.09:1 against the surface. The border, not the fill, identifies
-the control.
+borders keep at least 5.14:1 and 6.16:1 against their fill, the warning border 5.86:1. The border,
+not the fill, identifies the control.
 
 **The icon.** The severity icon is optional and appears in one place only, never inside the
 area where people type: browsers add their own elements there (autofill, password managers,

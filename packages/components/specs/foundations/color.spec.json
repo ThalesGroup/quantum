@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "7.2.0",
+  "version": "7.3.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -750,13 +750,12 @@
     },
     {
       "id": "border-accent-warning-on-fill",
-      "description": "The accent warning border on the subtle warning fill, which a form control with that severity can take as its fill (3:1).",
+      "description": "The accent warning border on the subtle warning fill, which the Alert and a form control with that severity sit on (3:1).",
       "foreground": "global.border.accent.functional.warning.default",
       "backgrounds": [
         "global.bg.subtle.functional.warning.default"
       ],
       "minimum": 3,
-      "knownIssue": "Light mode: 2.95:1, under 3:1. The scale jumps from warning 500 (#BD8107) to 600 (#765818), so no step passes: issue #119 asks for intermediate steps.",
       "refs": [
         "wcag:1.4.11"
       ]
@@ -976,6 +975,28 @@
   ],
   "decisions": [
     {
+      "id": "border-accent-warning-600",
+      "date": "2026-11-25",
+      "version": "7.3.0",
+      "area": "color",
+      "status": "active",
+      "text": "In light mode global.border.accent.functional.warning is functional warning 600 / 700 / 800 (#765818 / #644B16 / #3E2D0C), the warning text's step, as the error and success accent borders take their text's step (error 600, success 700); not the Figma library's 400 / 500 / 600, nor 500 / 600 / 700 as border-accent-functional-3-to-1 set it. The rest of border-accent-functional-3-to-1 holds unchanged: in dark mode global.border.accent.functional.error is error 400 / 500 / 600 and dark warning is written as 400 / 500 / 600. These departures stay in the token files like any token file evolved by a decision; pnpm tokens:figma-library lists them.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 4, the closing WCAG check of the warning and success rendering) between: A, close as landed, the light warning border at warning 500 (2.95:1 on the subtle warning fill, the known issue of issue #119); B, the light warning border at its text step, warning 600 / 700 / 800 (chosen). After warning-on-base-600, the error and the success read one step for their border, text and icon in light mode (error 600, success 700) and the warning did not (border 500, text and icon 600). With B the warning maps the same way, and every pair passes: on the levels 0 / 1 / 2 / 3 / sunken 6.49 / 6.16 / 6.49 / 6.16 / 6.16:1 (was 3.27 / 3.10:1), 5.86:1 on the subtle warning fill (was 2.95:1), so the Alert's warning border and a form control's warning border pass against their fill too (WCAG 1.4.11); the accent warning Badge's border is 4.19:1 on its fill (was 2.11:1). Hover and active stay one step darker each. Dark mode is unchanged (warning 400 / 500 / 600). Read by the Alert, the accent Badge, the Select and the Text field family; the Bootstrap theme's --bs-warning-border follows.",
+      "supersedes": [
+        "border-accent-functional-3-to-1"
+      ],
+      "tokens": [
+        "global.border.accent.functional.warning.default",
+        "global.border.accent.functional.warning.hover",
+        "global.border.accent.functional.warning.active",
+        "global.border.accent.functional.error.default"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
       "id": "warning-on-base-600",
       "date": "2026-11-25",
       "version": "7.2.0",
@@ -997,7 +1018,7 @@
       "date": "2026-11-19",
       "version": "7.1.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "Two accent functional border roles depart from the Figma library so that they reach 3:1 against the surface levels, each with its whole ladder (default, hover, active). In light mode global.border.accent.functional.warning is functional warning 500 / 600 / 700 (#BD8107 / #765818 / #644B16), not 400 / 500 / 600. In dark mode global.border.accent.functional.error is functional error 400 / 500 / 600 (#EE5248 / #DF2821 / #C01619), as dark success and info are 400 / 500 / 600; the role had no dark value and inherited light's error 600 / 700 / 800. Dark warning is written as a dark value too, 400 / 500 / 600 (it inherited light's ladder, which would now read warning 500 / 600 / 700 on a dark surface, darker, not lighter, than the default). Light error and dark success and info are unchanged. These departures are kept in the mode files like any token file evolved by a decision; pnpm tokens:figma-library lists the nine tokens that differ.",
       "rationale": "The accent borders identify an alert, a badge, a button and, with the Forms severities, a form control, and a border that identifies a control needs 3:1 against the surface (Understanding 1.4.11, boundaries). Warning 400 gives 2.13 / 2.01:1 on the light surface levels 0 to 3 (2.13, 2.01, 2.13, 2.01); warning 500 gives 3.27 / 3.09 / 3.27 / 3.09:1. Error 600 in dark mode gave 2.82 / 2.58 / 2.36 / 2.11:1 on the dark levels 0 to 3; error 400 gives 4.97 / 4.55 / 4.16 / 3.73:1. Against the subtle fill: the light warning border is 2.95:1 (under 3:1, accepted knowingly by the team: no step of the scale lies between warning 500 and 600 and issue #119 asks for intermediate steps), the dark error border 5.14:1, the light error border 5.45:1, the dark warning border 8.28:1. The ladders were chosen by the team on 2026-11-19 (option A): each step stays one step darker (light) or follows the dark success and info ladder (dark), so default, hover and active stay ordered. Approved by the team on 2026-11-19. Also read by the Alert, the accent Badge, the Button and the Icon button (error intent), whose borders change; the Bootstrap theme's --bs-warning-border and --bs-danger-border follow.",
       "tokens": [
@@ -1101,6 +1122,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "7.3.0",
+      "date": "2026-11-25",
+      "note": "Decision border-accent-warning-600 (supersedes border-accent-functional-3-to-1, whose dark error ladder holds): in light mode global.border.accent.functional.warning is warning 600 / 700 / 800 (was 500 / 600 / 700): the default #765818 is 6.49 / 6.16 / 6.49 / 6.16 / 6.16:1 on the levels 0 to 3 and sunken (was 3.27 / 3.10:1) and 5.86:1 on the subtle warning fill (was 2.95:1): the pair border-accent-warning-on-fill loses its known issue. Read by the Alert, the accent Badge (4.19:1 on its fill, was 2.11:1), the Select and the field family."
+    },
     {
       "version": "7.2.0",
       "date": "2026-11-25",

@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -53,12 +53,12 @@
     {
       "id": "statuses",
       "name": "Severities",
-      "text": "A form control can show one of three severities, none by default: an error says the value is not accepted and how to fix it, a warning says the value is accepted but deserves attention, a success says the value was checked and confirmed. The word is \"error\", not \"invalid\": every platform's guidance speaks of errors (WCAG 3.3.1 Error Identification, the Compose error semantics, Material's error text), while invalid is the web's technical term. There is no information severity: information that holds before any check is the description's job, and no source gives a field an information status. The property is severity, and one message carries every severity. The Checkbox, the Checkbox group and the Radio group have only the error severity: a choice has nothing to confirm or to warn about (our judgment, not a source's). On the web, the error is aria-invalid=\"true\" (and :user-invalid when the browser validates); a warning and a success have no web state, since aria-invalid has no value for them: they are the message text and the styling. The control's border takes the severity's accent functional border color and the message its functional text color. Since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1) the accent borders reach the 3:1 of WCAG 1.4.11 on every surface level; the one shortfall left is the light warning border on the subtle warning fill (2.95:1), which step 6 may use as the fill, accepted knowingly by the team (issue #119)."
+      "text": "A form control can show one of three severities, none by default: an error says the value is not accepted and how to fix it, a warning says the value is accepted but deserves attention, a success says the value was checked and confirmed. The word is \"error\", not \"invalid\": every platform's guidance speaks of errors (WCAG 3.3.1 Error Identification, the Compose error semantics, Material's error text), while invalid is the web's technical term. There is no information severity: information that holds before any check is the description's job, and no source gives a field an information status. The property is severity, and one message carries every severity. The Checkbox, the Checkbox group and the Radio group have only the error severity: a choice has nothing to confirm or to warn about (our judgment, not a source's). On the web, the error is aria-invalid=\"true\" (and :user-invalid when the browser validates); a warning and a success have no web state, since aria-invalid has no value for them: they are the message text and the styling. The control's border takes the severity's accent functional border color and the message its functional text color. Since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1) the accent borders reach the 3:1 of WCAG 1.4.11 on every surface level; on the subtle warning fill the light warning border was 2.95:1 until the Color foundation set it to the warning text's step, warning 600 (decision border-accent-warning-600): 5.86:1."
     },
     {
       "id": "severity-fill",
       "name": "Severity in the fill",
-      "text": "The severity is also shown in the control's fill, a solid color, never translucent: the subtle functional background of the severity, global.bg.subtle.functional.<severity>.default (error, warning, success), at rest and on hover alike (step 6, the Text field family as the reference rendering). A hover tint does not apply in a severity: the error hover step (global.bg.subtle.functional.error.hover) would bring the placeholder under 4.5:1 in light mode (4.33:1, WCAG 1.4.3), and every severity behaves the same. The value and the placeholder keep their colors on the fill. The light warning border is 2.95:1 against the warning fill, a shortfall accepted knowingly (issue #119); against the surface it keeps at least 3.09:1."
+      "text": "The severity is also shown in the control's fill, a solid color, never translucent: the subtle functional background of the severity, global.bg.subtle.functional.<severity>.default (error, warning, success), at rest and on hover alike (step 6, the Text field family as the reference rendering). A hover tint does not apply in a severity: the error hover step (global.bg.subtle.functional.error.hover) would bring the placeholder under 4.5:1 in light mode (4.33:1, WCAG 1.4.3), and every severity behaves the same. The value and the placeholder keep their colors on the fill. Every border passes against its fill: error 5.45:1 (light) and 5.14:1 (dark), warning 5.86:1 and 8.27:1, success 7.17:1 and 6.16:1."
     },
     {
       "id": "severity-icon",
@@ -137,7 +137,7 @@
     },
     {
       "id": "success-text-on-surfaces",
-      "description": "The message of a success on every surface level. Measured only (WCAG 1.4.3 asks 4.5:1).",
+      "description": "The message of a success on every surface level (WCAG 1.4.3 asks 4.5:1): 7.87 / 7.44 / 7.87 / 7.44:1 in light mode and 7.89 / 7.23 / 6.62 / 5.92:1 in dark mode, the color of the success icon. A requirement since the success rendering was decided.",
       "foreground": "global.text.on-base.functional.success.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -147,7 +147,8 @@
       ],
       "refs": [
         "wcag:1.4.3"
-      ]
+      ],
+      "minimum": 4.5
     },
     {
       "id": "error-border-on-surfaces",
@@ -206,10 +207,11 @@
       "backgrounds": [
         "global.bg.subtle.functional.warning.default"
       ],
-      "description": "The border of a control with a warning against its own fill, the other color next to it. Measured only here (WCAG 1.4.11 asks 3:1): 2.95:1 in light mode, a shortfall accepted knowingly and required, as a known issue, by the Color foundation's pair border-accent-warning-on-fill (issue #119); against the surface it keeps at least 3.09:1. 8.27:1 in dark mode.",
+      "description": "The border of a control with a warning against its own fill, the other color next to it (WCAG 1.4.11 asks 3:1): 5.86:1 in light mode (warning 600 since the Color foundation's decision border-accent-warning-600; it was 2.95:1), 8.27:1 in dark mode.",
       "refs": [
         "wcag:1.4.11"
-      ]
+      ],
+      "minimum": 3
     },
     {
       "id": "warning-value-on-fill",
@@ -318,7 +320,7 @@
     },
     {
       "id": "warning-border-on-surfaces",
-      "description": "The border of a control with a warning, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1): 3.27 / 3.09 / 3.27 / 3.09:1 in light mode and 8.09 / 7.41 / 6.78 / 6.07:1 in dark mode on levels 0 to 3, since the Color foundation 7.1.0. On the subtle warning fill it is 2.95:1 in light mode, a shortfall the team accepted knowingly (issue #119).",
+      "description": "The border of a control with a warning, the accent functional border, against every surface level (WCAG 1.4.11 asks 3:1): 6.49 / 6.16 / 6.49 / 6.16:1 in light mode and 8.09 / 7.41 / 6.78 / 6.07:1 in dark mode on levels 0 to 3, since the Color foundation's decision border-accent-warning-600. A requirement since the warning rendering was decided.",
       "foreground": "global.border.accent.functional.warning.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -328,11 +330,12 @@
       ],
       "refs": [
         "wcag:1.4.11"
-      ]
+      ],
+      "minimum": 3
     },
     {
       "id": "success-border-on-surfaces",
-      "description": "The border of a control with a success, the accent functional border. Measured only (WCAG 1.4.11 asks 3:1).",
+      "description": "The border of a control with a success, the accent functional border, against every surface level (WCAG 1.4.11 asks 3:1): 7.87 / 7.44 / 7.87 / 7.44:1 in light mode and 6.08 / 5.57 / 5.10 / 4.57:1 in dark mode. A requirement since the success rendering was decided.",
       "foreground": "global.border.accent.functional.success.default",
       "backgrounds": [
         "global.bg.level.0.default",
@@ -342,7 +345,8 @@
       ],
       "refs": [
         "wcag:1.4.11"
-      ]
+      ],
+      "minimum": 3
     }
   ],
   "accessibility": {
@@ -929,6 +933,18 @@
   ],
   "decisions": [
     {
+      "id": "forms-warning-border-600",
+      "date": "2026-11-25",
+      "version": "0.21.0",
+      "area": "color",
+      "status": "active",
+      "text": "A control with a warning keeps the accent warning border, which the Color foundation sets to the warning text's step in light mode, warning 600 (decision border-accent-warning-600): border, outline, icon and message read one color for every severity, and every severity's border passes 3:1 against its fill and the surface levels. The warning and success rendering is complete; its pairs are requirements.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 4, the closing WCAG check of the warning and success rendering) between: A, close as landed, the light warning border at warning 500 (2.95:1 on the subtle warning fill, the known issue of issue #119); B, the light warning border at its text step, warning 600 / 700 / 800 (chosen). After warning-on-base-600, the error and the success read one step for their border, text and icon in light mode (error 600, success 700) and the warning did not (border 500, text and icon 600). With B the warning maps the same way, and every pair passes: on the levels 0 / 1 / 2 / 3 / sunken 6.49 / 6.16 / 6.49 / 6.16 / 6.16:1 (was 3.27 / 3.10:1), 5.86:1 on the subtle warning fill (was 2.95:1), so the Alert's warning border and a form control's warning border pass against their fill too (WCAG 1.4.11); the accent warning Badge's border is 4.19:1 on its fill (was 2.11:1). Hover and active stay one step darker each. Dark mode is unchanged (warning 400 / 500 / 600).",
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "forms-warning-one-color",
       "date": "2026-11-25",
       "version": "0.20.0",
@@ -1262,6 +1278,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.21.0",
+      "date": "2026-11-25",
+      "note": "Decision forms-warning-border-600: the light warning border is warning 600 (Color foundation, border-accent-warning-600): 6.16:1 at the lowest on the surface levels, 5.86:1 on the warning fill (was 2.95:1). The warning and success rendering is complete: warning-border-on-fill, warning- and success-border-on-surfaces and success-text-on-surfaces become required pairs."
+    },
     {
       "version": "0.20.0",
       "date": "2026-11-25",

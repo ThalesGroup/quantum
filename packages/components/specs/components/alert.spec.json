@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "alert",
   "name": "Alert",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "status": "draft",
   "role": "alert",
   "summary": "A brief, important message that draws attention without interrupting the task.",
@@ -400,6 +400,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.2",
+      "date": "2026-11-25",
+      "note": "Fix, no decision of the Alert changed: the Color foundation's decision border-accent-warning-600 sets the light accent warning border to the warning text's step; the warning alert's border (container.border-color.warning) is warning 600 #765818 in light mode (was 500 #BD8107): 6.49 / 6.16:1 on the levels (was 3.27 / 3.10:1) and 5.86:1 on the alert's own subtle warning fill (was 2.95:1, under 3:1). Dark mode, the tokens, CSS and template are unchanged."
+    },
     {
       "version": "0.2.1",
       "date": "2026-11-19",

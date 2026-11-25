@@ -160,7 +160,7 @@ and the full radius, which stay in px.
 | `--bs-warning-bg` | `global.bg.accent.functional.warning.default` | `#FFC61C` |  |
 | `--bs-warning-bg-subtle` | `global.bg.subtle.functional.warning.default` | `#FFF1C7` / `#1F1504` |  |
 | `--bs-warning-bg-muted` | `global.bg.subtle.functional.warning.hover` | `#FFE495` / `#2D2107` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
-| `--bs-warning-border` | `global.border.accent.functional.warning.default` | `#BD8107` / `#DFA700` | The alert and accent badge border. |
+| `--bs-warning-border` | `global.border.accent.functional.warning.default` | `#765818` / `#DFA700` | The alert and accent badge border. |
 | `--bs-warning-focus-ring` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | Quantum has one focus ring color for every intent (Focus foundation). |
 | `--bs-warning-contrast` | `global.text.on-accent.functional.warning.default` | `#1F1504` |  |
 
