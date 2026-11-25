@@ -49,9 +49,9 @@ when they write more. The box never resizes horizontally: it fills the width the
 | Default | Resting. | An outlined box on the default surface. |
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
 | Focus visible | The box has focus, from the keyboard or a pointer. | The focus color as a 2.4 px outline drawn flush over the border, which keeps its width, so the text does not move. An editable field shows it however it was focused. |
-| Error | `severity` property set to error, after validation. | The box takes the subtle error fill, on hover too; an outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
-| Warning | `severity` property set to warning. | The box takes the subtle warning fill, on hover too; an outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
-| Success | `severity` property set to success. | The box takes the subtle success fill, on hover too; an outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
+| Error | `severity` property set to error, after validation. | The box takes the subtle error fill, on hover too; an outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | The box takes the subtle warning fill, on hover too; an outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | The box takes the subtle success fill, on hover too; an outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the success color. No web state: the message says it. |
 | Read-only | `readonly` property. | The box takes the level 1 surface, which is close to the resting one, so say in the description that it is read-only; the text can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, text, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
@@ -64,7 +64,7 @@ line of text, or not at all.
 - The label is a noun phrase: **Message**, **Description**, **Delivery notes**.
 - The description says what to include or a length limit: **Up to 500 characters.**
 - The message of an error says what is wrong and how to fix it: **Enter a message of at least 20
-  characters.**
+  characters.** It goes under the description, which stays, so the limit is still in view while people fix the text.
 
 ## Accessibility
 

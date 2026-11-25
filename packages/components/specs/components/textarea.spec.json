@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -46,7 +46,7 @@
         "warning",
         "success"
       ],
-      "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), associated with the control as a description. Shown only with a severity."
+      "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), under the description (under the control when there is none), associated with the control as a description, after it. Shown only with a severity; the description stays."
     },
     {
       "id": "severity-icon",
@@ -848,6 +848,7 @@
         "label": "Message",
         "value": "Hi",
         "rows": 3,
+        "description": "Up to 500 characters.",
         "severity": "error",
         "message": "Enter a message of at least 20 characters.",
         "required": true
@@ -908,6 +909,29 @@
     "text-field"
   ],
   "decisions": [
+    {
+      "id": "message-under-description",
+      "date": "2026-11-25",
+      "version": "0.18.1",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Textarea shows a visible label (above the control by default, Forms rule label-placement), the control, the description under it when there is one and, while a severity shows, the message under the description (under the control when there is no description), for every severity: the description stays visible while a message shows. The control's description lists the description, then the message; on the web aria-describedby references them in that order, with the severity icon's name before the message when the icon is after the control. This applies the Forms foundation's decision forms-message-under-description and departs from the Figma prototype, where the error, warning or success message takes the place of the helper text.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 14) among: A, keep the message under the description (chosen); B, Figma's anatomy, the message replacing the description while a severity shows. A keeps the help (a format, a limit) on the screen and in what assistive technology reads when people fix the value: AccName concatenates every node aria-describedby references, so a screen reader reads the description, then the message. B would reopen the Forms rule and does not even keep the height: since decision message-text-size the message (14 / 16 / 16 px) is larger than the description (12 / 12 / 14 px), so a medium field with a one-line description still grows 6 px when the message replaces it, and 30 px with no description, while the help disappears. Measured on 320 px wide fields: a one-line message adds 30 px under a medium field (the 6 px gap and a 24 px line), a two-line message 48 px under a small one; both parts keep their size, weight and color, 6 px apart (container.gap). Supersedes label-description-error, whose text still named the error message and the invalid state. No token, CSS, template, Figma blueprint or theme change; the error example gains a description, so the docs show both parts together.",
+      "supersedes": [
+        "label-description-error"
+      ],
+      "tokens": [
+        "textarea.container.gap",
+        "textarea.description.typography.*",
+        "textarea.message.typography.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:3.3.2",
+        "apg-describing",
+        "accname-description"
+      ]
+    },
     {
       "id": "warning-border-text-step",
       "date": "2026-11-25",
@@ -1298,7 +1322,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "anatomy",
-      "status": "active",
+      "status": "superseded",
       "text": "A field always has a visible label above the control; help text goes under the control as the description, and the error message under it while the field is invalid. Both are exposed as the control's description.",
       "refs": [
         "wcag:3.3.2",
@@ -1324,6 +1348,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.18.1",
+      "date": "2026-11-25",
+      "note": "Decision message-under-description (keep, #103 step 14): the message sits under the description for every severity, both visible, and is read after it, as the Forms foundation decided (forms-message-under-description); a departure from the Figma prototype, where the message replaces the helper text. Supersedes label-description-error. The message part says where it sits; the error example gains a description. No token or rendering change."
+    },
     {
       "version": "0.18.0",
       "date": "2026-11-25",

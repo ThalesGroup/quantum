@@ -45,6 +45,12 @@ description, under the box, gives the format, an example or what the value is us
 placeholder is a hint inside the empty box, in a lighter color: it disappears as soon as people
 type, so it never replaces the label and never carries an instruction people must remember.
 
+When a severity shows, its message goes under the description, and the description stays: people
+fixing the value still see the format or the limit it gives, and assistive technology reads the
+description, then the message. Without a description, the message sits under the box. The
+message never takes the place of the description, as the
+[Forms foundation](/foundations/forms/guidelines) asks of every control.
+
 ## Leading icon
 
 A field can show an icon before its value (**Leading icon**), but none is the default and regular
@@ -64,9 +70,9 @@ euros**, not **Amount** next to a euro glyph. It is never a button; an action ne
 | Default | Resting. | An outlined box on the default surface. |
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
 | Focus visible | The box has focus, from the keyboard or a pointer. | The focus color as a 2.4 px outline drawn flush over the border, which keeps its width, so the text does not move. An editable field shows it however it was focused. |
-| Error | `severity` property set to error, after validation. | The box takes the subtle error fill, on hover too; an outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the error color. The control is exposed as in error. |
-| Warning | `severity` property set to warning. | The box takes the subtle warning fill, on hover too; an outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the warning color. No web state: the message says it. |
-| Success | `severity` property set to success. | The box takes the subtle success fill, on hover too; an outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the box, in the success color. No web state: the message says it. |
+| Error | `severity` property set to error, after validation. | The box takes the subtle error fill, on hover too; an outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | The box takes the subtle warning fill, on hover too; an outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | The box takes the subtle success fill, on hover too; an outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the success color. No web state: the message says it. |
 | Read-only | `readonly` property. | The box takes the level 1 surface, which is close to the resting one, so say in the description that it is read-only; the value can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, value, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
