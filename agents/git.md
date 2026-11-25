@@ -150,7 +150,10 @@ The repository is the GitHub repository
   `scripts/lib/conventional-commits.mjs`.
 - **Breaking changes** (a removed option, property or token path, a renamed part, anything that
   makes consumers change their code or design files) take `!` after the scope and a
-  `BREAKING CHANGE:` footer saying what to change, and bump the spec's **major** version.
+  `BREAKING CHANGE:` footer saying what to change, and bump the spec's **major** version once
+  it has reached 1.0.0. A spec still at 0.x is in initial development, where anything may change
+  ([Semantic Versioning, item 4](https://semver.org/#spec-item-4)): it bumps the **minor**, with
+  the same `!` and footer.
 - **Subject**: imperative or a noun phrase stating the decision, no final period, header at
   most 100 characters. One decision, one commit (`agents/workflow.md` "Decisions").
 - Check a message before committing with `pnpm commits:check --message "<message>"`.
