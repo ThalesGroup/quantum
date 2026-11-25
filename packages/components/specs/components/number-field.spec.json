@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -376,10 +376,10 @@
       },
       {
         "key": "Arrow keys",
-        "action": "Up increases the value by one step, Down decreases it, within the bounds; the browser provides it for a native number input.",
+        "action": "Up increases the value by one step, Down decreases it, within the bounds: the native number input gives the default increment and decrement, which a spinbutton offers on the arrow keys.",
         "refs": [
           "apg-spinbutton-keyboard",
-          "html-input-number"
+          "mdn-spinbutton-role"
         ],
         "platforms": [
           "web"
@@ -530,7 +530,7 @@
         ]
       },
       {
-        "key": "Arrow keys",
+        "key": "Left, Right arrow keys",
         "action": "On Windows, move the caret inside the field: in a text field every key goes to entering or navigating the text first.",
         "refs": [
           "windows-keyboard-navigation",
@@ -541,9 +541,30 @@
         ]
       },
       {
-        "key": "Enter",
-        "action": "On Windows, adds no line: a text box takes newline characters only when AcceptsReturn is set.",
+        "key": "Up, Down",
+        "action": "On Windows, step the value by its small change, as the NumberBox does.",
         "refs": [
+          "windows-number-box-stepping"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Page Up, Page Down",
+        "action": "On Windows, step the value by its large change.",
+        "refs": [
+          "windows-number-box-stepping"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "On Windows, evaluates the value typed (an expression, when calculation is on) and validates it, as leaving the field does; it adds no line.",
+        "refs": [
+          "windows-number-box-calculation",
           "windows-text-box-multi-line"
         ],
         "platforms": [
@@ -714,6 +735,46 @@
           "swiftui-submit-label",
           "compose-keyboard-options",
           "windows-text-box-keyboard"
+        ]
+      },
+      {
+        "text": "APG's Home and End (to the minimum and the maximum) and Page Up and Page Down (a larger step) are not promised: the native number input does not document them and the template adds no script, so they keep the browser's behaviour.",
+        "refs": [
+          "apg-spinbutton-keyboard",
+          "mdn-spinbutton-role"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Show a number pad, or a decimal pad when the value has decimals, the keyboard type that matches the content; no key steps the value: a stepper beside the field does.",
+        "refs": [
+          "uikit-keyboard-type",
+          "hig-text-fields-keyboard",
+          "hig-steppers"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Set a number keyboard type through the field's keyboard options; the arrow keys and the D-pad move the caret, and no key steps the value.",
+        "refs": [
+          "compose-keyboard-options",
+          "compose-focus-text-fields-2d"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, a stepper beside the field changes the value; no key is named that steps it in the field.",
+        "refs": [
+          "hig-steppers"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -1314,6 +1375,31 @@
         "id": "windows-text-box-keyboard",
         "title": "Windows apps: text box, choose the right keyboard (InputScope)",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#choose-the-right-keyboard-for-your-text-control"
+      },
+      {
+        "id": "mdn-spinbutton-role",
+        "title": "MDN: ARIA spinbutton role (input type=number gives the default increment and decrement; a spinbutton offers them on the arrow keys)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/spinbutton_role#description"
+      },
+      {
+        "id": "uikit-keyboard-type",
+        "title": "UIKit: UIKeyboardType (number pad, decimal pad)",
+        "url": "https://developer.apple.com/documentation/uikit/uikeyboardtype"
+      },
+      {
+        "id": "hig-text-fields-keyboard",
+        "title": "Apple HIG: Text fields, best practices (show the appropriate keyboard type)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices"
+      },
+      {
+        "id": "windows-number-box-stepping",
+        "title": "Windows apps: NumberBox, increment and decrement stepping (Up / Down, Page Up / Page Down)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box#increment-and-decrement-stepping"
+      },
+      {
+        "id": "windows-number-box-calculation",
+        "title": "Windows apps: NumberBox, calculation support (evaluated on Enter or on leaving the field)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box#enable-calculation-support"
       }
     ]
   },
@@ -1455,6 +1541,23 @@
     "slider"
   ],
   "decisions": [
+    {
+      "id": "stepping-keys-per-platform",
+      "date": "2026-11-25",
+      "version": "0.24.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "The keys that step the value are each platform's native control's, and no more. Web: Up and Down step the value within the bounds, the default increment and decrement the native number input gives; APG's Home, End, Page Up and Page Down are not promised, since the native input does not document them and the template adds no script. iOS: a number pad, or a decimal pad for decimals, and a stepper beside the field; no key steps the value. Android: a number keyboard type; the arrow keys move the caret. macOS: a stepper beside the field; no key named. Windows: Up and Down step by the small change, Page Up and Page Down by the large one, Enter evaluates and validates the value, as the NumberBox does.",
+      "refs": [
+        "apg-spinbutton-keyboard",
+        "mdn-spinbutton-role",
+        "uikit-keyboard-type",
+        "hig-steppers",
+        "compose-keyboard-options",
+        "windows-number-box-stepping",
+        "windows-number-box-calculation"
+      ]
+    },
     {
       "id": "enter-by-field-kind",
       "date": "2026-11-25",
@@ -2063,6 +2166,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.24.0",
+      "date": "2026-11-25",
+      "note": "Decision stepping-keys-per-platform (#103 step 19, point 4): the web's Up / Down entry re-sourced (MDN spinbutton role: the native input gives the increment and decrement), APG's Home, End and Page keys not promised; Windows Up / Down, Page Up / Page Down and Enter (NumberBox); iOS number or decimal pad and the stepper, Android a number keyboard type, macOS the stepper, in guidelines. Text only: no token, CSS, template or rendering change."
+    },
     {
       "version": "0.23.0",
       "date": "2026-11-25",

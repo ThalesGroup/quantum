@@ -108,6 +108,12 @@ This section explains the decisions behind it.
   editable one's ([Material 3: Read-only fields](https://m3.material.io/components/text-fields/guidelines#f572b53d-1a15-4ede-881a-80adbbdc24a5), [Windows: Make a text box read-only](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#make-a-text-box-read-only)).
 - The color transitions of the control are switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+- Up and Down step the value within its bounds: the native number input gives the increment and
+  decrement, which a spin button offers on the arrow keys. APG's Home and End (to the minimum and
+  the maximum) and Page Up and Page Down (a larger step) are not promised: the native input does not
+  document them and the template adds no script, so they keep the browser's behaviour
+  ([MDN: spinbutton role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/spinbutton_role#description),
+  [APG: spinbutton keyboard](https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/#keyboardinteraction)).
 
 ### iOS
 
@@ -123,6 +129,10 @@ This section explains the decisions behind it.
   iPadOS supports keyboard navigation in text fields and text views, unlike buttons. On iPhone,
   Full Keyboard Access reaches the field: use the native text field and test with it on
   ([Apple HIG: Focus and selection, iPadOS](https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS), [Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices), [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
+- Show a number pad, or a decimal pad when the value has decimals, the keyboard type that matches
+  the content; no key steps the value, the stepper beside the field does
+  ([UIKit: UIKeyboardType](https://developer.apple.com/documentation/uikit/uikeyboardtype),
+  [Apple HIG: Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
 
 ### Android
 
@@ -137,6 +147,9 @@ This section explains the decisions behind it.
   D-pad move the caret, then move focus at the start or end of the text; Shift with the arrows
   selects, Ctrl+A selects all ([Orange: Android keyboard navigation](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order), [Jetpack Compose: focus in text fields](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#one-dimensional-focus-traversal),
   [two-dimensional traversal](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#two-dimensional-focus-traversal), [Jetpack Compose: keyboard commands](https://developer.android.com/develop/ui/compose/touch-input/keyboard-input/commands)).
+- Set a number keyboard type through the field's keyboard options; the arrow keys and the D-pad
+  move the caret, and no key steps the value
+  ([Jetpack Compose: keyboard options](https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options)).
 
 ### Desktop
 
@@ -145,8 +158,14 @@ This section explains the decisions behind it.
   Use the native control and keep the standard keyboard shortcuts ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices),
   [Apple HIG: standard keyboard shortcuts](https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts), [AppKit: nextKeyView](https://developer.apple.com/documentation/appkit/nsview/nextkeyview)).
 - On Windows, Tab follows the tab order, the order the controls are added, and skips a disabled
-  field; Shift+Tab goes back; in the field the arrow keys move the caret, since every key goes to
+  field; Shift+Tab goes back; in the field Left and Right move the caret, since every key goes to
   the text first ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements), [Windows: keyboard interactions, navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation), [text entry](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry)).
+- On Windows, as in a NumberBox, Up and Down step the value by its small change, Page Up and Page
+  Down by its large one, and Enter evaluates and validates what was typed, as leaving the field does
+  ([Windows: NumberBox, stepping](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box#increment-and-decrement-stepping),
+  [calculation](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/number-box#enable-calculation-support)).
+  On macOS a stepper beside the field changes the value
+  ([Apple HIG: Steppers](https://developer.apple.com/design/human-interface-guidelines/steppers)).
 
 ## Related
 
