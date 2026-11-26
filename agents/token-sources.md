@@ -115,7 +115,10 @@ Without ids it draws every component; with ids, those and the components their i
   depends on something else (the button's icon slots, whose padding differs). A state an enum
   property sets (`error`, set by `severity: "error"`) is left out of State when that enum is an
   axis: the axis already draws it, and State crosses it (`Severity=error, State=focus-visible`)
-  instead of naming it twice or contradicting it (`Severity=error, State=warning`). A blueprint
+  instead of naming it twice or contradicting it (`Severity=error, State=warning`). State takes
+  one value at a time, so two states at once are not drawn (hover with focus, or a focused
+  read-only field, whose ring the web draws over its read-only fill): accepted for every component,
+  a designer overrides the variant (#103 step 23, Q3). A blueprint
   takes an enum out of the axes with `fixed` (`fixed: { markedFields: 'optional' }`: every variant
   draws that option, and a state it sets stays in State), and sets a value computed from a token
   without a variable with `derive` (`['mark.typography', 0.25]`: a quarter of its font size;

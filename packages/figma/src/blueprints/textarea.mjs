@@ -8,6 +8,12 @@
  * so the default texts end with two empty lines: the text, set in the bound control typography,
  * is three lines tall in every size. Designers set the number of rows by the number of lines.
  * The vertical resize handle is not drawn.
+ *
+ * The severity icon after the control sits level with the control's first line, below
+ * control.padding-block (`withSeverityIcon`'s `firstLine`), as the web's `align-self: start` and
+ * `margin-block-start`, not centered on the box. As in the Text field, a focused read-only Textarea
+ * is not drawn (State takes one value at a time, #103 step 23, Q3: a designer overrides the fill on a
+ * `focus-visible` variant), nor is the hit region of iOS and Android (decision touch-target-hit-region).
  */
 import { CONTENT, TRANSITION, container, content, control, description, message, labelRow, MARKED_FIELDS, ASTERISK, withSeverityIcon, SEVERITY_ICON_AXES } from './text-field.mjs';
 

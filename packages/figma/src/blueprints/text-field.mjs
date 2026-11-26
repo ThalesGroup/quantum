@@ -24,6 +24,12 @@
  * The `Leading icon` axis (iconStart) wraps the control in a `field` frame with the decorative glyph over
  * its start edge, the control reserving control.padding-inline-start, as the Search field's.
  *
+ * State takes one value at a time, so a focused read-only field is not drawn: the web focuses a read-only
+ * control and draws the focus ring over its read-only fill. Accepted, as hover with focus for every
+ * component (#103 step 23, Q3): a designer overrides the fill on a `focus-visible` variant. The hit region of
+ * iOS and Android (decision touch-target-hit-region) is not drawn either, as for the Button: no token holds
+ * it, and the drawn field is the same on every platform.
+ *
  * The other field blueprints (textarea, number-field, search-field, select) build on the helpers
  * exported here.
  */
