@@ -658,8 +658,47 @@ and the language's plural rules pick the form from the number
 So the title is one plural string per language, with every form of that language, even though a
 summary lists two errors or more by default.
 
-> **Not decided yet (step 9, points 4 to 6).** The summary's entries (errors only, or warnings
-> too), where it sits, and when it updates and clears.
+**Its entries are the errors, in the form's order.** One entry per field in error, in the order
+the fields appear in the form, as SCR32 builds its list by walking the form's fields. A warning
+never blocks the submit (see [When a value is checked](#when-a-value-is-checked)), so it stays under its field
+and the summary leaves it out: the list holds what stops the submit, and the title counts exactly
+its entries.
+
+**On the web, each entry is a plain link, no script.** The system uses the platform's native means
+first: where the browser gives the same result, the web needs no JavaScript. An entry is an in-page
+link to the field's control, `<a href="#email">`, as the WAI tutorial and G139 describe
+([WAI forms tutorial: listing errors](https://www.w3.org/WAI/tutorials/forms/notifications/#listing-errors),
+[G139](https://www.w3.org/WAI/WCAG22/Techniques/general/G139)). Following it, the browser scrolls
+the control to the top of the view and focuses it
+([HTML: scrolling to a fragment](https://html.spec.whatwg.org/multipage/browsing-the-web.html#scrolling-to-a-fragment)).
+Two details make it work:
+
+- **The label stays in view.** At the top edge, the control would hide its own label above it.
+  Each field's control carries a top scroll margin, `scroll-margin-top`, at least as tall as its
+  label (or its group's legend) and the gap above the control, so the browser stops that much
+  higher and the label shows above the focused field
+  ([MDN: scroll-margin-top](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-top)).
+- **A group's entry names its first option.** A fieldset cannot take focus, so a link to it
+  scrolls but focuses nothing: the entry for a radio or checkbox group links to its first option,
+  and the legend shows above it.
+
+Two trade-offs come with plain links. Each entry followed adds a fragment to the URL and an entry
+to the history
+([HTML: navigate to a fragment](https://html.spec.whatwg.org/multipage/browsing-the-web.html#navigate-fragid)),
+so Back walks through the fields before it leaves the page. And a single-page app whose router
+takes over `#` links may need its own handling: that is the product's choice.
+
+The scroll margin is built with the Error summary component, on the field controls
+([#129](https://github.com/ThalesGroup/quantum/issues/129)); this page states the behaviour.
+
+**On iOS, Android and desktop, the entry moves focus.** There are no in-page links there:
+activating an entry moves focus to the field with the means a failed
+submit uses (see [How errors are announced](#how-errors-are-announced)), and brings the field and
+its label into view. No Apple, Android or Windows page says how a list of errors reaches its
+fields, so this is the system's judgment.
+
+> **Not decided yet (step 9, points 5 and 6).** Where the summary sits, and when it updates and
+> clears.
 
 ## Spacing
 

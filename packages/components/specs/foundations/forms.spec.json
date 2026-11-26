@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.42.0",
+  "version": "0.43.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -93,7 +93,7 @@
     {
       "id": "summary",
       "name": "Error summary",
-      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. A dedicated Error summary component renders it, not the Alert: an alert must not affect keyboard focus (APG Alert pattern), and WAI-ARIA asks for an alertdialog, not an alert, when focus moves to a message, while the summary's title takes focus. So the summary has no alert role, its title takes focus, and its entries are links. Its title states how many errors the form has: \"There are 3 errors in this form\", the WAI tutorial's example heading, one sentence with no period (message-wording). The number is the number of entries, one per field in error. The title states and the entries say the fix: the title is not a message, so the rule that a message says the fix applies to each entry, never to the title. The Error summary component holds this English title as its default, and the product passes its own, translated and pluralised: one plural string per language, whose form the language's plural rules pick from the number (English has two forms, one and other; Arabic has six), never a number joined to a word. By default a summary lists two errors or more, yet the string carries every form of its language, for a product that shows one with a single error. Its behaviour is decided in step 9 (points 4 to 6), and the component is built in its own pull request after this foundation (#129). Not decided yet (step 9, points 4 to 6): its entries, where it sits, and when it updates and clears."
+      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. A dedicated Error summary component renders it, not the Alert: an alert must not affect keyboard focus (APG Alert pattern), and WAI-ARIA asks for an alertdialog, not an alert, when focus moves to a message, while the summary's title takes focus. So the summary has no alert role, its title takes focus, and its entries are links. Its title states how many errors the form has: \"There are 3 errors in this form\", the WAI tutorial's example heading, one sentence with no period (message-wording). The number is the number of entries, one per field in error. The title states and the entries say the fix: the title is not a message, so the rule that a message says the fix applies to each entry, never to the title. The Error summary component holds this English title as its default, and the product passes its own, translated and pluralised: one plural string per language, whose form the language's plural rules pick from the number (English has two forms, one and other; Arabic has six), never a number joined to a word. By default a summary lists two errors or more, yet the string carries every form of its language, for a product that shows one with a single error. It lists the errors only: one entry per field in error, in the order the fields appear in the form. A warning never blocks the submit (timing), so it stays under its field and the summary leaves it out; the title counts exactly the entries. On the web, each entry is a plain in-page link to its field, with no script: <a href=\"#id\">, the id being the field's control. For a group, the link names the group's first option, never its fieldset, which cannot take focus. Following the link, the browser scrolls the control to the top of the view and focuses it (HTML, scrolling to a fragment). To keep the label in view, each field's control carries a top scroll margin (CSS scroll-margin-top) at least as tall as its label, or its group's legend, and the gap above the control: the browser then stops that much higher, and the label shows above the focused field. The system uses the platform's native means first: no script on the web where the browser gives the same result. Two trade-offs come with it: each activation adds a fragment to the URL and an entry to the history, so Back walks through the fields before leaving the page; and a single-page app whose router takes over # links may need its own handling, the product's choice. iOS, Android and desktop have no in-page link: activating an entry moves focus to the field with the means the rule announcement names (a layout-changed notification with the field, a FocusRequester, the Focus method with the focus state Programmatic), the field and its label scrolled into view; no Apple, Android or Windows page says so, so this is the system's judgment. The scroll margin is built with the Error summary component, on the field controls, in #129; this foundation states the behaviour. The component is built in its own pull request after this foundation (#129). Not decided yet (step 9, points 5 and 6): where it sits, and when it updates and clears."
     },
     {
       "id": "spacing",
@@ -661,6 +661,16 @@
           "wai-forms-listing-errors",
           "wcag-scr32",
           "mdn-intl-pluralrules"
+        ]
+      },
+      {
+        "text": "Each entry of the error summary is an in-page link to its field's control, as the WAI tutorial and G139 describe. Following a link to a fragment, the browser scrolls the target into view with block \"start\", then runs the focusing steps with the document's viewport as the fallback: the control takes focus at the top edge of the view, its label above it, out of view, and a link to a fieldset, which is not focusable, focuses nothing. So an entry for a group names its first option, and the control carries a top scroll margin (scroll-margin-top) that keeps its label or legend in view. Navigating to a fragment pushes a history entry, so each entry followed adds one.",
+        "refs": [
+          "wai-forms-listing-errors",
+          "wcag-g139",
+          "html-scroll-to-fragment",
+          "html-navigate-fragment",
+          "mdn-scroll-margin-top"
         ]
       },
       {
@@ -1433,6 +1443,11 @@
         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules"
       },
       {
+        "id": "mdn-scroll-margin-top",
+        "title": "MDN: scroll-margin-top",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-top"
+      },
+      {
         "id": "mdn-live-regions",
         "title": "MDN: ARIA live regions",
         "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions"
@@ -1491,6 +1506,16 @@
         "id": "html-interactive-validation",
         "title": "HTML Standard: interactively validate the constraints",
         "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#interactively-validate-the-constraints"
+      },
+      {
+        "id": "html-scroll-to-fragment",
+        "title": "HTML: scrolling to a fragment (scroll the target into view with block \"start\", then run the focusing steps, the viewport as the fallback)",
+        "url": "https://html.spec.whatwg.org/multipage/browsing-the-web.html#scrolling-to-a-fragment"
+      },
+      {
+        "id": "html-navigate-fragment",
+        "title": "HTML: navigate to a fragment (a push adds a session history entry)",
+        "url": "https://html.spec.whatwg.org/multipage/browsing-the-web.html#navigate-fragid"
       },
       {
         "id": "wcag-understanding-status-messages-excepted",
@@ -1629,6 +1654,22 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-summary-entries",
+      "date": "2026-11-26",
+      "version": "0.43.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "The error summary lists the errors only, one entry per field in error, in the form's order; warnings stay under their fields. On the web, each entry is a plain in-page link, no JavaScript: <a href=\"#field-id\">, to the field's control, and for a group to its first option, never to the fieldset; each field's control carries a CSS scroll-margin-top so its label, or its group's legend, stays visible above the focused control. Each activation adds a URL fragment and a history entry (Back walks the fields first), and a single-page app whose router takes over # links may need its own handling, the product's choice. iOS, Android and desktop move focus to the field with the means of forms-focus-after-submit. No component, token or rendering change here: the scroll margin is built on the field controls with the Error summary component in #129.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 9, point 4): B+, an option raised in discussion, chosen over the recommended A. The team's words: \"the reason would be to use native approaches at first, so for the web not relying on extra JavaScript if we can\". Native first: on the web the browser already focuses the target of a fragment link, and CSS scroll-margin-top keeps the label in view, so script adds nothing. Among: A, errors only, a link plus a few lines of script that focus the control and scroll its label into view (recommended; not chosen: the same result with script); B, errors only, a plain link and nothing more (superseded by B+: the label is cut off at the top edge, and a link to a fieldset focuses nothing); B+, B with scroll-margin-top on the controls and group links to their first option (chosen); C, errors then warnings under \"Also check\" (rejected); D, errors and warnings in one list (rejected). Verified on 2026-11-26 with a probe page in Chromium 156, WebKit 27.2 (Playwright 1.64) and Firefox 161 (WebDriver BiDi): following each link focuses the control; without a margin the control lands at the top (label 22 to 24 px above the view); with scroll-margin-top 40 px the label shows 16 to 18 px from the top and a legend 9 to 11 px; a link to a group's first radio or checkbox focuses it; a link to the fieldset focuses nothing; each activation adds one history entry and Back returns to the previous fragment. Sources opened on 2026-11-26: HTML, scrolling to a fragment (scroll into view with block \"start\", then the focusing steps, the viewport as the fallback) and navigate to a fragment (a push adds a history entry); CSS Scroll Snap Module Level 1, scroll-margin (on fragment navigation and scrollIntoView the UA uses the scroll snap area, even when snapping is off; not in the trusted sources, so cited here only); MDN scroll-margin-top; the WAI forms tutorial, listing errors, and G139.",
+      "refs": [
+        "wai-forms-listing-errors",
+        "wcag-g139",
+        "html-scroll-to-fragment",
+        "html-navigate-fragment",
+        "mdn-scroll-margin-top"
+      ]
+    },
     {
       "id": "forms-summary-title",
       "date": "2026-11-26",
@@ -2345,6 +2386,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.43.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-summary-entries (#105 step 9, point 4): the rule summary says that the error summary lists the errors only, one entry per field in the form's order, and that on the web each entry is a plain in-page link to the field's control (a group's first option), no script, the control's scroll-margin-top keeping its label in view; the URL fragment, history and single-page app trade-offs; iOS, Android and desktop move focus as after a submit. One guideline and three references (HTML scrolling to a fragment, HTML navigate to a fragment, MDN scroll-margin-top). Its place and updates are still open (step 9 points 5 and 6). No component, token or rendering change."
+    },
     {
       "version": "0.42.0",
       "date": "2026-11-26",
