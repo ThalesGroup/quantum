@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.36.0",
+  "version": "0.37.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -88,7 +88,7 @@
     {
       "id": "announcement",
       "name": "How errors are announced",
-      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. Not decided yet (step 8): whether changes that bring no new error (an error that clears, a warning, a success) are announced, where focus goes after a failed submit, and what the foundation states where a platform says nothing."
+      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs (timing), are announced the same way, politely, through the same region or announcement: the label, a colon, a space, then the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent: people hear their own keystrokes, the field no longer reads as in error when they come back to it, and the submit checks every field again. Not decided yet (step 8): where focus goes after a failed submit, and what the foundation states where a platform says nothing."
     },
     {
       "id": "summary",
@@ -627,7 +627,19 @@
         ]
       },
       {
-        "text": "One hidden live region per form, aria-live=\"polite\", present in the initial markup (a region added with its content may not be announced), filled with \"Label: message\" when an error appears on leaving a field. Not role=\"alert\" nor aria-live=\"assertive\": both interrupt, and role=\"alert\" with aria-live speaks twice with VoiceOver on iOS. The message also stays referenced by the control's aria-describedby.",
+        "text": "A warning shown as people leave a field and a success from a check people cannot make themselves are status messages too, a warning on the existence of a problem and the result of an action: the form announces them like an error that appears on leaving a field, politely, as the field's label, a colon and the message, without moving focus. An error that clears as people type is not announced: a live region treats removals as irrelevant by default and keeps them for important changes, the field no longer exposes an error when people come back to it, and the submit checks again. No Apple, Android or Windows page covers announcing a warning, a success or a cleared error: every platform uses the means chosen for an error.",
+        "refs": [
+          "wcag:4.1.3",
+          "wcag-understanding-status-messages-techniques",
+          "wcag-aria19",
+          "wcag-aria22",
+          "aria-status",
+          "aria-relevant",
+          "wai-forms-binary-messages"
+        ]
+      },
+      {
+        "text": "One hidden live region per form, aria-live=\"polite\", present in the initial markup (a region added with its content may not be announced), filled with \"Label: message\" when an error or a warning appears on leaving a field, or a success when its check runs. Not role=\"alert\" nor aria-live=\"assertive\": both interrupt, and role=\"alert\" with aria-live speaks twice with VoiceOver on iOS. The message also stays referenced by the control's aria-describedby.",
         "refs": [
           "wcag-aria19",
           "aria-live",
@@ -639,7 +651,18 @@
         ]
       },
       {
-        "text": "Apple asks apps to inform VoiceOver when visible content changes: post an accessibility announcement of \"Label: message\" (AccessibilityNotification.Announcement, iOS 17 and macOS 14; on AppKit, announcementRequested), at low priority, never high, which interrupts other speech and cannot be interrupted. Apple's accessibility references do not define low and default; low is our choice for a message that must not cut off the field people reached.",
+        "text": "The form's polite region serves both situations of 4.1.3: role=\"status\", ARIA22's technique for the result of an action, is itself a polite live region, so a success goes through the same region as an error or a warning, with no second region. When an error clears, the region is not filled or emptied to say so: with the default aria-relevant (additions text) a removal is not announced, and removals are for important changes only.",
+        "refs": [
+          "wcag-aria22",
+          "aria-status",
+          "aria-relevant"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Apple asks apps to inform VoiceOver when visible content changes: post an accessibility announcement of \"Label: message\" for an error or a warning that appears on leaving a field and for a success when its check runs (AccessibilityNotification.Announcement, iOS 17 and macOS 14; on AppKit, announcementRequested), at low priority, never high, which interrupts other speech and cannot be interrupted. Apple's accessibility references do not define low and default; low is our choice for a message that must not cut off the field people reached.",
         "refs": [
           "hig-voiceover-navigation",
           "apple-accessibility-announcement",
@@ -651,7 +674,17 @@
         ]
       },
       {
-        "text": "A polite live region (liveRegion Polite, the mode for most changes; Assertive only for time-sensitive content) holds \"Label: message\" when an error appears on leaving a field, while the field keeps its error semantics.",
+        "text": "Apple asks that all feedback be accessible, received whether people look away from the screen or use VoiceOver: a warning or a success a form shows is announced like an error, at the same low priority.",
+        "refs": [
+          "hig-feedback-best-practices"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "A polite live region (liveRegion Polite, the mode for most changes; Assertive only for time-sensitive content) holds \"Label: message\" when an error or a warning appears on leaving a field, or a success when its check runs, while the field keeps its error semantics.",
         "refs": [
           "compose-live-regions",
           "compose-error-components"
@@ -661,7 +694,7 @@
         ]
       },
       {
-        "text": "On Windows, an element whose AutomationProperties.LiveSetting is Polite (non-interruptive) and whose name is \"Label: message\", raising its live region change when an error appears on leaving a field. Windows' Forms page says nothing on announcing errors; LiveSetting is the WinUI API for content that changes, chosen as our judgment.",
+        "text": "On Windows, an element whose AutomationProperties.LiveSetting is Polite (non-interruptive) and whose name is \"Label: message\", raising its live region change when an error or a warning appears on leaving a field, or a success when its check runs. Windows' Forms page says nothing on announcing errors; LiveSetting is the WinUI API for content that changes, chosen as our judgment.",
         "refs": [
           "winui-live-setting",
           "winui-automation-live-setting",
@@ -1328,6 +1361,21 @@
         "id": "winui-automation-live-setting",
         "title": "Windows App SDK: AutomationLiveSetting enum",
         "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.peers.automationlivesetting"
+      },
+      {
+        "id": "wcag-aria22",
+        "title": "WCAG 2.2 Technique ARIA22: Using role=status to present status messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA22"
+      },
+      {
+        "id": "aria-status",
+        "title": "WAI-ARIA 1.2: status role",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#status"
+      },
+      {
+        "id": "aria-relevant",
+        "title": "WAI-ARIA 1.2: aria-relevant",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-relevant"
       }
     ]
   },
@@ -1431,6 +1479,25 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-warning-success-announcement",
+      "date": "2026-11-26",
+      "version": "0.37.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs, are announced politely through the form's announcement of an error (forms-error-announcement), as the field's label, a colon, a space and the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent. Every platform uses the means of forms-error-announcement: on the web the form's one polite live region, on iOS and macOS a low-priority announcement, on Android a polite live region, on Windows an element with LiveSetting Polite. No component, token or rendering change.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 8, point 2), B chosen as recommended, among: A, only errors are announced (rejected: a warning and a success that appear without focus are status messages, and leaving them silent fails 4.1.3, AA); B, a warning and a success announced politely as \"Label: message\", a cleared error silent (chosen); C, everything announced, including \"Label: no error\" when an error clears (rejected: no source asks for a cleared error to be announced, it talks over people's typing, and it needs a new string in every language); D, as B but the message alone while focus is in the field, as in the WAI tutorial's binary-messages example (rejected: a second string and a rule that depends on focus, and a check that answers late, after people tab away, would then lack its label). The team follows the recommendation because it rests on screen-reader best practice, not on its own use of screen readers. Why B: it meets 4.1.3 with one rule and one string, the error summary entry's: Understanding 4.1.3 lists a warning under situation B (ARIA19) and the result of an action under situation A (ARIA22, role=status, an implicitly polite and atomic live region), both status messages, so the form's polite region serves both. No source asks for a cleared error to be announced: WAI-ARIA 1.2 aria-relevant treats removals as irrelevant by default and keeps removals for important changes, to be used sparingly; people hear their own keystrokes, the field no longer reads as in error when they come back, and the submit checks again. Apple asks that all feedback be accessible, VoiceOver included (HIG Feedback). No Apple, Android or Windows page covers announcing a warning, a success or a cleared error: each platform keeps the means chosen for an error, as our judgment. Sources opened on 2026-11-26: Understanding 4.1.3 (techniques, situations A and B), ARIA19, ARIA22, WAI-ARIA 1.2 status and aria-relevant, WAI forms tutorial (binary messages), Apple HIG Feedback.",
+      "refs": [
+        "wcag:4.1.3",
+        "wcag-understanding-status-messages-techniques",
+        "wcag-aria19",
+        "wcag-aria22",
+        "aria-status",
+        "aria-relevant",
+        "wai-forms-binary-messages",
+        "hig-feedback-best-practices"
+      ]
+    },
     {
       "id": "forms-error-announcement",
       "date": "2026-11-26",
@@ -2043,6 +2110,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.37.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-warning-success-announcement (#105 step 8, point 2): the rule announcement says that a warning shown on leaving a field and a success from a check people cannot make, when it runs, are announced politely like an error, as \"Label: message\", through the form's region or announcement on every platform, and that an error clearing as people type is silent; the web, Apple, Android and Windows guidelines name warnings and successes; three guidelines (generic, web, Apple feedback); three references (ARIA22, WAI-ARIA status and aria-relevant). No component, token or rendering change."
+    },
     {
       "version": "0.36.0",
       "date": "2026-11-26",
