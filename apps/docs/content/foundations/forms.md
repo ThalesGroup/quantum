@@ -631,9 +631,17 @@ one of two errors and submit again, one error is left: the summary goes, and foc
 remaining field. No Apple, Android or Windows page says whether a form lists its errors, so the
 default holds on every platform.
 
-> **Not decided yet (step 9, points 2 to 6).** What renders the summary (the Alert component, a
-> variant of it, or a pattern of its own), its title and count, its entries (errors only, or
-> warnings too), where it sits, and when it updates and clears.
+**A component of its own renders it.** The summary is not an Alert. An alert must not affect
+keyboard focus ([APG: Alert pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alert/)), and when
+focus moves to a message, WAI-ARIA asks for an alertdialog instead of an alert
+([WAI-ARIA 1.2: alert](https://www.w3.org/TR/wai-aria-1.2/#alert)). The summary's title takes
+focus after a failed submit, so the summary carries no alert role: the focus move announces it.
+A dedicated Error summary component renders it, a title that takes focus and a list of links to
+the fields. Its behaviour is decided in the points below, and it is built in its own pull request
+after this foundation ([#129](https://github.com/ThalesGroup/quantum/issues/129)).
+
+> **Not decided yet (step 9, points 3 to 6).** The summary's title and count, its entries (errors
+> only, or warnings too), where it sits, and when it updates and clears.
 
 ## Spacing
 
@@ -833,6 +841,7 @@ On macOS, Apple's guidance above applies.
 
 - Every component whose role is an input follows this page; the Tokens tab of the foundation
   lists them.
-- [Alert](/components/alert): the candidate for an error summary (step 9).
+- [Alert](/components/alert): a brief message that never moves focus, so not the error summary,
+  which a component of its own renders ([#129](https://github.com/ThalesGroup/quantum/issues/129)).
 - [Color](/foundations/color): the error, warning and success colors.
 - [Spacing](/foundations/spacing): the scale the spacing between fields will use.

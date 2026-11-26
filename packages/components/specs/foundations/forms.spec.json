@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.40.0",
+  "version": "0.41.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -93,7 +93,7 @@
     {
       "id": "summary",
       "name": "Error summary",
-      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. Not decided yet (step 9, points 2 to 6): what renders it, its title and count, its entries, where it sits, and when it updates and clears."
+      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. A dedicated Error summary component renders it, not the Alert: an alert must not affect keyboard focus (APG Alert pattern), and WAI-ARIA asks for an alertdialog, not an alert, when focus moves to a message, while the summary's title takes focus. So the summary has no alert role, its title takes focus, and its entries are links. Its behaviour is decided in step 9 (points 3 to 6), and the component is built in its own pull request after this foundation (#129). Not decided yet (step 9, points 3 to 6): its title and count, its entries, where it sits, and when it updates and clears."
     },
     {
       "id": "spacing",
@@ -646,6 +646,13 @@
           "wcag-scr32",
           "wcag:3.3.1",
           "wcag-understanding-error-identification-intent"
+        ]
+      },
+      {
+        "text": "The error summary is not an alert. An alert must not affect keyboard focus, and when focus moves to a message, WAI-ARIA asks for an alertdialog instead of an alert; the summary's title takes focus after a failed submit, so the summary carries no alert role and is announced by the focus move itself. A dedicated Error summary component renders it: a title that takes focus and a list of links to the fields.",
+        "refs": [
+          "apg-alert",
+          "aria-alert"
         ]
       },
       {
@@ -1408,6 +1415,11 @@
         "url": "https://www.w3.org/TR/wai-aria-1.2/#alert"
       },
       {
+        "id": "apg-alert",
+        "title": "APG: Alert pattern",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/"
+      },
+      {
         "id": "mdn-live-regions",
         "title": "MDN: ARIA live regions",
         "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions"
@@ -1604,6 +1616,19 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-summary-component",
+      "date": "2026-11-26",
+      "version": "0.41.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A dedicated Error summary component renders a form's error summary: not the Alert, not a variant of the Alert, and not a pattern built from other components. It has no alert role, its title takes focus after a failed submit (forms-focus-after-submit), and its entries are links to their fields (forms-message-relies-on-label). Its behaviour (title and count, entries, place, updates and clearing) is decided in #105 step 9 points 3 to 6; the component is built in its own pull request after this foundation (#129). No component, token or rendering change here.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 9, point 2), C chosen as recommended, among: A, the Alert as it is (rejected: it carries role=\"alert\" and never moves focus, while the summary's title takes focus; the APG Alert pattern says alerts must not affect keyboard focus, and WAI-ARIA 1.2 says to use alertdialog instead of alert when focus moves to a message); B, a summary variant of the Alert (rejected: one component with two roles and two focus contracts, and the validator requires role=\"alert\" on every Alert rendering); C, a new Error summary component (chosen); D, a Forms pattern with no component (rejected: nothing would carry its tokens, template or Figma drawing). Sources opened on 2026-11-26: APG Alert pattern, WAI-ARIA 1.2 alert role.",
+      "refs": [
+        "apg-alert",
+        "aria-alert"
+      ]
+    },
     {
       "id": "forms-summary-optional",
       "date": "2026-11-26",
@@ -2292,6 +2317,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.41.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-summary-component (#105 step 9, point 2): the rule summary says that a dedicated Error summary component renders the summary, not the Alert (no alert role, its title takes focus, entries are links), built in its own pull request after this foundation (#129); its title and count, entries, place and updates are still open (step 9 points 3 to 6). One guideline and one reference (APG Alert pattern). No component, token or rendering change."
+    },
     {
       "version": "0.40.0",
       "date": "2026-11-26",
