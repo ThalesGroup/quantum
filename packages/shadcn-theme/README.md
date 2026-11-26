@@ -85,7 +85,7 @@ of the matching Quantum component, so it follows that component's decisions. The
 | `--destructive` | `:root`, `.dark` | `global.text.on-base.functional.error.default` | `#C01619` / `#F88275` | The error text role, the Text field message's (`text-field.message.color.error`): shadcn colors error text, invalid borders and the destructive Button and Badge fill with this one variable, and most of its uses are text, which this role keeps above 4.5:1 on levels 0 to 3. |
 | `--destructive-foreground` | `:root`, `.dark` | `global.text.on-accent.functional.error.default` | `#FEFBFA` / `#FEFBFA` | No longer in shadcn's documented set (the v4 components write `text-white`); kept for blocks that read it. |
 | `--border` | `:root`, `.dark` | `card.container.border-color.level-1` (component, = `global.border.level.edge.level.1`) | `#D5D5D5` / `#282828` | The edge of the Card at level 1: shadcn's `--border` is mostly card, popover and table edges. |
-| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.base.neutral.5`) | `#8C8C8C` / `#9C9C9C` | The border of a Quantum text field (3:1 or more on every surface). shadcn has no input-specific border variable: `--input` is also read by its checkbox, radio, select, switch and textarea, which Quantum draws with the accent neutral border (`#313131` / `#CFCFCF`) until the complex controls are refined, so they are lighter than the Quantum ones. |
+| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.base.neutral.5`) | `#8C8C8C` / `#9C9C9C` | The border of a Quantum text field (3:1 or more on every surface). shadcn has no input-specific border variable: `--input` is also read by its checkbox, radio, select, switch and textarea, which Quantum draws with the accent neutral border (`#313131` / `#CFCFCF`) until the complex controls are refined, so they are lighter than the Quantum ones. shadcn also fills with it: the off Switch track, and every field in dark at 30 % (`dark:bg-input/30`), a grey Quantum's fields do not have (Not themable). |
 | `--ring` | `:root`, `.dark` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | The focus ring color. |
 | `--chart-1` … `--chart-5` | `:root`, `.dark` | `dataviz.role.brand.bg.accent.brand-1` … `brand-5` | `#0B2A69` … `#749DE5` / `#9EE7FA` … `#297B8C` | The brand data series. The categorical alternative is `dataviz.role.extended.wood.accent.extended-1..8`. |
 | `--sidebar` | `:root`, `.dark` | `global.bg.level.1.default` | `#F7F7F7` / `#212121` | A sidebar is a level-1 surface beside the level-0 page. |
@@ -192,10 +192,14 @@ them out rather than restyle the components:
   and the destructive Button, `--destructive` at 60 % over the page, is lighter than Quantum's
   (its label 4.64 to 5.27:1). A focused destructive menu item (`--destructive` at 20 % under the
   text) is 4.18:1 in dark, under 4.5:1.
-- **The value of an invalid field in dark.** An invalid `Field` writes the typed value in
-  `--destructive` over the input's `dark:bg-input/30` fill (`--input` at 30 %, the grey Quantum's
-  fields do not have): 3.21 to 4.13:1 on levels 0 to 3, under 4.5:1. The fill comes from `--input`,
-  the field border, so no `--destructive` value fixes it.
+- **Text on a field in dark.** In dark, shadcn fills every field with its own blend,
+  `dark:bg-input/30` (`--input` at 30 % over the page), a grey Quantum's fields do not have. On it,
+  an invalid `Field`'s typed value (`--destructive`) is 3.21 to 4.13:1 on levels 0 to 3, and the
+  placeholder (`--muted-foreground`) 4.40 and 4.03:1 on levels 2 and 3: under the 4.5:1 WCAG 1.4.3
+  asks of text, placeholder text included. `--input` is also the field border, which must keep 3:1:
+  a darker dark `--input` (`#767676`) would pass the value on levels 0 and 1 only and fail the off
+  Switch track on every level and the borders on level 3, so the class string is left as shadcn
+  ships it.
 - **The switch.** shadcn's off track is `--input` with a `--background` thumb (dark track, light
   thumb); Quantum's off switch is a level-0 track with a dark thumb.
 - **Placeholders** read `--muted-foreground` (Quantum's secondary text); Quantum draws them tertiary.
