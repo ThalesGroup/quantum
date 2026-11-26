@@ -122,6 +122,16 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   assert.deepEqual(plan.variables.skipped, ['button/container/transition/duration', 'button/container/transition/easing']);
 });
 
+test('the fields\' placeholder colors are text fills, their start paddings and margins gaps', () => {
+  const scopes = (id) => Object.fromEntries(figmaComponent(loaded, specOf(id), BLUEPRINTS[id]).variables.variables.map((v) => [v.name, v.scopes]));
+  const tf = scopes('text-field');
+  assert.deepEqual(tf['text-field/control/placeholder-color/default'], ['TEXT_FILL']);
+  assert.deepEqual(tf['text-field/icon/placeholder-color/default'], ['TEXT_FILL']);
+  assert.deepEqual(tf['text-field/control/padding-inline-start/medium'], ['GAP']);
+  assert.deepEqual(tf['text-field/icon/margin-inline'], ['GAP']);
+  assert.deepEqual(tf['text-field/asterisk/margin-inline-start/medium'], ['GAP']);
+});
+
 test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
   const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
   const ring = (severity, state) => plan.variants.find((v) => v.name === `Size=medium, Severity icon=message, Severity=${severity}, Content=value, Leading icon=false, State=${state}`).root.children.find((c) => c.name === 'control-row').children.find((c) => c.name === 'control').focusRing;
