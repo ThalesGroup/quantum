@@ -121,7 +121,8 @@ fields ([Forms foundation](/foundations/forms/guidelines)). By default (`message
 message, 16 px, and the box keeps its full width. With `after-control` it follows the box, at
 the size of the Button's icon of the same size (20, 24 and 24 px), and the box gives up the icon
 and an 8 px gap, so it no longer lines up with a full-width field or Button. With `none` there is
-no icon, and the message says the severity in words. The icon is never drawn inside the box,
+no icon, and the message's own words say the severity: the component writes no severity word, so a
+project whose messages do not say it starts them with **Error: …** itself. The icon is never drawn inside the box,
 where browsers add their own controls. It draws the Alert's glyph of the severity (`error`,
 `warning`, `check_circle`), so the three differ by shape as well as color, in the on-base icon
 color of the severity, the color of its message (for a warning, warning 600 in light mode, 6.16:1
@@ -134,7 +135,7 @@ the severity and then the message.
   no trailing punctuation.
 - The description gives the format or an example when it is not obvious.
 - The placeholder, when any, is a short example of a valid value (**name@example.com**).
-- The message of an error says what is wrong and how to fix it: **Enter an email address with an @.** A warning says what to check and a success what was confirmed; say the severity in the words, since a warning and a success have no state to expose it.
+- The message of an error is the instruction that fixes it: **Enter an email address with an @.** A warning says what to check (**Check the domain: did you mean example.com?**) and a success what was confirmed (**This username is available.**). With an icon, the message does not start with the severity's word, which the icon's name already says; without one, its words alone make the severity clear ([Forms foundation](/foundations/forms/guidelines)).
 
 ## Accessibility
 

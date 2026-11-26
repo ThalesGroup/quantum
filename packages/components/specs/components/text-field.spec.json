@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.28.0",
+  "version": "0.28.1",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -184,7 +184,7 @@
         },
         {
           "value": "none",
-          "description": "No icon: the message says the severity in words (\"Error: …\")."
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
         }
       ]
     },
@@ -2287,6 +2287,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.1",
+      "date": "2026-11-26",
+      "note": "Fix: the severityIcon option none follows the Forms guideline forms-severity-word-guideline (which supersedes forms-severity-word): without an icon the message's own words say the severity, and the component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon. No template or rendering change."
+    },
     {
       "version": "0.28.0",
       "date": "2026-11-26",
