@@ -507,10 +507,16 @@ that takes focus is a change of context, not a status message
 ([Understanding 4.1.3: excepted examples](https://www.w3.org/WAI/WCAG22/Understanding/status-messages#excepted-examples)),
 so no live region is filled. Leaving focus on the submit button would leave people at the bottom
 of the form with a polite message they can miss; moving it to the first field while a summary is
-shown would skip the summary. No Apple, Android or Windows page says where focus goes after a
-failed submit: the means named below are the system's judgment.
+shown would skip the summary.
 
-> **Not decided yet (step 8).** What this page states where a platform says nothing.
+**Where a platform says nothing, the default applies.** The system enforces default principles,
+the platforms follow their own guidance, and a product can still override them at the end for its
+own specifics. Each platform follows its own guidance where it has some (when to check a value on
+Apple, Material's error semantics on Android, the marked fields of Windows), and the behaviour
+above where it has none, through the API named below. No Apple, Android or Windows page says how
+a form's errors reach the screen reader or where focus goes after a failed submit: those APIs are
+the system's judgment, and each platform part below ends by saying so. A product may depart from
+the default for its own specifics; until it does, the default is the rule.
 
 ### Web
 
@@ -556,7 +562,7 @@ on UIKit), or sets an
 on it. Without a summary, it moves focus to the first field in error with its
 [focus state](https://developer.apple.com/documentation/swiftui/focusstate), as Apple's own
 example does when people sign in with a field left empty, and posts the layout-changed
-notification with that field.
+notification with that field. No Apple page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.
 
 ### Android
 
@@ -576,7 +582,7 @@ After a failed submit, a
 [FocusRequester](https://developer.android.com/develop/ui/compose/touch-input/focus/change-focus-behavior#use-focus-requester)
 requests focus for the error summary, or for the first field in error, from the submit's
 callback. No Android page says that TalkBack follows a requested focus, or how to move TalkBack
-to an element that is not a control: this is the system's judgment.
+to an element that is not a control. No Android page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.
 
 ### Desktop
 
@@ -585,8 +591,7 @@ On macOS, the form posts the same low-priority announcement as on iOS (macOS 14,
 on AppKit). On Windows, an element whose `LiveSetting` is `Polite`, non-interruptive
 ([AutomationProperties.LiveSetting](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.livesetting),
 [AutomationLiveSetting](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.peers.automationlivesetting)),
-is named "Label: message", for an error, a warning or a success. Windows' Forms page says
-nothing on announcing errors: this is the system's judgment, with the WinUI API for content
+is named "Label: message", for an error, a warning or a success: the WinUI API for content
 that changes. No Apple, Android or Windows page covers announcing a warning, a success or a
 cleared error: every platform keeps the means it uses for an error.
 
@@ -596,6 +601,7 @@ first field in error, takes focus through its `Focus` method with the focus stat
 ([Programmatic focus navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/focus-navigation-programmatic)).
 Windows' Forms page asks only to mark the fields with invalid input and to require a resubmit
 ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)).
+No Windows page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.
 
 ## Error summary
 

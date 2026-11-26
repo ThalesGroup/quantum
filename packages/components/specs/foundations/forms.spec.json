@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.38.0",
+  "version": "0.39.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -88,7 +88,7 @@
     {
       "id": "announcement",
       "name": "How errors are announced",
-      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs (timing), are announced the same way, politely, through the same region or announcement: the label, a colon, a space, then the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent: people hear their own keystrokes, the field no longer reads as in error when they come back to it, and the submit checks every field again. After a failed submit, focus moves: to the title of the form's error summary when the form has one, so people hear how many fields to check (\"Check 2 fields\") then every entry, \"Label: message\", each a link to its field (summary); to the first field in error when it has none, which reads its label and its error. Focus moves once per submit, and the summary or the field taking focus is announced by that move, with no live region. On the web, the summary's title takes focus with focus() and tabindex=\"-1\"; on iOS and macOS, a layout-changed notification with the summary as the element to move to, or an accessibility focus state; to a field, its focus state, with the layout-changed notification; on Android, a FocusRequester; on Windows, the element's Focus method with the focus state Programmatic. No Apple, Android or Windows page says where focus goes after a failed submit: these are our judgment. Not decided yet (step 8): what the foundation states where a platform says nothing."
+      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs (timing), are announced the same way, politely, through the same region or announcement: the label, a colon, a space, then the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent: people hear their own keystrokes, the field no longer reads as in error when they come back to it, and the submit checks every field again. After a failed submit, focus moves: to the title of the form's error summary when the form has one, so people hear how many fields to check (\"Check 2 fields\") then every entry, \"Label: message\", each a link to its field (summary); to the first field in error when it has none, which reads its label and its error. Focus moves once per submit, and the summary or the field taking focus is announced by that move, with no live region. On the web, the summary's title takes focus with focus() and tabindex=\"-1\"; on iOS and macOS, a layout-changed notification with the summary as the element to move to, or an accessibility focus state; to a field, its focus state, with the layout-changed notification; on Android, a FocusRequester; on Windows, the element's Focus method with the focus state Programmatic. Each platform follows its own guidance where it has some (when to check a value on Apple, Material's error semantics on Android, the marked fields of Windows), and the behaviour above where it has none, through the API its guideline names; no Apple, Android or Windows page says how a form's errors reach the screen reader or where focus goes after a failed submit, so those APIs are the system's judgment, and every guideline that rests on one ends by saying so. The system sets the default, the platforms follow their own guidance, and a product can still depart from both at the end for its own specifics: the default is the rule until it does."
     },
     {
       "id": "summary",
@@ -685,7 +685,7 @@
         ]
       },
       {
-        "text": "Apple asks apps to inform VoiceOver when visible content changes: post an accessibility announcement of \"Label: message\" for an error or a warning that appears on leaving a field and for a success when its check runs (AccessibilityNotification.Announcement, iOS 17 and macOS 14; on AppKit, announcementRequested), at low priority, never high, which interrupts other speech and cannot be interrupted. Apple's accessibility references do not define low and default; low is our choice for a message that must not cut off the field people reached.",
+        "text": "Apple asks apps to inform VoiceOver when visible content changes: post an accessibility announcement of \"Label: message\" for an error or a warning that appears on leaving a field and for a success when its check runs (AccessibilityNotification.Announcement, iOS 17 and macOS 14; on AppKit, announcementRequested), at low priority, never high, which interrupts other speech and cannot be interrupted. Apple's accessibility references do not define low and default; low is our choice for a message that must not cut off the field people reached. No Apple page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.",
         "refs": [
           "hig-voiceover-navigation",
           "apple-accessibility-announcement",
@@ -707,7 +707,7 @@
         ]
       },
       {
-        "text": "After a failed submit, post a layout-changed notification with the error summary as the element VoiceOver moves to (AccessibilityNotification.LayoutChanged, iOS 17 and macOS 14; UIAccessibility layoutChanged on UIKit), or set an accessibility focus state on it, which moves VoiceOver focus; without a summary, move focus to the first field in error with its focus state, as Apple's own focus state example does when people sign in with a field left empty, and post the layout-changed notification with that field. No Apple page says where focus goes after a failed submit: this is our judgment.",
+        "text": "After a failed submit, post a layout-changed notification with the error summary as the element VoiceOver moves to (AccessibilityNotification.LayoutChanged, iOS 17 and macOS 14; UIAccessibility layoutChanged on UIKit), or set an accessibility focus state on it, which moves VoiceOver focus; without a summary, move focus to the first field in error with its focus state, as Apple's own focus state example does when people sign in with a field left empty, and post the layout-changed notification with that field. No Apple page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.",
         "refs": [
           "apple-accessibility-layout-changed",
           "uikit-layout-changed",
@@ -720,7 +720,7 @@
         ]
       },
       {
-        "text": "A polite live region (liveRegion Polite, the mode for most changes; Assertive only for time-sensitive content) holds \"Label: message\" when an error or a warning appears on leaving a field, or a success when its check runs, while the field keeps its error semantics.",
+        "text": "A polite live region (liveRegion Polite, the mode for most changes; Assertive only for time-sensitive content) holds \"Label: message\" when an error or a warning appears on leaving a field, or a success when its check runs, while the field keeps its error semantics. No Android page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.",
         "refs": [
           "compose-live-regions",
           "compose-error-components"
@@ -730,7 +730,7 @@
         ]
       },
       {
-        "text": "After a failed submit, a FocusRequester requests focus for the error summary, or for the first field in error without one, from the submit's event callback. No Android page says where focus goes after a failed submit, nor that TalkBack follows a requested focus or how to move TalkBack to an element that is not a control: this is our judgment.",
+        "text": "After a failed submit, a FocusRequester requests focus for the error summary, or for the first field in error without one, from the submit's event callback. No Android page says that TalkBack follows a requested focus, or how to move TalkBack to an element that is not a control. No Android page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.",
         "refs": [
           "compose-focus-requester"
         ],
@@ -739,7 +739,7 @@
         ]
       },
       {
-        "text": "On Windows, an element whose AutomationProperties.LiveSetting is Polite (non-interruptive) and whose name is \"Label: message\", raising its live region change when an error or a warning appears on leaving a field, or a success when its check runs. Windows' Forms page says nothing on announcing errors; LiveSetting is the WinUI API for content that changes, chosen as our judgment.",
+        "text": "On Windows, an element whose AutomationProperties.LiveSetting is Polite (non-interruptive) and whose name is \"Label: message\", raising its live region change when an error or a warning appears on leaving a field, or a success when its check runs. LiveSetting is the WinUI API for content that changes. No Windows page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.",
         "refs": [
           "winui-live-setting",
           "winui-automation-live-setting",
@@ -750,7 +750,7 @@
         ]
       },
       {
-        "text": "On Windows, after a failed submit, the error summary, or the first field in error without one, takes focus through its Focus method, with the focus state Programmatic. Windows' Forms page asks only to mark the fields with invalid input and to require a resubmit; it says nothing on focus: this is our judgment.",
+        "text": "On Windows, after a failed submit, the error summary, or the first field in error without one, takes focus through its Focus method, with the focus state Programmatic. Windows' Forms page asks only to mark the fields with invalid input and to require a resubmit. No Windows page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.",
         "refs": [
           "windows-programmatic-focus",
           "windows-forms-submitting"
@@ -1585,6 +1585,20 @@
   ],
   "decisions": [
     {
+      "id": "forms-platform-gaps",
+      "date": "2026-11-26",
+      "version": "0.39.0",
+      "area": "platform",
+      "status": "active",
+      "text": "Where a platform has its own guidance, the form follows it; where it has none, the generic behaviour applies through the API the platform guideline names, and that API is the system's judgment. The rule announcement states this principle once, as the rule required already does, and every Apple, Android and Windows guideline that rests on an API alone (announcing an error, moving focus after a failed submit) ends with the same sentence: \"No <Platform> page says how a form's errors reach its screen reader or where focus goes: this API is the system's judgment.\" Apple's low priority keeps its own caveat: the API is Apple's, only the level is the system's choice. The default is the rule; a product may still depart from it for its own specifics. No component, token or rendering change.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 8, point 4), B chosen as recommended, among: A, the five wordings stay (\"chosen as our judgment\", \"this is our judgment\", \"these are our judgment\", \"low is our choice\", \"the system's judgment\") (rejected: one fact said five ways, and the Android announcement guideline said nothing of its gap); B, one principle in the rule and one closing sentence on each API-only platform guideline (chosen); C, the APIs as examples and the means left to the product (rejected: two products on one platform could differ); D, as B plus a structured guideline field (basis: \"judgment\") shown by the site and checked by the validator (rejected for this step: it changes the schemas, the validator and the site for every spec, beyond the Forms foundation; filed as an issue). The team's principle: \"We enforce default principles, the platforms follow their own guidance, and the product can still override at the end with their specificities.\" The override is explicit: a product may deviate for its own specifics, but the default is the rule.",
+      "platforms": [
+        "ios",
+        "android",
+        "desktop"
+      ]
+    },
+    {
       "id": "forms-focus-after-submit",
       "date": "2026-11-26",
       "version": "0.38.0",
@@ -2242,6 +2256,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.39.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-platform-gaps (#105 step 8, point 4): the rule announcement states once that each platform follows its own guidance where it has some and the generic behaviour where it has none, through the API its guideline names as the system's judgment, and that a product may still depart from the default for its own specifics; its \"Not decided yet\" sentence is removed. Six Apple, Android and Windows guidelines end with the same sentence (the Android announcement guideline gains it); Apple's low-priority caveat is kept. No component, token or rendering change."
+    },
     {
       "version": "0.38.0",
       "date": "2026-11-26",
