@@ -530,8 +530,23 @@ of the on-screen keyboard's return key, because only the form knows which field 
   ([WAI forms tutorial: user notification](https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit)),
   unless they already start with it.
 
-> **Not decided yet (step 11).** Whether messages end with a period and how long they may be,
-> and how a message names its field in an error summary.
+- **One sentence, no period.** A message or a description is one sentence in sentence case, a
+  second only when the fix needs it, about one line at the field's default width and two lines
+  at most, so it does not push the next field down. A single sentence ends with no period,
+  **Choose a country**, **We send the receipt to this address**; two sentences each end with
+  their period, **Enter at least 20 characters. You have entered 10.**; a question keeps its
+  mark, **Check the domain: did you mean example.com?** This is Material's rule, which asks to
+  avoid periods on single sentences and to use them on multiple sentences
+  ([Material: grammar and punctuation](https://m3.material.io/foundations/content-design/style-guide/grammar-and-punctuation)),
+  and departs from Apple's examples and the WAI tutorial's, which end with a period
+  ([HIG: Alerts](https://developer.apple.com/design/human-interface-guidelines/alerts#Content),
+  [WAI forms tutorial: user notification](https://www.w3.org/WAI/tutorials/forms/notifications/#inline)).
+  A screen reader gets the description and the message as one string joined by a space
+  ([Accessible Name and Description Computation](https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description)),
+  so without a period they run on when read, *…to this address Enter an email…*; with an icon,
+  its name falls between them.
+
+> **Not decided yet (step 11).** How a message names its field in an error summary.
 
 ## Accessibility
 

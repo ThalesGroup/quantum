@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -751,7 +751,7 @@
         "orientation": "vertical",
         "size": "medium",
         "label": "Plan",
-        "description": "You can change plans at any time.",
+        "description": "You can change plans at any time",
         "name": "plan",
         "options": [
           {
@@ -784,7 +784,7 @@
         "name": "delivery-error",
         "required": true,
         "severity": "error",
-        "message": "Choose a delivery method.",
+        "message": "Choose a delivery method",
         "options": [
           {
             "label": "Standard",
@@ -804,7 +804,7 @@
         "orientation": "vertical",
         "size": "medium",
         "label": "Billing cycle",
-        "description": "Managed by your organization.",
+        "description": "Managed by your organization",
         "name": "billing",
         "disabled": true,
         "options": [
@@ -931,6 +931,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.1",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation). No rendering change."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-19",

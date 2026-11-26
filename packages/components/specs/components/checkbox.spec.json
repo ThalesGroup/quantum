@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox",
   "name": "Checkbox",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "status": "draft",
   "role": "checkbox",
   "summary": "Lets people turn one option on or off, or pick any number of options from a list.",
@@ -580,7 +580,7 @@
       "props": {
         "size": "medium",
         "label": "Enable notifications",
-        "description": "You can change this at any time in Settings."
+        "description": "You can change this at any time in Settings"
       }
     },
     {
@@ -598,7 +598,7 @@
       "props": {
         "size": "medium",
         "label": "I accept the terms of service",
-        "description": "Check the box to continue.",
+        "description": "Check the box to continue",
         "required": true,
         "severity": "error"
       }
@@ -609,7 +609,7 @@
       "props": {
         "size": "medium",
         "label": "Two-factor authentication",
-        "description": "Managed by your organization.",
+        "description": "Managed by your organization",
         "checked": true,
         "disabled": true
       }
@@ -721,6 +721,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.1",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation). No rendering change."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-19",

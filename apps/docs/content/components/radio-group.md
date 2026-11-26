@@ -76,7 +76,7 @@ properties down to them.
 - Costs, delays and consequences go to the option's description.
 - Order options logically, and offer a neutral option (**None**, **Not sure**) when people
   may have no preference. Pre-check the most common option only when a default is safe.
-- The message of an error says what to do: **Choose a delivery method.**
+- The message of an error says what to do: **Choose a delivery method**
 
 ## Accessibility
 

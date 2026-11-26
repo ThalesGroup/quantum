@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.32.0",
+  "version": "0.33.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -78,7 +78,7 @@
     {
       "id": "message-wording",
       "name": "A message says the fix",
-      "text": "A message tells people what to do, in plain words, the same way for every control and every severity. An error is the instruction that fixes it: the control's verb (enter, choose, check) and the thing asked for, with the format or the limit that fixes it when there is one (\"Enter an email address with an @.\", \"Enter a quantity between 1 and 99.\", \"Choose a delivery method.\"), rather than a statement of what is wrong. An empty required field gets a message like any other error (\"Enter your full name.\"), never \"This field is required\": the form already said which fields are required. A warning says what to check (\"Check the domain: did you mean example.com?\") and a success what was confirmed (\"This username is available.\"). A message addresses people as you, without blame, without robotic words such as invalid, without interjections such as oops, without please and without we. Without a severity icon (severityIcon none), these words alone make the severity clear, since nothing but color says it otherwise: the fix of an error, what to check for a warning, what was confirmed for a success. This is a guideline the component cannot enforce: a project that cannot write its own messages (they come from a backend it cannot change, or they do not say their severity) adapts them itself, starting them with the severity's word and its language's colon (\"Error: …\", \"Erreur : …\" in French) unless they already start with it; the component writes no word and checks nothing (severity-icon). Not decided yet (step 11, points 3 and 4): the punctuation and the length, and how a message names its field in an error summary."
+      "text": "A message tells people what to do, in plain words, the same way for every control and every severity. An error is the instruction that fixes it: the control's verb (enter, choose, check) and the thing asked for, with the format or the limit that fixes it when there is one (\"Enter an email address with an @\", \"Enter a quantity between 1 and 99\", \"Choose a delivery method\"), rather than a statement of what is wrong. An empty required field gets a message like any other error (\"Enter your full name\"), never \"This field is required\": the form already said which fields are required. A warning says what to check (\"Check the domain: did you mean example.com?\") and a success what was confirmed (\"This username is available\"). A message addresses people as you, without blame, without robotic words such as invalid, without interjections such as oops, without please and without we. Without a severity icon (severityIcon none), these words alone make the severity clear, since nothing but color says it otherwise: the fix of an error, what to check for a warning, what was confirmed for a success. This is a guideline the component cannot enforce: a project that cannot write its own messages (they come from a backend it cannot change, or they do not say their severity) adapts them itself, starting them with the severity's word and its language's colon (\"Error: …\", \"Erreur : …\" in French) unless they already start with it; the component writes no word and checks nothing (severity-icon). A message and a description are one sentence in sentence case, a second only when the fix needs it, about one line at the field's default width and two lines at most. A single sentence ends with no period (\"Choose a country\", \"We send the receipt to this address\"); with two or more sentences, every sentence ends with its period (\"Enter at least 20 characters. You have entered 10.\"); a question keeps its question mark (\"Check the domain: did you mean example.com?\"). Assistive technology gets the description and the message as one string joined by a space (aria-describedby), so without a period the two run on when read (\"…to this address Enter an email…\"); a severity icon's name falls between them, none does with severityIcon none. Not decided yet (step 11, point 4): how a message names its field in an error summary."
     },
     {
       "id": "timing",
@@ -482,6 +482,13 @@
         ]
       },
       {
+        "text": "A message or a description is one sentence, a second only when the fix needs it, about one line at the field's default width and two lines at most. A single sentence ends with no period, two or more sentences each end with their period, and a question keeps its question mark.",
+        "refs": [
+          "material-grammar-punctuation",
+          "material-text-fields-guidelines"
+        ]
+      },
+      {
         "text": "A control is marked as in error only after its value was validated, not before people used it.",
         "refs": [
           "wcag-aria21"
@@ -870,6 +877,11 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/writing#Best-practices"
       },
       {
+        "id": "hig-alerts-content",
+        "title": "Apple HIG: Alerts, content (ending punctuation of a complete sentence)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/alerts#Content"
+      },
+      {
         "id": "hig-feedback-best-practices",
         "title": "Apple HIG: Feedback, best practices",
         "url": "https://developer.apple.com/design/human-interface-guidelines/feedback#Best-practices"
@@ -918,6 +930,11 @@
         "id": "material-menus-guidelines",
         "title": "Material Design 3: Menus, guidelines (text field dropdown menus)",
         "url": "https://m3.material.io/components/menus/guidelines"
+      },
+      {
+        "id": "material-grammar-punctuation",
+        "title": "Material 3: style guide, grammar and punctuation (skip periods)",
+        "url": "https://m3.material.io/foundations/content-design/style-guide/grammar-and-punctuation"
       },
       {
         "id": "windows-forms",
@@ -1155,9 +1172,9 @@
         "size": "medium",
         "label": "Email address",
         "value": "ada.example.com",
-        "description": "We will only use it to send your receipt.",
+        "description": "We will only use it to send your receipt",
         "severity": "error",
-        "message": "Enter an email address with an @.",
+        "message": "Enter an email address with an @",
         "required": true
       }
     },
@@ -1182,7 +1199,7 @@
         "label": "Username",
         "value": "ada.lovelace",
         "severity": "success",
-        "message": "This username is available."
+        "message": "This username is available"
       }
     },
     {
@@ -1195,7 +1212,7 @@
         "placeholder": "Choose a country",
         "required": true,
         "severity": "error",
-        "message": "Choose a country.",
+        "message": "Choose a country",
         "options": [
           {
             "label": "France",
@@ -1219,7 +1236,7 @@
         "name": "forms-delivery-error",
         "required": true,
         "severity": "error",
-        "message": "Choose a delivery method.",
+        "message": "Choose a delivery method",
         "options": [
           {
             "label": "Standard",
@@ -1239,13 +1256,30 @@
       "props": {
         "size": "medium",
         "label": "I accept the terms of service",
-        "description": "Check the box to continue.",
+        "description": "Check the box to continue",
         "required": true,
         "severity": "error"
       }
     }
   ],
   "decisions": [
+    {
+      "id": "forms-message-punctuation",
+      "date": "2026-11-26",
+      "version": "0.33.0",
+      "area": "content",
+      "status": "active",
+      "text": "A message or a description of one sentence takes no period (\"Choose a country\", \"We send the receipt to this address\"); with two or more sentences, every sentence ends with its period (\"Enter at least 20 characters. You have entered 10.\"); a question keeps its question mark (\"Check the domain: did you mean example.com?\"). Each is in sentence case, one sentence and a second only when the fix needs it, about one line at the field's default width, two lines at most. Consequence: assistive technology gets the description and the message as one string, the text of every node aria-describedby names joined by a space, so the separate ids add no pause and a one-sentence description runs into the message when read (\"…to this address Enter an email…\"); the template does not mend it: with an icon, after the control or in the message, the icon's name (\"Error\") falls between the two, with severityIcon none nothing does.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 11, point 3) among: A, a sentence with its period on every message and description (recommended); B, Material's rule, no period on a single sentence, periods on two or more, a question keeps its mark (chosen); C, never a period. The length was the same in every option. Departure from A's sources, recorded: Apple's Writing example (\"Choose a password with at least 8 characters.\") and the WAI tutorial's messages (\"Use the format MM/YYYY.\") end with a period, and Apple asks an alert's complete sentence for its ending punctuation; Material asks to avoid periods on single sentences and to use them on multiple sentences. Windows' trusted pages say nothing on it. Today's examples ended every message and description with a period.",
+      "refs": [
+        "material-grammar-punctuation",
+        "material-text-fields-guidelines",
+        "hig-writing-best-practices",
+        "hig-alerts-content",
+        "wai-forms-notifications",
+        "accname-description"
+      ]
+    },
     {
       "id": "forms-warning-success-timing",
       "date": "2026-11-26",
@@ -1765,6 +1799,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.33.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-message-punctuation (#105 step 11, point 3): the rule message-wording says a message or a description of one sentence takes no period, two or more sentences each take theirs and a question keeps its mark, in sentence case, a second sentence only when the fix needs it, about one line and two at most; a new guideline; the run-on reading under aria-describedby is recorded. Every example drops the period of its single sentence. Material's grammar and punctuation and Apple's Alerts become references. No token or rendering change."
+    },
     {
       "version": "0.32.0",
       "date": "2026-11-26",
