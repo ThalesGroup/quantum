@@ -184,6 +184,10 @@ export function checkMapping(mapping, q) {
     for (const s of Object.keys(eq.states ?? {})) if (!states.includes(s)) problems.push(`${at}: spec has no state "${s}"`);
     const parts = specParts(spec);
     for (const p of Object.keys(eq.parts ?? {})) if (!parts.includes(p)) problems.push(`${at}: spec has no anatomy part "${p}"`);
+    for (const [k, why] of Object.entries(eq.notMapped ?? {})) {
+      if (!parts.includes(k) && !(spec.properties ?? []).some((p) => p.id === k)) problems.push(`${at}: notMapped names "${k}", which is neither a part nor a property of the spec`);
+      if (!why) problems.push(`${at}: notMapped ${k} needs a reason`);
+    }
   }
   const mapped = new Set((mapping.equivalences ?? []).map((e) => e.component));
   for (const id of q.specs.keys()) if (!mapped.has(id)) problems.push(`component ${id} has no equivalence entry (add one, with bootstrap: null when Bootstrap has none)`);

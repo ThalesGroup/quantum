@@ -330,9 +330,10 @@ export function equivalenceTable(q) {
     if (!eq.bootstrap) return `| ${name} (${code(eq.component)}) | none | ${md(eq.why ?? '')} |`;
     const props = Object.entries(eq.options ?? {}).map(([p, o]) => `${p}: ${Object.entries(o).map(([k, v]) => `${k} = ${v === '' ? 'default' : v === null ? 'none' : code(v)}`).join(', ')}`);
     const combos = (eq.combinations ?? []).map((c) => `${Object.entries(c.when).map(([p, o]) => `${p} ${o}`).join(' + ')} = ${code(c.classes)}`);
-    const states = Object.entries(eq.states ?? {}).map(([k, v]) => `${k} = ${code(v)}`);
-    const parts = Object.entries(eq.parts ?? {}).map(([k, v]) => `${k} = ${code(v)}`);
-    const cells = [...props, ...combos, states.length ? `states: ${states.join(', ')}` : '', parts.length ? `parts: ${parts.join(', ')}` : '', eq.bootstrapOnly ? `Bootstrap only: ${eq.bootstrapOnly.map(code).join(', ')}` : ''].filter(Boolean);
+    const states = Object.entries(eq.states ?? {}).map(([k, v]) => `${k} = ${v === null ? 'none' : code(v)}`);
+    const parts = Object.entries(eq.parts ?? {}).map(([k, v]) => `${k} = ${v === null ? 'none' : code(v)}`);
+    const notMapped = Object.entries(eq.notMapped ?? {}).map(([k, why]) => `${code(k)} (${why})`);
+    const cells = [...props, ...combos, states.length ? `states: ${states.join(', ')}` : '', parts.length ? `parts: ${parts.join(', ')}` : '', notMapped.length ? `not mapped: ${notMapped.join(', ')}` : '', eq.bootstrapOnly ? `Bootstrap only: ${eq.bootstrapOnly.map(code).join(', ')}` : ''].filter(Boolean);
     return `| ${name} (${code(eq.component)}) | ${eq.bootstrap}${eq.base ? ` (${code(eq.base)})` : ''} | ${md(cells.join('; '))} |`;
   });
   return `| Quantum component | Bootstrap | Options, states and parts |\n| --- | --- | --- |\n${rows.join('\n')}\n\nBootstrap components with no Quantum equivalent (themed by the root tokens only): ${mapping.bootstrapOnly.join(', ')}.`;

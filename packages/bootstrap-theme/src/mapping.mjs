@@ -25,7 +25,8 @@
  * equivalences[] Quantum component (spec id) -> Bootstrap component and classes. `options` maps
  *                every option of a spec property to a class ('' = Bootstrap's default, null = no
  *                equivalent); `combinations` override a pair of options; `states` and `parts` map
- *                spec states and anatomy parts. Each id is checked against the spec.
+ *                spec states and anatomy parts. Each id is checked against the spec. `notMapped`
+ *                names a spec part or property Bootstrap has no class for, with the reason.
  */
 
 const SANS_STACK = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'";
@@ -542,6 +543,7 @@ export default {
       sass: { map: '$root-tokens', strip: '--bs-' },
       why: 'Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.',
       tokens: {
+        '--bs-label-margin-bottom': ['text-field.container.gap', 'The space between a field\'s parts, under a label set outside .form-field. Inside .form-field, Bootstrap spaces the label, control and texts with a fixed 0.5rem gap and sets this margin to 0 (README, Not themable).'],
         '--bs-label-color': 'text-field.label.color.default',
         '--bs-label-font-size': { token: 'text-field.label.typography.medium', member: 'fontSize' },
         '--bs-label-font-weight': { token: 'text-field.label.typography.medium', member: 'fontWeight' },
@@ -553,7 +555,6 @@ export default {
       sass: { map: '$form-text-tokens', strip: '--bs-' },
       why: 'A Quantum description is smaller with its field; Bootstrap has one description size, so it takes the medium one (12px).',
       tokens: {
-        '--bs-form-text-margin-top': 'text-field.container.gap',
         '--bs-form-text-font-size': { token: 'text-field.description.typography.medium', member: 'fontSize' },
         '--bs-form-text-color': 'text-field.description.color.default',
       },
@@ -955,11 +956,30 @@ export default {
       options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
       states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
       parts: { label: '.form-label', control: '.form-control', description: '.form-text', message: '.invalid-feedback' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
     },
-    { component: 'textarea', bootstrap: 'Form control', base: 'textarea.form-control', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
+    {
+      component: 'textarea', bootstrap: 'Form control', base: 'textarea.form-control',
+      options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
+      states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
+      parts: { label: '.form-label', control: '.form-control', description: '.form-text', message: '.invalid-feedback' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
+    },
     { component: 'select', bootstrap: 'Form control', base: 'select.form-control', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
-    { component: 'number-field', bootstrap: 'Form control', base: 'input[type=number].form-control', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
-    { component: 'search-field', bootstrap: 'Form adorn', base: 'label.form-control.form-adorn > .form-adorn-icon + input.form-ghost', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
+    {
+      component: 'number-field', bootstrap: 'Form control', base: 'input[type=number].form-control',
+      options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
+      states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
+      parts: { label: '.form-label', control: '.form-control', description: '.form-text', message: '.invalid-feedback' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
+    },
+    {
+      component: 'search-field', bootstrap: 'Form adorn', base: 'label.form-control.form-adorn > .form-adorn-icon + input.form-ghost',
+      options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
+      states: { disabled: ':disabled' },
+      parts: { label: '.form-label', field: 'label.form-control.form-adorn', control: 'input.form-ghost', icon: '.form-adorn-icon', description: '.form-text' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
+    },
     { component: 'progress-bar', bootstrap: 'Progress', base: '.progress > .progress-bar', options: { size: { small: null, medium: '' } }, parts: { track: '.progress', indicator: '.progress-bar' }, bootstrapOnly: ['.progress-stacked', '.progress-bar-striped'] },
     { component: 'spinner', bootstrap: 'Spinners', base: '.spinner-border', options: { size: { small: '.spinner-sm', medium: '', large: null } }, bootstrapOnly: ['.spinner-grow'] },
     { component: 'pagination', bootstrap: 'Pagination', base: '.pagination', options: { size: { small: '.pagination-sm', medium: '' } }, states: { current: '.active', disabled: '.disabled' }, bootstrapOnly: ['.pagination-lg'] },

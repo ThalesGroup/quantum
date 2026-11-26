@@ -575,6 +575,7 @@ Labels (.form-label), on root; Sass `$root-tokens`. Bootstrap reads these with f
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
+| `--bs-label-margin-bottom` | `text-field.container.gap` | `0.375rem` | The space between a field's parts, under a label set outside .form-field. Inside .form-field, Bootstrap spaces the label, control and texts with a fixed 0.5rem gap and sets this margin to 0 (README, Not themable). |
 | `--bs-label-color` | `text-field.label.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-label-font-size` | `text-field.label.typography.medium` (fontSize) | `1rem` |  |
 | `--bs-label-font-weight` | `text-field.label.typography.medium` (fontWeight) | `500` |  |
@@ -583,7 +584,6 @@ Description (.form-text), on `.form-text`; Sass `$form-text-tokens`. A Quantum d
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-form-text-margin-top` | `text-field.container.gap` | `0.375rem` |  |
 | `--bs-form-text-font-size` | `text-field.description.typography.medium` (fontSize) | `0.75rem` |  |
 | `--bs-form-text-color` | `text-field.description.color.default` | `#313131` / `#B8B8B8` |  |
 
@@ -936,11 +936,11 @@ Error (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writte
 | Radio group (`radio-group`) | Radios (`fieldset.form-group of input.radio`) | orientation: vertical = default, horizontal = none; size: small = `.radio-sm`, medium = default; states: checked = `:checked`, error = `.is-invalid`, disabled = `:disabled` |
 | Switch (`switch`) | Switch (`.switch`) | size: small = `.switch-sm`, medium = default; states: checked = `:has(input:checked)`, disabled = `:has(input:disabled)` |
 | Slider (`slider`) | Range (`.form-range > .form-range-input`) | size: small = none, medium = default; states: disabled = `:disabled` |
-| Text field (`text-field`) | Form control (`input.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg`; states: error = `.is-invalid`, warning = `null`, success = `.is-valid`, readonly = `[readonly]`, disabled = `:disabled`; parts: label = `.form-label`, control = `.form-control`, description = `.form-text`, message = `.invalid-feedback` |
-| Textarea (`textarea`) | Form control (`textarea.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg` |
+| Text field (`text-field`) | Form control (`input.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg`; states: error = `.is-invalid`, warning = none, success = `.is-valid`, readonly = `[readonly]`, disabled = `:disabled`; parts: label = `.form-label`, control = `.form-control`, description = `.form-text`, message = `.invalid-feedback`; not mapped: `mark` (The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.), `asterisk` (Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.), `severity-icon` (.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.), `severityIcon` (Where the severity icon sits is markup: Bootstrap draws none.), `markedFields` (Which fields carry a mark is the form's markup: Bootstrap has no setting for it.) |
+| Textarea (`textarea`) | Form control (`textarea.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg`; states: error = `.is-invalid`, warning = none, success = `.is-valid`, readonly = `[readonly]`, disabled = `:disabled`; parts: label = `.form-label`, control = `.form-control`, description = `.form-text`, message = `.invalid-feedback`; not mapped: `mark` (The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.), `asterisk` (Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.), `severity-icon` (.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.), `severityIcon` (Where the severity icon sits is markup: Bootstrap draws none.), `markedFields` (Which fields carry a mark is the form's markup: Bootstrap has no setting for it.) |
 | Select (`select`) | Form control (`select.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg` |
-| Number field (`number-field`) | Form control (`input[type=number].form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg` |
-| Search field (`search-field`) | Form adorn (`label.form-control.form-adorn > .form-adorn-icon + input.form-ghost`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg` |
+| Number field (`number-field`) | Form control (`input[type=number].form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg`; states: error = `.is-invalid`, warning = none, success = `.is-valid`, readonly = `[readonly]`, disabled = `:disabled`; parts: label = `.form-label`, control = `.form-control`, description = `.form-text`, message = `.invalid-feedback`; not mapped: `mark` (The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.), `asterisk` (Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.), `severity-icon` (.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.), `severityIcon` (Where the severity icon sits is markup: Bootstrap draws none.), `markedFields` (Which fields carry a mark is the form's markup: Bootstrap has no setting for it.) |
+| Search field (`search-field`) | Form adorn (`label.form-control.form-adorn > .form-adorn-icon + input.form-ghost`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg`; states: disabled = `:disabled`; parts: label = `.form-label`, field = `label.form-control.form-adorn`, control = `input.form-ghost`, icon = `.form-adorn-icon`, description = `.form-text`; not mapped: `mark` (The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.), `asterisk` (Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.), `markedFields` (Which fields carry a mark is the form's markup: Bootstrap has no setting for it.) |
 | Progress bar (`progress-bar`) | Progress (`.progress > .progress-bar`) | size: small = none, medium = default; parts: track = `.progress`, indicator = `.progress-bar`; Bootstrap only: `.progress-stacked`, `.progress-bar-striped` |
 | Spinner (`spinner`) | Spinners (`.spinner-border`) | size: small = `.spinner-sm`, medium = default, large = none; Bootstrap only: `.spinner-grow` |
 | Pagination (`pagination`) | Pagination (`.pagination`) | size: small = `.pagination-sm`, medium = default; states: current = `.active`, disabled = `.disabled`; Bootstrap only: `.pagination-lg` |
@@ -985,10 +985,16 @@ them, and the theme restyles nothing directly.
 - **Checkbox and radio shape.** Bootstrap draws them with a `1px` border and a `33%` (checkbox)
   radius written in the rule itself (it declares `--check-border-radius` but does not read it):
   Quantum's `stroke-width.md` border and `checkbox.control.border-radius.*` are not applied.
-- **Field states.** Hover and read-only backgrounds (`text-field.control.background.hover`,
-  `.readonly`, the controls' `background.hover`): Bootstrap has no hover or read-only token. The
-  message (`.invalid-feedback`, `.valid-feedback`) reads `--bs-danger-fg` or `--bs-success-fg`
-  (Quantum's on-subtle text), not `text-field.message.color.error` and `.success` (on-base text).
+- **Hover fill.** A Quantum field takes the level's hover fill under the pointer
+  (`text-field.control.background.hover`, and the other controls' `background.hover`): Bootstrap
+  has no hover rule or variable on `.form-control`.
+- **Read-only fill.** A read-only Quantum field sits on level 1 (`text-field.control.background.readonly`):
+  Bootstrap styles `[readonly]` only on file and color inputs, so a read-only `.form-control` keeps
+  the resting fill.
+- **Message color.** The message (`.invalid-feedback`, `.valid-feedback`) reads `--bs-danger-fg` or
+  `--bs-success-fg`, the theme's on-subtle text (`#940E11` / `#FAA79D` for an error), where Quantum
+  writes it in the on-base severity text (`text-field.message.color.error`, `#C01619` / `#F88275`,
+  and `.success`).
 - **Warning severity.** Quantum's fields can show a warning (`severity`); Bootstrap has no
   `.is-warning` state, only `.is-valid` and `.is-invalid`. Bootstrap builds more validation states
   from its Sass `$validation-states` map, which the CSS-variable theme does not reach, so the
@@ -1003,12 +1009,23 @@ them, and the theme restyles nothing directly.
   form rows with spacing utilities in the markup (`.mb-3`) and builds a horizontal form's label
   column from grid classes in the markup, with no custom property or Sass setting for these gaps,
   so the four gap tokens are not mapped.
-- **Label and help text sizes.** A Quantum label scales with its field (14, 16 and 16px) and the
-  description and the message are smaller (12, 12 and 14px). Bootstrap has one label size
-  and one description size on every field, so the theme sets the medium ones
-  (`text-field.label.typography.medium`, `text-field.description.typography.medium`);
-  `.col-form-label-sm` and `.col-form-label-lg` keep Bootstrap's own sizes, and so does the
-  message (`.invalid-feedback`, `.valid-feedback`).
+- **Label and help text sizes.** A Quantum label and message scale with their field (14, 16 and
+  16px, the message in medium weight) and the description is smaller (12, 12 and 14px, regular).
+  Bootstrap has one label size and one description size on every field, so the theme sets the
+  medium ones, the size of a field without a size (`text-field.label.typography.medium`,
+  `text-field.description.typography.medium`); `.col-form-label-sm` and `.col-form-label-lg` keep
+  Bootstrap's own sizes. The message keeps Bootstrap's `--bs-font-size-sm` (14px) in regular weight.
+- **Label line height.** `.form-label` reads no line-height variable and inherits the body's 1.5
+  (24px at 16px), where a Quantum label sits on a 1.2 line (`text-field.label.typography.*`).
+- **Spacing between parts.** Quantum spaces the label, control, description and message 6px apart
+  (`text-field.container.gap`). Inside `.form-field`, Bootstrap spaces them with a fixed `gap: 0.5rem`
+  (8px) and no variable; `--bs-form-text-margin-top` is declared but read by no rule. The theme sets
+  `--bs-label-margin-bottom`, so only a label outside `.form-field` gets the 6px.
+- **Severity icon.** A Quantum message can open with its severity icon, or the icon can sit after
+  the control (`severityIcon`, `text-field.severity-icon.*`): `.invalid-feedback` and
+  `.valid-feedback` draw no icon, so it is markup inside the message.
+- **The optional or required mark.** Words after the label (`text-field.mark.*`), set by the form
+  (`markedFields`): Bootstrap has no class for them, so they are markup in the `.form-label`.
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
   button sizes: the same heights (28px, 44px) as Quantum's small and large fields, but the
   button label's line height and padding, not the field's.

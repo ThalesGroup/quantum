@@ -54,6 +54,7 @@ test('checkMapping reports unknown tokens, raw tokens, spec options and missing 
   button.options.size.huge = '.btn-xl';
   delete button.options.emphasis.ghost;
   button.states.pressed = ':active';
+  m.equivalences.find((e) => e.component === 'textarea').notMapped.icon = 'the Textarea has no icon part';
   m.equivalences = m.equivalences.filter((e) => e.component !== 'spinner');
   const problems = checkMapping(m, q).join('\n');
   assert.match(problems, /unknown Quantum token "global\.bg\.accent\.brand\.nope"/);
@@ -63,6 +64,7 @@ test('checkMapping reports unknown tokens, raw tokens, spec options and missing 
   assert.match(problems, /property size has no option "huge"/);
   assert.match(problems, /option emphasis=ghost is not mapped/);
   assert.match(problems, /spec has no state "pressed"/);
+  assert.match(problems, /equivalence textarea: notMapped names "icon", which is neither a part nor a property/);
   assert.match(problems, /component spinner has no equivalence entry/);
 });
 
