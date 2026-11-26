@@ -298,9 +298,7 @@ not the fill, identifies the control.
 area where people type: browsers add their own elements there (autofill, password managers,
 reveal and clear buttons, spinners, pickers). It goes **after the control**, which then gives up
 the icon and its gap, **at the start of the message**, the control keeping its full width, or
-**nowhere**, and then the component starts the message with the severity's word (**Error: …**),
-as the WAI tutorial shows it
-([WAI forms tutorial: user notification](https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit)).
+**nowhere**, and then the message's own words say the severity (see "Writing messages").
 The placement is a rule of
 the form: every control that can show a severity carries the same property, `severityIcon`
 (`after-control`, `message`, `none`; `message` by default), and a form sets it once, to the same
@@ -495,12 +493,17 @@ of the on-screen keyboard's return key, because only the form knows which field 
   before the fix doubles the length and wraps most messages to a second line, which pushes the
   next field down; the value usually shows the problem already.
 
-- **No severity word in the text.** The author writes only the fix. When the form shows no
-  icon, the component starts the message with the severity's word, the icon's name in the form's
-  language followed by that language's colon (**Error: Enter an email address with an @**,
-  **Erreur : …** in French), in the message's color and weight. When an icon shows, its name says
-  the severity, so a typed **Warning:** next to it would be said twice, on screen and to a screen
-  reader. A form can then change where its icons go without rewriting a message.
+- **Without an icon, the words say the severity.** When the form shows no icon, nothing but
+  color tells an error from a warning or a success, so the message's own words do: the fix of an
+  error, what to check for a warning, what was confirmed for a success. When an icon shows, its
+  name says the severity, so a message does not start with **Warning:** next to it, which would
+  be said twice, on screen and to a screen reader. This is a guideline: the component writes no
+  severity word and checks nothing, since it cannot know where a message comes from. A project
+  that cannot write its own messages, because they come from a backend it cannot change or do
+  not say their severity, adapts them: it starts them with the severity's word and its
+  language's colon, **Error: …**, **Erreur : …** in French, as the WAI tutorial shows it
+  ([WAI forms tutorial: user notification](https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit)),
+  unless they already start with it.
 
 > **Not decided yet (step 11).** Whether messages end with a period and how long they may be,
 > and how a message names its field in an error summary.
