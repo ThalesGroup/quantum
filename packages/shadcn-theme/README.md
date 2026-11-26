@@ -184,6 +184,13 @@ them out rather than restyle the components:
   color (`global.border.base.neutral.4`) is darker than the card edge `--border` takes. The
   progress track is `--primary` at 20 % instead of `global.bg.base.neutral.3`; the skeleton is
   `--accent` instead of `global.bg.state.skeleton.default`.
+- **The outline Button's border in light.** shadcn's `outline` Button (also the Dropdown, Dialog and
+  Tooltip triggers of the demo) draws its light border with `--border`, the card edge (`#D5D5D5`),
+  1.37 to 1.44:1 against the light surface levels; in dark it reads `--input`. It is left as is:
+  its text label identifies the button, and WCAG 1.4.11 "does not require that controls have a
+  visual boundary" when visible content identifies them ([Understanding 1.4.11,
+  Boundaries](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).
+  Darkening `--border` would darken every card, popover and table edge with it.
 - **One error color.** shadcn paints error text, the `aria-invalid` border and the destructive fill
   with `--destructive`, which takes the error text role (`global.text.on-base.functional.error.default`).
   The light destructive Button and Badge fill is therefore `#C01619`, one step darker than Quantum's
