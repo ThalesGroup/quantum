@@ -46,7 +46,14 @@ directory touched.
   2.5.8, contrast 1.4.3 / 1.4.11, focus 2.4.7…) is shown with its criterion and the source you
   opened, and a compliant option is recommended.
 - **One question at a time**, with its context, a review sheet when rendering is involved, and a
-  recommendation. Nothing is applied before the answer.
+  recommendation. Nothing is applied before the answer. A step with several independent parts
+  becomes points (`1`, `2`, `2b`…), each asked, applied and committed alone.
+- **Native first on the web.** Prefer a script-free HTML and CSS answer when it gives the same
+  result (`:placeholder-shown`, a grid, an attribute), and show the no-script option on the sheet
+  whenever one exists.
+- **Form-wide questions** (validation states, required marks, the message) are decided once for
+  every component of the kind in the foundation's own pull request; the refinement stacks on it
+  and applies each decision as a step.
 
 ## 1. Set up (first session)
 
@@ -115,9 +122,12 @@ platform and in every mode.
   its sources, the platform sub-headings; the docs blueprint still telling the component apart.
 - **Figma blueprint** (`packages/figma/src/blueprints/<id>.mjs`): exists (create it from the CSS
   and template when missing, `packages/figma/AGENTS.md`), every slot bound or listed in
-  `notDrawn`, open design tool issues touching it (`gh issue list --label figma`).
+  `notDrawn` (a `notDrawn` slot exports no Figma variable and no Penpot token), open design tool
+  issues touching it (`gh issue list --label figma`).
 - **Framework themes** (`packages/*-theme/src/mapping.mjs`): the equivalence or the reason for
-  none, and whether a decision of the run gives the framework something to map.
+  none, and whether a decision of the run gives the framework something to map. What the
+  framework's own theming API cannot carry goes to the theme README's "Not themable" list, with
+  the measured gap, never to a restyled component.
 - **Screens** rendering the component (`pnpm impact --files <its files>` lists them).
 
 ## 3. Each step
@@ -163,7 +173,8 @@ platform and in every mode.
    component's decision in that issue instead, and say in the pull request why none was opened.
 3. `pnpm figma:export <id>` and `pnpm penpot:export <id>` build: they give the Figma designer the
    result, bound to variables named after the token paths of the issue (`agents/token-sources.md`
-   "Drawing a component in Figma"). Rebuild the themes and look at their demos in light and dark
+   "Drawing a component in Figma"). A check in the real tool that the team defers goes into the
+   closing issue as a checklist, so it is run later. Rebuild the themes and look at their demos in light and dark
    (`pnpm themes:demo`). In a worktree, serve the worktree's demos instead
    (`pnpm --dir apps/theme-demos exec vite --port 4501 --open false`): `pnpm themes:demo` and the
    `theme-demos` launch configuration of the preview tools serve the main checkout's.
@@ -174,6 +185,20 @@ platform and in every mode.
 ## Lessons learned
 
 Newest first. Each entry: date, component, what was off, what changed in the process.
+
+- **2026-11-26, Text field, step 25.** Steps holding several questions were split into points
+  as they came (12, 13, 15, 16, 19, 20, 23, 24): the ground rules now plan it. Steps 12 to 16
+  concerned every field and waited on the Forms foundation's pull request, on which this one was
+  stacked: the ground rules now send form-wide questions there first. The team took the
+  script-free web answer each time one existed (the leading icon's color through
+  `:placeholder-shown`, the severity icon placed by a grid, no wrapper): a ground rule now. The
+  asterisk's variables were exported to Figma and Penpot though no layer drew them (step 23):
+  the blueprint item says a `notDrawn` slot exports nothing. The first reading of the clipped
+  accents (step 3c) used the fallback font, before the web font's Vietnamese subset loaded,
+  which hid the clip: measure with the page's real fonts loaded, in Chromium and WebKit. Theme
+  decisions the framework's API cannot carry went to each README's "Not themable" list (step
+  24): the themes item says so. The check in real Figma and Penpot was deferred by the team: §4
+  now carries such a check into the closing issue.
 
 - **2026-11-12, Icon button, step 11.** Four things. The branch was one commit behind its base
   at close, and `pnpm impact` listed another pull request's semantic tokens as changed until
