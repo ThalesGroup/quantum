@@ -118,10 +118,13 @@ Without ids it draws every component; with ids, those and the components their i
   instead of naming it twice or contradicting it (`Severity=error, State=warning`). A blueprint
   takes an enum out of the axes with `fixed` (`fixed: { markedFields: 'optional' }`: every variant
   draws that option, and a state it sets stays in State), and sets a value computed from a token
-  without a variable with `derive` (`['mark.typography', 0.25]`: a quarter of its font size). The default
+  without a variable with `derive` (`['mark.typography', 0.25]`: a quarter of its font size;
+  `['message.typography', 1, 'line']`: one line, font size x line height). The default
   variant is the top-left one. Text properties carry the texts and icon glyphs (ligatures of the
   icon font, as on the web), BOOLEAN properties show the optional parts, focus rings are frames
-  outside the border in `focus-visible` only, and a part that is another component (the
+  outside the border in `focus-visible`, or, for a part without an `outline-offset` slot (the
+  text-entry controls), flush over the border, in focus and in every severity state too (the
+  severity's color and width, the focus width when focused, none when disabled), and a part that is another component (the
   dropdown's trigger) is an instance of it. A component set that already exists is kept as it
   is: delete it to draw it again, so that no instance loses its main component unnoticed.
 - **What Figma cannot hold** is set without a variable or left out, and listed in each
@@ -169,7 +172,8 @@ component; with ids, those and the components their copies use.
   component with variants whose properties are the Figma variant properties. Penpot components have
   no text or boolean properties: a copy overrides its texts and icon glyphs directly, and an
   optional part is shown or hidden as the boolean's default says, which a copy changes. Focus rings
-  are rectangles outside the border in `focus-visible` only, and a part that is another component
+  are rectangles drawn as in Figma: outside the border in `focus-visible`, or flush over the border
+  of a text-entry control, in focus and in every severity state too, and a part that is another component
   (the dropdown's trigger) is a copy of it. A component that already exists is kept as it is.
 - **What Penpot cannot hold** is set to the token's value, and `dist/plan.json` lists it per
   component (`unbound`, with the tokens, and `approximations`): an icon's font size (its size is a
