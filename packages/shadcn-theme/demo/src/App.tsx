@@ -485,7 +485,7 @@ function Forms() {
           <Field data-invalid>
             <FieldLabel htmlFor="email">Email</FieldLabel>
             <Input id="email" type="email" defaultValue="ada@" aria-invalid />
-            <FieldError>Enter a complete email address.</FieldError>
+            <FieldError>Include an @, as in name@example.com</FieldError>
           </Field>
           <Field data-disabled>
             <FieldLabel htmlFor="disabled">Disabled</FieldLabel>
@@ -514,7 +514,7 @@ function Forms() {
           <Field data-invalid>
             <FieldLabel htmlFor="message-invalid">Message (invalid)</FieldLabel>
             <Textarea id="message-invalid" aria-invalid defaultValue="Too short" />
-            <FieldError>Write at least 20 characters.</FieldError>
+            <FieldError>Enter at least 20 characters</FieldError>
           </Field>
         </FieldGroup>
         <FieldGroup>
