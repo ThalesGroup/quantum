@@ -255,7 +255,8 @@ A form control can show one of three **severities**, none by default:
 
 - **Error:** the value is not accepted, and the message says how to fix it.
 - **Warning:** the value is accepted but deserves attention, and the message says what to check.
-- **Success:** the value was checked and confirmed, and the message says what was confirmed.
+- **Success:** the value was checked and confirmed, by a check people cannot make themselves,
+  and the message says what was confirmed (see "When a value is checked").
 
 The word is **error**, not invalid. Every platform's guidance speaks of errors: WCAG calls the
 criterion Error Identification
@@ -357,8 +358,25 @@ This is the experience the system recommends, not an obligation: some use cases 
 another timing, and still never mark a control as in error before people used it
 ([ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
 
-> **Not decided yet (step 7).** When a warning or a success shows, and whether the submit action
-> stays available while required fields are empty.
+**A warning** follows the error's timing: it shows when people leave a field they changed, or on
+submit, and clears as they type. No source gives a warning a timing of its own; it follows the
+error because its value is checked the same way, and since the value is accepted, a warning never
+blocks the submit.
+
+**A success** shows only for a check people cannot make themselves, such as an available user
+name or a verified code, when that check runs: the WAI tutorial confirms a user name as people
+type it ([WAI: binary messages](https://www.w3.org/WAI/tutorials/forms/notifications/#binary-messages)).
+A field whose value merely passes its checks, a name filled in or an email address well formed,
+shows no success: people only need to know when something is wrong, and a mark on every field
+would add noise to each one. The WAI tutorial's in-line example marks every valid field after a
+submit ([WAI: in-line feedback](https://www.w3.org/WAI/tutorials/forms/notifications/#inline));
+the system keeps that for the checks people could not make. A success or a warning that appears
+without moving focus is a status message
+([Understanding 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html#intent));
+how it is announced is step 8.
+
+> **Not decided yet (step 7).** Whether the submit action stays available while required fields
+> are empty.
 
 ### Web
 
@@ -367,7 +385,9 @@ submit the form ([HTML: user validity](https://html.spec.whatwg.org/multipage/in
 and [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) then
 follows the value as people type, both ways. Styled with `:user-invalid` alone, a field that was
 checked shows an error again at the first keystroke of an edit; to follow the default, the
-product keeps a cleared error hidden until people leave the field.
+product keeps a cleared error hidden until people leave the field. A warning and a success have
+no web state (see "Severities"), so the browser never shows them: the product sets `severity`
+itself, at the same moments.
 
 ### iOS
 
@@ -377,13 +397,17 @@ another field, a user name or a password before they leave it
 It gives feedback as soon as it detects a problem, so people can correct it right away
 ([HIG: Entering data](https://developer.apple.com/design/human-interface-guidelines/entering-data#Best-practices)):
 the default checks a field when people leave it and clears its error as soon as it is fixed.
+Apple confirms that a task has completed only when it is significant, since people only need to know
+when it does not ([HIG: Feedback](https://developer.apple.com/design/human-interface-guidelines/feedback#Best-practices)):
+a field confirms only a check people cannot make themselves.
 
 ### Android
 
 A field can be checked as people move on from it, in the action of the keyboard's Next key,
 which keeps moving focus to the next field
 ([Compose: keyboard interaction logic](https://developer.android.com/develop/ui/compose/text/user-input#define-logic)).
-Material's text field guidelines say nothing about when a value is checked.
+Material's text field guidelines say nothing about when a value is checked, nor about a warning
+or a success; the default applies.
 
 ### Desktop
 
@@ -393,6 +417,7 @@ a password box is validated as people type or once they finish
 ([Password box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/password-box#create-a-password-box)),
 and a submitted form marks the controls whose input is invalid
 ([Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)).
+Windows says nothing about when a warning or a success shows; the default applies.
 
 ## How errors are announced
 

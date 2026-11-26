@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.31.0",
+  "version": "0.32.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -53,7 +53,7 @@
     {
       "id": "statuses",
       "name": "Severities",
-      "text": "A form control can show one of three severities, none by default: an error says the value is not accepted and how to fix it, a warning says the value is accepted but deserves attention, a success says the value was checked and confirmed. The word is \"error\", not \"invalid\": every platform's guidance speaks of errors (WCAG 3.3.1 Error Identification, the Compose error semantics, Material's error text), while invalid is the web's technical term. There is no information severity: information that holds before any check is the description's job, and no source gives a field an information status. The property is severity, and one message carries every severity. The Checkbox, the Checkbox group and the Radio group have only the error severity: a choice has nothing to confirm or to warn about (our judgment, not a source's). On the web, the error is aria-invalid=\"true\" (and :user-invalid when the browser validates); a warning and a success have no web state, since aria-invalid has no value for them: they are the message text and the styling. The control's border takes the severity's accent functional border color and the message its functional text color. Since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1) the accent borders reach the 3:1 of WCAG 1.4.11 on every surface level; on the subtle warning fill the light warning border was 2.95:1 until the Color foundation set it to the warning text's step, warning 600 (decision border-accent-warning-600): 5.86:1."
+      "text": "A form control can show one of three severities, none by default: an error says the value is not accepted and how to fix it, a warning says the value is accepted but deserves attention, a success says the value was checked and confirmed, by a check people cannot make themselves (rule timing). The word is \"error\", not \"invalid\": every platform's guidance speaks of errors (WCAG 3.3.1 Error Identification, the Compose error semantics, Material's error text), while invalid is the web's technical term. There is no information severity: information that holds before any check is the description's job, and no source gives a field an information status. The property is severity, and one message carries every severity. The Checkbox, the Checkbox group and the Radio group have only the error severity: a choice has nothing to confirm or to warn about (our judgment, not a source's). On the web, the error is aria-invalid=\"true\" (and :user-invalid when the browser validates); a warning and a success have no web state, since aria-invalid has no value for them: they are the message text and the styling. The control's border takes the severity's accent functional border color and the message its functional text color. Since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1) the accent borders reach the 3:1 of WCAG 1.4.11 on every surface level; on the subtle warning fill the light warning border was 2.95:1 until the Color foundation set it to the warning text's step, warning 600 (decision border-accent-warning-600): 5.86:1."
     },
     {
       "id": "severity-fill",
@@ -83,7 +83,7 @@
     {
       "id": "timing",
       "name": "When a value is checked",
-      "text": "By default, as the recommended experience: a field shows an error when people leave it after changing it, and every field is checked when people submit the form, so a required field people skipped shows its error only then; a field never shows a new error while people are typing in it, and an error clears as people type, as soon as the value is right; a new error then waits until they leave the field again. A choice (a checkbox, a radio, an option in a list) is checked when people make it, since choosing commits the value. A check people try values against, such as an available user name or password rules, may run as they type. Some use cases cannot follow the default (a check only the server can make, a value checked as it is entered by its nature); they choose another timing, and still never mark a control as in error before people used it or before validation ran. Not decided yet: when a warning or a success shows, and whether the submit action stays available while required fields are empty."
+      "text": "By default, as the recommended experience: a field shows an error when people leave it after changing it, and every field is checked when people submit the form, so a required field people skipped shows its error only then; a field never shows a new error while people are typing in it, and an error clears as people type, as soon as the value is right; a new error then waits until they leave the field again. A choice (a checkbox, a radio, an option in a list) is checked when people make it, since choosing commits the value. A check people try values against, such as an available user name or password rules, may run as they type. Some use cases cannot follow the default (a check only the server can make, a value checked as it is entered by its nature); they choose another timing, and still never mark a control as in error before people used it or before validation ran. A warning follows the error's timing, since its value is checked the same way: it shows when people leave a field they changed, or on submit, and clears as they type; the value being accepted, a warning never blocks the submit. A success shows only for a check people cannot make themselves, such as an available user name or a verified code, when that check runs; a field whose value merely passes its checks shows no success. Not decided yet: whether the submit action stays available while required fields are empty."
     },
     {
       "id": "announcement",
@@ -537,6 +537,27 @@
           "windows-number-box-validation",
           "windows-password-box",
           "windows-forms-submitting"
+        ]
+      },
+      {
+        "text": "A warning shows and clears when an error would, when people leave a field they changed or submit the form, since its value is checked the same way; no source gives a warning a timing of its own, and the value being accepted, it never blocks the submit. A success shows only for a check people cannot make themselves, such as an available user name, when that check runs; a field whose value merely passes gets no success, since people only need to know when something is wrong.",
+        "refs": [
+          "wai-forms-inline",
+          "wai-forms-binary-messages",
+          "wai-forms-after-submit",
+          "hig-feedback-best-practices",
+          "wcag:4.1.3",
+          "wcag-understanding-status-messages"
+        ]
+      },
+      {
+        "platforms": [
+          "ios",
+          "desktop"
+        ],
+        "text": "Apple confirms that a task has completed only when it is significant enough, since people only need to know when it does not: a field confirms only a check people cannot make themselves, and shows no success when its value merely passes.",
+        "refs": [
+          "hig-feedback-best-practices"
         ]
       },
       {
@@ -1069,6 +1090,21 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/#on-focus-change"
       },
       {
+        "id": "wai-forms-inline",
+        "title": "WAI Forms tutorial: user notification, in-line feedback",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/#inline"
+      },
+      {
+        "id": "wai-forms-binary-messages",
+        "title": "WAI Forms tutorial: user notification, binary messages during typing",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/#binary-messages"
+      },
+      {
+        "id": "wcag-understanding-status-messages",
+        "title": "Understanding WCAG 2.2: 4.1.3 Status Messages, intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html#intent"
+      },
+      {
         "id": "html-user-validity-commit",
         "title": "HTML: common input element events (user validity when the user commits a change)",
         "url": "https://html.spec.whatwg.org/multipage/input.html#common-input-element-events"
@@ -1210,6 +1246,23 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-warning-success-timing",
+      "date": "2026-11-26",
+      "version": "0.32.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A warning follows the error's timing (forms-validation-timing): it shows when people leave a field they changed, or on submit, and clears as they type; since the value is accepted, it never blocks the submit. A success shows only for a check people cannot make themselves, such as an available user name or a verified code, when that check runs; a field whose value merely passes gets no success.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 7, point 2), B, among: A, a warning like an error and a success on every field that passes (the WAI tutorial's in-line example after submit marks each valid field); B; C, no success in a field; D, a warning on submit only. No trusted source gives a warning a timing: it follows the error because it is checked the same way. The WAI tutorial confirms an available user name as people type (binary messages); Apple confirms only significant tasks, since people only need to know when something is wrong; Understanding 4.1.3 counts the result of an action, a success, and a warning among status messages. Android, Windows and Material say nothing on either.",
+      "refs": [
+        "wai-forms-inline",
+        "wai-forms-binary-messages",
+        "wai-forms-after-submit",
+        "hig-feedback-best-practices",
+        "wcag-understanding-status-messages",
+        "wcag:4.1.3"
+      ]
+    },
     {
       "id": "forms-severity-word-guideline",
       "date": "2026-11-26",
@@ -1712,6 +1765,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.32.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-warning-success-timing (#105 step 7, point 2): the rule timing says a warning follows the error's timing and never blocks the submit, and a success shows only for a check people cannot make themselves, when it runs; the rule statuses points to it; two guidelines (every platform, Apple). The Forms examples already fit (a likely typo, an available username). No token or rendering change."
+    },
     {
       "version": "0.31.0",
       "date": "2026-11-26",
