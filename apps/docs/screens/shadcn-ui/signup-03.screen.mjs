@@ -19,7 +19,7 @@ export function render() {
       nameField('signup-03-name'),
       emailField('signup-03-email'),
       columns(
-        passwordField('signup-03-password', { autocomplete: 'new-password', description: 'Must be at least 8 characters long.' }),
+        passwordField('signup-03-password', { autocomplete: 'new-password', description: 'Must be at least 8 characters long' }),
         passwordField('signup-03-confirm-password', { label: 'Confirm Password', autocomplete: 'new-password' }),
       ),
       submit('Create Account'),

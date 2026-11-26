@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.28.1",
+  "version": "0.28.2",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -1456,7 +1456,7 @@
         "size": "medium",
         "label": "Email address",
         "placeholder": "name@example.com",
-        "description": "We will only use it to send your receipt.",
+        "description": "We will only use it to send your receipt",
         "required": true
       }
     },
@@ -1507,9 +1507,9 @@
         "size": "medium",
         "label": "Email address",
         "value": "ada.example.com",
-        "description": "We send the receipt to this address.",
+        "description": "We send the receipt to this address",
         "severity": "error",
-        "message": "Enter an email address with an @.",
+        "message": "Enter an email address with an @",
         "required": true
       }
     },
@@ -1534,7 +1534,7 @@
         "label": "Username",
         "value": "ada.lovelace",
         "severity": "success",
-        "message": "This username is available."
+        "message": "This username is available"
       }
     },
     {
@@ -1544,7 +1544,7 @@
         "size": "medium",
         "label": "Workspace identifier",
         "value": "ws_8f3a2c",
-        "description": "Read-only: generated when the workspace was created.",
+        "description": "Read-only: generated when the workspace was created",
         "readonly": true
       }
     },
@@ -2287,6 +2287,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.2",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation, #105 step 11 point 3); a question keeps its mark. No rendering change."
+    },
     {
       "version": "0.28.1",
       "date": "2026-11-26",

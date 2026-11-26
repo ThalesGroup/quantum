@@ -135,7 +135,7 @@ the severity and then the message.
   no trailing punctuation.
 - The description gives the format or an example when it is not obvious.
 - The placeholder, when any, is a short example of a valid value (**name@example.com**).
-- The message of an error is the instruction that fixes it: **Enter an email address with an @.** A warning says what to check (**Check the domain: did you mean example.com?**) and a success what was confirmed (**This username is available.**). With an icon, the message does not start with the severity's word, which the icon's name already says; without one, its words alone make the severity clear ([Forms foundation](/foundations/forms/guidelines)).
+- The message of an error is the instruction that fixes it: **Enter an email address with an @** A warning says what to check (**Check the domain: did you mean example.com?**) and a success what was confirmed (**This username is available**). With an icon, the message does not start with the severity's word, which the icon's name already says; without one, its words alone make the severity clear ([Forms foundation](/foundations/forms/guidelines)).
 
 ## Accessibility
 

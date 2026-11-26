@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.26.5",
+  "version": "0.26.6",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -1326,7 +1326,7 @@
         "size": "medium",
         "label": "Description",
         "placeholder": "What is this project about?",
-        "description": "Up to 500 characters.",
+        "description": "Up to 500 characters",
         "rows": 4
       }
     },
@@ -1358,9 +1358,9 @@
         "label": "Message",
         "value": "Hi",
         "rows": 3,
-        "description": "Up to 500 characters.",
+        "description": "Up to 500 characters",
         "severity": "error",
-        "message": "Enter a message of at least 20 characters.",
+        "message": "Enter a message of at least 20 characters",
         "required": true
       }
     },
@@ -1372,7 +1372,7 @@
         "label": "Public key",
         "rows": 3,
         "value": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGx0…",
-        "description": "Read-only: the key is generated when the account is created.",
+        "description": "Read-only: the key is generated when the account is created",
         "readonly": true
       }
     },
@@ -2048,6 +2048,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.26.6",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation, #105 step 11 point 3); a question keeps its mark. No rendering change."
+    },
     {
       "version": "0.26.5",
       "date": "2026-11-26",

@@ -19,7 +19,7 @@ export function render() {
         requiredNote(),
         emailField('signup-04-email', { description: "We'll use this to contact you. We will not share your email with anyone else." }),
         columns(
-          passwordField('signup-04-password', { autocomplete: 'new-password', description: 'Must be at least 8 characters long.' }),
+          passwordField('signup-04-password', { autocomplete: 'new-password', description: 'Must be at least 8 characters long' }),
           passwordField('signup-04-confirm-password', { label: 'Confirm Password', autocomplete: 'new-password' }),
         ),
         submit('Create Account'),
