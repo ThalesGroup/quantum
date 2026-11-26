@@ -9,7 +9,7 @@
  * padding-inline-start. Here the glyph sits in `icon-inset`, a frame positioned absolutely at the
  * field's start edge and vertically centered, whose left padding is icon.margin-inline.
  */
-import { CONTENT, TRANSITION, ICON_AXES, ASTERISK, container, content, description, field, labelRow } from './text-field.mjs';
+import { CONTENT, TRANSITION, LINE_FLOOR, ICON_AXES, ASTERISK, container, content, description, field, labelRow } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
@@ -24,5 +24,6 @@ export default {
     TRANSITION,
     ICON_AXES,
     ASTERISK,
+    LINE_FLOOR,
   ],
 };

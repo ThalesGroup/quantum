@@ -228,6 +228,9 @@ export const container = (children) => ({
 
 export const TRANSITION = { slot: 'control.transition', reason: 'Figma variables have no duration or easing.' };
 
+/** The web input's shortest line (decision value-line-not-clipped): Figma never clips a text layer, so its value keeps the 1.2 line of control.typography. */
+export const LINE_FLOOR = { slot: 'control.line-height', reason: 'Web only: Chromium and WebKit clip an input\'s text to its line box; a Figma text layer is never clipped, so the value keeps its 1.2 line (decision value-line-not-clipped).' };
+
 // upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
 export const SEVERITY_ICON_AXES = { slot: 'severity-icon.fill, severity-icon.grade, severity-icon.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' };
 
@@ -239,5 +242,5 @@ export default {
   fixed: MARKED_FIELDS,
   booleans: { Mark: true, 'Show description': false },
   root: container([labelRow, withSeverityIcon(withLeadingIcon(content(), 'mail')), description, message]),
-  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES, ASTERISK],
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES, ASTERISK, LINE_FLOOR],
 };

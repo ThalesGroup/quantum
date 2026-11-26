@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.19.2",
+  "version": "0.20.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -582,6 +582,16 @@
         ]
       },
       {
+        "text": "Never clip the value: Chromium and WebKit clip an input's text to its own line box, and the stacked marks of Ấ, Ỗ, Ẫ reach past a 1.2 line. Set the input's block padding to 0 and its line-height to the larger of 1.2 times the text plus twice the block padding and search-field.control.line-height (1.5) times the text: the box keeps its height and the text its place.",
+        "refs": [
+          "wcag:1.4.4",
+          "f69-clipped-text"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
         "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: zoom enlarges the text and the box together, which meets Resize Text.",
         "refs": [
           "wcag:1.4.4",
@@ -1151,6 +1161,11 @@
         "id": "mdn-overflow-wrap",
         "title": "MDN: overflow-wrap",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow-wrap"
+      },
+      {
+        "id": "f69-clipped-text",
+        "title": "WCAG 2.2 Technique F69: Failure of Success Criterion 1.4.4 when resizing visually rendered text up to 200 percent causes the text, image or controls to be clipped, truncated or obscured",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F69"
       }
     ]
   },
@@ -1242,6 +1257,22 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "value-line-not-clipped",
+      "date": "2026-11-26",
+      "version": "0.20.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The value keeps its 1.2 line (font.line-height.tight, decision value-text-button-size) on every platform; on the web the input takes its block padding into its line, which is never shorter than 1.5 times the text (search-field.control.line-height, font.line-height.normal), because Chromium and WebKit clip an input's text to its own line box. The box keeps its heights (28, 36 and 44 px at the default text size; as the text grows, those of decision grows-with-text-size, small 2.4 px taller at 200 %), and the text sits where a 1.2 line puts it. It mirrors the Text field (the Text field's decision field-family-mirrors). Measured with Playwright (Chromium 156, WebKit 27.2, Inter, every size at 100 and 200 %): at 1.2 the stacked marks of Ấ, Ỗ, Ẫ, Ở reach 1.6 to 2.1 px past the line at 100 % and 4.1 to 4.7 px at 200 %, 4 to 7 % of their ink is lost and Ấ reads as Â; line-height normal clips too; with the system font, which shows until Inter's Vietnamese subset has loaded, the marks fit; the Textarea does not clip (it scrolls inside its padding); the Button keeps its marks at 100 % but at 200 % its xsmall, small and medium sizes cut them 2.9 to 4 px above the box, a Button finding outside this step. Firefox was not measured. Rejected: A, the value at 1.5 on every platform (the small box 29 px in Chromium, 8 to 10 px taller than today at 200 %, and the running-text line height step 3 kept off single lines); C, the padding inside the line without the 1.5 floor (the small size still clips at 200 %, 1.1 px).",
+      "rationale": "WCAG 1.4.4 fails when text enlarged to 200 % is clipped (F69), and a clipped mark changes the letter. The clip is the web input's, so only the web layout changes: the tokens of the value's text, Figma and the other platforms keep 1.2.",
+      "tokens": [
+        "search-field.control.line-height"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "f69-clipped-text"
+      ]
+    },
     {
       "id": "default-size-medium",
       "date": "2026-11-25",
@@ -1803,6 +1834,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.20.0",
+      "date": "2026-11-26",
+      "note": "Decision value-line-not-clipped (#103 step 3c): on the web the input's line takes its block padding and is at least 1.5 times the text (new token search-field.control.line-height, font.line-height.normal), so Chromium and WebKit no longer clip the top mark of Ấ, Ỗ, Ẫ (1.6 to 4.7 px before). The box keeps its heights except small at 200 % (+2.4 px). A web guideline and the F69 reference."
+    },
     {
       "version": "0.19.2",
       "date": "2026-11-25",

@@ -63,7 +63,9 @@ export const MIRRORS = [
     of: 'text-field',
     paths: [],
     // No leading icon in a multi-line field (decision leading-icon-optional).
-    ignore: ['icon.*', 'control.padding-inline-start.*'],
+    // and no shortest input line: a textarea scrolls its text inside its padding, never clipping it to a
+    // line box (decision value-line-not-clipped of the Text field).
+    ignore: ['icon.*', 'control.padding-inline-start.*', 'control.line-height'],
     own: [],
     // The block padding that keeps the first line off the top edge (decision rows-and-resize): larger
     // than the Text field's minimum block padding (decision grows-with-text-size), which a textarea of

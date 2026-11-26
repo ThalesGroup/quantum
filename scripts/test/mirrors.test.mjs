@@ -91,8 +91,8 @@ test('the field family: each mirror is the Text field with its own tokens and it
   assert.deepEqual(byId['textarea'].own, []);
   // Its block padding is larger than the field's minimum on purpose (decisions rows-and-resize, grows-with-text-size).
   assert.deepEqual(byId['textarea'].differs, ['control.padding-block.*']);
-  // No leading icon in a multi-line field.
-  assert.deepEqual(byId['textarea'].ignore, ['icon.*', 'control.padding-inline-start.*']);
+  // No leading icon in a multi-line field, and no shortest input line: a textarea scrolls inside its padding (value-line-not-clipped).
+  assert.deepEqual(byId['textarea'].ignore, ['icon.*', 'control.padding-inline-start.*', 'control.line-height']);
   // The search glyph is the Text field's leading icon: compared like the rest.
   assert.deepEqual(byId['search-field'].own, []);
   assert.deepEqual(byId['search-field'].ignore, ['control.background.readonly', 'control.background.error', 'control.background.warning', 'control.background.success', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'control.outline-width.error', 'control.outline-width.warning', 'control.outline-width.success', 'control.outline-color.error', 'control.outline-color.warning', 'control.outline-color.success', 'message.*', 'severity-icon.*']);

@@ -123,6 +123,11 @@ This section explains the decisions behind it.
   field's text, while zoom enlarges the text and the box together, which meets Resize Text
   ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
   [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
+- Chromium and WebKit clip an input's text to its own line box, and the stacked marks of Vietnamese
+  letters (Ấ, Ỗ, Ẫ) reach past a 1.2 line: Ấ would read as Â, and text enlarged to 200 % would be
+  clipped, which fails WCAG 1.4.4 ([F69](https://www.w3.org/WAI/WCAG22/Techniques/failures/F69)). The input
+  takes its block padding into its line, never shorter than 1.5 times the text (`control.line-height`):
+  the box keeps its height and the text its place. The value stays 1.2 on the other platforms and in Figma.
 
 ### iOS
 

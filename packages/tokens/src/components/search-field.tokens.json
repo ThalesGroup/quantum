@@ -147,6 +147,11 @@
           "$value": "{space.8}"
         }
       },
+      "line-height": {
+        "$type": "number",
+        "$description": "Shortest line of the value on the web, as a multiple of its text size: the input takes its block padding into its line, never shorter than this, because Chromium and WebKit clip an input's text to its line box and the stacked marks of Ấ, Ỗ, Ẫ reach past a 1.2 line (decision value-line-not-clipped). The value's text style keeps control.typography (1.2).",
+        "$value": "{font.line-height.normal}"
+      },
       "padding-inline": {
         "$type": "dimension",
         "small": {
