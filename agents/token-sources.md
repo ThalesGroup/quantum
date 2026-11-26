@@ -124,7 +124,10 @@ Without ids it draws every component; with ids, those and the components their i
   without a variable with `derive` (`['mark.typography', 0.25]`: a quarter of its font size;
   `['message.typography', 1, 'line']`: one line, font size x line height). The default
   variant is the top-left one. Text properties carry the texts and icon glyphs (ligatures of the
-  icon font, as on the web), BOOLEAN properties show the optional parts, focus rings are frames
+  icon font, as on the web), BOOLEAN properties show the optional parts, a row whose children
+  wrap takes `wrap` and a part that hugs up to a width `maxWidth` (the fields' label wraps at the
+  field's width, its mark then on its own line, #103 step 23 Q2), the set's description is the spec's
+  summary followed by the blueprint's `note` (guidance for the designer), focus rings are frames
   outside the border in `focus-visible`, or, for a part without an `outline-offset` slot (the
   text-entry controls), flush over the border, in focus and in every severity state too (the
   severity's color and width, the focus width when focused, none when disabled), and a part that is another component (the
@@ -174,7 +177,9 @@ component; with ids, those and the components their copies use.
   flex layout, laid out in the Figma grid, made a component, then all of them combined into one
   component with variants whose properties are the Figma variant properties. Penpot components have
   no text or boolean properties: a copy overrides its texts and icon glyphs directly, and an
-  optional part is shown or hidden as the boolean's default says, which a copy changes. Focus rings
+  optional part is shown or hidden as the boolean's default says, which a copy changes. A wrapping
+  row is a flex layout with `wrap`, a maximum width the layout child's; a blueprint's `note` is the
+  annotation of the default variant (Penpot has no component description). Focus rings
   are rectangles drawn as in Figma: outside the border in `focus-visible`, or flush over the border
   of a text-entry control, in focus and in every severity state too, and a part that is another component
   (the dropdown's trigger) is a copy of it. A component that already exists is kept as it is.

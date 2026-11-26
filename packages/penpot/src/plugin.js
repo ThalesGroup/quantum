@@ -396,7 +396,7 @@ function drawBoard(spec) {
   if (spec.layout) {
     const flex = board.addFlexLayout();
     flex.dir = spec.layout;
-    flex.wrap = 'nowrap';
+    flex.wrap = spec.wrap ? 'wrap' : 'nowrap';
     flex.justifyContent = spec.justify;
     flex.alignItems = spec.align;
     flex.horizontalSizing = 'auto';
@@ -525,7 +525,7 @@ function structure(spec) {
   spec = drawnSpec(spec);
   const keys = (o) => Object.keys(o || {}).sort();
   return [
-    spec.type, spec.name, spec.layout || '', typeof spec.width, typeof spec.height, keys(spec.bind), keys(spec.set),
+    spec.type, spec.name, spec.layout || '', !!spec.wrap, typeof spec.width, typeof spec.height, keys(spec.bind), keys(spec.set),
     !!spec.fill, !!spec.stroke, !!spec.typography, !!spec.focusRing, spec.border ? spec.border.side : '', spec.arc ? 'arc' : '',
     spec.type === 'instance' ? spec.component : '',
     (spec.children || []).map(structure),
@@ -826,6 +826,14 @@ async function drawComponent(plan, progress) {
   await until(() => container.variants.variantComponents().length === mains.length, `the variants of "${plan.name}"`);
   container.name = plan.name;
   await nameProperties(container, plan, drawn);
+  // The designer's guidance (the blueprint's `note`): Penpot has no description, the default variant's annotation holds it.
+  if (plan.note) {
+    try {
+      drawn[0].component.annotation = plan.note;
+    } catch (e) {
+      warn(`No annotation on "${plan.name}": ${e.message}`);
+    }
+  }
   container.setSharedPluginData('quantum', 'component', JSON.stringify({ id: plan.id, version: plan.version }));
   containers[plan.id] = { container, textLayers: plan.textLayers };
   await settle();

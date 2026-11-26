@@ -56,16 +56,25 @@ export const mark = {
   bind: { fill: 'mark.color', typography: 'mark.typography' },
 };
 
-/** The label and, after a word space (a quarter of the mark's font size), the required mark. */
+/**
+ * The label and, after a word space (a quarter of the mark's font size), the required mark. The row wraps
+ * and the label hugs its text up to the field's width (decision of #103 step 23, Q2: C), so a long label
+ * wraps there; the mark then goes to its own line, where the web flows it after the label's last word
+ * (`LONG_LABEL_NOTE` says how to draw that).
+ */
 export const labelRow = {
   type: 'frame',
   name: 'label-row',
   layout: 'HORIZONTAL',
+  wrap: true,
   align: { primary: 'MIN', counter: 'MIN' },
   width: 'FILL',
   derive: { gap: ['mark.typography', 0.25] },
-  children: [{ ...label, width: 'HUG' }, mark],
+  children: [{ ...label, width: 'HUG', maxWidth: FIELD_WIDTH }, mark],
 };
+
+/** The designer's way to the web's long label (#103 step 23, Q2: B as a technique), in the component's description. */
+export const LONG_LABEL_NOTE = 'To keep "(optional)" right after a long label\'s last word, as on the web, hide Mark and type the mark at the end of the label, styled like the mark.';
 
 /** The form setting markedFields, drawn by `Mark` and `Mark text` instead of a variant axis (decision mark-part). */
 export const MARKED_FIELDS = { markedFields: 'optional' };
@@ -285,6 +294,7 @@ export default {
   axes: [CONTENT, LEADING_ICON],
   fixed: MARKED_FIELDS,
   booleans: { Mark: true, 'Show description': false },
+  note: LONG_LABEL_NOTE,
   root: container([labelRow, withSeverityIcon(withLeadingIcon(content(), 'mail')), description, message]),
   notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES, ASTERISK, LINE_FLOOR],
 };

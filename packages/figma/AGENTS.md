@@ -29,6 +29,15 @@ translates the Figma plan, so a change here is a change of both drawings.
 - Literal values are layout only, and said in the blueprint's header comment: a width the web
   takes from its container, a value position of a slider or progress bar.
 - A part that is another component is an `instance` of it, listed in `uses`.
+- A row whose children wrap takes `wrap` (Figma `layoutWrap: 'WRAP'`), a HUG node that must not
+  grow past a width takes `maxWidth` in px (set once the node is in its auto layout parent: Figma
+  applies it only to auto layout frames and their direct children). A HUG text stays
+  `textAutoResize: 'WIDTH_AND_HEIGHT'`: the only mode that wraps, `HEIGHT`, has a fixed width, and
+  Figma documents `WIDTH_AND_HEIGHT` as "Characters do not wrap"
+  (https://developers.figma.com/docs/plugins/api/properties/TextNode-textautoresize/), so that it
+  wraps at its `maxWidth` is checked in Figma (the fields' long label, #103 step 23).
+- Guidance a designer needs in Figma goes in the blueprint's `note`: the plugin writes it after
+  the spec's summary in the component set's description.
 - The window is built with the design system, like the docs site: the components' templates and
   CSS for every control it shows, semantic tokens only in `ui.css`. A change to the progress bar,
   badge or button is a change to the window: look at it (open `dist/ui.html` in a browser and

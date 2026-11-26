@@ -213,6 +213,7 @@ export function penpotComponent(component, values, types) {
       if (node.align?.counter === 'BASELINE') approximations.add(APPROXIMATIONS.baseline);
     }
     for (const key of ['width', 'height']) if (node[key] !== undefined) out[key] = SIZING[node[key]] ?? node[key];
+    if (node.wrap) out.wrap = true;
     if (node.absolute) out.absolute = node.absolute;
     if (node.arc) {
       out.arc = node.arc;
@@ -258,6 +259,8 @@ export function penpotComponent(component, values, types) {
       const property = SIDES[field] ? null : typeof PROPERTIES[field] === 'function' ? PROPERTIES[field](out) : PROPERTIES[field];
       if (property) set[property] = value;
     }
+    // A maximum width in pixels (a HUG node growing up to it): a layout child's limit.
+    if (node.maxWidth !== undefined) set.layoutItemMaxW = node.maxWidth;
     if (Object.keys(bind).length) out.bind = bind;
     if (Object.keys(set).length) out.set = set;
     if (node.typography) {
@@ -304,6 +307,7 @@ export function penpotComponent(component, values, types) {
     name: component.name,
     version: component.version,
     description: component.description,
+    note: component.note,
     page: component.page,
     properties: component.properties.filter((p) => p.kind === 'VARIANT').map((p) => ({ name: p.name, values: p.values })),
     grid: component.grid,

@@ -37,6 +37,14 @@ of the agent guide: start from the root `AGENTS.md`; how to run it and what it d
   applied tokens, a token applied to many shapes showing in their `tokens` once applied, a variant's
   properties read from its name, path data in page coordinates): what
   it cannot prove is checked in Penpot before it is relied on.
+- A blueprint's `wrap` is the board's `flex.wrap = 'wrap'`, its `maxWidth` the layout child's
+  `maxWidth` (written as a value, `layoutItemMaxW` in `set`); a HUG text stays `growType`
+  `'auto-width'`. The plugin API documents neither that an auto-width text wraps at its maximum
+  width (https://doc.plugins.penpot.app/interfaces/Text/,
+  https://doc.plugins.penpot.app/interfaces/LayoutChildProperties/): checked in Penpot. A
+  blueprint's `note` is the annotation of the default variant's component (`LibraryComponent.annotation`,
+  at most 300 characters, https://doc.plugins.penpot.app/interfaces/LibraryComponent/): Penpot has no
+  component description.
 - Code that works around a limit of Penpot says so with an `upstream(penpot): …` marker in its
   comment, which the review of Penpot's releases reads (`agents/design-tools.md`).
 - The window is the Figma plugin's: a change to its layout is made in `packages/figma/src/ui/ui.css`

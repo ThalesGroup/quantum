@@ -568,6 +568,28 @@ test('the plugin draws every component, instances of the components they use inc
   }
 });
 
+test('the fields\' label row wraps, the label hugging up to the field\'s width; their description says how to keep the mark after the last word', async () => {
+  for (const id of ['text-field', 'number-field', 'search-field', 'textarea']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const row = findNode(plan.variants[0].root, 'label-row');
+    assert.equal(row.wrap, true, id);
+    assert.equal(row.children.find((c) => c.name === 'label').maxWidth, 240, id);
+    assert.match(plan.note, /hide Mark and type the mark at the end of the label/, id);
+  }
+  // No other component takes a note, a wrap or a max width it did not ask for.
+  const select = figmaComponent(loaded, specOf('select'), BLUEPRINTS.select);
+  assert.equal(select.note, null);
+  assert.equal(findNode(select.variants[0].root, 'label').maxWidth, undefined);
+  const fake = fakeFigma({ fonts: FONTS });
+  const { logs } = await runPlugin(fake, ['search-field']);
+  assert.deepEqual(logs, []);
+  const set = fake.figma.root.children.find((p) => p.name === 'Search field').children[0];
+  assert.match(set.description, /^.+ To keep "\(optional\)" right after a long label's last word, .+ Quantum search-field /);
+  const row = findNode(set.children[0], 'label-row');
+  assert.equal(row.layoutWrap, 'WRAP');
+  assert.equal(findNode(row, 'label').maxWidth, 240);
+});
+
 test('the plugin reports its progress to its window, then waits for Close', async () => {
   const fake = fakeFigma({ fonts: FONTS });
   const { plan } = await runPlugin(fake);

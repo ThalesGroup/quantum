@@ -206,7 +206,7 @@ export function figmaVariables(loaded, paths) {
  * scripts/lib/token-map.mjs names them) that drives each field. It holds no value: each variant binds the
  * token its slot makes active for that configuration, exactly as the CSS reads it.
  *
- *   { root, axes?, fixed?, booleans?, uses?, notDrawn? }
+ *   { root, axes?, fixed?, booleans?, uses?, notDrawn?, note? }
  *
  * - `root`: the component's node (a frame). Every node has a `type` and optionally `name`,
  *   `when(v)` (drawn only when true), `visibleProperty` (the BOOLEAN property showing it),
@@ -216,11 +216,13 @@ export function figmaVariables(loaded, paths) {
  *   typography slot gives its font size, so `['mark.typography', 0.25]` is a quarter of it, or with
  *   `'line'` third its line, font size x line height, so `['message.typography', 1, 'line']` is
  *   the height of one message line; a derived `width` or `height` is the node's fixed size),
- *   `width` / `height` (`'HUG'`, `'FILL'` or px) and `absolute` (`{ x, y }` in px or `'center'`).
+ *   `width` / `height` (`'HUG'`, `'FILL'` or px), `maxWidth` (px: a HUG node grows up to it, a
+ *   text wrapping there) and `absolute` (`{ x, y }` in px or `'center'`).
  *   These layout keys (and `layout`, `align`, `arc`, `path`, `textDecoration`) may also
  *   be `(v) => value`.
  *   - `frame`: `layout` (`'HORIZONTAL'`, `'VERTICAL'` or none), `align` (`{ primary, counter }`,
  *     Figma's MIN, CENTER, MAX, SPACE_BETWEEN, BASELINE),
+ *     `wrap` (true: the children wrap onto further rows, Figma's layoutWrap WRAP),
  *     `children`, `focusRing` (the part whose `outline-*` slots draw a ring outside it).
  *   - `text`: `text` (or `(v) => text`), `property` (the TEXT property it shows),
  *     `textDecoration` (`'UNDERLINE'`).
@@ -239,6 +241,8 @@ export function figmaVariables(loaded, paths) {
  * - `fixed`: enum properties of the spec kept out of the variant axes, id -> the value every variant
  *   draws (a form setting such as `markedFields`, which a BOOLEAN and a TEXT property show instead).
  * - `booleans`: BOOLEAN properties, name -> default.
+ * - `note`: guidance for the designer, written after the summary in the component set's description
+ *   (Figma) and in the default variant's annotation (Penpot, at most 300 characters).
  * - `notDrawn`: `[{ slot, reason }]`, the token slots Figma cannot draw. Every slot of the
  *   component is bound by the blueprint or listed here (`uncovered` lists the others).
  *
@@ -277,7 +281,7 @@ const ICON_SIZE = ['width', 'height', 'fontSize', 'lineHeight'];
 const PAINTS = { fill: 'fills', stroke: 'strokes' };
 const NODE_TYPES = new Set(['frame', 'text', 'icon', 'ellipse', 'vector', 'instance']);
 /** Node keys copied as they are into the plan. */
-const PLAIN = ['layout', 'align', 'width', 'height', 'absolute', 'arc', 'path', 'strokeCap', 'textDecoration', 'visibleProperty'];
+const PLAIN = ['layout', 'align', 'wrap', 'width', 'height', 'maxWidth', 'absolute', 'arc', 'path', 'strokeCap', 'textDecoration', 'visibleProperty'];
 
 /** The values of an enum property, its default first. */
 const defaultFirst = (property) => {
@@ -473,6 +477,7 @@ export function figmaComponent(loaded, spec, blueprint) {
     name: spec.name,
     version: spec.version,
     description: spec.summary,
+    note: blueprint.note ?? null,
     page: spec.name,
     properties: [
       ...axes.map((a) => ({ name: a.name, kind: 'VARIANT', values: a.values.map(String) })),

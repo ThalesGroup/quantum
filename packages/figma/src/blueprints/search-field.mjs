@@ -9,12 +9,13 @@
  * padding-inline-start. Here the glyph sits in `icon-inset`, a frame positioned absolutely at the
  * field's start edge and vertically centered, whose left padding is icon.margin-inline.
  */
-import { CONTENT, TRANSITION, LINE_FLOOR, ICON_AXES, ASTERISK, container, content, description, field, labelRow } from './text-field.mjs';
+import { CONTENT, TRANSITION, LINE_FLOOR, ICON_AXES, ASTERISK, container, content, description, field, labelRow, LONG_LABEL_NOTE } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
   fixed: { markedFields: 'none' },
   booleans: { Mark: false, 'Show description': false },
+  note: LONG_LABEL_NOTE,
   root: container([
     labelRow,
     field(content(), 'search'),

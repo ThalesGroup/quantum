@@ -860,6 +860,26 @@ test('penpotComponent refuses a token the Penpot file does not hold', () => {
   assert.throws(() => penpotComponent(figma, {}, new Map()), /badge: "badge\..+" has no Penpot token/);
 });
 
+test('the fields\' label row wraps in Penpot, the label up to the field\'s width, and the default variant\'s annotation says how to keep the mark after the last word', async () => {
+  const fake = fakePenpot({ fonts: FONTS });
+  const { logs, plan } = await runPlugin(fake, ['search-field']);
+  assert.deepEqual(logs, []);
+  const component = plan.components[0];
+  const find = (node, name) => (node.children ?? []).reduce((hit, c) => hit ?? (c.name === name ? c : find(c, name)), undefined);
+  assert.equal(find(component.variants[0].root, 'label-row').wrap, true);
+  assert.equal(find(component.variants[0].root, 'label').set.layoutItemMaxW, 240);
+  const [container] = containersOf(fake, 'Search field');
+  for (const variant of container.children) {
+    const row = find(variant, 'label-row');
+    assert.equal(row.flex.wrap, 'wrap');
+    assert.equal(find(row, 'label').layoutChild.maxWidth, 240);
+  }
+  const [first, second] = container.variants.variantComponents();
+  assert.match(first.annotation, /^To keep "\(optional\)" right after a long label's last word/);
+  assert.ok(first.annotation.length <= 300);
+  assert.equal(second.annotation, undefined);
+});
+
 test('the plugin draws a variant as a clone of the first one of its structure, writing what differs', async () => {
   const runs = {};
   // The Dropdown draws the Button first, for its trigger: its own cost is what it adds.
