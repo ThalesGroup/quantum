@@ -128,6 +128,20 @@ test('quantum.json is a registry theme item whose cssVars equal the CSS', () => 
   assert.deepEqual(item.cssVars.theme, themeDecls);
 });
 
+test('--destructive, shadcn\'s error text color, passes 4.5:1 on levels 0 to 3 in light and dark', () => {
+  const r = resolveMapping(mapping, quantum);
+  const lin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  const lum = (hex) => { const n = parseInt(hex.slice(1, 7), 16); return 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255); };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+  for (const mode of ['light', 'dark']) {
+    const fg = String(r[mode].destructive.value);
+    for (const level of [0, 1, 2, 3]) {
+      const bg = String(quantum[mode].get(`global.bg.level.${level}.default`).value);
+      assert.ok(ratio(fg, bg) >= 4.5, `${mode} --destructive ${fg} on level ${level} ${bg}: ${ratio(fg, bg).toFixed(2)}:1`);
+    }
+  }
+});
+
 test('the radius scale is Quantum\'s: controls 4px, cards 8px', () => {
   assert.equal(built.theme.theme['radius-md'].value, quantum.light.get('button.container.border-radius.medium').value);
   assert.equal(built.theme.theme['radius-xl'].value, quantum.light.get('card.container.border-radius').value);
