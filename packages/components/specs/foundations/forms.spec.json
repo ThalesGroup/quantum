@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.39.0",
+  "version": "0.40.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -93,7 +93,7 @@
     {
       "id": "summary",
       "name": "Error summary",
-      "text": "Not decided yet (step 9): whether a form lists its errors above the fields, with a link to each field, and from how many errors. Where focus goes after a failed submit is decided (announcement): a summary, when there is one, takes it. How each entry is worded is decided (message-wording): the field's label, a colon, then its message, as a link to the field."
+      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. Not decided yet (step 9, points 2 to 6): what renders it, its title and count, its entries, where it sits, and when it updates and clears."
     },
     {
       "id": "spacing",
@@ -639,6 +639,16 @@
         ]
       },
       {
+        "text": "A list of the form's errors at its top, each entry a link to its field, is optional: the WAI tutorial finds it helpful when errors occur, G139 and SCR32 list any number of errors, and WCAG 3.3.1 mandates no particular way of showing them, at the start of the form, inline next to each field, in an alert or in a dialog. By default the form lists its errors when two fields or more are in error after a failed submit; with one, focus moves to that field, which reads its label and its message. A product may decide never to list them, in a short form such as a sign-in.",
+        "refs": [
+          "wai-forms-listing-errors",
+          "wcag-g139",
+          "wcag-scr32",
+          "wcag:3.3.1",
+          "wcag-understanding-error-identification-intent"
+        ]
+      },
+      {
         "text": "After a failed submit, focus moves to the list of errors when the form shows one, each entry a link to its field, so people hear that errors occurred and reach each field from it; without a list, focus moves to the first field in error, as the WAI tutorial advises after submit and as user agents generally do when their own validation stops a submit. Focus moves, so the summary or the field is announced by the move itself: a message that takes focus is a change of context, not a status message, and needs no live region.",
         "refs": [
           "wcag:3.3.1",
@@ -1031,6 +1041,11 @@
         "id": "wai-forms-notifications",
         "title": "WAI tutorials: Forms, user notification",
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
+      },
+      {
+        "id": "wai-forms-listing-errors",
+        "title": "WAI Forms tutorial: user notification, listing errors",
+        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/#listing-errors"
       },
       {
         "id": "accname-description",
@@ -1438,6 +1453,11 @@
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32"
       },
       {
+        "id": "wcag-understanding-error-identification-intent",
+        "title": "Understanding WCAG 2.2 SC 3.3.1: intent (no particular way of displaying errors is mandated)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-identification#intent"
+      },
+      {
         "id": "wcag-understanding-error-identification-native",
         "title": "Understanding WCAG 2.2 SC 3.3.1: user agent native HTML form validation",
         "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-identification#user-agent-native-html-form-validation"
@@ -1584,6 +1604,22 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-summary-optional",
+      "date": "2026-11-26",
+      "version": "0.40.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "An error summary is optional, never mandatory. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to the field in error (forms-focus-after-submit). A product may decide never to show one, typically a short form such as a sign-in with an email and a password: the explicit product override of the default (forms-platform-gaps). When a summary is shown, the rules already decided apply: its title takes focus after a failed submit (forms-focus-after-submit), its entries are \"Label: message\" as links to their fields (forms-message-relies-on-label), the announcements stay as they are (forms-error-announcement, forms-warning-success-announcement), and its rendering is decided by step 9 points 2 to 6. No source gives a threshold: the WAI tutorial, G139 and SCR32 list any number of errors, and Understanding 3.3.1 mandates no particular way, so WCAG is met with or without a summary. After people fix one of two errors and submit again, the summary goes and focus moves to the remaining field. The default holds on every platform: no Apple, Android or Windows page says whether a form lists its errors. No component, token or rendering change.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 9, point 1), C chosen, among: A, never a summary by default (rejected); B, a summary after every failed submit, whatever the number of errors, a one-field form excepted (recommended, rejected); C, a summary from two errors (chosen); D, no default, the product decides (rejected: it goes against the step 8 point 4 principle, a default the product may override). The team's words: \"By default we'd recommend having summary only when there are more than 1 error (option C), but product can still decide to never have a summary. If there's a summary displayed, it should follow the rules we already have defined (for a11y, rendering, focus order). Summary is a possibility, it's optional, and not mandatory. For some cases, it's useless, like a login/password, or really short forms, etc.\" The threshold is the team's: no source gives one. Sources opened on 2026-11-26: WAI forms tutorial (listing errors), G139, SCR32, Understanding 3.3.1.",
+      "refs": [
+        "wcag:3.3.1",
+        "wai-forms-listing-errors",
+        "wcag-g139",
+        "wcag-scr32",
+        "wcag-understanding-error-identification-intent"
+      ]
+    },
     {
       "id": "forms-platform-gaps",
       "date": "2026-11-26",
@@ -2256,6 +2292,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.40.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-summary-optional (#105 step 9, point 1): the rule summary says that an error summary is optional, shown by default after a failed submit from two fields in error, never with one (focus goes to that field), and that a product may decide never to show one, as a sign-in; when shown, the decided rules on focus, entries and announcements apply; what renders it, its wording, entries, place and updates are still open (step 9 points 2 to 6). One guideline (generic) and two references (WAI tutorial listing errors, Understanding 3.3.1 intent). No component, token or rendering change."
+    },
     {
       "version": "0.39.0",
       "date": "2026-11-26",

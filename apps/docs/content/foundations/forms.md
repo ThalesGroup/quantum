@@ -605,12 +605,35 @@ No Windows page says how a form's errors reach its screen reader or where focus 
 
 ## Error summary
 
-> **Not decided yet (step 9).** Whether a form lists its errors above the fields, with a link to
-> each field; from how many errors; whether it uses the Alert component. When there is one, its
-> title takes focus after a failed submit ([How errors are
-> announced](#how-errors-are-announced)). The
-> wording of an entry is decided: the field's label, a colon, then its message
-> ([Writing messages](#writing-messages)).
+**A summary is optional, never mandatory.** It lists the form's errors above its fields, each
+entry a link to its field. By default, a form shows one after a failed submit when two fields or
+more are in error. With a single error, it shows none: focus moves to that field, which reads its
+label and its message ([How errors are announced](#how-errors-are-announced)), and a list of one
+would only repeat it. A product may decide never to show a summary: a short form such as a
+sign-in, an email and a password, gains nothing from one. That is the product override the system
+leaves open everywhere (see "Where a platform says nothing, the default applies" under [How errors
+are announced](#how-errors-are-announced)): the default is the rule until a product departs from it.
+
+**No source gives a number.** The WAI tutorial lists the errors when errors occur, and WCAG's
+techniques list any number of them
+([WAI forms tutorial: listing errors](https://www.w3.org/WAI/tutorials/forms/notifications/#listing-errors),
+[G139](https://www.w3.org/WAI/WCAG22/Techniques/general/G139),
+[SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32)). WCAG 3.3.1 mandates
+no particular way of showing errors: at the start of the form, inline next to each field, in an
+alert or in a dialog
+([Understanding 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification#intent)).
+So a form meets it with or without a summary; from two errors is the system's choice.
+
+**When there is one, the rules already set apply.** Its title takes focus after a failed submit,
+each entry is the field's label, a colon, then its message, as a link to the field
+([Writing messages](#writing-messages)), and the announcements stay the same. After people fix
+one of two errors and submit again, one error is left: the summary goes, and focus moves to the
+remaining field. No Apple, Android or Windows page says whether a form lists its errors, so the
+default holds on every platform.
+
+> **Not decided yet (step 9, points 2 to 6).** What renders the summary (the Alert component, a
+> variant of it, or a pattern of its own), its title and count, its entries (errors only, or
+> warnings too), where it sits, and when it updates and clears.
 
 ## Spacing
 
@@ -742,8 +765,8 @@ of the on-screen keyboard's return key, because only the form knows which field 
   ([Microsoft Writing Style Guide: colons](https://learn.microsoft.com/en-us/style-guide/punctuation/colons),
   [Apple Style Guide: colons](https://support.apple.com/guide/applestyleguide/c-apsgb744e4a3/web)),
   and no source settles it for a summary, so the simpler choice holds: the summary changes
-  nothing in the message, whatever its language or its source. Whether a form has a summary is
-  step 9's.
+  nothing in the message, whatever its language or its source. A form shows a summary from two
+  errors, unless the product decides never to ([Error summary](#error-summary)).
 
 ## Accessibility
 
