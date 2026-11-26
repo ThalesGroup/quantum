@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.28.2",
+  "version": "0.28.3",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -1436,7 +1436,7 @@
       "The label is a noun phrase naming the information asked for: Email address, Company name. Sentence case, no colon, no trailing punctuation.",
       "The description gives the format or an example when it is not obvious: We will only use it to send your receipt.",
       "The placeholder, when any, is a short example of a valid value (name@example.com), never an instruction and never the label.",
-      "The message of an error says what is wrong and how to fix it: Enter an email address with an @."
+      "The message of an error says the fix and relies on the label it sits under, without repeating the field's name: Include an @, as in name@example.com"
     ]
   },
   "examples": [
@@ -1509,7 +1509,7 @@
         "value": "ada.example.com",
         "description": "We send the receipt to this address",
         "severity": "error",
-        "message": "Enter an email address with an @",
+        "message": "Include an @, as in name@example.com",
         "required": true
       }
     },
@@ -1534,7 +1534,7 @@
         "label": "Username",
         "value": "ada.lovelace",
         "severity": "success",
-        "message": "This username is available"
+        "message": "This one is available"
       }
     },
     {
@@ -2287,6 +2287,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.3",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' messages and the content guideline rely on the label they sit under and no longer repeat the field's name, as the Forms foundation decides (forms-message-relies-on-label, #105 step 11 point 4). No rendering change."
+    },
     {
       "version": "0.28.2",
       "date": "2026-11-26",

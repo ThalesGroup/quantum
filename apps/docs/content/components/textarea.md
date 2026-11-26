@@ -78,8 +78,8 @@ line of text, or not at all.
 
 - The label is a noun phrase: **Message**, **Description**, **Delivery notes**.
 - The description says what to include or a length limit: **Up to 500 characters**
-- The message of an error says what is wrong and how to fix it: **Enter a message of at least 20
-  characters.** It goes under the description, which stays, so the limit is still in view while people fix the text.
+- The message of an error says the fix, relying on the label it sits under without repeating the
+  field's name: **Enter at least 20 characters**. It goes under the description, which stays, so the limit is still in view while people fix the text.
 - The required mark follows the Text field's: "(optional)" or "(required)" after the label, as
   the form marks its fields.
 

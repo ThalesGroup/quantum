@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.26.6",
+  "version": "0.26.7",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -1306,7 +1306,7 @@
       "The label is a noun phrase naming the information asked for: Message, Description, Delivery notes. Sentence case, no colon, no trailing punctuation.",
       "The description says what to include, or a length limit, when it helps: Up to 500 characters.",
       "The placeholder, when any, is a short example, never an instruction and never the label.",
-      "The message of an error says what is wrong and how to fix it: Enter a message of at least 20 characters."
+      "The message of an error says the fix and relies on the label it sits under, without repeating the field's name: Enter at least 20 characters"
     ]
   },
   "examples": [
@@ -1360,7 +1360,7 @@
         "rows": 3,
         "description": "Up to 500 characters",
         "severity": "error",
-        "message": "Enter a message of at least 20 characters",
+        "message": "Enter at least 20 characters",
         "required": true
       }
     },
@@ -2048,6 +2048,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.26.7",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' messages and the content guideline rely on the label they sit under and no longer repeat the field's name, as the Forms foundation decides (forms-message-relies-on-label, #105 step 11 point 4). No rendering change."
+    },
     {
       "version": "0.26.6",
       "date": "2026-11-26",
