@@ -1019,6 +1019,13 @@ them, and the theme restyles nothing directly.
 - **Checkbox and radio shape.** Bootstrap draws them with a `1px` border and a `33%` (checkbox)
   radius written in the rule itself (it declares `--check-border-radius` but does not read it):
   Quantum's `stroke-width.md` border and `checkbox.control.border-radius.*` are not applied.
+- **Severity line at rest.** A Quantum field in error or success draws its 0.6px border plus a
+  1.2px outline in the severity color, flush over it (`text-field.control.outline-width.*`,
+  `.outline-color.*`). Bootstrap draws no outline at rest; the theme colors the border only. Measured
+  in Chromium, the 0.6px border paints the same device pixels as Quantum's border and outline at 1x
+  and 2x (both snap to 1 and 2 device pixels), so only the CSS differs; WebKit and Firefox were not
+  checked. `--bs-control-box-shadow` stays `none`: an inset shadow would paint a heavier line, and
+  forced colors drop box shadows. Focused, the field takes the 2.4px severity ring, as in Quantum.
 - **Hover fill.** A Quantum field takes the level's hover fill under the pointer
   (`text-field.control.background.hover`, and the other controls' `background.hover`): Bootstrap
   has no hover rule or variable on `.form-control`.
