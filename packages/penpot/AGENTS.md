@@ -37,6 +37,9 @@ of the agent guide: start from the root `AGENTS.md`; how to run it and what it d
   applied tokens, a token applied to many shapes showing in their `tokens` once applied, a variant's
   properties read from its name, path data in page coordinates): what
   it cannot prove is checked in Penpot before it is relied on.
+- The token file holds the Component-set tokens of the drawn components but those of their
+  `notDrawn` slots (`notExported` of the Figma plan), and every token they reference: the
+  library holds what its components draw (#103 step 23, Q4).
 - A blueprint's `wrap` is the board's `flex.wrap = 'wrap'`, its `maxWidth` the layout child's
   `maxWidth` (written as a value, `layoutItemMaxW` in `set`); a HUG text stays `growType`
   `'auto-width'`. The plugin API documents neither that an auto-width text wraps at its maximum

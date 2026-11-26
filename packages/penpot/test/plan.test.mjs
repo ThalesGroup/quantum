@@ -55,6 +55,17 @@ test('penpotTokens keeps what the names reach, references first, in every set, w
   assert.throws(() => penpotTokens(file, ['chip.border']), /"chip.border", which the Penpot token file does not hold/);
 });
 
+test('a slot a blueprint does not draw has no Penpot token, unless a drawn token references it (#103 step 23, Q4)', () => {
+  const plan = planOf(Object.keys(BLUEPRINTS));
+  const names = new Set(plan.tokens.tokens.map((t) => t.name));
+  for (const name of ['text-field.asterisk.color.default', 'search-field.asterisk.margin-inline-start.small', 'text-field.control.line-height', 'button.icon.grade', 'font.icon.optical-size.24', 'spinner.ring.opacity', 'progress-bar.indicator.opacity', 'opacity.40'])
+    assert.ok(!names.has(name), name);
+  assert.ok(names.has('space.2'));
+  assert.ok(names.has('text-field.label.typography.medium'));
+  // 1362 token names before #103 step 23 Q4, 76 left out (a mode token is one name in each mode set).
+  assert.equal(names.size, 1336);
+});
+
 test('penpotTokens gives a number as text where Penpot\'s plugin API takes only text', () => {
   assert.equal(pluginValue('number', 1.5), '1.5');
   assert.equal(pluginValue('opacity', 0), '0');
@@ -93,9 +104,11 @@ test('every component plan binds tokens Penpot holds, to properties their type c
     for (const a of c.approximations) assert.ok(Object.values(APPROXIMATIONS).includes(a), `${c.id}: ${a}`);
     assert.equal(new Set(c.variants.map((v) => JSON.stringify(v.props))).size, c.variants.length, `${c.id}: variant properties are unique`);
   }
-  // Every token of a drawn component the Penpot file holds is written, with what it references.
+  // Every token of a drawn component the Penpot file holds is written, with what it references, but
+  // those of a slot its blueprint does not draw (#103 step 23, Q4).
   const written = new Set(plan.tokens.tokens.map((t) => t.name));
-  for (const t of tokensOf(tokenFile).filter((t) => t.set === 'Component')) assert.ok(written.has(t.name), t.name);
+  const notExported = new Set(plan.components.flatMap((c) => c.notExported));
+  for (const t of tokensOf(tokenFile).filter((t) => t.set === 'Component')) assert.equal(written.has(t.name), !notExported.has(t.name), t.name);
 });
 
 test('the Button plan binds, in each variant, the tokens the web reads', () => {

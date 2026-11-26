@@ -95,7 +95,9 @@ Without ids it draws every component; with ids, those and the components their i
 - **Variables.** One collection per token tier: `Quantum / Raw` (hidden from publishing, no
   scope), `Quantum / Semantic` (a `Light` and a `Dark` mode, from the token modes; a second mode
   needs a paid Figma plan) and `Quantum / Components`, holding only the tokens the drawn
-  components reach. A variable is named after its token path (`button/container/gap/medium`), a
+  components reach: a slot a blueprint lists in `notDrawn` has no variable, unless a drawn token
+  aliases it (#103 step 23, Q4; the library holds what its components draw, as they draw the web
+  specification). A variable is named after its token path (`button/container/gap/medium`), a
   typography token gives one variable per member (`button/label/typography/medium/font-size`),
   aliases stay aliases, and the web code syntax is the token's CSS variable. These are the
   repository's tokens, not the Figma library's own collections: the plugin never edits those.
@@ -133,13 +135,19 @@ Without ids it draws every component; with ids, those and the components their i
   severity's color and width, the focus width when focused, none when disabled), and a part that is another component (the
   dropdown's trigger) is an instance of it. A component set that already exists is kept as it
   is: delete it to draw it again, so that no instance loses its main component unnoticed.
-- **What Figma cannot hold** is set without a variable or left out, and listed in each
-  blueprint's `notDrawn`: durations and easings (no variable type), a unitless line height
-  (Figma reads a number variable as pixels, so it is set as a percentage), the icon font's fill,
-  grade and optical size axes, values computed from a token (the outline radius, a check mark's
-  size), and the widths the web takes from its container (a literal width). The icon font's
-  axes are drawn anyway: every named instance of the variable font sits at the Iconography's
-  values (fill 0, grade 0, optical size 24). A color the web inherits has no token: its blueprint
+- **What Figma cannot hold** is set without a variable or left out. A slot it cannot draw is
+  listed in its blueprint's `notDrawn` and exports no variable: durations and easings (no
+  variable type), the icon font's fill, grade and optical size axes, the web's line floor
+  (`control.line-height`), the animations' low opacities, a visually hidden label's clip, and the
+  parts drawn on other platforms only (the fields' asterisk, Android and Windows: a mock of those
+  binds the semantic error text color and `space.*` directly). A unitless line height is kept
+  (Figma reads a number variable as pixels, so the text sets it as a percentage), and values
+  computed from a token (the outline radius, a check mark's size, a message line) and the widths
+  the web takes from its container (a literal width) are set without a variable. The icon font's
+  axes are drawn anyway, with no variable: every named instance of the variable font sits at the
+  Iconography's values (fill 0, grade 0, optical size 24), no layer can bind an axis, and Penpot's
+  number tokens drive only a rotation. #34 exported them as reference values; #103 step 23 Q4
+  removed them, as no one would use them in Figma or Penpot. A color the web inherits has no token: its blueprint
   binds a stand-in the spec decides (the Icon's `current` is drawn as `neutral`, decision
   `current-drawn-as-neutral`), and the designer overrides it on the instance.
 - **Fonts.** The plugin loads every family the tokens name. The icon font, Material Symbols
@@ -189,8 +197,8 @@ component; with ids, those and the components their copies use.
   size), the minimum size of a component itself (Penpot honours it inside a layout only: the
   component is given that size when its content is smaller), a border on one side (a line along it,
   until the plugin API has per-side strokes), a baseline alignment (aligned to the end) and an arc
-  (an open path). What Figma cannot hold either (durations, easings, the icon font's axes) is left
-  out as in Figma (`notDrawn`).
+  (an open path). A slot listed in `notDrawn` writes no token, as in Figma (durations, easings,
+  the icon font's axes, the asterisk…), unless a drawn token references it.
 - **Fonts.** Penpot's fonts are its own catalog (Google Fonts, where Inter comes from) and the
   team's fonts: the plugin finds each family by name, and a text whose family is missing keeps
   Penpot's default font. The icon font, Material Symbols Outlined, must be found too (upload it as a

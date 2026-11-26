@@ -119,7 +119,8 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   assert.deepEqual(plan.properties.filter((p) => p.kind === 'TEXT').map((p) => p.name).sort(), ['Label', 'Leading icon glyph', 'Trailing icon glyph']);
   assert.equal(plan.values[variableName('button.container.min-height.medium')], 36);
   for (const name of plan.variables.variables.map((v) => v.name)) assert.doesNotMatch(name, /[.{}$]/, name);
-  assert.deepEqual(plan.variables.skipped, ['button/container/transition/duration', 'button/container/transition/easing']);
+  // The transition is not drawn: no variable, not even a skipped one (#103 step 23, Q4).
+  assert.deepEqual(plan.variables.skipped, []);
 });
 
 test('the fields\' placeholder colors are text fills, their start paddings and margins gaps', () => {
@@ -129,7 +130,23 @@ test('the fields\' placeholder colors are text fills, their start paddings and m
   assert.deepEqual(tf['text-field/icon/placeholder-color/default'], ['TEXT_FILL']);
   assert.deepEqual(tf['text-field/control/padding-inline-start/medium'], ['GAP']);
   assert.deepEqual(tf['text-field/icon/margin-inline'], ['GAP']);
-  assert.deepEqual(tf['text-field/asterisk/margin-inline-start/medium'], ['GAP']);
+});
+
+test('a slot a blueprint does not draw has no variable, unless a drawn token aliases it (#103 step 23, Q4)', () => {
+  const specs = Object.keys(BLUEPRINTS).map(specOf);
+  const plan = pluginPlan(loaded, specs, BLUEPRINTS);
+  const names = new Set(plan.variables.variables.map((v) => v.name));
+  for (const c of plan.components) {
+    assert.ok(c.notExported.length || !c.notDrawn.length, `${c.id}: its notDrawn slots have tokens`);
+    for (const path of c.notExported) assert.ok(!names.has(variableName(path)), `${c.id}: ${path} has a variable`);
+  }
+  // The asterisk (Android and Windows), the web's line floor, the icon font's axes, the animations.
+  for (const name of ['text-field/asterisk/color/default', 'search-field/asterisk/margin-inline-start/small', 'text-field/control/line-height', 'button/icon/grade', 'font/icon/optical-size/24', 'spinner/ring/opacity', 'opacity/40'])
+    assert.ok(!names.has(name), name);
+  // A token a drawn slot reads stays (space/2: the asterisk's margin and drawn gaps alike).
+  assert.ok(names.has('space/2'));
+  assert.ok(names.has('text-field/label/typography/medium/line-height'));
+  assert.equal(plan.variables.variables.length, 1840);
 });
 
 test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {

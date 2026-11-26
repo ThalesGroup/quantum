@@ -65,13 +65,10 @@ const COMPONENT_SCOPES = {
   'font-size': ['FONT_SIZE'],
   'font-weight': ['FONT_WEIGHT'],
   'letter-spacing': ['LETTER_SPACING'],
-  // No Figma field takes them: a unitless line height (Figma reads pixels), the icon font's axes.
-  // upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
   opacity: ['OPACITY'],
+  // No Figma field takes a unitless line height (Figma reads pixels): a typography's member keeps it,
+  // with no scope. The icon font's axes have no variable (#103 step 23, Q4: blueprints list them in `notDrawn`).
   'line-height': [],
-  fill: [],
-  grade: [],
-  'optical-size': [],
 };
 
 /** Figma variable name of a token path (or of its segments). */
@@ -244,7 +241,8 @@ export function figmaVariables(loaded, paths) {
  * - `note`: guidance for the designer, written after the summary in the component set's description
  *   (Figma) and in the default variant's annotation (Penpot, at most 300 characters).
  * - `notDrawn`: `[{ slot, reason }]`, the token slots Figma cannot draw. Every slot of the
- *   component is bound by the blueprint or listed here (`uncovered` lists the others).
+ *   component is bound by the blueprint or listed here (`uncovered` lists the others). A listed
+ *   slot has no variable (nor Penpot token): the library holds what its components draw.
  *
  * The variants are every enum option x every axis value x every state of the spec (`v` is
  * `{ props, axes, state }`), the default first on each axis: Figma's default variant is the
@@ -306,7 +304,14 @@ export const slotsOf = (spec, tokens) => new Set(tokens.map((t) => parseTokenPat
 export function figmaComponent(loaded, spec, blueprint) {
   const tokens = loaded.all.filter((t) => t.tier === 'component' && t.segments[0] === spec.id);
   const slots = slotsOf(spec, tokens);
-  const vars = figmaVariables(loaded, tokens.map((t) => t.path));
+  const notDrawn = blueprint.notDrawn ?? [];
+  // A notDrawn entry names slots, or a prefix of slots (`container.transition`).
+  const listed = notDrawn.flatMap((n) => n.slot.split(/,\s*/));
+  const isListed = (slot) => listed.some((l) => slot === l || slot.startsWith(`${l}.`));
+  // The library holds what the components draw (#103 step 23, Q4): a slot not drawn has no variable,
+  // unless a drawn token aliases it (figmaVariables follows the aliases).
+  const notExported = tokens.filter((t) => isListed(parseTokenPath(spec, t.segments).slot)).map((t) => t.path);
+  const vars = figmaVariables(loaded, tokens.map((t) => t.path).filter((p) => !notExported.includes(p)));
   const known = new Set(vars.variables.map((v) => v.name));
   const resolved = (path) => resolveValue(loaded.byPath.get(path).value, loaded.byPath);
   const values = {};
@@ -468,10 +473,7 @@ export function figmaComponent(loaded, spec, blueprint) {
     };
   });
 
-  const notDrawn = blueprint.notDrawn ?? [];
-  // A notDrawn entry names slots, or a prefix of slots (`container.transition`).
-  const listed = notDrawn.flatMap((n) => n.slot.split(/,\s*/));
-  for (const slot of slots) if (listed.some((l) => slot === l || slot.startsWith(`${l}.`))) used.add(slot);
+  for (const slot of slots) if (isListed(slot)) used.add(slot);
   return {
     id: spec.id,
     name: spec.name,
@@ -488,6 +490,7 @@ export function figmaComponent(loaded, spec, blueprint) {
     variants,
     uses: blueprint.uses ?? [],
     notDrawn,
+    notExported,
     uncovered: [...slots].filter((s) => !used.has(s)).sort(),
     values,
     variables: vars,
