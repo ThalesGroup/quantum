@@ -14,6 +14,17 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const loaded = loadAll(path.join(ROOT, PATHS.tokens));
 const button = JSON.parse(fs.readFileSync(path.join(ROOT, artifacts('button').spec), 'utf8'));
 
+
+/** The first node named `name` in a plan node's subtree. */
+const findNode = (node, name) => {
+  for (const child of node?.children ?? []) {
+    if (child.name === name) return child;
+    const found = findNode(child, name);
+    if (found) return found;
+  }
+  return undefined;
+};
+
 test('rgba and px convert resolved DTCG values to Figma units', () => {
   assert.deepEqual(rgba({ colorSpace: 'srgb', components: [1, 0.5, 0], alpha: 0.10000000149011612 }), { r: 1, g: 0.5, b: 0, a: 0.1 });
   assert.deepEqual(rgba('#ff000080'), { r: 1, g: 0, b: 0, a: 128 / 255 });
@@ -124,7 +135,7 @@ test('the Text field draws its outline flush, a severity at its own width at res
 test('the Text field draws the severity icon after the control or at the start of the message, for every severity', () => {
   const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
   const variant = (size, place, state) => plan.variants.find((v) => v.name === `Size=${size}, Severity icon=${place}, Severity=error, Content=value, Leading icon=false, State=${state}`).root;
-  const iconIn = (node) => (node?.children ?? []).find((c) => c.name === 'severity-icon');
+  const iconIn = (node) => findNode(node, 'severity-icon');
   const row = (root) => root.children.find((c) => c.name === 'control-row');
   const msg = (root) => root.children.find((c) => c.name === 'message');
   const after = variant('small', 'after-control', 'default');
@@ -151,7 +162,7 @@ test('the fields draw the message and the severity icon of the severity property
     const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
     const find = (severity, state, place = 'message') => plan.variants.find((v) => v.name.includes(`Severity icon=${place}, Severity=${severity},`) && v.name.endsWith(`State=${state}`) && !v.name.includes('Leading icon=true')).root;
     const msg = (root) => root.children.find((c) => c.name === 'message');
-    const icon = (node) => (node?.children ?? []).find((c) => c.name === 'severity-icon');
+    const icon = (node) => findNode(node, 'severity-icon');
     // The severity property alone, in any state: the message and its icon, as the template draws them.
     for (const state of ['default', 'hover', 'focus-visible', 'readonly', 'disabled']) {
       assert.ok(msg(find('error', state)), `${id}: Severity=error, State=${state} draws the message`);
@@ -162,6 +173,22 @@ test('the fields draw the message and the severity icon of the severity property
     assert.equal(icon(row).glyph, 'warning');
     // No severity: no message.
     assert.equal(msg(find('none', 'default')), undefined);
+  }
+});
+
+test('the fields center the message\'s icon on its first line: a frame as tall as the line, computed from message.typography', () => {
+  // Small 14 px x 1.5 = 21, medium and large 16 px x 1.5 = 24: the web's calc(font-size * line-height).
+  for (const id of ['text-field', 'number-field', 'textarea']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    for (const [size, height] of [['small', 21], ['medium', 24], ['large', 24]]) {
+      const root = plan.variants.find((v) => v.name.startsWith(`Size=${size}, Severity icon=message, Severity=error,`) && v.name.endsWith('State=default')).root;
+      const line = findNode(root.children.find((c) => c.name === 'message'), 'severity-icon-line');
+      assert.equal(line.height, height, `${id} ${size}`);
+      assert.deepEqual(line.align, { primary: 'CENTER', counter: 'CENTER' });
+      assert.equal(line.children[0].name, 'severity-icon');
+    }
+    const none = plan.variants.find((v) => v.name.includes('Severity icon=none, Severity=error,')).root;
+    assert.equal(findNode(none, 'severity-icon-line'), undefined);
   }
 });
 

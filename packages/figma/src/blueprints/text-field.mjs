@@ -89,14 +89,32 @@ export const severityOf = (v) => [...SEVERITIES].reverse().find((s) => v.state =
 /** The glyph of each severity's icon, the template's (decision severity-icon-glyphs). */
 export const SEVERITY_GLYPHS = { error: 'error', warning: 'warning', success: 'check_circle' };
 
+/** Whether a variant draws the severity icon at `place` (`severityIcon`: after-control or message). */
+const iconAt = (place) => (v) => severityOf(v) !== null && v.props.severityIcon === place;
+
 /** The severity icon of every severity, after the control or at the start of the message (`severityIcon`). */
 const severityIcon = (place) => ({
   type: 'icon',
   name: 'severity-icon',
   glyph: (v) => SEVERITY_GLYPHS[severityOf(v)],
-  when: (v) => severityOf(v) !== null && v.props.severityIcon === place,
+  when: iconAt(place),
   bind: { fill: 'severity-icon.color', size: 'severity-icon.size', fontFamily: 'severity-icon.font-family', fontWeight: 'severity-icon.font-weight' },
 });
+
+/**
+ * The icon at the start of the message, centered on the message's first line: a frame as tall as that
+ * line (font size x line height, computed from message.typography: no variable holds the product), as the
+ * web makes the icon's box `calc(font-size * line-height)` tall and centers the glyph in it.
+ */
+const messageIcon = {
+  type: 'frame',
+  name: 'severity-icon-line',
+  layout: 'HORIZONTAL',
+  align: { primary: 'CENTER', counter: 'CENTER' },
+  when: iconAt('message'),
+  derive: { height: ['message.typography', 1, 'line'] },
+  children: [severityIcon('message')],
+};
 
 /** The message: its text, after the severity icon when the form places it there. */
 export const message = {
@@ -108,7 +126,7 @@ export const message = {
   width: 'FILL',
   bind: { gap: (v) => (v.props.severityIcon === 'message' ? 'severity-icon.gap' : null) },
   children: [
-    severityIcon('message'),
+    messageIcon,
     {
       type: 'text',
       name: 'message-text',

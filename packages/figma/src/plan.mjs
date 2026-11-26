@@ -209,7 +209,9 @@ export function figmaVariables(loaded, paths) {
  *   `context(v)` (`{ props, state }` merged into the configuration of its subtree: a current
  *   page, an expanded item, a menu item's intent), `bind` (key -> slot, or `(v) => slot | null`),
  *   `derive` (key -> `[slot, factor]`: a value computed from a token, set without a variable; a
- *   typography slot gives its font size, so `['mark.typography', 0.25]` is a quarter of it),
+ *   typography slot gives its font size, so `['mark.typography', 0.25]` is a quarter of it, or with
+ *   `'line'` third its line, font size x line height, so `['message.typography', 1, 'line']` is
+ *   the height of one message line; a derived `width` or `height` is the node's fixed size),
  *   `width` / `height` (`'HUG'`, `'FILL'` or px) and `absolute` (`{ x, y }` in px or `'center'`).
  *   These layout keys (and `layout`, `align`, `arc`, `path`, `textDecoration`) may also
  *   be `(v) => value`.
@@ -368,14 +370,22 @@ export function figmaComponent(loaded, spec, blueprint) {
       out.bind ??= {};
       for (const f of fields) out.bind[f] = binding(path);
     }
-    for (const [key, [slot, factor]] of Object.entries(node.derive ?? {})) {
+    for (const [key, [slot, factor, measure = 'font-size']] of Object.entries(node.derive ?? {})) {
       useSlot(slot);
       const path = active.get(slot);
       if (!path) continue;
-      out.set ??= {};
       const value = resolved(path);
-      const base = value && typeof value === 'object' && 'fontSize' in value ? value.fontSize : value;
-      for (const f of FIELDS[key]) out.set[f] = +(px(base) * factor).toFixed(3);
+      const typo = value && typeof value === 'object' && 'fontSize' in value;
+      // A typography's line: its font size times its line height (unitless, or a length as it is).
+      const line = () => (typeof value.lineHeight === 'number' ? px(value.fontSize) * value.lineHeight : px(value.lineHeight));
+      const base = !typo ? px(value) : measure === 'line' ? line() : px(value.fontSize);
+      const computed = +(base * factor).toFixed(3);
+      // A derived width or height is the node's fixed size, as a size in pixels is.
+      if (key === 'width' || key === 'height') out[key] = computed;
+      else {
+        out.set ??= {};
+        for (const f of FIELDS[key]) out.set[f] = computed;
+      }
     }
     if (node.focusRing) {
       // A part without an `outline-offset` slot draws its ring flush over its border: the offset is
