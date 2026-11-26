@@ -7,8 +7,10 @@
  *
  * The `Content` axis draws the control's text as a value or as the placeholder (its own color).
  * The description is a boolean property (off, as in the template); the message is drawn
- * whenever the variant has a severity, from its State or its `severity` property, as the template
- * shows it with a severity (`severityOf`: the later declared severity wins, as in the tokens). The
+ * whenever the variant has a severity, as the template shows it. The severity is the `Severity`
+ * axis only: the engine leaves out of State the states an enum axis sets, so State is default,
+ * hover, focus-visible, read-only or disabled, crossed with every severity (`severityOf` still
+ * reads a severity State, for a blueprint that fixes `severity`). The
  * severity icon (the Alert's glyph of each severity) sits after the control, in `control-row`, or at the start of
  * the message, by the `severityIcon` variant; the web lays the control and the icon out on a grid
  * row without a wrapper.

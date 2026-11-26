@@ -15,7 +15,7 @@
  * `values` holds the resolved value of each one in the default mode, which the plugin sets first.
  */
 import { cssVarName, isAlias, aliasPath, resolveContext, resolveValue } from '../../../scripts/lib/dtcg.mjs';
-import { activeTokens, effectiveStates, parseTokenPath } from '../../../scripts/lib/token-map.mjs';
+import { activeTokens, effectiveStates, isValueState, parseTokenPath } from '../../../scripts/lib/token-map.mjs';
 
 /** Figma variable collection of each token tier. */
 export const COLLECTIONS = {
@@ -424,10 +424,14 @@ export function figmaComponent(loaded, spec, blueprint) {
     if (!property.options.some((o) => o.value === value)) throw new Error(`${spec.id}: fixed sets ${id} to "${value}", which is not one of its options`);
   }
   const enums = spec.properties.filter((p) => p.type === 'enum');
+  const enumAxes = enums.filter((p) => !(p.id in fixed));
+  // A state an enum axis already sets (`severity: "error"` sets `error`) is left out of State, so a
+  // variant never names it twice or two contradictory values (`Severity=error, State=warning`).
+  const setByAxis = (s) => isValueState(s) && enumAxes.some((p) => p.id === s.property);
   const axes = [
-    ...enums.filter((p) => !(p.id in fixed)).map((p) => ({ name: p.name, key: p.id, values: defaultFirst(p) })),
+    ...enumAxes.map((p) => ({ name: p.name, key: p.id, values: defaultFirst(p) })),
     ...(blueprint.axes ?? []).map((a) => ({ name: a.name, key: a.name, values: a.values, extra: true })),
-    { name: 'State', key: 'state', values: spec.states.map((s) => s.id) },
+    { name: 'State', key: 'state', values: spec.states.filter((s) => !setByAxis(s)).map((s) => s.id) },
   ];
   const columnAxes = axes.filter((a) => (a.key === 'size' && !a.extra) || a.key === 'state');
   const rowAxes = axes.filter((a) => !columnAxes.includes(a));

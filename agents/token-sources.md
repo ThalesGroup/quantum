@@ -110,9 +110,15 @@ Without ids it draws every component; with ids, those and the components their i
   real CSS and template), and every token slot of a component is bound by its blueprint or listed
   in its `notDrawn` with the reason; a changed CSS structure changes the blueprint.
 - **The component set.** On a page named after the component: one variant per option of every
-  enum property and per state (a state a property sets, such as `disabled` or `checked`, is a
-  value of State, as in the spec's state list), plus the axes a blueprint adds when the layout
-  depends on something else (the button's icon slots, whose padding differs). The default
+  enum property and per state (a state a boolean property sets, such as `disabled` or `checked`,
+  is a value of State, as in the spec's state list), plus the axes a blueprint adds when the layout
+  depends on something else (the button's icon slots, whose padding differs). A state an enum
+  property sets (`error`, set by `severity: "error"`) is left out of State when that enum is an
+  axis: the axis already draws it, and State crosses it (`Severity=error, State=focus-visible`)
+  instead of naming it twice or contradicting it (`Severity=error, State=warning`). A blueprint
+  takes an enum out of the axes with `fixed` (`fixed: { markedFields: 'optional' }`: every variant
+  draws that option, and a state it sets stays in State), and sets a value computed from a token
+  without a variable with `derive` (`['mark.typography', 0.25]`: a quarter of its font size). The default
   variant is the top-left one. Text properties carry the texts and icon glyphs (ligatures of the
   icon font, as on the web), BOOLEAN properties show the optional parts, focus rings are frames
   outside the border in `focus-visible` only, and a part that is another component (the

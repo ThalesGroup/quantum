@@ -9,14 +9,16 @@
  *
  * Each option is the Checkbox's two rows (src/blueprints/checkbox.mjs): its box, label and
  * description. A forced state applies, as on the web, to the whole group when it is group-wide
- * (error, disabled) and to the first option only otherwise (hover, focus, checked): the others
- * stay at rest. The description and the options' descriptions are boolean properties (off, as in
- * the template); the message is drawn in the error state only.
+ * (disabled) and to the first option only otherwise (hover, focus, checked): the others stay at
+ * rest. The severity is the `Severity` axis, not a State value (the engine leaves out of State the
+ * states an enum axis sets), so it reaches every option. The description and the options'
+ * descriptions are boolean properties (off, as in the template); the message is drawn with
+ * Severity=error only.
  */
 import { TRANSITION, checkboxControl, optionRows } from './checkbox.mjs';
 
 /** States that the web forces on the whole group; the others apply to one option. */
-const GROUP_WIDE = new Set(['error', 'disabled']);
+const GROUP_WIDE = new Set(['disabled']);
 
 const option = (control) => (n) =>
   optionRows({
@@ -84,7 +86,7 @@ export const group = (control) => ({
       {
         type: 'text',
         name: 'message',
-        when: (v) => v.state === 'error',
+        when: (v) => v.props.severity === 'error',
         text: 'Message',
         property: 'Message',
         bind: { fill: 'message.color', typography: 'message.typography' },
