@@ -553,6 +553,16 @@ export default {
       },
     },
     {
+      id: 'form-adorn', section: 'Text field', component: 'text-field', title: 'Leading icon (.form-adorn)', tier: 'component',
+      selector: '.form-adorn',
+      why: 'Bootstrap draws an icon inside a field with label.form-control.form-adorn > .form-adorn-icon + input.form-ghost: the Quantum leading icon (iconStart; the Search field\'s icon). .form-adorn has no size modifier, so it takes the medium values; the icon size reaches an SVG child only.',
+      tokens: {
+        '--bs-form-adorn-gap': ['space.8', 'The medium gap between the icon and the text: text-field.control.padding-inline-start.medium (36px) - icon.margin-inline (8px) - icon.size.medium (20px). Quantum has no gap token: the gap is what the start padding leaves.'],
+        '--bs-form-adorn-icon-size': 'text-field.icon.size.medium',
+        '--bs-form-adorn-icon-color': ['text-field.icon.placeholder-color.default', 'The empty field\'s icon color (tertiary): Bootstrap has one color, and Quantum turns the icon primary once the field is filled (decision leading-icon-color). .form-adorn-text takes it too.'],
+      },
+    },
+    {
       id: 'labels', section: 'Text field', component: 'text-field', title: 'Labels (.form-label)', selector: ROOT, tier: 'component',
       sass: { map: '$root-tokens', strip: '--bs-' },
       why: 'Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.',
@@ -988,7 +998,7 @@ export default {
       component: 'text-field', bootstrap: 'Form control', base: 'input.form-control',
       options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
       states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
-      parts: { label: '.form-label', control: '.form-control', description: '.form-text', message: '.invalid-feedback' },
+      parts: { label: '.form-label', control: '.form-control', field: 'label.form-control.form-adorn (with iconStart)', icon: '.form-adorn-icon', description: '.form-text', message: '.invalid-feedback' },
       notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
     },
     {
@@ -1003,7 +1013,7 @@ export default {
       component: 'number-field', bootstrap: 'Form control', base: 'input[type=number].form-control',
       options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
       states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
-      parts: { label: '.form-label', control: '.form-control', description: '.form-text', message: '.invalid-feedback' },
+      parts: { label: '.form-label', control: '.form-control', field: 'label.form-control.form-adorn (with iconStart)', icon: '.form-adorn-icon', description: '.form-text', message: '.invalid-feedback' },
       notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
     },
     {
