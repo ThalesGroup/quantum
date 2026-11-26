@@ -491,8 +491,26 @@ important changes
 their own keystrokes, the field no longer reads as in error when they come back to it, and the
 submit checks every field again. Announcing "no error" would talk over their typing.
 
-> **Not decided yet (step 8).** Where focus goes after a failed submit; what this page states
-> where a platform says nothing.
+**After a failed submit, focus moves to the errors.** When the form has an [error
+summary](#error-summary), its title takes focus: people hear how many fields to check ("Check 2
+fields"), then every entry, "Label: message", each a link to its field. This is what
+[G139](https://www.w3.org/WAI/WCAG22/Techniques/general/G139#example-3-client-side-error-checking-with-no-popup)
+(example 3) and [SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32) do.
+When it has none, the first field in error takes focus and reads its label and its error, as the
+WAI tutorial advises after submit
+([WAI: after submit](https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit)) and as
+browsers do when their own validation stops a submit
+([HTML: interactively validate the constraints](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#interactively-validate-the-constraints),
+[Understanding 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification#user-agent-native-html-form-validation)).
+Focus moves once per submit, and the move itself announces the summary or the field: a message
+that takes focus is a change of context, not a status message
+([Understanding 4.1.3: excepted examples](https://www.w3.org/WAI/WCAG22/Understanding/status-messages#excepted-examples)),
+so no live region is filled. Leaving focus on the submit button would leave people at the bottom
+of the form with a polite message they can miss; moving it to the first field while a summary is
+shown would skip the summary. No Apple, Android or Windows page says where focus goes after a
+failed submit: the means named below are the system's judgment.
+
+> **Not decided yet (step 8).** What this page states where a platform says nothing.
 
 ### Web
 
@@ -510,6 +528,11 @@ also referenced by the control's `aria-describedby` for every severity, and a co
 carries `aria-invalid="true"`, so the message is read with the field when people come back to
 it.
 
+After a failed submit, the summary's title takes focus with `focus()`; `tabindex="-1"` makes it
+focusable without adding it to the tab order
+([MDN: tabindex](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/tabindex)).
+Without a summary, the first field in error takes focus.
+
 ### iOS
 
 Apple asks apps to tell VoiceOver when visible content changes
@@ -523,6 +546,17 @@ for a message that must not cut off the field people reached. Apple asks that al
 accessible, VoiceOver included
 ([HIG: Feedback](https://developer.apple.com/design/human-interface-guidelines/feedback#Best-practices)),
 which a warning and a success announced like an error satisfy.
+
+After a failed submit, the form posts a layout-changed notification with the error summary as
+the element VoiceOver moves to
+([AccessibilityNotification.LayoutChanged](https://developer.apple.com/documentation/accessibility/accessibilitynotification/layoutchanged),
+iOS 17; [layoutChanged](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/layoutchanged)
+on UIKit), or sets an
+[accessibility focus state](https://developer.apple.com/documentation/swiftui/accessibilityfocusstate)
+on it. Without a summary, it moves focus to the first field in error with its
+[focus state](https://developer.apple.com/documentation/swiftui/focusstate), as Apple's own
+example does when people sign in with a field left empty, and posts the layout-changed
+notification with that field.
 
 ### Android
 
@@ -538,6 +572,12 @@ a message that relies on its label then does not say which field it concerns. Fo
 reads its error with its label, and the error summary names the field; no source gives a way to
 add the label to Material's announcement itself.
 
+After a failed submit, a
+[FocusRequester](https://developer.android.com/develop/ui/compose/touch-input/focus/change-focus-behavior#use-focus-requester)
+requests focus for the error summary, or for the first field in error, from the submit's
+callback. No Android page says that TalkBack follows a requested focus, or how to move TalkBack
+to an element that is not a control: this is the system's judgment.
+
 ### Desktop
 
 On macOS, the form posts the same low-priority announcement as on iOS (macOS 14, or
@@ -550,10 +590,19 @@ nothing on announcing errors: this is the system's judgment, with the WinUI API 
 that changes. No Apple, Android or Windows page covers announcing a warning, a success or a
 cleared error: every platform keeps the means it uses for an error.
 
+After a failed submit, macOS moves focus as iOS does. On Windows, the error summary, or the
+first field in error, takes focus through its `Focus` method with the focus state
+`Programmatic`
+([Programmatic focus navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/focus-navigation-programmatic)).
+Windows' Forms page asks only to mark the fields with invalid input and to require a resubmit
+([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)).
+
 ## Error summary
 
 > **Not decided yet (step 9).** Whether a form lists its errors above the fields, with a link to
-> each field; from how many errors; whether it uses the Alert component and receives focus. The
+> each field; from how many errors; whether it uses the Alert component. When there is one, its
+> title takes focus after a failed submit ([How errors are
+> announced](#how-errors-are-announced)). The
 > wording of an entry is decided: the field's label, a colon, then its message
 > ([Writing messages](#writing-messages)).
 

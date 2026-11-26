@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.37.0",
+  "version": "0.38.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -88,12 +88,12 @@
     {
       "id": "announcement",
       "name": "How errors are announced",
-      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs (timing), are announced the same way, politely, through the same region or announcement: the label, a colon, a space, then the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent: people hear their own keystrokes, the field no longer reads as in error when they come back to it, and the submit checks every field again. Not decided yet (step 8): where focus goes after a failed submit, and what the foundation states where a platform says nothing."
+      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs (timing), are announced the same way, politely, through the same region or announcement: the label, a colon, a space, then the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent: people hear their own keystrokes, the field no longer reads as in error when they come back to it, and the submit checks every field again. After a failed submit, focus moves: to the title of the form's error summary when the form has one, so people hear how many fields to check (\"Check 2 fields\") then every entry, \"Label: message\", each a link to its field (summary); to the first field in error when it has none, which reads its label and its error. Focus moves once per submit, and the summary or the field taking focus is announced by that move, with no live region. On the web, the summary's title takes focus with focus() and tabindex=\"-1\"; on iOS and macOS, a layout-changed notification with the summary as the element to move to, or an accessibility focus state; to a field, its focus state, with the layout-changed notification; on Android, a FocusRequester; on Windows, the element's Focus method with the focus state Programmatic. No Apple, Android or Windows page says where focus goes after a failed submit: these are our judgment. Not decided yet (step 8): what the foundation states where a platform says nothing."
     },
     {
       "id": "summary",
       "name": "Error summary",
-      "text": "Not decided yet (step 9): whether a form lists its errors above the fields, with a link to each field. How each entry is worded is decided (message-wording): the field's label, a colon, then its message, as a link to the field."
+      "text": "Not decided yet (step 9): whether a form lists its errors above the fields, with a link to each field, and from how many errors. Where focus goes after a failed submit is decided (announcement): a summary, when there is one, takes it. How each entry is worded is decided (message-wording): the field's label, a colon, then its message, as a link to the field."
     },
     {
       "id": "spacing",
@@ -639,6 +639,18 @@
         ]
       },
       {
+        "text": "After a failed submit, focus moves to the list of errors when the form shows one, each entry a link to its field, so people hear that errors occurred and reach each field from it; without a list, focus moves to the first field in error, as the WAI tutorial advises after submit and as user agents generally do when their own validation stops a submit. Focus moves, so the summary or the field is announced by the move itself: a message that takes focus is a change of context, not a status message, and needs no live region.",
+        "refs": [
+          "wcag:3.3.1",
+          "wcag-g139",
+          "wcag-scr32",
+          "wai-forms-after-submit",
+          "wcag-understanding-error-identification-native",
+          "html-interactive-validation",
+          "wcag-understanding-status-messages-excepted"
+        ]
+      },
+      {
         "text": "One hidden live region per form, aria-live=\"polite\", present in the initial markup (a region added with its content may not be announced), filled with \"Label: message\" when an error or a warning appears on leaving a field, or a success when its check runs. Not role=\"alert\" nor aria-live=\"assertive\": both interrupt, and role=\"alert\" with aria-live speaks twice with VoiceOver on iOS. The message also stays referenced by the control's aria-describedby.",
         "refs": [
           "wcag-aria19",
@@ -656,6 +668,17 @@
           "wcag-aria22",
           "aria-status",
           "aria-relevant"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "After a failed submit, the error summary's title takes focus through focus(), with tabindex=\"-1\" so that it can be focused without entering the tab order; without a summary, the first field in error takes focus. The HTML specification lets the user agent focus one of the invalid controls when its own validation stops a submit; a form that validates itself does it in its script.",
+        "refs": [
+          "wcag-scr32",
+          "mdn-tabindex",
+          "html-interactive-validation"
         ],
         "platforms": [
           "web"
@@ -684,10 +707,32 @@
         ]
       },
       {
+        "text": "After a failed submit, post a layout-changed notification with the error summary as the element VoiceOver moves to (AccessibilityNotification.LayoutChanged, iOS 17 and macOS 14; UIAccessibility layoutChanged on UIKit), or set an accessibility focus state on it, which moves VoiceOver focus; without a summary, move focus to the first field in error with its focus state, as Apple's own focus state example does when people sign in with a field left empty, and post the layout-changed notification with that field. No Apple page says where focus goes after a failed submit: this is our judgment.",
+        "refs": [
+          "apple-accessibility-layout-changed",
+          "uikit-layout-changed",
+          "swiftui-accessibility-focus-state",
+          "swiftui-focus-state"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
         "text": "A polite live region (liveRegion Polite, the mode for most changes; Assertive only for time-sensitive content) holds \"Label: message\" when an error or a warning appears on leaving a field, or a success when its check runs, while the field keeps its error semantics.",
         "refs": [
           "compose-live-regions",
           "compose-error-components"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "After a failed submit, a FocusRequester requests focus for the error summary, or for the first field in error without one, from the submit's event callback. No Android page says where focus goes after a failed submit, nor that TalkBack follows a requested focus or how to move TalkBack to an element that is not a control: this is our judgment.",
+        "refs": [
+          "compose-focus-requester"
         ],
         "platforms": [
           "android"
@@ -699,6 +744,16 @@
           "winui-live-setting",
           "winui-automation-live-setting",
           "windows-forms"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, after a failed submit, the error summary, or the first field in error without one, takes focus through its Focus method, with the focus state Programmatic. Windows' Forms page asks only to mark the fields with invalid input and to require a resubmit; it says nothing on focus: this is our judgment.",
+        "refs": [
+          "windows-programmatic-focus",
+          "windows-forms-submitting"
         ],
         "platforms": [
           "desktop"
@@ -1376,6 +1431,56 @@
         "id": "aria-relevant",
         "title": "WAI-ARIA 1.2: aria-relevant",
         "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-relevant"
+      },
+      {
+        "id": "wcag-scr32",
+        "title": "WCAG 2.2 Technique SCR32: Providing client-side validation and adding error text via the DOM",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32"
+      },
+      {
+        "id": "wcag-understanding-error-identification-native",
+        "title": "Understanding WCAG 2.2 SC 3.3.1: user agent native HTML form validation",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-identification#user-agent-native-html-form-validation"
+      },
+      {
+        "id": "html-interactive-validation",
+        "title": "HTML Standard: interactively validate the constraints",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#interactively-validate-the-constraints"
+      },
+      {
+        "id": "wcag-understanding-status-messages-excepted",
+        "title": "Understanding WCAG 2.2 SC 4.1.3: examples excepted from status messages",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages#excepted-examples"
+      },
+      {
+        "id": "mdn-tabindex",
+        "title": "MDN: tabindex",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/tabindex"
+      },
+      {
+        "id": "apple-accessibility-layout-changed",
+        "title": "Apple Accessibility: AccessibilityNotification.LayoutChanged",
+        "url": "https://developer.apple.com/documentation/accessibility/accessibilitynotification/layoutchanged"
+      },
+      {
+        "id": "uikit-layout-changed",
+        "title": "UIKit: UIAccessibility.Notification layoutChanged",
+        "url": "https://developer.apple.com/documentation/uikit/uiaccessibility/notification/layoutchanged"
+      },
+      {
+        "id": "swiftui-accessibility-focus-state",
+        "title": "SwiftUI: AccessibilityFocusState",
+        "url": "https://developer.apple.com/documentation/swiftui/accessibilityfocusstate"
+      },
+      {
+        "id": "compose-focus-requester",
+        "title": "Android developers: Compose, change focus behavior, use FocusRequester",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/change-focus-behavior#use-focus-requester"
+      },
+      {
+        "id": "windows-programmatic-focus",
+        "title": "Windows: Programmatic focus navigation",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/focus-navigation-programmatic"
       }
     ]
   },
@@ -1479,6 +1584,33 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-focus-after-submit",
+      "date": "2026-11-26",
+      "version": "0.38.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "After a failed submit, focus moves to the title of the form's error summary when the form has one, so people hear the count (\"Check 2 fields\") and every entry, \"Label: message\", as links to their fields (forms-message-relies-on-label); without a summary, focus moves to the first field in error. Focus moves once per submit and the move announces the summary or the field, with no live region. Per platform: on the web, focus() on the summary's title with tabindex=\"-1\"; on iOS and macOS, a layout-changed notification with the summary, or an accessibility focus state, and for a field its focus state with the layout-changed notification; on Android, a FocusRequester; on Windows, Focus with the focus state Programmatic. Whether a form shows a summary, and from how many errors, is step 9, which must let the summary take focus. No component, token or rendering change.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 8, point 3), B chosen as recommended, among: A, focus always moves to the first field in error (rejected: with a summary, its count and its entries are never heard, and a visible summary is skipped); B, focus moves to the summary's title when there is one, otherwise to the first field in error (chosen); C, focus stays on the submit button and a polite status message says \"Check N fields: Label, Label\" (rejected: people are left at the bottom of the form, a polite message can be missed, and a new count string needs plural forms in every language); D, focus moves to the first field and the count is announced politely (rejected: two announcements compete, and the count repeats the summary). The team follows the recommendation because it rests on screen-reader best practice, not on its own use of screen readers. Why B: G139 example 3 and SCR32 move focus to the list of errors, each entry linking to its field; without a list, the WAI tutorial advises focusing the first field in error after submit, which is also what user agents do: the HTML specification lets them focus an invalid control when their validation stops a submit, and Understanding 3.3.1 says they generally set focus back to the first field in error. A message that takes focus is a change of context, not a status message (Understanding 4.1.3, excepted examples), so no live region is needed. B holds whatever step 9 decides on the summary. No Apple, Android or Windows page says where focus goes after a failed submit (Windows' Forms page only asks to mark the invalid fields and require a resubmit), and no Android page says TalkBack follows a FocusRequester or how to move TalkBack to an element that is not a control: the platform means are our judgment. Sources opened on 2026-11-26: WAI forms tutorial (after submit, listing errors), G139, SCR32, Understanding 3.3.1, Understanding 4.1.3, HTML interactively validate the constraints, MDN tabindex, Apple AccessibilityNotification.LayoutChanged, UIKit layoutChanged, SwiftUI AccessibilityFocusState and FocusState, Compose change focus behavior, Windows programmatic focus navigation and Forms.",
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:4.1.3",
+        "wcag-g139",
+        "wcag-scr32",
+        "wai-forms-after-submit",
+        "wcag-understanding-error-identification-native",
+        "html-interactive-validation",
+        "wcag-understanding-status-messages-excepted",
+        "mdn-tabindex",
+        "apple-accessibility-layout-changed",
+        "uikit-layout-changed",
+        "swiftui-accessibility-focus-state",
+        "swiftui-focus-state",
+        "compose-focus-requester",
+        "windows-programmatic-focus",
+        "windows-forms-submitting"
+      ]
+    },
     {
       "id": "forms-warning-success-announcement",
       "date": "2026-11-26",
@@ -2110,6 +2242,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.38.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-focus-after-submit (#105 step 8, point 3): the rule announcement says that after a failed submit focus moves to the error summary's title when the form has one, otherwise to the first field in error, with each platform's means; five guidelines (generic, web, Apple, Android, Windows); ten references (SCR32, Understanding 3.3.1 native validation, HTML interactive validation, Understanding 4.1.3 excepted examples, MDN tabindex, Apple LayoutChanged and UIKit layoutChanged, SwiftUI AccessibilityFocusState, Compose FocusRequester, Windows programmatic focus). No component, token or rendering change."
+    },
     {
       "version": "0.37.0",
       "date": "2026-11-26",
