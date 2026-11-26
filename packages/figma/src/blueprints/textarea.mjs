@@ -21,7 +21,7 @@ export default {
       counter: 'MIN',
       bind: { paddingY: 'control.padding-block' },
       children: content({ value: 'Value\n\n', placeholder: 'Placeholder\n\n' }),
-    }), 'MIN'),
+    }), { firstLine: true }),
     description,
     message,
   ]),

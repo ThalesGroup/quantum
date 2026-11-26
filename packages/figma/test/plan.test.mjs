@@ -192,6 +192,25 @@ test('the fields center the message\'s icon on its first line: a frame as tall a
   }
 });
 
+test('the Textarea sets its after-control icon level with the first line, below control.padding-block', () => {
+  const plan = figmaComponent(loaded, specOf('textarea'), BLUEPRINTS.textarea);
+  for (const size of ['small', 'medium', 'large']) {
+    const root = plan.variants.find((v) => v.name.startsWith(`Size=${size}, Severity icon=after-control, Severity=warning,`) && v.name.endsWith('State=default')).root;
+    const row = root.children.find((c) => c.name === 'control-row');
+    assert.equal(row.align.counter, 'MIN');
+    const inset = row.children.find((c) => c.name === 'severity-icon-inset');
+    assert.equal(inset.bind.paddingTop, `textarea/control/padding-block/${size}`);
+    assert.equal(inset.children[0].glyph, 'warning');
+  }
+  const none = plan.variants.find((v) => v.name.includes('Severity icon=after-control, Severity=none,')).root;
+  assert.equal(findNode(none, 'severity-icon-inset'), undefined);
+  // The Text field keeps its icon centered on the control, without the inset.
+  const tf = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const row = tf.variants.find((v) => v.name.includes('Severity icon=after-control, Severity=error,')).root.children.find((c) => c.name === 'control-row');
+  assert.equal(row.align.counter, 'CENTER');
+  assert.equal(findNode(row, 'severity-icon-inset'), undefined);
+});
+
 test('State leaves out a state an enum axis sets: no variant names a severity twice or two of them', () => {
   for (const [id, blueprint] of Object.entries(BLUEPRINTS)) {
     const spec = specOf(id);

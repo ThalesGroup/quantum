@@ -138,15 +138,33 @@ export const message = {
   ],
 };
 
-/** The control and, when the form places it there, the severity icon after it (the web lays them out on a grid row). */
-export const withSeverityIcon = (controlNode, counter = 'CENTER') => ({
+/**
+ * The control and, when the form places it there, the severity icon after it (the web lays them out on a grid
+ * row). With `firstLine` (the Textarea), the row aligns at the top and the icon sits in a frame whose top
+ * padding is control.padding-block, level with the control's first line, as the web's
+ * `margin-block-start: var(--_padding-block)`.
+ */
+export const withSeverityIcon = (controlNode, { counter = 'CENTER', firstLine = false } = {}) => ({
   type: 'frame',
   name: 'control-row',
   layout: 'HORIZONTAL',
-  align: { primary: 'MIN', counter },
+  align: { primary: 'MIN', counter: firstLine ? 'MIN' : counter },
   width: 'FILL',
   bind: { gap: (v) => (v.props.severityIcon === 'after-control' ? 'severity-icon.gap' : null) },
-  children: [...[].concat(controlNode), severityIcon('after-control')],
+  children: [
+    ...[].concat(controlNode),
+    firstLine
+      ? {
+          type: 'frame',
+          name: 'severity-icon-inset',
+          layout: 'HORIZONTAL',
+          align: { primary: 'MIN', counter: 'MIN' },
+          when: iconAt('after-control'),
+          bind: { paddingTop: 'control.padding-block' },
+          children: [severityIcon('after-control')],
+        }
+      : severityIcon('after-control'),
+  ],
 });
 
 /** The `Leading icon` axis: a variant axis, as the Button's, because the control's start padding depends on it. */
