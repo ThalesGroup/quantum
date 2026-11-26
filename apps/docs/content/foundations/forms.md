@@ -442,25 +442,82 @@ fields are filled.
 
 ## How errors are announced
 
-> **Not decided yet (step 8).** Where focus goes after a failed submit (the first field in error
-> or the error summary), and how an error that appears without a submit reaches assistive
-> technology, on each platform.
+When an error appears as people leave a field, focus is already on the next one: the message
+appears where they no longer are. The form announces it, politely, as the field's label, a
+colon and the message ("Email address: Include an @, as in name@example.com"), the same string
+as the field's entry in the [error summary](#error-summary). The message relies on its label
+([Writing messages](#writing-messages)), so announced alone it would not say which field it
+concerns; with the label, the field in error is identified
+([WCAG 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification)) and the
+announcement is a status message, reaching people without moving their focus
+([WCAG 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages),
+[situation B and ARIA19](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html#techniques)).
+
+**Politely, not assertively.** An assertive announcement interrupts people and may clear what
+the screen reader was about to say, here the name of the field they just reached; WAI-ARIA asks
+authors not to use it unless the interruption is imperative
+([WAI-ARIA 1.2: aria-live](https://www.w3.org/TR/wai-aria-1.2/#aria-live)), and Android asks for
+polite in most cases
+([Compose semantics: alerts and pop-ups](https://developer.android.com/develop/ui/compose/accessibility/semantics#alerts-pop-ups)).
+A polite announcement waits for the field's name, and the error is checked again when people
+submit. This departs from two sources: the WAI tutorial's on-focus-change example uses an
+assertive live region
+([WAI: on focus change](https://www.w3.org/WAI/tutorials/forms/notifications/#on-focus-change)),
+and Material gives a text field's error text an alert role. The system follows the sources'
+general rule over their examples.
+
+**The form owns the announcement**, as it owns the summary: the controls render nothing for it.
+The team follows this as screen-reader best practice rather than from its own use of screen
+readers.
+
+> **Not decided yet (step 8).** Whether changes that bring no new error (an error that clears,
+> a warning, a success) are announced; where focus goes after a failed submit; what this page
+> states where a platform says nothing.
 
 ### Web
 
-The message is referenced by the control's `aria-describedby` for every severity, and a control
-in error carries `aria-invalid="true"`, so the message is read with the field when people reach
+One hidden live region per form, `aria-live="polite"`, present in the initial markup, since a
+region added along with its content may not be announced
+([MDN: ARIA live regions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions)),
+filled with "Label: message" when an error appears on leaving a field
+([ARIA19](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA19)). Not `role="alert"`, which is
+assertive ([WAI-ARIA 1.2: alert](https://www.w3.org/TR/wai-aria-1.2/#alert)). The message is
+also referenced by the control's `aria-describedby` for every severity, and a control in error
+carries `aria-invalid="true"`, so the message is read with the field when people come back to
 it.
+
+### iOS
+
+Apple asks apps to tell VoiceOver when visible content changes
+([HIG: VoiceOver](https://developer.apple.com/design/human-interface-guidelines/voiceover#Navigation)).
+The form posts an announcement of "Label: message"
+([AccessibilityNotification.Announcement](https://developer.apple.com/documentation/accessibility/accessibilitynotification/announcement),
+iOS 17) at low priority. A high priority interrupts other speech and cannot be interrupted;
+Apple's accessibility references do not define low and default, so low is the system's choice
+for a message that must not cut off the field people reached.
 
 ### Android
 
-The field exposes its error with the error semantics, so TalkBack reads the error with the field.
+A polite live region holds "Label: message" when an error appears on leaving a field
+([Compose semantics: alerts and pop-ups](https://developer.android.com/develop/ui/compose/accessibility/semantics#alerts-pop-ups)),
+and the field exposes its error with the error semantics, so TalkBack reads the error with the
+field when people come back to it.
 Material gives the error text an alert role, so it is also announced when it appears, on its own,
 without the label
 ([Material: text fields, accessibility](https://m3.material.io/components/text-fields/accessibility)):
 a message that relies on its label then does not say which field it concerns. Focused, the field
 reads its error with its label, and the error summary names the field; no source gives a way to
-add the label to the announcement itself.
+add the label to Material's announcement itself.
+
+### Desktop
+
+On macOS, the form posts the same low-priority announcement as on iOS (macOS 14, or
+[announcementRequested](https://developer.apple.com/documentation/appkit/nsaccessibility-swift.struct/notification/announcementrequested)
+on AppKit). On Windows, an element whose `LiveSetting` is `Polite`, non-interruptive
+([AutomationProperties.LiveSetting](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.livesetting),
+[AutomationLiveSetting](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.peers.automationlivesetting)),
+is named "Label: message". Windows' Forms page says nothing on announcing errors: this is the
+system's judgment, with the WinUI API for content that changes.
 
 ## Error summary
 
