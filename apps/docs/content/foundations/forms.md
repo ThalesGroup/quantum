@@ -375,8 +375,12 @@ without moving focus is a status message
 ([Understanding 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html#intent));
 how it is announced is step 8.
 
-> **Not decided yet (step 7).** Whether the submit action stays available while required fields
-> are empty.
+**The submit button stays enabled** while required fields are empty: people can always submit,
+and submitting shows the error of every required field they left empty, so they learn what is
+missing ([WAI: after submit](https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit)).
+This is the generic rule, applied as is on the web and on Android. iOS, macOS and Windows ask for
+the opposite, and there the submit button is disabled until the required fields are filled; the
+required marks tell people what keeps it disabled (see each platform below).
 
 ### Web
 
@@ -389,6 +393,15 @@ product keeps a cleared error hidden until people leave the field. A warning and
 no web state (see "Severities"), so the browser never shows them: the product sets `severity`
 itself, at the same moments.
 
+The submit button stays enabled. A disabled button leaves the tab order
+([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#focusabilityofdisabledcontrols)),
+a form whose default button is disabled is not submitted with Enter
+([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission)),
+and an inactive button is exempt from contrast
+([WCAG 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)), whose
+Understanding page gives this very button as its example: people would not find out what is
+missing.
+
 ### iOS
 
 Apple validates when it makes sense for the field: an email address when people move to
@@ -399,7 +412,10 @@ It gives feedback as soon as it detects a problem, so people can correct it righ
 the default checks a field when people leave it and clears its error as soon as it is fixed.
 Apple confirms that a task has completed only when it is significant, since people only need to know
 when it does not ([HIG: Feedback](https://developer.apple.com/design/human-interface-guidelines/feedback#Best-practices)):
-a field confirms only a check people cannot make themselves.
+a field confirms only a check people cannot make themselves. Apple makes a button such as Next
+or Continue available only after people enter the data the app requires
+([HIG: Entering data](https://developer.apple.com/design/human-interface-guidelines/entering-data#Best-practices)):
+on iOS the submit button is disabled until the required fields are filled.
 
 ### Android
 
@@ -407,7 +423,8 @@ A field can be checked as people move on from it, in the action of the keyboard'
 which keeps moving focus to the next field
 ([Compose: keyboard interaction logic](https://developer.android.com/develop/ui/compose/text/user-input#define-logic)).
 Material's text field guidelines say nothing about when a value is checked, nor about a warning
-or a success; the default applies.
+or a success, nor about disabling the submit button; the generic rule applies, and the submit
+button stays enabled.
 
 ### Desktop
 
@@ -417,7 +434,11 @@ a password box is validated as people type or once they finish
 ([Password box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/password-box#create-a-password-box)),
 and a submitted form marks the controls whose input is invalid
 ([Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)).
-Windows says nothing about when a warning or a success shows; the default applies.
+Windows says nothing about when a warning or a success shows; the default applies. Windows
+disables the submit button until all required information is filled in
+([Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)),
+and macOS follows Apple's guidance: on desktop the submit button is disabled until the required
+fields are filled.
 
 ## How errors are announced
 
@@ -453,7 +474,9 @@ People move through the fields in their reading order, the order that keeps thei
 physical or an assistive keyboard on every platform
 ([WCAG 2.4.3 Focus Order](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html#intent)).
 A form that is submitted has a submit button, and Enter in a single-line field submits it; the
-Textarea takes Enter as a new line. Each field says what Enter does in it; the form sets the label
+Textarea takes Enter as a new line. Where the submit button is disabled until the required fields
+are filled (iOS, macOS and Windows, see "When a value is checked"), Enter (Return) does not
+submit the form while it is disabled. Each field says what Enter does in it; the form sets the label
 of the on-screen keyboard's return key, because only the form knows which field comes last.
 
 ### Web

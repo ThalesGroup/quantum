@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.33.0",
+  "version": "0.34.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -83,7 +83,7 @@
     {
       "id": "timing",
       "name": "When a value is checked",
-      "text": "By default, as the recommended experience: a field shows an error when people leave it after changing it, and every field is checked when people submit the form, so a required field people skipped shows its error only then; a field never shows a new error while people are typing in it, and an error clears as people type, as soon as the value is right; a new error then waits until they leave the field again. A choice (a checkbox, a radio, an option in a list) is checked when people make it, since choosing commits the value. A check people try values against, such as an available user name or password rules, may run as they type. Some use cases cannot follow the default (a check only the server can make, a value checked as it is entered by its nature); they choose another timing, and still never mark a control as in error before people used it or before validation ran. A warning follows the error's timing, since its value is checked the same way: it shows when people leave a field they changed, or on submit, and clears as they type; the value being accepted, a warning never blocks the submit. A success shows only for a check people cannot make themselves, such as an available user name or a verified code, when that check runs; a field whose value merely passes its checks shows no success. Not decided yet: whether the submit action stays available while required fields are empty."
+      "text": "By default, as the recommended experience: a field shows an error when people leave it after changing it, and every field is checked when people submit the form, so a required field people skipped shows its error only then; a field never shows a new error while people are typing in it, and an error clears as people type, as soon as the value is right; a new error then waits until they leave the field again. A choice (a checkbox, a radio, an option in a list) is checked when people make it, since choosing commits the value. A check people try values against, such as an available user name or password rules, may run as they type. Some use cases cannot follow the default (a check only the server can make, a value checked as it is entered by its nature); they choose another timing, and still never mark a control as in error before people used it or before validation ran. A warning follows the error's timing, since its value is checked the same way: it shows when people leave a field they changed, or on submit, and clears as they type; the value being accepted, a warning never blocks the submit. A success shows only for a check people cannot make themselves, such as an available user name or a verified code, when that check runs; a field whose value merely passes its checks shows no success. The submit button stays enabled while required fields are empty, so that people can submit and learn what is missing (the generic rule, applied as is on the web and on Android); on iOS, macOS and Windows, whose guidance asks for it, it is disabled until the required fields are filled, the required marks telling people what keeps it disabled."
     },
     {
       "id": "announcement",
@@ -103,7 +103,7 @@
     {
       "id": "keyboard",
       "name": "Keyboard in a form",
-      "text": "People move through a form's fields from the keyboard in their reading order, on every platform. A form that is submitted has a submit button, and Enter (Return) in a single-line field submits it; a multi-line field takes Enter as a new line. A search field that stands alone, the only field of its search form, needs no submit button: Enter runs the search, and the Search field labels its own return key for search. The label of the on-screen keyboard's return key is the form's, set on each single-line field through the platform's own setting for its place in the form: on the web, where Enter submits from every single-line field and enterkeyhint changes only the label, it names the form's action (go, send, search, done) and never next; on iOS and Android, next on every field but the last, whose return key names the form's action and submits the form (Android's Next moves focus by itself, iOS moves it in the field's submit action). Desktop keyboards have no on-screen return key."
+      "text": "People move through a form's fields from the keyboard in their reading order, on every platform. A form that is submitted has a submit button, and Enter (Return) in a single-line field submits it; a multi-line field takes Enter as a new line. Where the submit button is disabled until the required fields are filled (iOS, macOS and Windows, rule timing), Enter (Return) does not submit the form while it is disabled. A search field that stands alone, the only field of its search form, needs no submit button: Enter runs the search, and the Search field labels its own return key for search. The label of the on-screen keyboard's return key is the form's, set on each single-line field through the platform's own setting for its place in the form: on the web, where Enter submits from every single-line field and enterkeyhint changes only the label, it names the form's action (go, send, search, done) and never next; on iOS and Android, next on every field but the last, whose return key names the form's action and submits the form (Android's Next moves focus by itself, iOS moves it in the field's submit action). Desktop keyboards have no on-screen return key."
     },
     {
       "id": "web-rendering",
@@ -565,6 +565,39 @@
         "text": "Apple confirms that a task has completed only when it is significant enough, since people only need to know when it does not: a field confirms only a check people cannot make themselves, and shows no success when its value merely passes.",
         "refs": [
           "hig-feedback-best-practices"
+        ]
+      },
+      {
+        "platforms": [
+          "web",
+          "android"
+        ],
+        "text": "The submit button stays enabled while required fields are empty: submitting shows the error of every required field left empty. On the web a disabled button would leave the tab order, a form whose default button is disabled is not submitted with Enter, and an inactive button is exempt from contrast, so people would not find out what is missing.",
+        "refs": [
+          "wai-forms-after-submit",
+          "apg-disabled-controls",
+          "html-implicit-submission",
+          "wcag:1.4.3",
+          "wcag:3.3.1"
+        ]
+      },
+      {
+        "platforms": [
+          "ios",
+          "desktop"
+        ],
+        "text": "Apple makes a button such as Next or Continue available only after people enter the data the app requires: on iOS and macOS the submit button is disabled until the required fields are filled.",
+        "refs": [
+          "hig-entering-data-best-practices"
+        ]
+      },
+      {
+        "platforms": [
+          "desktop"
+        ],
+        "text": "Windows disables the submit button until all required information is filled in, and marks the controls whose data is invalid on submission: on Windows the submit button is disabled until the required fields are filled.",
+        "refs": [
+          "windows-forms-submitting"
         ]
       },
       {
@@ -1122,6 +1155,11 @@
         "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html#intent"
       },
       {
+        "id": "apg-disabled-controls",
+        "title": "APG: keyboard interface, focusability of disabled controls",
+        "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#focusabilityofdisabledcontrols"
+      },
+      {
         "id": "html-user-validity-commit",
         "title": "HTML: common input element events (user validity when the user commits a change)",
         "url": "https://html.spec.whatwg.org/multipage/input.html#common-input-element-events"
@@ -1263,6 +1301,30 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-submit-enabled",
+      "date": "2026-11-26",
+      "version": "0.34.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "The submit button stays enabled while required fields are empty, so that submitting shows what is missing (forms-validation-timing); this is the generic rule, applied as is on the web and on Android. On iOS, macOS and Windows, whose guidance asks for it, the submit button is disabled until the required fields are filled, and Enter (Return) does not submit the form while it is disabled.",
+      "platforms": [
+        "web",
+        "ios",
+        "android",
+        "desktop"
+      ],
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 7, point 3), C, among: A, always enabled everywhere (against Apple's and Windows' guidance); B, disabled until the required fields are filled everywhere (nothing says what is missing, and on the web the button leaves the tab order, Enter does not submit and the label is exempt from contrast); C. It follows the foundation's principle that a platform follows its own requirements where it has them and the generic rule where it has none (label-placement, forms-required-windows-name). Sources opened: HIG Entering data, Windows Forms (submitting with button), HTML implicit submission, APG focusability of disabled controls, MDN aria-disabled, WAI after submit, Understanding 3.3.1 and 1.4.3 (inactive components, whose example is this very button). Material says nothing.",
+      "refs": [
+        "hig-entering-data-best-practices",
+        "windows-forms-submitting",
+        "html-implicit-submission",
+        "apg-disabled-controls",
+        "wai-forms-after-submit",
+        "wcag:1.4.3",
+        "wcag:3.3.1"
+      ]
+    },
     {
       "id": "forms-message-punctuation",
       "date": "2026-11-26",
@@ -1799,6 +1861,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.34.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-submit-enabled (#105 step 7, point 3; step 7 complete): the rule timing keeps the submit button enabled while required fields are empty (generic rule, web, Android) and lets iOS, macOS and Windows disable it until they are filled, as their guidance says; the rule keyboard says Enter does not submit while it is disabled; three guidelines (web and Android, Apple, Windows) and one reference (APG focusability of disabled controls). The Button 0.30.2 notes the exception. No token or rendering change."
+    },
     {
       "version": "0.33.0",
       "date": "2026-11-26",

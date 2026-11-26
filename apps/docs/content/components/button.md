@@ -145,7 +145,9 @@ region in another mode.
 | Disabled | `disabled` property. | Colors switch to the shared disabled palette, whatever the emphasis and intent, so a disabled ghost button gets the same fill and border as the others; hover and active no longer apply. |
 
 Prefer keeping actions enabled and explaining what is missing on activation. A disabled
-button cannot tell people why it is disabled.
+button cannot tell people why it is disabled. One exception comes from the platforms' own
+guidance: on iOS, macOS and Windows, a form's submit button is disabled until the form's
+required fields are filled (the Forms foundation, "When a value is checked").
 
 ## Content
 

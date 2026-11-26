@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "button",
   "name": "Button",
-  "version": "0.30.1",
+  "version": "0.30.2",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action or event when activated.",
@@ -141,7 +141,7 @@
       "name": "Disabled",
       "type": "boolean",
       "default": false,
-      "description": "Prevents activation; hover and active feedback no longer apply. Prefer keeping actions enabled and validating on activation."
+      "description": "Prevents activation; hover and active feedback no longer apply. Prefer keeping actions enabled and validating on activation; on iOS, macOS and Windows, a form's submit button is disabled until its required fields are filled (Forms, forms-submit-enabled)."
     }
   ],
   "states": [
@@ -1423,6 +1423,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.30.2",
+      "date": "2026-11-26",
+      "note": "Fix, no decision changed: the Disabled property and the States guidance note the exception the Forms foundation 0.34.0 makes (forms-submit-enabled): on iOS, macOS and Windows a form's submit button is disabled until its required fields are filled. No token, CSS or template change."
+    },
     {
       "version": "0.30.1",
       "date": "2026-11-19",
