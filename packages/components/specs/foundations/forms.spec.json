@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -88,12 +88,12 @@
     {
       "id": "announcement",
       "name": "How errors are announced",
-      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs (timing), are announced the same way, politely, through the same region or announcement: the label, a colon, a space, then the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent: people hear their own keystrokes, the field no longer reads as in error when they come back to it, and the submit checks every field again. After a failed submit, focus moves: to the title of the form's error summary when the form has one, so people hear how many fields to check (\"Check 2 fields\") then every entry, \"Label: message\", each a link to its field (summary); to the first field in error when it has none, which reads its label and its error. Focus moves once per submit, and the summary or the field taking focus is announced by that move, with no live region. On the web, the summary's title takes focus with focus() and tabindex=\"-1\"; on iOS and macOS, a layout-changed notification with the summary as the element to move to, or an accessibility focus state; to a field, its focus state, with the layout-changed notification; on Android, a FocusRequester; on Windows, the element's Focus method with the focus state Programmatic. Each platform follows its own guidance where it has some (when to check a value on Apple, Material's error semantics on Android, the marked fields of Windows), and the behaviour above where it has none, through the API its guideline names; no Apple, Android or Windows page says how a form's errors reach the screen reader or where focus goes after a failed submit, so those APIs are the system's judgment, and every guideline that rests on one ends by saying so. The system sets the default, the platforms follow their own guidance, and a product can still depart from both at the end for its own specifics: the default is the rule until it does."
+      "text": "When an error appears as people leave a field, focus already on the next one, the form announces it politely: the field's label, a colon, a space, then the message (\"Email address: Include an @, as in name@example.com\"), the same string as the field's error summary entry (message-wording), so the announcement says which field it concerns even though the message relies on its label. Politely, so that it waits for the name of the field people just reached instead of interrupting it; the error is checked again when people submit. The form owns this announcement, as it owns the summary, not the control: on the web, one hidden polite live region per form, present in the initial markup; on iOS and macOS, an accessibility announcement at low priority; on Android, a polite live region; on Windows, an element whose LiveSetting is Polite. The field still exposes its error with it (web-rendering, error semantics), read when people come back to it. A warning shown as people leave a field, and a success from a check people cannot make themselves, shown when that check runs (timing), are announced the same way, politely, through the same region or announcement: the label, a colon, a space, then the message (\"Email address: Check the domain: did you mean example.com?\", \"Username: This one is available\"). An error that clears as people type is silent: people hear their own keystrokes, the field no longer reads as in error when they come back to it, and the submit checks every field again. After a failed submit, focus moves: to the title of the form's error summary when the form has one, so people hear how many errors it lists (\"There are 2 errors in this form\") then every entry, \"Label: message\", each a link to its field (summary); to the first field in error when it has none, which reads its label and its error. Focus moves once per submit, and the summary or the field taking focus is announced by that move, with no live region. On the web, the summary's title takes focus with focus() and tabindex=\"-1\"; on iOS and macOS, a layout-changed notification with the summary as the element to move to, or an accessibility focus state; to a field, its focus state, with the layout-changed notification; on Android, a FocusRequester; on Windows, the element's Focus method with the focus state Programmatic. Each platform follows its own guidance where it has some (when to check a value on Apple, Material's error semantics on Android, the marked fields of Windows), and the behaviour above where it has none, through the API its guideline names; no Apple, Android or Windows page says how a form's errors reach the screen reader or where focus goes after a failed submit, so those APIs are the system's judgment, and every guideline that rests on one ends by saying so. The system sets the default, the platforms follow their own guidance, and a product can still depart from both at the end for its own specifics: the default is the rule until it does."
     },
     {
       "id": "summary",
       "name": "Error summary",
-      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. A dedicated Error summary component renders it, not the Alert: an alert must not affect keyboard focus (APG Alert pattern), and WAI-ARIA asks for an alertdialog, not an alert, when focus moves to a message, while the summary's title takes focus. So the summary has no alert role, its title takes focus, and its entries are links. Its behaviour is decided in step 9 (points 3 to 6), and the component is built in its own pull request after this foundation (#129). Not decided yet (step 9, points 3 to 6): its title and count, its entries, where it sits, and when it updates and clears."
+      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. A dedicated Error summary component renders it, not the Alert: an alert must not affect keyboard focus (APG Alert pattern), and WAI-ARIA asks for an alertdialog, not an alert, when focus moves to a message, while the summary's title takes focus. So the summary has no alert role, its title takes focus, and its entries are links. Its title states how many errors the form has: \"There are 3 errors in this form\", the WAI tutorial's example heading, one sentence with no period (message-wording). The number is the number of entries, one per field in error. The title states and the entries say the fix: the title is not a message, so the rule that a message says the fix applies to each entry, never to the title. The Error summary component holds this English title as its default, and the product passes its own, translated and pluralised: one plural string per language, whose form the language's plural rules pick from the number (English has two forms, one and other; Arabic has six), never a number joined to a word. By default a summary lists two errors or more, yet the string carries every form of its language, for a product that shows one with a single error. Its behaviour is decided in step 9 (points 4 to 6), and the component is built in its own pull request after this foundation (#129). Not decided yet (step 9, points 4 to 6): its entries, where it sits, and when it updates and clears."
     },
     {
       "id": "spacing",
@@ -653,6 +653,14 @@
         "refs": [
           "apg-alert",
           "aria-alert"
+        ]
+      },
+      {
+        "text": "The error summary's title states how many errors the form has, \"There are 3 errors in this form\", as the WAI tutorial's example heading does and as SCR32's heading counts them: a statement in one sentence with no period, while each entry below it says the fix. The product passes the title in its own language as one plural string, never a number joined to a word: languages have from one to six plural forms (English two, one and other; Arabic six), and the language's plural rules pick the form from the number.",
+        "refs": [
+          "wai-forms-listing-errors",
+          "wcag-scr32",
+          "mdn-intl-pluralrules"
         ]
       },
       {
@@ -1420,6 +1428,11 @@
         "url": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/"
       },
       {
+        "id": "mdn-intl-pluralrules",
+        "title": "MDN: Intl.PluralRules",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules"
+      },
+      {
         "id": "mdn-live-regions",
         "title": "MDN: ARIA live regions",
         "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions"
@@ -1616,6 +1629,21 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-summary-title",
+      "date": "2026-11-26",
+      "version": "0.42.0",
+      "area": "content",
+      "status": "active",
+      "text": "The error summary's title is a statement with the count: \"There are 3 errors in this form\", one sentence with no period (forms-message-punctuation), the number being the number of entries. The Error summary component holds it as its English default, and the product passes its own string, translated and pluralised: one plural string per language, its form picked by the language's plural rules from the number, never a number joined to a word. The title states and the entries say the fix (forms-message-says-the-fix, forms-message-relies-on-label): the title is not a message. It replaces the provisional example \"Check 2 fields\" of forms-focus-after-submit. No component, token or rendering change here; the component is built in #129.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 9, point 3), B chosen over the recommended A, among: A, \"Check 3 fields\", the count and the fix in two words (recommended; not chosen); B, \"There are 3 errors in this form\", a statement with the count, the WAI tutorial's own example heading (chosen); C, \"Check these fields\", the fix without a count (rejected); D, \"The form has errors\", as G139's \"Errors have occurred\", no count (rejected). No words from the team beyond the choice. Fit with step 11: the rule that a message says the fix applies to the entries, each \"Label: message\"; the title only states how many there are, so the two do not conflict, and the title follows the punctuation rule (one sentence, no period). Plurals: English has two forms (one, other) and Arabic six (zero, one, two, few, many, other), so a translated title is one plural string chosen from the number (MDN Intl.PluralRules), not a fixed word after a number. Sources opened on 2026-11-26: the WAI forms tutorial, listing errors (example heading \"There are 2 errors in this form\"), SCR32 (\"N Errors in Submission\"), G139 (example 3, \"Errors have occurred\"), MDN Intl.PluralRules.",
+      "refs": [
+        "wai-forms-listing-errors",
+        "wcag-scr32",
+        "wcag-g139",
+        "mdn-intl-pluralrules"
+      ]
+    },
     {
       "id": "forms-summary-component",
       "date": "2026-11-26",
@@ -2317,6 +2345,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.42.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-summary-title (#105 step 9, point 3): the rule summary says that the error summary's title states the count, \"There are 3 errors in this form\" (the WAI tutorial's example), the English default the Error summary component holds, the product passing its own translated, pluralised string (one plural string per language); the title states, the entries say the fix. The rule announcement's example follows. One guideline and one reference (MDN Intl.PluralRules). Its entries, place and updates are still open (step 9 points 4 to 6). No component, token or rendering change."
+    },
     {
       "version": "0.41.0",
       "date": "2026-11-26",

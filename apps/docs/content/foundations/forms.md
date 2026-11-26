@@ -492,8 +492,8 @@ their own keystrokes, the field no longer reads as in error when they come back 
 submit checks every field again. Announcing "no error" would talk over their typing.
 
 **After a failed submit, focus moves to the errors.** When the form has an [error
-summary](#error-summary), its title takes focus: people hear how many fields to check ("Check 2
-fields"), then every entry, "Label: message", each a link to its field. This is what
+summary](#error-summary), its title takes focus: people hear how many errors it lists ("There are
+2 errors in this form"), then every entry, "Label: message", each a link to its field. This is what
 [G139](https://www.w3.org/WAI/WCAG22/Techniques/general/G139#example-3-client-side-error-checking-with-no-popup)
 (example 3) and [SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32) do.
 When it has none, the first field in error takes focus and reads its label and its error, as the
@@ -640,8 +640,26 @@ A dedicated Error summary component renders it, a title that takes focus and a l
 the fields. Its behaviour is decided in the points below, and it is built in its own pull request
 after this foundation ([#129](https://github.com/ThalesGroup/quantum/issues/129)).
 
-> **Not decided yet (step 9, points 3 to 6).** The summary's title and count, its entries (errors
-> only, or warnings too), where it sits, and when it updates and clears.
+**Its title states the count.** "There are 3 errors in this form": a statement of how many errors
+the form has, the heading the WAI tutorial gives as its example
+([WAI forms tutorial: listing errors](https://www.w3.org/WAI/tutorials/forms/notifications/#listing-errors)),
+counted as SCR32's heading counts them
+([SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32)). The number is the
+number of entries, one per field in error, and the title is one sentence with no period, like a
+message ([Writing messages](#writing-messages)). The title states; the entries say the fix. The
+title is not a message, so "a message says the fix" applies to each entry, "Label: message",
+never to the title.
+
+The Error summary component holds this English title as its default, and the product passes its
+own, translated and pluralised. A number joined to a word does not translate: English has two
+plural forms (one, other), other languages up to six (Arabic: zero, one, two, few, many, other),
+and the language's plural rules pick the form from the number
+([MDN: Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules)).
+So the title is one plural string per language, with every form of that language, even though a
+summary lists two errors or more by default.
+
+> **Not decided yet (step 9, points 4 to 6).** The summary's entries (errors only, or warnings
+> too), where it sits, and when it updates and clears.
 
 ## Spacing
 
