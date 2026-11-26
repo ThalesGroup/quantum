@@ -455,12 +455,19 @@ it.
 ### Android
 
 The field exposes its error with the error semantics, so TalkBack reads the error with the field.
+Material gives the error text an alert role, so it is also announced when it appears, on its own,
+without the label
+([Material: text fields, accessibility](https://m3.material.io/components/text-fields/accessibility)):
+a message that relies on its label then does not say which field it concerns. Focused, the field
+reads its error with its label, and the error summary names the field; no source gives a way to
+add the label to the announcement itself.
 
 ## Error summary
 
-> **Not decided yet (step 9).** Whether a form lists its errors above the fields, each naming
-> the field, what is wrong and how to fix it, with a link to the field; from how many errors;
-> whether it uses the Alert component and receives focus.
+> **Not decided yet (step 9).** Whether a form lists its errors above the fields, with a link to
+> each field; from how many errors; whether it uses the Alert component and receives focus. The
+> wording of an entry is decided: the field's label, a colon, then its message
+> ([Writing messages](#writing-messages)).
 
 ## Spacing
 
@@ -524,12 +531,18 @@ of the on-screen keyboard's return key, because only the form knows which field 
   colon.
 - **The description** gives the format, an example or a limit, only when it is not obvious.
 - **The message says the fix**, the same way for every control and every severity. An error is
-  the instruction that fixes it: the control's verb and the thing asked for, with the format or
-  the limit when there is one, **Enter an email address with an @**, **Enter a quantity between
-  1 and 99**, **Choose a delivery method**, not **Invalid email**. An empty required field reads
-  like any other error, **Enter your full name**, never **This field is required**: the form
-  already said which fields are required. A warning says what to check, **Check the domain: did
-  you mean example.com?**, and a success what was confirmed, **This username is available**.
+  the instruction that fixes it: the control's verb, with the format or the limit when there is
+  one, **Include an @, as in name@example.com**, **Enter a number between 1 and 99**, **Choose
+  one**, not **Invalid email**. An empty required field reads like any other error, **Enter it as
+  on your ID**, never **This field is required**: the form already said which fields are
+  required. A warning says what to check, **Check the domain: did you mean example.com?**, and a
+  success what was confirmed, **This one is available**.
+- **The message relies on its label.** It sits under the label and does not repeat the field's
+  name: under **Email address**, **Include an @, as in name@example.com**, not **Enter an email
+  address with an @**. A screen reader reads the label first, as the control's name, then the
+  message, so the name is not said twice. The WAI tutorial's inline messages rely on their label
+  the same way, **Use the format MM/YYYY.**
+  ([WAI forms tutorial: user notification](https://www.w3.org/WAI/tutorials/forms/notifications/#after-submit)).
 - **Plain words, no blame.** A message speaks to people as you, without robotic words such as
   invalid, interjections, please or we. Apple asks to say how to fix an error, without blame,
   and to avoid robotic messages
@@ -569,7 +582,25 @@ of the on-screen keyboard's return key, because only the form knows which field 
   so without a period they run on when read, *…to this address Enter an email…*; with an icon,
   its name falls between them.
 
-> **Not decided yet (step 11).** How a message names its field in an error summary.
+- **A summary entry adds the label.** In an error summary, each entry is the field's label as
+  it is written, without its required or optional mark, a colon, then the message as it is
+  written, the whole entry a link to the field: **Country: Choose one**. An entry whose message is
+  empty shows the label alone, still as a link. So the summary always says which field is in
+  error, even when a backend sends no message, or the same bare code for several fields: the
+  label is always there. The message is written once, and the summary composes the entry, so the
+  two never disagree. The WAI tutorial's list of errors references each control's label and
+  links to the control, and WCAG's techniques link each error to its field and name the fields
+  left empty
+  ([WAI forms tutorial: listing errors](https://www.w3.org/WAI/tutorials/forms/notifications/#listing-errors),
+  [G139](https://www.w3.org/WAI/WCAG22/Techniques/general/G139),
+  [G83](https://www.w3.org/WAI/WCAG22/Techniques/general/G83)). The message keeps its own casing
+  after the colon: Microsoft's style guide lowercases the word after a colon in a sentence, Apple's
+  capitalizes a complete sentence after it
+  ([Microsoft Writing Style Guide: colons](https://learn.microsoft.com/en-us/style-guide/punctuation/colons),
+  [Apple Style Guide: colons](https://support.apple.com/guide/applestyleguide/c-apsgb744e4a3/web)),
+  and no source settles it for a summary, so the simpler choice holds: the summary changes
+  nothing in the message, whatever its language or its source. Whether a form has a summary is
+  step 9's.
 
 ## Accessibility
 

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -643,7 +643,7 @@
       "The label is a noun phrase naming the choice: Country, Time zone, Sort by. Sentence case, no colon, no trailing punctuation.",
       "Option labels are short and parallel; order them logically (alphabetical for long lists, most common first for short ones).",
       "The placeholder, when any, is an invitation to choose (Choose a country), shown until a choice is made; it is never a valid value.",
-      "The message of an error says what to do: Choose a country."
+      "The message of an error says what to do, relying on the label it sits under: Choose one"
     ]
   },
   "examples": [
@@ -755,7 +755,7 @@
         "placeholder": "Choose a country",
         "required": true,
         "severity": "error",
-        "message": "Choose a country",
+        "message": "Choose one",
         "options": [
           {
             "label": "France",
@@ -920,6 +920,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.5",
+      "date": "2026-11-26",
+      "note": "Fix: the example's error message and the content guideline rely on the label it sits under and no longer repeat the field's name (\"Choose one\"), as the Forms foundation decides (forms-message-relies-on-label). No rendering change."
+    },
     {
       "version": "0.3.4",
       "date": "2026-11-26",

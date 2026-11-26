@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -663,7 +663,7 @@
       "Option labels are short, parallel and mutually exclusive: Standard, Express, Pickup. Sentence case, no trailing punctuation.",
       "Put costs, delays and consequences in an option's description, not in its label.",
       "Order options logically (most common first, or a natural scale); offer a neutral option (None, Not sure) when people may have no preference.",
-      "The message of an error says what to do: Choose a delivery method."
+      "The message of an error says what to do, relying on the legend it sits under: Choose one"
     ]
   },
   "examples": [
@@ -784,7 +784,7 @@
         "name": "delivery-error",
         "required": true,
         "severity": "error",
-        "message": "Choose a delivery method",
+        "message": "Choose one",
         "options": [
           {
             "label": "Standard",
@@ -931,6 +931,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.2",
+      "date": "2026-11-26",
+      "note": "Fix: the example's error message and the content guideline rely on the label it sits under and no longer repeat the field's name (\"Choose one\"), as the Forms foundation decides (forms-message-relies-on-label). No rendering change."
+    },
     {
       "version": "0.2.1",
       "date": "2026-11-26",

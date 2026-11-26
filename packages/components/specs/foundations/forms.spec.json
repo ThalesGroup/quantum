@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -78,7 +78,7 @@
     {
       "id": "message-wording",
       "name": "A message says the fix",
-      "text": "A message tells people what to do, in plain words, the same way for every control and every severity. An error is the instruction that fixes it: the control's verb (enter, choose, check) and the thing asked for, with the format or the limit that fixes it when there is one (\"Enter an email address with an @\", \"Enter a quantity between 1 and 99\", \"Choose a delivery method\"), rather than a statement of what is wrong. An empty required field gets a message like any other error (\"Enter your full name\"), never \"This field is required\": the form already said which fields are required. A warning says what to check (\"Check the domain: did you mean example.com?\") and a success what was confirmed (\"This username is available\"). A message addresses people as you, without blame, without robotic words such as invalid, without interjections such as oops, without please and without we. Without a severity icon (severityIcon none), these words alone make the severity clear, since nothing but color says it otherwise: the fix of an error, what to check for a warning, what was confirmed for a success. This is a guideline the component cannot enforce: a project that cannot write its own messages (they come from a backend it cannot change, or they do not say their severity) adapts them itself, starting them with the severity's word and its language's colon (\"Error: …\", \"Erreur : …\" in French) unless they already start with it; the component writes no word and checks nothing (severity-icon). A message and a description are one sentence in sentence case, a second only when the fix needs it, about one line at the field's default width and two lines at most. A single sentence ends with no period (\"Choose a country\", \"We send the receipt to this address\"); with two or more sentences, every sentence ends with its period (\"Enter at least 20 characters. You have entered 10.\"); a question keeps its question mark (\"Check the domain: did you mean example.com?\"). Assistive technology gets the description and the message as one string joined by a space (aria-describedby), so without a period the two run on when read (\"…to this address Enter an email…\"); a severity icon's name falls between them, none does with severityIcon none. Not decided yet (step 11, point 4): how a message names its field in an error summary."
+      "text": "A message tells people what to do, in plain words, the same way for every control and every severity. An error is the instruction that fixes it: the control's verb (enter, choose, check, include) with the format or the limit that fixes it when there is one (\"Include an @, as in name@example.com\", \"Enter a number between 1 and 99\", \"Choose one\"), rather than a statement of what is wrong. A message sits under its label and relies on it: it does not repeat the field's name, which the label already says, on screen and as the control's accessible name read before the message. An empty required field gets a message like any other error (\"Enter it as on your ID\", \"Choose one\"), never \"This field is required\": the form already said which fields are required. A warning says what to check (\"Check the domain: did you mean example.com?\") and a success what was confirmed (\"This one is available\"). A message addresses people as you, without blame, without robotic words such as invalid, without interjections such as oops, without please and without we. Without a severity icon (severityIcon none), these words alone make the severity clear, since nothing but color says it otherwise: the fix of an error, what to check for a warning, what was confirmed for a success. This is a guideline the component cannot enforce: a project that cannot write its own messages (they come from a backend it cannot change, or they do not say their severity) adapts them itself, starting them with the severity's word and its language's colon (\"Error: …\", \"Erreur : …\" in French) unless they already start with it; the component writes no word and checks nothing (severity-icon). A message and a description are one sentence in sentence case, a second only when the fix needs it, about one line at the field's default width and two lines at most. A single sentence ends with no period (\"Choose a country\", \"We send the receipt to this address\"); with two or more sentences, every sentence ends with its period (\"Enter at least 20 characters. You have entered 10.\"); a question keeps its question mark (\"Check the domain: did you mean example.com?\"). Assistive technology gets the description and the message as one string joined by a space (aria-describedby), so without a period the two run on when read (\"…to this address Enter an email…\"); a severity icon's name falls between them, none does with severityIcon none. In an error summary, the entry of a field adds the name the inline message leaves out: the field's label verbatim, without its required or optional mark, a colon, a space, then the message with its own casing (\"Country: Choose one\", \"Email address: Include an @, as in name@example.com\"), the whole entry a link to the field; an entry whose message is empty shows the label alone, still as a link, so the summary always says which field is in error even when a backend sends no message or the same bare code for several fields. The message is written once and the summary composes the entry, so the field and the summary never disagree. On Android, a message read on its own, without its field (Material gives the error text an alert role, announced when it appears), loses the name it relies on: the field still reads the error with its label when focused (compose-error-components), and the summary names it."
     },
     {
       "id": "timing",
@@ -93,7 +93,7 @@
     {
       "id": "summary",
       "name": "Error summary",
-      "text": "Not decided yet: whether a form lists its errors above the fields, with a link to each field."
+      "text": "Not decided yet (step 9): whether a form lists its errors above the fields, with a link to each field. How each entry is worded is decided (message-wording): the field's label, a colon, then its message, as a link to the field."
     },
     {
       "id": "spacing",
@@ -489,6 +489,15 @@
         ]
       },
       {
+        "text": "A message relies on the label it sits under and does not repeat the field's name. An error summary references the label of each field: its entry is the label, a colon, then the message, as an in-page link to the field; an entry without a message is the label alone, still a link.",
+        "refs": [
+          "wai-forms-notifications",
+          "wcag-g139",
+          "wcag-g83",
+          "wcag:3.3.1"
+        ]
+      },
+      {
         "text": "A control is marked as in error only after its value was validated, not before people used it.",
         "refs": [
           "wcag-aria21"
@@ -632,6 +641,16 @@
         "refs": [
           "compose-error-components",
           "compose-live-regions"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "Material gives a text field's error text an alert role, so it is announced when it appears, on its own, without the field's label: a message that relies on its label then does not say which field it concerns. Focused, the field reads its error with it through its error semantics, and an error summary names the field in each entry; no source gives a way to add the label to the announcement itself.",
+        "refs": [
+          "material-text-fields-accessibility",
+          "compose-error-components"
         ],
         "platforms": [
           "android"
@@ -1198,6 +1217,16 @@
         "id": "windows-forms-submitting",
         "title": "Windows: Forms, submitting with button",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button"
+      },
+      {
+        "id": "wcag-g139",
+        "title": "WCAG technique G139: creating a mechanism that allows users to jump to errors",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G139"
+      },
+      {
+        "id": "wcag-g83",
+        "title": "WCAG technique G83: providing text descriptions to identify required fields that were not completed",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G83"
       }
     ]
   },
@@ -1212,7 +1241,7 @@
         "value": "ada.example.com",
         "description": "We will only use it to send your receipt",
         "severity": "error",
-        "message": "Enter an email address with an @",
+        "message": "Include an @, as in name@example.com",
         "required": true
       }
     },
@@ -1237,7 +1266,7 @@
         "label": "Username",
         "value": "ada.lovelace",
         "severity": "success",
-        "message": "This username is available"
+        "message": "This one is available"
       }
     },
     {
@@ -1250,7 +1279,7 @@
         "placeholder": "Choose a country",
         "required": true,
         "severity": "error",
-        "message": "Choose a country",
+        "message": "Choose one",
         "options": [
           {
             "label": "France",
@@ -1274,7 +1303,7 @@
         "name": "forms-delivery-error",
         "required": true,
         "severity": "error",
-        "message": "Choose a delivery method",
+        "message": "Choose one",
         "options": [
           {
             "label": "Standard",
@@ -1301,6 +1330,29 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-message-relies-on-label",
+      "date": "2026-11-26",
+      "version": "0.35.0",
+      "area": "content",
+      "status": "active",
+      "text": "Inline, a message relies on the label it sits under: it says the fix without repeating the field's name (\"Include an @, as in name@example.com\" under Email address, not \"Enter an email address with an @\"), consistent with forms-message-says-the-fix and forms-message-punctuation. An error summary entry is the field's label verbatim, without its required or optional mark, a colon, a space, then the message with its own casing, the whole entry a link to the field (\"Country: Choose one\"); an entry whose message is empty shows the label alone, still as a link. Whether there is a summary is step 9's; this only words its entries. Consequence on Android: Material gives the error text an alert role, announced on its own when it appears, so that announcement does not say which field it concerns; the field still reads its error with its label when focused (error semantics) and the summary names it, and no source gives a way to add the label to the announcement.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 11, point 4), B chosen over the recommended A, among: A, one sentence naming the thing asked, used both inline and in the summary (recommended, rejected); B, rely on the label inline, the summary adds it (chosen); C, the summary lists labels only (rejected: it says where, not what to fix); D, the summary has its own sentences (rejected: two strings per error that drift apart, the problem before the fix). The team's reason: the summary must always locate the error, even when the message is useless. A backend may return no message, or several identical ones (bare error codes); with A, the summary would show an empty bullet with no link, or identical entries with no context; with B, the label is always there. Sources: the WAI tutorial's inline message relies on its label (\"Use the format MM/YYYY.\") and its list of errors references each control's label with an in-page link; G139 asks for a link to each field in error and G83 for text identifying the omitted fields; Understanding 3.3.1 asks that the item in error be identified, which the label does inline and in the summary; ARIA19's live-region messages and Apple's Writing example name the thing asked, A's sources; ARIA21's inline message sits under its label. Material and Compose: see the consequence. Windows' Forms page is silent on wording and on a summary. Casing after the colon: Microsoft's style guide lowercases the word after a colon in a sentence, Apple's style guide capitalizes it when a complete sentence follows, Material's grammar page is silent; both are style guides outside the trusted accessibility sources, and no trusted source settles it, so the simpler choice is kept, the message's own casing: the summary changes nothing in the message, whatever its language or its source.",
+      "refs": [
+        "wai-forms-notifications",
+        "wcag-g139",
+        "wcag-g83",
+        "wcag:3.3.1",
+        "wcag:3.3.3",
+        "wcag-aria21",
+        "hig-writing-best-practices",
+        "material-text-fields-guidelines",
+        "material-text-fields-accessibility",
+        "compose-error-components",
+        "windows-forms",
+        "accname-description"
+      ]
+    },
     {
       "id": "forms-submit-enabled",
       "date": "2026-11-26",
@@ -1861,6 +1913,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.35.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-message-relies-on-label (#105 step 11, point 4; step 11 complete): the rule message-wording says a message relies on its label and does not repeat the field's name, and words an error summary entry as the label, a colon and the message, as a link, the label alone when the message is empty; the rule summary notes it; two guidelines (the summary entry, Android's alert announcement); two references (G139, G83). The examples drop the field's name from their messages. No token or rendering change."
+    },
     {
       "version": "0.34.0",
       "date": "2026-11-26",

@@ -67,7 +67,7 @@ The opened list is not a state of the component: the platform draws it.
 - Option labels are short and parallel; order them logically (alphabetical for long lists,
   most common first for short ones).
 - The placeholder is an invitation to choose (**Choose a country**), never a value.
-- The message of an error says what to do: **Choose a country**
+- The message of an error says what to do, under the label it relies on: **Choose one**
 
 ## Accessibility
 

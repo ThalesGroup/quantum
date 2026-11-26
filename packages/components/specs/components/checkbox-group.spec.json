@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -646,7 +646,7 @@
       "Option labels are short, parallel and positive: Email, Push, Text message. Sentence case, no trailing punctuation.",
       "Put consequences in an option's description, not in its label.",
       "Say when a choice is required or limited in the description: Choose at least one; Choose up to three.",
-      "The message of an error says what to do: Choose at least one channel."
+      "The message of an error says what to do, relying on the legend it sits under: Choose at least one"
     ]
   },
   "examples": [
@@ -773,7 +773,7 @@
         "name": "notifications-error",
         "required": true,
         "severity": "error",
-        "message": "Choose at least one channel",
+        "message": "Choose at least one",
         "options": [
           {
             "label": "Email",
@@ -922,6 +922,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.2.2",
+      "date": "2026-11-26",
+      "note": "Fix: the example's error message and the content guideline rely on the label it sits under and no longer repeat the field's name (\"Choose at least one\"), as the Forms foundation decides (forms-message-relies-on-label). No rendering change."
+    },
     {
       "version": "0.2.1",
       "date": "2026-11-26",
