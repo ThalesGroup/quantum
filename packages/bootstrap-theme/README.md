@@ -1030,11 +1030,15 @@ them, and the theme restyles nothing directly.
   stays regular.
 - **Selection controls in error.** The labels of a checkbox, radio or switch in error read the root
   `--bs-danger-fg`, the on-subtle text the alerts use, not the field message's on-base role.
-- **Warning severity.** Quantum's fields can show a warning (`severity`); Bootstrap has no
-  `.is-warning` state, only `.is-valid` and `.is-invalid`. Bootstrap builds more validation states
-  from its Sass `$validation-states` map, which the CSS-variable theme does not reach, so the
-  warning border and message (`text-field.control.border-color.warning`, `text-field.message.color.warning`)
-  are not mapped.
+- **Warning severity.** Quantum's fields can show a warning (`severity`); Bootstrap's CSS has only
+  `.is-valid` and `.is-invalid`. Bootstrap builds more validation states from its Sass
+  `$validation-states` map (`("warning": "warning")` adds `.is-warning` and `.warning-feedback`),
+  but the theme does not take that route: `dist/quantum.css` and `dist/quantum.scss` deliver the
+  same theme, and a state that exists only when Bootstrap is compiled from Sass would make them
+  differ. So the warning fill, border, message and focus ring (`text-field.control.*.warning`,
+  `text-field.message.color.warning`) are not mapped. With the CSS theme, `.warning-feedback` has no
+  rule, so a warning message written with it shows as plain body text, always visible: write a
+  warning as a `.form-text` description or an alert instead.
 - **The Forms family.** The Forms foundation's `form.*` tokens are the defaults every form control
   aliases (its colors, its text sizes per size, the part gap `form.container.gap`). The theme maps
   each control's own tokens, whose values are the family's (`--bs-form-text-margin-top` reads
