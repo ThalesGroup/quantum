@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -93,7 +93,7 @@
     {
       "id": "summary",
       "name": "Error summary",
-      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. A dedicated Error summary component renders it, not the Alert: an alert must not affect keyboard focus (APG Alert pattern), and WAI-ARIA asks for an alertdialog, not an alert, when focus moves to a message, while the summary's title takes focus. So the summary has no alert role, its title takes focus, and its entries are links. Its title states how many errors the form has: \"There are 3 errors in this form\", the WAI tutorial's example heading, one sentence with no period (message-wording). The number is the number of entries, one per field in error. The title states and the entries say the fix: the title is not a message, so the rule that a message says the fix applies to each entry, never to the title. The Error summary component holds this English title as its default, and the product passes its own, translated and pluralised: one plural string per language, whose form the language's plural rules pick from the number (English has two forms, one and other; Arabic has six), never a number joined to a word. By default a summary lists two errors or more, yet the string carries every form of its language, for a product that shows one with a single error. It lists the errors only: one entry per field in error, in the order the fields appear in the form. A warning never blocks the submit (timing), so it stays under its field and the summary leaves it out; the title counts exactly the entries. On the web, each entry is a plain in-page link to its field, with no script: <a href=\"#id\">, the id being the field's control. For a group, the link names the group's first option, never its fieldset, which cannot take focus. Following the link, the browser scrolls the control to the top of the view and focuses it (HTML, scrolling to a fragment). To keep the label in view, each field's control carries a top scroll margin (CSS scroll-margin-top) at least as tall as its label, or its group's legend, and the gap above the control: the browser then stops that much higher, and the label shows above the focused field. The system uses the platform's native means first: no script on the web where the browser gives the same result. Two trade-offs come with it: each activation adds a fragment to the URL and an entry to the history, so Back walks through the fields before leaving the page; and a single-page app whose router takes over # links may need its own handling, the product's choice. iOS, Android and desktop have no in-page link: activating an entry moves focus to the field with the means the rule announcement names (a layout-changed notification with the field, a FocusRequester, the Focus method with the focus state Programmatic), the field and its label scrolled into view; no Apple, Android or Windows page says so, so this is the system's judgment. The scroll margin is built with the Error summary component, on the field controls, in #129; this foundation states the behaviour. The component is built in its own pull request after this foundation (#129). Not decided yet (step 9, points 5 and 6): where it sits, and when it updates and clears."
+      "text": "An error summary is optional, never mandatory: a list of the form's errors above its fields, each entry a link to its field. By default, a form shows one after a failed submit when two fields or more are in error; with one error it shows none, and focus moves to that field (announcement). A product may decide never to show one, as a short form such as a sign-in with an email and a password does: this is the product override of the default (announcement). No source gives a number of errors from which to list them: the WAI tutorial, G139 and SCR32 list any number, and WCAG 3.3.1 mandates no particular way, so the form meets it with or without a summary. When the form shows one, the rules it already has apply: its title takes focus after a failed submit (announcement), each entry is the field's label, a colon, then its message, as a link to the field (message-wording), and the form announces the rest as it does without one (announcement). After people fix one of two errors and submit again, one error is left: the summary goes and focus moves to that field. No Apple, Android or Windows page says whether a form lists its errors, so the default applies on every platform. A dedicated Error summary component renders it, not the Alert: an alert must not affect keyboard focus (APG Alert pattern), and WAI-ARIA asks for an alertdialog, not an alert, when focus moves to a message, while the summary's title takes focus. So the summary has no alert role, its title takes focus, and its entries are links. Its title states how many errors the form has: \"There are 3 errors in this form\", the WAI tutorial's example heading, one sentence with no period (message-wording). The number is the number of entries, one per field in error. The title states and the entries say the fix: the title is not a message, so the rule that a message says the fix applies to each entry, never to the title. The Error summary component holds this English title as its default, and the product passes its own, translated and pluralised: one plural string per language, whose form the language's plural rules pick from the number (English has two forms, one and other; Arabic has six), never a number joined to a word. By default a summary lists two errors or more, yet the string carries every form of its language, for a product that shows one with a single error. It lists the errors only: one entry per field in error, in the order the fields appear in the form. A warning never blocks the submit (timing), so it stays under its field and the summary leaves it out; the title counts exactly the entries. On the web, each entry is a plain in-page link to its field, with no script: <a href=\"#id\">, the id being the field's control. For a group, the link names the group's first option, never its fieldset, which cannot take focus. Following the link, the browser scrolls the control to the top of the view and focuses it (HTML, scrolling to a fragment). To keep the label in view, each field's control carries a top scroll margin (CSS scroll-margin-top) at least as tall as its label, or its group's legend, and the gap above the control: the browser then stops that much higher, and the label shows above the focused field. The system uses the platform's native means first: no script on the web where the browser gives the same result. Two trade-offs come with it: each activation adds a fragment to the URL and an entry to the history, so Back walks through the fields before leaving the page; and a single-page app whose router takes over # links may need its own handling, the product's choice. iOS, Android and desktop have no in-page link: activating an entry moves focus to the field with the means the rule announcement names (a layout-changed notification with the field, a FocusRequester, the Focus method with the focus state Programmatic), the field and its label scrolled into view; no Apple, Android or Windows page says so, so this is the system's judgment. The scroll margin is built with the Error summary component, on the field controls, in #129; this foundation states the behaviour. The component is built in its own pull request after this foundation (#129). It sits at the top of the form, inside it: the first thing after the form's heading and introduction, above the first field, so the summary comes before the fields it lists and the visual, reading and focus orders agree; after its last entry, Tab reaches the first field. A form in a dialog or a panel shows it at the top of that form, never at the top of the page behind it. On a page that is only the form, this is the top of the page before the form, where the WAI tutorial and G139 put it; SCR32 puts it at the top of the form. Its title is a heading one level below the form's heading, or below the page's when the form has none. On iOS, Android and desktop, it is the first element of the form's scrolling content, above the first field, and scrolls with it, never pinned; no Apple, Android or Windows page says where, so this is the system's judgment. Its place needs no script on the web. Not decided yet (step 9, point 6): when it updates and clears."
     },
     {
       "id": "spacing",
@@ -671,6 +671,16 @@
           "html-scroll-to-fragment",
           "html-navigate-fragment",
           "mdn-scroll-margin-top"
+        ]
+      },
+      {
+        "text": "The error summary sits at the top of the form, before its first field: the WAI tutorial lists errors at the top of the page, before the form, and G139 describes a text at the top of the page, both on a page that is the form, while SCR32 displays the list at the top of the form. Before the fields it lists, the summary keeps a reading sequence that makes sense and a focus order that preserves meaning: from the title, Tab goes through the entries to the first field.",
+        "refs": [
+          "wai-forms-listing-errors",
+          "wcag-g139",
+          "wcag-scr32",
+          "understanding-meaningful-sequence",
+          "understanding-focus-order"
         ]
       },
       {
@@ -1263,6 +1273,11 @@
         "url": "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/basic-accessibility-information#accessible-name"
       },
       {
+        "id": "understanding-meaningful-sequence",
+        "title": "Understanding WCAG 2.2: 1.3.2 Meaningful Sequence, intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence#intent"
+      },
+      {
         "id": "understanding-focus-order",
         "title": "Understanding WCAG 2.2: 2.4.3 Focus Order, intent",
         "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html#intent"
@@ -1654,6 +1669,22 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-summary-place",
+      "date": "2026-11-26",
+      "version": "0.44.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "The error summary sits at the top of the form, inside it: after the form's heading and introduction, before the first field; in a dialog or a panel, at the top of that form. Its title is a heading one level below the form's heading (or the page's when the form has none). On iOS, Android and desktop, it is the first element of the form's scrolling content, scrolling with it, never pinned (the system's judgment: no platform page says where). No component, token or rendering change here; the component is built in #129.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 9, point 5): A, as recommended, among: A, at the top of the form, before its first field (chosen); B, at the top of the page, under its main heading, before the form (rejected: written for a page that is only the form; in a dialog the top of the page is behind it, and with other content or other forms it sits away from the form it lists); C, at the end of the form, above the submit button (rejected: read after the fields it lists, Tab from its last entry goes to submit, no source places it there). No words from the team beyond the choice. On a page that is only the form, A is the place the WAI tutorial (\"list them at the top of the page, before the form\") and G139 (\"a text description at the top of the page\") give; SCR32 displays the list \"at the top of the form\", its container inside the form before the first fieldset. Before the fields, the reading sequence (1.3.2) and the focus order (2.4.3) follow the meaning: the live sheet checked that Tab after the last entry reaches the first field in A, the page's links first in B, and submit in C. Placing it needs no script in any option (the team's native-first principle of point 4). Sources opened on 2026-11-26: the WAI forms tutorial (listing errors), G139, SCR32, Understanding 1.3.2 and 2.4.3 (intents); Apple's HIG Entering data, Material and Windows say nothing of a list of errors.",
+      "refs": [
+        "wai-forms-listing-errors",
+        "wcag-g139",
+        "wcag-scr32",
+        "understanding-meaningful-sequence",
+        "understanding-focus-order"
+      ]
+    },
     {
       "id": "forms-summary-entries",
       "date": "2026-11-26",
@@ -2386,6 +2417,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.44.0",
+      "date": "2026-11-26",
+      "note": "Decision forms-summary-place (#105 step 9, point 5): the rule summary says that the error summary sits at the top of the form, before its first field (in a dialog or a panel, at the top of that form), its title a heading one level below the form's; on iOS, Android and desktop, the first element of the form's scrolling content, not pinned. One guideline and one reference (Understanding 1.3.2). Its updates are still open (step 9 point 6). No component, token or rendering change."
+    },
     {
       "version": "0.43.0",
       "date": "2026-11-26",

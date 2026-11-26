@@ -697,8 +697,27 @@ submit uses (see [How errors are announced](#how-errors-are-announced)), and bri
 its label into view. No Apple, Android or Windows page says how a list of errors reaches its
 fields, so this is the system's judgment.
 
-> **Not decided yet (step 9, points 5 and 6).** Where the summary sits, and when it updates and
-> clears.
+**It sits at the top of the form.** The summary is the first thing inside the form, after its
+heading and introduction, above the first field. It comes before the fields it lists, so what
+people see, what a screen reader reads and where Tab goes agree: from the title, Tab goes through
+the entries, then to the first field
+([Understanding 1.3.2](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence#intent),
+[Understanding 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html#intent)). On a
+page that is only the form, that is the top of the page, before the form, where the WAI tutorial
+and G139 put it
+([WAI forms tutorial: listing errors](https://www.w3.org/WAI/tutorials/forms/notifications/#listing-errors),
+[G139](https://www.w3.org/WAI/WCAG22/Techniques/general/G139)); SCR32 puts it at the top of the
+form ([SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32)). The top of the
+form still holds where the top of the page does not: a form in a dialog or a side panel shows it at
+the top of that form, never behind it on the page, and a page with several forms shows each one's
+summary above its own fields. Its title is a heading one level below the form's heading, or below
+the page's when the form has none. Its place needs no script.
+
+**On iOS, Android and desktop, it opens the form's content.** It is the first element of the
+form's scrolling content, above the first field, and scrolls with it; it is never pinned. No
+Apple, Android or Windows page says where a list of errors goes, so this is the system's judgment.
+
+> **Not decided yet (step 9, point 6).** When the summary updates and clears.
 
 ## Spacing
 
