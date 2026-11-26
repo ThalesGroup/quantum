@@ -502,8 +502,22 @@ export default {
     {
       id: 'form-control-focus', section: 'Text field', component: 'text-field', title: 'Focus ring offset (flush)', tier: 'component',
       selector: '.form-control:focus-visible, .form-control:focus-within',
-      why: 'Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap keeps its own focus ring color for a control in error and draws no outline at rest, so the 1.2 px and 2.4 px severity outlines of a Quantum field are not themable.',
+      why: 'Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap draws no outline at rest, so the 1.2 px severity outline of a Quantum field is not themable; the focused one is (below).',
       tokens: { '--bs-focus-ring-offset': { template: 'calc(-1 * {text-field.control.border-width})', why: 'The ring covers the 0.6px border exactly (a token alias cannot negate a token).' } },
+    },
+    {
+      id: 'form-control-error-focus', section: 'Text field', component: 'text-field', title: 'Error, focused', tier: 'component',
+      selector: '.form-control.is-invalid:focus-visible',
+      also: ['[data-bs-validate] .form-control:user-invalid:focus-visible'],
+      why: 'Bootstrap reads --bs-danger-focus-ring on these rules (the theme sets it on the root to the one focus color for every other use). A focused Quantum field in error keeps the severity color at the focus width (step 7); the ring width is the root --bs-focus-ring-width.',
+      tokens: { '--bs-danger-focus-ring': 'text-field.control.outline-color.error' },
+    },
+    {
+      id: 'form-control-success-focus', section: 'Text field', component: 'text-field', title: 'Success, focused', tier: 'component',
+      selector: '.form-control.is-valid:focus-visible',
+      also: ['[data-bs-validate~=valid] .form-control:user-valid:focus-visible'],
+      why: 'Bootstrap reads --bs-success-focus-ring on these rules: a focused Quantum field in success keeps the severity color at the focus width (step 7).',
+      tokens: { '--bs-success-focus-ring': 'text-field.control.outline-color.success' },
     },
     {
       id: 'form-control-error', section: 'Text field', component: 'text-field', title: 'Error (.is-invalid)', tier: 'component',
@@ -557,6 +571,25 @@ export default {
       tokens: {
         '--bs-form-text-font-size': { token: 'text-field.description.typography.medium', member: 'fontSize' },
         '--bs-form-text-color': 'text-field.description.color.default',
+      },
+    },
+
+    {
+      id: 'invalid-feedback', section: 'Text field', component: 'text-field', title: 'Error message (.invalid-feedback)', tier: 'component',
+      selector: '.invalid-feedback',
+      why: 'Bootstrap reads --bs-danger-fg and --bs-font-size-sm on this rule; set here, they reach the field message only, while alerts and badges keep the root on-subtle text. A Quantum message scales with its field; Bootstrap has one message size, so it takes the medium one. Its medium weight has no variable (README, Not themable).',
+      tokens: {
+        '--bs-danger-fg': 'text-field.message.color.error',
+        '--bs-font-size-sm': { token: 'text-field.message.typography.medium', member: 'fontSize' },
+      },
+    },
+    {
+      id: 'valid-feedback', section: 'Text field', component: 'text-field', title: 'Success message (.valid-feedback)', tier: 'component',
+      selector: '.valid-feedback',
+      why: 'Bootstrap reads --bs-success-fg and --bs-font-size-sm on this rule: the field message in the on-base success text, at the medium size.',
+      tokens: {
+        '--bs-success-fg': 'text-field.message.color.success',
+        '--bs-font-size-sm': { token: 'text-field.message.typography.medium', member: 'fontSize' },
       },
     },
 

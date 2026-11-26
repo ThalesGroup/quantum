@@ -25,7 +25,9 @@ A theme uses what the framework documents for theming and nothing else:
   that follow `data-bs-theme`), the Sass configuration (`@use "bootstrap" with (...)`: theme
   color maps, surfaces, radii, spacers, font sizes, per-component token maps) and the
   per-component custom properties a component declares (`--bs-btn-*`), set on the selectors
-  Bootstrap uses.
+  Bootstrap declares or reads them on: a variable a Bootstrap rule reads (`.invalid-feedback`
+  reads `--bs-danger-fg`) may be set on that exact rule, so the value reaches that component only,
+  as `--bs-label-*`, read on `.form-label`, is set on the root.
 - **shadcn/ui**: the CSS variables of its theme (`--background`, `--primary`, `--radius`, …) on
   `:root` and `.dark`, bridged to Tailwind in `@theme inline`, and the registry item
   (`registry:theme`, `cssVars.theme/light/dark`) that `shadcn add` applies.

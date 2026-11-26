@@ -527,11 +527,23 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | `--bs-control-line-height` | `text-field.control.line-height` | `1.5` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius.large` | `0.25rem` |  |
 
-Focus ring offset (flush), on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use. Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap keeps its own focus ring color for a control in error and draws no outline at rest, so the 1.2 px and 2.4 px severity outlines of a Quantum field are not themable.
+Focus ring offset (flush), on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use. Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap draws no outline at rest, so the 1.2 px severity outline of a Quantum field is not themable; the focused one is (below).
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-focus-ring-offset` | `calc(-1 * {text-field.control.border-width})` | `calc(-1 * 0.6px)` | The ring covers the 0.6px border exactly (a token alias cannot negate a token). |
+
+Error, focused, on `.form-control.is-invalid:focus-visible` (and `[data-bs-validate] .form-control:user-invalid:focus-visible`); Sass: written after the @use. Bootstrap reads --bs-danger-focus-ring on these rules (the theme sets it on the root to the one focus color for every other use). A focused Quantum field in error keeps the severity color at the focus width (step 7); the ring width is the root --bs-focus-ring-width.
+
+| Bootstrap | ← Quantum | Light / dark | Why |
+| --- | --- | --- | --- |
+| `--bs-danger-focus-ring` | `text-field.control.outline-color.error` | `#C01619` / `#EE5248` |  |
+
+Success, focused, on `.form-control.is-valid:focus-visible` (and `[data-bs-validate~=valid] .form-control:user-valid:focus-visible`); Sass: written after the @use. Bootstrap reads --bs-success-focus-ring on these rules: a focused Quantum field in success keeps the severity color at the focus width (step 7).
+
+| Bootstrap | ← Quantum | Light / dark | Why |
+| --- | --- | --- | --- |
+| `--bs-success-focus-ring` | `text-field.control.outline-color.success` | `#075D33` / `#16AE64` |  |
 
 Error (.is-invalid), on `.form-control.is-invalid`; Sass: written after the @use.
 
@@ -586,6 +598,20 @@ Description (.form-text), on `.form-text`; Sass `$form-text-tokens`. A Quantum d
 | --- | --- | --- | --- |
 | `--bs-form-text-font-size` | `text-field.description.typography.medium` (fontSize) | `0.75rem` |  |
 | `--bs-form-text-color` | `text-field.description.color.default` | `#313131` / `#B8B8B8` |  |
+
+Error message (.invalid-feedback), on `.invalid-feedback`; Sass: written after the @use. Bootstrap reads --bs-danger-fg and --bs-font-size-sm on this rule; set here, they reach the field message only, while alerts and badges keep the root on-subtle text. A Quantum message scales with its field; Bootstrap has one message size, so it takes the medium one. Its medium weight has no variable (README, Not themable).
+
+| Bootstrap | ← Quantum | Light / dark | Why |
+| --- | --- | --- | --- |
+| `--bs-danger-fg` | `text-field.message.color.error` | `#C01619` / `#F88275` |  |
+| `--bs-font-size-sm` | `text-field.message.typography.medium` (fontSize) | `1rem` |  |
+
+Success message (.valid-feedback), on `.valid-feedback`; Sass: written after the @use. Bootstrap reads --bs-success-fg and --bs-font-size-sm on this rule: the field message in the on-base success text, at the medium size.
+
+| Bootstrap | ← Quantum | Light / dark | Why |
+| --- | --- | --- | --- |
+| `--bs-success-fg` | `text-field.message.color.success` | `#075D33` / `#11C772` |  |
+| `--bs-font-size-sm` | `text-field.message.typography.medium` (fontSize) | `1rem` |  |
 
 
 #### Checkbox
@@ -991,10 +1017,11 @@ them, and the theme restyles nothing directly.
 - **Read-only fill.** A read-only Quantum field sits on level 1 (`text-field.control.background.readonly`):
   Bootstrap styles `[readonly]` only on file and color inputs, so a read-only `.form-control` keeps
   the resting fill.
-- **Message color.** The message (`.invalid-feedback`, `.valid-feedback`) reads `--bs-danger-fg` or
-  `--bs-success-fg`, the theme's on-subtle text (`#940E11` / `#FAA79D` for an error), where Quantum
-  writes it in the on-base severity text (`text-field.message.color.error`, `#C01619` / `#F88275`,
-  and `.success`).
+- **Message weight.** The theme sets the message's color and size on `.invalid-feedback` and
+  `.valid-feedback` (the on-base severity text, 16px); its medium weight has no variable, so it
+  stays regular.
+- **Selection controls in error.** The labels of a checkbox, radio or switch in error read the root
+  `--bs-danger-fg`, the on-subtle text the alerts use, not the field message's on-base role.
 - **Warning severity.** Quantum's fields can show a warning (`severity`); Bootstrap has no
   `.is-warning` state, only `.is-valid` and `.is-invalid`. Bootstrap builds more validation states
   from its Sass `$validation-states` map, which the CSS-variable theme does not reach, so the
@@ -1014,7 +1041,7 @@ them, and the theme restyles nothing directly.
   Bootstrap has one label size and one description size on every field, so the theme sets the
   medium ones, the size of a field without a size (`text-field.label.typography.medium`,
   `text-field.description.typography.medium`); `.col-form-label-sm` and `.col-form-label-lg` keep
-  Bootstrap's own sizes. The message keeps Bootstrap's `--bs-font-size-sm` (14px) in regular weight.
+  Bootstrap's own sizes. The message takes the medium size too (16px).
 - **Label line height.** `.form-label` reads no line-height variable and inherits the body's 1.5
   (24px at 16px), where a Quantum label sits on a 1.2 line (`text-field.label.typography.*`).
 - **Spacing between parts.** Quantum spaces the label, control, description and message 6px apart
