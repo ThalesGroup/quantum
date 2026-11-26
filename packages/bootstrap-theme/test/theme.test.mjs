@@ -125,6 +125,25 @@ test('dist/quantum.css: Quantum values where the brief expects them', () => {
   assert.equal(get('.card', '--bs-card-bg'), 'light-dark(#F7F7F7, #212121)');
 });
 
+test('each input size keeps its Quantum height on a line that does not clip, with the largest space step', () => {
+  const rules = parseRules(themeCss());
+  const px = (v) => (v.endsWith('rem') ? parseFloat(v) * 16 : parseFloat(v));
+  const get = (selector, property) => rules.find((r) => r.selector === selector && r.declarations.some((d) => d.property === property))?.declarations.find((d) => d.property === property).value;
+  const border = px(get('.form-control', '--bs-control-border-width'));
+  const shortest = Number(q.light.get('text-field.control.line-height'));
+  const steps = [...q.tokens.values()].filter((t) => /^space\.\d+$/.test(t.path)).map((t) => q.light.get(t.path)).filter((v) => v.unit === 'px').map((v) => v.value).sort((a, b) => a - b);
+  for (const [selector, size] of [['.form-control-sm', 'small'], ['.form-control', 'medium'], ['.form-control-lg', 'large']]) {
+    const lineHeight = Number(get(selector, '--bs-control-line-height'));
+    const line = px(get(selector, '--bs-control-font-size')) * lineHeight;
+    const padding = px(get(selector, '--bs-control-padding-y'));
+    const minHeight = px(get(selector, '--bs-control-min-height'));
+    assert.ok(lineHeight >= shortest, `${selector}: line ${lineHeight} is at least text-field.control.line-height (${shortest})`);
+    assert.ok(line + 2 * padding + 2 * border <= minHeight + 1e-9, `${selector}: ${line} + 2 x ${padding} + borders fits the ${size} min-height ${minHeight}`);
+    const next = steps.find((s) => s > padding);
+    assert.ok(line + 2 * next + 2 * border > minHeight, `${selector}: the next space step (${next}px) would outgrow ${minHeight}px`);
+  }
+});
+
 test('dist/quantum.css uses the theming API only, each value traced to its source', () => {
   const css = themeCss();
   const rules = parseRules(css);

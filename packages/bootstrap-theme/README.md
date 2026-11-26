@@ -489,9 +489,9 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | --- | --- | --- | --- |
 | `--bs-control-min-height` | `text-field.control.min-height.medium` | `2.25rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.medium` | `0.75rem` |  |
-| `--bs-control-padding-y` | `space.7` | `0.4375rem` | Bootstrap pads inputs and textareas alike; Quantum keeps a minimum block padding on a field (text-field.control.padding-block, 3 / 5 / 8px) that shows only once the text outgrows the min-height, and pads the textarea more. The largest space step that keeps a medium input at its 36px min-height (line 19.2px + 2 x 7px + borders). |
+| `--bs-control-padding-y` | `space.5` | `0.3125rem` | Bootstrap pads inputs and textareas alike; Quantum keeps a minimum block padding on a field (text-field.control.padding-block, 3 / 5 / 8px) that shows only once the text outgrows the min-height, and pads the textarea more. The largest space step that keeps a medium input at its 36px min-height (line 24px + 2 x 5px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.medium` (fontSize) | `1rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.medium` (lineHeight) | `1.2` |  |
+| `--bs-control-line-height` | `text-field.control.line-height` | `1.5` | The value's shortest line on the web (decision value-line-not-clipped): Chromium and WebKit clip an input's text to its line box, and a 1.2 line cuts the stacked marks of Ấ or Ỗ. Bootstrap has no input-only selector, so a textarea's rows take 1.5 too (README, Not themable). |
 | `--bs-control-fg` | `text-field.control.color.default` | `#0E0E0E` / `#CFCFCF` |  |
 | `--bs-control-bg` | `text-field.control.background.default` | `#FDFDFD` / `#191919` |  |
 | `--bs-control-border-width` | `text-field.control.border-width` | `0.6px` |  |
@@ -511,9 +511,9 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | --- | --- | --- | --- |
 | `--bs-control-min-height` | `text-field.control.min-height.small` | `1.75rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.small` | `0.5rem` |  |
-| `--bs-control-padding-y` | `space.4` | `0.25rem` | Keeps a small input at its 28px min-height (line 16.8px + 2 x 4px + borders). |
+| `--bs-control-padding-y` | `space.2` | `0.125rem` | Keeps a small input at its 28px min-height (line 21px + 2 x 2px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.small` (fontSize) | `0.875rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.small` (lineHeight) | `1.2` |  |
+| `--bs-control-line-height` | `text-field.control.line-height` | `1.5` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius.small` | `0.125rem` |  |
 
 .form-control-lg (large), on `.form-control-lg`; Sass: written after the @use.
@@ -522,9 +522,9 @@ Text disabled (ghost), on `.btn-text:disabled, .btn-text.disabled, .btn-text.btn
 | --- | --- | --- | --- |
 | `--bs-control-min-height` | `text-field.control.min-height.large` | `2.75rem` |  |
 | `--bs-control-padding-x` | `text-field.control.padding-inline.large` | `1rem` |  |
-| `--bs-control-padding-y` | `space.10` | `0.625rem` | Keeps a large input at its 44px min-height (line 19.2px + 2 x 10px + borders). |
+| `--bs-control-padding-y` | `space.8` | `0.5rem` | Keeps a large input at its 44px min-height (line 24px + 2 x 8px + borders). |
 | `--bs-control-font-size` | `text-field.control.typography.large` (fontSize) | `1rem` |  |
-| `--bs-control-line-height` | `text-field.control.typography.large` (lineHeight) | `1.2` |  |
+| `--bs-control-line-height` | `text-field.control.line-height` | `1.5` |  |
 | `--bs-control-border-radius` | `text-field.control.border-radius.large` | `0.25rem` |  |
 
 Focus ring offset (flush), on `.form-control:focus-visible, .form-control:focus-within`; Sass: written after the @use. Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap keeps its own focus ring color for a control in error and draws no outline at rest, so the 1.2 px and 2.4 px severity outlines of a Quantum field are not themable.
@@ -1012,9 +1012,15 @@ them, and the theme restyles nothing directly.
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
   button sizes: the same heights (28px, 44px) as Quantum's small and large fields, but the
   button label's line height and padding, not the field's.
-- **Field padding.** Bootstrap pads inputs and textareas alike, where Quantum centers a field's
-  line (no block padding) and pads only the textarea: the block padding is the space step that
-  keeps each input at its Quantum height, so a textarea's first line sits a little higher.
+- **Field line and padding.** Bootstrap styles inputs and textareas with the same `.form-control`
+  properties and has no input-only selector. The theme gives the value Quantum's shortest web line
+  (`text-field.control.line-height`, 1.5), so Chromium and WebKit no longer clip the stacked marks
+  of Ấ or Ỗ, and the largest space step that keeps each input at its Quantum height as the block
+  padding (`space.2`, `space.5`, `space.8`: inputs 28, 36 and 44px). Quantum's own minimum
+  padding (`text-field.control.padding-block`, 3, 5 and 8px) would make a small input 28.2px.
+  The textarea follows: its rows are 1.5 lines where Quantum's textarea keeps the 1.2 line of
+  `textarea.control.typography` and pads more (`textarea.control.padding-block`), so three rows are
+  83.2px high in Bootstrap and 74.6px in Quantum.
 - **Spinner.** Bootstrap's ring is `currentColor` with a transparent segment: Quantum's track
   color (`spinner.ring.border-color`), ring color and timing are not themable, and the large size
   has no class.

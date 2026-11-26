@@ -155,6 +155,11 @@ them out rather than restyle the components:
   controls. The colors reach shadcn through the semantic roles they alias; shadcn's `Field`,
   `FieldGroup` and `FieldSet` set their gaps and text sizes with Tailwind classes in the
   components, not with a theme variable, so the family's sizes and gaps are not mapped.
+- **The value's line.** `Input` sets its text with `text-base md:text-sm` (16 px on a 24 px line,
+  14 px on a 20 px line from 768 px), so Chromium and WebKit clip the stacked marks of Ấ or Ỗ: the
+  input keeps about 95 % of their ink. Quantum gives the value a 1.5 line on the web
+  (`text-field.control.line-height`); shadcn's theming variables have no type size or line height,
+  and Tailwind's `--text-*--line-height` would move every text that uses the size.
 - **Border widths.** Quantum draws 0.6 px borders (`stroke-width.sm`); shadcn's `border` is 1 px.
 - **Hover and active colors.** Quantum has a token per state (`global.bg.accent.brand.hover`,
   `.active`); shadcn blends the rest color with opacity (`hover:bg-primary/90`, `bg-secondary/80`),
