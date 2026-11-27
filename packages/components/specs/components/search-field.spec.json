@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.22.1",
+  "version": "0.22.2",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -18,7 +18,7 @@
       "id": "container",
       "role": "container",
       "required": true,
-      "description": "Root. Stacks the label, the control, the description and the error message; carries the size and the forced state."
+      "description": "Root. Stacks the label, the control, the description and the message; carries the size and the forced state."
     },
     {
       "id": "label",
@@ -2084,6 +2084,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.22.2",
+      "date": "2026-11-27",
+      "note": "Fix (#103 step 34, from Forms step 12): the root's anatomy description names the message, no longer the error message, as the layout note and the content guideline have since 0.21.0 (step 26), where the message says an error, a warning or a success. Text only."
+    },
     {
       "version": "0.22.1",
       "date": "2026-11-27",
