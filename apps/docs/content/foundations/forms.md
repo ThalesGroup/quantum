@@ -142,7 +142,7 @@ control it holds, as it passes `markedFields`: a form never mixes labels above a
 start, and with `start` it sizes one column for all its labels. A group's legend sits in that
 column, as a field's label does; a checkbox, a radio or a switch keeps its label after the box
 whatever the setting. In a design tool the setting is not one of the component's variants, as
-`markedFields` is not. When the column stacks above the fields is decided in step 10, point 8.
+`markedFields` is not.
 
 **In the column, each label sits against its control.** Every label and every group legend aligns
 to the end of the column, so it ends 12 px from its control whatever the length of the others; the
@@ -157,6 +157,17 @@ but no short label ends far from its control. A label's first line is centred on
 box, and the description and the message stay under the control. In a right-to-left language the
 column mirrors: the labels sit to the right of their fields.
 
+**A narrow form stacks its labels above its fields.** By default the column stacks when the form
+itself is narrower than 30 rem (480 px), wherever it sits: a page, a dialog, a side panel. On the
+web the form is a size container and a container query on its own width stacks the labels, with no
+script, so it also stacks when people zoom in. A label and its input change "to a vertical
+alignment" when space is limited ([C38](https://www.w3.org/WAI/WCAG22/Techniques/css/C38)), and the
+form then reads at a width of 320 CSS px without scrolling in two dimensions
+([WCAG 1.4.10 Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)). No source gives the
+threshold: 30 rem leaves room for a 14 em column, its 12 px gap and a control of about 240 px. It is
+a default: a product may keep the column at smaller widths, or move the threshold, when its labels
+and controls still fit, as long as the form still reflows at 320 CSS px.
+
 The other platforms follow their own requirements and constraints where they have some, and
 the generic rule where they have none. A floating label is allowed where it is the platform's
 standard way.
@@ -165,11 +176,16 @@ standard way.
   field is empty and at its top once it is selected or filled, always visible; an adjacent label
   aligned to the container's leading edge may take its place
   ([Material: text fields guidelines](https://m3.material.io/components/text-fields/guidelines)).
+  A label column stacks at the largest font sizes, where a label beside its control no longer
+  fits.
 - **iOS and macOS.** Apple gives no rule on where a text field's label sits; since a placeholder
   disappears when people type, a separate label can be useful
   ([HIG: Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
   On macOS a checkbox has its title on its trailing side, and a radio button is followed by its
   label ([HIG: Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles#Checkboxes)).
+  At larger Dynamic Type sizes, horizontally adjacent views may need to stack vertically
+  ([HIG: Layout, adaptability](https://developer.apple.com/design/human-interface-guidelines/layout#Adaptability)):
+  on iOS a label column stacks at the largest text sizes, whatever the form's width.
 - **Windows.** Labels are left-aligned and placed above the input control; labels on the left
   are shown as what not to do ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#labels)), so a form's `labelPlacement` stays
   `above` on Windows, whatever the form sets.

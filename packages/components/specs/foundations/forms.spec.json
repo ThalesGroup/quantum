@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.55.0",
+  "version": "0.56.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -56,7 +56,7 @@
     {
       "id": "label-placement",
       "name": "Where the label sits",
-      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. In the column, every label and every group legend aligns to its end, against its control: the column is as wide as the longest label, at most 14 em (a longer label wraps), and each label ends form.gap.label-column (space.12, 12 px) from its control whatever the other labels' lengths, immediately before its field. A label's first line is centred on the control's box; the description and the message stay under the control; in a right-to-left language start and end mirror, so the labels sit to the right of their fields. When the column stacks is decided in step 10, point 8; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting."
+      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. In the column, every label and every group legend aligns to its end, against its control: the column is as wide as the longest label, at most 14 em (a longer label wraps), and each label ends form.gap.label-column (space.12, 12 px) from its control whatever the other labels' lengths, immediately before its field. A label's first line is centred on the control's box; the description and the message stay under the control; in a right-to-left language start and end mirror, so the labels sit to the right of their fields. By default the column stacks, every label back above its field, when the form itself is narrower than 30 rem (480 px), wherever the form sits (a page, a dialog, a side panel), so it also stacks when people zoom in; a product may keep the column at smaller widths, or move the threshold, when its labels and controls still fit, still without scrolling in two dimensions at a width of 320 CSS px. On iOS and Android the column also stacks at the largest text sizes; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting."
     },
     {
       "id": "required",
@@ -1022,6 +1022,32 @@
         ]
       },
       {
+        "text": "A label column stacks its labels above their fields when the form is too narrow for a label and its control side by side, by default under 30 rem of the form's own width, so the form reflows at a width of 320 CSS px without scrolling in two dimensions. A product that keeps the column at smaller widths still has to meet that.",
+        "refs": [
+          "wcag:1.4.10",
+          "wcag-c38"
+        ]
+      },
+      {
+        "text": "On the web the form is a size container and a container query on its own width stacks the labels, with no script: it stacks in a narrow panel on a wide screen as on a phone, and at 400 % zoom.",
+        "platforms": [
+          "web"
+        ],
+        "refs": [
+          "wcag-c38",
+          "wcag:1.4.10"
+        ]
+      },
+      {
+        "text": "On iOS, horizontally adjacent views may need to stack vertically at larger Dynamic Type sizes to give text more room: a label column stacks at the largest text sizes, whatever the form's width.",
+        "platforms": [
+          "ios"
+        ],
+        "refs": [
+          "hig-layout-adaptability"
+        ]
+      },
+      {
         "text": "On Windows, labels are left-aligned and placed above the input control, many controls having a Header property for it; a form with labels on the left is shown as what not to do, so a form's labelPlacement stays above on Windows.",
         "refs": [
           "windows-forms"
@@ -1252,6 +1278,16 @@
         "id": "rgaa-glossary-accoles",
         "title": "RGAA 4.1 glossary: accolés (label and field)",
         "url": "https://accessibilite.numerique.gouv.fr/methode/glossaire/#accoles-etiquette-et-champ-accoles"
+      },
+      {
+        "id": "wcag-c38",
+        "title": "C38: Using CSS width, max-width and flexbox to fit labels and inputs",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/css/C38"
+      },
+      {
+        "id": "hig-layout-adaptability",
+        "title": "Apple HIG: Layout, adaptability",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/layout#Adaptability"
       },
       {
         "id": "wai-forms-grouping",
@@ -1930,6 +1966,20 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-label-column-stacking",
+      "date": "2026-11-27",
+      "version": "0.56.0",
+      "area": "layout",
+      "status": "active",
+      "text": "By default a label column stacks, every label back above its field, when the form itself is narrower than 30 rem (480 px): on the web with a container query on the form, no script, so it stacks wherever the form sits (a page, a dialog, a side panel) and at 400 % zoom. A product may keep the column at smaller widths, or move the threshold, when its labels and controls still fit; it stays bound by reflow, no scrolling in two dimensions at a width of 320 CSS px. iOS and Android also stack it at the largest text sizes; Windows keeps its labels above (forms-label-column).",
+      "rationale": "Decided by the team on 2026-11-27 (#105 step 10, point 8): A, the form's own width, as the recommended default, among: A, when the form is narrower than 30 rem, a container query (chosen); B, when the viewport is narrower than 600 px, a media query (rejected: a form in a narrow side panel on a wide screen keeps its column and squeezes its controls); C, never by itself, left to the product (rejected as the default: at 320 px the controls get a few characters or the page scrolls sideways, against 1.4.10). The team's words: \"Step 10.8 -> A as a recommendation, but in the end it'll always depend on the product constraints, maybe we could have forms that stay horizontal even at really small breakpoints (not the majority of cases but it can happen).\" Hence the default with a product override, the team's principle (a default, each platform's guidance, the product's constraints), the override still bound by 1.4.10. C38, a sufficient technique for 1.4.10, changes a label and its input to a vertical alignment \"when space is limited\"; Understanding 1.4.10 asks for content at a width equivalent to 320 CSS pixels without scrolling in two dimensions; HIG Layout (Adaptability) says horizontally adjacent views may need to stack vertically at larger Dynamic Type sizes, and #103 step 20 found a label beside its control must stack at the largest text sizes on iOS and Android (WCAG 1.4.4). The 30 rem threshold is the system's judgment: a 14 em label column, the 12 px gap and a control of about 240 px; no source gives a number. Sources opened on 2026-11-27: C38, Understanding 1.4.10, HIG Layout (Adaptability).",
+      "refs": [
+        "wcag:1.4.10",
+        "wcag-c38",
+        "hig-layout-adaptability"
+      ]
+    },
     {
       "id": "forms-label-column-gap",
       "date": "2026-11-27",
@@ -2868,6 +2918,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.56.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-label-column-stacking (#105 step 10, point 8): the rule label-placement says a label column stacks by default when the form itself is narrower than 30 rem (a container query on the web, no script), a product may keep it narrower or move the threshold while meeting 1.4.10 at 320 CSS px, iOS and Android also stack at the largest text sizes. Three guidelines (every platform; web; iOS) and two references (C38, HIG Layout adaptability). Step 10 is decided. No component, token or rendering change here: the field family builds the column."
+    },
     {
       "version": "0.55.0",
       "date": "2026-11-27",
