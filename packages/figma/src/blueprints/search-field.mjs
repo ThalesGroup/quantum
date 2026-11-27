@@ -10,11 +10,11 @@
  * padding-inline-start. Here the glyph sits in `icon-inset`, a frame positioned absolutely at the
  * field's start edge and vertically centered, whose left padding is icon.margin-inline.
  */
-import { CONTENT, TRANSITION, LINE_FLOOR, ICON_AXES, SEVERITY_ICON_AXES, ASTERISK, container, content, description, field, labelRow, message, withSeverityIcon, LONG_LABEL_NOTE } from './text-field.mjs';
+import { CONTENT, TRANSITION, LINE_FLOOR, ICON_AXES, SEVERITY_ICON_AXES, ASTERISK, LABEL_COLUMN, container, content, description, field, labelRow, message, withSeverityIcon, LONG_LABEL_NOTE } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
-  fixed: { markedFields: 'none' },
+  fixed: { markedFields: 'none', labelPlacement: 'above' },
   booleans: { Mark: false, 'Show description': false },
   note: LONG_LABEL_NOTE,
   root: container([
@@ -24,6 +24,7 @@ export default {
     message,
   ]),
   notDrawn: [
+    LABEL_COLUMN,
     TRANSITION,
     SEVERITY_ICON_AXES,
     ICON_AXES,

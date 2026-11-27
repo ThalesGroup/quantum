@@ -373,6 +373,79 @@
   outline-width: var(--textarea-control-outline-width-focus-visible);
 }
 
+
+/* ---- Label at the start (labelPlacement start) --------------------------------------------------------------
+   The form lays its fields out on one grid, [label] fit-content(14em) [control] minmax(0, 1fr), as a size
+   container (product CSS, Forms page). The field carries its row: a subgrid of that grid, the label in the first
+   column, ending against the control, its first line level with the first line of text, at any number of rows (Forms decision forms-label-multiline); everything else in the second. It sets its own
+   column gap, which would otherwise be its part gap. Standalone (no grid around it), subgrid computes to none and
+   the field draws its own two columns, the label's as wide as the label (the form must be the grid and the size container). With the severity icon after the
+   control, both share the second column. Under 30 rem of the form's width the label stacks back above (Forms
+   decisions forms-label-column, -alignment, -column-gap, -column-stacking, forms-label-column-web). */
+
+.ds-textarea[data-label-placement="start"] {
+  display: inline-grid;
+  grid-column: 1 / -1;
+  grid-auto-columns: auto minmax(0, 1fr);
+  column-gap: var(--textarea-container-column-gap-start);
+  row-gap: var(--textarea-container-gap);
+  align-items: start;
+}
+.ds-textarea[data-label-placement="start"] > * {
+  grid-column: 2;
+}
+.ds-textarea[data-label-placement="start"] > .ds-textarea__label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  text-align: end;
+  margin-block-start: calc(var(--_padding-block) + (var(--_line-height) * var(--_font-size) - var(--_label-font-size) * var(--_label-line-height)) / 2);
+}
+.ds-textarea[data-label-placement="start"] > .ds-textarea__control {
+  grid-row: 1;
+}
+.ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__control {
+  grid-column: 2;
+  justify-self: start;
+  inline-size: calc(100% - var(--_severity-icon-size) - var(--textarea-severity-icon-gap-after-control));
+}
+.ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin-block-start: var(--_padding-block);
+}
+
+/* A subgrid of the form's grid only inside the form, a size container at least 30 rem wide: Chromium sizes a
+   subgrid with no grid around it to its min-content, so alone the field keeps its own two columns. */
+@container (width >= 30rem) {
+  .ds-textarea[data-label-placement="start"] {
+    grid-template-columns: subgrid;
+  }
+}
+
+@container (width < 30rem) {
+  .ds-textarea[data-label-placement="start"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-textarea[data-label-placement="start"] > *,
+  .ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > * {
+    grid-column: 1;
+  }
+  .ds-textarea[data-label-placement="start"] > .ds-textarea__label {
+    justify-self: start;
+    text-align: start;
+    margin-block-start: 0;
+  }
+  .ds-textarea[data-label-placement="start"] > .ds-textarea__control,
+  .ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__control,
+  .ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ds-textarea__control {
     transition: none;

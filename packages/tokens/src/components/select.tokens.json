@@ -6,6 +6,13 @@
         "$type": "dimension",
         "$value": "{form.container.gap}",
         "$description": "Between the label, the control, the description and the message."
+      },
+      "column-gap": {
+        "$type": "dimension",
+        "start": {
+          "$description": "With labelPlacement start, between the label column and the control: the form's label column gap (Forms decision forms-label-column-gap). The field row sets it itself, as its own part gap would otherwise win over the form grid's.",
+          "$value": "{form.gap.label-column}"
+        }
       }
     },
     "label": {

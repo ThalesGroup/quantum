@@ -46,6 +46,16 @@ the box, or none.
 The search glyph follows the text beside it: as light as the placeholder while the field is
 empty, as dark as the value once people type. It never stands out from the text it introduces.
 
+## Label at the start
+
+A form can put the labels of its fields in a column at the start (**Label placement** `start`),
+set once for all its field-like controls, never per field
+([Forms foundation](/foundations/forms/guidelines)). The search field then sits in the form's column: its
+label ends 12 px from the box, its first line centred on the box, and the description and the message stay
+under the box. When the form is narrower than 30 rem, the label goes back above. The form draws the
+column, sized to its longest label, at most 14 em: the Forms page gives the few lines of CSS it
+takes on the web. Alone, the search field draws its own two columns. In Figma the label stays above.
+
 ## Content
 
 - The label says what is searched: **Search**, **Search projects**, **Filter by name**.

@@ -93,6 +93,15 @@ export const LONG_LABEL_NOTE = 'To keep "(optional)" right after a long label\'s
 /** The form setting markedFields, drawn by `Mark` and `Mark text` instead of a variant axis (decision mark-part). */
 export const MARKED_FIELDS = { markedFields: 'optional' };
 
+/**
+ * The form settings of a field-like control (decisions mark-part, label-placement): markedFields drawn by `Mark` and
+ * `Mark text`, labelPlacement drawn above, both kept out of the variants. A label column is the form's layout.
+ */
+export const FIELD_SETTINGS = { ...MARKED_FIELDS, labelPlacement: 'above' };
+
+/** The label column's gap (labelPlacement start): the component draws its label above (decision label-placement). */
+export const LABEL_COLUMN = { slot: 'container.column-gap', reason: 'The label column is the form\'s layout: the component draws its label above (labelPlacement fixed, decision label-placement).' };
+
 /** The asterisk is Android's and Windows' (decision asterisk-style): the component draws the web specification. */
 export const ASTERISK = { slot: 'asterisk', reason: 'Drawn on Android and Windows only (decision asterisk-style); the Figma component draws the web specification (decision mark-part).' };
 
@@ -311,9 +320,9 @@ export const ICON_AXES = { slot: 'icon.fill, icon.grade, icon.optical-size', rea
 
 export default {
   axes: [CONTENT, LEADING_ICON],
-  fixed: MARKED_FIELDS,
+  fixed: FIELD_SETTINGS,
   booleans: { Mark: true, 'Show description': false },
   note: LONG_LABEL_NOTE,
   root: container([labelRow, withSeverityIcon(withLeadingIcon(content(), 'mail')), description, message]),
-  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES, ASTERISK, LINE_FLOOR],
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ICON_AXES, ASTERISK, LINE_FLOOR, LABEL_COLUMN],
 };

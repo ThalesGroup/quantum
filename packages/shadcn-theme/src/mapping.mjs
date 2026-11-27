@@ -275,6 +275,7 @@ export const COMPONENTS = [
       { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLabel.' },
       { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { set: { labelPlacement: 'start' }, props: { component: 'Field orientation="horizontal"' }, note: 'The label beside the control, each Field on its own: shadcn has no label column shared by the form.' },
     ],
   },
   {
@@ -294,6 +295,7 @@ export const COMPONENTS = [
       { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLabel.' },
       { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { set: { labelPlacement: 'start' }, props: { component: 'Field orientation="horizontal"' }, note: 'The label beside the control, each Field on its own: shadcn has no label column shared by the form.' },
     ],
   },
   {
@@ -313,6 +315,7 @@ export const COMPONENTS = [
       { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLabel.' },
       { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { set: { labelPlacement: 'start' }, props: { component: 'Field orientation="horizontal"' }, note: 'The label beside the control, each Field on its own: shadcn has no label column shared by the form.' },
     ],
   },
   {
@@ -325,6 +328,7 @@ export const COMPONENTS = [
       { state: 'warning', props: null, note: 'shadcn has no warning state: only aria-invalid.' },
       { state: 'success', props: null, note: 'shadcn has no success state: only aria-invalid.' },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { set: { labelPlacement: 'start' }, props: { component: 'Field orientation="horizontal"' }, note: 'The label beside the control, each Field on its own: shadcn has no label column shared by the form.' },
     ],
   },
   {
@@ -338,6 +342,7 @@ export const COMPONENTS = [
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
       { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLabel.' },
       { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
+      { set: { labelPlacement: 'start' }, props: { component: 'Field orientation="horizontal"' }, note: 'The label beside the control, each Field on its own: shadcn has no label column shared by the form.' },
     ],
   },
   {

@@ -15,11 +15,11 @@
  * is not drawn (State takes one value at a time, #103 step 23, Q3: a designer overrides the fill on a
  * `focus-visible` variant), nor is the hit region of iOS and Android (decision touch-target-hit-region).
  */
-import { CONTENT, TRANSITION, container, content, control, description, message, labelRow, LONG_LABEL_NOTE, MARKED_FIELDS, ASTERISK, withSeverityIcon, SEVERITY_ICON_AXES } from './text-field.mjs';
+import { CONTENT, TRANSITION, container, content, control, description, message, labelRow, LONG_LABEL_NOTE, FIELD_SETTINGS, LABEL_COLUMN, ASTERISK, withSeverityIcon, SEVERITY_ICON_AXES } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
-  fixed: MARKED_FIELDS,
+  fixed: FIELD_SETTINGS,
   booleans: { Mark: true, 'Show description': false },
   note: LONG_LABEL_NOTE,
   root: container([
@@ -32,5 +32,5 @@ export default {
     description,
     message,
   ]),
-  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ASTERISK],
+  notDrawn: [LABEL_COLUMN, TRANSITION, SEVERITY_ICON_AXES, ASTERISK],
 };

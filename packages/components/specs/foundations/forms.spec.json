@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.63.1",
+  "version": "0.64.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which severities exist and how they render, how messages are written, when a value is checked, how errors are announced and summarised, how fields are spaced and how the keyboard moves through a form; and the tokens every form control starts from, the Forms family (form.*).",
@@ -112,7 +112,7 @@
     {
       "id": "label-placement",
       "name": "Where the label sits",
-      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. In the column, every label and every group legend aligns to its end, against its control: the column is as wide as the longest label, at most 14 em (a longer label wraps), and each label ends form.gap.label-column (space.12, 12 px) from its control whatever the other labels' lengths, immediately before its field. A label's first line is centred on the control's box; the description and the message stay under the control; in a right-to-left language start and end mirror, so the labels sit to the right of their fields. By default the column stacks, every label back above its field, when the form itself is narrower than 30 rem (480 px), wherever the form sits (a page, a dialog, a side panel), so it also stacks when people zoom in; a product may keep the column at smaller widths, or move the threshold, when its labels and controls still fit, still without scrolling in two dimensions at a width of 320 CSS px. On iOS and Android the column also stacks at the largest text sizes; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting."
+      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. In the column, every label and every group legend aligns to its end, against its control: the column is as wide as the longest label, at most 14 em (a longer label wraps), and each label ends form.gap.label-column (space.12, 12 px) from its control whatever the other labels' lengths, immediately before its field. A label's first line is centred on a one-line control's box and level with the first line of text of a multi-line control (the Textarea), at any number of rows; the description and the message stay under the control; in a right-to-left language start and end mirror, so the labels sit to the right of their fields. By default the column stacks, every label back above its field, when the form itself is narrower than 30 rem (480 px), wherever the form sits (a page, a dialog, a side panel), so it also stacks when people zoom in; a product may keep the column at smaller widths, or move the threshold, when its labels and controls still fit, still without scrolling in two dimensions at a width of 320 CSS px. On iOS and Android the column also stacks at the largest text sizes; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting. On the web each field-like control carries its row of the form's grid (a subgrid row, its label in the first column, its own column gap, the stacking under 30 rem of the form's width), and the form's grid, fit-content(14em) minmax(0, 1fr) with form.gap.label-column as a size container, is the product's CSS."
     },
     {
       "id": "required",
@@ -2092,6 +2092,27 @@
   ],
   "decisions": [
     {
+      "id": "forms-label-multiline",
+      "date": "2026-11-27",
+      "version": "0.64.0",
+      "area": "layout",
+      "status": "active",
+      "text": "In a label column, beside a multi-line control (the Textarea), the label's first line sits level with the control's first line of text (its block padding plus half its line), at any number of rows and after a resize, as a one-line control's label does; it is not centred on the whole box. It completes forms-label-alignment, whose \"centred on the control's box\" holds for one-line controls.",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 29, Q2, on a review sheet): B, level with the first row, as recommended, among: A, centred on the whole box, the alignment rule's words (rejected: the label dropped from 28 to 57 px below the box top between 3 and 6 rows, away from the line people type on); B (chosen). It reads as the rule severity-icon places the icon on a multi-line control: on its first line. No words from the team beyond the choice."
+    },
+    {
+      "id": "forms-label-column-web",
+      "date": "2026-11-27",
+      "version": "0.64.0",
+      "area": "layout",
+      "status": "active",
+      "text": "On the web, each field-like control carries its own row of the form's label column: with labelPlacement start it is a subgrid row of the form's grid, its label in the first column and everything else in the second, it sets its own column gap (its part gap would otherwise win over the form's), and a container query stacks it back above when the form is narrower than 30 rem (a literal: a container query cannot read a token). The form's half is the product's CSS, which this foundation's page shows: a grid of [label] fit-content(14em) [control] minmax(0, 1fr), column-gap form.gap.label-column, and container-type inline-size. The system ships no form class.",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 29, Q1, on a review sheet): A, the fields carry their row, as recommended, among: A (chosen); B, a .ds-form class the system ships, owning the grid, the cap, the gap, the query and the fields' rows (rejected); C, each field its own two columns (rejected: no shared column, the boxes no longer line up, against forms-label-column). No words from the team beyond the choice.",
+      "tokens": [
+        "form.gap.label-column"
+      ]
+    },
+    {
       "id": "forms-on-off-saved-by-button",
       "date": "2026-11-27",
       "version": "0.63.0",
@@ -3162,6 +3183,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.64.0",
+      "date": "2026-11-27",
+      "note": "Decisions forms-label-column-web and forms-label-multiline (#103 step 29, Q1 and Q2): on the web each field-like control carries its row of the form's label column and the form's grid is the product's CSS, shown on this page; beside a multi-line control the label is level with its first line of text. Rule label-placement reworded. The Text field, Number field, Search field, Textarea and Select take labelPlacement (their decision label-placement)."
+    },
     {
       "version": "0.63.1",
       "date": "2026-11-27",

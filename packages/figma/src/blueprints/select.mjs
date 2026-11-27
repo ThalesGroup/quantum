@@ -17,7 +17,7 @@
  * `severityIcon` variant. The label row ends with the required mark, the Text field's `labelRow`: markedFields
  * is kept out of the variants (`fixed`), shown by the BOOLEAN `Mark` and typed in `Mark text` (decision mark-part).
  */
-import { FIELD_WIDTH, TRANSITION, SEVERITY_ICON_AXES, ASTERISK, MARKED_FIELDS, LONG_LABEL_NOTE, container, control, description, message, labelRow, withSeverityIcon } from './text-field.mjs';
+import { FIELD_WIDTH, TRANSITION, SEVERITY_ICON_AXES, ASTERISK, FIELD_SETTINGS, LABEL_COLUMN, LONG_LABEL_NOTE, container, control, description, message, labelRow, withSeverityIcon } from './text-field.mjs';
 
 export default {
   root: container([
@@ -64,10 +64,11 @@ export default {
     description,
     message,
   ]),
-  fixed: MARKED_FIELDS,
+  fixed: FIELD_SETTINGS,
   booleans: { Mark: true, 'Show description': false },
   note: LONG_LABEL_NOTE,
   notDrawn: [
+    LABEL_COLUMN,
     TRANSITION,
     SEVERITY_ICON_AXES,
     ASTERISK,

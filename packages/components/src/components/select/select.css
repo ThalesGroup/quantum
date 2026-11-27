@@ -357,6 +357,79 @@
   outline-offset: var(--select-control-outline-offset-focus-visible);
 }
 
+
+/* ---- Label at the start (labelPlacement start) --------------------------------------------------------------
+   The form lays its fields out on one grid, [label] fit-content(14em) [control] minmax(0, 1fr), as a size
+   container (product CSS, Forms page). The field carries its row: a subgrid of that grid, the label in the first
+   column, ending against the control, its first line centred on the box; everything else in the second. It sets its own
+   column gap, which would otherwise be its part gap. Standalone (no grid around it), subgrid computes to none and
+   the field draws its own two columns, the label's as wide as the label (the form must be the grid and the size container). With the severity icon after the
+   control, both share the second column. Under 30 rem of the form's width the label stacks back above (Forms
+   decisions forms-label-column, -alignment, -column-gap, -column-stacking, forms-label-column-web). */
+
+.ds-select[data-label-placement="start"] {
+  display: inline-grid;
+  grid-column: 1 / -1;
+  grid-auto-columns: auto minmax(0, 1fr);
+  column-gap: var(--select-container-column-gap-start);
+  row-gap: var(--select-container-gap);
+  align-items: start;
+}
+.ds-select[data-label-placement="start"] > * {
+  grid-column: 2;
+}
+.ds-select[data-label-placement="start"] > .ds-select__label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  text-align: end;
+  margin-block-start: calc((var(--_min-height) - var(--_label-font-size) * var(--_label-line-height)) / 2);
+}
+.ds-select[data-label-placement="start"] > .ds-select__field {
+  grid-row: 1;
+}
+.ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__field {
+  grid-column: 2;
+  justify-self: start;
+  inline-size: calc(100% - var(--_severity-icon-size) - var(--select-severity-icon-gap-after-control));
+}
+.ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__severity-icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin-block-start: calc((var(--_min-height) - var(--_severity-icon-size)) / 2);
+}
+
+/* A subgrid of the form's grid only inside the form, a size container at least 30 rem wide: Chromium sizes a
+   subgrid with no grid around it to its min-content, so alone the field keeps its own two columns. */
+@container (width >= 30rem) {
+  .ds-select[data-label-placement="start"] {
+    grid-template-columns: subgrid;
+  }
+}
+
+@container (width < 30rem) {
+  .ds-select[data-label-placement="start"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-select[data-label-placement="start"] > *,
+  .ds-select[data-label-placement="start"][data-severity-icon="after-control"] > * {
+    grid-column: 1;
+  }
+  .ds-select[data-label-placement="start"] > .ds-select__label {
+    justify-self: start;
+    text-align: start;
+    margin-block-start: 0;
+  }
+  .ds-select[data-label-placement="start"] > .ds-select__field,
+  .ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__field,
+  .ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__severity-icon {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ds-select__control {
     transition: none;

@@ -74,6 +74,16 @@ A severity can also show its icon (the Alert's `error`, `warning` or `check_circ
 `severityIcon`, as for the Text field: at the start of the message by default, or after the box, level with the first
 line of text, or not at all.
 
+## Label at the start
+
+A form can put the labels of its fields in a column at the start (**Label placement** `start`),
+set once for all its field-like controls, never per field
+([Forms foundation](/foundations/forms/guidelines)). The textarea then sits in the form's column: its
+label ends 12 px from the box, its first line level with its first line of text, at any number of rows, and the description and the message stay
+under the box. When the form is narrower than 30 rem, the label goes back above. The form draws the
+column, sized to its longest label, at most 14 em: the Forms page gives the few lines of CSS it
+takes on the web. Alone, the textarea draws its own two columns. In Figma the label stays above.
+
 ## Content
 
 - The label is a noun phrase: **Message**, **Description**, **Delivery notes**.

@@ -184,7 +184,8 @@ whatever the setting. In a design tool the setting is not one of the component's
 to the end of the column, so it ends at the same distance from its control whatever the length of
 the others: `form.gap.label-column`, with the other gaps of a form in [Spacing](#spacing). The
 column is as wide as the longest label, at most 14 em, and a longer label wraps. A label's first
-line is centred on the control's box, and the description and the message stay under the
+line is centred on the control's box, or, beside a multi-line control such as the Textarea, level
+with its first line of text at any number of rows; the description and the message stay under the
 control. In a right-to-left language the column mirrors: the labels sit to the right of their
 fields.
 
@@ -239,6 +240,25 @@ and controls still fit, as long as the form still reflows at 320 CSS px.
 
 The rule applies as it is. The form is a size container, and a container query on its own width
 stacks the labels, with no script, so they also stack when people zoom in.
+
+Each field-like control carries its own row: with `labelPlacement: 'start'` it becomes a row of the
+form's grid (a CSS subgrid), puts its label in the first column and everything else in the second,
+and stacks back above under 30 rem. The form's half is yours, a few lines on the element that holds
+the fields:
+
+```css
+form.with-label-column {
+  display: grid;
+  grid-template-columns: [label] fit-content(14em) [control] minmax(0, 1fr);
+  column-gap: var(--form-gap-label-column);
+  row-gap: var(--form-gap-field);
+  container-type: inline-size;
+}
+```
+
+The form must be both the grid and the size container: a field becomes a row of the form's grid
+only inside a size container at least 30 rem wide. A field rendered outside such a form draws its
+own two columns, its label column as wide as its label.
 
 ### iOS
 

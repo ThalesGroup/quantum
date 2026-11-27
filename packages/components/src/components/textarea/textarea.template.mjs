@@ -30,6 +30,7 @@ export function render(props = {}) {
     rows = 3,
     size = 'medium',
     required = false,
+    labelPlacement = 'above',
     markedFields = 'optional',
     markLabel = null,
     disabled = false,
@@ -62,6 +63,8 @@ export function render(props = {}) {
   if (readonly) rootAttrs.push('data-readonly');
   if (severity && severity !== 'none') rootAttrs.push(`data-severity="${escapeAttr(severity)}"`);
   if (state && state !== 'default') rootAttrs.push(`data-state="${escapeAttr(state)}"`);
+  // The form's label column (decision label-placement): the field carries its row of the form's grid.
+  if (labelPlacement === 'start') rootAttrs.push('data-label-placement=\"start\"');
   if (iconPlace === 'after-control') rootAttrs.push('data-severity-icon="after-control"');
 
   const controlAttrs = ['class="ds-textarea__control"', 'data-part="control"', `id="${escapeAttr(controlId)}"`, `rows="${escapeAttr(Math.max(1, Number(rows) || 3))}"`];

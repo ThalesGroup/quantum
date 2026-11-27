@@ -31,6 +31,7 @@ export function render(props = {}) {
     message = null,
     size = 'medium',
     required = false,
+    labelPlacement = 'above',
     markedFields = 'none',
     markLabel = null,
     disabled = false,
@@ -59,6 +60,8 @@ export function render(props = {}) {
   if (disabled) rootAttrs.push('data-disabled');
   if (severity && severity !== 'none') rootAttrs.push(`data-severity="${escapeAttr(severity)}"`);
   if (state && state !== 'default') rootAttrs.push(`data-state="${escapeAttr(state)}"`);
+  // The form's label column (decision label-placement): the field carries its row of the form's grid.
+  if (labelPlacement === 'start') rootAttrs.push('data-label-placement=\"start\"');
   if (iconPlace === 'after-control') rootAttrs.push('data-severity-icon="after-control"');
 
   const inputAttrs = ['type="search"', 'class="ds-search-field__control"', 'data-part="control"', `id="${escapeAttr(inputId)}"`];

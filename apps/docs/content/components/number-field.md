@@ -42,6 +42,16 @@ minimum space above and below the text; the leading icon keeps its size, so the 
 and the severity icon grows with its text. The label and the help text wrap, even inside a long
 word, and the value scrolls.
 
+## Label at the start
+
+A form can put the labels of its fields in a column at the start (**Label placement** `start`),
+set once for all its field-like controls, never per field
+([Forms foundation](/foundations/forms/guidelines)). The number field then sits in the form's column: its
+label ends 12 px from the box, its first line centred on the box, and the description and the message stay
+under the box. When the form is narrower than 30 rem, the label goes back above. The form draws the
+column, sized to its longest label, at most 14 em: the Forms page gives the few lines of CSS it
+takes on the web. Alone, the number field draws its own two columns. In Figma the label stays above.
+
 ## Accessibility
 
 The Specification tab lists the full accessibility contract, grouped into what holds on every

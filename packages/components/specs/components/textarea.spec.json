@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.26.9",
+  "version": "0.27.0",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -174,6 +174,27 @@
       ]
     },
     {
+      "id": "labelPlacement",
+      "name": "Label placement",
+      "type": "enum",
+      "default": "above",
+      "description": "Where the label sits. A rule of the form, not of the field: a form sets it once, to the same value, for all its field-like controls, and sizes one label column for them (Forms decision forms-label-column).",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "above",
+          "description": "Above the control (default)."
+        },
+        {
+          "value": "start",
+          "description": "In the form's label column, at the start: the label ends form.gap.label-column (12 px) from the control, its first line level with the first line of text, the control's block padding plus half its line, at any number of rows; the description and the message stay under the control. The column stacks back above when the form is narrower than 30 rem."
+        }
+      ]
+    },
+    {
       "id": "markedFields",
       "name": "Marked fields",
       "type": "enum",
@@ -314,7 +335,8 @@
       "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
       "The block padding sets the inset of the first and last lines; the control grows with the rows property and can be resized vertically.",
       "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap, level with the control's first line.",
-      "When people raise the text size the lines grow and the control grows with them, keeping its own block padding (control.padding-block, 6 / 8 / 12 px) above and below the text (decision grows-with-text-size)."
+      "When people raise the text size the lines grow and the control grows with them, keeping its own block padding (control.padding-block, 6 / 8 / 12 px) above and below the text (decision grows-with-text-size).",
+      "With labelPlacement start, the Textarea is a row of the form's grid (a subgrid on the web): the label in the first column, as wide as the form's longest label up to 14 em, aligned to its end; the control, description and message in the second; the label's first line level with the first line of text, the control's block padding plus half its line, at any number of rows. Standalone, it draws its own two columns, the label's as wide as the label. Under 30 rem of the form's width (a size container) the label stacks back above. The form's grid is the product's (the Forms page shows it)."
     ]
   },
   "accessibility": {
@@ -1275,6 +1297,17 @@
         "value": "Visible to administrators only.",
         "disabled": true
       }
+    },
+    {
+      "id": "medium-label-start",
+      "name": "Medium, label at the start",
+      "description": "In a form that puts its labels in a column at the start (labelPlacement start): shown here alone, the field draws its own two columns; in a form, the label column is the form's.",
+      "props": {
+        "size": "medium",
+        "label": "Message",
+        "labelPlacement": "start",
+        "description": "The help stays under the control"
+      }
     }
   ],
   "tokens": {
@@ -1291,7 +1324,8 @@
         "size": "data-size",
         "disabled": "data-disabled",
         "severity": "data-severity",
-        "readonly": "data-readonly"
+        "readonly": "data-readonly",
+        "labelPlacement": "data-label-placement"
       },
       "stateAttribute": "data-state",
       "rolePart": "control",
@@ -1310,6 +1344,18 @@
     "text-field"
   ],
   "decisions": [
+    {
+      "id": "label-placement",
+      "date": "2026-11-27",
+      "version": "0.27.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Textarea takes labelPlacement (above by default, start), a setting of the form passed to every field-like control (Forms decisions forms-label-column, forms-label-alignment, forms-label-column-gap, forms-label-column-stacking). With start, on the web, the Textarea carries its row of the form's grid (forms-label-column-web): a subgrid row, the label in the first column ending textarea.container.column-gap.start (form.gap.label-column, 12 px) from the control, its first line level with the first line of text, the control's block padding plus half its line, at any number of rows; the control, description and message in the second column; under a 30 rem size container it stacks back above. The form's grid (fit-content(14em) minmax(0, 1fr), the gap, the size container) is the product's. The Figma component draws the label above (labelPlacement fixed, kept out of the variants, as markedFields).",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 29, on review sheets): Q1, A, the fields carry their row (rejected: B, a .ds-form class the system ships; C, each field its own column, which no longer lines up); Q2, B, a multi-line control's label level with its first row (forms-label-multiline); Q3, A, the Select now.",
+      "tokens": [
+        "textarea.container.column-gap.start"
+      ]
+    },
     {
       "id": "form-family-aliases",
       "date": "2026-11-27",
@@ -1960,6 +2006,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.27.0",
+      "date": "2026-11-27",
+      "note": "Decision label-placement (#103 step 29; Forms forms-label-column, -alignment, -column-gap, -column-stacking, and the team's forms-label-column-web, forms-label-multiline): property labelPlacement (above, start), token textarea.container.column-gap.start → form.gap.label-column, the subgrid row in the CSS (label end-aligned, first line level with the first line of text, the control's block padding plus half its line, at any number of rows; stacking under a 30 rem container), data-label-placement in the template, the Figma component fixed above. New example: Medium, label at the start. No change with the default, above."
+    },
     {
       "version": "0.26.9",
       "date": "2026-11-27",

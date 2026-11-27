@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.21.2",
+  "version": "0.22.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -184,6 +184,27 @@
       ]
     },
     {
+      "id": "labelPlacement",
+      "name": "Label placement",
+      "type": "enum",
+      "default": "above",
+      "description": "Where the label sits. A rule of the form, not of the field: a form sets it once, to the same value, for all its field-like controls, and sizes one label column for them (Forms decision forms-label-column).",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "above",
+          "description": "Above the control (default)."
+        },
+        {
+          "value": "start",
+          "description": "In the form's label column, at the start: the label ends form.gap.label-column (12 px) from the control, its first line centred on the box; the description and the message stay under the control. The column stacks back above when the form is narrower than 30 rem."
+        }
+      ]
+    },
+    {
       "id": "markedFields",
       "name": "Marked fields",
       "type": "enum",
@@ -311,7 +332,8 @@
       "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
       "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap.",
       "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start.",
-      "The control keeps control.padding-block (3 / 5 / 8 px, the Button's) above and below its line as a minimum: at the default text size the minimum height sets the height; when people raise the text size and the line outgrows it, the box grows and keeps that space (decision grows-with-text-size)."
+      "The control keeps control.padding-block (3 / 5 / 8 px, the Button's) above and below its line as a minimum: at the default text size the minimum height sets the height; when people raise the text size and the line outgrows it, the box grows and keeps that space (decision grows-with-text-size).",
+      "With labelPlacement start, the Search field is a row of the form's grid (a subgrid on the web): the label in the first column, as wide as the form's longest label up to 14 em, aligned to its end; the control, description and message in the second; the label's first line centred on the box. Standalone, it draws its own two columns, the label's as wide as the label. Under 30 rem of the form's width (a size container) the label stacks back above. The form's grid is the product's (the Forms page shows it)."
     ]
   },
   "accessibility": {
@@ -1369,6 +1391,17 @@
         "placeholder": "Search projects",
         "disabled": true
       }
+    },
+    {
+      "id": "medium-label-start",
+      "name": "Medium, label at the start",
+      "description": "In a form that puts its labels in a column at the start (labelPlacement start): shown here alone, the field draws its own two columns; in a form, the label column is the form's.",
+      "props": {
+        "size": "medium",
+        "label": "Search",
+        "labelPlacement": "start",
+        "description": "The help stays under the control"
+      }
     }
   ],
   "tokens": {
@@ -1384,7 +1417,8 @@
       "attributes": {
         "size": "data-size",
         "disabled": "data-disabled",
-        "severity": "data-severity"
+        "severity": "data-severity",
+        "labelPlacement": "data-label-placement"
       },
       "stateAttribute": "data-state",
       "rolePart": "control",
@@ -1406,6 +1440,18 @@
     "select"
   ],
   "decisions": [
+    {
+      "id": "label-placement",
+      "date": "2026-11-27",
+      "version": "0.22.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Search field takes labelPlacement (above by default, start), a setting of the form passed to every field-like control (Forms decisions forms-label-column, forms-label-alignment, forms-label-column-gap, forms-label-column-stacking). With start, on the web, the Search field carries its row of the form's grid (forms-label-column-web): a subgrid row, the label in the first column ending search-field.container.column-gap.start (form.gap.label-column, 12 px) from the control, its first line centred on the box; the control, description and message in the second column; under a 30 rem size container it stacks back above. The form's grid (fit-content(14em) minmax(0, 1fr), the gap, the size container) is the product's. The Figma component draws the label above (labelPlacement fixed, kept out of the variants, as markedFields).",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 29, on review sheets): Q1, A, the fields carry their row (rejected: B, a .ds-form class the system ships; C, each field its own column, which no longer lines up); Q2, B, a multi-line control's label level with its first row (forms-label-multiline); Q3, A, the Select now.",
+      "tokens": [
+        "search-field.container.column-gap.start"
+      ]
+    },
     {
       "id": "form-family-aliases",
       "date": "2026-11-27",
@@ -2038,6 +2084,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.22.0",
+      "date": "2026-11-27",
+      "note": "Decision label-placement (#103 step 29; Forms forms-label-column, -alignment, -column-gap, -column-stacking, and the team's forms-label-column-web): property labelPlacement (above, start), token search-field.container.column-gap.start → form.gap.label-column, the subgrid row in the CSS (label end-aligned, first line centred on the box; stacking under a 30 rem container), data-label-placement in the template, the Figma component fixed above. New example: Medium, label at the start. No change with the default, above."
+    },
     {
       "version": "0.21.2",
       "date": "2026-11-27",
