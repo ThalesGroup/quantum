@@ -408,14 +408,9 @@ export function figmaComponent(loaded, spec, blueprint) {
       ring.forEach(useSlot);
       let width = active.get(`${node.focusRing}.outline-width`);
       // A flush ring follows the CSS of the text-entry controls: a disabled control draws none (not
-      // even its severity's outline), and a focused one draws the focus width in whatever color is
-      // active (a severity with focus: the severity's color, 2.4 px).
-      if (flush && width) {
-        const states = effectiveStates(spec, v.props, v.state);
-        const focusWidth = `${spec.id}.${node.focusRing}.outline-width.focus-visible`;
-        if (states.includes('disabled')) width = undefined;
-        else if (states.includes('focus-visible') && loaded.byPath.has(focusWidth)) width = focusWidth;
-      }
+      // even its severity's outline). A focused one in a severity takes its token for two states
+      // (`outline-width.focus-visible-<severity>`), which the token rule makes active.
+      if (flush && width && effectiveStates(spec, v.props, v.state).includes('disabled')) width = undefined;
       const offset = active.get(`${node.focusRing}.outline-offset`);
       const color = active.get(`${node.focusRing}.outline-color`);
       if (width) {

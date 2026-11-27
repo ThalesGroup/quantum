@@ -150,17 +150,30 @@ test('a slot a blueprint does not draw has no variable, unless a drawn token ali
   // Step 28: the field family aliases form.*, which adds the 7 family tokens no other control reached (asterisk not drawn).
   // Step 30: the severity icon of the Select (11 variables) and of the Checkbox and the groups (5 each) adds 26.
   // Step 31: the required mark of the Select (17 variables) and of the Checkbox and the groups (12 each) adds 53; the asterisk is not drawn.
-  assert.equal(plan.variables.variables.length, 1967);
+  // Step 32: the focus width in a severity (control.outline-width.focus-visible-<severity>) of the four fields adds 12.
+  assert.equal(plan.variables.variables.length, 1979);
 });
 
-test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
+test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width, its token for two states, when focused', () => {
   const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
   const ring = (severity, state) => plan.variants.find((v) => v.name === `Size=medium, Severity icon=message, Severity=${severity}, Content=value, Leading icon=false, State=${state}`).root.children.find((c) => c.name === 'control-row').children.find((c) => c.name === 'control').focusRing;
   assert.deepEqual(ring('none', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible', offset: -0.6, stroke: 'text-field/control/outline-color/focus-visible' });
   assert.deepEqual(ring('error', 'default'), { strokeWeight: 'text-field/control/outline-width/error', offset: -0.6, stroke: 'text-field/control/outline-color/error' });
-  assert.deepEqual(ring('warning', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible', offset: -0.6, stroke: 'text-field/control/outline-color/warning' });
+  assert.deepEqual(ring('warning', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible-warning', offset: -0.6, stroke: 'text-field/control/outline-color/warning' });
   assert.equal(ring('none', 'default'), undefined);
   assert.equal(ring('success', 'disabled'), undefined);
+});
+
+test('a focused field in a severity binds its token for two states, in the four fields (#103 step 32)', () => {
+  for (const id of ['text-field', 'number-field', 'textarea', 'search-field']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const ringOf = (node) => node.focusRing ?? (node.children ?? []).map(ringOf).find(Boolean);
+    for (const severity of ['error', 'warning', 'success']) {
+      const focused = plan.variants.filter((v) => v.name.includes(`Severity=${severity},`) && v.name.endsWith('State=focus-visible'));
+      assert.ok(focused.length > 0, `${id} ${severity}`);
+      for (const v of focused) assert.equal(ringOf(v.root).strokeWeight, `${id}/control/outline-width/focus-visible-${severity}`, v.name);
+    }
+  }
 });
 
 test('the Text field draws the severity icon after the control or at the start of the message, for every severity', () => {

@@ -278,6 +278,18 @@
         },
         "success": {
           "$value": "{stroke-width.md}"
+        },
+        "focus-visible-error": {
+          "$value": "{focus.ring.width}",
+          "$description": "The outline of a focused field in error: the focus width (focus.ring.width, as control.outline-width.focus-visible), drawn in the error color (control.outline-color.error) flush over the border (decision focus-severity-outline). A token for two states: it applies when the field has focus and is in error, and wins over control.outline-width.focus-visible and control.outline-width.error (packages/tokens/AGENTS.md, Which token applies)."
+        },
+        "focus-visible-warning": {
+          "$value": "{focus.ring.width}",
+          "$description": "The outline of a focused field with a warning: the focus width (focus.ring.width, as control.outline-width.focus-visible), drawn in the warning color (control.outline-color.warning) flush over the border (decision focus-severity-outline). A token for two states: it applies when the field has focus and a warning, and wins over control.outline-width.focus-visible and control.outline-width.warning (packages/tokens/AGENTS.md, Which token applies)."
+        },
+        "focus-visible-success": {
+          "$value": "{focus.ring.width}",
+          "$description": "The outline of a focused field with a success: the focus width (focus.ring.width, as control.outline-width.focus-visible), drawn in the success color (control.outline-color.success) flush over the border (decision focus-severity-outline). A token for two states: it applies when the field has focus and a success, and wins over control.outline-width.focus-visible and control.outline-width.success (packages/tokens/AGENTS.md, Which token applies)."
         }
       },
       "outline-color": {

@@ -132,7 +132,8 @@ Without ids it draws every component; with ids, those and the components their i
   summary followed by the blueprint's `note` (guidance for the designer), focus rings are frames
   outside the border in `focus-visible`, or, for a part without an `outline-offset` slot (the
   text-entry controls), flush over the border, in focus and in every severity state too (the
-  severity's color and width, the focus width when focused, none when disabled), and a part that is another component (the
+  severity's color and width, the focus width when focused through its token for two states
+  `outline-width.focus-visible-<severity>`, none when disabled), and a part that is another component (the
   dropdown's trigger) is an instance of it. A component set that already exists is kept as it
   is: delete it to draw it again, so that no instance loses its main component unnoticed.
 - **What Figma cannot hold** is set without a variable or left out. A slot it cannot draw is

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.27.1",
+  "version": "0.28.0",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -1345,6 +1345,20 @@
   ],
   "decisions": [
     {
+      "id": "focus-severity-outline",
+      "date": "2026-11-27",
+      "version": "0.28.0",
+      "area": "state",
+      "status": "active",
+      "text": "A focused Textarea in a severity keeps the focus width, in the severity's color, through a token for two states per severity: control.outline-width.focus-visible-error, focus-visible-warning and focus-visible-success (= focus.ring.width, as control.outline-width.focus-visible). Each applies when the field has focus and is in that severity, and wins over the token of each state alone (packages/tokens/AGENTS.md, Which token applies). The path stays the only thing that says when a component token applies, so the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants with a severity in State=focus-visible take the width the web draws, and the Figma plan no longer sets it by a rule written by hand. A disabled field still draws no outline. No rendered value changes on the web.",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 32, after #105 step 2b, point b3.1): \"A but we'll revisit probably these tokens one day\", as recommended: the team expects to revisit these tokens later. Rejected: B, keep the Figma plan's hand-written rule and add a note to the token inspector (a reader of the tokens alone would still get 1.2 px); C, one token per field for every severity (focus-visible-severity), fewer tokens but a new path grammar, a property standing for its value states. Measured before: the web drew the focus width (focus.ring.width, 2.4 px), while the token rule, and so the inspector, picked control.outline-width.<severity> (stroke-width.md, 1.2 px); Figma and Penpot drew 2.4 px through a rule written by hand in the plan.",
+      "tokens": [
+        "textarea.control.outline-width.focus-visible-error",
+        "textarea.control.outline-width.focus-visible-warning",
+        "textarea.control.outline-width.focus-visible-success"
+      ]
+    },
+    {
       "id": "label-placement",
       "date": "2026-11-27",
       "version": "0.27.0",
@@ -2006,6 +2020,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.0",
+      "date": "2026-11-27",
+      "note": "Decision focus-severity-outline (#103 step 32, after #105 b3.1): new tokens for two states control.outline-width.focus-visible-error, focus-visible-warning and focus-visible-success (= focus.ring.width), which the CSS reads for a focused field in a severity; the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants now take the focus width there too, and the Figma plan drops the focus half of its hand-written rule. No rendered value changes."
+    },
     {
       "version": "0.27.1",
       "date": "2026-11-27",
