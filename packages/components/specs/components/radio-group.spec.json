@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -843,6 +843,25 @@
   ],
   "decisions": [
     {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.5.2",
+      "area": "color",
+      "status": "active",
+      "text": "The Radio group's component tokens alias the Forms family (form.*) wherever their value is the family's default: the part gap (container.row-gap), the legend's color and font sizes, the description's and the message's colors and font sizes, the radios' fill at rest, on hover and in error and their border in error, the option labels' and descriptions' colors. No value changes. Overrides, kept until this component's own refinement: the radios' border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5; the gaps between the options and under the legend stay this group's own. Disabled colors, geometry and checked colors stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases.",
+      "tokens": [
+        "radio-group.container.row-gap",
+        "radio-group.legend.*",
+        "radio-group.description.*",
+        "radio-group.message.*",
+        "radio-group.control.background.*",
+        "radio-group.control.border-color.*",
+        "radio-group.option-label.color.default",
+        "radio-group.option-description.color.default"
+      ]
+    },
+    {
       "id": "text-sizes",
       "date": "2026-11-27",
       "version": "0.5.0",
@@ -968,6 +987,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.2",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6): the part gap (container.row-gap), the legend's color and font sizes, the description's and the message's colors and font sizes, the radios' fill at rest, on hover and in error and their border in error, the option labels' and descriptions' colors alias the Forms family (form.*), every resolved value unchanged; the radios' border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5; the gaps between the options and under the legend stay this group's own."
+    },
     {
       "version": "0.5.1",
       "date": "2026-11-27",

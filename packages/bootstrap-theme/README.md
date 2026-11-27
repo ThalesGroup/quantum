@@ -990,11 +990,15 @@ them, and the theme restyles nothing directly.
   from its Sass `$validation-states` map, which the CSS-variable theme does not reach, so the
   warning border and message (`text-field.control.border-color.warning`, `text-field.message.color.warning`)
   are not mapped.
-- **Form gaps.** The Forms foundation spaces fields `form.gap.field` apart, groups of fields
-  `form.gap.group`, a group's title `form.gap.title` above its first field and a label column
-  `form.gap.label-column` from its controls: Bootstrap spaces form rows with spacing utilities in
-  the markup (`.mb-3`) and builds a horizontal form's label column from grid classes in the markup,
-  with no custom property or Sass setting for these gaps, so the four tokens are not mapped.
+- **The Forms family.** The Forms foundation's `form.*` tokens are the defaults every form control
+  aliases (its colors, its text sizes per size, the part gap `form.container.gap`). The theme maps
+  each control's own tokens, whose values are the family's (`--bs-form-text-margin-top` reads
+  `text-field.container.gap`), so the family itself is not mapped. Its layout gaps space fields
+  `form.gap.field` apart, groups of fields `form.gap.group`, a group's title `form.gap.title` above
+  its first field and a label column `form.gap.label-column` from its controls: Bootstrap spaces
+  form rows with spacing utilities in the markup (`.mb-3`) and builds a horizontal form's label
+  column from grid classes in the markup, with no custom property or Sass setting for these gaps,
+  so the four gap tokens are not mapped.
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
   button sizes (28px, 44px), not from Quantum's small and large fields (32px, 48px).
 - **Field padding.** Bootstrap pads inputs and textareas alike, where Quantum centers a field's

@@ -148,11 +148,13 @@ them out rather than restyle the components:
 - **Sizes and spacing.** Control heights (Quantum buttons 24 / 28 / 36 / 44 px, text fields 32 / 40 /
   48 px), paddings, gaps, icon sizes and font sizes are Tailwind utilities in each component (`h-9`,
   `px-4`, `text-sm`). Quantum's medium button label is 16 px; shadcn's is 14 px.
-- **Form gaps.** The Forms foundation spaces fields `form.gap.field` apart, groups of fields
-  `form.gap.group`, a group's title `form.gap.title` above its first field and a label column
-  `form.gap.label-column` from its controls: shadcn's `Field`,
-  `FieldGroup` and `FieldSet` set their gaps with Tailwind classes in the components, not with a
-  theme variable, so the four tokens are not mapped.
+- **The Forms family.** The Forms foundation's `form.*` tokens are the defaults every form control
+  aliases: its colors, its text sizes per size, the part gap `form.container.gap`, and the layout
+  gaps that space fields `form.gap.field` apart, groups of fields `form.gap.group`, a group's title
+  `form.gap.title` above its first field and a label column `form.gap.label-column` from its
+  controls. The colors reach shadcn through the semantic roles they alias; shadcn's `Field`,
+  `FieldGroup` and `FieldSet` set their gaps and text sizes with Tailwind classes in the
+  components, not with a theme variable, so the family's sizes and gaps are not mapped.
 - **Border widths.** Quantum draws 0.6 px borders (`stroke-width.sm`); shadcn's `border` is 1 px.
 - **Hover and active colors.** Quantum has a token per state (`global.bg.accent.brand.hover`,
   `.active`); shadcn blends the rest color with opacity (`hover:bg-primary/90`, `bg-secondary/80`),

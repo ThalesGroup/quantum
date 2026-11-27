@@ -12,7 +12,7 @@ Every `*.json` file under a tier directory is loaded, deep-merged and flattened;
 | Tier | Directory | May reference | Purpose |
 | --- | --- | --- | --- |
 | raw | `src/raw/` | other raw tokens | Hidden primitives from the Figma library: the color palettes (Colors / Base) and the palette switch. Never read by a component or the site. |
-| semantic | `src/semantic/`, `src/additions/semantic/` | raw, other semantic tokens | What components and the site read: the Figma library's mapped colors (`global.bg.accent.brand.hover`) and its Dimension, Effect and Typography scales (`space.12`, `corner-radius.xs`, `body.size.md`) in `src/semantic/`; the design system's few additions (`font.line-height.tight`, `duration.fast`, `font.icon.family`, `color.transparent`, `focus.ring.width`, `color.focus.ring`, `form.gap.field`) in `src/additions/semantic/`. |
+| semantic | `src/semantic/`, `src/additions/semantic/` | raw, other semantic tokens | What components and the site read: the Figma library's mapped colors (`global.bg.accent.brand.hover`) and its Dimension, Effect and Typography scales (`space.12`, `corner-radius.xs`, `body.size.md`) in `src/semantic/`; the design system's few additions (`font.line-height.tight`, `duration.fast`, `font.icon.family`, `color.transparent`, `focus.ring.width`, `color.focus.ring`, the Forms family `form.*`: `form.control.background.error`, `form.gap.field`) in `src/additions/semantic/`. |
 | component | `src/components/<id>.tokens.json` | semantic | One file per component. Root group = component id. Never overridden per platform. |
 | overlay | `src/platforms/<id>/` | as the tier it overrides | Platform values of raw or semantic tokens (see below). |
 | mode | `src/modes/<id>/`, `src/additions/modes/<id>/` | raw | Values of semantic tokens in a mode other than the default (`dark`; see below). |
@@ -29,7 +29,10 @@ Every `*.json` file under a tier directory is loaded, deep-merged and flattened;
   follows from the path alone (see "Which token applies" below).
 - Component tokens alias semantic tokens **only**: a mapped color, a step of a Figma library scale
   or an addition. There is no intermediate layer of sizes, radii or text styles: a component
-  picks scale steps in its own tokens. If nothing fits, that is a decision to ask for (a new
+  picks scale steps in its own tokens. The one exception is the Forms family (`form.*`, Forms
+  foundation, decision `forms-token-family`): its font sizes per control size and its part gap
+  are defaults every form control aliases, as its colors are, and a control overrides them in its
+  own tokens. It covers that family only. If nothing fits, that is a decision to ask for (a new
   addition in `src/additions/semantic/`), never a token created for convenience.
 - The documentation site (`apps/docs/`) is a consumer of the design system like any product: its
   CSS reads **semantic** tokens only (never raw, never another component's tokens). When the

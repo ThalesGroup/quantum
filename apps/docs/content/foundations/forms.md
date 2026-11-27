@@ -110,8 +110,9 @@ Select or a Radio group under a Text field does not look smaller:
 
 A control with two sizes takes the small and medium columns. The message is larger than the
 description, so the fix reads as easily as the field. Options and their labels keep their own
-styles: they are choices, not names. These are defaults: each control's own refinement may
-revisit them.
+styles: they are choices, not names. These are defaults, tokens of the Forms family
+([Tokens every control starts from](#tokens-every-control-starts-from)): each control's own
+refinement may revisit them.
 
 **Every control that can show a severity has a message part**, after its description, so its
 error is said in text next to it and associated with it. A form-wide summary may repeat the
@@ -974,7 +975,9 @@ and message stack 6 px apart, so the label sits nearer to its own control than t
 group takes the same 6 px from its legend to its options, from its description to its options and
 from its options to its message. Its description sits right under the legend, with no space, so
 the two read as one heading; its options stack 4 px apart (16 px in a row), closer than the parts
-around them, so the list reads as one unit. These are each component's own tokens, the same on
+around them, so the list reads as one unit. The 6 px between a control's parts is a token of the
+Forms family ([Tokens every control starts from](#tokens-every-control-starts-from)), which each
+control's gap points to; a group's 4 px, 16 px and 0 are its own tokens. They are the same on
 every platform. At these values a small option is 21 px tall and 25 px from the next one, so the
 24 px circles of the spacing exception clear each other
 ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
@@ -1133,6 +1136,38 @@ of the on-screen keyboard's return key, because only the form knows which field 
   and no source settles it for a summary, so the simpler choice holds: the summary changes
   nothing in the message, whatever its language or its source. A form shows a summary from two
   errors, unless the product decides never to ([Error summary](#error-summary)).
+
+## Tokens every control starts from
+
+**A form control starts from the Forms family.** The colors, text sizes and part gap that every
+form control shares are tokens of their own, `form.*`, which this foundation owns: the control's
+fill at rest, on hover, read-only and in each severity, its border, its value and its placeholder;
+the label, the description, the message and the severity icon; the required mark and the
+asterisk; the label's, description's and message's sizes per control size; and the space between a
+control's parts. Each control's own tokens point to them, so a decision taken for every form,
+such as the error fill or the message's size, is one token to change, and a new form control gets
+the form's look by pointing its tokens to the family before it decides anything of its own. Each
+family token stands for a role of the color, typography or spacing scales, so it has that role's
+value in both modes and on every platform; the Tokens tab draws them.
+
+**The names follow a control's anatomy.** A family token has the path a control's token would
+have, with `form` in place of the control's name: `form.control.background.error` is the fill of
+a control in error, and the Select's `select.control.background.error` points to it. The four
+gaps of a form's layout keep their own names, `form.gap.*` ([Spacing](#spacing)), since they space
+the controls, not the parts inside one.
+
+**A control overrides the family where its case differs.** The family is a default, not a lock:
+a control keeps a value of its own when its use needs one, and that is a decision of its own
+refinement, recorded with it. Today the Select, the Checkbox, the Checkbox group and the Radio
+group keep their earlier, darker border at rest until they are refined, and the Checkbox keeps
+its 14 px medium description. What belongs to one control never comes from the family: its
+disabled colors, its heights, paddings and radii, a box's checked colors, and the gaps a group
+puts between its options and under its legend.
+
+**The family includes sizes, by exception.** The design system otherwise adds no layer of sizes
+over the Figma library's scales: a component picks scale steps in its own tokens. Forms is the
+exception the team approved, because a form behaves like one component spread over many
+controls: its text sizes and its part gap are defaults every control shares, like its colors.
 
 ## Accessibility
 

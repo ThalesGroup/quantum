@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -869,6 +869,25 @@
   ],
   "decisions": [
     {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.6.2",
+      "area": "color",
+      "status": "active",
+      "text": "The Checkbox group's component tokens alias the Forms family (form.*) wherever their value is the family's default: the part gap (container.row-gap), the legend's color and font sizes, the description's and the message's colors and font sizes, the boxes' fill at rest, on hover and in error and their border in error, the option labels' and descriptions' colors. No value changes. Overrides, kept until this component's own refinement: the boxes' border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5; the gaps between the options and under the legend stay this group's own. Disabled colors, geometry and checked colors stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases.",
+      "tokens": [
+        "checkbox-group.container.row-gap",
+        "checkbox-group.legend.*",
+        "checkbox-group.description.*",
+        "checkbox-group.message.*",
+        "checkbox-group.control.background.*",
+        "checkbox-group.control.border-color.*",
+        "checkbox-group.option-label.color.default",
+        "checkbox-group.option-description.color.default"
+      ]
+    },
+    {
       "id": "text-sizes",
       "date": "2026-11-27",
       "version": "0.6.0",
@@ -1008,6 +1027,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.2",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6): the part gap (container.row-gap), the legend's color and font sizes, the description's and the message's colors and font sizes, the boxes' fill at rest, on hover and in error and their border in error, the option labels' and descriptions' colors alias the Forms family (form.*), every resolved value unchanged; the boxes' border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5; the gaps between the options and under the legend stay this group's own."
+    },
     {
       "version": "0.6.1",
       "date": "2026-11-27",

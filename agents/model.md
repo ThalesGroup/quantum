@@ -103,7 +103,8 @@ packages/tokens/src/raw/**         packages/tokens/src/semantic/**             p
 Raw is the Figma library's color palettes and palette switch, which nobody reads directly. Semantic is
 what components and the site read: the Figma library's mapped colors and its Dimension, Effect and
 Typography scales (the library applies those directly; there is no semantic layer of sizes or
-text styles on top of them), plus the few tokens the design system adds.
+text styles on top of them, except the Forms family's defaults, `form.*`), plus the few tokens the
+design system adds.
 
 The raw and semantic tokens come from two places, kept apart (`agents/token-sources.md`): `packages/tokens/src/raw/`,
 `packages/tokens/src/semantic/` and `packages/tokens/src/modes/dark/` are recreated from

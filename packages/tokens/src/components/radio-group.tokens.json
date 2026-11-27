@@ -2,7 +2,7 @@
   "$description": "Component tokens for Radio group. Path grammar: radio-group.<part>.<property>[.<orientation>|.<size>][.<state>]: colors vary by state only, the gap between options by orientation, control dimensions and type by size. Parts, options and states must exist in packages/components/specs/components/radio-group.spec.json. Values alias semantic tokens only (Figma library mapped colors and scales, and the additions).",
   "radio-group": {
     "container": {
-      "row-gap": { "$type": "dimension", "$value": "{space.6}", "$description": "Between the legend and the options when no description follows (the legend's bottom margin), and between the description, the options and the message. A description sits right under its legend (0), the two read as one heading." },
+      "row-gap": { "$type": "dimension", "$value": "{form.container.gap}", "$description": "Between the legend and the options when no description follows (the legend's bottom margin), and between the description, the options and the message. A description sits right under its legend (0), the two read as one heading." },
       "gap": {
         "$type": "dimension",
         "$description": "Between two options: closer in a column than the parts around them, so the list reads as one unit.",
@@ -13,41 +13,41 @@
     "legend": {
       "color": {
         "$type": "color",
-        "default": { "$value": "{global.text.on-base.neutral.primary}" },
+        "default": { "$value": "{form.label.color.default}" },
         "disabled": { "$value": "{global.text.state.disabled.default}" }
       },
       "typography": {
         "$type": "typography",
-        "$description": "Legend text: the field family's label sizes per control size (body.size.sm, md), medium weight, the tight line height of single lines and the normal letter spacing (Forms foundation, rule anatomy, decision forms-text-sizes).",
-        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.tight}", "letterSpacing": "{font.letter-spacing.normal}" } },
-        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.tight}", "letterSpacing": "{font.letter-spacing.normal}" } }
+        "$description": "Legend text: the Forms family's label sizes per control size (form.label.font-size: body.size.sm, md), medium weight, the tight line height of single lines and the normal letter spacing (Forms foundation, rule anatomy, decisions forms-text-sizes and forms-token-family).",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.label.font-size.small}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.tight}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.label.font-size.medium}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.tight}", "letterSpacing": "{font.letter-spacing.normal}" } }
       }
     },
     "description": {
       "color": {
         "$type": "color",
-        "default": { "$value": "{global.text.on-base.neutral.secondary}" },
+        "default": { "$value": "{form.description.color.default}" },
         "disabled": { "$value": "{global.text.state.disabled.default}" }
       },
       "typography": {
         "$type": "typography",
-        "$description": "Description text: the field family's helper size per control size, smaller than the label (body.size.xs, xs), regular weight, the normal line height and the normal letter spacing (Forms foundation, rule anatomy, decision forms-text-sizes).",
-        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.xs}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
-        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.xs}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+        "$description": "Description text: the Forms family's description sizes per control size, smaller than the label (form.description.font-size: body.size.xs, xs), regular weight, the normal line height and the normal letter spacing (Forms foundation, rule anatomy, decisions forms-text-sizes and forms-token-family).",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.description.font-size.small}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.description.font-size.medium}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
       }
     },
     "message": {
       "color": {
         "$type": "color",
         "error": {
-          "$value": "{global.text.on-base.functional.error.default}"
+          "$value": "{form.message.color.error}"
         }
       },
       "typography": {
         "$type": "typography",
-        "$description": "Message text: the label's size per control size (body.size.sm, md), larger than the description, so the message that says what to fix reads as easily as the field; medium weight, the normal line height and the normal letter spacing (Forms foundation, rule anatomy, decision forms-text-sizes).",
-        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
-        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+        "$description": "Message text: the Forms family's message sizes per control size, the label's (form.message.font-size: body.size.sm, md), larger than the description, so the message that says what to fix reads as easily as the field; medium weight, the normal line height and the normal letter spacing (Forms foundation, rule anatomy, decisions forms-text-sizes and forms-token-family).",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.message.font-size.small}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.message.font-size.medium}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
       }
     },
     "option": {
@@ -65,21 +65,22 @@
       "border-width": { "$type": "dimension", "$value": "{stroke-width.md}" },
       "background": {
         "$type": "color",
-        "default": { "$value": "{global.bg.level.0.default}" },
-        "hover": { "$value": "{global.bg.level.0.hover}" },
+        "default": { "$value": "{form.control.background.default}" },
+        "hover": { "$value": "{form.control.background.hover}" },
         "checked": { "$value": "{global.bg.accent.brand.default}" },
         "error": {
-          "$value": "{global.bg.subtle.functional.error.default}",
+          "$value": "{form.control.background.error}",
           "$description": "The fill of an unchecked box in error, inside its error border, at rest and on hover alike: the subtle error background, as a field in error (Forms foundation, decisions forms-severity-fill and forms-choice-error-fill); a checked radio keeps its brand fill. The border and the message carry the error, the tint is not the cue."
         },
         "disabled": { "$value": "{global.bg.state.disabled.default}" }
       },
       "border-color": {
         "$type": "color",
+        "$description": "The border at rest keeps global.border.accent.neutral.default, an override of the Forms family's default (form.control.border-color.default, the field family's base neutral border) until this control's own refinement (decision form-family-aliases).",
         "default": { "$value": "{global.border.accent.neutral.default}" },
         "hover": { "$value": "{global.border.accent.neutral.default}" },
         "checked": { "$value": "{global.border.accent.brand.default}" },
-        "error": { "$value": "{global.border.accent.functional.error.default}" },
+        "error": { "$value": "{form.control.border-color.error}" },
         "disabled": { "$value": "{global.border.state.disabled.default}" }
       },
       "color": {
@@ -99,7 +100,7 @@
     "option-label": {
       "color": {
         "$type": "color",
-        "default": { "$value": "{global.text.on-base.neutral.primary}" },
+        "default": { "$value": "{form.label.color.default}" },
         "disabled": { "$value": "{global.text.state.disabled.default}" }
       },
       "typography": {
@@ -111,7 +112,7 @@
     "option-description": {
       "color": {
         "$type": "color",
-        "default": { "$value": "{global.text.on-base.neutral.secondary}" },
+        "default": { "$value": "{form.description.color.default}" },
         "disabled": { "$value": "{global.text.state.disabled.default}" }
       },
       "typography": {

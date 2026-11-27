@@ -32,10 +32,13 @@ of any token shows in its path:
 - **Additions.** `packages/tokens/src/additions/{semantic,modes/dark}/` and `packages/tokens/src/platforms/` hold the few
   tokens the design system adds because the Figma library lacks them to render the components
   and lay out a form: line heights, letter spacing, motion, the icon font, `transparent`, the
-  focus ring, the form gaps (`form.gap.*`, Forms foundation), and the iOS and Android font
-  families. Each file says so in its `$description`. Nothing else is added: no semantic layer of
-  sizes, radii or text styles over the library's scales. A new addition is a
-  decision to ask for, never a convenience.
+  focus ring, the Forms family (`form.*`, Forms foundation: the defaults every form control
+  aliases and the gaps of a form's layout), and the iOS and Android font families. Each file says
+  so in its `$description`. Nothing else is added: no semantic layer of sizes, radii or text
+  styles over the library's scales. The one exception is the Forms family's dimensions (its font
+  sizes per control size and its part gap, `form.<part>.font-size.<size>`, `form.container.gap`),
+  approved by the team with decision `forms-token-family`; it covers that family only. A new
+  addition is a decision to ask for, never a convenience.
 - **Component exports.** `raw_content/components/<id>-variants-raw.json` is the Figma export of
   a component set of the Figma library, made with figma-cli: its variant properties and their
   defaults, then every variant with its auto layout (padding, gap, radius, size), fills,
