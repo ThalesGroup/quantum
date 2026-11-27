@@ -1,0 +1,24 @@
+{
+  "id": "shadcn-ui-examples",
+  "name": "shadcn/ui examples",
+  "description": "Examples of the shadcn/ui documentation: forms built with its Field, Radio Group, Select, Checkbox and Switch components and validated with React Hook Form, in React, Radix and Tailwind. Only their structure and content are rebuilt here, with the design system's components and tokens.",
+  "url": "https://ui.shadcn.com/docs/forms",
+  "repository": "https://github.com/shadcn-ui/ui",
+  "commit": "0132174664c07d41262fb51012d0cc782e458e6c",
+  "retrieved": "2026-11-27",
+  "license": {
+    "id": "MIT",
+    "name": "MIT License",
+    "url": "https://github.com/shadcn-ui/ui/blob/main/LICENSE.md",
+    "copyright": "Copyright (c) 2023 shadcn",
+    "file": "LICENSE.md"
+  },
+  "screenUrl": "https://ui.shadcn.com/view/new-york-v4/{block}",
+  "codeUrl": "https://github.com/shadcn-ui/ui/blob/0132174664c07d41262fb51012d0cc782e458e6c/apps/v4/registry/new-york-v4/examples/{block}.tsx",
+  "changes": [
+    "Rebuilt as static HTML with the design system's component templates; every color, type style, radius, border and spacing comes from its tokens.",
+    "The original visual design (Tailwind classes, the Geist font) is not reused.",
+    "No script: the validation the original runs in the browser is shown as its result, and the toast that shows the submitted values is dropped.",
+    "Labels and messages are written in the design system's words (Forms foundation, Writing messages): sentence case, no period on a single sentence, a message that says the fix."
+  ]
+}
