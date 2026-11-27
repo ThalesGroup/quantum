@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.54.0",
+  "version": "0.55.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -23,7 +23,7 @@
       "tokens": [
         "form.gap.*"
       ],
-      "description": "The spaces of a form's layout: between two fields, between two groups of fields, and between a group's title and its first field. The actions take the field or the group gap."
+      "description": "The spaces of a form's layout: between two fields, between two groups of fields, between a group's title and its first field, and between a label column and its controls. The actions take the field or the group gap."
     }
   ],
   "appliesTo": "input-components",
@@ -56,7 +56,7 @@
     {
       "id": "label-placement",
       "name": "Where the label sits",
-      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. In the column, every label and every group legend aligns to its end, against its control: the column is as wide as the longest label, at most 14 em (a longer label wraps), and each label ends 12 px (space.12) from its control whatever the other labels' lengths, immediately before its field. A label's first line is centred on the control's box; the description and the message stay under the control; in a right-to-left language start and end mirror, so the labels sit to the right of their fields. When the column stacks is decided in step 10, point 8; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting."
+      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. In the column, every label and every group legend aligns to its end, against its control: the column is as wide as the longest label, at most 14 em (a longer label wraps), and each label ends form.gap.label-column (space.12, 12 px) from its control whatever the other labels' lengths, immediately before its field. A label's first line is centred on the control's box; the description and the message stay under the control; in a right-to-left language start and end mirror, so the labels sit to the right of their fields. When the column stacks is decided in step 10, point 8; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting."
     },
     {
       "id": "required",
@@ -111,7 +111,7 @@
     {
       "id": "spacing",
       "name": "Spacing",
-      "text": "Two fields of a form stack form.gap.field (space.16, 16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack form.gap.group (space.32, 32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits form.gap.title (space.12, 12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The form's actions (its submit button and the buttons next to it) take the gap of what precedes them: form.gap.field after a form without groups, form.gap.group after a grouped form, with no token of their own, since they act on the whole form and not on its last group; the buttons stand space.8 (8 px) apart. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. The three gaps are semantic tokens the design system adds (the Figma library has none for them), the same on every platform today; a platform may override them, none does. Inside a field, the label, the control, the description and the message are 6 px apart (space.6, each component's own gap token). A group takes the same 6 px from its legend to its options when there is no description, from its description to its options and from its options to its message; its description sits right under its legend (0 px), the two read as one heading, and its options stack 4 px apart (16 px in a row), closer than the parts around them, so the list reads as one unit. These are component values, the same on every platform: on iOS each option row is at least 44 pt tall and on Android 48 dp (Material sets it), both keeping 4 between rows; macOS keeps the web's values, its 20 pt minimum met; Windows' Spacing page gives 8 epx between a control and its header and 12 epx between a control and its label, a recorded difference a product may override."
+      "text": "Two fields of a form stack form.gap.field (space.16, 16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack form.gap.group (space.32, 32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits form.gap.title (space.12, 12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The form's actions (its submit button and the buttons next to it) take the gap of what precedes them: form.gap.field after a form without groups, form.gap.group after a grouped form, with no token of their own, since they act on the whole form and not on its last group; the buttons stand space.8 (8 px) apart. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. These gaps, with the label column's (form.gap.label-column, rule label-placement), are semantic tokens the design system adds (the Figma library has none for them), the same on every platform today; a platform may override them, none does. Inside a field, the label, the control, the description and the message are 6 px apart (space.6, each component's own gap token). A group takes the same 6 px from its legend to its options when there is no description, from its description to its options and from its options to its message; its description sits right under its legend (0 px), the two read as one heading, and its options stack 4 px apart (16 px in a row), closer than the parts around them, so the list reads as one unit. These are component values, the same on every platform: on iOS each option row is at least 44 pt tall and on Android 48 dp (Material sets it), both keeping 4 between rows; macOS keeps the web's values, its 20 pt minimum met; Windows' Spacing page gives 8 epx between a control and its header and 12 epx between a control and its label, a recorded difference a product may override."
     },
     {
       "id": "keyboard",
@@ -1931,6 +1931,18 @@
   ],
   "decisions": [
     {
+      "id": "forms-label-column-gap",
+      "date": "2026-11-27",
+      "version": "0.55.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The space between a label column and its controls is a fourth semantic addition owned by the Forms foundation, form.gap.label-column → {space.12}, next to form.gap.field, form.gap.group and form.gap.title (forms-gap-tokens). It is its own token, not an alias of form.gap.title: a group's title introduces the fields under it, a label in the column names the control beside it, so the two may diverge though they share 12 px today. The same on every platform; a platform may override it in its overlay, and none does.",
+      "rationale": "Decided by the team on 2026-11-27 (#105 step 10, point 7b), asked on its own after point 7: A, no addition, the rule naming space.12 (rejected); B, a fourth semantic addition form.gap.label-column → {space.12} (recommended, chosen). The team's words: \"B, add the token\"; the choice is the approval this addition needs, as no semantic token beyond the Figma library is added without asking, and nothing else is added. Like the three gaps of point 4, a semantic token lets a platform override the value, reaches Figma and Penpot as a variable, and is what a form's layout reads. The 12 px follows point 7 (forms-label-alignment); Windows' Spacing page gives 12 epx between a control and its label (a design page outside the trusted sources, named here only).",
+      "tokens": [
+        "form.gap.label-column"
+      ]
+    },
+    {
       "id": "forms-label-alignment",
       "date": "2026-11-27",
       "version": "0.54.0",
@@ -2856,6 +2868,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.55.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-label-column-gap (#105 step 10, point 7b): a fourth semantic addition owned by Forms, form.gap.label-column → {space.12} (packages/tokens/src/additions/semantic/form.tokens.json), drawn by the Form gaps specimen; the rule label-placement names it for the 12 px between a label column and its controls, the rule spacing counts it among the form's gap tokens. Not an alias of form.gap.title. No rendering change."
+    },
     {
       "version": "0.54.0",
       "date": "2026-11-27",

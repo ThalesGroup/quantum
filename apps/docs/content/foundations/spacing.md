@@ -17,7 +17,7 @@ Two scales from the Figma library (Dimension) measure everything in the system:
 
 There is no semantic layer on top of them: components and the docs site read these scales
 directly. The one exception is the layout of a form: the space between fields, between groups of
-fields and above a group's first field are three tokens of their own, `form.gap.*`, which the
+fields, above a group's first field and after a label column are four tokens of their own, `form.gap.*`, which the
 [Forms](/foundations/forms#spacing) foundation owns and which alias steps of the space scale.
 
 ## Building with the scales

@@ -146,7 +146,8 @@ whatever the setting. In a design tool the setting is not one of the component's
 
 **In the column, each label sits against its control.** Every label and every group legend aligns
 to the end of the column, so it ends 12 px from its control whatever the length of the others; the
-column is as wide as the longest label, at most 14 em, and a longer label wraps. Each label is then
+column is as wide as the longest label, at most 14 em, and a longer label wraps. The 12 px are
+`form.gap.label-column`, with the other gaps of a form in [Spacing](#spacing). Each label is then
 immediately before its field, where people expect it and where a screen magnifier finds it
 ([G162](https://www.w3.org/WAI/WCAG22/Techniques/general/G162)); RGAA asks the same, a label
 "visuellement accolée immédiatement" to the left of its field
@@ -867,10 +868,12 @@ last group of a grouped form. They act on the whole form, not on its last group:
 stand apart as a group does, and in a plain form they are one more row. The buttons stand 8 px
 apart. The actions have no value of their own, and no trusted page gives one.
 
-**The gaps are tokens.** The three spaces of a form's layout are semantic tokens the design
-system adds, since the Figma library has none for them: `form.gap.field` (16 px) between two fields,
-`form.gap.group` (32 px) between two groups of fields and `form.gap.title` (12 px) between a group's
-title and its first field. The actions take the field or the group gap, whichever precedes them,
+**The gaps are tokens.** The spaces of a form's layout are semantic tokens the design system
+adds, since the Figma library has none for them: `form.gap.field` (16 px) between two fields,
+`form.gap.group` (32 px) between two groups of fields, `form.gap.title` (12 px) between a group's
+title and its first field, and `form.gap.label-column` (12 px) between a label column and its
+controls. The last two share a value, not a meaning: a title introduces the fields under it, a
+label in the column names the control beside it, so each has its own token. The actions take the field or the group gap, whichever precedes them,
 and have no token of their own. A form's layout reads these tokens rather than the scale steps
 behind them, so a platform can give them its own values, and Figma and Penpot get them as
 variables. They are the same on every platform today; the Tokens tab draws them.

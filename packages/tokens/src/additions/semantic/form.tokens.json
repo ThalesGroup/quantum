@@ -1,5 +1,5 @@
 {
-  "$description": "The gaps of a form's layout (Forms foundation, rule spacing): between two fields, between two groups of fields, and between a group's title and its first field. A form's actions take the field or the group gap, whichever precedes them. Not in the Figma library: added by the design system (decision forms-gap-tokens). A platform may override them in src/platforms/<id>/; none does today.",
+  "$description": "The gaps of a form's layout (Forms foundation, rule spacing): between two fields, between two groups of fields, between a group's title and its first field, and between a label column and its controls (rule label-placement). A form's actions take the field or the group gap, whichever precedes them. Not in the Figma library: added by the design system (decisions forms-gap-tokens and forms-label-column-gap). A platform may override them in src/platforms/<id>/; none does today.",
   "form": {
     "$type": "dimension",
     "gap": {
@@ -14,6 +14,10 @@
       "title": {
         "$value": "{space.12}",
         "$description": "Between a group's title and its first field."
+      },
+      "label-column": {
+        "$value": "{space.12}",
+        "$description": "In a label column (labelPlacement start), between the end of the column, where every label ends, and its control. Not form.gap.title: a title introduces the fields under it, a label in the column names the control beside it; the two share a value today, not a meaning."
       }
     }
   }

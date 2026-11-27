@@ -987,9 +987,10 @@ them, and the theme restyles nothing directly.
   warning border and message (`text-field.control.border-color.warning`, `text-field.message.color.warning`)
   are not mapped.
 - **Form gaps.** The Forms foundation spaces fields `form.gap.field` apart, groups of fields
-  `form.gap.group` and a group's title `form.gap.title` above its first field: Bootstrap spaces form
-  rows with spacing utilities in the markup (`.mb-3`), with no custom property or Sass setting for
-  the gap between fields or groups, so the three tokens are not mapped.
+  `form.gap.group`, a group's title `form.gap.title` above its first field and a label column
+  `form.gap.label-column` from its controls: Bootstrap spaces form rows with spacing utilities in
+  the markup (`.mb-3`) and builds a horizontal form's label column from grid classes in the markup,
+  with no custom property or Sass setting for these gaps, so the four tokens are not mapped.
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
   button sizes (28px, 44px), not from Quantum's small and large fields (32px, 48px).
 - **Field padding.** Bootstrap pads inputs and textareas alike, where Quantum centers a field's
