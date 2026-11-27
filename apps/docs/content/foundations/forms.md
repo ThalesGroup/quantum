@@ -142,8 +142,19 @@ control it holds, as it passes `markedFields`: a form never mixes labels above a
 start, and with `start` it sizes one column for all its labels. A group's legend sits in that
 column, as a field's label does; a checkbox, a radio or a switch keeps its label after the box
 whatever the setting. In a design tool the setting is not one of the component's variants, as
-`markedFields` is not. How the labels align in the column and when the column stacks above the
-fields are decided in step 10, points 7 and 8.
+`markedFields` is not. When the column stacks above the fields is decided in step 10, point 8.
+
+**In the column, each label sits against its control.** Every label and every group legend aligns
+to the end of the column, so it ends 12 px from its control whatever the length of the others; the
+column is as wide as the longest label, at most 14 em, and a longer label wraps. Each label is then
+immediately before its field, where people expect it and where a screen magnifier finds it
+([G162](https://www.w3.org/WAI/WCAG22/Techniques/general/G162)); RGAA asks the same, a label
+"visuellement accolée immédiatement" to the left of its field
+([RGAA 11.4](https://accessibilite.numerique.gouv.fr/methode/criteres-et-tests/#11.4)). The cost
+is a ragged start edge: the labels are less easy to scan down than labels aligned to the start,
+but no short label ends far from its control. A label's first line is centred on the control's
+box, and the description and the message stay under the control. In a right-to-left language the
+column mirrors: the labels sit to the right of their fields.
 
 The other platforms follow their own requirements and constraints where they have some, and
 the generic rule where they have none. A floating label is allowed where it is the platform's

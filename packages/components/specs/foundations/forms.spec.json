@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.53.0",
+  "version": "0.54.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -56,7 +56,7 @@
     {
       "id": "label-placement",
       "name": "Where the label sits",
-      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. How the labels align in the column and when the column stacks are decided in step 10, points 7 and 8; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting."
+      "text": "The anatomy fixes the order (label, control, description, message) and the association; where the label sits is a layout choice. The generic rule, applied as is on the web: the label sits above a field-like control (Text field, Number field, Search field, Textarea, Select) by default; a form may put the labels of its fields in a column at the start. Where the labels sit is a setting of the form, never of a field: labelPlacement, above (the default) or start, set once per form and passed to every field-like control of the form, as markedFields is, so a form never mixes placements, and the form sizes one column for all its labels. A group's legend sits in that column; a checkbox, a radio or a switch keeps its label after the box whatever the setting. A design tool draws the setting outside the component's variants, as markedFields. In the column, every label and every group legend aligns to its end, against its control: the column is as wide as the longest label, at most 14 em (a longer label wraps), and each label ends 12 px (space.12) from its control whatever the other labels' lengths, immediately before its field. A label's first line is centred on the control's box; the description and the message stay under the control; in a right-to-left language start and end mirror, so the labels sit to the right of their fields. When the column stacks is decided in step 10, point 8; a checkbox, a radio or a switch has its label after the box; the label never sits inside the box, so there is no floating label on the web. On iOS, Android and desktop, a control follows its platform's own requirements and constraints where the platform has them, and the generic rule where it has none: a floating label is allowed where it is that platform's standard way, such as Material's text field label on Android; on Windows, whose Forms guidance places labels above the input control, the labels stay above whatever the form's setting."
     },
     {
       "id": "required",
@@ -1014,6 +1014,14 @@
         ]
       },
       {
+        "text": "In a label column, each label sits immediately before its field: aligned to the end of the column, 12 px from the control, to the left of the field in a left-to-right language and to the right in a right-to-left one, so a screen magnifier finds it next to the field and no label can be taken for its neighbour's.",
+        "refs": [
+          "wcag-g162",
+          "rgaa-11-4",
+          "rgaa-glossary-accoles"
+        ]
+      },
+      {
         "text": "On Windows, labels are left-aligned and placed above the input control, many controls having a Header property for it; a form with labels on the left is shown as what not to do, so a form's labelPlacement stays above on Windows.",
         "refs": [
           "windows-forms"
@@ -1234,6 +1242,16 @@
         "id": "wcag-g162",
         "title": "WCAG technique G162: positioning labels to maximize predictability of relationships",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G162"
+      },
+      {
+        "id": "rgaa-11-4",
+        "title": "RGAA 4.1: criterion 11.4 (label next to its field)",
+        "url": "https://accessibilite.numerique.gouv.fr/methode/criteres-et-tests/#11.4"
+      },
+      {
+        "id": "rgaa-glossary-accoles",
+        "title": "RGAA 4.1 glossary: accolés (label and field)",
+        "url": "https://accessibilite.numerique.gouv.fr/methode/glossaire/#accoles-etiquette-et-champ-accoles"
       },
       {
         "id": "wai-forms-grouping",
@@ -1912,6 +1930,23 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-label-alignment",
+      "date": "2026-11-27",
+      "version": "0.54.0",
+      "area": "layout",
+      "status": "active",
+      "text": "In a label column (labelPlacement start, forms-label-column), every label and every group legend aligns to the end of the column, against its control: the column is as wide as the longest label, at most 14 em, and each label ends 12 px (space.12) from its control whatever the other labels' lengths. A label's first line is centred on the control's box; the description and the message stay under the control; right-to-left mirrors start and end. Windows keeps its labels above (forms-label-column). The ragged start edge of the labels is the trade-off.",
+      "rationale": "Decided by the team on 2026-11-27 (#105 step 10, point 7): B, as recommended, among: A, labels at the start of the same fitted column (rejected: a short label ends far from its control when another label is long, 80 px or more on the sheet); B, labels at the end of the column, against the control (chosen); C, labels at the start of a fixed 160 px column (rejected: too wide for short labels, long ones wrap). The team's words: \"Step 10.7 -> B\". G162 positions labels \"immediately before the field\", to the left (or the right in a right-to-left language) or above, which also \"makes labels easier to locate with a screen magnifier\"; RGAA test 11.4.2 asks the label to be visually \"accolée immédiatement\" above or to the left of its field (to the right in right-to-left), and its glossary defines \"accolés\" as visually close enough that the relation cannot be confused, with no distance. Fixed on every option: the first line centred on the box (step 3 point 4 measured a field lining up with a Button of the same size that way), 12 px between the column and the control, the description and the message under the control. Whether the 12 px becomes a semantic addition is point 7b. iOS and Android have no page on label alignment: the default applies where a product uses a label column. Sources opened on 2026-11-27: G162, RGAA criterion 11.4 (tests 11.4.2 and 11.4.3), RGAA glossary (accolés).",
+      "tokens": [
+        "space.12"
+      ],
+      "refs": [
+        "wcag-g162",
+        "rgaa-11-4",
+        "rgaa-glossary-accoles"
+      ]
+    },
     {
       "id": "forms-label-column",
       "date": "2026-11-27",
@@ -2821,6 +2856,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.54.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-label-alignment (#105 step 10, point 7): the rule label-placement says that in a label column every label and legend aligns to the end of a column fitted to the longest label (at most 14 em), 12 px from its control, its first line centred on the box, the description and the message under the control, right-to-left mirrored; stacking left to point 8. One guideline (every platform) and two references (RGAA criterion 11.4, RGAA glossary accolés). No component, token or rendering change here: the field family builds the column."
+    },
     {
       "version": "0.53.0",
       "date": "2026-11-27",
