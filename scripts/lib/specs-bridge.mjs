@@ -19,6 +19,7 @@
  */
 import { flatten, isAlias, aliasPath, EXT } from './dtcg.mjs';
 import { artifacts } from './paths.mjs';
+import { statePair } from './token-map.mjs';
 
 /** Reverse-domain key for Quantum data inside Specs `$extensions` (shared with the resolved platform outputs). */
 export { EXT };
@@ -173,15 +174,25 @@ export function toSpecs(spec, tokensTree) {
     let expressible = !!map && isAlias(t.value) && SPECS_TOKEN_TYPES.has(t.type) && !instanceParts.has(partId);
     // Grammar is <option>…<state>: each enum property takes one segment, so an option value that
     // is also a state id (variant `default` + state `default`) reads as the state once its
-    // property is set. Only one state segment is allowed. A state set by an enum value
+    // property is set. Only one state segment is allowed; it may name two states (`checked-error`,
+    // scripts/lib/token-map.mjs), which become one layer setting both (checked: true, severity:
+    // error), unless both are values of STATE_PROP. A state set by an enum value
     // (error: severity = error) is that value of the property: the same configuration.
     let stated = false;
     for (const seg of rest) {
+      const pair = !stated && !stateById[seg] && !optionOf.has(seg) ? statePair(spec, seg) : null;
       if (optionOf.has(seg) && !(optionOf.get(seg) in config)) config[optionOf.get(seg)] = seg;
       else if (stateById[seg] && !stated) {
         stated = true;
         if (viaBoolean(stateById[seg])) config[stateById[seg].property] = true;
         else if (seg !== 'default') config[STATE_PROP] = seg;
+      } else if (pair) {
+        stated = true;
+        for (const s of pair.map((id) => stateById[id])) {
+          const set = viaBoolean(s) ? [s.property, true] : viaValue(s) ? [s.property, s.value] : [STATE_PROP, s.id];
+          if (set[0] in config) expressible = false;
+          else config[set[0]] = set[1];
+        }
       } else expressible = false;
     }
     if (!expressible) { residue.push({ path: t.path, type: t.type, value: t.value }); continue; }

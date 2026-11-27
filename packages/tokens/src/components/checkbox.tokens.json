@@ -24,9 +24,17 @@
         "hover": { "$value": "{form.control.background.hover}" },
         "checked": { "$value": "{global.bg.accent.brand.default}" },
         "indeterminate": { "$value": "{global.bg.accent.brand.default}" },
+        "checked-error": {
+          "$value": "{global.bg.accent.brand.default}",
+          "$description": "The fill of a checked box in error: its brand fill, the role of control.background.checked, inside its error border; the border and the message carry the error (decision checked-error-fill, Forms forms-choice-error-fill). A token for two states: it applies when the box is checked and in error, and wins over control.background.checked and control.background.error (packages/tokens/AGENTS.md, Which token applies)."
+        },
+        "indeterminate-error": {
+          "$value": "{global.bg.accent.brand.default}",
+          "$description": "The fill of an indeterminate box in error: its brand fill, the role of control.background.indeterminate, inside its error border (decision checked-error-fill, Forms forms-choice-error-fill). A token for two states: it applies when the box is indeterminate and in error, and wins over control.background.indeterminate and control.background.error."
+        },
         "error": {
           "$value": "{form.control.background.error}",
-          "$description": "The fill of an unchecked box in error, inside its error border, at rest and on hover alike: the subtle error background, as a field in error (Forms foundation, decisions forms-severity-fill and forms-choice-error-fill); a checked or indeterminate box keeps its brand fill. The border and the message carry the error, the tint is not the cue."
+          "$description": "The fill of an unchecked box in error, inside its error border, at rest and on hover alike: the subtle error background, as a field in error (Forms foundation, decisions forms-severity-fill and forms-choice-error-fill); a checked or indeterminate box keeps its brand fill (control.background.checked-error, indeterminate-error). The border and the message carry the error, the tint is not the cue."
         },
         "disabled": { "$value": "{global.bg.state.disabled.default}" }
       },

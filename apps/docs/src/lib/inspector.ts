@@ -63,7 +63,8 @@ export function inspectorTokens(spec: any): InspectorToken[] {
 /** The part of a spec the browser needs to decide which tokens are active. */
 export const inspectorSpec = (spec: any) => ({
   properties: spec.properties.filter((p: any) => p.type === 'enum' || p.type === 'boolean').map((p: any) => ({ id: p.id, type: p.type, default: p.default, affects: p.affects, options: p.options?.map((o: any) => ({ value: o.value })) })),
-  states: spec.states.map((s: any) => ({ id: s.id, trigger: s.trigger, property: s.property })),
+  // `value`: a state set by one option of an enum property (error, severity: error) holds only at that option.
+  states: spec.states.map((s: any) => ({ id: s.id, trigger: s.trigger, property: s.property, value: s.value })),
   // Instance enum properties of repeated parts (a menu item's intent) name options of their parts' tokens.
   anatomy: spec.anatomy.filter((p: any) => p.properties?.some((x: any) => x.type === 'enum')).map((p: any) => ({
     id: p.id,

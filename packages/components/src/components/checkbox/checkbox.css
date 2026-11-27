@@ -124,7 +124,8 @@
 }
 
 /* ---- States -------------------------------------------------------------- */
-/* Order matters: hover < error fill < checked < indeterminate < error border < disabled. Hover never
+/* Order matters: hover < error fill < checked < checked in error < indeterminate < indeterminate in error
+   < error border < disabled. Hover never
    repaints a checked, indeterminate or disabled box (the checked token wins over hover, as in the token
    rule); it reads the hover values through private properties, which an error keeps at its own. */
 
@@ -154,6 +155,15 @@
   opacity: 1;
 }
 
+/* A checked box in error keeps its brand fill, through the token for both states (decision
+   checked-error-fill), as the token rule says: after the checked rule, at its specificity, so a
+   disabled box still wins. The indeterminate one follows the indeterminate rule. */
+:where(.ds-checkbox[data-state="error"], .ds-checkbox[data-severity="error"]) .ds-checkbox__control:checked,
+.ds-checkbox__control:where([aria-invalid="true"]):checked,
+.ds-checkbox:where([data-state="checked"][data-severity="error"]) .ds-checkbox__control {
+  --_control-background: var(--checkbox-control-background-checked-error);
+}
+
 .ds-checkbox:where([data-state="indeterminate"]) .ds-checkbox__control,
 .ds-checkbox__control:indeterminate {
   --_control-background: var(--checkbox-control-background-indeterminate);
@@ -168,6 +178,12 @@
   border-width: 0 0 calc(var(--_control-size) * 0.12) 0;
   transform: none;
   opacity: 1;
+}
+
+:where(.ds-checkbox[data-state="error"], .ds-checkbox[data-severity="error"]) .ds-checkbox__control:indeterminate,
+.ds-checkbox__control:where([aria-invalid="true"]):indeterminate,
+.ds-checkbox:where([data-state="indeterminate"][data-severity="error"]) .ds-checkbox__control {
+  --_control-background: var(--checkbox-control-background-indeterminate-error);
 }
 
 .ds-checkbox:where([data-state="error"], [data-severity="error"]) .ds-checkbox__control,

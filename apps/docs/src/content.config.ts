@@ -45,7 +45,7 @@ const specs = defineCollection({
           of: z.array(z.string()).optional(),
         }),
       ),
-      states: z.array(z.object({ id: z.string(), trigger: z.string(), description: z.string().optional(), property: z.string().optional(), platforms: z.array(z.string()).optional(), inputs: z.array(z.string()).optional(), parts: z.array(z.string()).optional() })),
+      states: z.array(z.object({ id: z.string(), trigger: z.string(), description: z.string().optional(), property: z.string().optional(), value: z.string().optional(), platforms: z.array(z.string()).optional(), inputs: z.array(z.string()).optional(), parts: z.array(z.string()).optional() })),
       slots: z.array(z.any()).optional(),
       layout: z.record(z.any()).optional(),
       accessibility: z.record(z.any()).optional(),

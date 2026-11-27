@@ -13,6 +13,10 @@
  * state once its property is set. A state set by an enum value (`error`, set by `severity: error`)
  * is read as that state first: its segment is never an option.
  *
+ * The state segment may name two states, joined by a hyphen in the spec's state order
+ * (`checked-error`): such a token applies when both hold. It is one segment, not two, because a
+ * DTCG token cannot also be a group (`checked` holds a value, so it cannot hold `checked.error`).
+ *
  * Instance enum properties of a repeated part (a menu item's `intent`, spec `anatomy[].properties`)
  * name options of the parts they affect too; they are keyed `<part>.<property>` (`item.intent`)
  * so they never collide with a component property of the same id.
@@ -78,8 +82,24 @@ const enumProperties = (spec) => [
 export const isValueState = (s) => s.trigger === 'property' && Boolean(s.property) && s.value !== undefined;
 
 /**
+ * The two states a state segment names (`checked-error` -> ['checked', 'error']), or null: two
+ * declared states other than `default`, joined by a hyphen in the spec's state order.
+ */
+export function statePair(spec, seg) {
+  const ids = (spec.states ?? []).map((s) => s.id).filter((id) => id !== 'default');
+  for (let i = 0; i < ids.length; i++) {
+    if (!seg.startsWith(`${ids[i]}-`)) continue;
+    const j = ids.indexOf(seg.slice(ids[i].length + 1));
+    if (j > i) return [ids[i], ids[j]];
+  }
+  return null;
+}
+
+/**
  * Reads the segments of a component token path.
- * @returns {{ component, part, property, keys: string[], options: Record<string,string>, state: string|null, slot: string, specificity: number }}
+ * `state` is the state segment as written (one state id, or two joined by a hyphen); `states`
+ * lists the state ids it names, in spec order (empty without a state).
+ * @returns {{ component, part, property, keys: string[], options: Record<string,string>, state: string|null, states: string[], slot: string, specificity: number }}
  */
 export function parseTokenPath(spec, segments) {
   const [component, part, property, ...rest] = segments;
@@ -90,15 +110,18 @@ export function parseTokenPath(spec, segments) {
   const options = {};
   const keys = [];
   let state = null;
+  let states = [];
   for (const seg of rest) {
     const owner = valueStates.has(seg) && state === null ? null : enums.find((p) => !(p.key in options) && p.options.some((o) => o.value === seg));
+    const pair = state === null && !owner && !stateIds.has(seg) ? statePair(spec, seg) : null;
     if (owner) options[owner.key] = seg;
-    else if (state === null && stateIds.has(seg)) state = seg;
+    else if (state === null && stateIds.has(seg)) [state, states] = [seg, [seg]];
+    else if (pair) [state, states] = [seg, pair];
     else keys.push(seg);
   }
   // The slot is what one CSS declaration reads: the same part, property and keys, whatever the options and state.
   const slot = [part, property, ...keys].join('.');
-  return { component, part, property, keys, options, state, slot, specificity: Object.keys(options).length };
+  return { component, part, property, keys, options, state, states, slot, specificity: Object.keys(options).length };
 }
 
 /** Value of an enum property in `props`, or its spec default. */
@@ -130,8 +153,14 @@ export function effectiveStates(spec, props = {}, state = null) {
  * that has one, else a `default` token, else a token without state. Among those, the one naming
  * the most options wins. A slot with none of them is inactive (`outline-width.focus-visible` at rest).
  *
+ * A token naming two states (`checked-error`) applies when both hold. It ranks with the higher of
+ * its two states and, at that rank, wins over the token of that state alone; so it wins over the
+ * tokens of each of its states, and a state that outranks both (`disabled`) still wins with its
+ * own token. Two such tokens of one rank go by their other state, the higher first.
+ *
  * @param tokens  [{ path, segments, … }] component tokens of `spec`
- * @returns       [{ token, parsed, via: 'state' | 'default' | 'stateless', state: string|null }] in token order
+ * @returns       [{ token, parsed, via: 'state' | 'default' | 'stateless', state: string|null }] in token order;
+ *                `state` is the state segment that won (`checked-error` for a two-state token)
  */
 export function activeTokens(spec, tokens, props = {}, state = null) {
   const states = effectiveStates(spec, props, state);
@@ -153,7 +182,20 @@ export function activeTokens(spec, tokens, props = {}, state = null) {
       out.set(best.token, { ...best, via, state: s });
       return true;
     };
-    const done = states.some((s) => pick(candidates.filter((c) => c.parsed.state === s), 'state', s));
+    // Two-state tokens whose states both hold, at the rank of their higher state, then by their other one.
+    const rank = (id) => states.indexOf(id);
+    const pairs = candidates.filter((c) => c.parsed.states.length === 2 && c.parsed.states.every((id) => rank(id) >= 0));
+    const pairsAt = (s) => {
+      const at = pairs.filter((c) => Math.min(...c.parsed.states.map(rank)) === rank(s));
+      const other = (c) => Math.max(...c.parsed.states.map(rank));
+      const best = Math.min(...at.map(other));
+      return at.filter((c) => other(c) === best);
+    };
+    const done = states.some((s) => {
+      const two = pairsAt(s);
+      if (two.length) return pick(two, 'state', two[0].parsed.state);
+      return pick(candidates.filter((c) => c.parsed.state === s), 'state', s);
+    });
     if (!done && !pick(candidates.filter((c) => c.parsed.state === 'default'), 'default', 'default')) {
       pick(candidates.filter((c) => c.parsed.state === null), 'stateless', null);
     }

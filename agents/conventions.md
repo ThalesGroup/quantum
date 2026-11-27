@@ -28,10 +28,12 @@ button.label.typography.md
 ```
 - `<part>` must be a part id from the spec's anatomy.
 - `<property>` is a kebab-case CSS-like property name (`background`, `border-color`, `min-height`, `typography`).
-- `<option>` is an option value of an enum property (`primary`, `sm`); `<state>` a declared state id.
+- `<option>` is an option value of an enum property (`primary`, `sm`); `<state>` a declared state id,
+  or two joined by a hyphen in the spec's state order for a value that holds only when both do
+  (`checkbox.control.background.checked-error`).
 - Which token applies to a configuration follows from the path alone: an option missing from
-  the path matches any value, a state without a token falls back to `default`, the token naming
-  the most options wins. Rule and checks: `packages/tokens/AGENTS.md` "Which token applies".
+  the path matches any value, a state without a token falls back to `default`, a token naming two
+  states wins over each of them alone when both hold, the token naming the most options wins. Rule and checks: `packages/tokens/AGENTS.md` "Which token applies".
 - Values **alias semantic tokens only**. Never a raw token, never a literal.
 - The generated CSS variable is the path joined with `-`: `--button-container-background-primary-hover`.
   Typography composites expand to `-font-family`, `-font-size`, `-font-weight`, `-line-height`, `-letter-spacing`.

@@ -22,7 +22,7 @@ import { allContexts, evaluateContrast, formatRatio } from './lib/contrast.mjs';
 import { checkSiteCss, checkSiteMarkup } from './lib/site-check.mjs';
 import { checkLogicalCss } from './lib/logical-css.mjs';
 import { checkBlueprint } from './lib/blueprint.mjs';
-import { checkTokenMap, parseTokenPath, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
+import { checkTokenMap, parseTokenPath, statePair, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
 import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
@@ -320,6 +320,9 @@ for (const { spec, where } of specs) {
       for (const seg of rest.slice(1)) {
         // A word of the state vocabulary that an enum property owns as an option (an intent `error`) is that option.
         if (stateVocabulary.has(seg) && !stateIds.includes(seg) && !optionValues.has(seg)) error(rel(tokenFile), `${t.path}: state "${seg}" is not declared in the spec`);
+        // Two states in one segment (`checked-error`): both declared, neither `default`, in the spec's state order.
+        const pairOf = [...stateVocabulary].map((a) => seg.startsWith(`${a}-`) && stateVocabulary.has(seg.slice(a.length + 1)) && [a, seg.slice(a.length + 1)]).find(Boolean);
+        if (pairOf && !stateVocabulary.has(seg) && !optionValues.has(seg) && !statePair(spec, seg)) error(rel(tokenFile), `${t.path}: "${seg}" names two states, which must both be declared in the spec, other than default, in the spec's state order`);
         if (enumOptions.has(seg)) continue;
         // A segment that matches an option of NO property but looks like a variant is suspicious only if states/options exist with similar names; keep permissive.
       }

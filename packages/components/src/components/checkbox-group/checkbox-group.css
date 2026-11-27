@@ -224,7 +224,7 @@
 
 /* ---- States -------------------------------------------------------------- */
 /* Forced on the root (every option) or on one option; native pseudo-classes on the radio.
-   Order matters: hover < error fill < checked < error border < disabled; hover never repaints a checked
+   Order matters: hover < error fill < checked < checked in error < error border < disabled; hover never repaints a checked
    or disabled box, and reads its values through private properties, which an error keeps at its own. */
 
 :where(.ds-checkbox-group[data-state="hover"], .ds-checkbox-group__option[data-state="hover"]) .ds-checkbox-group__control:not(:checked, :disabled),
@@ -251,6 +251,15 @@
 :where(.ds-checkbox-group[data-state="checked"], .ds-checkbox-group__option[data-state="checked"]) .ds-checkbox-group__control::after,
 .ds-checkbox-group__control:checked::after {
   opacity: 1;
+}
+
+/* A checked box in error keeps its brand fill, through the token for both states (decision
+   checked-error-fill), as the token rule says: after the checked rule, at its specificity, so a
+   disabled one still wins. */
+:where(.ds-checkbox-group[data-state="error"], .ds-checkbox-group__option[data-state="error"], .ds-checkbox-group[data-severity="error"]) .ds-checkbox-group__control:checked,
+.ds-checkbox-group__control:where([aria-invalid="true"]):checked,
+:where(.ds-checkbox-group[data-severity="error"][data-state="checked"], .ds-checkbox-group[data-severity="error"] .ds-checkbox-group__option[data-state="checked"]) .ds-checkbox-group__control {
+  --_control-background: var(--checkbox-group-control-background-checked-error);
 }
 
 :where(.ds-checkbox-group[data-state="error"], .ds-checkbox-group__option[data-state="error"]) .ds-checkbox-group__control,

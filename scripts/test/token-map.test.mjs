@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseTokenPath, effectiveStates, activeTokens, checkTokenMap, kindOf, matchesTokenPattern, aliasChain } from '../lib/token-map.mjs';
+import { parseTokenPath, statePair, effectiveStates, activeTokens, checkTokenMap, kindOf, matchesTokenPattern, aliasChain } from '../lib/token-map.mjs';
 
 const spec = {
   id: 'chip',
@@ -40,7 +40,7 @@ const active = (props, state) => activeTokens(spec, tokens, props, state).map((a
 test('parseTokenPath reads options, then the state, then keys, positionally', () => {
   // `default` is first the variant option, then the state once the variant is set.
   assert.deepEqual(parseTokenPath(spec, 'chip.container.background.default.neutral.default'.split('.')), {
-    component: 'chip', part: 'container', property: 'background', keys: [], options: { variant: 'default', tone: 'neutral' }, state: 'default', slot: 'container.background', specificity: 2,
+    component: 'chip', part: 'container', property: 'background', keys: [], options: { variant: 'default', tone: 'neutral' }, state: 'default', states: ['default'], slot: 'container.background', specificity: 2,
   });
   const t = parseTokenPath(spec, 'chip.container.transition.duration'.split('.'));
   assert.deepEqual([t.keys, t.slot, t.state], [['duration'], 'container.transition.duration', null]);
@@ -175,4 +175,60 @@ test('a state set by an enum value reads as that state, never as the option', ()
   assert.deepEqual(pick({}), ['field.control.border-color.default']);
   assert.deepEqual(pick({ severity: 'error' }), ['field.control.border-color.error']);
   assert.deepEqual(checkTokenMap(field, toks).unreachable, []);
+});
+
+test('a token naming two states applies when both hold and wins over each of them alone', () => {
+  const box = {
+    id: 'box',
+    properties: [
+      { id: 'checked', type: 'boolean', default: false },
+      { id: 'severity', type: 'enum', default: 'none', options: [{ value: 'none' }, { value: 'error' }] },
+      { id: 'disabled', type: 'boolean', default: false },
+    ],
+    states: [
+      { id: 'default', trigger: 'interaction' },
+      { id: 'hover', trigger: 'interaction' },
+      { id: 'focus-visible', trigger: 'interaction' },
+      { id: 'checked', trigger: 'property', property: 'checked' },
+      { id: 'indeterminate', trigger: 'system' },
+      { id: 'error', trigger: 'property', property: 'severity', value: 'error' },
+      { id: 'disabled', trigger: 'property', property: 'disabled' },
+    ],
+  };
+  // Two declared states, in spec order, joined by a hyphen; never `default`, never the other order.
+  assert.deepEqual(statePair(box, 'checked-error'), ['checked', 'error']);
+  assert.deepEqual(statePair(box, 'focus-visible-error'), ['focus-visible', 'error']);
+  assert.equal(statePair(box, 'error-checked'), null);
+  assert.equal(statePair(box, 'default-error'), null);
+  assert.equal(statePair(box, 'focus-visible'), null);
+  const p = parseTokenPath(box, ['box', 'control', 'background', 'checked-error']);
+  assert.deepEqual([p.state, p.states, p.slot, p.keys], ['checked-error', ['checked', 'error'], 'control.background', []]);
+  // A declared state with a hyphen stays one state.
+  assert.deepEqual(parseTokenPath(box, ['box', 'control', 'outline-width', 'focus-visible']).states, ['focus-visible']);
+  // The other order is not a state: it reads as a key, so another slot.
+  assert.equal(parseTokenPath(box, ['box', 'control', 'background', 'error-checked']).slot, 'control.background.error-checked');
+
+  const paths = ['default', 'hover', 'checked', 'indeterminate', 'checked-error', 'indeterminate-error', 'error', 'disabled'].map((s) => `box.control.background.${s}`);
+  const toks = [...paths, 'box.control.border-color.default', 'box.control.border-color.checked', 'box.control.border-color.error'].map(tok);
+  const pick = (props, state) => activeTokens(box, toks, props, state).map((a) => a.token.path);
+  // One state alone: as before.
+  assert.deepEqual(pick({ checked: true }), ['box.control.background.checked', 'box.control.border-color.checked']);
+  assert.deepEqual(pick({ severity: 'error' }), ['box.control.background.error', 'box.control.border-color.error']);
+  // Both: the two-state token in its slot; the border, with no such token, keeps the higher state.
+  assert.deepEqual(pick({ checked: true, severity: 'error' }), ['box.control.background.checked-error', 'box.control.border-color.error']);
+  assert.deepEqual(pick({ checked: true, severity: 'error' }, 'hover'), ['box.control.background.checked-error', 'box.control.border-color.error']);
+  assert.deepEqual(pick({ severity: 'error' }, 'checked'), ['box.control.background.checked-error', 'box.control.border-color.error']);
+  const won = activeTokens(box, toks, { checked: true, severity: 'error' }).find((a) => a.parsed.slot === 'control.background');
+  assert.deepEqual([won.via, won.state], ['state', 'checked-error']);
+  // Two two-state tokens of one rank (error): the other state decides, indeterminate over checked.
+  assert.deepEqual(pick({ checked: true, severity: 'error' }, 'indeterminate'), ['box.control.background.indeterminate-error', 'box.control.border-color.error']);
+  // A state that outranks both keeps its own token.
+  assert.deepEqual(pick({ checked: true, severity: 'error', disabled: true }), ['box.control.background.disabled', 'box.control.border-color.error']);
+  // Without the two-state token, both holding is what it was: the higher state.
+  const one = toks.filter((t) => !t.path.endsWith('-error'));
+  assert.ok(activeTokens(box, one, { checked: true, severity: 'error' }).some((a) => a.token.path === 'box.control.background.error'));
+  assert.deepEqual(checkTokenMap(box, toks), { unreachable: [], ambiguous: [] });
+  // Two tokens naming the same two states, with as many options, tie.
+  const tied = [...toks, { path: 'box.control.background.checked-error', segments: ['box', 'control', 'background', 'checked-error'] }];
+  assert.equal(checkTokenMap(box, tied).ambiguous.length, 1);
 });

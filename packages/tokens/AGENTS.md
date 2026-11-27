@@ -25,7 +25,8 @@ Every `*.json` file under a tier directory is loaded, deep-merged and flattened;
   may share a top-level group (`color`) as long as full paths differ.
 - Component token path grammar: `<component>.<part>.<property>[.<option>][.<state>]`.
   `<part>` must be an anatomy part id of the spec, `<option>` an enum option value, `<state>` a
-  declared state. `pnpm validate` enforces it. Which token applies to a given configuration
+  declared state, or two joined by a hyphen in the spec's state order (`checked-error`).
+  `pnpm validate` enforces it. Which token applies to a given configuration
   follows from the path alone (see "Which token applies" below).
 - Component tokens alias semantic tokens **only**: a mapped color, a step of a Figma library scale
   or an addition. There is no intermediate layer of sizes, radii or text styles: a component
@@ -155,16 +156,26 @@ token inspector shows its result. The web CSS follows the same rule by conventio
    value equal to a state id (`default`) reads as the state once its property is set. The
    instance enum properties of a repeated part (a menu item's `intent`) count as enum
    properties of the parts they affect (`dropdown.item.background.error.hover`); each instance
-   matches with its own value.
+   matches with its own value. The state segment may name **two states**, joined by a hyphen in
+   the spec's state order (`checkbox.control.background.checked-error`): one segment, because a
+   DTCG token cannot also be a group (`checked` holds a value, so it cannot hold `checked.error`).
+   Both must be declared, neither `default` (`pnpm validate`).
 2. **Slots.** Tokens with the same part, property and keys form a slot: one CSS declaration.
 3. **Matching.** In a slot, a token applies when every option it names equals the prop. An
    option it does not name matches any value: `button.container.background.accent.disabled`
    holds for every intent.
-4. **States.** The states that hold are the forced state and every state set through a boolean
-   property that is on (`disabled`); when several hold, the one declared last in the spec wins
+4. **States.** The states that hold are the forced state, every state set through a boolean
+   property that is on (`disabled`) and every state set by an enum property at its option
+   (`error`, `severity: error`); when several hold, the one declared last in the spec wins
    (as the CSS orders its rules). The slot takes a token of the winning state if it has one,
    else of the next state that holds, else its `default` token, else a token without state.
    A slot with none of them is inactive (`outline-width.focus-visible` at rest).
+   A token naming two states applies when both hold. It ranks with the higher of the two and,
+   at that rank, wins over the token of that state alone: a checked box in error takes
+   `control.background.checked-error`, not `.checked` nor `.error`, while a state that outranks
+   both (`disabled`) keeps its own token. Two such tokens of one rank go by their other state.
+   Add one only where two states that hold together need a value neither gives alone, and alias
+   the role that fits (Checkbox, decision `checked-error-fill`: the checked fill's).
 5. **Specificity.** Among the tokens chosen that way, the one naming the most options wins.
    Two tokens that tie for one configuration are an **error** (`pnpm validate`): name one more
    option or state in one of them. A token that never wins is a **warning** (dead token).
