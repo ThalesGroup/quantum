@@ -86,11 +86,21 @@
       },
       "background": {
         "$type": "color",
+        "$description": "The control's fill: the Forms family's at rest and on hover; with a severity, the subtle functional fill of the severity at rest and on hover alike (Forms rule severity-fill, decision forms-severity-fill); the disabled fill wins over a severity.",
         "default": {
           "$value": "{form.control.background.default}"
         },
         "hover": {
           "$value": "{form.control.background.hover}"
+        },
+        "error": {
+          "$value": "{form.control.background.error}"
+        },
+        "warning": {
+          "$value": "{form.control.background.warning}"
+        },
+        "success": {
+          "$value": "{form.control.background.success}"
         },
         "disabled": {
           "$value": "{global.bg.state.disabled.default}"

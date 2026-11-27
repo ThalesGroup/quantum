@@ -53,11 +53,11 @@ never be chosen again and is not a valid value.
 | State | How it happens | What changes |
 | --- | --- | --- |
 | Default | Resting, closed. | An outlined box with the chosen option and a chevron. |
-| Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
+| Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint, unless it shows a severity, whose fill stays; the border does not change. |
 | Focus visible | Keyboard focus on the closed box. | The shared focus ring appears outside the border. Pointer focus shows no ring. |
-| Error | `severity` property set to error, after validation. | The border takes the error color and the message appears under the box, in the error color. The control is exposed as in error. |
-| Warning | `severity` property set to warning. | The border takes the warning color and the message appears under the box, in the warning color. No web state: the message says it. |
-| Success | `severity` property set to success. | The border takes the success color and the message appears under the box, in the success color. No web state: the message says it. |
+| Error | `severity` property set to error, after validation. | The box takes the subtle error fill and the error border, and the message appears under the box, in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | The box takes the subtle warning fill and the warning border, and the message appears under the box, in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | The box takes the subtle success fill and the success border, and the message appears under the box, in the success color. No web state: the message says it. |
 | Disabled | `disabled` property. | Box, value, chevron, label and description drop to the shared disabled colors; the select leaves the keyboard order. |
 
 The opened list is not a state of the component: the platform draws it.
@@ -88,8 +88,8 @@ This section explains the decisions behind it.
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/),
   [WAI tutorial: Form instructions](https://www.w3.org/WAI/tutorials/forms/instructions/),
   [APG: describing with aria-describedby](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby)).
-- **Severities are identified in text.** When validation finds something, the border turns to the
-  severity's color and the message under the control says what is wrong and how to fix it (an
+- **Severities are identified in text.** When validation finds something, the box takes the
+  severity's subtle fill and border color, and the message under the control says what is wrong and how to fix it (an
   error), what to check (a warning) or what was confirmed (a success). Color never carries a
   severity alone, and required fields are marked in words
   ([WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),

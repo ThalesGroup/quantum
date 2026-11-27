@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -193,15 +193,15 @@
         },
         {
           "value": "error",
-          "description": "The value is not accepted: the border takes the error color, the message says what is wrong and how to fix it, and the control is exposed as in error (aria-invalid on the web)."
+          "description": "The value is not accepted: the control takes the subtle error fill and the error border, the message says what is wrong and how to fix it, and the control is exposed as in error (aria-invalid on the web)."
         },
         {
           "value": "warning",
-          "description": "The value is accepted but deserves attention: the border takes the warning color and the message says what to check. No web state: said in the message text."
+          "description": "The value is accepted but deserves attention: the control takes the subtle warning fill and the warning border, and the message says what to check. No web state: said in the message text."
         },
         {
           "value": "success",
-          "description": "The value was checked and confirmed: the border takes the success color and the message says what was confirmed. No web state: said in the message text."
+          "description": "The value was checked and confirmed: the control takes the subtle success fill and the success border, and the message says what was confirmed. No web state: said in the message text."
         }
       ]
     },
@@ -225,7 +225,7 @@
       "inputs": [
         "pointer"
       ],
-      "description": "Pointer over the control. The box takes the surface hover tint; the border does not change. Needs a pointing device: touch has no hover."
+      "description": "Pointer over the control. The box takes the surface hover tint, unless it shows a severity, whose fill stays; the border does not change. Needs a pointing device: touch has no hover."
     },
     {
       "id": "focus-visible",
@@ -240,21 +240,21 @@
       "trigger": "property",
       "property": "severity",
       "value": "error",
-      "description": "Severity error: the border takes the error color and the message is shown under the control, in the error color."
+      "description": "Severity error: the control takes the subtle error fill and the error border, and the message is shown under the control, in the error color."
     },
     {
       "id": "warning",
       "trigger": "property",
       "property": "severity",
       "value": "warning",
-      "description": "Severity warning: the border takes the warning color and the message is shown under the control, in the warning color. No web state beyond the data attribute."
+      "description": "Severity warning: the control takes the subtle warning fill and the warning border, and the message is shown under the control, in the warning color. No web state beyond the data attribute."
     },
     {
       "id": "success",
       "trigger": "property",
       "property": "severity",
       "value": "success",
-      "description": "Severity success: the border takes the success color and the message is shown under the control, in the success color. No web state beyond the data attribute."
+      "description": "Severity success: the control takes the subtle success fill and the success border, and the message is shown under the control, in the success color. No web state beyond the data attribute."
     },
     {
       "id": "disabled",
@@ -350,13 +350,13 @@
         ]
       },
       {
-        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 6.49:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 6.16:1 and 8.38:1, success 7.44:1 and 5.92:1). Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 6.49:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 6.16:1 and 8.38:1, success 7.44:1 and 5.92:1). On the severity fills the value reads 16.91:1 (error), 17.15:1 (warning) and 17.31:1 (success) in light mode, 11.68:1, 11.55:1 and 11.43:1 in dark mode. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 6.49:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 6.16:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. Against the subtle warning fill the warning border is 5.86:1 in light mode and 8.27:1 in dark mode.",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 6.49:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 6.16:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. Against the fill of its severity each border keeps it: error 5.46:1 (light) and 5.14:1 (dark), warning 5.87:1 and 8.28:1, success 7.18:1 and 6.17:1.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -727,6 +727,24 @@
   ],
   "decisions": [
     {
+      "id": "severity-fill",
+      "date": "2026-11-27",
+      "version": "0.6.0",
+      "area": "color",
+      "status": "active",
+      "text": "A Select with a severity is filled with the subtle functional background of its severity, control.background.error, .warning and .success (= form.control.background.<severity>, global.bg.subtle.functional.<severity>.default: #FEECEA, #FFF1C7, #DBFAE6 in light mode, #2B0B08, #1F1504, #011C16 in dark mode), at rest and on hover alike, under its severity border; the value, the placeholder and the indicator keep their colors; the disabled fill wins over a severity. It follows the Forms decision forms-severity-fill (\"A control with a severity is filled with the subtle functional background of its severity … at rest and on hover alike, under its accent functional border\").",
+      "rationale": "Applied in #105 step 12 (spec and docs fixes) from forms-severity-fill, decided by the team in #103 step 12 point 1 (error) and step 13 point 1 (warning and success), the Text field family as the reference rendering. Measured: the value 16.91 to 17.31:1 in light mode and 11.43 to 11.68:1 in dark mode on the three fills, the tertiary text 5.43:1 at the lowest; the border on its fill 5.14:1 at the lowest.",
+      "tokens": [
+        "select.control.background.error",
+        "select.control.background.warning",
+        "select.control.background.success"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
       "id": "form-family-aliases",
       "date": "2026-11-27",
       "version": "0.5.2",
@@ -866,6 +884,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.0",
+      "date": "2026-11-27",
+      "note": "Decision severity-fill, after the Forms decision forms-severity-fill (#105 step 12): with a severity the control takes the subtle fill of its severity (new tokens control.background.error, .warning, .success = form.control.background.<severity>) at rest and on hover alike; hover no longer tints a control in a severity. Measured: value on the fills 16.91, 17.15, 17.31:1 (light) and 11.68, 11.55, 11.43:1 (dark); border on its fill error 5.46 and 5.14:1, warning 5.87 and 8.28:1, success 7.18 and 6.17:1."
+    },
     {
       "version": "0.5.2",
       "date": "2026-11-27",

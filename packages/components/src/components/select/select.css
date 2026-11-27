@@ -9,8 +9,9 @@
  *    select is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
- *    spec order: default < hover < focus-visible < error < warning < success < disabled: hover only tints the
- *    background, a severity only recolors the border, so they combine as the token rule combines them.
+ *    spec order: default < hover < focus-visible < error < warning < success < disabled: a severity fills the
+ *    control with its subtle fill and recolors its border, and hover does not tint a control in a severity,
+ *    as the token rule combines them (Forms rule severity-fill).
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
@@ -206,18 +207,21 @@
 
 /* ---- States -------------------------------------------------------------- */
 
-.ds-select:where([data-state="hover"]) .ds-select__control:not(:disabled),
-.ds-select:not([data-state]) .ds-select__control:hover:not(:disabled) {
+/* Hover tints only a control without a severity: a severity keeps its fill on hover (Forms rule severity-fill). */
+.ds-select:where([data-state="hover"]):not([data-severity]) .ds-select__control:not(:disabled),
+.ds-select:not([data-state], [data-severity]) .ds-select__control:hover:not(:disabled) {
   --_control-background: var(--select-control-background-hover);
 }
 
-/* Severity: the control's border takes the severity's color and the message its text color. Only the
-   error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
+/* Severity: the control takes the severity's subtle fill and border color, and the message its text color
+   (decision severity-fill; Forms forms-severity-fill). Only the error is also a native state: aria-invalid
+   on the control. Warning and success have none on the web. */
 .ds-select:where([data-state="error"], [data-severity="error"]) {
   --_message-color: var(--select-message-color-error);
 }
 .ds-select:where([data-state="error"], [data-severity="error"]) .ds-select__control,
 .ds-select__control[aria-invalid="true"] {
+  --_control-background: var(--select-control-background-error);
   --_control-border-color: var(--select-control-border-color-error);
 }
 
@@ -225,6 +229,7 @@
   --_message-color: var(--select-message-color-warning);
 }
 .ds-select:where([data-state="warning"], [data-severity="warning"]) .ds-select__control {
+  --_control-background: var(--select-control-background-warning);
   --_control-border-color: var(--select-control-border-color-warning);
 }
 
@@ -232,6 +237,7 @@
   --_message-color: var(--select-message-color-success);
 }
 .ds-select:where([data-state="success"], [data-severity="success"]) .ds-select__control {
+  --_control-background: var(--select-control-background-success);
   --_control-border-color: var(--select-control-border-color-success);
 }
 
