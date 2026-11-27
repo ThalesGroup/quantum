@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -273,7 +273,7 @@
       "parts": [
         "option"
       ],
-      "description": "Severity error on the group: every box border takes the error color and the message is shown."
+      "description": "Severity error on the group: every box border takes the error color, every unchecked box the subtle error fill (a checked box keeps its brand fill), and the message is shown."
     },
     {
       "id": "disabled",
@@ -887,6 +887,22 @@
   ],
   "decisions": [
     {
+      "id": "error-fill",
+      "date": "2026-11-27",
+      "version": "0.5.0",
+      "area": "color",
+      "status": "active",
+      "text": "Every unchecked box in error takes the subtle error fill (control.background.error = global.bg.subtle.functional.error.default) inside its error border, at rest and on hover alike; a checked box keeps its brand fill, so checked still reads checked. On hover an empty box in error keeps its fill and its error border (before, hover turned its border back to the neutral one).",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b3, option B chosen over the recommended A, border only); it follows the Forms foundation's decision forms-choice-error-fill, where the options and their reasons are recorded. Measured: The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue.",
+      "tokens": [
+        "checkbox-group.control.background.error"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.1"
+      ]
+    },
+    {
       "id": "required-at-least-one",
       "date": "2026-11-27",
       "version": "0.4.0",
@@ -996,6 +1012,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-27",
+      "note": "Decision error-fill (Forms forms-choice-error-fill, #105 step 2b, point b3): new token control.background.error → global.bg.subtle.functional.error.default, every unchecked box in error filled with it inside its error border, a checked box keeps its brand fill. The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue. On hover an empty box in error keeps its fill and its error border (before, hover turned its border back to the neutral one)."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-27",

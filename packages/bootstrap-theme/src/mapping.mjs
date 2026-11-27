@@ -592,12 +592,12 @@ export default {
     {
       id: 'check-error', section: 'Checkbox', component: 'checkbox', title: 'Error (.is-invalid)', tier: 'component',
       selector: '.check.is-invalid',
-      tokens: { '--bs-check-border-color': 'checkbox.control.border-color.error' },
+      tokens: { '--bs-check-border-color': 'checkbox.control.border-color.error', '--bs-check-bg': 'checkbox.control.background.error' },
     },
     {
       id: 'check-user-error', section: 'Checkbox', component: 'checkbox', title: 'Error (:user-invalid)', tier: 'component',
       selector: '[data-bs-validate] .check:user-invalid',
-      tokens: { '--bs-check-border-color': 'checkbox.control.border-color.error' },
+      tokens: { '--bs-check-border-color': 'checkbox.control.border-color.error', '--bs-check-bg': 'checkbox.control.background.error' },
     },
     {
       id: 'radio', section: 'Radio group', component: 'radio-group', title: '.radio', tier: 'component',
@@ -620,12 +620,12 @@ export default {
     {
       id: 'radio-error', section: 'Radio group', component: 'radio-group', title: 'Error (.is-invalid)', tier: 'component',
       selector: '.radio.is-invalid',
-      tokens: { '--bs-radio-border-color': 'radio-group.control.border-color.error' },
+      tokens: { '--bs-radio-border-color': 'radio-group.control.border-color.error', '--bs-radio-bg': 'radio-group.control.background.error' },
     },
     {
       id: 'radio-user-error', section: 'Radio group', component: 'radio-group', title: 'Error (:user-invalid)', tier: 'component',
       selector: '[data-bs-validate] .radio:user-invalid',
-      tokens: { '--bs-radio-border-color': 'radio-group.control.border-color.error' },
+      tokens: { '--bs-radio-border-color': 'radio-group.control.border-color.error', '--bs-radio-bg': 'radio-group.control.background.error' },
     },
     {
       id: 'switch', section: 'Switch', component: 'switch', title: '.switch', tier: 'component',

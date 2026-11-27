@@ -620,12 +620,14 @@ Error (.is-invalid), on `.check.is-invalid`; Sass: written after the @use.
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-check-border-color` | `checkbox.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-check-bg` | `checkbox.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
 Error (:user-invalid), on `[data-bs-validate] .check:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-check-border-color` | `checkbox.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-check-bg` | `checkbox.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
 
 #### Radio group
@@ -652,12 +654,14 @@ Error (.is-invalid), on `.radio.is-invalid`; Sass: written after the @use.
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-radio-border-color` | `radio-group.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-radio-bg` | `radio-group.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
 Error (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
 | `--bs-radio-border-color` | `radio-group.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-radio-bg` | `radio-group.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
 
 #### Switch

@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.58.0",
+  "version": "0.59.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -71,7 +71,7 @@
     {
       "id": "severity-fill",
       "name": "Severity in the fill",
-      "text": "The severity is also shown in the control's fill, a solid color, never translucent: the subtle functional background of the severity, global.bg.subtle.functional.<severity>.default (error, warning, success), at rest and on hover alike (step 6, the Text field family as the reference rendering). A hover tint does not apply in a severity: the error hover step (global.bg.subtle.functional.error.hover) would bring the placeholder under 4.5:1 in light mode (4.33:1, WCAG 1.4.3), and every severity behaves the same. The value and the placeholder keep their colors on the fill. Every border passes against its fill: error 5.45:1 (light) and 5.14:1 (dark), warning 5.86:1 and 8.27:1, success 7.17:1 and 6.16:1."
+      "text": "The severity is also shown in the control's fill, a solid color, never translucent: the subtle functional background of the severity, global.bg.subtle.functional.<severity>.default (error, warning, success), at rest and on hover alike (step 6, the Text field family as the reference rendering). A hover tint does not apply in a severity: the error hover step (global.bg.subtle.functional.error.hover) would bring the placeholder under 4.5:1 in light mode (4.33:1, WCAG 1.4.3), and every severity behaves the same. The value and the placeholder keep their colors on the fill. Every border passes against its fill: error 5.45:1 (light) and 5.14:1 (dark), warning 5.86:1 and 8.27:1, success 7.17:1 and 6.16:1. The choice controls (Checkbox, Checkbox group, Radio group) follow it in their empty boxes: an unchecked box in error takes the subtle error fill inside its error border, at rest and on hover; a checked or indeterminate box keeps its brand fill, so checked still reads checked (forms-choice-error-fill)."
     },
     {
       "id": "severity-icon",
@@ -1992,6 +1992,25 @@
   ],
   "decisions": [
     {
+      "id": "forms-choice-error-fill",
+      "date": "2026-11-27",
+      "version": "0.59.0",
+      "area": "color",
+      "status": "active",
+      "text": "The severity fill applies to the choice controls' empty boxes: an unchecked checkbox or radio box in error takes the subtle error fill, global.bg.subtle.functional.error.default (#FEECEA in light mode, #2B0B08 in dark mode), inside its error border, at rest and on hover alike; a checked or indeterminate box keeps its brand fill, so checked still reads checked. One rule for every control (forms-severity-fill). The border and the message carry the error; the tint is not the cue. The Checkbox, the Checkbox group and the Radio group carry it in a new component token, control.background.error.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b3): B, tinted when empty, chosen over the recommended A, among: A, border only, the rule severity-fill saying it applies to field-like boxes (recommended: the tint is barely visible on a 16 to 20 px box); B, the subtle error fill inside an unchecked box (chosen); C, a checked box in error turns the error accent, Material's selected error (rejected: in dark mode the checked box falls to 3.74 down to 2.80:1 on levels 0 to 3, under the 3:1 of WCAG 1.4.11 on level 3, and a checked box should still read checked); D, B and C together. No words from the team beyond the choice. Measured from the resolved tokens: The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue.",
+      "tokens": [
+        "global.bg.subtle.functional.error.default",
+        "checkbox.control.background.error",
+        "checkbox-group.control.background.error",
+        "radio-group.control.background.error"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.1"
+      ]
+    },
+    {
       "id": "forms-required-group",
       "date": "2026-11-27",
       "version": "0.58.0",
@@ -2980,6 +2999,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.59.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-choice-error-fill (#105 step 2b, point b3): an unchecked checkbox or radio box in error takes the subtle error fill inside its error border, a checked or indeterminate box keeps its brand fill; the rule severity-fill says so. Checkbox 0.3.0, Checkbox group 0.5.0 and Radio group 0.4.0 gain control.background.error. The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue. On hover an empty box in error keeps its fill and its error border (before, hover turned its border back to the neutral one)."
+    },
     {
       "version": "0.58.0",
       "date": "2026-11-27",

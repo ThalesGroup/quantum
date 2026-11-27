@@ -46,7 +46,7 @@ them.
 | Hover | A pointer rests over a box or its label. Needs a pointing device: there is no hover on touch. | The empty box takes a light tint. A checked box does not change. |
 | Focus visible | Keyboard focus on a box. | The shared focus ring appears outside it. Pointer focus shows no ring. |
 | Checked | The option's `checked` property, or activation. | The box fills with the brand color and shows a check mark. |
-| Error | The group's `severity` property set to error, after validation. | Every box border takes the error color; the message is shown, in the error color. A group of choices has no warning or success. |
+| Error | The group's `severity` property set to error, after validation. | Every box border takes the error color, every unchecked box the subtle error fill (a checked box keeps its brand fill); the message is shown, in the error color. A group of choices has no warning or success. |
 | Disabled | The group's `disabled` property, or an option's. | Box, label and description drop to the shared disabled colors. |
 
 ## Content

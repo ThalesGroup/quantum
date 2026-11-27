@@ -53,6 +53,10 @@
         "default": { "$value": "{global.bg.level.0.default}" },
         "hover": { "$value": "{global.bg.level.0.hover}" },
         "checked": { "$value": "{global.bg.accent.brand.default}" },
+        "error": {
+          "$value": "{global.bg.subtle.functional.error.default}",
+          "$description": "The fill of an unchecked box in error, inside its error border, at rest and on hover alike: the subtle error background, as a field in error (Forms foundation, decisions forms-severity-fill and forms-choice-error-fill); a checked radio keeps its brand fill. The border and the message carry the error, the tint is not the cue."
+        },
         "disabled": { "$value": "{global.bg.state.disabled.default}" }
       },
       "border-color": {

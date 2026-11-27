@@ -54,7 +54,7 @@ control's description, after the name.
 | Focus visible | Keyboard focus on the box. | The shared focus ring appears outside the box. Pointer focus shows no ring. |
 | Checked | `checked` property. | The box fills with the brand color and shows a check mark. |
 | Indeterminate | Set by the application when the box stands for a group of options of which some are on. | The box fills and shows a bar instead of a check. Toggling it checks or unchecks the whole group. |
-| Error | `severity` property set to error, after validation. | The box border takes the error color; the form states the error in text. A single choice has no warning or success. |
+| Error | `severity` property set to error, after validation. | The box border takes the error color and, while unchecked, the box the subtle error fill (checked or indeterminate, it keeps its brand fill); the form states the error in text. A single choice has no warning or success. |
 | Disabled | `disabled` property. | Box, label and description drop to the shared disabled colors, checked or not. |
 
 A checkbox cannot be in two states at once from the tokens' point of view: a checked box keeps

@@ -351,6 +351,14 @@ in light mode, under the 4.5:1 text needs
 borders keep at least 5.14:1 and 6.16:1 against their fill, the warning border 5.86:1. The border,
 not the fill, identifies the control.
 
+**A choice control fills its empty boxes.** An unchecked checkbox or radio box in error takes the
+same subtle error fill inside its error border, at rest and on hover, so every control in error
+looks alike; a checked or indeterminate box keeps its brand fill, so checked still reads checked.
+On a 16 to 24 px box the tint is barely seen (1.03 to 1.37:1 against the surface): the border,
+5.45:1 on the fill in light mode and 5.14:1 in dark mode, and the message carry the error
+([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast),
+[WCAG 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color)).
+
 **The icon.** The severity icon is optional and appears in one place only, never inside the
 area where people type: browsers add their own elements there (autofill, password managers,
 reveal and clear buttons, spinners, pickers). It goes **after the control**, which then gives up

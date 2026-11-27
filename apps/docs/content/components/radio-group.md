@@ -69,7 +69,7 @@ properties down to them.
 | Hover | A pointer rests over a radio or its label. Needs a pointing device: there is no hover on touch. | The empty circle takes a light tint. A checked radio does not change. |
 | Focus visible | Keyboard focus on a radio. | The shared focus ring appears outside it. Pointer focus shows no ring. |
 | Checked | The option's `checked` property, or activation. | The circle fills with the brand color and shows a dot. |
-| Error | The group's `severity` property set to error, after validation. | Every radio border takes the error color; the message is shown, in the error color. A group of choices has no warning or success. |
+| Error | The group's `severity` property set to error, after validation. | Every radio border takes the error color, every unchecked radio the subtle error fill (a checked radio keeps its brand fill); the message is shown, in the error color. A group of choices has no warning or success. |
 | Disabled | The group's `disabled` property, or an option's. | Radio, label and description drop to the shared disabled colors. |
 
 ## Content

@@ -19,7 +19,9 @@
   --_control-size: var(--checkbox-control-size-medium);
   --_control-radius: var(--checkbox-control-border-radius-medium);
   --_control-background: var(--checkbox-control-background-default);
+  --_control-background-hover: var(--checkbox-control-background-hover);
   --_control-border-color: var(--checkbox-control-border-color-default);
+  --_control-border-color-hover: var(--checkbox-control-border-color-hover);
   --_control-color: var(--checkbox-control-color-checked);
   --_label-color: var(--checkbox-label-color-default);
   --_description-color: var(--checkbox-description-color-default);
@@ -122,13 +124,23 @@
 }
 
 /* ---- States -------------------------------------------------------------- */
-/* Order matters: hover < checked < indeterminate < error < disabled. Hover never repaints a checked,
-   indeterminate or disabled box (the checked token wins over hover, as in the token rule). */
+/* Order matters: hover < error fill < checked < indeterminate < error border < disabled. Hover never
+   repaints a checked, indeterminate or disabled box (the checked token wins over hover, as in the token
+   rule); it reads the hover values through private properties, which an error keeps at its own. */
 
 .ds-checkbox:where([data-state="hover"]) .ds-checkbox__control:not(:checked, :indeterminate, :disabled),
 .ds-checkbox:not([data-state]) .ds-checkbox__control:hover:not(:checked, :indeterminate, :disabled) {
-  --_control-background: var(--checkbox-control-background-hover);
-  --_control-border-color: var(--checkbox-control-border-color-hover);
+  --_control-background: var(--_control-background-hover);
+  --_control-border-color: var(--_control-border-color-hover);
+}
+
+/* An unchecked box in error takes the subtle error fill inside its error border, at rest and on hover
+   (decision error-fill; Forms forms-choice-error-fill). Before the checked rules, at low specificity,
+   so a checked or indeterminate box keeps its brand fill. */
+:where(.ds-checkbox[data-state="error"] .ds-checkbox__control, .ds-checkbox[data-severity="error"] .ds-checkbox__control, .ds-checkbox__control[aria-invalid="true"]):not(:checked, :indeterminate) {
+  --_control-background: var(--checkbox-control-background-error);
+  --_control-background-hover: var(--checkbox-control-background-error);
+  --_control-border-color-hover: var(--checkbox-control-border-color-error);
 }
 
 .ds-checkbox:where([data-state="checked"]) .ds-checkbox__control,

@@ -120,7 +120,9 @@
 
 .ds-radio-group__option {
   --_control-background: var(--radio-group-control-background-default);
+  --_control-background-hover: var(--radio-group-control-background-hover);
   --_control-border-color: var(--radio-group-control-border-color-default);
+  --_control-border-color-hover: var(--radio-group-control-border-color-hover);
   --_control-color: var(--radio-group-control-color-checked);
   --_label-color: var(--radio-group-option-label-color-default);
   --_option-description-color: var(--radio-group-option-description-color-default);
@@ -187,12 +189,22 @@
 
 /* ---- States -------------------------------------------------------------- */
 /* Forced on the root (every option) or on one option; native pseudo-classes on the radio.
-   Order matters: hover < checked < error < disabled; hover never repaints a checked or disabled radio. */
+   Order matters: hover < error fill < checked < error border < disabled; hover never repaints a checked
+   or disabled box, and reads its values through private properties, which an error keeps at its own. */
 
 :where(.ds-radio-group[data-state="hover"], .ds-radio-group__option[data-state="hover"]) .ds-radio-group__control:not(:checked, :disabled),
 .ds-radio-group:not([data-state]) .ds-radio-group__option:not([data-state]) .ds-radio-group__control:hover:not(:checked, :disabled) {
-  --_control-background: var(--radio-group-control-background-hover);
-  --_control-border-color: var(--radio-group-control-border-color-hover);
+  --_control-background: var(--_control-background-hover);
+  --_control-border-color: var(--_control-border-color-hover);
+}
+
+/* An unchecked box in error takes the subtle error fill inside its error border, at rest and on hover
+   (decision error-fill; Forms forms-choice-error-fill). Before the checked rules, at low specificity,
+   so a checked box keeps its brand fill. */
+:where(.ds-radio-group[data-state="error"] .ds-radio-group__control, .ds-radio-group__option[data-state="error"] .ds-radio-group__control, .ds-radio-group[data-severity="error"] .ds-radio-group__control, .ds-radio-group__control[aria-invalid="true"]):not(:checked) {
+  --_control-background: var(--radio-group-control-background-error);
+  --_control-background-hover: var(--radio-group-control-background-error);
+  --_control-border-color-hover: var(--radio-group-control-border-color-error);
 }
 
 :where(.ds-radio-group[data-state="checked"], .ds-radio-group__option[data-state="checked"]) .ds-radio-group__control,
