@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -1002,6 +1002,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.1",
+      "date": "2026-11-27",
+      "note": "#105 step 12, seen on the b3.1 sheet: the states the playground forces now render as the properties do. A forced disabled state turns a checked box and a box in error to the disabled fill, border and mark, and a forced error state gives a checked box the error border: those selectors are written at the specificity of :checked and of the error rule (the root or the option class outside :where), as the Checkbox writes them. Nothing changes with real properties."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-27",

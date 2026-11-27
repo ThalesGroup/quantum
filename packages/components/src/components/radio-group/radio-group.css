@@ -257,8 +257,10 @@
   --_control-background: var(--radio-group-control-background-checked-error);
 }
 
-:where(.ds-radio-group[data-state="error"], .ds-radio-group__option[data-state="error"]) .ds-radio-group__control,
-:where(.ds-radio-group[data-severity="error"]) .ds-radio-group__control,
+/* The error border reaches a checked box: the forced and the severity selectors are written at the specificity
+   of :checked (the root or the option class outside :where), after the checked rules. */
+.ds-radio-group:where([data-state="error"], [data-severity="error"]) .ds-radio-group__control,
+.ds-radio-group__option:where([data-state="error"]) .ds-radio-group__control,
 .ds-radio-group__control[aria-invalid="true"] {
   --_control-border-color: var(--radio-group-control-border-color-error);
 }
@@ -274,7 +276,10 @@
   --_label-color: var(--radio-group-option-label-color-disabled);
   --_option-description-color: var(--radio-group-option-description-color-disabled);
 }
-:where(.ds-radio-group[data-state="disabled"], .ds-radio-group__option[data-state="disabled"]) .ds-radio-group__control,
+/* A forced disabled wins as the native one does, over a checked box and the error border: written at their
+   specificity (the root or the option class outside :where), after them. */
+.ds-radio-group:where([data-state="disabled"]) .ds-radio-group__control,
+.ds-radio-group__option:where([data-state="disabled"]) .ds-radio-group__control,
 .ds-radio-group__control:disabled {
   --_control-background: var(--radio-group-control-background-disabled);
   --_control-border-color: var(--radio-group-control-border-color-disabled);

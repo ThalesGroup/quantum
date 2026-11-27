@@ -262,8 +262,10 @@
   --_control-background: var(--checkbox-group-control-background-checked-error);
 }
 
-:where(.ds-checkbox-group[data-state="error"], .ds-checkbox-group__option[data-state="error"]) .ds-checkbox-group__control,
-:where(.ds-checkbox-group[data-severity="error"]) .ds-checkbox-group__control,
+/* The error border reaches a checked box: the forced and the severity selectors are written at the specificity
+   of :checked (the root or the option class outside :where), after the checked rules. */
+.ds-checkbox-group:where([data-state="error"], [data-severity="error"]) .ds-checkbox-group__control,
+.ds-checkbox-group__option:where([data-state="error"]) .ds-checkbox-group__control,
 .ds-checkbox-group__control[aria-invalid="true"] {
   --_control-border-color: var(--checkbox-group-control-border-color-error);
 }
@@ -279,7 +281,10 @@
   --_label-color: var(--checkbox-group-option-label-color-disabled);
   --_option-description-color: var(--checkbox-group-option-description-color-disabled);
 }
-:where(.ds-checkbox-group[data-state="disabled"], .ds-checkbox-group__option[data-state="disabled"]) .ds-checkbox-group__control,
+/* A forced disabled wins as the native one does, over a checked box and the error border: written at their
+   specificity (the root or the option class outside :where), after them. */
+.ds-checkbox-group:where([data-state="disabled"]) .ds-checkbox-group__control,
+.ds-checkbox-group__option:where([data-state="disabled"]) .ds-checkbox-group__control,
 .ds-checkbox-group__control:disabled {
   --_control-background: var(--checkbox-group-control-background-disabled);
   --_control-border-color: var(--checkbox-group-control-border-color-disabled);
