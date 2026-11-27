@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.62.3",
+  "version": "0.63.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which severities exist and how they render, how messages are written, when a value is checked, how errors are announced and summarised, how fields are spaced and how the keyboard moves through a form; and the tokens every form control starts from, the Forms family (form.*).",
@@ -82,7 +82,7 @@
     {
       "id": "form-control",
       "name": "What a form control is",
-      "text": "A form control is a component through which people enter or choose a value the product keeps: text, a number, one or several options, on or off, a point in a range. It has a visible label and may have a description; when its value can be missing or wrong, it can be marked required and report an error. Whether the value applies at once or with the rest of the form depends on how the control is used, not on the component."
+      "text": "A form control is a component through which people enter or choose a value the product keeps: text, a number, one or several options, on or off, a point in a range. It has a visible label and may have a description; when its value can be missing or wrong, it can be marked required and report an error. Whether the value applies at once or with the rest of the form depends on how the control is used, not on the component, with one exception: a Switch applies its value at once, so a form submitted with a button holds no Switch, and an on/off value saved with the form is a Checkbox."
     },
     {
       "id": "tiers",
@@ -117,7 +117,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. The mark follows the label (or the legend) after a word space, at its size, in the regular weight and the description's color (form.mark.color.default), the disabled text color when the control is disabled. On Android and Windows the asterisk is red, the color of the error message and icon (form.asterisk.color.default), at the label's size and weight, 4 px after the label (2 px in small), and so is the asterisk of the note that explains it. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on Windows the asterisk stays in the accessible name, since Microsoft asks that the name be the label as shown; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label. A required Checkbox group means at least one option checked: no box carries the required state, since on a checkbox it requires that very box (on one box, that option; on every box, all of them); the product checks the group when the form is submitted and its error says so (\"Choose at least one\"). Its legend's \"(required)\" is not hidden from assistive technology on the web, since no state says that a group is required (aria-required is not supported on the group role of a fieldset), so it is part of the group's name. A set of consents that must all be accepted is a set of separate required Checkboxes, not a required group. A Radio group keeps the platform's required state: a required radio makes its whole group required, and its legend's \"(required)\" stays hidden on the web."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's, and it covers every control of a submitted form, since none of them is a Switch (rule form-control): an on/off value saved with the form is a Checkbox, which takes the required state and the mark like any field. The mark follows the label (or the legend) after a word space, at its size, in the regular weight and the description's color (form.mark.color.default), the disabled text color when the control is disabled. On Android and Windows the asterisk is red, the color of the error message and icon (form.asterisk.color.default), at the label's size and weight, 4 px after the label (2 px in small), and so is the asterisk of the note that explains it. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on Windows the asterisk stays in the accessible name, since Microsoft asks that the name be the label as shown; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label. A required Checkbox group means at least one option checked: no box carries the required state, since on a checkbox it requires that very box (on one box, that option; on every box, all of them); the product checks the group when the form is submitted and its error says so (\"Choose at least one\"). Its legend's \"(required)\" is not hidden from assistive technology on the web, since no state says that a group is required (aria-required is not supported on the group role of a fieldset), so it is part of the group's name. A set of consents that must all be accepted is a set of separate required Checkboxes, not a required group. A Radio group keeps the platform's required state: a required radio makes its whole group required, and its legend's \"(required)\" stays hidden on the web."
     },
     {
       "id": "statuses",
@@ -1140,7 +1140,7 @@
         ]
       },
       {
-        "text": "On the web, the form marks the fewer fields: \"(optional)\" in the label or legend of each optional field, with a note before the first field saying the others are required, when most fields are required; \"(required)\" in the label or legend of each required field when most are optional. A required control keeps the required attribute either way.",
+        "text": "On the web, the form marks the fewer fields: \"(optional)\" in the label or legend of each optional field, with a note before the first field saying the others are required, when most fields are required; \"(required)\" in the label or legend of each required field when most are optional. The note covers every control of the form, which holds no Switch, its on/off values being Checkboxes. A required control keeps the required attribute either way.",
         "refs": [
           "wcag:3.3.2",
           "wcag-h90",
@@ -1978,6 +1978,16 @@
         "id": "html-aam-fieldset",
         "title": "HTML-AAM: fieldset maps to the group role",
         "url": "https://www.w3.org/TR/html-aam-1.0/#el-fieldset"
+      },
+      {
+        "id": "material-switch-guidelines",
+        "title": "Material 3: Switch, guidelines",
+        "url": "https://m3.material.io/components/switch/guidelines"
+      },
+      {
+        "id": "windows-toggles-switch-or-checkbox",
+        "title": "Windows: Toggle switches, choosing between toggle switch and check box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/toggles#choosing-between-toggle-switch-and-check-box"
       }
     ]
   },
@@ -2081,6 +2091,20 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-no-switch-in-submitted-form",
+      "date": "2026-11-27",
+      "version": "0.63.0",
+      "area": "behaviour",
+      "status": "active",
+      "text": "A form submitted with a button holds no Switch: an on/off value saved with the form is a Checkbox, which takes a required state and a mark like any field, so the note \"All fields are required unless marked optional.\" holds for every control of the form, with no exception (rules form-control and required). The Switch stays a form control (forms-input-components) and follows the presentation tier, its label guidelines, as a control for settings that take effect at once; this is what its own decision binary-only says (\"never used for a value saved later with a form\") and what its page says under \"When not to use\". forms-input-components stands: whether a value applies at once or with the form still depends on how a control is used, the Switch being the one component that only applies at once.",
+      "rationale": "Decided by the team on 2026-11-27 (#105 step 13, question 13.1): \"Step 13.1 -> D\", as recommended, among A (the note counts only the controls that can be marked), B (a Switch in such a form shows \"(optional)\") and C (no note in a form that holds a control that cannot be marked). The question came from the screen form-rhf-complex, whose Switch is saved with \"Save preferences\": once the controls draw their marks, the note would call that Switch required, while it has no required state and no mark. Material asks that the effects of a switch start immediately, without needing to save, and to use checkboxes instead for options people must save; Windows asks for a check box when people must click a submit or next button to apply changes; Apple says nothing on immediate versus saved values, puts a mini switch in a grouped form on macOS and says in general not to replace a checkbox with a switch.",
+      "refs": [
+        "material-switch-guidelines",
+        "windows-toggles-switch-or-checkbox",
+        "hig-toggles-switches"
+      ]
+    },
     {
       "id": "forms-token-family",
       "date": "2026-11-27",
@@ -3138,6 +3162,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.63.0",
+      "date": "2026-11-27",
+      "note": "forms-no-switch-in-submitted-form (#105 step 13.1, D): a form submitted with a button holds no Switch, its on/off values are Checkboxes. The rule form-control names the Switch as the one exception to \"depends on how the control is used\", the rule required says the note covers every control of a submitted form, and the web guideline on marking the fewer fields says so too. Two references: Material 3 Switch guidelines, Windows toggle switch or check box. No token, contrast or component change."
+    },
     {
       "version": "0.62.3",
       "date": "2026-11-27",

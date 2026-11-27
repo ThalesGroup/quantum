@@ -41,6 +41,18 @@ value applies at once or with the rest of the form depends on how the control is
 the component: a settings page applies each change as it is made, a sign-up form collects the
 values and applies them when people submit.
 
+**A form submitted with a button holds no Switch.** A switch acts at once, while a value saved
+with the form waits for the button, so an on/off value saved with the form is a Checkbox. Material
+asks that the effects of a switch start immediately, without needing to save, and to use
+checkboxes for options people must save
+([Material: switch](https://m3.material.io/components/switch/guidelines)); Windows asks for a
+check box when people must click a submit or next button to apply changes
+([Windows: toggle switch or check box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/toggles#choosing-between-toggle-switch-and-check-box)).
+Apple says nothing on it, and asks in general not to replace a checkbox with a switch
+([HIG: Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles#Switches)).
+The Switch stays a form control, with its label rules, for settings that take effect at once
+([Switch](/components/switch)).
+
 Which rules a control follows is read from its specification, with no list of exceptions:
 
 - **Every control** follows the anatomy and label rules.
@@ -352,6 +364,9 @@ technology, and nothing relies on color
 [WAI forms tutorial: validation](https://www.w3.org/WAI/tutorials/forms/validation/#validating-required-input),
 [H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90),
 [F81](https://www.w3.org/WAI/WCAG22/Techniques/failures/F81)).
+The note holds for every control of the form with no exception: none of them is a Switch, which
+can be neither required nor marked, since an on/off value saved with the form is a Checkbox
+([What a form control is](#what-a-form-control-is)).
 
 **The form says which fields it marks, once.** Every control that can be marked required carries
 the same property, `markedFields` (`optional`, `required`, `none`; `optional` by default), and a

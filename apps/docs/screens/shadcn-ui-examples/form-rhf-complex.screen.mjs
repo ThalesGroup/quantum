@@ -3,7 +3,7 @@ import { form, stack, submit, CHANGES } from '../lib/auth.mjs';
 
 /**
  * shadcn/ui example form-rhf-complex: a subscription form (a plan, a billing period, add-ons and
- * email notifications) validated with React Hook Form, shown as the browser leaves it after a
+ * email notifications, a Checkbox where the original has a Switch) validated with React Hook Form, shown as the browser leaves it after a
  * submit with the billing period and the add-ons left empty.
  */
 export const meta = {
@@ -17,12 +17,12 @@ export const meta = {
     'Messages say the fix and rely on their label: "Choose one" for the billing period and "Choose at least one" for the add-ons, where the original says "Please select a billing period" and "Please select at least one add-on".',
     'Labels and descriptions are in sentence case, and a description of one sentence takes no period ("Subscription plan", "Choose your subscription plan").',
     'The plans are a Radio group with a description under each option; the original draws each plan as a bordered card with the radio at its end.',
-    'The Switch has its label after the box, where the original puts its label and description before the switch.',
+    'Email notifications is a Checkbox, where the original has a Switch: the value is saved with "Save preferences", and a form submitted with a button holds no Switch (Forms rule form-control, decision forms-no-switch-in-submitted-form), since a switch acts at once. Its label and description follow the box, where the original puts them before the switch.',
     'The actions follow the last field inside the form, at the field gap, with Reset as a native reset button; the original puts them in the card footer under a border.',
   ],
   gaps: [
     { text: 'The Card has no content or footer part: the form, its separators and its actions are placed inside the Card root after its title and description.' },
-    { text: 'Required marks: the Radio group, the Select and the Checkbox group do not draw the form\'s marks yet, so the note "All fields are required unless marked optional" and the marks of the Forms foundation are not shown.' },
+    { text: 'Required marks: the Radio group, the Select, the Checkbox group and the Checkbox do not draw the form\'s marks yet, so the note "All fields are required unless marked optional" and the marks of the Forms foundation are not shown; the Email notifications Checkbox, the one optional field, would end its label with "(optional)".' },
     { text: 'No Error summary component: with two fields in error after a submit, the form would show a summary above its first field, its title taking focus.', issues: [129] },
   ],
 };
@@ -72,7 +72,7 @@ export function render() {
         ],
       }),
       ds.divider({}),
-      ds.switch({
+      ds.checkbox({
         id: `${ID}-email-notifications`,
         name: 'emailNotifications',
         label: 'Email notifications',

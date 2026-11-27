@@ -25,7 +25,8 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 ## When not to use
 
 - **The value is saved with a form**, when people submit it. Use a Checkbox: people expect a
-  switch to act at once.
+  switch to act at once, and a form submitted with a button holds no Switch
+  ([Forms: what a form control is](/foundations/forms#what-a-form-control-is)).
 - **The choice can be partially on**, or stands for a group of options. Use a Checkbox, which
   has an indeterminate state.
 - **Choosing between several values.** Use a Radio group or a Select.
