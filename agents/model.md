@@ -109,7 +109,8 @@ The raw and semantic tokens come from two places, kept apart (`agents/token-sour
 `packages/tokens/src/semantic/` and `packages/tokens/src/modes/dark/` are recreated from
 the Figma library as it is (paths made valid, same values, same aliases, errors
 included); `packages/tokens/src/additions/` and `packages/tokens/src/platforms/` hold the few
-tokens the design system adds, and only those the library lacks to render the components.
+tokens the design system adds, and only those the library lacks to render the components and
+lay out a form (the form gaps).
 
 `scripts/build-tokens.mjs` compiles the tiers to CSS custom properties in
 `packages/tokens/dist/css/` (generated, not committed, never edited by hand), with an `index.css`

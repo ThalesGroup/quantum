@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.50.0",
+  "version": "0.51.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -12,7 +12,20 @@
     "forms",
     "validation"
   ],
-  "tokens": [],
+  "tokens": [
+    "form.gap.*"
+  ],
+  "specimens": [
+    {
+      "id": "form-gap",
+      "name": "Form gaps",
+      "display": "length",
+      "tokens": [
+        "form.gap.*"
+      ],
+      "description": "The spaces of a form's layout: between two fields, between two groups of fields, and between a group's title and its first field. The actions take the field or the group gap."
+    }
+  ],
   "appliesTo": "input-components",
   "rules": [
     {
@@ -98,7 +111,7 @@
     {
       "id": "spacing",
       "name": "Spacing",
-      "text": "Two fields of a form stack space.16 (16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack space.32 (32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits space.12 (12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The form's actions (its submit button and the buttons next to it) take the gap of what precedes them: space.16 after a form without groups, space.32 after a grouped form, since they act on the whole form and not on its last group; the buttons stand space.8 (8 px) apart. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. Not decided yet: whether these values become tokens (step 10, point 4) and the space inside a field and a group (point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
+      "text": "Two fields of a form stack form.gap.field (space.16, 16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack form.gap.group (space.32, 32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits form.gap.title (space.12, 12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The form's actions (its submit button and the buttons next to it) take the gap of what precedes them: form.gap.field after a form without groups, form.gap.group after a grouped form, with no token of their own, since they act on the whole form and not on its last group; the buttons stand space.8 (8 px) apart. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. The three gaps are semantic tokens the design system adds (the Figma library has none for them), the same on every platform today; a platform may override them, none does. Not decided yet: the space inside a field and a group (step 10, point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
     },
     {
       "id": "keyboard",
@@ -1865,6 +1878,20 @@
   ],
   "decisions": [
     {
+      "id": "forms-gap-tokens",
+      "date": "2026-11-27",
+      "version": "0.51.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The gaps of a form are three semantic tokens, additions to the semantic tier owned by the Forms foundation: form.gap.field → {space.16} between two fields (forms-field-gap), form.gap.group → {space.32} between two groups of fields and form.gap.title → {space.12} between a group's title and its first field (forms-group-gap). The actions take form.gap.field or form.gap.group, whichever precedes them (forms-actions-gap), with no token of their own. The values are the same on every platform; a platform may override them in its overlay, and none does (Windows' 24 and 48 px stay recorded differences).",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 4): B, as recommended, among: A, no token, the rule naming the space.* steps (rejected: no platform could override them, and Figma binds the layout to bare scale steps); B, semantic additions form.gap.field, form.gap.group and form.gap.title (recommended, chosen; the team's choice is the approval these additions need, as no semantic token beyond the Figma library is added without asking); C, component tokens of a Form component (rejected: there is no Form component, and component tokens are never overridden per platform). No words from the team beyond the choice. A semantic token lets a platform override the default (Windows states 24 and 48 px: a separate decision, not taken), is exported as a Figma and a Penpot variable through the token build, and is what a product's form layout reads (the screens' form stacks). The Spacing foundation's rule layout, which said there were no layout tokens, now names them.",
+      "tokens": [
+        "form.gap.field",
+        "form.gap.group",
+        "form.gap.title"
+      ]
+    },
+    {
       "id": "forms-actions-gap",
       "date": "2026-11-27",
       "version": "0.50.0",
@@ -2717,6 +2744,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.51.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-gap-tokens (#105 step 10, point 4): three semantic additions owned by the Forms foundation, form.gap.field → {space.16}, form.gap.group → {space.32}, form.gap.title → {space.12} (packages/tokens/src/additions/semantic/form.tokens.json), shown on the Tokens tab by a new specimen (Form gaps); the rule spacing names them, the actions taking the field or the group gap. The screens' form stacks read form.gap.field (16 px, unchanged); the Spacing foundation's rule layout names them (Spacing 0.3.0). Point 5 of step 10 still open."
+    },
     {
       "version": "0.50.0",
       "date": "2026-11-27",

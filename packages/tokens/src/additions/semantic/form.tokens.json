@@ -1,0 +1,20 @@
+{
+  "$description": "The gaps of a form's layout (Forms foundation, rule spacing): between two fields, between two groups of fields, and between a group's title and its first field. A form's actions take the field or the group gap, whichever precedes them. Not in the Figma library: added by the design system (decision forms-gap-tokens). A platform may override them in src/platforms/<id>/; none does today.",
+  "form": {
+    "$type": "dimension",
+    "gap": {
+      "field": {
+        "$value": "{space.16}",
+        "$description": "Between two fields of a form, at every field size, from the bottom of a field's last part (control, description or message) to the next field's label; a Checkbox group or a Radio group is one field. Also before the actions of a form without groups."
+      },
+      "group": {
+        "$value": "{space.32}",
+        "$description": "Between two groups of fields (sections with their own title), from the bottom of a group's last field to the next group's title. Also before the actions of a grouped form."
+      },
+      "title": {
+        "$value": "{space.12}",
+        "$description": "Between a group's title and its first field."
+      }
+    }
+  }
+}

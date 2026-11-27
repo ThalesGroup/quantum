@@ -12,7 +12,7 @@ Every `*.json` file under a tier directory is loaded, deep-merged and flattened;
 | Tier | Directory | May reference | Purpose |
 | --- | --- | --- | --- |
 | raw | `src/raw/` | other raw tokens | Hidden primitives from the Figma library: the color palettes (Colors / Base) and the palette switch. Never read by a component or the site. |
-| semantic | `src/semantic/`, `src/additions/semantic/` | raw, other semantic tokens | What components and the site read: the Figma library's mapped colors (`global.bg.accent.brand.hover`) and its Dimension, Effect and Typography scales (`space.12`, `corner-radius.xs`, `body.size.md`) in `src/semantic/`; the design system's few additions (`font.line-height.tight`, `duration.fast`, `font.icon.family`, `color.transparent`, `focus.ring.width`, `color.focus.ring`) in `src/additions/semantic/`. |
+| semantic | `src/semantic/`, `src/additions/semantic/` | raw, other semantic tokens | What components and the site read: the Figma library's mapped colors (`global.bg.accent.brand.hover`) and its Dimension, Effect and Typography scales (`space.12`, `corner-radius.xs`, `body.size.md`) in `src/semantic/`; the design system's few additions (`font.line-height.tight`, `duration.fast`, `font.icon.family`, `color.transparent`, `focus.ring.width`, `color.focus.ring`, `form.gap.field`) in `src/additions/semantic/`. |
 | component | `src/components/<id>.tokens.json` | semantic | One file per component. Root group = component id. Never overridden per platform. |
 | overlay | `src/platforms/<id>/` | as the tier it overrides | Platform values of raw or semantic tokens (see below). |
 | mode | `src/modes/<id>/`, `src/additions/modes/<id>/` | raw | Values of semantic tokens in a mode other than the default (`dark`; see below). |

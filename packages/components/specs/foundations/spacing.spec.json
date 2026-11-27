@@ -2,10 +2,10 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "spacing",
   "name": "Spacing and sizing",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "status": "draft",
   "summary": "The spacing scale and the element sizes from the Figma library, which components pick their paddings, gaps, heights and icon sizes from.",
-  "description": "Two scales from the Figma library (Dimension), as they are, measure everything: space, the room inside and between elements, on a 4 px grid; and size, the dimensions of elements such as icons and avatars. Components and the docs site read them directly: each component picks its padding, gaps, heights and icon sizes from them in its own tokens. There is no semantic spacing layer in between.",
+  "description": "Two scales from the Figma library (Dimension), as they are, measure everything: space, the room inside and between elements, on a 4 px grid; and size, the dimensions of elements such as icons and avatars. Components and the docs site read them directly: each component picks its padding, gaps, heights and icon sizes from them in its own tokens. There is no semantic spacing layer in between, except the gaps of a form's layout, which the Forms foundation owns (form.gap.*).",
   "tags": [
     "spacing",
     "dimension",
@@ -45,7 +45,7 @@
     {
       "id": "layout",
       "name": "Layout",
-      "text": "There are no page layout tokens (page margins, section spacing): layouts pick from the spacing scale until a decision names them."
+      "text": "There are no page layout tokens (page margins, section spacing): layouts pick from the spacing scale until a decision names them. One decision named the gaps of a form: form.gap.field, form.gap.group and form.gap.title, semantic additions aliasing space.16, space.32 and space.12, owned by the Forms foundation (forms-gap-tokens)."
     }
   ],
   "specimens": [
@@ -201,6 +201,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-27",
+      "note": "The rule layout and the description name the first layout tokens, the form gaps form.gap.field, form.gap.group and form.gap.title (space.16, space.32, space.12), semantic additions owned by the Forms foundation (Forms decision forms-gap-tokens, #105 step 10, point 4). The spacing scale itself does not change."
+    },
     {
       "version": "0.2.1",
       "date": "2026-11-05",

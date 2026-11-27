@@ -847,9 +847,16 @@ last group of a grouped form. They act on the whole form, not on its last group:
 stand apart as a group does, and in a plain form they are one more row. The buttons stand 8 px
 apart. The actions have no value of their own, and no trusted page gives one.
 
-> **Not decided yet (step 10).** Whether these values become tokens, and the space inside a field
-> and a group. Today each control spaces only its own parts: a field by its container gap, a group
-> by its row gap.
+**The gaps are tokens.** The three spaces of a form's layout are semantic tokens the design
+system adds, since the Figma library has none for them: `form.gap.field` (16 px) between two fields,
+`form.gap.group` (32 px) between two groups of fields and `form.gap.title` (12 px) between a group's
+title and its first field. The actions take the field or the group gap, whichever precedes them,
+and have no token of their own. A form's layout reads these tokens rather than the scale steps
+behind them, so a platform can give them its own values, and Figma and Penpot get them as
+variables. They are the same on every platform today; the Tokens tab draws them.
+
+> **Not decided yet (step 10).** The space inside a field and a group. Today each control spaces
+> only its own parts: a field by its container gap, a group by its row gap.
 
 ### Desktop
 
