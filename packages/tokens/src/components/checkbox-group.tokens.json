@@ -118,7 +118,7 @@
       "column-gap": {
         "$type": "dimension",
         "$value": "{space.8}",
-        "$description": "Between the radio and its label column."
+        "$description": "Between the box and its label column."
       },
       "row-gap": {
         "$type": "dimension",

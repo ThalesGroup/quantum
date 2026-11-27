@@ -131,9 +131,9 @@ screen reader reads the name, the help, then the message. The help stays where p
 most: a format or a limit is what they need to fix an error. The cost is a shift when a message
 appears: the next field moves down 30 px for a one-line message and 54 px for a two-line one on
 a medium Text field (85 px at rest), and 29 px under a Radio group. A message appears after
-validation, not while people type (step 7 decides when). The description is not replaced, not
-moved above the control, and no line is reserved for the message, which may come back as a
-choice of the form's layout in step 10.
+validation, not while people type ([When a value is checked](#when-a-value-is-checked)). The
+description is not replaced, not moved above the control, and no line is reserved for the
+message: the form's spacing reserves none ([Spacing](#spacing)).
 
 Material's text field guidelines say to replace the supporting text with the error text, so the
 layout does not shift ([Material: text fields guidelines](https://m3.material.io/components/text-fields/guidelines)),
@@ -486,7 +486,7 @@ submit ([WAI: in-line feedback](https://www.w3.org/WAI/tutorials/forms/notificat
 the system keeps that for the checks people could not make. A success or a warning that appears
 without moving focus is a status message
 ([Understanding 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html#intent));
-how it is announced is step 8.
+how it is announced is said in [How errors are announced](#how-errors-are-announced).
 
 **The submit button stays enabled** while required fields are empty: people can always submit,
 and submitting shows the error of every required field they left empty, so they learn what is

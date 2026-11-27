@@ -9,7 +9,7 @@
  *    a native checkbox (the control, drawn by the component), its label and its description. The check is
  *    a pseudo-element of the input.
  *  - Orientation and size are data attributes on the root; states are native pseudo-classes of the
- *    radio. A state is forced for review with [data-state="<state>"] on the root (every option) or on
+ *    checkbox. A state is forced for review with [data-state="<state>"] on the root (every option) or on
  *    one option (the states matrix forces one entry). Precedence follows the spec order:
  *    default < hover < focus-visible < checked < error < disabled.
  *  - Private properties (--_*) are the single place an option or a state writes to.
@@ -223,7 +223,7 @@
 }
 
 /* ---- States -------------------------------------------------------------- */
-/* Forced on the root (every option) or on one option; native pseudo-classes on the radio.
+/* Forced on the root (every option) or on one option; native pseudo-classes on the checkbox.
    Order matters: hover < error fill < checked < checked in error < error border < disabled; hover never repaints a checked
    or disabled box, and reads its values through private properties, which an error keeps at its own. */
 

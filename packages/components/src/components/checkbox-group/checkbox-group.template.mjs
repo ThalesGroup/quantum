@@ -7,7 +7,7 @@
  * `required`, which would require that very box; the product checks the group on submit.
  *
  * Extra props: `id` names the group (option ids derive from it; unique in the page; without it
- * instances are numbered in render order); `attrs` adds HTML attributes to every radio.
+ * instances are numbered in render order); `attrs` adds HTML attributes to every checkbox.
  * Extra sandbox-only props: `state` forces a visual state through data-state on the root (every
  * option); an entry's `state` forces it on that option only.
  */

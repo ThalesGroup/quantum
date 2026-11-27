@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -44,7 +44,7 @@
           "type": "string",
           "required": true,
           "bindsTo": "option-label",
-          "description": "Name of the option. Provides the radio's accessible name."
+          "description": "Name of the option. Provides the checkbox's accessible name."
         },
         {
           "id": "value",
@@ -57,7 +57,7 @@
           "name": "Description",
           "type": "string",
           "bindsTo": "option-description",
-          "description": "Help text under the option's label, exposed as the radio's description."
+          "description": "Help text under the option's label, exposed as the checkbox's description."
         },
         {
           "id": "checked",
@@ -257,7 +257,7 @@
       "parts": [
         "option"
       ],
-      "description": "Keyboard focus on a radio. Shows the shared focus ring outside it; pointer focus shows none."
+      "description": "Keyboard focus on a box. Shows the shared focus ring outside it; pointer focus shows none."
     },
     {
       "id": "checked",
@@ -382,7 +382,7 @@
         ]
       },
       {
-        "text": "Each box is what identifies its option and shows its state, so its border, its fill and its dot contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.78:1 (light) and 11.28:1 (dark) on the default surface; checked fill 5.77:1 and 12.76:1; the dot on the fill 5.72:1 and 13.05:1; the error border (the accent functional border) 6.12:1 and 4.97:1, at least 5.79:1 and 3.73:1 on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
+        "text": "Each box is what identifies its option and shows its state, so its border, its fill and its check mark contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.78:1 (light) and 11.28:1 (dark) on the default surface; checked fill 5.77:1 and 12.76:1; the check mark on the fill 5.72:1 and 13.05:1; the error border (the accent functional border) 6.12:1 and 4.97:1, at least 5.79:1 and 3.73:1 on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -1042,6 +1042,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.1",
+      "date": "2026-11-27",
+      "note": "#105 step 12, copy errors from the Radio group: an option's label and description name the checkbox, not the radio; the focus state is on a box; the contrast guideline measures the check mark on the fill, not a dot; the template, CSS comments and the column-gap token description say checkbox and box. Text only."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-27",
