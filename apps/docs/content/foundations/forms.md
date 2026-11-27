@@ -717,7 +717,55 @@ the page's when the form has none. Its place needs no script.
 form's scrolling content, above the first field, and scrolls with it; it is never pinned. No
 Apple, Android or Windows page says where a list of errors goes, so this is the system's judgment.
 
-> **Not decided yet (step 9, point 6).** When the summary updates and clears.
+**It shows the errors of the last submit.** Fixing a field clears that field's error (see [When
+a value is checked](#when-a-value-is-checked)), but the summary stays as it is: its title and its
+entries are those of the last submit. Each submit checks every field and rebuilds it, its count
+and its entries, and its title takes focus again; with one error left, the summary goes and focus
+moves to that field; with none, the form is sent. SCR32 builds its list in the form's submit
+handler and replaces the existing list with the new one
+([SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32)), and the WAI tutorial
+gives its feedback when a form is submitted
+([WAI forms tutorial: overall feedback](https://www.w3.org/WAI/tutorials/forms/notifications/#overall-feedback)).
+This holds whoever checks the values, the browser, the app or the server, and needs no script
+beyond the submit's own. The cost: until people submit again, the summary can list a field they
+already fixed.
+
+**A product may update it live, when every check runs in the browser or the app.** An entry then
+leaves the summary as soon as its field is fixed, the title's count follows, and the summary goes
+when no entry is left. A status text that stays on the page and changes is usually a new status
+message
+([Understanding 4.1.3: modification of status text](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html#modification-of-status-text)),
+so the new title is announced politely, through the form's live region or announcement (see [How
+errors are announced](#how-errors-are-announced)), without moving focus. It costs script on every
+field. Never when a check waits for the server: only a new submit tells whether such a field is
+fixed, and a summary that is live for some fields and stale for others says the wrong count. This
+is the product override the system leaves open: the default is the summary of the last submit.
+
+**On iOS, Android and desktop, the platform's timing decides.** Each platform follows its own
+guidance on when a value is checked:
+
+- **iOS and macOS.** Apple asks to verify values as soon as people enter them and to give
+  feedback as soon as a problem is detected
+  ([HIG: Entering data](https://developer.apple.com/design/human-interface-guidelines/entering-data#Best-practices)):
+  a form whose every check runs in the app may follow it with the live summary, its new title
+  announced at low priority. A check the server makes keeps the summary of the last submit.
+- **Android.** Android Developers validates a field as people type
+  ([Validate input as the user types](https://developer.android.com/develop/ui/compose/quick-guides/content/validate-input))
+  and when people move to the next field
+  ([Compose: keyboard interaction logic](https://developer.android.com/develop/ui/compose/text/user-input#define-logic)):
+  the same holds, the new title in a polite live region.
+- **Windows.** Windows asks to mark the controls with invalid input on submission and to require
+  a resubmit ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button)):
+  the default, the summary of the last submit. A form that applies each value at once, such as a
+  settings page, has no submit, so no summary.
+
+On iOS, macOS and Windows the submit button stays disabled until the required fields are filled,
+so a summary there lists values to fix, never empty required fields. No Apple, Android or Windows
+page speaks of a list of errors: each platform's use is the system's judgment, drawn from when
+that platform checks a value.
+
+> **Not decided yet (step 9, point 6b).** On the web, a page the server sends back with errors:
+> how focus reaches the summary, and the error count in the page's title.
 
 ## Spacing
 

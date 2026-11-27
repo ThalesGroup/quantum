@@ -184,7 +184,7 @@ trusted source for it in `a11y/sources.json`.
 
 Trusted publishers today: W3C WCAG 2.2 and WAI Understanding/Techniques, WAI-ARIA, APG,
 AccName, HTML-AAM, Core-AAM, ARIA in HTML, WAI tutorials, WHATWG HTML, MDN, RGAA, ETSI EN 301 549,
-Apple HIG, accessibility docs and UI framework references (UIKit, AppKit, SwiftUI), Android accessibility docs and Compose focus, keyboard and text input guides, Material Design 3 foundations
+Apple HIG, accessibility docs and UI framework references (UIKit, AppKit, SwiftUI), Android accessibility docs, Compose focus, keyboard and text input guides and the Compose quick guide on validating input, Material Design 3 foundations
 and component guidelines, Windows app controls guidance, Windows input guidance, Windows accessibility guidance, the WinUI automation reference and the UI Automation property identifiers,
 Orange accessibility guidelines. Material's component guidelines and the Windows pages were added
 on 2026-11-13 (Forms foundation, decision `forms-platform-sources`): they hold the only Android
@@ -195,4 +195,6 @@ property identifiers page were added on 2026-11-25 (decision `forms-required-win
 say what a Windows control's accessible name must be. Android Developers' Compose focus and keyboard guides
 (`develop/ui/compose/touch-input/`), text input guides (`develop/ui/compose/text/`) and Windows' input guidance
 (`windows/apps/develop/input/`) were added on 2026-11-25 (decision `forms-keyboard`, and the field family's `keyboard-on-every-platform`): only they
-name the keys of a text field and the IME actions on Android and Windows.
+name the keys of a text field and the IME actions on Android and Windows. Android Developers' quick guide
+Validate input as the user types (`develop/ui/compose/quick-guides/content/validate-input`, that page only) was added on
+2026-11-27 (decision `forms-summary-updates`): it is the Android page that says when a field's value is checked.

@@ -85,9 +85,9 @@
       "prefixes": ["https://developer.apple.com/design/human-interface-guidelines/", "https://developer.apple.com/documentation/accessibility/", "https://developer.apple.com/documentation/uikit/", "https://developer.apple.com/documentation/appkit/", "https://developer.apple.com/documentation/swiftui/"]
     },
     "android": {
-      "name": "Android accessibility documentation and the Compose focus, keyboard and text input guides",
+      "name": "Android accessibility documentation, the Compose focus, keyboard and text input guides, and the Compose quick guide on validating input",
       "kind": "platform",
-      "prefixes": ["https://developer.android.com/guide/topics/ui/accessibility", "https://developer.android.com/develop/ui/compose/accessibility", "https://developer.android.com/develop/ui/compose/touch-input/", "https://developer.android.com/develop/ui/compose/text/"]
+      "prefixes": ["https://developer.android.com/guide/topics/ui/accessibility", "https://developer.android.com/develop/ui/compose/accessibility", "https://developer.android.com/develop/ui/compose/touch-input/", "https://developer.android.com/develop/ui/compose/text/", "https://developer.android.com/develop/ui/compose/quick-guides/content/validate-input"]
     },
     "material": {
       "name": "Material Design 3 foundations and component guidelines",
