@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.21.1",
+  "version": "0.21.2",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -1407,6 +1407,29 @@
   ],
   "decisions": [
     {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.21.2",
+      "area": "color",
+      "status": "active",
+      "text": "The Search field's component tokens alias the Forms family (form.*) wherever their value is the family's default: the container gap; the control's fill at rest, on hover and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors. No value changes, on any platform or in any mode. Its border at rest is the family's own default, global.border.base.neutral.5, the field family's border (decision border-base-neutral-5): no override. Disabled colors, hover and focus, geometry, the leading icon and the value's text style stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases. Applied in #103 step 28.",
+      "tokens": [
+        "search-field.container.gap",
+        "search-field.control.background.*",
+        "search-field.control.border-color.*",
+        "search-field.control.outline-color.*",
+        "search-field.control.color.default",
+        "search-field.control.placeholder-color.default",
+        "search-field.label.*",
+        "search-field.description.*",
+        "search-field.message.*",
+        "search-field.severity-icon.color.*",
+        "search-field.mark.color.default",
+        "search-field.asterisk.color.default"
+      ]
+    },
+    {
       "id": "text-field-severities",
       "date": "2026-11-27",
       "version": "0.21.0",
@@ -2015,6 +2038,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.21.2",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6; #103 step 28): the container gap; the control's fill at rest, on hover and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors alias the Forms family (form.*), 34 tokens, every resolved value unchanged in the base tiers, iOS and Android, light and dark; no override, the border at rest being the family's default."
+    },
     {
       "version": "0.21.1",
       "date": "2026-11-27",

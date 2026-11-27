@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -1485,6 +1485,29 @@
   ],
   "decisions": [
     {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.28.5",
+      "area": "color",
+      "status": "active",
+      "text": "The Text field's component tokens alias the Forms family (form.*) wherever their value is the family's default: the container gap; the control's fill at rest, on hover, read-only and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors. No value changes, on any platform or in any mode. Its border at rest is the family's own default, global.border.base.neutral.5, the field family's border (decision border-base-neutral-5): no override. Disabled colors, hover and focus, geometry, the leading icon and the value's text style stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases. Applied in #103 step 28.",
+      "tokens": [
+        "text-field.container.gap",
+        "text-field.control.background.*",
+        "text-field.control.border-color.*",
+        "text-field.control.outline-color.*",
+        "text-field.control.color.default",
+        "text-field.control.placeholder-color.default",
+        "text-field.label.*",
+        "text-field.description.*",
+        "text-field.message.*",
+        "text-field.severity-icon.color.*",
+        "text-field.mark.color.default",
+        "text-field.asterisk.color.default"
+      ]
+    },
+    {
       "id": "value-line-not-clipped",
       "date": "2026-11-26",
       "version": "0.28.0",
@@ -2176,6 +2199,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.5",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6; #103 step 28): the container gap; the control's fill at rest, on hover, read-only and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors alias the Forms family (form.*), 35 tokens, every resolved value unchanged in the base tiers, iOS and Android, light and dark; no override, the border at rest being the family's default."
+    },
     {
       "version": "0.28.4",
       "date": "2026-11-27",

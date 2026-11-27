@@ -4,7 +4,7 @@
     "container": {
       "gap": {
         "$type": "dimension",
-        "$value": "{space.6}",
+        "$value": "{form.container.gap}",
         "$description": "Between the label, the control, the description and the message: one value at every size and state, so the box never moves."
       }
     },
@@ -12,7 +12,7 @@
       "color": {
         "$type": "color",
         "default": {
-          "$value": "{global.text.on-base.neutral.primary}"
+          "$value": "{form.label.color.default}"
         },
         "disabled": {
           "$value": "{global.text.state.disabled.default}"
@@ -24,7 +24,7 @@
         "small": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.sm}",
+            "fontSize": "{form.label.font-size.small}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -33,7 +33,7 @@
         "medium": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.md}",
+            "fontSize": "{form.label.font-size.medium}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -42,7 +42,7 @@
         "large": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.md}",
+            "fontSize": "{form.label.font-size.large}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.tight}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -55,7 +55,7 @@
       "color": {
         "$type": "color",
         "default": {
-          "$value": "{global.text.on-base.neutral.secondary}"
+          "$value": "{form.mark.color.default}"
         },
         "disabled": {
           "$value": "{global.text.state.disabled.default}"
@@ -99,7 +99,7 @@
         "$type": "color",
         "default": {
           "$description": "The error message's and the error icon's red.",
-          "$value": "{global.text.on-base.functional.error.default}"
+          "$value": "{form.asterisk.color.default}"
         },
         "disabled": {
           "$value": "{global.text.state.disabled.default}"
@@ -166,25 +166,25 @@
       "background": {
         "$type": "color",
         "default": {
-          "$value": "{global.bg.level.0.default}"
+          "$value": "{form.control.background.default}"
         },
         "hover": {
-          "$value": "{global.bg.level.0.hover}"
+          "$value": "{form.control.background.hover}"
         },
         "error": {
-          "$value": "{global.bg.subtle.functional.error.default}",
+          "$value": "{form.control.background.error}",
           "$description": "The fill of a control in error, at rest and on hover alike: the subtle error background (Forms foundation, decision forms-severity-fill). Its hover step would bring the placeholder under 4.5:1 in light mode."
         },
         "warning": {
-          "$value": "{global.bg.subtle.functional.warning.default}",
+          "$value": "{form.control.background.warning}",
           "$description": "The fill of a control with a warning, at rest and on hover alike: the subtle warning background (Forms foundation, decision forms-severity-fill), as in error."
         },
         "success": {
-          "$value": "{global.bg.subtle.functional.success.default}",
+          "$value": "{form.control.background.success}",
           "$description": "The fill of a control with a success, at rest and on hover alike: the subtle success background (Forms foundation, decision forms-severity-fill), as in error."
         },
         "readonly": {
-          "$value": "{global.bg.level.1.default}"
+          "$value": "{form.control.background.readonly}"
         },
         "disabled": {
           "$value": "{global.bg.state.disabled.default}"
@@ -193,16 +193,16 @@
       "border-color": {
         "$type": "color",
         "default": {
-          "$value": "{global.border.base.neutral.5}"
+          "$value": "{form.control.border-color.default}"
         },
         "error": {
-          "$value": "{global.border.accent.functional.error.default}"
+          "$value": "{form.control.border-color.error}"
         },
         "warning": {
-          "$value": "{global.border.accent.functional.warning.default}"
+          "$value": "{form.control.border-color.warning}"
         },
         "success": {
-          "$value": "{global.border.accent.functional.success.default}"
+          "$value": "{form.control.border-color.success}"
         },
         "disabled": {
           "$value": "{global.border.state.disabled.default}"
@@ -211,7 +211,7 @@
       "color": {
         "$type": "color",
         "default": {
-          "$value": "{global.text.on-base.neutral.primary}"
+          "$value": "{form.control.color.default}"
         },
         "disabled": {
           "$value": "{global.text.state.disabled.default}"
@@ -221,7 +221,7 @@
         "$type": "color",
         "$description": "Color of the placeholder hint, lighter than the value.",
         "default": {
-          "$value": "{global.text.on-base.neutral.tertiary}"
+          "$value": "{form.control.placeholder-color.default}"
         },
         "disabled": {
           "$value": "{global.text.state.disabled.default}"
@@ -279,13 +279,13 @@
           "$value": "{color.focus.ring}"
         },
         "error": {
-          "$value": "{global.border.accent.functional.error.default}"
+          "$value": "{form.control.border-color.error}"
         },
         "warning": {
-          "$value": "{global.border.accent.functional.warning.default}"
+          "$value": "{form.control.border-color.warning}"
         },
         "success": {
-          "$value": "{global.border.accent.functional.success.default}"
+          "$value": "{form.control.border-color.success}"
         }
       },
       "transition": {
@@ -315,7 +315,7 @@
       "color": {
         "$type": "color",
         "default": {
-          "$value": "{global.text.on-base.neutral.secondary}"
+          "$value": "{form.description.color.default}"
         },
         "disabled": {
           "$value": "{global.text.state.disabled.default}"
@@ -327,7 +327,7 @@
         "small": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.xs}",
+            "fontSize": "{form.description.font-size.small}",
             "fontWeight": "{body.weight.regular}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -336,7 +336,7 @@
         "medium": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.xs}",
+            "fontSize": "{form.description.font-size.medium}",
             "fontWeight": "{body.weight.regular}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -345,7 +345,7 @@
         "large": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.sm}",
+            "fontSize": "{form.description.font-size.large}",
             "fontWeight": "{body.weight.regular}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -409,13 +409,13 @@
         "$type": "color",
         "$description": "The on-base icon role of the severity: the icon sits on the surface, beside the control or in the message, and takes the message text's color.",
         "error": {
-          "$value": "{global.icon.on-base.functional.error.default}"
+          "$value": "{form.severity-icon.color.error}"
         },
         "warning": {
-          "$value": "{global.icon.on-base.functional.warning.default}"
+          "$value": "{form.severity-icon.color.warning}"
         },
         "success": {
-          "$value": "{global.icon.on-base.functional.success.default}"
+          "$value": "{form.severity-icon.color.success}"
         }
       }
     },
@@ -423,13 +423,13 @@
       "color": {
         "$type": "color",
         "error": {
-          "$value": "{global.text.on-base.functional.error.default}"
+          "$value": "{form.message.color.error}"
         },
         "warning": {
-          "$value": "{global.text.on-base.functional.warning.default}"
+          "$value": "{form.message.color.warning}"
         },
         "success": {
-          "$value": "{global.text.on-base.functional.success.default}"
+          "$value": "{form.message.color.success}"
         }
       },
       "typography": {
@@ -438,7 +438,7 @@
         "small": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.sm}",
+            "fontSize": "{form.message.font-size.small}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -447,7 +447,7 @@
         "medium": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.md}",
+            "fontSize": "{form.message.font-size.medium}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"
@@ -456,7 +456,7 @@
         "large": {
           "$value": {
             "fontFamily": "{body.family}",
-            "fontSize": "{body.size.md}",
+            "fontSize": "{form.message.font-size.large}",
             "fontWeight": "{body.weight.medium}",
             "lineHeight": "{font.line-height.normal}",
             "letterSpacing": "{font.letter-spacing.normal}"

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "number-field",
   "name": "Number field",
-  "version": "0.29.4",
+  "version": "0.29.5",
   "status": "draft",
   "role": "spinbutton",
   "summary": "Lets people enter a number, by typing it or stepping it up and down.",
@@ -1599,6 +1599,29 @@
   ],
   "decisions": [
     {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.29.5",
+      "area": "color",
+      "status": "active",
+      "text": "The Number field's component tokens alias the Forms family (form.*) wherever their value is the family's default: the container gap; the control's fill at rest, on hover, read-only and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors. No value changes, on any platform or in any mode. Its border at rest is the family's own default, global.border.base.neutral.5, the field family's border (decision border-base-neutral-5): no override. Disabled colors, hover and focus, geometry, the leading icon and the value's text style stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases. Applied in #103 step 28.",
+      "tokens": [
+        "number-field.container.gap",
+        "number-field.control.background.*",
+        "number-field.control.border-color.*",
+        "number-field.control.outline-color.*",
+        "number-field.control.color.default",
+        "number-field.control.placeholder-color.default",
+        "number-field.label.*",
+        "number-field.description.*",
+        "number-field.message.*",
+        "number-field.severity-icon.color.*",
+        "number-field.mark.color.default",
+        "number-field.asterisk.color.default"
+      ]
+    },
+    {
       "id": "value-line-not-clipped",
       "date": "2026-11-26",
       "version": "0.29.0",
@@ -2302,6 +2325,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.29.5",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6; #103 step 28): the container gap; the control's fill at rest, on hover, read-only and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors alias the Forms family (form.*), 35 tokens, every resolved value unchanged in the base tiers, iOS and Android, light and dark; no override, the border at rest being the family's default."
+    },
     {
       "version": "0.29.4",
       "date": "2026-11-27",

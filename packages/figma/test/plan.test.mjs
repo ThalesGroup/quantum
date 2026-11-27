@@ -147,7 +147,8 @@ test('a slot a blueprint does not draw has no variable, unless a drawn token ali
   assert.ok(names.has('space/2'));
   assert.ok(names.has('text-field/label/typography/medium/line-height'));
   // 1840 before #103 step 26; the Search field's severities add 41: 12 control, 18 message (each typography in five), 11 severity icon.
-  assert.equal(plan.variables.variables.length, 1881);
+  // Step 28: the field family aliases form.*, which adds the 7 family tokens no other control reached (asterisk not drawn).
+  assert.equal(plan.variables.variables.length, 1888);
 });
 
 test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
