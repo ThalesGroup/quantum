@@ -351,7 +351,7 @@
   outline: none;
 }
 
-.ds-select:where([data-state="focus-visible"]) .ds-select__control,
+.ds-select:where([data-state="focus-visible"]) .ds-select__control:not(:disabled),
 .ds-select__control:focus-visible {
   outline: var(--select-control-outline-width-focus-visible) solid var(--select-control-outline-color-focus-visible);
   outline-offset: var(--select-control-outline-offset-focus-visible);

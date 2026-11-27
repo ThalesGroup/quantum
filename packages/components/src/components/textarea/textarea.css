@@ -344,7 +344,7 @@
 /* Focus and a severity are outlines drawn flush over the border: the offset is minus the border
    width, so the border keeps its width and the text never moves. A severity at rest is a thin line
    in its color; with focus it takes the focus width, still in the severity's color. */
-.ds-textarea:where([data-state="focus-visible"]) .ds-textarea__control,
+.ds-textarea:where([data-state="focus-visible"]) .ds-textarea__control:not(:disabled),
 .ds-textarea__control:focus-visible {
   outline: var(--textarea-control-outline-width-focus-visible) solid var(--textarea-control-outline-color-focus-visible);
   outline-offset: calc(-1 * var(--textarea-control-border-width));

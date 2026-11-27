@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -2084,6 +2084,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.22.1",
+      "date": "2026-11-27",
+      "note": "Fix (#103 step 33, from Forms step 12): a disabled field never draws the focus ring. The rule that forces focus-visible for review (the playground, the states matrix) now skips a disabled control, as the severity outlines already did, so a disabled field in a severity with focus-visible forced shows no ring on the web, as Figma draws none. A disabled control takes no focus, so real properties render as before."
+    },
     {
       "version": "0.22.0",
       "date": "2026-11-27",

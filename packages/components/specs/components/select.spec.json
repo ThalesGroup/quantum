@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -1151,6 +1151,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.1",
+      "date": "2026-11-27",
+      "note": "Fix (#103 step 33, from Forms step 12): a disabled Select never draws the focus ring. The rule that forces focus-visible for review (the playground, the states matrix) now skips a disabled control, as in the field family. A disabled control takes no focus, so real properties render as before."
+    },
     {
       "version": "0.9.0",
       "date": "2026-11-27",

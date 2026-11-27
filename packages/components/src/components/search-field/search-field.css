@@ -388,7 +388,7 @@
 /* Focus and a severity are outlines drawn flush over the border, as the Text field's: the offset is minus
    the border width, so the border keeps its width and the text never moves. A severity at rest is a thin
    line in its color; with focus it takes the focus width, still in the severity's color. */
-.ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control,
+.ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control:not(:disabled),
 .ds-search-field__control:focus-visible {
   outline: var(--search-field-control-outline-width-focus-visible) solid var(--search-field-control-outline-color-focus-visible);
   outline-offset: calc(-1 * var(--search-field-control-border-width));
