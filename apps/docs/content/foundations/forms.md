@@ -51,6 +51,12 @@ Which rules a control follows is read from its specification, with no list of ex
   also follows the rules on severities, errors and their announcement, and says its severity in
   text.
 
+A control that can be required can also show a severity: a missing or wrong value is said in
+text next to it. So the Search field, which a form can require
+([MDN: making a search input required](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#making_input_required)),
+has the Text field's severities, message and severity icon; it differs from the Text field only
+by its search icon and its return key.
+
 The components that follow this page are the ones whose role is marked as an input; the
 foundation's Tokens tab lists them with the rules each follows.
 
@@ -59,9 +65,8 @@ enter or choose a value with it
 ([WCAG 3.2.2](https://www.w3.org/WAI/WCAG22/Understanding/on-input)). It does not follow this
 page as a control; the rules about the actions of a form, when they are decided, name it.
 
-> **Not decided yet (step 2b).** Whether the Search field, which can be required but has no
-> severity, gets one; and whether the label, required and message guidelines the controls
-> repeat move into this page.
+> **Not decided yet (step 2b).** Whether the label, required and message guidelines the
+> controls repeat move into this page.
 
 ### Web
 

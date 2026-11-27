@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.56.0",
+  "version": "0.57.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -36,7 +36,7 @@
     {
       "id": "tiers",
       "name": "Which rules a control follows",
-      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can show a severity (it has the severity property, or the error state it sets) also follows the rules on severities, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its severity property and its message part, with no list of exceptions. Not decided yet (step 2b): whether the Search field, which can be required but has no severity, gets one, and whether the label, required and message guidelines the controls repeat move into this foundation."
+      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can show a severity (it has the severity property, or the error state it sets) also follows the rules on severities, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its severity property and its message part, with no list of exceptions. A control that can be marked required can also show a severity, so a missing or wrong value is said in text next to it: the Search field takes the Text field's severities (forms-search-field-severity). Not decided yet (step 2b): whether the label, required and message guidelines the controls repeat move into this foundation."
     },
     {
       "id": "form-actions",
@@ -76,7 +76,7 @@
     {
       "id": "severity-icon",
       "name": "Severity icon",
-      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it (on its first line for a multi-line control, the Textarea), which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message's own words say the severity (message-wording). The component never writes a severity word, since it cannot know where a message comes from; with an icon, the icon's name says the severity, so a message does not start with the word, which would be said twice. The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its glyph says the severity, the Alert's intent icons and the Figma prototype's: error for an error, warning for a warning, check_circle for a success, so the three severities differ by shape as well as color; it is named after its severity (\"Error\", \"Warning\", \"Success\"), translated with the form's language. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it (on the first line of a multi-line control), as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is the on-base icon role of its severity, global.icon.on-base.functional.<severity>.default, the role of an icon on a surface, where it sits in both placements (never on the fill), and the color of the message text: for the error #C01619 in light mode, #F88275 in dark mode, 5.81:1 and 5.30:1 at the lowest on the surface levels; for the warning #765818 and #FFC61C, 6.16:1 and 8.38:1; for the success #075D33 and #11C772, 7.44:1 and 5.92:1 (WCAG 1.4.11); the Checkbox and the Search field take the property with their message part and severity (step 2b)."
+      "text": "The severity icon is optional and appears in one place only, never inside the area where people type, because browsers add their own elements there (autofill, password manager, reveal, clear, spin and picker controls). Three placements: after the control, centred on it (on its first line for a multi-line control, the Textarea), which narrows the control; at the start of the message, before its text, the control keeping its full width; or none, and then the message's own words say the severity (message-wording). The component never writes a severity word, since it cannot know where a message comes from; with an icon, the icon's name says the severity, so a message does not start with the word, which would be said twice. The placement is a rule of the form, not of each field: every form control that can show a severity carries the same property, severityIcon (after-control, message, none; message by default), and a form sets it once, to the same value, for all its controls, so its fields never mix two placements. The choice controls (Checkbox, Checkbox group, Radio group and any control whose label sits beside its box) draw no icon after the control, because the label or the options follow it there: they offer message and none, and a form set to after-control shows their icon in the message. The text-entry and picker controls (Text field, Number field, Textarea, Search field, Select) offer all three. Its glyph says the severity, the Alert's intent icons and the Figma prototype's: error for an error, warning for a warning, check_circle for a success, so the three severities differ by shape as well as color; it is named after its severity (\"Error\", \"Warning\", \"Success\"), translated with the form's language. Its size: after the control, the icon of the Button of the same size (20, 24 and 24 px for small, medium and large: size.3, size.4, size.4), space.8 after the control and centred on it (on the first line of a multi-line control), as a field lines up with the Button of its size; in the message, the Icon's small size (16 px, size.2, its size next to 14 and 16 px body text), space.4 before the text and centred on its first line. Its color is the on-base icon role of its severity, global.icon.on-base.functional.<severity>.default, the role of an icon on a surface, where it sits in both placements (never on the fill), and the color of the message text: for the error #C01619 in light mode, #F88275 in dark mode, 5.81:1 and 5.30:1 at the lowest on the surface levels; for the warning #765818 and #FFC61C, 6.16:1 and 8.38:1; for the success #075D33 and #11C772, 7.44:1 and 5.92:1 (WCAG 1.4.11); the Search field takes the property with its severities (forms-search-field-severity), the Checkbox with its message part (step 2b)."
     },
     {
       "id": "severity-width",
@@ -1520,6 +1520,11 @@
         "url": "https://www.w3.org/WAI/WCAG22/Understanding/page-titled.html#intent"
       },
       {
+        "id": "mdn-input-search-required",
+        "title": "MDN: <input type=\"search\">, making input required (a search input can be required)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#making_input_required"
+      },
+      {
         "id": "html-implicit-submission",
         "title": "HTML: implicit submission (Enter submits through the default button; without one, a form of several fields is not submitted)",
         "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission"
@@ -1966,6 +1971,25 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-search-field-severity",
+      "date": "2026-11-27",
+      "version": "0.57.0",
+      "area": "state",
+      "status": "active",
+      "text": "The Search field takes the Text field's severities: the severity property (none, error, warning, success; none by default), the message property and the message part under the description, and the severityIcon property (after-control, message, none; message by default), painted with the Text field's values (accent functional border, subtle functional fill, functional message and icon colors), so a required or checked search says a missing or wrong query in text next to the field, as every other text-entry control. It keeps required and the required mark; it differs from the Text field only by its search icon and its return key. A product uses only the severities its search needs.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b1): A, the Text field's severities, as recommended, among: A, none, error, warning and success with a message and severityIcon (chosen); B, error only, like the choice controls (rejected: the step 5 reason for the choice controls, nothing to confirm or warn about, does not hold for a typed query, which can deserve a warning, and the field family would diverge); C, the Search field drops required and the mark, a search is never required (rejected: HTML lets a search input be required, and a search inside a form, such as finding a company, can be mandatory, so the product would have to swap components); D, today, required with no severity (rejected: an empty required search showed only the browser's own bubble, against the rules form-control and error-in-text, WCAG 3.3.1). No words from the team beyond the choice. Sources opened on 2026-11-27: MDN input type search (making input required).",
+      "tokens": [
+        "global.border.accent.functional.*",
+        "global.bg.subtle.functional.*",
+        "global.text.on-base.functional.*",
+        "global.icon.on-base.functional.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "mdn-input-search-required"
+      ]
+    },
     {
       "id": "forms-label-column-stacking",
       "date": "2026-11-27",
@@ -2918,6 +2942,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.57.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-search-field-severity (#105 step 2b, point b1): the Search field takes the Text field's severities (none, error, warning, success), its message and message part and severityIcon, with the Text field's values. The rule tiers loses its open Search field question; the rule severity-icon names the Search field. One reference (MDN input type search, making input required). No component, token or rendering change here: the field family builds the Search field's severities in #103."
+    },
     {
       "version": "0.56.0",
       "date": "2026-11-27",
