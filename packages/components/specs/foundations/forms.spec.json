@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.49.0",
+  "version": "0.50.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -98,7 +98,7 @@
     {
       "id": "spacing",
       "name": "Spacing",
-      "text": "Two fields of a form stack space.16 (16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack space.32 (32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits space.12 (12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. Not decided yet: the space before the form's actions (step 10, point 3), whether these values become tokens (point 4) and the space inside a field and a group (point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
+      "text": "Two fields of a form stack space.16 (16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack space.32 (32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits space.12 (12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The form's actions (its submit button and the buttons next to it) take the gap of what precedes them: space.16 after a form without groups, space.32 after a grouped form, since they act on the whole form and not on its last group; the buttons stand space.8 (8 px) apart. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. Not decided yet: whether these values become tokens (step 10, point 4) and the space inside a field and a group (point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
     },
     {
       "id": "keyboard",
@@ -1865,6 +1865,23 @@
   ],
   "decisions": [
     {
+      "id": "forms-actions-gap",
+      "date": "2026-11-27",
+      "version": "0.50.0",
+      "area": "layout",
+      "status": "active",
+      "text": "A form's actions (its submit button and the buttons next to it) take the gap of what precedes them: space.16 (the field gap, forms-field-gap) after a form without groups, space.32 (the group gap, forms-group-gap) after a grouped form. The buttons stand space.8 (8 px) apart. No value of its own, on every platform.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 3): C, as recommended, among: A, always the field gap, 16 px (rejected: in a grouped form the buttons sit 16 px under the last group but 32 px under the groups before it, so they read as part of the last group); B, always space.24, between the field and the group gap (rejected: a third value to learn, still less than the group gap); C, the gap of what precedes (recommended, chosen). No words from the team beyond the choice. The actions submit the whole form, not its last group: after groups they stand apart as a group does, in a plain form they are one more row. No trusted page states the space before a form's buttons: Windows Forms' one-column sample puts Save at its field gap (Margin=\"0,24\"), and Windows Spacing and gutters gives 8 epx between buttons, the 8 px kept between the actions (a design page outside the trusted sources, cited in the rationale only). The screens already do it: their sign-in forms put the submit button 16 px under the last field and space their button rows 8 px apart. Sources opened on 2026-11-27: Windows Forms (Spacing, one-column form sample), Windows Spacing and gutters.",
+      "tokens": [
+        "space.16",
+        "space.32",
+        "space.8"
+      ],
+      "refs": [
+        "windows-forms-spacing"
+      ]
+    },
+    {
       "id": "forms-summary-page-title",
       "date": "2026-11-27",
       "version": "0.49.0",
@@ -2700,6 +2717,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.50.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-actions-gap (#105 step 10, point 3): the rule spacing says a form's actions take the gap of what precedes them, space.16 after a form without groups and space.32 after a grouped form, the buttons space.8 apart. Points 4 and 5 of step 10 still open. No component, token or rendering change: the screens' forms already put their actions at the field gap and their buttons 8 px apart."
+    },
     {
       "version": "0.49.0",
       "date": "2026-11-27",

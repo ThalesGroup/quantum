@@ -841,16 +841,24 @@ The space is not the only sign: the grouping is also in the code, a fieldset and
 web, as the WAI forms tutorial asks
 ([WAI forms tutorial: grouping controls](https://www.w3.org/WAI/tutorials/forms/grouping/)).
 
-> **Not decided yet (step 10).** The space before the form's actions, whether these values become
-> tokens, and the space inside a field and a group. Today each control spaces only its own parts:
-> a field by its container gap, a group by its row gap.
+**The actions take the gap of what precedes them.** A form's actions, its submit button and the
+buttons next to it, sit 16 px under the last field of a form without groups, and 32 px under the
+last group of a grouped form. They act on the whole form, not on its last group: after groups they
+stand apart as a group does, and in a plain form they are one more row. The buttons stand 8 px
+apart. The actions have no value of their own, and no trusted page gives one.
+
+> **Not decided yet (step 10).** Whether these values become tokens, and the space inside a field
+> and a group. Today each control spaces only its own parts: a field by its container gap, a group
+> by its row gap.
 
 ### Desktop
 
 Windows spaces individual input controls 24 px apart and groups of input controls 48 px apart
 ([Windows: Forms, spacing](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#spacing)).
 The design system keeps 16 px between fields and 32 px between groups on every platform, Windows
-included: recorded differences, not platform values.
+included: recorded differences, not platform values. Windows puts 8 epx between buttons
+([Windows: spacing and gutters](https://learn.microsoft.com/en-us/windows/apps/design/style/spacing#spacing-and-gutters)),
+the space between a form's actions.
 
 ## Keyboard in a form
 
