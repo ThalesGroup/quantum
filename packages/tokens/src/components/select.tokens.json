@@ -6,6 +6,13 @@
         "$type": "dimension",
         "$value": "{form.container.gap}",
         "$description": "Between the label, the control, the description and the message."
+      },
+      "column-gap": {
+        "$type": "dimension",
+        "start": {
+          "$description": "With labelPlacement start, between the label column and the control: the form's label column gap (Forms decision forms-label-column-gap). The field row sets it itself, as its own part gap would otherwise win over the form grid's.",
+          "$value": "{form.gap.label-column}"
+        }
       }
     },
     "label": {
@@ -331,6 +338,141 @@
         "$type": "dimension",
         "$value": "{space.8}",
         "$description": "Distance between the chevron and the end edge of the control."
+      }
+    },
+    "severity-icon": {
+      "$description": "The severity icon, a glyph of the icon font, after the control or at the start of the message (severityIcon; Forms decisions forms-severity-icon-placement, -size, -color). Only the font, the sizes, the gaps and the color are tokenized.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.24}"
+      },
+      "size": {
+        "$type": "dimension",
+        "after-control": {
+          "$description": "After the control: the size of the Button's icon at the same size (button.icon.size.small, medium, large: 20, 24, 24 px).",
+          "small": {
+            "$value": "{size.3}"
+          },
+          "medium": {
+            "$value": "{size.4}"
+          },
+          "large": {
+            "$value": "{size.4}"
+          }
+        },
+        "message": {
+          "$description": "At the start of the message: the Icon's size next to 14 and 16 px body text (16 px).",
+          "$value": "{size.2}"
+        }
+      },
+      "gap": {
+        "$type": "dimension",
+        "after-control": {
+          "$description": "Between the control and the icon.",
+          "$value": "{space.8}"
+        },
+        "message": {
+          "$description": "Between the icon and the message text.",
+          "$value": "{space.4}"
+        }
+      },
+      "color": {
+        "$type": "color",
+        "$description": "The on-base icon role of the severity: the icon sits on the surface, beside the control or in the message, and takes the message text's color.",
+        "error": {
+          "$value": "{form.severity-icon.color.error}"
+        },
+        "warning": {
+          "$value": "{form.severity-icon.color.warning}"
+        },
+        "success": {
+          "$value": "{form.severity-icon.color.success}"
+        }
+      }
+    },
+    "mark": {
+      "$description": "The required mark, \"(optional)\" or \"(required)\" at the end of the label (markedFields; decision mark-style).",
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{form.mark.color.default}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$description": "The label's typography in the regular weight: the mark is the label's size, regular (Forms decision forms-mark-style).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{form.label.font-size.small}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{form.label.font-size.medium}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "large": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{form.label.font-size.large}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      }
+    },
+    "asterisk": {
+      "$description": "Android and Windows only: the asterisk of a required field, in place of the mark (Forms decision forms-asterisk-style). It takes the label's typography (label.typography.*). Neither the web reference rendering nor the Figma component draws it.",
+      "color": {
+        "$type": "color",
+        "default": {
+          "$description": "The error message's and the error icon's red.",
+          "$value": "{form.asterisk.color.default}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "margin-inline-start": {
+        "$type": "dimension",
+        "$description": "Between the label and the asterisk, with no word space.",
+        "small": {
+          "$value": "{space.2}"
+        },
+        "medium": {
+          "$value": "{space.4}"
+        },
+        "large": {
+          "$value": "{space.4}"
+        }
       }
     }
   }

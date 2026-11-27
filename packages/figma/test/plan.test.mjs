@@ -14,6 +14,17 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const loaded = loadAll(path.join(ROOT, PATHS.tokens));
 const button = JSON.parse(fs.readFileSync(path.join(ROOT, artifacts('button').spec), 'utf8'));
 
+
+/** The first node named `name` in a plan node's subtree. */
+const findNode = (node, name) => {
+  for (const child of node?.children ?? []) {
+    if (child.name === name) return child;
+    const found = findNode(child, name);
+    if (found) return found;
+  }
+  return undefined;
+};
+
 test('rgba and px convert resolved DTCG values to Figma units', () => {
   assert.deepEqual(rgba({ colorSpace: 'srgb', components: [1, 0.5, 0], alpha: 0.10000000149011612 }), { r: 1, g: 0.5, b: 0, a: 0.1 });
   assert.deepEqual(rgba('#ff000080'), { r: 1, g: 0, b: 0, a: 128 / 255 });
@@ -108,7 +119,183 @@ test('the Button plan binds, in each variant, the tokens the web reads', () => {
   assert.deepEqual(plan.properties.filter((p) => p.kind === 'TEXT').map((p) => p.name).sort(), ['Label', 'Leading icon glyph', 'Trailing icon glyph']);
   assert.equal(plan.values[variableName('button.container.min-height.medium')], 36);
   for (const name of plan.variables.variables.map((v) => v.name)) assert.doesNotMatch(name, /[.{}$]/, name);
-  assert.deepEqual(plan.variables.skipped, ['button/container/transition/duration', 'button/container/transition/easing']);
+  // The transition is not drawn: no variable, not even a skipped one (#103 step 23, Q4).
+  assert.deepEqual(plan.variables.skipped, []);
+});
+
+test('the fields\' placeholder colors are text fills, their start paddings and margins gaps', () => {
+  const scopes = (id) => Object.fromEntries(figmaComponent(loaded, specOf(id), BLUEPRINTS[id]).variables.variables.map((v) => [v.name, v.scopes]));
+  const tf = scopes('text-field');
+  assert.deepEqual(tf['text-field/control/placeholder-color/default'], ['TEXT_FILL']);
+  assert.deepEqual(tf['text-field/icon/placeholder-color/default'], ['TEXT_FILL']);
+  assert.deepEqual(tf['text-field/control/padding-inline-start/medium'], ['GAP']);
+  assert.deepEqual(tf['text-field/icon/margin-inline'], ['GAP']);
+});
+
+test('a slot a blueprint does not draw has no variable, unless a drawn token aliases it (#103 step 23, Q4)', () => {
+  const specs = Object.keys(BLUEPRINTS).map(specOf);
+  const plan = pluginPlan(loaded, specs, BLUEPRINTS);
+  const names = new Set(plan.variables.variables.map((v) => v.name));
+  for (const c of plan.components) {
+    assert.ok(c.notExported.length || !c.notDrawn.length, `${c.id}: its notDrawn slots have tokens`);
+    for (const path of c.notExported) assert.ok(!names.has(variableName(path)), `${c.id}: ${path} has a variable`);
+  }
+  // The asterisk (Android and Windows), the web's line floor, the icon font's axes, the animations.
+  for (const name of ['text-field/asterisk/color/default', 'search-field/asterisk/margin-inline-start/small', 'text-field/control/line-height', 'button/icon/grade', 'font/icon/optical-size/24', 'spinner/ring/opacity', 'opacity/40'])
+    assert.ok(!names.has(name), name);
+  // A token a drawn slot reads stays (space/2: the asterisk's margin and drawn gaps alike).
+  assert.ok(names.has('space/2'));
+  assert.ok(names.has('text-field/label/typography/medium/line-height'));
+  // 1840 before #103 step 26; the Search field's severities add 41: 12 control, 18 message (each typography in five), 11 severity icon.
+  // Step 28: the field family aliases form.*, which adds the 7 family tokens no other control reached (asterisk not drawn).
+  // Step 30: the severity icon of the Select (11 variables) and of the Checkbox and the groups (5 each) adds 26.
+  // Step 31: the required mark of the Select (17 variables) and of the Checkbox and the groups (12 each) adds 53; the asterisk is not drawn.
+  // Step 32: the focus width in a severity (control.outline-width.focus-visible-<severity>) of the four fields adds 12.
+  assert.equal(plan.variables.variables.length, 1979);
+});
+
+test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width, its token for two states, when focused', () => {
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const ring = (severity, state) => plan.variants.find((v) => v.name === `Size=medium, Severity icon=message, Severity=${severity}, Content=value, Leading icon=false, State=${state}`).root.children.find((c) => c.name === 'control-row').children.find((c) => c.name === 'control').focusRing;
+  assert.deepEqual(ring('none', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible', offset: -0.6, stroke: 'text-field/control/outline-color/focus-visible' });
+  assert.deepEqual(ring('error', 'default'), { strokeWeight: 'text-field/control/outline-width/error', offset: -0.6, stroke: 'text-field/control/outline-color/error' });
+  assert.deepEqual(ring('warning', 'focus-visible'), { strokeWeight: 'text-field/control/outline-width/focus-visible-warning', offset: -0.6, stroke: 'text-field/control/outline-color/warning' });
+  assert.equal(ring('none', 'default'), undefined);
+  assert.equal(ring('success', 'disabled'), undefined);
+});
+
+test('a focused field in a severity binds its token for two states, in the four fields (#103 step 32)', () => {
+  for (const id of ['text-field', 'number-field', 'textarea', 'search-field']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const ringOf = (node) => node.focusRing ?? (node.children ?? []).map(ringOf).find(Boolean);
+    for (const severity of ['error', 'warning', 'success']) {
+      const focused = plan.variants.filter((v) => v.name.includes(`Severity=${severity},`) && v.name.endsWith('State=focus-visible'));
+      assert.ok(focused.length > 0, `${id} ${severity}`);
+      for (const v of focused) assert.equal(ringOf(v.root).strokeWeight, `${id}/control/outline-width/focus-visible-${severity}`, v.name);
+    }
+  }
+});
+
+test('the Text field draws the severity icon after the control or at the start of the message, for every severity', () => {
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const variant = (size, place, state) => plan.variants.find((v) => v.name === `Size=${size}, Severity icon=${place}, Severity=error, Content=value, Leading icon=false, State=${state}`).root;
+  const iconIn = (node) => findNode(node, 'severity-icon');
+  const row = (root) => root.children.find((c) => c.name === 'control-row');
+  const msg = (root) => root.children.find((c) => c.name === 'message');
+  const after = variant('small', 'after-control', 'default');
+  assert.equal(iconIn(row(after)).bind.width, 'text-field/severity-icon/size/after-control/small');
+  assert.equal(iconIn(row(after)).fills, 'text-field/severity-icon/color/error');
+  assert.equal(row(after).bind.itemSpacing, 'text-field/severity-icon/gap/after-control');
+  assert.equal(iconIn(msg(after)), undefined);
+  const inMessage = variant('large', 'message', 'default');
+  assert.equal(iconIn(msg(inMessage)).bind.width, 'text-field/severity-icon/size/message');
+  assert.equal(msg(inMessage).bind.itemSpacing, 'text-field/severity-icon/gap/message');
+  assert.equal(iconIn(row(inMessage)), undefined);
+  assert.equal(iconIn(row(variant('medium', 'none', 'default'))), undefined);
+  assert.equal(iconIn(msg(variant('medium', 'none', 'default'))), undefined);
+  // Warning and success draw their own glyph in their own color (decision severity-icon-glyphs).
+  const sev = (severity, place) => plan.variants.find((v) => v.name === `Size=medium, Severity icon=${place}, Severity=${severity}, Content=value, Leading icon=false, State=default`).root;
+  assert.equal(iconIn(row(sev('warning', 'after-control'))).glyph, 'warning');
+  assert.equal(iconIn(row(sev('warning', 'after-control'))).fills, 'text-field/severity-icon/color/warning');
+  assert.equal(iconIn(msg(sev('success', 'message'))).glyph, 'check_circle');
+  assert.equal(iconIn(msg(sev('success', 'message'))).fills, 'text-field/severity-icon/color/success');
+});
+
+test('the fields draw the message and the severity icon of the severity property, not only of the severity states', () => {
+  for (const id of ['text-field', 'number-field', 'textarea']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const find = (severity, state, place = 'message') => plan.variants.find((v) => v.name.includes(`Severity icon=${place}, Severity=${severity},`) && v.name.endsWith(`State=${state}`) && !v.name.includes('Leading icon=true')).root;
+    const msg = (root) => root.children.find((c) => c.name === 'message');
+    const icon = (node) => findNode(node, 'severity-icon');
+    // The severity property alone, in any state: the message and its icon, as the template draws them.
+    for (const state of ['default', 'hover', 'focus-visible', 'readonly', 'disabled']) {
+      assert.ok(msg(find('error', state)), `${id}: Severity=error, State=${state} draws the message`);
+      assert.equal(icon(msg(find('error', state))).glyph, 'error', `${id}: Severity=error, State=${state}`);
+    }
+    assert.equal(icon(msg(find('success', 'focus-visible'))).glyph, 'check_circle');
+    const row = find('warning', 'default', 'after-control').children.find((c) => c.name === 'control-row');
+    assert.equal(icon(row).glyph, 'warning');
+    // No severity: no message.
+    assert.equal(msg(find('none', 'default')), undefined);
+  }
+});
+
+test('the fields center the message\'s icon on its first line: a frame as tall as the line, computed from message.typography', () => {
+  // Small 14 px x 1.5 = 21, medium and large 16 px x 1.5 = 24: the web's calc(font-size * line-height).
+  for (const id of ['text-field', 'number-field', 'textarea']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    for (const [size, height] of [['small', 21], ['medium', 24], ['large', 24]]) {
+      const root = plan.variants.find((v) => v.name.startsWith(`Size=${size}, Severity icon=message, Severity=error,`) && v.name.endsWith('State=default')).root;
+      const line = findNode(root.children.find((c) => c.name === 'message'), 'severity-icon-line');
+      assert.equal(line.height, height, `${id} ${size}`);
+      assert.deepEqual(line.align, { primary: 'CENTER', counter: 'CENTER' });
+      assert.equal(line.children[0].name, 'severity-icon');
+    }
+    const none = plan.variants.find((v) => v.name.includes('Severity icon=none, Severity=error,')).root;
+    assert.equal(findNode(none, 'severity-icon-line'), undefined);
+  }
+});
+
+test('the Textarea sets its after-control icon level with the first line, below control.padding-block', () => {
+  const plan = figmaComponent(loaded, specOf('textarea'), BLUEPRINTS.textarea);
+  for (const size of ['small', 'medium', 'large']) {
+    const root = plan.variants.find((v) => v.name.startsWith(`Size=${size}, Severity icon=after-control, Severity=warning,`) && v.name.endsWith('State=default')).root;
+    const row = root.children.find((c) => c.name === 'control-row');
+    assert.equal(row.align.counter, 'MIN');
+    const inset = row.children.find((c) => c.name === 'severity-icon-inset');
+    assert.equal(inset.bind.paddingTop, `textarea/control/padding-block/${size}`);
+    assert.equal(inset.children[0].glyph, 'warning');
+  }
+  const none = plan.variants.find((v) => v.name.includes('Severity icon=after-control, Severity=none,')).root;
+  assert.equal(findNode(none, 'severity-icon-inset'), undefined);
+  // The Text field keeps its icon centered on the control, without the inset.
+  const tf = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const row = tf.variants.find((v) => v.name.includes('Severity icon=after-control, Severity=error,')).root.children.find((c) => c.name === 'control-row');
+  assert.equal(row.align.counter, 'CENTER');
+  assert.equal(findNode(row, 'severity-icon-inset'), undefined);
+});
+
+test('State leaves out a state an enum axis sets: no variant names a severity twice or two of them', () => {
+  for (const [id, blueprint] of Object.entries(BLUEPRINTS)) {
+    const spec = specOf(id);
+    const plan = figmaComponent(loaded, spec, blueprint);
+    const state = plan.properties.find((p) => p.name === 'State');
+    const axes = new Map(plan.properties.filter((p) => p.kind === 'VARIANT').map((p) => [p.name, p.values]));
+    for (const s of spec.states.filter((s) => s.trigger === 'property' && s.value !== undefined)) {
+      const property = spec.properties.find((p) => p.id === s.property);
+      if (!axes.has(property.name)) continue;
+      assert.ok(!state.values.includes(s.id), `${id}: State repeats ${property.name}=${s.value}`);
+      assert.ok(axes.get(property.name).includes(String(s.value)), `${id}: ${property.name} draws ${s.value}`);
+    }
+  }
+  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, select: 144, checkbox: 48, 'checkbox-group': 80, 'radio-group': 80, 'search-field': 288 };
+  for (const [id, count] of Object.entries(counts)) assert.equal(figmaComponent(loaded, specOf(id), BLUEPRINTS[id]).variants.length, count, id);
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  assert.deepEqual(plan.properties.find((p) => p.name === 'State').values, ['default', 'hover', 'focus-visible', 'readonly', 'disabled']);
+  assert.equal(new Set(plan.variants.map((v) => JSON.stringify(v.root))).size, 552);
+  // The group's message follows the Severity axis, and the severity reaches every option.
+  const group = figmaComponent(loaded, specOf('checkbox-group'), BLUEPRINTS['checkbox-group']);
+  const g = (severity, icon = 'message') => group.variants.find((v) => v.name === `Orientation=vertical, Size=medium, Severity icon=${icon}, Severity=${severity}, State=default`).root;
+  assert.ok(g('error').children.some((c) => c.name === 'message'));
+  assert.ok(!g('none').children.some((c) => c.name === 'message'));
+  // The severity icon starts the message with severityIcon message, and is not drawn with none (#103 step 30).
+  const icon = (root) => root.children.find((c) => c.name === 'message').children.find((c) => c.name === 'severity-icon-line');
+  assert.equal(icon(g('error')).children[0].glyph, 'error');
+  assert.equal(icon(g('error', 'none')), undefined);
+});
+
+test('the Text field draws its leading icon over the start of the control, in the color of the text beside it', () => {
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const root = (content, icon, state = 'default') => plan.variants.find((v) => v.name === `Size=small, Severity icon=message, Severity=none, Content=${content}, Leading icon=${icon}, State=${state}`).root;
+  const row = (r) => r.children.find((c) => c.name === 'control-row');
+  const glyph = (r) => row(r).children.find((c) => c.name === 'field')?.children.find((c) => c.name === 'icon-inset').children[0];
+  const control = (r) => row(r).children.find((c) => c.name === 'field').children.find((c) => c.name === 'control');
+  assert.equal(row(root('value', false)).children.find((c) => c.name === 'field'), undefined);
+  assert.equal(glyph(root('value', true)).fills, 'text-field/icon/color/default');
+  assert.equal(glyph(root('placeholder', true)).fills, 'text-field/icon/placeholder-color/default');
+  assert.equal(glyph(root('placeholder', true, 'disabled')).fills, 'text-field/icon/placeholder-color/disabled');
+  assert.equal(glyph(root('value', true)).bind.width, 'text-field/icon/size/small');
+  assert.equal(control(root('value', true)).bind.paddingLeft, 'text-field/control/padding-inline-start/small');
 });
 
 test('the Icon draws its current color as neutral on each surface', () => {
@@ -130,13 +317,44 @@ test('a checked box in error binds the token for both states, its brand fill', (
     const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
     const inError = plan.variants.filter((v) => /Severity=error/.test(v.name));
     const checked = inError.filter((v) => /State=checked/.test(v.name));
-    assert.equal(checked.length, id === 'checkbox' ? 2 : 4, id);
+    // Two placements of the severity icon (message, none) since #103 step 30.
+    assert.equal(checked.length, id === 'checkbox' ? 4 : 8, id);
     for (const v of checked) assert.equal(fillOf(v), `${id}/control/background/checked-error`, v.name);
     for (const v of inError.filter((v) => /State=indeterminate/.test(v.name))) assert.equal(fillOf(v), `${id}/control/background/indeterminate-error`, v.name);
     // An empty box in error keeps the error fill; the brand value is the checked fill's.
     assert.equal(fillOf(inError.find((v) => /State=default/.test(v.name))), `${id}/control/background/error`, id);
     assert.deepEqual(plan.values[`${id}/control/background/checked-error`], plan.values[`${id}/control/background/checked`], id);
   }
+});
+
+test('the fields draw the required mark with a BOOLEAN and a TEXT, markedFields out of the variant axes, never the asterisk', () => {
+  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, 'search-field': 288 };
+  for (const [id, count] of Object.entries(counts)) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    assert.equal(plan.variants.length, count, `${id}: markedFields adds no variant`);
+    assert.ok(!plan.properties.some((p) => p.name === 'Marked fields'), `${id}: no Marked fields axis`);
+    assert.deepEqual(plan.properties.find((p) => p.name === 'Mark text'), { name: 'Mark text', kind: 'TEXT', default: '(optional)' });
+    assert.deepEqual(plan.properties.find((p) => p.name === 'Mark'), { name: 'Mark', kind: 'BOOLEAN', default: id !== 'search-field' });
+    assert.ok(!JSON.stringify(plan.variants).includes('"name":"asterisk"'), `${id}: the asterisk is not drawn`);
+    assert.ok(plan.notDrawn.some((n) => n.slot === 'asterisk'), `${id}: the asterisk is listed as not drawn`);
+  }
+  const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
+  const row = (size, state = 'default') => plan.variants.find((v) => v.name === `Size=${size}, Severity icon=message, Severity=none, Content=value, Leading icon=false, State=${state}`).root.children.find((c) => c.name === 'label-row');
+  const mark = (size, state) => row(size, state).children.find((c) => c.name === 'mark');
+  assert.deepEqual(row('small').children.map((c) => c.name), ['label', 'mark']);
+  assert.equal(mark('small').visibleProperty, 'Mark');
+  assert.equal(mark('small').fills, 'text-field/mark/color/default');
+  assert.equal(mark('small', 'disabled').fills, 'text-field/mark/color/disabled');
+  assert.equal(mark('large').typography.fontWeight, 'text-field/mark/typography/large/font-weight');
+  // The word space: a quarter of the mark's font size, as the web measures it (3.5 px at 14 px, 4 px at 16 px).
+  assert.equal(row('small').set.itemSpacing, 3.5);
+  assert.equal(row('medium').set.itemSpacing, 4);
+});
+
+test('figmaComponent refuses a fixed property that is no enum of the spec, or a value that is not one of its options', () => {
+  const blueprint = { root: { type: 'frame' }, fixed: { tone: 'loud' } };
+  assert.throws(() => figmaComponent(loaded, button, blueprint), /fixed names "tone", which is no enum property/);
+  assert.throws(() => figmaComponent(loaded, button, { root: { type: 'frame' }, fixed: { size: 'huge' } }), /fixed sets size to "huge"/);
 });
 
 test('figmaComponent refuses a slot the component has no token for', () => {
@@ -387,6 +605,37 @@ test('the plugin draws every component, instances of the components they use inc
     const page = fake.figma.root.children.find((p) => p.name === c.page);
     assert.equal(page.children[0].children.length, c.variants.length, c.id);
   }
+});
+
+test('the fields\' label row wraps, the label hugging up to the field\'s width; their description says how to keep the mark after the last word', async () => {
+  // The Select has the field family's label row since #103 step 31.
+  for (const id of ['text-field', 'number-field', 'search-field', 'textarea', 'select']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const row = findNode(plan.variants[0].root, 'label-row');
+    assert.equal(row.wrap, true, id);
+    assert.equal(row.children.find((c) => c.name === 'label').maxWidth, 240, id);
+    assert.match(plan.note, /hide Mark and type the mark at the end of the label/, id);
+  }
+  // No other component takes a note, a wrap or a max width it did not ask for.
+  const button = figmaComponent(loaded, specOf('button'), BLUEPRINTS.button);
+  assert.equal(button.note, null);
+  assert.equal(findNode(button.variants[0].root, 'label').maxWidth, undefined);
+  // The Checkbox and the groups end their label or legend with the mark in a wrapping row, with no max width (#103 step 31).
+  for (const [id, name, text] of [['checkbox', 'label-row', 'label'], ['checkbox-group', 'legend-row', 'legend'], ['radio-group', 'legend-row', 'legend']]) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const row = findNode(plan.variants[0].root, name);
+    assert.equal(row.wrap, true, id);
+    assert.deepEqual(row.children.map((c) => c.name), [text, 'mark'], id);
+    assert.deepEqual(plan.properties.find((p) => p.name === 'Mark'), { name: 'Mark', kind: 'BOOLEAN', default: true }, id);
+  }
+  const fake = fakeFigma({ fonts: FONTS });
+  const { logs } = await runPlugin(fake, ['search-field']);
+  assert.deepEqual(logs, []);
+  const set = fake.figma.root.children.find((p) => p.name === 'Search field').children[0];
+  assert.match(set.description, /^.+ To keep "\(optional\)" right after a long label's last word, .+ Quantum search-field /);
+  const row = findNode(set.children[0], 'label-row');
+  assert.equal(row.layoutWrap, 'WRAP');
+  assert.equal(findNode(row, 'label').maxWidth, 240);
 });
 
 test('the plugin reports its progress to its window, then waits for Close', async () => {

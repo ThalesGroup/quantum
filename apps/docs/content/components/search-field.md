@@ -9,9 +9,9 @@ order: 22
 
 A search field collects a search term: a query for a whole site, a filter for a list. It is a
 Text field with a search glyph at its start, announced as a search box, whose clear control the
-platform provides. It has a visible label, even when that label is just **Search**, and an
-optional description. It has no error state: a search that finds nothing is reported by the
-results.
+platform provides. It has a visible label, even when that label is just **Search**, an optional
+description and, when the query is checked, the Text field's severities with a message. A search
+that finds nothing is still reported by the results, never by the field.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
 sub-heading named after it (Web, iOS, Android, Desktop); everything else holds everywhere.
@@ -28,14 +28,44 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 ## Sizes and states
 
-Sizes follow the Text field (small, medium, large). States are default, hover, focus visible
-and disabled: no invalid, no read-only.
+Sizes follow the Text field (small, medium, large; medium when none is set), their touch targets on iOS and Android included. States are default, hover, focus visible,
+error, warning, success and disabled, as the Text field's: a severity fills the box with its subtle
+background, on hover too, draws an outline in its color flush over the border (1.2 px at rest,
+2.4 px with focus) and shows the message under the description, in its color. The Search field has
+no read-only state. When people raise the text size the box grows as the
+Text field's does, keeping the Button's minimum space above and below the text; the glyph keeps
+its size, so the search text keeps its room, while the severity icon grows with its text. The label,
+the description and the message wrap, even inside a long word, and the search text scrolls.
+
+A severity says something about the query itself, not about what it found: a required search left
+empty, a term too short to check, a number checked against a register. It can show the Text
+field's severity icon, set by `severityIcon`, the choice the form makes once for all its controls
+([Forms foundation](/foundations/forms/guidelines)): at the start of the message by default, after
+the box, or none.
+
+The search glyph follows the text beside it: as light as the placeholder while the field is
+empty, as dark as the value once people type. It never stands out from the text it introduces.
+
+## Label at the start
+
+A form can put the labels of its fields in a column at the start (**Label placement** `start`),
+set once for all its field-like controls, never per field
+([Forms foundation](/foundations/forms/guidelines)). The search field then sits in the form's column: its
+label ends 12 px from the box, its first line centred on the box, and the description and the message stay
+under the box. When the form is narrower than 30 rem, the label goes back above. The form draws the
+column, sized to its longest label, at most 14 em: the Forms page gives the few lines of CSS it
+takes on the web. Alone, the search field draws its own two columns. In Figma the label stays above.
 
 ## Content
 
 - The label says what is searched: **Search**, **Search projects**, **Filter by name**.
 - The placeholder gives an example or the scope (**Name, email or role**), never the label.
-- An empty result is reported next to the results, with what to try next.
+- An empty result is reported next to the results, with what to try next, never as a severity.
+- The message of an error is the instruction that fixes it, relying on the label it sits under:
+  **Enter a company name or number** under **Company**. A warning says what to check, a success what
+  was confirmed.
+- A search field usually stands alone, so it carries no required mark by default. Inside a form
+  that marks its fields, it takes the form's **Marked fields**, as the Text field does.
 
 ## Accessibility
 
@@ -54,46 +84,130 @@ This section explains the decisions behind it.
   [WCAG 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html),
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/),
   [WAI tutorial: placeholder text](https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text)).
-- **Contrast, focus and target size** follow the Text field
-  ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
+- **Severities, said in text.** A severity's color is never the only sign: the message says what is
+  wrong, what to check or what was confirmed, and the severity icon is named after the severity, so
+  the description reads "Error" and then the message. The severity outline (1.2 px) and the focus
+  outline (2.4 px) differ by width, in forced colors too
+  ([WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
+  [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
+  [F78](https://www.w3.org/WAI/WCAG22/Techniques/failures/F78),
+  [AccName: computing the description](https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description)).
+  A search inside a form can be required, as a search input can
+  ([MDN: input type=search, making input required](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#making_input_required)).
+- **Contrast, text size, focus and target size** follow the Text field
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text),
+  [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
   [WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html),
   [WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
-  [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html),
   [WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html),
   [WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html),
   [WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)).
+- **Keyboard on every platform.** People reach, edit and leave the field from a keyboard,
+  physical or assistive, on every platform, and focus is never trapped in it: the platform's native
+  text control provides this, so the keys are the platform's
+  ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html), [WCAG 2.1.2 No Keyboard Trap](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent), [EN 301 549, 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70) for native software).
+  The keys are listed per platform below, from each platform's own documentation.
+- **Enter and the return key.** Enter runs the search on every platform. A search field's action
+  is always search, so it labels its own return key for search wherever it sits: the template writes
+  `enterkeyhint="search"` (`attrs` can replace it), iOS uses the search return key type, as Apple
+  suggests when an app starts a search, and Windows the Search input scope, whose touch keyboard shows
+  a Search key instead of Enter
+  ([HTML: enterkeyhint](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint),
+  [UIKit: UIReturnKeyType](https://developer.apple.com/documentation/uikit/uireturnkeytype),
+  [Apple HIG: Virtual keyboards](https://developer.apple.com/design/human-interface-guidelines/virtual-keyboards#Best-practices),
+  [UIKit: searchBarSearchButtonClicked](https://developer.apple.com/documentation/uikit/uisearchbardelegate/searchbarsearchbuttonclicked(_:)),
+  [Windows: AutoSuggestBox, query submitted](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/auto-suggest-box#query-submitted),
+  [Windows: input scope Search](https://learn.microsoft.com/en-us/windows/apps/develop/input/use-input-scope-to-change-the-touch-keyboard#search)).
+  Alone in its search form, as in a header or a sidebar, it needs no submit button: a form whose
+  only field is this one submits on Enter
+  ([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission)).
+- **Escape.** Chrome clears the term on Escape, as the clear cross some browsers draw does; other
+  browsers keep it. The component leaves the browser's behaviour as it is
+  ([MDN: input type=search](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#differences_between_search_and_text_types)).
 
 ### Web
 
-- The implementation renders an `<input type="search">` with a `<label for>`, a description
-  referenced by `aria-describedby`, and the search glyph in `aria-hidden="true"`. The clear
+- The implementation renders an `<input type="search">` with a `<label for>`, a description and
+  a message referenced by `aria-describedby` (the description, then the severity icon after the box,
+  then the message), `aria-invalid="true"` for an error only, and the search glyph in
+  `aria-hidden="true"`. The clear
   control is the browser's: the component neither styles nor removes it
   ([ARIA in HTML: input type=search](https://www.w3.org/TR/html-aria/#el-input-search),
   [HTML-AAM: input type=search](https://www.w3.org/TR/html-aam-1.0/#el-input-search),
   [HTML: the Search state](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)),
   [MDN: input type=search, labels and accessibility](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#search_form_labels_and_accessibility),
   [WAI-ARIA: aria-hidden](https://www.w3.org/TR/wai-aria-1.2/#aria-hidden)).
-- The focus ring uses `:focus-visible`
+- The focus outline uses `:focus-visible`
   ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   a disabled field leaves the focus order
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
 - The color transitions of the control are switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+- Text sizes are px lengths today, so a browser's text-only size setting does not enlarge the
+  field's text, while zoom enlarges the text and the box together, which meets Resize Text
+  ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
+- Chromium and WebKit clip an input's text to its own line box, and the stacked marks of Vietnamese
+  letters (Ấ, Ỗ, Ẫ) reach past a 1.2 line: Ấ would read as Â, and text enlarged to 200 % would be
+  clipped, which fails WCAG 1.4.4 ([F69](https://www.w3.org/WAI/WCAG22/Techniques/failures/F69)). The input
+  takes its block padding into its line, never shorter than 1.5 times the text (`control.line-height`):
+  the box keeps its height and the text its place. The value stays 1.2 on the other platforms and in Figma.
 
 ### iOS
 
+- The recommended minimum text size is 11 pt; the description at 12 pt and the message at 14 pt are above it
+  ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - A search field displays a search icon, a clear button and placeholder text; use the
   placeholder to help people know what they can search for
   ([Apple HIG: Search fields](https://developer.apple.com/design/human-interface-guidelines/search-fields)).
-  The small and medium sizes fall under the 44 by 44 pt hit region today
+  Every size reaches a 44 by 44 pt hit region as on the Text field: it extends above and below the
+  box, over the field's own label, description and message, which keep their 6 pt
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
+- With a hardware keyboard on iPadOS 15 and later, Tab moves focus among focus groups, and
+  iPadOS supports keyboard navigation in text fields and text views, unlike buttons. On iPhone,
+  Full Keyboard Access reaches the field: use the native text field and test with it on
+  ([Apple HIG: Focus and selection, iPadOS](https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS), [Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices), [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
+- The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
+  Apple asks that layouts adapt to all font sizes
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- The severity icon grows with the text it goes with, as Apple asks of meaningful icons; the
+  search glyph, decorative, keeps its size, and so does the inset before the text, so the search
+  text keeps its room
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under
-  it today
+- Interactive elements need a 48 by 48 dp touch target, and every size reaches it as on the Text
+  field: the touch target extends above and below the box, over the field's own label, description
+  and message, and the box does not take `minimumInteractiveComponentSize`, which would move the label.
+  Expose an error with the error semantics so the message is announced with the field
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
-  [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
+  [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
+  [Jetpack Compose: error semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components)).
+- With a hardware keyboard, a D-pad or Switch Access, focus navigation reaches the field in a
+  logical order and can always leave it. Tab moves focus to the next focus target; Shift+Tab moves back; the arrow keys and the
+  D-pad move the caret, then move focus at the start or end of the text; Shift with the arrows
+  selects, Ctrl+A selects all ([Orange: Android keyboard navigation](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order), [Jetpack Compose: focus in text fields](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#one-dimensional-focus-traversal),
+  [two-dimensional traversal](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#two-dimensional-focus-traversal), [Jetpack Compose: keyboard commands](https://developer.android.com/develop/ui/compose/touch-input/keyboard-input/commands)).
+
+### Desktop
+
+- On macOS, Full Keyboard Access lets people navigate to the field and use it with the keyboard
+  alone; Tab and Shift-Tab move through the key view loop and Command-A selects all the text.
+  Use the native control and keep the standard keyboard shortcuts ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices),
+  [Apple HIG: standard keyboard shortcuts](https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts), [AppKit: nextKeyView](https://developer.apple.com/documentation/appkit/nsview/nextkeyview)).
+- On Windows, Tab follows the tab order, the order the controls are added, and skips a disabled
+  field; Shift+Tab goes back; in the field the arrow keys move the caret, since every key goes to
+  the text first ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements), [Windows: keyboard interactions, navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation), [text entry](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry)).
+- On macOS, Option-Command-F moves focus to the product's main search field, a standard shortcut
+  ([Apple HIG: standard keyboard shortcuts](https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts)).
+- macOS does not support Dynamic Type: there the field keeps its size, as text does
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
+- On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
+  with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
+- On Windows, the search glyph keeps its size when text scales (`IsTextScaleFactorEnabled` set to
+  false), as Windows asks of font icons used for decoration; the severity icon scales with the text
+  ([Windows: don't scale font-based icons or symbols](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols)).
 
 ## Related
 

@@ -1,52 +1,34 @@
 /**
  * Search field (packages/components/src/components/search-field/search-field.css): the text
- * field's stack (src/blueprints/text-field.mjs), FIELD_WIDTH px wide where the web stretches,
- * without a message (no severity).
+ * field's stack (src/blueprints/text-field.mjs), FIELD_WIDTH px wide where the web stretches, with the
+ * Text field's severities: the Severity axis, the message and the severity icon after the field or at the
+ * start of the message, by the `severityIcon` variant (decision text-field-severities). Its required mark
+ * is hidden by default: a search field stands alone (markedFields none).
  *
  * The `field` wraps the control and the search glyph, which the web positions over the start edge
  * of the control (inset by icon.margin-inline) while the control reserves room for it with
  * padding-inline-start. Here the glyph sits in `icon-inset`, a frame positioned absolutely at the
  * field's start edge and vertically centered, whose left padding is icon.margin-inline.
  */
-import { CONTENT, TRANSITION, container, content, control, description, label } from './text-field.mjs';
+import { CONTENT, TRANSITION, LINE_FLOOR, ICON_AXES, SEVERITY_ICON_AXES, ASTERISK, LABEL_COLUMN, container, content, description, field, labelRow, message, withSeverityIcon, LONG_LABEL_NOTE } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
-  booleans: { 'Show description': false },
+  fixed: { markedFields: 'none', labelPlacement: 'above' },
+  booleans: { Mark: false, 'Show description': false },
+  note: LONG_LABEL_NOTE,
   root: container([
-    label,
-    {
-      type: 'frame',
-      name: 'field',
-      layout: 'HORIZONTAL',
-      width: 'FILL',
-      children: [
-        control({
-          bind: { paddingX: null, paddingLeft: 'control.padding-inline-start', paddingRight: 'control.padding-inline' },
-          children: content(),
-        }),
-        {
-          type: 'frame',
-          name: 'icon-inset',
-          layout: 'HORIZONTAL',
-          align: { primary: 'MIN', counter: 'CENTER' },
-          absolute: { x: 0, y: 'center' },
-          bind: { paddingLeft: 'icon.margin-inline' },
-          children: [
-            {
-              type: 'icon',
-              name: 'icon',
-              glyph: 'search',
-              bind: { fill: 'icon.color', size: 'icon.size', fontFamily: 'icon.font-family', fontWeight: 'icon.font-weight' },
-            },
-          ],
-        },
-      ],
-    },
+    labelRow,
+    withSeverityIcon(field(content(), 'search')),
     description,
+    message,
   ]),
   notDrawn: [
+    LABEL_COLUMN,
     TRANSITION,
-    { slot: 'icon.fill, icon.grade, icon.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' },
+    SEVERITY_ICON_AXES,
+    ICON_AXES,
+    ASTERISK,
+    LINE_FLOOR,
   ],
 };

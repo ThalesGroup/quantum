@@ -22,16 +22,20 @@ single place.
 The Figma library is kept with its errors and limitations on purpose: it is the starting point the
 system evolves from, one decision at a time. Since its POC2 export (November 2026) its error
 colors pass the contrast minimum everywhere, and since its export of 2026-11-12 its warning icon
-does too. The design system departs from it in two values so far, both accent functional borders
-(`global.border.accent.functional.<intent>.default`), which identify an alert, a badge, a button or a form control: in
-light mode the warning one is functional warning 600 / 700 / 800 (#765818 for the default), not 400 / 500 / 600 (#DFA700), the
-warning text's step as the error and success borders take theirs, so it reaches 3:1 on every surface level (it was 2.01:1 on
-level 1) and on the subtle warning fill (5.86:1), and in dark mode the error one is
-functional error 400 / 500 / 600 (#EE5248 for the default), not 600 / 700 / 800 (#C01619), so it reaches 3:1 on every dark surface
-level (it was 2.11:1 on level 3). It also departs in the warning text and icon on the page in light mode:
-`global.text.on-base.functional.warning.default` is warning 600 (#765818), the lightest step that
-passes 4.5:1 on every surface level, not 800 (#3E2D0C, 12.36:1, two steps darker than text needs),
-and `global.icon.on-base.functional.warning.default` aliases it, as the error and success icon roles
+does too. The design system departs from it in three values so far. Two are accent functional
+borders (`global.border.accent.functional.<intent>.default`), which identify an alert, a badge, a
+button or a form control: in light mode the warning one is functional warning 600 / 700 / 800
+(#765818 for the default), not 400 / 500 / 600 (#DFA700), the warning text's step as the error and
+success borders take theirs, so it reaches 3:1 on every surface level (it was 2.01:1 on level 1)
+and on the subtle warning fill (5.86:1), and in dark mode the error one is functional error
+400 / 500 / 600 (#EE5248 for the default), not 600 / 700 / 800 (#C01619), so it reaches 3:1 on
+every dark surface level (it was 2.11:1 on level 3). The third is `global.border.base.neutral.5`
+in dark mode: dark base 300 (#9C9C9C), not base 400 (#767676), so the border that identifies a text
+field reaches 3:1 on every dark surface level (it was 2.90:1 on level 3). It also departs in the
+warning text and icon on the page in light mode: `global.text.on-base.functional.warning.default`
+is warning 600 (#765818), the lightest step that passes 4.5:1 on every surface level, not 800
+(#3E2D0C, 12.36:1, two steps darker than text needs), and
+`global.icon.on-base.functional.warning.default` aliases it, as the error and success icon roles
 alias their text role, not warning 500 (#BD8107). The few colors the design system adds live apart,
 in `tokens/additions/`.
 

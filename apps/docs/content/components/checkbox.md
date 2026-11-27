@@ -45,6 +45,20 @@ the box, so the whole row is the target. The description adds help under the lab
 checking the box does, or why it cannot change. It is read by assistive technology as the
 control's description, after the name.
 
+## Required mark
+
+A form says once which of its fields carry a mark (**Marked fields**), the same for all its
+controls, and the checkbox draws its own from **Required**, as the Text field does. By default the form
+marks the optional ones: a checkbox that is not required ends its label with "(optional)", since its value waits for the form's submit button like a field's, a required one carries nothing, and the form says once, before its
+first field, "All fields are required unless marked optional." When most fields are optional, the
+form marks the required ones with "(required)" instead. A checkbox outside a submitted form, such as a table's row selection or a setting applied at once, carries no mark (**Marked fields** none). The rule is the
+[Forms foundation](/foundations/forms/guidelines)'s.
+
+The mark follows the label after a word space, at its size but regular and in the description's
+color. Android and Windows mark a required checkbox with an asterisk instead, in the error
+message's red; the web, iOS and macOS keep the words. In Figma the component draws the web's mark:
+**Mark** shows it and **Mark text** holds its words.
+
 ## Message
 
 With a severity, a message says what is wrong and what to do, under the description (or under
@@ -52,6 +66,12 @@ the label when there is none), aligned with the label, 6 px after it. It takes t
 weight of every form control's message, larger than the description, so the fix reads as easily
 as the option. Assistive technology reads it after the description. A checkbox shows only the
 error: a single choice has nothing to warn about or to confirm.
+
+By default the message starts with the severity icon, the Alert's `error` glyph at 16 px, named
+"Error", in the message's color: `severityIcon`, a choice the form makes once for all its controls
+([Forms foundation](/foundations/forms/guidelines)). With `none` there is no icon and the message's
+own words say the error. A checkbox never draws the icon after its box, where its label follows it: a
+form set to `after-control` shows it in the message.
 
 ## States
 

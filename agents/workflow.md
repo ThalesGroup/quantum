@@ -88,7 +88,8 @@ decision may replace provisional content without superseding anything.
    `pnpm tokens:build`.
 4. **Spec.** Anatomy, properties and options, states, layout, content rules, `examples[]` (add
    or change an example when the decision is visible), accessibility contract. Bump the minor
-   `version` (patch for a fix that changes no decision) and add a `changelog` entry naming the
+   `version` (patch for a fix that changes no decision; a breaking change of a spec at 1.0.0 or
+   later, the major: `agents/git.md` "Commits") and add a `changelog` entry naming the
    decision ids.
 5. **Web implementation.** CSS rules for every new option and state, template parts. CSS still
    reads only component tokens.

@@ -267,6 +267,8 @@ function applySizing(node, spec, parent) {
       warn('Could not size ' + node.name + ' (' + pair[0] + ' ' + want + '): ' + e.message);
     }
   });
+  // A maximum width holds in an auto layout frame or on its direct child: set once appended.
+  if (spec.maxWidth !== undefined && (inLayout || autoLayout)) setField(node, 'maxWidth', spec.maxWidth);
 }
 
 function drawText(spec) {
@@ -380,6 +382,8 @@ function drawFrame(spec, isRoot) {
     var align = spec.align || {};
     node.primaryAxisAlignItems = align.primary || 'MIN';
     node.counterAxisAlignItems = align.counter || 'MIN';
+    // A wrapping row: what does not fit goes to the next row (layoutWrap needs a HORIZONTAL layout).
+    if (spec.wrap) node.layoutWrap = 'WRAP';
     // CSS border-box: the border takes room inside the box, before the padding.
     try {
       node.strokesIncludedInLayout = true;
@@ -429,7 +433,7 @@ function finish(drawn) {
 }
 
 function drawFocusRing(node, ring) {
-  var offset = valueOf(ring.offset);
+  var offset = typeof ring.offset === 'number' ? ring.offset : valueOf(ring.offset);
   var radius = typeof node.topLeftRadius === 'number' ? node.topLeftRadius : 0;
   var frame = figma.createFrame();
   frame.name = 'focus-ring';
@@ -506,7 +510,7 @@ async function drawComponent(plan, progress) {
   }
   var set = figma.combineAsVariants(drawn.map(function (d) { return d.node; }), page);
   set.name = plan.name;
-  set.description = plan.description + ' Quantum ' + plan.id + ' ' + plan.version + '.';
+  set.description = plan.description + (plan.note ? ' ' + plan.note : '') + ' Quantum ' + plan.id + ' ' + plan.version + '.';
   set.setSharedPluginData('quantum', 'component', JSON.stringify({ id: plan.id, version: plan.version }));
   sets[plan.id] = set;
 

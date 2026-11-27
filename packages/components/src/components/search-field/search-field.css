@@ -5,32 +5,61 @@
  *
  * Rules:
  *  - Only --search-field-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (label, control with its search glyph, description, stacked); the native
+ *  - The root is a wrapper (label, control with its search glyph, description, message, stacked); the native
  *    search input is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
- *    spec order: default < hover < focus-visible < disabled.
+ *    spec order: default < hover < focus-visible < error < warning < success < disabled: hover only tints the
+ *    background, a severity recolors the border and the fill, which hover keeps, as the Text field's.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
 .ds-search-field {
   /* Defaults = size "medium", state "default". */
   --_control-background: var(--search-field-control-background-default);
+  --_control-background-hover: var(--search-field-control-background-hover);
   --_control-border-color: var(--search-field-control-border-color-default);
   --_control-color: var(--search-field-control-color-default);
   --_placeholder-color: var(--search-field-control-placeholder-color-default);
   --_label-color: var(--search-field-label-color-default);
+  --_mark-color: var(--search-field-mark-color-default);
   --_description-color: var(--search-field-description-color-default);
+  --_message-color: var(--search-field-message-color-error);
+  --_severity-icon-color: var(--search-field-severity-icon-color-error);
   --_min-height: var(--search-field-control-min-height-medium);
+  --_padding-block: var(--search-field-control-padding-block-medium);
+  --_severity-icon-size: var(--search-field-severity-icon-size-after-control-medium);
+  --_border-radius: var(--search-field-control-border-radius-medium);
   --_padding-inline: var(--search-field-control-padding-inline-medium);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-medium);
   --_icon-size: var(--search-field-icon-size-medium);
   --_icon-color: var(--search-field-icon-color-default);
+  --_icon-placeholder-color: var(--search-field-icon-placeholder-color-default);
   --_font-family: var(--search-field-control-typography-medium-font-family);
   --_font-size: var(--search-field-control-typography-medium-font-size);
   --_font-weight: var(--search-field-control-typography-medium-font-weight);
   --_line-height: var(--search-field-control-typography-medium-line-height);
   --_letter-spacing: var(--search-field-control-typography-medium-letter-spacing);
+  --_label-font-family: var(--search-field-label-typography-medium-font-family);
+  --_label-font-size: var(--search-field-label-typography-medium-font-size);
+  --_label-font-weight: var(--search-field-label-typography-medium-font-weight);
+  --_label-line-height: var(--search-field-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--search-field-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--search-field-mark-typography-medium-font-family);
+  --_mark-font-size: var(--search-field-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--search-field-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--search-field-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--search-field-mark-typography-medium-letter-spacing);
+  --_description-font-family: var(--search-field-description-typography-medium-font-family);
+  --_description-font-size: var(--search-field-description-typography-medium-font-size);
+  --_description-font-weight: var(--search-field-description-typography-medium-font-weight);
+  --_description-line-height: var(--search-field-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--search-field-description-typography-medium-letter-spacing);
+  --_message-font-family: var(--search-field-message-typography-medium-font-family);
+  --_message-font-size: var(--search-field-message-typography-medium-font-size);
+  --_message-font-weight: var(--search-field-message-typography-medium-font-weight);
+  --_message-line-height: var(--search-field-message-typography-medium-line-height);
+  --_message-letter-spacing: var(--search-field-message-typography-medium-letter-spacing);
 
   box-sizing: border-box;
   display: inline-flex;
@@ -45,6 +74,9 @@
 
 .ds-search-field[data-size="small"] {
   --_min-height: var(--search-field-control-min-height-small);
+  --_padding-block: var(--search-field-control-padding-block-small);
+  --_severity-icon-size: var(--search-field-severity-icon-size-after-control-small);
+  --_border-radius: var(--search-field-control-border-radius-small);
   --_padding-inline: var(--search-field-control-padding-inline-small);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-small);
   --_icon-size: var(--search-field-icon-size-small);
@@ -53,10 +85,33 @@
   --_font-weight: var(--search-field-control-typography-small-font-weight);
   --_line-height: var(--search-field-control-typography-small-line-height);
   --_letter-spacing: var(--search-field-control-typography-small-letter-spacing);
+  --_label-font-family: var(--search-field-label-typography-small-font-family);
+  --_label-font-size: var(--search-field-label-typography-small-font-size);
+  --_label-font-weight: var(--search-field-label-typography-small-font-weight);
+  --_label-line-height: var(--search-field-label-typography-small-line-height);
+  --_label-letter-spacing: var(--search-field-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--search-field-mark-typography-small-font-family);
+  --_mark-font-size: var(--search-field-mark-typography-small-font-size);
+  --_mark-font-weight: var(--search-field-mark-typography-small-font-weight);
+  --_mark-line-height: var(--search-field-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--search-field-mark-typography-small-letter-spacing);
+  --_description-font-family: var(--search-field-description-typography-small-font-family);
+  --_description-font-size: var(--search-field-description-typography-small-font-size);
+  --_description-font-weight: var(--search-field-description-typography-small-font-weight);
+  --_description-line-height: var(--search-field-description-typography-small-line-height);
+  --_description-letter-spacing: var(--search-field-description-typography-small-letter-spacing);
+  --_message-font-family: var(--search-field-message-typography-small-font-family);
+  --_message-font-size: var(--search-field-message-typography-small-font-size);
+  --_message-font-weight: var(--search-field-message-typography-small-font-weight);
+  --_message-line-height: var(--search-field-message-typography-small-line-height);
+  --_message-letter-spacing: var(--search-field-message-typography-small-letter-spacing);
 }
 
 .ds-search-field[data-size="large"] {
   --_min-height: var(--search-field-control-min-height-large);
+  --_padding-block: var(--search-field-control-padding-block-large);
+  --_severity-icon-size: var(--search-field-severity-icon-size-after-control-large);
+  --_border-radius: var(--search-field-control-border-radius-large);
   --_padding-inline: var(--search-field-control-padding-inline-large);
   --_padding-inline-start: var(--search-field-control-padding-inline-start-large);
   --_icon-size: var(--search-field-icon-size-large);
@@ -65,17 +120,48 @@
   --_font-weight: var(--search-field-control-typography-large-font-weight);
   --_line-height: var(--search-field-control-typography-large-line-height);
   --_letter-spacing: var(--search-field-control-typography-large-letter-spacing);
+  --_label-font-family: var(--search-field-label-typography-large-font-family);
+  --_label-font-size: var(--search-field-label-typography-large-font-size);
+  --_label-font-weight: var(--search-field-label-typography-large-font-weight);
+  --_label-line-height: var(--search-field-label-typography-large-line-height);
+  --_label-letter-spacing: var(--search-field-label-typography-large-letter-spacing);
+  --_mark-font-family: var(--search-field-mark-typography-large-font-family);
+  --_mark-font-size: var(--search-field-mark-typography-large-font-size);
+  --_mark-font-weight: var(--search-field-mark-typography-large-font-weight);
+  --_mark-line-height: var(--search-field-mark-typography-large-line-height);
+  --_mark-letter-spacing: var(--search-field-mark-typography-large-letter-spacing);
+  --_description-font-family: var(--search-field-description-typography-large-font-family);
+  --_description-font-size: var(--search-field-description-typography-large-font-size);
+  --_description-font-weight: var(--search-field-description-typography-large-font-weight);
+  --_description-line-height: var(--search-field-description-typography-large-line-height);
+  --_description-letter-spacing: var(--search-field-description-typography-large-letter-spacing);
+  --_message-font-family: var(--search-field-message-typography-large-font-family);
+  --_message-font-size: var(--search-field-message-typography-large-font-size);
+  --_message-font-weight: var(--search-field-message-typography-large-font-weight);
+  --_message-line-height: var(--search-field-message-typography-large-line-height);
+  --_message-letter-spacing: var(--search-field-message-typography-large-letter-spacing);
 }
 
 /* ---- Parts --------------------------------------------------------------- */
 
 .ds-search-field__label {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   color: var(--_label-color);
-  font-family: var(--search-field-label-typography-font-family);
-  font-size: var(--search-field-label-typography-font-size);
-  font-weight: var(--search-field-label-typography-font-weight);
-  line-height: var(--search-field-label-typography-line-height);
-  letter-spacing: var(--search-field-label-typography-letter-spacing);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
+}
+
+/* The required mark, inside the label after a word space (markedFields; decisions mark-style, mark-part). */
+.ds-search-field__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 
 /* The field wraps the input and the search glyph drawn over its start edge. */
@@ -92,7 +178,10 @@
   display: inline-grid;
   place-content: center;
   inline-size: var(--_icon-size);
-  color: var(--_icon-color);
+  /* The glyph follows the text beside it: the placeholder's color while the field is empty, the value's once
+     something is typed (decision leading-icon-color). The template always writes a placeholder attribute, empty
+     when there is none, so :placeholder-shown tells an empty field. */
+  color: var(--_icon-placeholder-color);
   font-family: var(--search-field-icon-font-family);
   font-size: var(--_icon-size);
   font-weight: var(--search-field-icon-font-weight);
@@ -111,22 +200,33 @@
   -webkit-font-smoothing: antialiased;
 }
 
+.ds-search-field:has(.ds-search-field__control:not(:placeholder-shown)) .ds-search-field__icon {
+  color: var(--_icon-color);
+}
+
 .ds-search-field__control {
   box-sizing: border-box;
   inline-size: 100%;
   min-height: var(--_min-height);
   margin: 0;
+  /* The block padding is a minimum, inside the value's line: the min-height sets the height until the text
+     outgrows it (decision grows-with-text-size). Chromium and WebKit clip an input's text to its line box, so
+     the line takes the padding and is never shorter than control.line-height times the text: the stacked
+     marks of Ấ, Ỗ, Ẫ stay whole, the text sits where a 1.2 line puts it (decision value-line-not-clipped). */
   padding-block: 0;
   padding-inline: var(--_padding-inline);
   padding-inline-start: var(--_padding-inline-start);
   border: var(--search-field-control-border-width) solid var(--_control-border-color);
-  border-radius: var(--search-field-control-border-radius);
+  border-radius: var(--_border-radius);
   background-color: var(--_control-background);
   color: var(--_control-color);
   font-family: var(--_font-family);
   font-size: var(--_font-size);
   font-weight: var(--_font-weight);
-  line-height: var(--_line-height);
+  line-height: max(
+    calc(var(--_line-height) * var(--_font-size) + 2 * var(--_padding-block)),
+    calc(var(--search-field-control-line-height) * var(--_font-size))
+  );
   letter-spacing: var(--_letter-spacing);
   appearance: none;
   -webkit-appearance: none;
@@ -141,28 +241,130 @@
 }
 
 .ds-search-field__description {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   margin: 0;
   color: var(--_description-color);
-  font-family: var(--search-field-description-typography-font-family);
-  font-size: var(--search-field-description-typography-font-size);
-  font-weight: var(--search-field-description-typography-font-weight);
-  line-height: var(--search-field-description-typography-line-height);
-  letter-spacing: var(--search-field-description-typography-letter-spacing);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
 }
 
+.ds-search-field__message {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
+  margin: 0;
+  color: var(--_message-color);
+  font-family: var(--_message-font-family);
+  font-size: var(--_message-font-size);
+  font-weight: var(--_message-font-weight);
+  line-height: var(--_message-line-height);
+  letter-spacing: var(--_message-letter-spacing);
+}
+
+/* ---- Severity icon ---------------------------------------------------------
+   One placement per form (severityIcon). After the control, the root becomes a two-column grid: the
+   control fills the first column and the icon follows it at the severity-icon gap; every other part
+   spans both. At the start of the message, the message becomes a row: the icon, then the text. */
+
+.ds-search-field[data-severity-icon="after-control"] {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--search-field-severity-icon-gap-after-control);
+  row-gap: var(--search-field-container-gap);
+  align-items: center;
+}
+.ds-search-field[data-severity-icon="after-control"] > * {
+  grid-column: 1 / -1;
+}
+.ds-search-field[data-severity-icon="after-control"] > .ds-search-field__field {
+  grid-column: 1;
+}
+.ds-search-field[data-severity-icon="after-control"] > .ds-search-field__severity-icon {
+  grid-column: 2;
+}
+
+.ds-search-field__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--_severity-icon-size);
+  block-size: var(--_severity-icon-size);
+  color: var(--_severity-icon-color);
+  font-family: var(--search-field-severity-icon-font-family);
+  font-size: var(--_severity-icon-size);
+  font-weight: var(--search-field-severity-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--search-field-severity-icon-fill),
+    "GRAD" var(--search-field-severity-icon-grade),
+    "opsz" var(--search-field-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_severity-icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-search-field__message:has(> .ds-search-field__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--search-field-severity-icon-gap-message);
+}
+/* In the message the icon is centred on the first line. */
+.ds-search-field__severity-icon[data-place="message"] {
+  --_severity-icon-size: var(--search-field-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+}
 
 /* ---- States -------------------------------------------------------------- */
 
 .ds-search-field:where([data-state="hover"]) .ds-search-field__control:not(:disabled),
 .ds-search-field:not([data-state]) .ds-search-field__control:hover:not(:disabled) {
-  --_control-background: var(--search-field-control-background-hover);
+  --_control-background: var(--_control-background-hover);
 }
 
+/* Severity: the control's border takes the severity's color, the message its text color, and the box the severity's subtle fill. Only the
+   error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
+.ds-search-field:where([data-state="error"], [data-severity="error"]) {
+  --_message-color: var(--search-field-message-color-error);
+  /* The error fill holds on hover: its hover step would bring the placeholder under 4.5:1. */
+  --_control-background: var(--search-field-control-background-error);
+  --_control-background-hover: var(--search-field-control-background-error);
+}
+.ds-search-field:where([data-state="error"], [data-severity="error"]) .ds-search-field__control,
+.ds-search-field__control[aria-invalid="true"] {
+  --_control-border-color: var(--search-field-control-border-color-error);
+}
 
+.ds-search-field:where([data-state="warning"], [data-severity="warning"]) {
+  --_message-color: var(--search-field-message-color-warning);
+  --_severity-icon-color: var(--search-field-severity-icon-color-warning);
+  /* The warning fill holds on hover, as the error's. */
+  --_control-background: var(--search-field-control-background-warning);
+  --_control-background-hover: var(--search-field-control-background-warning);
+}
+.ds-search-field:where([data-state="warning"], [data-severity="warning"]) .ds-search-field__control {
+  --_control-border-color: var(--search-field-control-border-color-warning);
+}
+
+.ds-search-field:where([data-state="success"], [data-severity="success"]) {
+  --_message-color: var(--search-field-message-color-success);
+  --_severity-icon-color: var(--search-field-severity-icon-color-success);
+  /* The success fill holds on hover, as the error's. */
+  --_control-background: var(--search-field-control-background-success);
+  --_control-background-hover: var(--search-field-control-background-success);
+}
+.ds-search-field:where([data-state="success"], [data-severity="success"]) .ds-search-field__control {
+  --_control-border-color: var(--search-field-control-border-color-success);
+}
 
 .ds-search-field:where([data-state="disabled"]),
 .ds-search-field:has(.ds-search-field__control:disabled) {
   --_label-color: var(--search-field-label-color-disabled);
+  --_mark-color: var(--search-field-mark-color-disabled);
   --_description-color: var(--search-field-description-color-disabled);
 }
 .ds-search-field:where([data-state="disabled"]) .ds-search-field__control,
@@ -176,16 +378,120 @@
 .ds-search-field:where([data-state="disabled"]),
 .ds-search-field:has(.ds-search-field__control:disabled) {
   --_icon-color: var(--search-field-icon-color-disabled);
+  --_icon-placeholder-color: var(--search-field-icon-placeholder-color-disabled);
 }
 
 .ds-search-field__control:focus {
   outline: none;
 }
 
-.ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control,
+/* Focus and a severity are outlines drawn flush over the border, as the Text field's: the offset is minus
+   the border width, so the border keeps its width and the text never moves. A severity at rest is a thin
+   line in its color; with focus it takes the focus width, still in the severity's color: each severity sets
+   its token for two states (control.outline-width.focus-visible-<severity>), which the focus rule reads. */
+.ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control:not(:disabled),
 .ds-search-field__control:focus-visible {
   outline: var(--search-field-control-outline-width-focus-visible) solid var(--search-field-control-outline-color-focus-visible);
-  outline-offset: var(--search-field-control-outline-offset-focus-visible);
+  outline-offset: calc(-1 * var(--search-field-control-border-width));
+}
+
+.ds-search-field:where([data-state="error"], [data-severity="error"]) .ds-search-field__control:not(:disabled),
+.ds-search-field__control[aria-invalid="true"]:not(:disabled) {
+  outline: var(--search-field-control-outline-width-error) solid var(--search-field-control-outline-color-error);
+  --_outline-width-focus: var(--search-field-control-outline-width-focus-visible-error);
+  outline-offset: calc(-1 * var(--search-field-control-border-width));
+}
+
+.ds-search-field:where([data-state="warning"], [data-severity="warning"]) .ds-search-field__control:not(:disabled) {
+  outline: var(--search-field-control-outline-width-warning) solid var(--search-field-control-outline-color-warning);
+  --_outline-width-focus: var(--search-field-control-outline-width-focus-visible-warning);
+  outline-offset: calc(-1 * var(--search-field-control-border-width));
+}
+
+.ds-search-field:where([data-state="success"], [data-severity="success"]) .ds-search-field__control:not(:disabled) {
+  outline: var(--search-field-control-outline-width-success) solid var(--search-field-control-outline-color-success);
+  --_outline-width-focus: var(--search-field-control-outline-width-focus-visible-success);
+  outline-offset: calc(-1 * var(--search-field-control-border-width));
+}
+
+.ds-search-field:where([data-state="error"], [data-state="warning"], [data-state="success"], [data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-search-field__control:not(:disabled):focus-visible,
+.ds-search-field:where([data-state="focus-visible"]):where([data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-search-field__control:not(:disabled),
+.ds-search-field:where([data-state="focus-visible"]) .ds-search-field__control[aria-invalid="true"]:not(:disabled),
+.ds-search-field__control[aria-invalid="true"]:not(:disabled):focus-visible {
+  outline-width: var(--_outline-width-focus);
+}
+
+
+/* ---- Label at the start (labelPlacement start) --------------------------------------------------------------
+   The form lays its fields out on one grid, [label] fit-content(14em) [control] minmax(0, 1fr), as a size
+   container (product CSS, Forms page). The field carries its row: a subgrid of that grid, the label in the first
+   column, ending against the control, its first line centred on the box; everything else in the second. It sets its own
+   column gap, which would otherwise be its part gap. Standalone (no grid around it), subgrid computes to none and
+   the field draws its own two columns, the label's as wide as the label (the form must be the grid and the size container). With the severity icon after the
+   control, both share the second column. Under 30 rem of the form's width the label stacks back above (Forms
+   decisions forms-label-column, -alignment, -column-gap, -column-stacking, forms-label-column-web). */
+
+.ds-search-field[data-label-placement="start"] {
+  display: inline-grid;
+  grid-column: 1 / -1;
+  grid-auto-columns: auto minmax(0, 1fr);
+  column-gap: var(--search-field-container-column-gap-start);
+  row-gap: var(--search-field-container-gap);
+  align-items: start;
+}
+.ds-search-field[data-label-placement="start"] > * {
+  grid-column: 2;
+}
+.ds-search-field[data-label-placement="start"] > .ds-search-field__label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  text-align: end;
+  margin-block-start: calc((var(--_min-height) - var(--_label-font-size) * var(--_label-line-height)) / 2);
+}
+.ds-search-field[data-label-placement="start"] > .ds-search-field__field {
+  grid-row: 1;
+}
+.ds-search-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-search-field__field {
+  grid-column: 2;
+  justify-self: start;
+  inline-size: calc(100% - var(--_severity-icon-size) - var(--search-field-severity-icon-gap-after-control));
+}
+.ds-search-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-search-field__severity-icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin-block-start: calc((var(--_min-height) - var(--_severity-icon-size)) / 2);
+}
+
+/* A subgrid of the form's grid only inside the form, a size container at least 30 rem wide: Chromium sizes a
+   subgrid with no grid around it to its min-content, so alone the field keeps its own two columns. */
+@container (width >= 30rem) {
+  .ds-search-field[data-label-placement="start"] {
+    grid-template-columns: subgrid;
+  }
+}
+
+@container (width < 30rem) {
+  .ds-search-field[data-label-placement="start"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-search-field[data-label-placement="start"] > *,
+  .ds-search-field[data-label-placement="start"][data-severity-icon="after-control"] > * {
+    grid-column: 1;
+  }
+  .ds-search-field[data-label-placement="start"] > .ds-search-field__label {
+    justify-self: start;
+    text-align: start;
+    margin-block-start: 0;
+  }
+  .ds-search-field[data-label-placement="start"] > .ds-search-field__field,
+  .ds-search-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-search-field__field,
+  .ds-search-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-search-field__severity-icon {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

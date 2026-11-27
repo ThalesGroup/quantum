@@ -31,12 +31,28 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 | Size | Use for |
 | --- | --- |
-| Small | Dense forms, toolbars and table rows: 32 px high with 14 px text. |
-| Medium | Forms, the default: 40 px high with 16 px text. |
-| Large | A prominent single field, such as a search page or a sign-in form: 48 px high with 20 px text. |
+| Small | Dense forms, toolbars and table rows: 28 px high with 14 px text. |
+| Medium | Forms, the default: 36 px high with 16 px text. |
+| Large | A prominent single field, such as a search page or a sign-in form: 44 px high with 16 px text. |
 
-Height, inline padding and text size scale together; the label, the description and the error
-message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
+Height, text size and inline padding are those of the Button of the same size, so a field and a
+button side by side line up and start their text at the same inset. The label is the size of the text in the box (14, 16 and 16 px), the message that says what to fix takes that size too, and the description is smaller (12, 12 and 14 px), so the help never competes with what it describes. The exact values are tokens (Tokens tab). Keep one size per form. A field without a size is medium, like every control with sizes, so fields and buttons that set none line up.
+
+When people raise the text size, the text grows and the box grows with it. The minimum height
+sets the height at the default size; once the text outgrows it, the box keeps the Button's minimum
+space above and below the line (3, 5 and 8 px), so the text never touches the border. Next to a
+Button of the same size the field is then a few pixels taller (2 to 10 px), since its line is 1.2
+times its text size and the Button's 1.0.
+
+When people raise the text size, the label, description and message wrap onto as many lines as
+they need, even inside a long word such as an email address, and are never cut; the value scrolls
+inside the box. Only the placeholder can be cut at the box's edge, so keep it a short example:
+**Smith**, not an instruction.
+
+On iOS and Android the sizes are drawn the same: each reaches the platform's touch target (44 by 44 pt,
+48 by 48 dp) with a hit region centered on the box, which may cover the field's own label and help
+text. Below a field without help text, keep the next control or label at least that far away: 8 pt or
+10 dp at small, 4 pt or 6 dp at medium, 2 dp at large (iOS and Android below).
 
 ## Label, description and placeholder
 
@@ -45,21 +61,83 @@ description, under the box, gives the format, an example or what the value is us
 placeholder is a hint inside the empty box, in a lighter color: it disappears as soon as people
 type, so it never replaces the label and never carries an instruction people must remember.
 
+When a severity shows, its message goes under the description, and the description stays: people
+fixing the value still see the format or the limit it gives, and assistive technology reads the
+description, then the message. Without a description, the message sits under the box. The
+message never takes the place of the description, as the
+[Forms foundation](/foundations/forms/guidelines) asks of every control.
+
+## Required mark
+
+A form says once which of its fields carry a mark (**Marked fields**), the same for all its
+controls, and each field draws its own from **Required**. By default the form marks the fewer
+fields, the optional ones: an optional field ends its label with "(optional)", a required one
+carries nothing, and the form says once, before its first field, "All fields are required unless
+marked optional." When most fields are optional, the form marks the required ones with
+"(required)" instead. A field outside a form, such as a table's filter or a setting applied at
+once, carries no mark. The rule is the [Forms foundation](/foundations/forms/guidelines)'s: words
+need no symbol explained, and a required field never says "(optional)".
+
+The mark follows the label after a word space, at the label's size but regular and in the
+description's color, so it reads as a qualifier of the name rather than part of it. Android and
+Windows mark each required field with an asterisk instead, in the error message's red, as their
+own guidelines ask; the web, iOS and macOS keep the words. In Figma the component draws the web's
+mark: **Mark** shows it and **Mark text** holds its words.
+
+## Leading icon
+
+A field can show an icon before its value (**Leading icon**), but none is the default and regular
+applications should not use one: a column of plain fields reads faster, and the label already says
+what is asked. The icon is there for designs that want a more precise rendering, such as a
+marketing page with a few fields. It is the Search field's glyph: the same size, 8 px from the border,
+in the placeholder's color while the field is empty and the value's once people type.
+
+The icon only illustrates. Whatever it suggests is said in text: the label reads **Amount in
+euros**, not **Amount** next to a euro glyph. It is never a button; an action next to the value
+(a location or a calendar picker) is an Icon button beside the field. When people raise the text
+size, the icon keeps its size and the value its start, so the value keeps its room when room is
+scarcest; the severity icon, which says something, grows with its text.
+
 ## States
 
 | State | How it happens | What changes |
 | --- | --- | --- |
 | Default | Resting. | An outlined box on the default surface. |
 | Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
-| Focus visible | The box has focus, from the keyboard or a pointer. | The shared focus ring appears outside the border. An editable field shows it however it was focused. |
-| Error | `severity` property set to error, after validation. | The border takes the error color and the message appears under the box, in the error color. The control is exposed as in error. |
-| Warning | `severity` property set to warning. | The border takes the warning color and the message appears under the box, in the warning color. No web state: the message says it. |
-| Success | `severity` property set to success. | The border takes the success color and the message appears under the box, in the success color. No web state: the message says it. |
-| Read-only | `readonly` property. | The box takes the level 1 surface; the value can still be focused, read and copied. |
+| Focus visible | The box has focus, from the keyboard or a pointer. | The focus color as a 2.4 px outline drawn flush over the border, which keeps its width, so the text does not move. An editable field shows it however it was focused. |
+| Error | `severity` property set to error, after validation. | The box takes the subtle error fill, on hover too; an outline in the error color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | The box takes the subtle warning fill, on hover too; an outline in the warning color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | The box takes the subtle success fill, on hover too; an outline in the success color is drawn flush over the border, 1.2 px at rest and 2.4 px with focus, and the message appears under the description (under the box when there is none), in the success color. No web state: the message says it. |
+| Read-only | `readonly` property. | The box takes the level 1 surface, which is close to the resting one, so say in the description that it is read-only; the value can still be focused, read and copied. |
 | Disabled | `disabled` property. | Box, value, label and description drop to the shared disabled colors; the field leaves the keyboard order. |
 
-A severity and hover combine (the hover tint under the severity border), and disabled wins over
+A severity and hover combine (the severity outline over the box; a severity keeps its fill on hover), and disabled wins over
 every other state: the states matrix shows what the tokens decide.
+
+### Severity icon
+
+A severity can also show an icon, set by `severityIcon`, a choice the form makes once for all its
+fields ([Forms foundation](/foundations/forms/guidelines)). By default (`message`) it starts the
+message, 16 px, and the box keeps its full width. With `after-control` it follows the box, at
+the size of the Button's icon of the same size (20, 24 and 24 px), and the box gives up the icon
+and an 8 px gap, so it no longer lines up with a full-width field or Button. With `none` there is
+no icon, and the message's own words say the severity: the component writes no severity word, so a
+project whose messages do not say it starts them with **Error: …** itself. The icon is never drawn inside the box,
+where browsers add their own controls. It draws the Alert's glyph of the severity (`error`,
+`warning`, `check_circle`), so the three differ by shape as well as color, in the on-base icon
+color of the severity, the color of its message (for a warning, warning 600 in light mode, 6.16:1
+at the lowest), and is named after it ("Error", "Warning", "Success"), so the description reads
+the severity and then the message.
+
+## Label at the start
+
+A form can put the labels of its fields in a column at the start (**Label placement** `start`),
+set once for all its field-like controls, never per field
+([Forms foundation](/foundations/forms/guidelines)). The text field then sits in the form's column: its
+label ends 12 px from the box, its first line centred on the box, and the description and the message stay
+under the box. When the form is narrower than 30 rem, the label goes back above. The form draws the
+column, sized to its longest label, at most 14 em: the Forms page gives the few lines of CSS it
+takes on the web. Alone, the text field draws its own two columns. In Figma the label stays above.
 
 ## Content
 
@@ -67,7 +145,7 @@ every other state: the states matrix shows what the tokens decide.
   no trailing punctuation.
 - The description gives the format or an example when it is not obvious.
 - The placeholder, when any, is a short example of a valid value (**name@example.com**).
-- The message of an error says what is wrong and how to fix it: **Enter an email address with an @.** A warning says what to check and a success what was confirmed; say the severity in the words, since a warning and a success have no state to expose it.
+- The message of an error is the instruction that fixes it, relying on the label it sits under without repeating the field's name: **Include an @, as in name@example.com** under **Email address**. A warning says what to check (**Check the domain: did you mean example.com?**) and a success what was confirmed (**This one is available**). With an icon, the message does not start with the severity's word, which the icon's name already says; without one, its words alone make the severity clear ([Forms foundation](/foundations/forms/guidelines)).
 
 ## Accessibility
 
@@ -96,18 +174,47 @@ This section explains the decisions behind it.
   [WAI tutorial: User notifications](https://www.w3.org/WAI/tutorials/forms/notifications/),
   [H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90)).
 - **The border is the boundary.** A field is identified by its box, so the border needs 3:1
-  against the surface in both modes. That is why it is the dark accent neutral border rather than
-  a light grey: the Figma library's light neutral borders fall under 3:1 in dark mode
+  against the surface in both modes. That is why it is the mid-grey base neutral 5 border
+  (`global.border.base.neutral.5`, 3.12:1 at the lowest in light mode and 4.80:1 in dark) rather
+  than the Figma library's light neutral borders, which fall under 3:1, and why its dark value is
+  lighter than the library's, which fell to 2.90:1 on the highest surface. It is lighter than the
+  border of the Select, Checkbox, Radio group and Switch, which keep the accent neutral border for now
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).
   Text needs 4.5:1 ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html));
   the error text passes on every surface since the Figma library's POC2 export moved it to a
   darker step (5.79:1 on the level 1 surface in light mode, the lowest).
-- **Visible focus.** Focus shows the shared ring outside the border
-  ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
-  [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)),
+  With a severity the box is filled with the subtle background of that severity, a solid color,
+  at rest and on hover alike: the value keeps at least 16.91:1 in light mode and 11.43:1 in dark
+  on it, the placeholder 5.42:1 and 6.48:1. Every severity border keeps at least 5.14:1 against its
+  fill (error 5.14:1, warning 5.86:1 since it reads warning 600 in light mode, success 6.16:1) and
+  3:1 against the surface, which is what identifies the field. The error hover step would bring the placeholder to 4.33:1 in light mode, so no severity fill changes
+  on hover.
+- **The leading icon is decoration.** It is hidden from assistive technology on every platform
+  and never names the field, so it needs no text alternative of its own; what it suggests must
+  already be in the label or the description, as for any image whose information is given by the
+  text next to it ([WCAG 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html),
+  [WAI tutorial: Decorative images](https://www.w3.org/WAI/tutorials/images/decorative/)).
+- **Text size.** The label and the help text are set from 12 to 16 px. WCAG sets no minimum text
+  size: it asks that text can be resized up to 200 % without loss of content or functionality, and
+  the box height is a minimum, so it grows with larger text and keeps a space above and below it
+  ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text)). These sizes
+  are under the large text size, so their colors keep the 4.5:1 above; the help text passes
+  everywhere, at 5.30:1 or more.
+- **Visible focus.** Focus shows a 2.4 px outline in the focus color, drawn flush over the border
+  ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)),
   and Tab reaches the control ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)).
-- **Target size.** Every size is at least 32 px high, above the 24 px minimum
+  The outline covers the border instead of sitting at a gap, so WCAG 2.4.13 Focus Appearance
+  (AAA, extra quality) is not claimed: the part over the border changes contrast only 2.21:1 in
+  light and 1.13:1 in dark. A field with a severity draws 1.2 px in the severity's color and,
+  with focus, 2.4 px in the same color: width tells them apart, including in forced colors, and
+  the message says why, never the color alone
+  ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
+  [F78](https://www.w3.org/WAI/WCAG22/Techniques/failures/F78)). The severity colors are the
+  accent functional borders, at least 3:1 on every surface level in both modes
+  ([WCAG 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus)).
+- **Target size.** Every size is at least 28 px high, above the 24 px minimum
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
+  On iOS and Android a hit region centered on the box reaches the platform's target (below).
 - **Input purpose.** A field collecting information about the person (name, email, phone,
   address) carries the matching autocomplete token, so browsers and assistive technology can
   identify its purpose and fill it
@@ -117,9 +224,28 @@ This section explains the decisions behind it.
   disabled field leaves the focus order and cannot be read by everyone. Prefer read-only when
   people may need the value
   ([APG: focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls)).
+  Say that the field is read-only in its label or description: its fill barely differs from an
+  editable one's ([Material 3: Read-only fields](https://m3.material.io/components/text-fields/guidelines#f572b53d-1a15-4ede-881a-80adbbdc24a5), [Windows: Make a text box read-only](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#make-a-text-box-read-only)).
 - **Motion.** The color transition is dropped when people ask their system for less motion
   ([WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html),
   a AAA criterion adopted as extra quality).
+- **Keyboard on every platform.** People reach, edit and leave the field from a keyboard,
+  physical or assistive, on every platform, and focus is never trapped in it: the platform's native
+  text control provides this, so the keys are the platform's
+  ([WCAG 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html), [WCAG 2.1.2 No Keyboard Trap](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent), [EN 301 549, 11.2.1.1.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70) for native software).
+  The keys are listed per platform below, from each platform's own documentation.
+- **Enter and the return key.** Enter never adds a line to this single-line field: it goes to the
+  form, which submits or runs the return key's action
+  ([HTML: implicit submission](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission),
+  [Jetpack Compose: line limits](https://developer.android.com/develop/ui/compose/text/user-input#line-limits),
+  [Windows: multi-line text box](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input)).
+  The return key's label (next, done…) depends on the field's place in the form, so the form sets it
+  through each platform's own setting: `enterkeyhint` on the web, passed through the template's
+  `attrs`; `returnKeyType` or `submitLabel` on iOS; the IME action on Android, where Next moves focus
+  by default ([HTML: enterkeyhint](https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint),
+  [UIKit: returnKeyType](https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype),
+  [SwiftUI: onSubmit](https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)),
+  [Jetpack Compose: keyboard options](https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options)).
 
 ### Web
 
@@ -135,30 +261,93 @@ This section explains the decisions behind it.
   explains why: it disappears when people start typing
   ([HTML: placeholder](https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder),
   [WAI tutorial: placeholder text](https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text)).
+- "(required)" is hidden from assistive technology with `aria-hidden="true"`, since the `required`
+  attribute already says it; "(optional)" stays in the `<label>`, so the name ends with it, as no
+  attribute says that a field is optional. The visible label still starts with the name
+  ([WCAG 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html),
+  [AccName 1.2: hidden nodes](https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced),
+  [MDN: aria-required](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples)).
 - The input type (`email`, `tel`, `url`) and the `autocomplete` token are passed through the
   template's extra attributes; they change the keyboard and the browser's help, not the look.
-- The focus ring uses `:focus-visible`, which browsers match whenever an editable field has
+- The focus outline uses `:focus-visible`, which browsers match whenever an editable field has
   focus ([MDN: :focus-visible](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible));
   the transition is switched off under
   [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+- Text sizes are px lengths today, so a browser's text-only size setting does not enlarge the
+  field's text, while zoom enlarges the text and the box together, which meets Resize Text
+  ([Technique G142](https://www.w3.org/WAI/WCAG22/Techniques/general/G142),
+  [MDN: absolute length units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units)).
+- Chromium and WebKit clip an input's text to its own line box, and the stacked marks of Vietnamese
+  letters (Ấ, Ỗ, Ẫ) reach past a 1.2 line: Ấ would read as Â, and text enlarged to 200 % would be
+  clipped, which fails WCAG 1.4.4 ([F69](https://www.w3.org/WAI/WCAG22/Techniques/failures/F69)). The input
+  takes its block padding into its line, never shorter than 1.5 times the text (`control.line-height`):
+  the box keeps its height and the text its place. The value stays 1.2 on the other platforms and in Figma.
 
 ### iOS
 
+- The recommended minimum text size is 11 pt; the description at 12 pt and the message at 14 pt are above it
+  ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - Show a hint to help communicate the purpose of a text field, and include a separate label
   because placeholder text disappears when people start typing
   ([Apple HIG: Text fields, best practices](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
-- A control needs a 44 by 44 pt hit region; the small and medium sizes fall under it today
- 
+- Apple's default control size on iOS is 44 by 44 pt, and every size has a hit region of at least
+  that: the small and medium boxes keep their drawn size and the hit region extends 8 and 4 pt above
+  and below them, over the field's own label and help text, which are not targets and keep their 6 pt;
+  keep other controls and the next field's label out of it. The large box is the hit region
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
+- With a hardware keyboard on iPadOS 15 and later, Tab moves focus among focus groups, and
+  iPadOS supports keyboard navigation in text fields and text views, unlike buttons. On iPhone,
+  Full Keyboard Access reaches the field: use the native text field and test with it on
+  ([Apple HIG: Focus and selection, iPadOS](https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS), [Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices), [Apple HIG: Accessibility, speech](https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech)).
+- The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
+  Apple asks that layouts adapt to all font sizes
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
+- The severity icon grows with the text it goes with, as Apple asks of meaningful icons; the
+  decorative leading icon and the inset before the value keep their size, so the value keeps its room
+  ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
-- Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under it
-  today. Expose an error with the error semantics so the message
-  is announced with the field
+- Interactive elements need a 48 by 48 dp touch target, and every size reaches it without growing:
+  the touch target extends 10, 6 or 2 dp above and below the box, over the field's own label and help
+  text, which keep their 6 dp; keep other controls and the next field's label out of it. Compose
+  extends a small clickable's touch target outside its bounds by itself: do not give the box
+  `minimumInteractiveComponentSize`, which would reserve that space and move the label. Expose an
+  error with the error semantics so the message is announced with the field
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Jetpack Compose: error semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components)).
+- A required field ends its label with an asterisk, explained once before the first field, and
+  the asterisk is part of its accessibility label; optional fields carry no mark
+  ([Material: text fields, required](https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145)).
+- With a hardware keyboard, a D-pad or Switch Access, focus navigation reaches the field in a
+  logical order and can always leave it. Tab moves focus to the next focus target; Shift+Tab moves back; the arrow keys and the
+  D-pad move the caret, then move focus at the start or end of the text; Shift with the arrows
+  selects, Ctrl+A selects all ([Orange: Android keyboard navigation](https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order), [Jetpack Compose: focus in text fields](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#one-dimensional-focus-traversal),
+  [two-dimensional traversal](https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#two-dimensional-focus-traversal), [Jetpack Compose: keyboard commands](https://developer.android.com/develop/ui/compose/touch-input/keyboard-input/commands)).
+
+### Desktop
+
+- On macOS, Full Keyboard Access lets people navigate to the field and use it with the keyboard
+  alone; Tab and Shift-Tab move through the key view loop and Command-A selects all the text.
+  Use the native control and keep the standard keyboard shortcuts ([Apple HIG: Keyboards, best practices](https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices),
+  [Apple HIG: standard keyboard shortcuts](https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts), [AppKit: nextKeyView](https://developer.apple.com/documentation/appkit/nsview/nextkeyview)).
+- On Windows, Tab follows the tab order, the order the controls are added, and skips a disabled
+  field; Shift+Tab goes back; in the field the arrow keys move the caret, since every key goes to
+  the text first ([Windows: keyboard accessibility](https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements), [Windows: keyboard interactions, navigation](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation), [text entry](https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry)).
+- On Windows, a required field ends its label with an asterisk, explained once before the first
+  field, and the asterisk stays in its accessible name: Microsoft asks that the UI Automation name
+  be the label as shown ("Full name*"), and the control also sets `IsRequiredForForm`
+  ([Windows: forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms),
+  [UI Automation: UIA_NamePropertyId](https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids),
+  [WinUI: IsRequiredForForm](https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform)).
+- macOS does not support Dynamic Type: there the field keeps its size, as text does
+  ([Apple HIG: Typography, macOS](https://developer.apple.com/design/human-interface-guidelines/typography#macOS)).
+- On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
+  with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
+- On Windows, the leading glyph keeps its size when text scales (`IsTextScaleFactorEnabled` set to
+  false), as Windows asks of font icons used for decoration; the severity icon scales with the text
+  ([Windows: don't scale font-based icons or symbols](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols)).
 
 ## Related
 

@@ -10,26 +10,51 @@
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
  *    spec order: default < hover < focus-visible < error < warning < success < readonly < disabled: hover only tints the
- *    background, a severity only recolors the border, so they combine as the token rule combines them.
+ *    background, a severity recolors the border and the fill, which hover keeps, so they combine as the token rule combines them.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
 .ds-textarea {
   /* Defaults = size "medium", state "default". */
   --_control-background: var(--textarea-control-background-default);
+  --_control-background-hover: var(--textarea-control-background-hover);
   --_control-border-color: var(--textarea-control-border-color-default);
   --_control-color: var(--textarea-control-color-default);
   --_placeholder-color: var(--textarea-control-placeholder-color-default);
   --_label-color: var(--textarea-label-color-default);
+  --_mark-color: var(--textarea-mark-color-default);
   --_description-color: var(--textarea-description-color-default);
   --_message-color: var(--textarea-message-color-error);
+  --_severity-icon-color: var(--textarea-severity-icon-color-error);
   --_min-height: var(--textarea-control-min-height-medium);
+  --_severity-icon-size: var(--textarea-severity-icon-size-after-control-medium);
+  --_border-radius: var(--textarea-control-border-radius-medium);
   --_padding-inline: var(--textarea-control-padding-inline-medium);
   --_font-family: var(--textarea-control-typography-medium-font-family);
   --_font-size: var(--textarea-control-typography-medium-font-size);
   --_font-weight: var(--textarea-control-typography-medium-font-weight);
   --_line-height: var(--textarea-control-typography-medium-line-height);
   --_letter-spacing: var(--textarea-control-typography-medium-letter-spacing);
+  --_label-font-family: var(--textarea-label-typography-medium-font-family);
+  --_label-font-size: var(--textarea-label-typography-medium-font-size);
+  --_label-font-weight: var(--textarea-label-typography-medium-font-weight);
+  --_label-line-height: var(--textarea-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--textarea-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--textarea-mark-typography-medium-font-family);
+  --_mark-font-size: var(--textarea-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--textarea-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--textarea-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--textarea-mark-typography-medium-letter-spacing);
+  --_description-font-family: var(--textarea-description-typography-medium-font-family);
+  --_description-font-size: var(--textarea-description-typography-medium-font-size);
+  --_description-font-weight: var(--textarea-description-typography-medium-font-weight);
+  --_description-line-height: var(--textarea-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--textarea-description-typography-medium-letter-spacing);
+  --_message-font-family: var(--textarea-message-typography-medium-font-family);
+  --_message-font-size: var(--textarea-message-typography-medium-font-size);
+  --_message-font-weight: var(--textarea-message-typography-medium-font-weight);
+  --_message-line-height: var(--textarea-message-typography-medium-line-height);
+  --_message-letter-spacing: var(--textarea-message-typography-medium-letter-spacing);
   --_padding-block: var(--textarea-control-padding-block-medium);
 
   box-sizing: border-box;
@@ -45,35 +70,90 @@
 
 .ds-textarea[data-size="small"] {
   --_min-height: var(--textarea-control-min-height-small);
+  --_severity-icon-size: var(--textarea-severity-icon-size-after-control-small);
+  --_border-radius: var(--textarea-control-border-radius-small);
   --_padding-inline: var(--textarea-control-padding-inline-small);
   --_font-family: var(--textarea-control-typography-small-font-family);
   --_font-size: var(--textarea-control-typography-small-font-size);
   --_font-weight: var(--textarea-control-typography-small-font-weight);
   --_line-height: var(--textarea-control-typography-small-line-height);
   --_letter-spacing: var(--textarea-control-typography-small-letter-spacing);
+  --_label-font-family: var(--textarea-label-typography-small-font-family);
+  --_label-font-size: var(--textarea-label-typography-small-font-size);
+  --_label-font-weight: var(--textarea-label-typography-small-font-weight);
+  --_label-line-height: var(--textarea-label-typography-small-line-height);
+  --_label-letter-spacing: var(--textarea-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--textarea-mark-typography-small-font-family);
+  --_mark-font-size: var(--textarea-mark-typography-small-font-size);
+  --_mark-font-weight: var(--textarea-mark-typography-small-font-weight);
+  --_mark-line-height: var(--textarea-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--textarea-mark-typography-small-letter-spacing);
+  --_description-font-family: var(--textarea-description-typography-small-font-family);
+  --_description-font-size: var(--textarea-description-typography-small-font-size);
+  --_description-font-weight: var(--textarea-description-typography-small-font-weight);
+  --_description-line-height: var(--textarea-description-typography-small-line-height);
+  --_description-letter-spacing: var(--textarea-description-typography-small-letter-spacing);
+  --_message-font-family: var(--textarea-message-typography-small-font-family);
+  --_message-font-size: var(--textarea-message-typography-small-font-size);
+  --_message-font-weight: var(--textarea-message-typography-small-font-weight);
+  --_message-line-height: var(--textarea-message-typography-small-line-height);
+  --_message-letter-spacing: var(--textarea-message-typography-small-letter-spacing);
   --_padding-block: var(--textarea-control-padding-block-small);
 }
 
 .ds-textarea[data-size="large"] {
   --_min-height: var(--textarea-control-min-height-large);
+  --_severity-icon-size: var(--textarea-severity-icon-size-after-control-large);
+  --_border-radius: var(--textarea-control-border-radius-large);
   --_padding-inline: var(--textarea-control-padding-inline-large);
   --_font-family: var(--textarea-control-typography-large-font-family);
   --_font-size: var(--textarea-control-typography-large-font-size);
   --_font-weight: var(--textarea-control-typography-large-font-weight);
   --_line-height: var(--textarea-control-typography-large-line-height);
   --_letter-spacing: var(--textarea-control-typography-large-letter-spacing);
+  --_label-font-family: var(--textarea-label-typography-large-font-family);
+  --_label-font-size: var(--textarea-label-typography-large-font-size);
+  --_label-font-weight: var(--textarea-label-typography-large-font-weight);
+  --_label-line-height: var(--textarea-label-typography-large-line-height);
+  --_label-letter-spacing: var(--textarea-label-typography-large-letter-spacing);
+  --_mark-font-family: var(--textarea-mark-typography-large-font-family);
+  --_mark-font-size: var(--textarea-mark-typography-large-font-size);
+  --_mark-font-weight: var(--textarea-mark-typography-large-font-weight);
+  --_mark-line-height: var(--textarea-mark-typography-large-line-height);
+  --_mark-letter-spacing: var(--textarea-mark-typography-large-letter-spacing);
+  --_description-font-family: var(--textarea-description-typography-large-font-family);
+  --_description-font-size: var(--textarea-description-typography-large-font-size);
+  --_description-font-weight: var(--textarea-description-typography-large-font-weight);
+  --_description-line-height: var(--textarea-description-typography-large-line-height);
+  --_description-letter-spacing: var(--textarea-description-typography-large-letter-spacing);
+  --_message-font-family: var(--textarea-message-typography-large-font-family);
+  --_message-font-size: var(--textarea-message-typography-large-font-size);
+  --_message-font-weight: var(--textarea-message-typography-large-font-weight);
+  --_message-line-height: var(--textarea-message-typography-large-line-height);
+  --_message-letter-spacing: var(--textarea-message-typography-large-letter-spacing);
   --_padding-block: var(--textarea-control-padding-block-large);
 }
 
 /* ---- Parts --------------------------------------------------------------- */
 
 .ds-textarea__label {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   color: var(--_label-color);
-  font-family: var(--textarea-label-typography-font-family);
-  font-size: var(--textarea-label-typography-font-size);
-  font-weight: var(--textarea-label-typography-font-weight);
-  line-height: var(--textarea-label-typography-line-height);
-  letter-spacing: var(--textarea-label-typography-letter-spacing);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
+}
+
+/* The required mark, inside the label after a word space (markedFields; decisions mark-style, mark-part). */
+.ds-textarea__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 
 .ds-textarea__control {
@@ -84,7 +164,7 @@
   padding-block: 0;
   padding-inline: var(--_padding-inline);
   border: var(--textarea-control-border-width) solid var(--_control-border-color);
-  border-radius: var(--textarea-control-border-radius);
+  border-radius: var(--_border-radius);
   background-color: var(--_control-background);
   color: var(--_control-color);
   font-family: var(--_font-family);
@@ -105,23 +185,25 @@
 }
 
 .ds-textarea__description {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   margin: 0;
   color: var(--_description-color);
-  font-family: var(--textarea-description-typography-font-family);
-  font-size: var(--textarea-description-typography-font-size);
-  font-weight: var(--textarea-description-typography-font-weight);
-  line-height: var(--textarea-description-typography-line-height);
-  letter-spacing: var(--textarea-description-typography-letter-spacing);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
 }
 
 .ds-textarea__message {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   margin: 0;
   color: var(--_message-color);
-  font-family: var(--textarea-message-typography-font-family);
-  font-size: var(--textarea-message-typography-font-size);
-  font-weight: var(--textarea-message-typography-font-weight);
-  line-height: var(--textarea-message-typography-line-height);
-  letter-spacing: var(--textarea-message-typography-letter-spacing);
+  font-family: var(--_message-font-family);
+  font-size: var(--_message-font-size);
+  font-weight: var(--_message-font-weight);
+  line-height: var(--_message-line-height);
+  letter-spacing: var(--_message-letter-spacing);
 }
 
 /* Multi-line: the block padding sets the inset of the first and last line; the control can be resized vertically. */
@@ -130,17 +212,83 @@
   resize: vertical;
 }
 
+/* ---- Severity icon ---------------------------------------------------------
+   One placement per form (severityIcon). After the control, the root becomes a two-column grid: the
+   control fills the first column and the icon follows it at the severity-icon gap; every other part
+   spans both. At the start of the message, the message becomes a row: the icon, then the text. */
+
+.ds-textarea[data-severity-icon="after-control"] {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--textarea-severity-icon-gap-after-control);
+  row-gap: var(--textarea-container-gap);
+  align-items: center;
+}
+.ds-textarea[data-severity-icon="after-control"] > * {
+  grid-column: 1 / -1;
+}
+.ds-textarea[data-severity-icon="after-control"] > .ds-textarea__control {
+  grid-column: 1;
+}
+.ds-textarea[data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+  grid-column: 2;
+}
+
+/* In a textarea the icon stays level with the first line rather than the middle of the box. */
+.ds-textarea[data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+  align-self: start;
+  margin-block-start: var(--_padding-block);
+}
+
+.ds-textarea__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--_severity-icon-size);
+  block-size: var(--_severity-icon-size);
+  color: var(--_severity-icon-color);
+  font-family: var(--textarea-severity-icon-font-family);
+  font-size: var(--_severity-icon-size);
+  font-weight: var(--textarea-severity-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--textarea-severity-icon-fill),
+    "GRAD" var(--textarea-severity-icon-grade),
+    "opsz" var(--textarea-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_severity-icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-textarea__message:has(> .ds-textarea__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--textarea-severity-icon-gap-message);
+}
+/* In the message the icon is centred on the first line. */
+.ds-textarea__severity-icon[data-place="message"] {
+  --_severity-icon-size: var(--textarea-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+}
+
 /* ---- States -------------------------------------------------------------- */
 
 .ds-textarea:where([data-state="hover"]) .ds-textarea__control:not(:disabled, [readonly]),
 .ds-textarea:not([data-state]) .ds-textarea__control:hover:not(:disabled, [readonly]) {
-  --_control-background: var(--textarea-control-background-hover);
+  --_control-background: var(--_control-background-hover);
 }
 
-/* Severity: the control's border takes the severity's color and the message its text color. Only the
+/* Severity: the control's border takes the severity's color, the message its text color, and the box the severity's subtle fill. Only the
    error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
 .ds-textarea:where([data-state="error"], [data-severity="error"]) {
   --_message-color: var(--textarea-message-color-error);
+  /* The error fill holds on hover: its hover step would bring the placeholder under 4.5:1. */
+  --_control-background: var(--textarea-control-background-error);
+  --_control-background-hover: var(--textarea-control-background-error);
 }
 .ds-textarea:where([data-state="error"], [data-severity="error"]) .ds-textarea__control,
 .ds-textarea__control[aria-invalid="true"] {
@@ -149,6 +297,10 @@
 
 .ds-textarea:where([data-state="warning"], [data-severity="warning"]) {
   --_message-color: var(--textarea-message-color-warning);
+  --_severity-icon-color: var(--textarea-severity-icon-color-warning);
+  /* The warning fill holds on hover, as the error's. */
+  --_control-background: var(--textarea-control-background-warning);
+  --_control-background-hover: var(--textarea-control-background-warning);
 }
 .ds-textarea:where([data-state="warning"], [data-severity="warning"]) .ds-textarea__control {
   --_control-border-color: var(--textarea-control-border-color-warning);
@@ -156,6 +308,10 @@
 
 .ds-textarea:where([data-state="success"], [data-severity="success"]) {
   --_message-color: var(--textarea-message-color-success);
+  --_severity-icon-color: var(--textarea-severity-icon-color-success);
+  /* The success fill holds on hover, as the error's. */
+  --_control-background: var(--textarea-control-background-success);
+  --_control-background-hover: var(--textarea-control-background-success);
 }
 .ds-textarea:where([data-state="success"], [data-severity="success"]) .ds-textarea__control {
   --_control-border-color: var(--textarea-control-border-color-success);
@@ -169,6 +325,7 @@
 .ds-textarea:where([data-state="disabled"]),
 .ds-textarea:has(.ds-textarea__control:disabled) {
   --_label-color: var(--textarea-label-color-disabled);
+  --_mark-color: var(--textarea-mark-color-disabled);
   --_description-color: var(--textarea-description-color-disabled);
 }
 .ds-textarea:where([data-state="disabled"]) .ds-textarea__control,
@@ -184,10 +341,113 @@
   outline: none;
 }
 
-.ds-textarea:where([data-state="focus-visible"]) .ds-textarea__control,
+/* Focus and a severity are outlines drawn flush over the border: the offset is minus the border
+   width, so the border keeps its width and the text never moves. A severity at rest is a thin line
+   in its color; with focus it takes the focus width, still in the severity's color: each severity sets
+   its token for two states (control.outline-width.focus-visible-<severity>), which the focus rule reads. */
+.ds-textarea:where([data-state="focus-visible"]) .ds-textarea__control:not(:disabled),
 .ds-textarea__control:focus-visible {
   outline: var(--textarea-control-outline-width-focus-visible) solid var(--textarea-control-outline-color-focus-visible);
-  outline-offset: var(--textarea-control-outline-offset-focus-visible);
+  outline-offset: calc(-1 * var(--textarea-control-border-width));
+}
+
+.ds-textarea:where([data-state="error"], [data-severity="error"]) .ds-textarea__control:not(:disabled),
+.ds-textarea__control[aria-invalid="true"]:not(:disabled) {
+  outline: var(--textarea-control-outline-width-error) solid var(--textarea-control-outline-color-error);
+  --_outline-width-focus: var(--textarea-control-outline-width-focus-visible-error);
+  outline-offset: calc(-1 * var(--textarea-control-border-width));
+}
+
+.ds-textarea:where([data-state="warning"], [data-severity="warning"]) .ds-textarea__control:not(:disabled) {
+  outline: var(--textarea-control-outline-width-warning) solid var(--textarea-control-outline-color-warning);
+  --_outline-width-focus: var(--textarea-control-outline-width-focus-visible-warning);
+  outline-offset: calc(-1 * var(--textarea-control-border-width));
+}
+
+.ds-textarea:where([data-state="success"], [data-severity="success"]) .ds-textarea__control:not(:disabled) {
+  outline: var(--textarea-control-outline-width-success) solid var(--textarea-control-outline-color-success);
+  --_outline-width-focus: var(--textarea-control-outline-width-focus-visible-success);
+  outline-offset: calc(-1 * var(--textarea-control-border-width));
+}
+
+.ds-textarea:where([data-state="error"], [data-state="warning"], [data-state="success"], [data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-textarea__control:not(:disabled):focus-visible,
+.ds-textarea:where([data-state="focus-visible"]):where([data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-textarea__control:not(:disabled),
+.ds-textarea:where([data-state="focus-visible"]) .ds-textarea__control[aria-invalid="true"]:not(:disabled),
+.ds-textarea__control[aria-invalid="true"]:not(:disabled):focus-visible {
+  outline-width: var(--_outline-width-focus);
+}
+
+
+/* ---- Label at the start (labelPlacement start) --------------------------------------------------------------
+   The form lays its fields out on one grid, [label] fit-content(14em) [control] minmax(0, 1fr), as a size
+   container (product CSS, Forms page). The field carries its row: a subgrid of that grid, the label in the first
+   column, ending against the control, its first line level with the first line of text, at any number of rows (Forms decision forms-label-multiline); everything else in the second. It sets its own
+   column gap, which would otherwise be its part gap. Standalone (no grid around it), subgrid computes to none and
+   the field draws its own two columns, the label's as wide as the label (the form must be the grid and the size container). With the severity icon after the
+   control, both share the second column. Under 30 rem of the form's width the label stacks back above (Forms
+   decisions forms-label-column, -alignment, -column-gap, -column-stacking, forms-label-column-web). */
+
+.ds-textarea[data-label-placement="start"] {
+  display: inline-grid;
+  grid-column: 1 / -1;
+  grid-auto-columns: auto minmax(0, 1fr);
+  column-gap: var(--textarea-container-column-gap-start);
+  row-gap: var(--textarea-container-gap);
+  align-items: start;
+}
+.ds-textarea[data-label-placement="start"] > * {
+  grid-column: 2;
+}
+.ds-textarea[data-label-placement="start"] > .ds-textarea__label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  text-align: end;
+  margin-block-start: calc(var(--_padding-block) + (var(--_line-height) * var(--_font-size) - var(--_label-font-size) * var(--_label-line-height)) / 2);
+}
+.ds-textarea[data-label-placement="start"] > .ds-textarea__control {
+  grid-row: 1;
+}
+.ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__control {
+  grid-column: 2;
+  justify-self: start;
+  inline-size: calc(100% - var(--_severity-icon-size) - var(--textarea-severity-icon-gap-after-control));
+}
+.ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin-block-start: var(--_padding-block);
+}
+
+/* A subgrid of the form's grid only inside the form, a size container at least 30 rem wide: Chromium sizes a
+   subgrid with no grid around it to its min-content, so alone the field keeps its own two columns. */
+@container (width >= 30rem) {
+  .ds-textarea[data-label-placement="start"] {
+    grid-template-columns: subgrid;
+  }
+}
+
+@container (width < 30rem) {
+  .ds-textarea[data-label-placement="start"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-textarea[data-label-placement="start"] > *,
+  .ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > * {
+    grid-column: 1;
+  }
+  .ds-textarea[data-label-placement="start"] > .ds-textarea__label {
+    justify-self: start;
+    text-align: start;
+    margin-block-start: 0;
+  }
+  .ds-textarea[data-label-placement="start"] > .ds-textarea__control,
+  .ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__control,
+  .ds-textarea[data-label-placement="start"][data-severity-icon="after-control"] > .ds-textarea__severity-icon {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

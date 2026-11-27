@@ -80,3 +80,26 @@ export function checkInputControl(spec) {
   }
   return problems;
 }
+
+/**
+ * The exact token paths a component must alias to follow a foundation: `required` (the exact
+ * paths of its `tokens`) minus what a rule of the foundation exempts that component from
+ * (`rules[].exempts`: `{ components, tokens }`).
+ */
+export function requiredTokensFor(spec, componentId, required) {
+  const exempt = new Set();
+  for (const r of spec.rules ?? []) {
+    if (r.exempts?.components?.includes(componentId)) for (const t of r.exempts.tokens ?? []) exempt.add(t);
+  }
+  return required.filter((p) => !exempt.has(p));
+}
+
+/** Problems of the exemptions of a foundation: a component that does not exist, a token the foundation does not own. */
+export function checkExemptions(spec, componentIds, owned) {
+  const problems = [];
+  for (const r of spec.rules ?? []) {
+    for (const c of r.exempts?.components ?? []) if (!componentIds.includes(c)) problems.push(`rule "${r.id}" exempts unknown component "${c}"`);
+    for (const t of r.exempts?.tokens ?? []) if (!owned.has(t)) problems.push(`rule "${r.id}" exempts ${t}, which the foundation does not own (tokens)`);
+  }
+  return problems;
+}

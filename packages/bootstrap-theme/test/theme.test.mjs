@@ -54,6 +54,7 @@ test('checkMapping reports unknown tokens, raw tokens, spec options and missing 
   button.options.size.huge = '.btn-xl';
   delete button.options.emphasis.ghost;
   button.states.pressed = ':active';
+  m.equivalences.find((e) => e.component === 'textarea').notMapped.icon = 'the Textarea has no icon part';
   m.equivalences = m.equivalences.filter((e) => e.component !== 'spinner');
   const problems = checkMapping(m, q).join('\n');
   assert.match(problems, /unknown Quantum token "global\.bg\.accent\.brand\.nope"/);
@@ -63,6 +64,7 @@ test('checkMapping reports unknown tokens, raw tokens, spec options and missing 
   assert.match(problems, /property size has no option "huge"/);
   assert.match(problems, /option emphasis=ghost is not mapped/);
   assert.match(problems, /spec has no state "pressed"/);
+  assert.match(problems, /equivalence textarea: notMapped names "icon", which is neither a part nor a property/);
   assert.match(problems, /component spinner has no equivalence entry/);
 });
 
@@ -119,10 +121,29 @@ test('dist/quantum.css: Quantum values where the brief expects them', () => {
   assert.equal(get(':root, :host', '--bs-border-width'), '0.6px');
   assert.match(get(':root, :host', '--bs-body-font-family'), /^Inter, /);
   assert.match(get(':root, :host', '--bs-font-mono'), /^"Fragment Mono", /);
-  assert.equal(get('.form-control', '--bs-control-min-height'), '2.5rem');
-  assert.equal(get('.form-control', '--bs-control-border-color'), 'light-dark(#313131, #CFCFCF)');
+  assert.equal(get('.form-control', '--bs-control-min-height'), '2.25rem');
+  assert.equal(get('.form-control', '--bs-control-border-color'), 'light-dark(#8C8C8C, #9C9C9C)');
   assert.equal(get('.card', '--bs-card-border-radius'), '0.5rem');
   assert.equal(get('.card', '--bs-card-bg'), 'light-dark(#F7F7F7, #212121)');
+});
+
+test('each input size keeps its Quantum height on a line that does not clip, with the largest space step', () => {
+  const rules = parseRules(themeCss());
+  const px = (v) => (v.endsWith('rem') ? parseFloat(v) * 16 : parseFloat(v));
+  const get = (selector, property) => rules.find((r) => r.selector === selector && r.declarations.some((d) => d.property === property))?.declarations.find((d) => d.property === property).value;
+  const border = px(get('.form-control', '--bs-control-border-width'));
+  const shortest = Number(q.light.get('text-field.control.line-height'));
+  const steps = [...q.tokens.values()].filter((t) => /^space\.\d+$/.test(t.path)).map((t) => q.light.get(t.path)).filter((v) => v.unit === 'px').map((v) => v.value).sort((a, b) => a - b);
+  for (const [selector, size] of [['.form-control-sm', 'small'], ['.form-control', 'medium'], ['.form-control-lg', 'large']]) {
+    const lineHeight = Number(get(selector, '--bs-control-line-height'));
+    const line = px(get(selector, '--bs-control-font-size')) * lineHeight;
+    const padding = px(get(selector, '--bs-control-padding-y'));
+    const minHeight = px(get(selector, '--bs-control-min-height'));
+    assert.ok(lineHeight >= shortest, `${selector}: line ${lineHeight} is at least text-field.control.line-height (${shortest})`);
+    assert.ok(line + 2 * padding + 2 * border <= minHeight + 1e-9, `${selector}: ${line} + 2 x ${padding} + borders fits the ${size} min-height ${minHeight}`);
+    const next = steps.find((s) => s > padding);
+    assert.ok(line + 2 * next + 2 * border > minHeight, `${selector}: the next space step (${next}px) would outgrow ${minHeight}px`);
+  }
 });
 
 test('dist/quantum.css uses the theming API only, each value traced to its source', () => {
@@ -154,7 +175,7 @@ test('dist/quantum.scss passes the maps to Bootstrap and compiles with sass', (t
   const r = spawnSync(sass, ['--load-path=node_modules', '--no-source-map', 'dist/quantum.scss'], { cwd: PKG, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /--primary-bg: light-dark\(#175DD6, #9EE7FA\)/);
-  assert.match(r.stdout, /--control-min-height: 2\.5rem/);
+  assert.match(r.stdout, /--control-min-height: 2\.25rem/);
 });
 
 test('dist/demo.html is self-contained apart from the webfonts', () => {

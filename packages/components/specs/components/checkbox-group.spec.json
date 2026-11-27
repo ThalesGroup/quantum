@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.7.2",
+  "version": "0.9.0",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -24,6 +24,20 @@
       "role": "label",
       "required": true,
       "description": "Text naming the choice. Provides the group's accessible name."
+    },
+    {
+      "id": "mark",
+      "role": "indicator",
+      "required": false,
+      "parent": "legend",
+      "description": "The required mark of the Forms rule, at the end of the legend after a word space: \"(optional)\" on a group that is not required when the form marks optional fields, \"(required)\" on a required group when it marks required fields (markedFields), nothing otherwise. The legend's size, regular, the description's color (Forms decision forms-mark-style). On the web \"(optional)\" is part of the group's name, and \"(required)\" is too: no state says that a group is required (Forms decision forms-required-group)."
+    },
+    {
+      "id": "asterisk",
+      "role": "indicator",
+      "required": false,
+      "parent": "legend",
+      "description": "On Android and Windows only, in place of the mark: an asterisk at the end of the legend of a required group, 4 px after it (2 px in small), at the legend's size and weight (legend.typography), in the error message's red (Forms decision forms-asterisk-style), kept in the accessible name. Never drawn on the web, iOS and macOS, so neither the reference rendering nor the Figma component draws it."
     },
     {
       "id": "description",
@@ -104,6 +118,15 @@
         "error"
       ],
       "description": "Text saying what is wrong and what to do, associated with every option as a description. Shown only with a severity."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\"): error, the Alert's glyph. At the start of the message, before its text, when severityIcon is message (or after-control, which a choice control draws in the message); never after the box, where the label or the options follow it."
     }
   ],
   "properties": [
@@ -140,7 +163,9 @@
         "option-description",
         "legend",
         "description",
-        "message"
+        "message",
+        "mark",
+        "asterisk"
       ],
       "options": [
         {
@@ -193,11 +218,57 @@
       "description": "What is wrong and what to do, shown with a severity. Replaces errorMessage."
     },
     {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes, a rule of the form set once for all its controls (Forms decision forms-severity-icon-placement). A choice control offers message and none: its label or options follow the box, so a form set to after-control shows its icon in the message.",
+      "affects": [
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px (default; also what after-control draws here)."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
+        }
+      ]
+    },
+    {
+      "id": "markedFields",
+      "name": "Marked fields",
+      "type": "enum",
+      "default": "optional",
+      "description": "Which fields carry the required mark. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-marked-fields); the field draws its mark from its own required.",
+      "affects": [
+        "mark",
+        "asterisk"
+      ],
+      "options": [
+        {
+          "value": "optional",
+          "description": "\"(optional)\" on the group when it is not required, nothing when it is (default). The form says once, before its first field, \"All fields are required unless marked optional.\"."
+        },
+        {
+          "value": "required",
+          "description": "\"(required)\" on the group when it is required, nothing when it is not: for a form where most fields are optional."
+        },
+        {
+          "value": "none",
+          "description": "No mark: a group outside a form, such as a table's filter or a setting applied at once."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "At least one option must be checked. No box carries the native requirement, which would require that very box; the product checks the group when the form is submitted and says so in the message (Choose at least one)."
+      "description": "At least one option must be checked. No box carries the native requirement, which would require that very box; the product checks the group when the form is submitted and says so in the message (Choose at least one). It draws the mark that markedFields asks for (\"(required)\" on a required group, \"(optional)\" on one that is not), and the asterisk on Android and Windows."
     },
     {
       "id": "severity",
@@ -489,6 +560,45 @@
           "wcag:2.3.3",
           "mdn-reduced-motion"
         ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\") and is part of the description: at the start of the group's message it is inside the message, which every option's aria-describedby references. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 (light) and 5.30:1 (dark)).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The mark comes after the legend's words, so the visible legend starts with the group's name, and so does the accessible name when it ends with \"(optional)\": speech input by the legend works.",
+        "refs": [
+          "wcag:2.5.3"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, the Checkbox group draws the asterisk of a required group in the error text color whenever markedFields is optional or required, none drawing no mark; an optional group carries none.",
+        "refs": [
+          "material-text-fields-required"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, the asterisk stays in the Checkbox group's UI Automation Name: the Name is the legend as shown (\"Notify me by*\").",
+        "refs": [
+          "uia-name-property"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -656,6 +766,21 @@
         "id": "html-aam-fieldset",
         "title": "HTML-AAM: fieldset maps to the group role",
         "url": "https://www.w3.org/TR/html-aam-1.0/#el-fieldset"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "uia-name-property",
+        "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
       }
     ]
   },
@@ -832,6 +957,27 @@
           }
         ]
       }
+    },
+    {
+      "id": "medium-marked-required",
+      "name": "Medium, in a form that marks required fields",
+      "description": "Most fields of the form are optional, so the form marks the required ones (markedFields required): \"(required)\" after the legend, part of the group's name: no state says that a group is required.",
+      "props": {
+        "size": "medium",
+        "label": "Notify me by",
+        "required": true,
+        "markedFields": "required",
+        "options": [
+          {
+            "label": "Email",
+            "value": "email"
+          },
+          {
+            "label": "Text message",
+            "value": "sms"
+          }
+        ]
+      }
     }
   ],
   "tokens": {
@@ -859,7 +1005,9 @@
         "control": ".ds-checkbox-group__control",
         "option-label": ".ds-checkbox-group__option-label",
         "option-description": ".ds-checkbox-group__option-description",
-        "message": ".ds-checkbox-group__message"
+        "message": ".ds-checkbox-group__message",
+        "severity-icon": ".ds-checkbox-group__severity-icon",
+        "mark": ".ds-checkbox-group__mark"
       }
     }
   },
@@ -868,6 +1016,39 @@
     "radio-group"
   ],
   "decisions": [
+    {
+      "id": "mark-part",
+      "date": "2026-11-27",
+      "version": "0.9.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Checkbox group draws the required mark of the Forms rule: the property markedFields (optional by default, required, none), set once per form to the same value for all its controls; the part mark at the end of its legend after a word space, \"(optional)\" on a group that is not required when the form marks optional fields, \"(required)\" on a required one when it marks required fields, nothing with none; the legend's size, regular, in the description's color (checkbox-group.mark.*, its color aliasing form.mark.color.default); on the web \"(required)\" stays in the group's name, not hidden, as no state says that a group is required (forms-required-group), and \"(optional)\" is part of it too. The part asterisk, on Android and Windows only, ends the legend of a required group in the error text color (checkbox-group.asterisk.*, aliasing form.asterisk.color.default), 4 px after it (2 px in small), kept in the Windows UI Automation Name. The Figma component draws the web specification: a BOOLEAN Mark (on) and a TEXT Mark text, markedFields kept out of the variants (blueprint option fixed); the asterisk is not drawn.",
+      "rationale": "Applies the Forms decisions forms-marked-fields, forms-mark-style, forms-asterisk-style, forms-required-windows-name and forms-required-group (#103 step 16, #105 steps 4 and 2b, moved here by #105 step 12), as the field family's mark-part does. Built in #103 step 31.",
+      "tokens": [
+        "checkbox-group.mark.*",
+        "checkbox-group.asterisk.*"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "severity-icon",
+      "date": "2026-11-27",
+      "version": "0.8.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Checkbox group gets the severity icon (part severity-icon) and the property severityIcon, as the Forms foundation decided for every form control that shows a severity: at the start of the message only: it offers message (default) and none, and draws a form's after-control in the message, its label or options following the box. Its size: 16 px (size.2), space.4 before the text. Its glyph is the Alert's, error, named \"Error\"; its color the on-base icon role of the severity, checkbox-group.severity-icon.color.* aliasing form.severity-icon.color.*. Drawn with the Text field's rules and Figma helpers.",
+      "rationale": "Applies the Forms decisions forms-severity-icon-placement, forms-severity-icon-size, forms-severity-icon-color and forms-severity-icon-glyphs (#103 step 12 and #105 steps 6 and 12): the Select, the Checkbox and the groups take the field family's severity icon, built in #103 step 30.",
+      "tokens": [
+        "checkbox-group.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.1.1"
+      ]
+    },
     {
       "id": "checked-error-fill",
       "date": "2026-11-27",
@@ -1042,6 +1223,16 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.0",
+      "date": "2026-11-27",
+      "note": "Decision mark-part (#103 step 31; Forms forms-marked-fields, forms-mark-style, forms-asterisk-style, forms-required-windows-name, forms-required-group): property markedFields (optional by default), parts mark and asterisk in the legend, tokens checkbox-group.mark.* and checkbox-group.asterisk.* (colors aliasing form.mark.color.default and form.asterisk.color.default), the mark in the template (\"(required)\" not hidden, part of the group's name) and the CSS, a web, an Android and a Windows guideline, the Figma Mark and Mark text with markedFields fixed. New example: Medium, in a form that marks required fields. The mark is 12.09:1 at the lowest in light mode and 6.65:1 in dark mode (forms-mark-style). A group that is not required now shows \"(optional)\" by default; a control outside a form sets markedFields none (the docs site's controls and the dashboard and calendar screens do)."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-27",
+      "note": "Decision severity-icon (#103 step 30; Forms forms-severity-icon-placement, -size, -color, -glyphs): part severity-icon and property severityIcon (message, none; message by default), tokens checkbox-group.severity-icon.* (font, size, gap, color aliasing form.severity-icon.color.*), the icon in the template (named after the severity, role img) and the CSS, a web guideline on its name; the Figma blueprint draws it with the Text field's helpers. An error now starts its message with the icon by default. Icon on the surface at the lowest: error 5.81:1 (light) and 5.30:1 (dark)."
+    },
     {
       "version": "0.7.2",
       "date": "2026-11-27",

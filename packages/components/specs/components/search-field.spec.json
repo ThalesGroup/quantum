@@ -2,11 +2,11 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.2.0",
+  "version": "0.23.0",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
-  "description": "A search field collects a search term: a query for a whole site, a filter for a list. It is a Text field with a search glyph at its start, exposed to assistive technology as a search box, and whose clear control the platform provides. It has a visible label, which may be the only word next to it (Search), and an optional description; it has no error state: a search that finds nothing is reported by the results, not by the field.",
+  "description": "A search field collects a search term: a query for a whole site, a filter for a list. It is a Text field with a search glyph at its start, exposed to assistive technology as a search box, and whose clear control the platform provides. It has a visible label, which may be the only word next to it (Search), an optional description and, when the query is checked, the Text field's severities with a message; a search that finds nothing is reported by the results, not by the field.",
   "tags": [
     "form",
     "input",
@@ -18,13 +18,27 @@
       "id": "container",
       "role": "container",
       "required": true,
-      "description": "Root. Stacks the label, the control, the description and the error message; carries the size and the forced state."
+      "description": "Root. Stacks the label, the control, the description and the message; carries the size and the forced state."
     },
     {
       "id": "label",
       "role": "label",
       "required": true,
       "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
+    },
+    {
+      "id": "mark",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "The required mark of the Forms rule, at the end of the label after a word space: \"(optional)\" on a field that is not required when the form marks optional fields, \"(required)\" on a required field when it marks required fields (markedFields), nothing otherwise. The label's size, regular, the description's color (decision mark-style). On the web \"(required)\" is hidden from assistive technology, the required attribute saying it, and \"(optional)\" is part of the name."
+    },
+    {
+      "id": "asterisk",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "On Android and Windows only, in place of the mark: an asterisk at the end of the label of a required field, 4 px after it (2 px in small), at the label's size and weight (label.typography), in the error message's red (decision asterisk-style), kept in the accessible name. Never drawn on the web, iOS and macOS, so neither the reference rendering nor the Figma component draws it."
     },
     {
       "id": "field",
@@ -52,6 +66,28 @@
       "role": "description",
       "required": false,
       "description": "Optional help text under the control (format, example, consequence), associated with it as its description."
+    },
+    {
+      "id": "message",
+      "role": "errormessage",
+      "required": false,
+      "visibleIn": [
+        "error",
+        "warning",
+        "success"
+      ],
+      "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), under the description (under the control when there is none), associated with the control as a description, after it. Shown only with a severity; the description stays."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error",
+        "warning",
+        "success"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\", \"Warning\", \"Success\"): error, warning or check_circle, the Alert's glyphs. Placed by severityIcon: after the control, centred on it, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements."
     }
   ],
   "properties": [
@@ -60,23 +96,29 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, inline padding and text size scale together; label, description and error keep their size.",
+      "description": "Control height, value text and inline padding take the height, the text size and the inline padding of the Button of the same size; the label takes the text size of the value; the description takes the helper sizes.",
       "affects": [
         "control",
-        "icon"
+        "icon",
+        "label",
+        "mark",
+        "asterisk",
+        "description",
+        "message",
+        "severity-icon"
       ],
       "options": [
         {
           "value": "small",
-          "description": "Dense forms, toolbars, table rows (32 px high)."
+          "description": "Dense forms, toolbars, table rows (28 px high)."
         },
         {
           "value": "medium",
-          "description": "Default (40 px)."
+          "description": "Default (36 px)."
         },
         {
           "value": "large",
-          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+          "description": "Prominent, single fields: a search page, a sign-in form (44 px)."
         }
       ]
     },
@@ -109,18 +151,127 @@
       "description": "Help text: expected format, example, or what the value is used for."
     },
     {
+      "id": "message",
+      "name": "Message",
+      "type": "string",
+      "bindsTo": "message",
+      "description": "What the severity means: what is wrong with the query and how to fix it, what to check, or what was confirmed. Shown with a severity, in the color of that severity."
+    },
+    {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-severity-icon-placement).",
+      "affects": [
+        "control",
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px; the control keeps its full width (default)."
+        },
+        {
+          "value": "after-control",
+          "description": "After the control, centred on it, at the size of the Button's icon of the same size; the control gives up the icon and the gap."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
+        }
+      ]
+    },
+    {
+      "id": "labelPlacement",
+      "name": "Label placement",
+      "type": "enum",
+      "default": "above",
+      "description": "Where the label sits. A rule of the form, not of the field: a form sets it once, to the same value, for all its field-like controls, and sizes one label column for them (Forms decision forms-label-column).",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "above",
+          "description": "Above the control (default)."
+        },
+        {
+          "value": "start",
+          "description": "In the form's label column, at the start: the label ends form.gap.label-column (12 px) from the control, its first line centred on the box; the description and the message stay under the control. The column stacks back above when the form is narrower than 30 rem."
+        }
+      ]
+    },
+    {
+      "id": "markedFields",
+      "name": "Marked fields",
+      "type": "enum",
+      "default": "none",
+      "description": "Which fields carry the required mark. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-marked-fields); the field draws its mark from its own required.",
+      "affects": [
+        "mark",
+        "asterisk"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No mark (default): a search field usually stands alone, outside a form."
+        },
+        {
+          "value": "optional",
+          "description": "\"(optional)\" on the field when it is not required, nothing when it is: in a form that marks its optional fields."
+        },
+        {
+          "value": "required",
+          "description": "\"(required)\" on the field when it is required, nothing when it is not: in a form where most fields are optional."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "The field must be filled to submit the form."
+      "description": "The field must be filled to submit the form. It draws the mark that markedFields asks for (\"(required)\" on a required field, \"(optional)\" on one that is not), and the asterisk on Android and Windows."
+    },
+    {
+      "id": "severity",
+      "name": "Severity",
+      "type": "enum",
+      "default": "none",
+      "description": "What the check of the query found: error, warning and success are the three severities of a form control (Forms decision forms-severity), the Text field's; information that holds before any check is the description's job. A search that finds nothing is reported by the results, not by a severity.",
+      "affects": [
+        "control",
+        "message",
+        "severity-icon"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No severity: nothing was checked, or there is nothing to say (default)."
+        },
+        {
+          "value": "error",
+          "description": "The value is not accepted: the border takes the error color, the message says what is wrong and how to fix it, and the control is exposed as in error (aria-invalid on the web)."
+        },
+        {
+          "value": "warning",
+          "description": "The value is accepted but deserves attention: the border takes the warning color and the message says what to check. No web state: said in the message text."
+        },
+        {
+          "value": "success",
+          "description": "The value was checked and confirmed: the border takes the success color and the message says what was confirmed. No web state: said in the message text."
+        }
+      ]
     },
     {
       "id": "disabled",
       "name": "Disabled",
       "type": "boolean",
       "default": false,
-      "description": "Non-interactive and skipped by the keyboard; the value stays visible. Prefer read-only when people may need to read or copy the value."
+      "description": "Non-interactive and skipped by the keyboard; the value stays visible. The Search field has no read-only state."
     }
   ],
   "states": [
@@ -140,7 +291,28 @@
     {
       "id": "focus-visible",
       "trigger": "interaction",
-      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the focus color as a 2.4 px outline drawn flush over its border however it was focused; the border and the text do not move."
+    },
+    {
+      "id": "error",
+      "trigger": "property",
+      "property": "severity",
+      "value": "error",
+      "description": "Severity error: the box is filled with the subtle error background, on hover too, an outline in the error color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the error color."
+    },
+    {
+      "id": "warning",
+      "trigger": "property",
+      "property": "severity",
+      "value": "warning",
+      "description": "Severity warning: the box is filled with the subtle warning background, on hover too, an outline in the warning color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the warning color. No web state beyond the data attribute."
+    },
+    {
+      "id": "success",
+      "trigger": "property",
+      "property": "severity",
+      "value": "success",
+      "description": "Severity success: the box is filled with the subtle success background, on hover too, an outline in the success color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the success color. No web state beyond the data attribute."
     },
     {
       "id": "disabled",
@@ -156,15 +328,18 @@
     "wrap": false,
     "sizing": "fill",
     "notes": [
-      "Label, control, description and error message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
-      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change.",
-      "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start."
+      "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
+      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
+      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap.",
+      "The search glyph sits over the start edge of the control, which reserves room for it with padding-inline-start.",
+      "The control keeps control.padding-block (3 / 5 / 8 px, the Button's) above and below its line as a minimum: at the default text size the minimum height sets the height; when people raise the text size and the line outgrows it, the box grows and keeps that space (decision grows-with-text-size).",
+      "With labelPlacement start, the Search field is a row of the form's grid (a subgrid on the web): the label in the first column, as wide as the form's longest label up to 14 em, aligned to its end; the control, description and message in the second; the label's first line centred on the box. Standalone, it draws its own two columns, the label's as wide as the label. Under 30 rem of the form's width (a size container) the label stacks back above. The form's grid is the product's (the Forms page shows it)."
     ]
   },
   "accessibility": {
     "ariaRole": "searchbox",
     "name": {
-      "text": "Computed from the label, associated with the control as its label element on the web. The description is exposed as the accessible description; the placeholder is exposed as a placeholder, not as the name.",
+      "text": "Computed from the label, associated with the control as its label element on the web. The description and the message are exposed as the accessible description, not as part of the name; the placeholder is exposed as a placeholder, not as the name.",
       "refs": [
         "wai-labels",
         "html-aam-name-input",
@@ -187,18 +362,183 @@
       },
       {
         "key": "Escape",
-        "action": "In browsers that provide a clear control, clears the term.",
+        "action": "Clears the term in Chrome, as the clear cross the browser may draw does; other browsers keep the term.",
         "refs": [
-          "mdn-input-search"
+          "mdn-input-search-escape"
         ],
         "platforms": [
           "web"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "Runs the search: a search form whose only field is this one submits on Enter, with or without a submit button (implicit submission).",
+        "refs": [
+          "html-implicit-submission"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "On iPadOS 15 and later with a hardware keyboard, moves focus among focus groups, the field included: iPadOS supports keyboard navigation in text fields and text views.",
+        "refs": [
+          "hig-focus-ipados",
+          "hig-keyboards-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "key": "Return",
+        "action": "Runs the search: the keyboard's Search button begins it.",
+        "refs": [
+          "uikit-search-button-clicked",
+          "uikit-return-key-type-cases"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "Moves focus to the next focus target.",
+        "refs": [
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Shift+Tab",
+        "action": "Moves focus to the previous focus target.",
+        "refs": [
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Arrow keys, D-pad",
+        "action": "Move the caret; at the start or the end of the text (on the first or the last line) they move focus to the adjacent focus target.",
+        "refs": [
+          "compose-focus-text-fields-2d"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Shift+arrow keys, Ctrl+A",
+        "action": "Select characters, select all: the system handles them for a text field with a hardware keyboard.",
+        "refs": [
+          "compose-keyboard-commands"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Enter, IME action",
+        "action": "Runs the search through the IME action the field sets; a single-line field adds no line.",
+        "refs": [
+          "compose-keyboard-options",
+          "compose-line-limits"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Tab, Shift-Tab",
+        "action": "On macOS, move focus to the next or the previous view of the key view loop.",
+        "refs": [
+          "appkit-next-key-view",
+          "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Command-A",
+        "action": "On macOS, selects all the characters in the field.",
+        "refs": [
+          "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Return",
+        "action": "On macOS, runs the search, the field's action.",
+        "refs": [
+          "appkit-text-field"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Option-Command-F",
+        "action": "On macOS, moves focus to the search field: a standard shortcut, for the product's main search field.",
+        "refs": [
+          "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "On Windows, moves focus in the tab order, which follows the order the controls are added; a disabled field is removed from it.",
+        "refs": [
+          "windows-keyboard-accessibility"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Shift+Tab",
+        "action": "On Windows, moves focus in reverse tab order.",
+        "refs": [
+          "windows-keyboard-navigation"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Arrow keys",
+        "action": "On Windows, move the caret inside the field: in a text field every key goes to entering or navigating the text first.",
+        "refs": [
+          "windows-keyboard-navigation",
+          "windows-keyboard-text-entry"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "On Windows, submits the query, as the AutoSuggestBox Windows uses for search does.",
+        "refs": [
+          "windows-auto-suggest-box-query"
+        ],
+        "platforms": [
+          "desktop"
         ]
       }
     ],
     "guidelines": [
       {
-        "text": "Expose the searchbox role, the name, the value and the disabled state through the platform's native search control, so assistive technology announces it as a search field.",
+        "text": "Expose the searchbox role, the name, the value and the required, disabled and error states through the platform's native search control, so assistive technology announces it as a search field.",
         "refs": [
           "wcag:4.1.2",
           "aria-searchbox"
@@ -211,26 +551,6 @@
           "html-aam-input-search",
           "html-input-search",
           "mdn-input-search"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
-        "text": "Every search field has a visible label associated with the control programmatically, even when it is just Search; the glyph alone is not a label.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-labels",
-          "html-label"
-        ]
-      },
-      {
-        "text": "Associate the label with a label element whose for attribute names the control's id, and the description with aria-describedby.",
-        "refs": [
-          "wcag-h44",
-          "wcag-aria1",
-          "apg-describing"
         ],
         "platforms": [
           "web"
@@ -258,38 +578,204 @@
         ]
       },
       {
-        "text": "Label, value and description contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1. The glyph is decoration and needs no contrast of its own (6.08:1 and 6.40:1 anyway). Disabled text is inactive and exempt.",
+        "text": "The severity icon is named after the severity (\"Error\", \"Warning\", \"Success\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 light, 5.30:1 dark; warning 6.16:1 and 8.38:1; success 7.44:1 and 5.92:1).",
         "refs": [
-          "wcag:1.4.3"
-        ]
-      },
-      {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
-        "refs": [
-          "wcag:1.4.11",
-          "understanding-non-text-contrast-boundaries"
-        ]
-      },
-      {
-        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
-        "refs": [
-          "wcag:2.4.7",
-          "wcag:2.4.13"
-        ]
-      },
-      {
-        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
-        "refs": [
-          "mdn-focus-visible"
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
         ],
         "platforms": [
           "web"
         ]
       },
       {
-        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 6.49:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 6.16:1 and 8.38:1, success 7.44:1 and 5.92:1). On the severity fills (global.bg.subtle.functional.<severity>.default, at rest and on hover), the value is at least 16.91:1 (light) and 11.43:1 (dark) and the placeholder 5.42:1 and 6.48:1: error 16.91 / 11.67:1 and 5.42 / 6.62:1, warning 17.15 / 11.54:1 and 5.50 / 6.55:1, success 17.30 / 11.43:1 and 5.55 / 6.48:1. The glyph is decoration and needs no contrast of its own (6.08:1 and 6.40:1 on the default surface, at least 5.42:1 and 6.48:1 on the severity fills, anyway). Disabled text is inactive and exempt.",
+        "refs": [
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 6.49:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 6.16:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. Against the warning fill the warning border is 5.86:1 in light mode and 8.27:1 in dark mode; against the success fill the success border is 7.17:1 and 6.16:1.",
+        "refs": [
+          "wcag:1.4.11",
+          "understanding-non-text-contrast-boundaries",
+          "understanding-focus-contrast"
+        ]
+      },
+      {
+        "text": "The field can be reached, edited and left from a keyboard, physical or assistive, on every platform, through the platform's native text control and its keyboard services, and focus is never trapped in it; the keys are the platform's.",
+        "refs": [
+          "wcag:2.1.1",
+          "en-301-549-keyboard",
+          "wcag:2.1.2",
+          "understanding-no-keyboard-trap"
+        ]
+      },
+      {
+        "text": "Use the native text field so Full Keyboard Access reaches it, and test the app with Full Keyboard Access on. Unlike buttons, text fields and text views have keyboard navigation on iPadOS.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "With a hardware keyboard, a D-pad or Switch Access, focus navigation reaches the field and highlights it, in a logical order, and focus can always move away from it: by default Compose does not trap focus in a text field.",
+        "refs": [
+          "orange-android-focus-access",
+          "orange-android-focus-order",
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, Full Keyboard Access lets people navigate to the field and use it with the keyboard alone: use the native control and keep the standard keyboard shortcuts.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "The Search field labels its own return key for search, wherever it sits: enterkeyhint=\"search\" on the web, written by the template (attrs can override it); the search return key type on iOS; the Search input scope, which puts a Search key instead of Enter on Windows' touch keyboard; on Android the field sets its IME action. Standing alone, the only field of its search form, it needs no submit button: Enter runs the search.",
+        "refs": [
+          "html-enterkeyhint",
+          "uikit-return-key-type-cases",
+          "hig-virtual-keyboards",
+          "windows-input-scope-search",
+          "compose-keyboard-options",
+          "html-implicit-submission"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the control receives focus: a 2.4 px outline in the focus color drawn flush over the border, at every size, so focus is visible by pointer and keyboard alike (WCAG 2.4.7). WCAG 2.4.13 Focus Appearance (AAA) is not met at 1x and 2x, because the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, and the fields do not claim it.",
+        "refs": [
+          "wcag:2.4.7",
+          "wcag:2.4.13",
+          "understanding-focus-contrast"
+        ]
+      },
+      {
+        "text": "The focus outline is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard. It is a CSS outline, never a box-shadow, so forced colors mode repaints it in a system color.",
+        "refs": [
+          "mdn-focus-visible",
+          "mdn-forced-colors"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The severity outline (1.2 px) and the focus outline (2.4 px) differ by width, so a field with a severity is not mistaken for a focused one, in forced colors too, where both take the same system color. At 1x the severity outline is as wide as the 1 px border at rest: the severity's color and the message say what the severity is, never the color alone.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag-f78",
+          "wcag-f81"
+        ]
+      },
+      {
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 28, 36 and 44 pixels.",
         "refs": [
           "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The label, description and message are set from 12 to 16 px (the message from 14), under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text and keeps its block padding.",
+        "refs": [
+          "wcag:1.4.4",
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "At every text size the label, the description and the message wrap onto as many lines as they need, a word longer than the line breaking, and are never truncated; the value of the single-line field scrolls, its whole content available as people move the caret. The placeholder may be cut at the box's edge, so it never holds what people need.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text",
+          "hig-typography-dynamic-type",
+          "windows-text-scaling-wrap",
+          "mdn-placeholder"
+        ]
+      },
+      {
+        "text": "Set overflow-wrap: anywhere on the label, the description and the message: a word longer than the line breaks instead of spilling past the field.",
+        "refs": [
+          "mdn-overflow-wrap"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Never clip the value: Chromium and WebKit clip an input's text to its own line box, and the stacked marks of Ấ, Ỗ, Ẫ reach past a 1.2 line. Set the input's block padding to 0 and its line-height to the larger of 1.2 times the text plus twice the block padding and search-field.control.line-height (1.5) times the text: the box keeps its height and the text its place.",
+        "refs": [
+          "wcag:1.4.4",
+          "f69-clipped-text"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: zoom enlarges the text and the box together, which meets Resize Text.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding, as Apple asks that layouts adapt to all font sizes.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "The severity icon grows with Dynamic Type with the text it goes with, as Apple asks of meaningful icons; the search glyph, decorative, keeps its size, and so does the inset before the text, so the search text keeps its room.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, the field keeps its size, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize with it: the box grows with it and keeps its block padding.",
+        "refs": [
+          "windows-text-scaling"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, the search glyph keeps its size when text scales (IsTextScaleFactorEnabled set to false), as Windows asks of font icons used for decoration; the severity icon scales with the text.",
+        "refs": [
+          "windows-text-scaling-icons"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -303,7 +789,7 @@
         ]
       },
       {
-        "text": "A search field is an editable text field that displays a search icon, a clear button and placeholder text; use placeholder text to help people know what they can search for. The small and medium sizes (32 and 40 pt) fall under the 44 x 44 pt hit region on iOS today.",
+        "text": "A search field is an editable text field that displays a search icon, a clear button and placeholder text; use placeholder text to help people know what they can search for. Apple's default control size on iOS is 44 x 44 pt, and every size has a hit region of at least that: the small and medium boxes (28 and 36 pt high) keep their drawn size and the hit region extends 8 and 4 pt above and below them, centered, over its own label, description and message, which keep their 6 pt; the layout keeps it clear of other controls and of another field's label. The large box (44 pt) is the hit region.",
         "refs": [
           "hig-search-fields",
           "hig-accessibility-mobility"
@@ -313,10 +799,20 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today.",
+        "text": "Apple's recommended minimum text size is 11 pt on iOS and iPadOS; the description (12 pt at its smallest) and the message (14 pt at its smallest) are above it.",
+        "refs": [
+          "hig-typography"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "Android recommends a touch target of at least 48 x 48 dp, and every size reaches it without growing: the box (28, 36 or 44 dp high) keeps its drawn size and its touch target extends 10, 6 or 2 dp above and below it, centered, over its own label, description and message, which keep their 6 dp; the layout keeps it clear of other controls and of another field's label. Compose extends a small clickable's touch target outside its bounds by itself, so the box does not take the minimumInteractiveComponentSize modifier, which would reserve that space and move the label. Expose an error with the error semantics so the message is announced with the field.",
         "refs": [
           "android-large-controls",
-          "compose-target-sizes"
+          "compose-target-sizes",
+          "compose-error-components"
         ],
         "platforms": [
           "android"
@@ -327,6 +823,53 @@
         "refs": [
           "wcag:2.3.3",
           "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "Exclude the search glyph from VoiceOver, as a purely decorative image.",
+        "refs": [
+          "hig-voiceover-descriptions"
+        ],
+        "platforms": [
+          "ios",
+          "desktop"
+        ]
+      },
+      {
+        "text": "Pass null as the search glyph's contentDescription, or hide it with hideFromAccessibility, as a decorative graphic.",
+        "refs": [
+          "compose-graphic-elements",
+          "compose-hide-semantics"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "The mark comes after the label's words, so the visible label starts with the field's name, and so does the accessible name when it ends with \"(optional)\" (\"Company (optional)\"): speech input by the label works.",
+        "refs": [
+          "wcag:2.5.3"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, the field draws the asterisk of a required field in the error text color whenever markedFields is optional or required, none drawing no mark; an optional field carries none.",
+        "refs": [
+          "material-text-fields-required"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, the asterisk stays in the field's UI Automation Name: the Name is the label as shown (\"Full name*\").",
+        "refs": [
+          "uia-name-property"
+        ],
+        "platforms": [
+          "desktop"
         ]
       }
     ],
@@ -350,11 +893,6 @@
         "id": "html-aam-placeholder",
         "title": "HTML-AAM: placeholder attribute (aria-placeholder, a last-resort name)",
         "url": "https://www.w3.org/TR/html-aam-1.0/#att-placeholder"
-      },
-      {
-        "id": "html-label",
-        "title": "HTML: the label element (for attribute, labeled control)",
-        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
       },
       {
         "id": "html-placeholder",
@@ -392,16 +930,6 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text"
       },
       {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-aria1",
-        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
-      },
-      {
         "id": "understanding-non-text-contrast-boundaries",
         "title": "Understanding WCAG 1.4.11 Non-text Contrast: user interface components and boundaries",
         "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries"
@@ -415,6 +943,11 @@
         "id": "hig-accessibility-mobility",
         "title": "Apple HIG: Accessibility, mobility (control sizes)",
         "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
+        "id": "hig-typography",
+        "title": "Apple HIG: Typography, specifications (minimum sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Specifications"
       },
       {
         "id": "android-large-controls",
@@ -455,14 +988,320 @@
         "id": "aria-hidden",
         "title": "WAI-ARIA 1.2: aria-hidden",
         "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "understanding-focus-contrast",
+        "title": "Understanding 1.4.11 Non-text Contrast: relationship with Focus Visible",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      },
+      {
+        "id": "understanding-non-text-contrast-adjacent-colors",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: adjacent colors",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast#adjacent-colors"
+      },
+      {
+        "id": "understanding-contrast-minimum",
+        "title": "Understanding WCAG 1.4.3 Contrast (Minimum)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum"
+      },
+      {
+        "id": "material-text-fields-guidelines",
+        "title": "Material Design 3: Text fields, guidelines",
+        "url": "https://m3.material.io/components/text-fields/guidelines"
+      },
+      {
+        "id": "windows-text-box",
+        "title": "Windows apps: Text box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "material-text-fields",
+        "title": "Material Design 3: Text fields, specs",
+        "url": "https://m3.material.io/components/text-fields/specs"
+      },
+      {
+        "id": "hig-text-fields",
+        "title": "Apple HIG: Text fields",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/text-fields"
+      },
+      {
+        "id": "mdn-placeholder",
+        "title": "MDN: ::placeholder, accessibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#accessibility"
+      },
+      {
+        "id": "hig-color",
+        "title": "Apple HIG: Color, system colors (placeholder text)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+      },
+      {
+        "id": "hig-voiceover-descriptions",
+        "title": "Apple HIG: VoiceOver, descriptions (describe meaningful images, exclude decorative ones)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/voiceover#Descriptions"
+      },
+      {
+        "id": "compose-graphic-elements",
+        "title": "Jetpack Compose accessibility: graphic elements (contentDescription null for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#graphic-elements"
+      },
+      {
+        "id": "compose-hide-semantics",
+        "title": "Jetpack Compose accessibility: hide semantics (hideFromAccessibility for decoration)",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/merging-clearing#hide-semantics"
+      },
+      {
+        "id": "windows-forms",
+        "title": "Windows apps: Forms",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "winui-is-required-for-form",
+        "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
+        "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
+      },
+      {
+        "id": "uia-name-property",
+        "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
+      },
+      {
+        "id": "en-301-549-keyboard",
+        "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
+      },
+      {
+        "id": "understanding-no-keyboard-trap",
+        "title": "Understanding WCAG 2.2: 2.1.2 No Keyboard Trap, intent (standard exit methods)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent"
+      },
+      {
+        "id": "hig-keyboards-best-practices",
+        "title": "Apple HIG: Keyboards, best practices (Full Keyboard Access; iPadOS keyboard navigation in text fields and text views)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices"
+      },
+      {
+        "id": "hig-keyboards-shortcuts",
+        "title": "Apple HIG: Keyboards, standard keyboard shortcuts (Shift-Tab, Command-A)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts"
+      },
+      {
+        "id": "hig-accessibility-speech",
+        "title": "Apple HIG: Accessibility, speech (keyboard alone, Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech"
+      },
+      {
+        "id": "hig-focus-ipados",
+        "title": "Apple HIG: Focus and selection, iPadOS (Tab moves focus among focus groups)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS"
+      },
+      {
+        "id": "appkit-next-key-view",
+        "title": "AppKit: NSView.nextKeyView (the key view loop)",
+        "url": "https://developer.apple.com/documentation/appkit/nsview/nextkeyview"
+      },
+      {
+        "id": "orange-android-focus-access",
+        "title": "Orange accessibility guidelines, Android: access to interactive elements (keyboard navigation)",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-order",
+        "title": "Orange accessibility guidelines, Android: keyboard navigation order",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order"
+      },
+      {
+        "id": "compose-focus-text-fields",
+        "title": "Android Developers, Compose: focus in text fields (Tab, Shift+Tab, arrow keys)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#one-dimensional-focus-traversal"
+      },
+      {
+        "id": "compose-focus-text-fields-2d",
+        "title": "Android Developers, Compose: focus in text fields, two-dimensional traversal (arrow keys, D-pad)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#two-dimensional-focus-traversal"
+      },
+      {
+        "id": "compose-keyboard-commands",
+        "title": "Android Developers, Compose: keyboard commands (default shortcuts of a text field)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/keyboard-input/commands"
+      },
+      {
+        "id": "windows-keyboard-accessibility",
+        "title": "Windows apps: keyboard accessibility, navigation among UI elements (tab order)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements"
+      },
+      {
+        "id": "windows-keyboard-navigation",
+        "title": "Windows apps: keyboard interactions, navigation (Shift+Tab, the caret in a text box)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation"
+      },
+      {
+        "id": "windows-keyboard-text-entry",
+        "title": "Windows apps: keyboard interactions, text entry",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry"
+      },
+      {
+        "id": "html-implicit-submission",
+        "title": "HTML: implicit submission (Enter in a text control submits through the default button)",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission"
+      },
+      {
+        "id": "html-enterkeyhint",
+        "title": "HTML: the enterkeyhint attribute (the label of the enter key)",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint"
+      },
+      {
+        "id": "swiftui-on-submit",
+        "title": "SwiftUI: onSubmit(of:_:) (text fields and secure fields, on the return key)",
+        "url": "https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)"
+      },
+      {
+        "id": "uikit-return-key-type",
+        "title": "UIKit: UITextInputTraits.returnKeyType",
+        "url": "https://developer.apple.com/documentation/uikit/uitextinputtraits/returnkeytype"
+      },
+      {
+        "id": "compose-line-limits",
+        "title": "Android Developers, Compose: line limits (a single-line field allows no new lines)",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#line-limits"
+      },
+      {
+        "id": "compose-keyboard-options",
+        "title": "Android Developers, Compose: keyboard options and the IME action",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#keyboard-options"
+      },
+      {
+        "id": "appkit-text-field",
+        "title": "AppKit: NSTextField (sends its action when people press Return)",
+        "url": "https://developer.apple.com/documentation/appkit/nstextfield"
+      },
+      {
+        "id": "windows-text-box-multi-line",
+        "title": "Windows apps: text box, enable multi-line input (AcceptsReturn)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input"
+      },
+      {
+        "id": "uikit-return-key-type-cases",
+        "title": "UIKit: UIReturnKeyType (search: the Return key indicates a search)",
+        "url": "https://developer.apple.com/documentation/uikit/uireturnkeytype"
+      },
+      {
+        "id": "hig-virtual-keyboards",
+        "title": "Apple HIG: Virtual keyboards, best practices (a search Return key type when the app initiates a search)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/virtual-keyboards#Best-practices"
+      },
+      {
+        "id": "uikit-search-button-clicked",
+        "title": "UIKit: UISearchBarDelegate.searchBarSearchButtonClicked(_:) (begin the search)",
+        "url": "https://developer.apple.com/documentation/uikit/uisearchbardelegate/searchbarsearchbuttonclicked(_:)"
+      },
+      {
+        "id": "windows-auto-suggest-box-query",
+        "title": "Windows apps: AutoSuggestBox, query submitted (Enter in the text box)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/auto-suggest-box#query-submitted"
+      },
+      {
+        "id": "windows-input-scope-search",
+        "title": "Windows apps: input scope Search (the Search key instead of Enter on the touch keyboard)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/use-input-scope-to-change-the-touch-keyboard#search"
+      },
+      {
+        "id": "mdn-input-search-escape",
+        "title": "MDN: input type=search, differences from text (the clear cross; Escape clears in Chrome)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#differences_between_search_and_text_types"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "windows-text-scaling",
+        "title": "Windows: text scaling, UX guidance",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance"
+      },
+      {
+        "id": "windows-text-scaling-icons",
+        "title": "Windows: text scaling, don't scale font-based icons or symbols",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols"
+      },
+      {
+        "id": "windows-text-scaling-wrap",
+        "title": "Windows: text scaling, use text wrapping",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#use-text-wrapping"
+      },
+      {
+        "id": "mdn-overflow-wrap",
+        "title": "MDN: overflow-wrap",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow-wrap"
+      },
+      {
+        "id": "f69-clipped-text",
+        "title": "WCAG 2.2 Technique F69: Failure of Success Criterion 1.4.4 when resizing visually rendered text up to 200 percent causes the text, image or controls to be clipped, truncated or obscured",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F69"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "wcag-f78",
+        "title": "WCAG failure F78: a focus indicator that is not visible, or looks the same as another outline",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F78"
+      },
+      {
+        "id": "wcag-f81",
+        "title": "WCAG failure F81: required or error fields identified by color only",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
+      },
+      {
+        "id": "compose-error-components",
+        "title": "Jetpack Compose accessibility: error semantics of components",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components"
+      },
+      {
+        "id": "mdn-input-search-required",
+        "title": "MDN: <input type=\"search\">, making input required (a search input can be required)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#making_input_required"
       }
     ]
   },
   "content": {
     "guidelines": [
-      "The label says what is searched: Search, Search projects, Filter by name. Sentence case, no colon.",
+      "The label says what is searched, even when it is just Search: Search, Search projects, Filter by name; the glyph alone is never the label. Sentence case, no colon.",
       "The placeholder gives an example of a query or the scope (Name, email or role), never the label.",
-      "A search field has no error message: an empty result is reported next to the results, with what to try next."
+      "An empty result is reported next to the results, with what to try next, never as a severity: the message says what is wrong with the query itself, a required search left empty or a term too short to check.",
+      "The message of an error says the fix and relies on the label it sits under, without repeating the field's name: Enter a company name or number"
     ]
   },
   "examples": [
@@ -482,7 +1321,7 @@
         "size": "medium",
         "label": "Filter members",
         "value": "ada",
-        "description": "Name, email or role."
+        "description": "Name, email or role"
       }
     },
     {
@@ -504,6 +1343,46 @@
       }
     },
     {
+      "id": "medium-error",
+      "name": "Medium, error",
+      "description": "A required search left empty: the message says how to fix it, under the description, which stays.",
+      "props": {
+        "size": "medium",
+        "label": "Company",
+        "description": "Name or registration number",
+        "markedFields": "optional",
+        "required": true,
+        "severity": "error",
+        "message": "Enter a company name or number"
+      }
+    },
+    {
+      "id": "medium-warning",
+      "name": "Medium, warning",
+      "description": "The query is accepted but deserves attention: the message says what to check.",
+      "props": {
+        "size": "medium",
+        "label": "Filter members",
+        "value": "a",
+        "severity": "warning",
+        "message": "One letter matches most members: type a few more"
+      }
+    },
+    {
+      "id": "medium-success",
+      "name": "Medium, success",
+      "description": "The query was checked and confirmed: the message says what was confirmed.",
+      "props": {
+        "size": "medium",
+        "label": "Company",
+        "value": "552 059 024",
+        "markedFields": "optional",
+        "required": true,
+        "severity": "success",
+        "message": "This number matches a registered company"
+      }
+    },
+    {
       "id": "medium-disabled",
       "name": "Medium, disabled",
       "props": {
@@ -511,6 +1390,17 @@
         "label": "Search",
         "placeholder": "Search projects",
         "disabled": true
+      }
+    },
+    {
+      "id": "medium-label-start",
+      "name": "Medium, label at the start",
+      "description": "In a form that puts its labels in a column at the start (labelPlacement start): shown here alone, the field draws its own two columns; in a form, the label column is the form's.",
+      "props": {
+        "size": "medium",
+        "label": "Search",
+        "labelPlacement": "start",
+        "description": "The help stays under the control"
       }
     }
   ],
@@ -526,17 +1416,22 @@
       "element": "div",
       "attributes": {
         "size": "data-size",
-        "disabled": "data-disabled"
+        "disabled": "data-disabled",
+        "severity": "data-severity",
+        "labelPlacement": "data-label-placement"
       },
       "stateAttribute": "data-state",
       "rolePart": "control",
       "partSelectors": {
         "container": ".ds-search-field",
         "label": ".ds-search-field__label",
+        "mark": ".ds-search-field__mark",
         "field": ".ds-search-field__field",
         "icon": ".ds-search-field__icon",
         "control": ".ds-search-field__control",
-        "description": ".ds-search-field__description"
+        "description": ".ds-search-field__description",
+        "message": ".ds-search-field__message",
+        "severity-icon": ".ds-search-field__severity-icon"
       }
     }
   },
@@ -546,11 +1441,607 @@
   ],
   "decisions": [
     {
+      "id": "focus-severity-outline",
+      "date": "2026-11-27",
+      "version": "0.23.0",
+      "area": "state",
+      "status": "active",
+      "text": "A focused Search field in a severity keeps the focus width, in the severity's color, through a token for two states per severity: control.outline-width.focus-visible-error, focus-visible-warning and focus-visible-success (= focus.ring.width, as control.outline-width.focus-visible). Each applies when the field has focus and is in that severity, and wins over the token of each state alone (packages/tokens/AGENTS.md, Which token applies). The path stays the only thing that says when a component token applies, so the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants with a severity in State=focus-visible take the width the web draws, and the Figma plan no longer sets it by a rule written by hand. A disabled field still draws no outline. No rendered value changes on the web.",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 32, after #105 step 2b, point b3.1): \"A but we'll revisit probably these tokens one day\", as recommended: the team expects to revisit these tokens later. Rejected: B, keep the Figma plan's hand-written rule and add a note to the token inspector (a reader of the tokens alone would still get 1.2 px); C, one token per field for every severity (focus-visible-severity), fewer tokens but a new path grammar, a property standing for its value states. Measured before: the web drew the focus width (focus.ring.width, 2.4 px), while the token rule, and so the inspector, picked control.outline-width.<severity> (stroke-width.md, 1.2 px); Figma and Penpot drew 2.4 px through a rule written by hand in the plan.",
+      "tokens": [
+        "search-field.control.outline-width.focus-visible-error",
+        "search-field.control.outline-width.focus-visible-warning",
+        "search-field.control.outline-width.focus-visible-success"
+      ]
+    },
+    {
+      "id": "label-placement",
+      "date": "2026-11-27",
+      "version": "0.22.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Search field takes labelPlacement (above by default, start), a setting of the form passed to every field-like control (Forms decisions forms-label-column, forms-label-alignment, forms-label-column-gap, forms-label-column-stacking). With start, on the web, the Search field carries its row of the form's grid (forms-label-column-web): a subgrid row, the label in the first column ending search-field.container.column-gap.start (form.gap.label-column, 12 px) from the control, its first line centred on the box; the control, description and message in the second column; under a 30 rem size container it stacks back above. The form's grid (fit-content(14em) minmax(0, 1fr), the gap, the size container) is the product's. The Figma component draws the label above (labelPlacement fixed, kept out of the variants, as markedFields).",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 29, on review sheets): Q1, A, the fields carry their row (rejected: B, a .ds-form class the system ships; C, each field its own column, which no longer lines up); Q2, B, a multi-line control's label level with its first row (forms-label-multiline); Q3, A, the Select now.",
+      "tokens": [
+        "search-field.container.column-gap.start"
+      ]
+    },
+    {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.21.2",
+      "area": "color",
+      "status": "active",
+      "text": "The Search field's component tokens alias the Forms family (form.*) wherever their value is the family's default: the container gap; the control's fill at rest, on hover and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors. No value changes, on any platform or in any mode. Its border at rest is the family's own default, global.border.base.neutral.5, the field family's border (decision border-base-neutral-5): no override. Disabled colors, hover and focus, geometry, the leading icon and the value's text style stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases. Applied in #103 step 28.",
+      "tokens": [
+        "search-field.container.gap",
+        "search-field.control.background.*",
+        "search-field.control.border-color.*",
+        "search-field.control.outline-color.*",
+        "search-field.control.color.default",
+        "search-field.control.placeholder-color.default",
+        "search-field.label.*",
+        "search-field.description.*",
+        "search-field.message.*",
+        "search-field.severity-icon.color.*",
+        "search-field.mark.color.default",
+        "search-field.asterisk.color.default"
+      ]
+    },
+    {
+      "id": "text-field-severities",
+      "date": "2026-11-27",
+      "version": "0.21.0",
+      "area": "state",
+      "status": "active",
+      "text": "The Search field takes the Text field's severities (Forms decision forms-search-field-severity): the property severity (none, error, warning, success; none by default), the property message with the message part under the description, and the property severityIcon (message by default, after-control, none) with the severity-icon part. They are drawn with the Text field's values: the subtle fill of the severity at rest and on hover, its accent border and an outline flush over it (1.2 px at rest, 2.4 px with focus), the message and the icon in its functional color, the icon's glyph and size (decisions error-fill-subtle, severity-fill-subtle, severity-icon, severity-icon-glyphs and state-outline-flush, which now have their tokens; the mirror check compares them). On the web an error sets aria-invalid on the control, and aria-describedby references the description, then the icon after the control, then the message. The Search field keeps required and the required mark; it still has no read-only state and its clear control stays the browser's. A search that finds nothing is still reported by the results: the message says what is wrong with the query itself, such as a required search left empty.",
+      "rationale": "Decided by the team on 2026-11-26 in the Forms foundation (#105 step 2b, point b1): A, the Text field's severities, among A; B, error only, like the choice controls; C, no required and no mark, a search being never required; D, required with no severity (an empty required search showed only the browser's bubble). A search input can be required (MDN), and a search inside a form, such as finding a company, can be mandatory. Applied in #103 step 26.",
+      "supersedes": [
+        "no-error-state"
+      ],
+      "tokens": [
+        "search-field.control.background.error",
+        "search-field.control.background.warning",
+        "search-field.control.background.success",
+        "search-field.control.border-color.error",
+        "search-field.control.border-color.warning",
+        "search-field.control.border-color.success",
+        "search-field.control.outline-width.error",
+        "search-field.control.outline-width.warning",
+        "search-field.control.outline-width.success",
+        "search-field.control.outline-color.error",
+        "search-field.control.outline-color.warning",
+        "search-field.control.outline-color.success",
+        "search-field.message.*",
+        "search-field.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "mdn-input-search-required"
+      ]
+    },
+    {
+      "id": "value-line-not-clipped",
+      "date": "2026-11-26",
+      "version": "0.20.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The value keeps its 1.2 line (font.line-height.tight, decision value-text-button-size) on every platform; on the web the input takes its block padding into its line, which is never shorter than 1.5 times the text (search-field.control.line-height, font.line-height.normal), because Chromium and WebKit clip an input's text to its own line box. The box keeps its heights (28, 36 and 44 px at the default text size; as the text grows, those of decision grows-with-text-size, small 2.4 px taller at 200 %), and the text sits where a 1.2 line puts it. It mirrors the Text field (the Text field's decision field-family-mirrors). Measured with Playwright (Chromium 156, WebKit 27.2, Inter, every size at 100 and 200 %): at 1.2 the stacked marks of Ấ, Ỗ, Ẫ, Ở reach 1.6 to 2.1 px past the line at 100 % and 4.1 to 4.7 px at 200 %, 4 to 7 % of their ink is lost and Ấ reads as Â; line-height normal clips too; with the system font, which shows until Inter's Vietnamese subset has loaded, the marks fit; the Textarea does not clip (it scrolls inside its padding); the Button keeps its marks at 100 % but at 200 % its xsmall, small and medium sizes cut them 2.9 to 4 px above the box, a Button finding outside this step. Firefox was not measured. Rejected: A, the value at 1.5 on every platform (the small box 29 px in Chromium, 8 to 10 px taller than today at 200 %, and the running-text line height step 3 kept off single lines); C, the padding inside the line without the 1.5 floor (the small size still clips at 200 %, 1.1 px).",
+      "rationale": "WCAG 1.4.4 fails when text enlarged to 200 % is clipped (F69), and a clipped mark changes the letter. The clip is the web input's, so only the web layout changes: the tokens of the value's text, Figma and the other platforms keep 1.2.",
+      "tokens": [
+        "search-field.control.line-height"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "f69-clipped-text"
+      ]
+    },
+    {
+      "id": "default-size-medium",
+      "date": "2026-11-25",
+      "version": "0.19.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Without a size, a search field is medium (36 px high), like every component with sizes (the Button's and the Icon button's decision default-size-medium); it mirrors the Text field (the Text field's decision field-family-mirrors). The Figma prototype's \"Form - text input\" set defaults to small (28 px): Figma takes the top-left variant of a set as its default, and small is the set's left column (Figma, Create and use variants); the repository keeps medium, a departure recorded for the closing Figma issue.",
+      "rationale": "A field is the Button of the same size (decision box-height-button), so a form whose fields and Buttons set no size lines up at 36 px, as the login and signup screens do; all 21 specs with a size default to medium. Measured: a small default puts 28 px fields under 36 px Buttons, doubles the hit region a default field needs above and below its box on iOS and Android (8 pt and 10 dp instead of 4 and 6, decision touch-target-hit-region), and is a breaking change for every consumer relying on the default. Rejected: B, small for the fields only, as Figma; C, small for every control (still not Figma, whose Button set defaults to xsmall, and a breaking change for every sized component).",
+      "tokens": [
+        "search-field.control.min-height.medium"
+      ]
+    },
+    {
+      "id": "long-text-wraps",
+      "date": "2026-11-25",
+      "version": "0.18.0",
+      "area": "content",
+      "status": "active",
+      "text": "As the Text field (decision long-text-wraps of the Text field, which holds the measurements and the options rejected): When people raise the text size, the label and the description wrap onto as many lines as they need, a word longer than the line breaking rather than spilling past the field, and are never truncated; the value of a single-line field scrolls, as on every platform; the placeholder, a single line, is cut at the box's edge, so it stays a short example that nothing depends on (the label and the description say what people need). ",
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type",
+        "windows-text-scaling-wrap",
+        "compose-line-limits",
+        "mdn-placeholder"
+      ]
+    },
+    {
+      "id": "icons-at-text-size",
+      "date": "2026-11-25",
+      "version": "0.17.0",
+      "area": "size",
+      "status": "active",
+      "text": "As the Text field (decision icons-at-text-size of the Text field, which holds the measurements and the options rejected): the search glyph, the field's decorative leading icon, keeps its size (16 / 20 / 24) when people raise the text size, and so does the inset before the text (control.padding-inline-start, 28 / 36 / 40), so the search text keeps its room (Iconography decision field-leading-icon-keeps-size). Where nothing scales the text (macOS), and on the web, where zoom scales everything, both keep their proportions.",
+      "tokens": [
+        "search-field.icon.size.*",
+        "search-field.control.padding-inline-start.*"
+      ],
+      "refs": [
+        "hig-typography-dynamic-type",
+        "windows-text-scaling-icons"
+      ]
+    },
+    {
+      "id": "grows-with-text-size",
+      "date": "2026-11-25",
+      "version": "0.16.0",
+      "area": "size",
+      "status": "active",
+      "text": "The Search field grows with the text size as the Text field does (decision grows-with-text-size of the Text field, which holds the rule and the options rejected): its text grows, and the box keeps its minimum height (28 / 36 / 44) and a minimum block padding, the Button's (space.3 / 5 / 8), which shows only once the line outgrows the minimum height. pnpm validate compares search-field.control.padding-block.* with the Text field's. Where nothing scales the text (macOS), and on the web, where zoom scales text and box together, the field keeps its size.",
+      "tokens": [
+        "search-field.control.padding-block.*",
+        "search-field.control.min-height.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type",
+        "windows-text-scaling"
+      ]
+    },
+    {
+      "id": "search-own-key",
+      "date": "2026-11-25",
+      "version": "0.15.0",
+      "area": "accessibility",
+      "status": "active",
+      "supersedes": [
+        "enter-by-field-kind"
+      ],
+      "text": "Enter (Return) runs the search on every platform and never adds a line: on the web a search form whose only field is this one submits on Enter, with or without a button; iOS begins the search on the keyboard's Search button; Android runs the field's IME action; macOS sends the field's action; Windows submits the query, as its AutoSuggestBox does. Unlike the other fields, the Search field labels its own return key for search wherever it sits, since its action is always search: enterkeyhint=\"search\" on the web, written by the template (attrs can override it); the search return key type on iOS, as Apple suggests when an app initiates a search; the Search input scope on Windows' touch keyboard; on Android the field sets its IME action, with no label stated. Standing alone, it needs no submit button (forms-search-alone). Escape clears the term in Chrome only, the browser's behaviour, which the component leaves as it is. On macOS, Option-Command-F moves focus to the product's main search field.",
+      "refs": [
+        "html-implicit-submission",
+        "html-enterkeyhint",
+        "uikit-search-button-clicked",
+        "uikit-return-key-type-cases",
+        "hig-virtual-keyboards",
+        "windows-auto-suggest-box-query",
+        "windows-input-scope-search",
+        "mdn-input-search-escape",
+        "hig-keyboards-shortcuts"
+      ]
+    },
+    {
+      "id": "enter-by-field-kind",
+      "date": "2026-11-25",
+      "version": "0.14.0",
+      "area": "accessibility",
+      "status": "superseded",
+      "text": "Enter (Return) never adds a line to a single-line field: it goes to the form, which submits or runs the return key's action (the Forms foundation says what the form does). The return key's label depends on the field's place in the form (next, done…), so the form sets it through each platform's own setting: enterkeyhint on the web, passed through the template's attrs; returnKeyType or submitLabel on iOS; the IME action on Android; Windows' touch keyboard follows the input scope. The field adds no property for it; unset, the platform picks its default.",
+      "refs": [
+        "html-implicit-submission",
+        "html-enterkeyhint",
+        "swiftui-on-submit",
+        "uikit-return-key-type",
+        "compose-line-limits",
+        "compose-keyboard-options",
+        "appkit-text-field",
+        "windows-text-box-multi-line"
+      ]
+    },
+    {
+      "id": "keyboard-on-every-platform",
+      "date": "2026-11-25",
+      "version": "0.13.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Being reached, edited and left from a keyboard is a requirement on every platform (WCAG 2.1.1 on the web, EN 301 549 11.2.1.1.1 for native software), met, as on the Button, through the platform's native text control and its keyboard services, and focus is never trapped in the field (WCAG 2.1.2). Unlike the Button, the keys are named on every platform whose own documentation names them for text entry: Tab on the web; on iPadOS, Tab among focus groups (iPadOS supports keyboard navigation in text fields and text views, so the Button's line against keyboard navigation of one's own is not carried) and Full Keyboard Access; on Android, Shift+Tab back, the arrow keys and the D-pad moving the caret then leaving at the edge of the text, the system's selection keys, and on Android Tab moves to the next focus target from this single-line field (a multi-line one takes it as a character); on macOS, Tab and Shift-Tab through the key view loop and Command-A; on Windows, the tab order, Shift+Tab and the arrow keys moving the caret. Each platform keeps its own behaviour. Three prefixes join the trusted sources for it: Android Developers' Compose focus and keyboard pages (develop/ui/compose/touch-input/) and text pages (develop/ui/compose/text/), and Windows' input pages (windows/apps/develop/input/).",
+      "refs": [
+        "wcag:2.1.1",
+        "wcag:2.1.2",
+        "en-301-549-keyboard",
+        "hig-keyboards-best-practices",
+        "hig-focus-ipados",
+        "compose-focus-text-fields",
+        "appkit-next-key-view",
+        "windows-keyboard-accessibility"
+      ]
+    },
+    {
+      "id": "touch-target-hit-region",
+      "date": "2026-11-25",
+      "version": "0.12.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "As on the Button, on iOS and Android every size reaches the platform's touch target without growing: the hit region is at least 44 x 44 pt on iOS and 48 x 48 dp on Android, centered on the box. It may extend over its own label and description, which are not targets, so the 6 px between the parts stays on every platform; the layout keeps it clear of every other control and of another field's label. Above and below the box it extends 8, 4 and 0 pt on iOS and 10, 6 and 2 dp on Android at the small, medium and large sizes. On Android, Compose extends a small clickable's touch target outside its bounds by itself; the box does not take minimumInteractiveComponentSize, which would reserve the space around it and move the label. The drawn field, its parts and its tokens stay the same on every platform, as in Figma; the web (WCAG 2.5.8, 24 x 24 CSS px) and desktop already meet their targets with the box.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 18, point 1) among: A, the Button's rule as is, the hit region reserved all around the box (on iOS and Android the label would sit 14, 10 and 6 pt or 16, 12 and 8 dp from the box instead of 6, unlike the web and Figma); B, the hit region over the field's own text, reserved only against other controls and other fields' labels (recommended, chosen); C, the whole field as the target, a tap on the label or the help text focusing the field (no platform documents it, and selecting text in a description would focus the field); D, platform heights of 44 pt and 48 dp (a semantic addition; the three sizes would look the same on mobile and no longer line up with the Button, undoing box-height-button there). No trusted source says that tapping a field's label focuses it on iOS or Android, so the label does not count as part of the target. Measured on the review sheet: with 16 px between fields nothing has to be kept; with none, the next small field is kept 8 pt (iOS) or 10 dp (Android) lower; a small Search field 8 px above navigation items keeps 2 dp more on Android.",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "refs": [
+        "hig-accessibility-mobility",
+        "android-large-controls",
+        "compose-target-sizes"
+      ]
+    },
+    {
+      "id": "mark-part",
+      "date": "2026-11-25",
+      "version": "0.11.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Search field draws the required mark as the mark part, inside the label after a word space, and keeps the asterisk part for Android and Windows. The web template takes markedFields (none by default) and markLabel, to translate the words; \"(required)\" is aria-hidden. In Figma the component draws the web rendering only: a BOOLEAN \"Mark\" (off by default) shows the mark, whose TEXT \"Mark text\" is \"(optional)\" and is typed \"(required)\" when the form marks required fields; markedFields is not a variant axis and the asterisk is not drawn. Tokens: mark.color.* and mark.typography.* (mark-style); asterisk.color.* and asterisk.margin-inline-start.* (asterisk-style), the asterisk taking label.typography.*.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 4) among: A, a BOOLEAN and a TEXT for the mark and a BOOLEAN for the asterisk, markedFields kept out of the variant axes (recommended); B, markedFields and required as variant axes, six times the variants (6912 for the Text field); C, the Figma prototype's single BOOLEAN drawing the asterisk, the words typed into the label. The team chose A without the asterisk: the Figma components draw the current web specification, not every platform's rendering, so Figma shows \"(optional)\", \"(required)\" or no mark, never the asterisk. Variant counts are unchanged (Text field 1152, Number field 1152, Textarea 576, Search field 24). Departs from the Figma prototype, whose BOOLEAN \"required\" (on by default) draws a red asterisk. The word space before the mark is a quarter of the font size in Figma (3.5 px at 14 px, 4 px at 16 px), as measured on the web.",
+      "tokens": [
+        "search-field.mark.*",
+        "search-field.asterisk.*"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "required-windows-name",
+      "date": "2026-11-25",
+      "version": "0.10.15",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On Windows, a required Search field keeps its asterisk in its accessible name: the UI Automation Name is the label as shown (\"Full name*\"), and the control sets AutomationProperties.IsRequiredForForm. The words keep their exposure on the other platforms (hidden on the web and macOS, read on iOS).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 3b) among: A, hide the asterisk from Narrator and let IsRequiredForForm alone say required; B, keep it in the Name (chosen, recommended). The team asked to follow the Windows recommendation for Windows specificities: Microsoft asks that the UI Automation Name be the label on screen, not a modified version of it, and no Microsoft page says Narrator announces IsRequiredForForm, so A could leave required unsaid while B at worst says it twice. Applies the Forms decision forms-required-windows-name, which cites the UI Automation property identifiers and Windows' accessible name guidance.",
+      "platforms": [
+        "desktop"
+      ],
+      "refs": [
+        "winui-is-required-for-form",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "asterisk-style",
+      "date": "2026-11-25",
+      "version": "0.10.14",
+      "area": "color",
+      "status": "active",
+      "text": "On Android and Windows, the Search field marks a required field with an asterisk at the end of its label, whatever markedFields says when it is optional or required (nothing with none), and draws nothing on an optional field. The asterisk is the color of the error message and of the error icon (global.text.on-base.functional.error.default), at the label's size and weight (14 / 16 / 16 px, medium), 4 px after the label (2 px in small), with no word space; disabled, the label's disabled color (global.text.state.disabled.default). 5.79 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode on levels 0 to 3. The words of the other platforms keep mark-style.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 3) among: A, the mark's own look (mark-style; recommended); B, the label's style; C, the Figma prototype's red asterisk (chosen). The team chose C because a reddish asterisk is the most common rendering of a required field in interfaces, and asked that its red be the color of the severity message and of the severity icon. Applies the Forms decision forms-asterisk-style. Matches the Figma prototype on Android and Windows (its asterisk, color, weight and gap); the words of the web, iOS and macOS stay a departure. The asterisk gets its own tokens (component tokens are never forked per platform), which land with point 4.",
+      "platforms": [
+        "android",
+        "desktop"
+      ],
+      "refs": [
+        "material-text-fields-required",
+        "windows-forms",
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "mark-style",
+      "date": "2026-11-25",
+      "version": "0.10.13",
+      "area": "typography",
+      "status": "active",
+      "text": "The Search field's required mark (\"(optional)\" or \"(required)\", from marked-fields) follows the label's text after a word space, at the label's size (14 / 16 / 16 px for small, medium, large), in the regular weight (body.weight.regular) and the description's color (global.text.on-base.neutral.secondary); disabled, the label's disabled color (global.text.state.disabled.default). 12.09 to 12.78:1 in light mode, 6.65 to 8.86:1 in dark mode on levels 0 to 3.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 2) among: the Figma prototype's red asterisk (reference: global.text.on-base.functional.error.default, the label's size and weight, 4 px after it, 2 px in small); A, the label's own style; B, the label's size, regular, the description's color (chosen, recommended); C, the label's size and color, regular; D, the description's style (12 / 12 / 14 px). The team hesitated between B and D and chose B: a smaller mark, the only element of a different size, draws the eye before the label itself. Applies the Forms decision forms-mark-style. The word space measures 3.5 px at 14 px and 4.0 px at 16 px, near Figma's 4 px. Departs from Figma (red asterisk). The tokens (mark.color.*, mark.typography.*) land with point 4.",
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
+      "id": "marked-fields",
+      "date": "2026-11-25",
+      "version": "0.10.12",
+      "area": "content",
+      "status": "active",
+      "text": "The Search field draws the required mark of the Forms rule from a form setting: it carries markedFields (optional, required, none; none by default), which a form sets once, to the same value, for all its controls, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none. A required search field never says \"(optional)\". The Search field defaults to none because a search box usually stands alone; a search form with several fields sets it like any other form.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 1) among: A, a form setting, optional by default (chosen, recommended); B, the same setting, none by default; C, a mark chosen per field, nothing tying it to required; D, no property, the words typed into the label. Applies the Forms decision forms-marked-fields: a form that sets nothing follows the Forms rule (forms-required-marking), a mark can never contradict required, and on the web \"(required)\" can stay hidden from assistive technology (forms-required-mark-exposure) while Android and Windows swap it for their asterisk (forms-required-marking-platforms). The Figma prototype marks each required field with a red asterisk, shown by default: a departure. The mark's look, the platforms' asterisk and the part, its tokens and the Figma axis are #103 step 16, points 2 to 4.",
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:1.3.1"
+      ]
+    },
+    {
+      "id": "severity-icon-glyphs",
+      "date": "2026-11-25",
+      "version": "0.10.11",
+      "area": "content",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms foundation step 2b), its severity icon draws the Text field's glyphs: error, warning or check_circle, named \"Error\", \"Warning\" or \"Success\", in the on-base icon role of its severity. No token today: the mirror check ignores severity-icon.* (scripts/lib/mirrors.mjs).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 2, also the Forms foundation step 6, forms-severity-icon-glyphs) among: A, the Alert's glyphs, warning and check_circle (chosen); B, a plain check for the success; C, no success icon. A is the Figma prototype's and the Alert's glyphs: the three severities differ by shape as well as color, and the message still says the severity in text (WCAG 1.4.1). B departs from the Alert and from Figma and reuses the Checkbox's glyph, thinner at 16 px; C draws icons on some fields and not others under one placement rule, and after the control a field would change width or keep an empty gap when it passes. The color follows the rule decided for the error (forms-severity-icon-color), the on-base icon role of the severity. Measured on the Text field (every size, both placements, light and dark, levels 0 to 3): the warning icon 3.09 to 3.27:1 in light mode and 8.38 to 11.17:1 in dark mode, the success icon 7.44 to 7.87:1 and 5.92 to 7.89:1 (WCAG 1.4.11 asks 3:1)."
+    },
+    {
+      "id": "severity-fill-subtle",
+      "date": "2026-11-25",
+      "version": "0.10.10",
+      "area": "color",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms foundation step 2b), its box with a warning or a success takes the fill of the Text field: the subtle functional background of the severity (global.bg.subtle.functional.warning.default, global.bg.subtle.functional.success.default), at rest and on hover alike, as in error. No token today: the Search field has no severity yet, so the mirror check ignores control.background.warning and control.background.success (scripts/lib/mirrors.mjs).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 1, also the reference rendering of the Forms foundation step 6, forms-severity-fill) among three options, measured at every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, keep the page-level fill for warning and success, only the error tinted; B, the error's rule for every severity, the subtle fill of the severity at rest and on hover alike (chosen); C, the subtle fill at rest and its hover step on hover. B is the Figma prototype's fill (#FFF1C7, #DBFAE6) and one rule for the three severities. On the fills, light / dark: placeholder 5.50 / 6.55:1 (warning) and 5.55 / 6.48:1 (success), value 17.15 / 11.54:1 and 17.30 / 11.43:1 (WCAG 1.4.3); success border on its fill 7.17 / 6.16:1; the light warning border is 2.95:1 on its fill, the shortfall accepted in the Forms foundation step 5b (issue #119), and keeps 3.09:1 against the surface (WCAG 1.4.11). C would make the severities differ on hover and bring the light warning border to 2.66:1 on the hover fill."
+    },
+    {
+      "id": "leading-icon-decorative",
+      "date": "2026-11-20",
+      "version": "0.10.9",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The search glyph keeps its contract, the field family's leading icon's: decorative on every platform, hidden from assistive technology (aria-hidden on the web, excluded from VoiceOver, a null contentDescription on Android), never a name; the label names the field. The Text field and the Number field now draw the same part with the same tokens, so the mirror check compares icon.* and control.padding-inline-start.* with theirs.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 5) among: A, always decorative, hidden from assistive technology on every platform and never a name, whatever it suggests said in the label or the description (chosen, recommended); B, decorative by default with an optional name (iconStartLabel) that makes it an image referenced from the input's description, which then needs a text alternative (WCAG 1.1.1) and 3:1 against the fill (WCAG 1.4.11, met at 5.43:1); C, as B and the icon may be an action, a button inside the box (iconStartAction), with its own focus, keyboard, name and target (WCAG 2.1.1, 2.4.7, 4.1.2, 2.5.8, the 16 / 20 px glyph under 24 px). Measured on the sheet, from the rendered page: with A the field keeps one tab stop and one name, the label, and is read as the label, the role, the value and the description; with B a named icon repeats the label (\"Email, edit text, Email\") or carries what the visible text lacks, read after the value; with C the field gets two tab stops. A is the contract of the Search field's glyph, the Button's icons and a decorative Icon. Sources: WCAG 1.1.1, a pure decoration can be ignored by assistive technology; WAI decorative images, an image whose information is already given by adjacent text gets a null text alternative; Apple HIG VoiceOver, exclude purely decorative images; Jetpack Compose, a null contentDescription for decorative graphics. An action at the start of a field is an Icon button next to it, out of this part.",
+      "tokens": [
+        "search-field.icon.*"
+      ]
+    },
+    {
+      "id": "leading-icon-spacing",
+      "date": "2026-11-20",
+      "version": "0.10.8",
+      "area": "dimension",
+      "status": "active",
+      "text": "The search glyph keeps its spacing: 8 px from the start border at every size (search-field.icon.margin-inline, space.8) and 4 / 8 / 8 px from the text, the text starting at 28 / 36 / 40 px (search-field.control.padding-inline-start); the spacing of the field family's leading icon, which the Text field and the Number field take.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 4) among: A, keep the Search field's spacing, the glyph 8 px from the border at every size (space.8) and 4 / 8 / 8 px from the text (space.4 / 8 / 8), the text at 28 / 36 / 40 px (chosen, recommended); B, the Button's leading icon, 6 / 6 / 8 px from the edge (button.container.padding-inline.icon-side) and 2 / 4 / 4 px from the label (button.container.gap), the text at 24 / 30 / 36 px; C, the Figma prototype's spacing on the field's glyph, inset 6 / 8 / 10 and gap 8 / 8 / 12, the text at 30 / 36 / 46 px; D, the glyph at the text inset of a field without icon (8 / 12 / 16) and gap 4 / 8 / 8, the text at 28 / 40 / 48 px. The Figma prototype draws an 18 / 18 / 24 px frame 6 / 8 / 10 px from the border and 8 / 8 / 12 px from the text, its large size varying between variants (gap 8 at rest, inset 8 in error, warning and success). Measured beside a field without icon, the Search field and a Button of the same size, light and dark, surface levels 0 to 3: with A the glyph starts at the text inset of a plain field in small and before it in medium and large, so it reads as the start of the box; nothing moves in the Search field, and the choice follows point 2, which kept the Search field's glyph sizes rather than the Button's. B's spacing is set for the Button's larger icon (2 px gap in small); C and D start the text later and leave the value less room. No new token: every value is on the space scale; the end padding stays the box's inline padding, 8 / 12 / 16 px.",
+      "tokens": [
+        "search-field.icon.margin-inline",
+        "search-field.control.padding-inline-start.*"
+      ]
+    },
+    {
+      "id": "leading-icon-color",
+      "date": "2026-11-20",
+      "version": "0.10.7",
+      "area": "color",
+      "status": "active",
+      "supersedes": [
+        "field-colors"
+      ],
+      "text": "The search glyph follows the text beside it: search-field.icon.placeholder-color, global.icon.on-base.neutral.tertiary (the placeholder's role), while the field is empty, and search-field.icon.color, global.icon.on-base.neutral.primary (the value's role), once something is typed; both take global.icon.state.disabled.default when disabled. On the web the template always writes a placeholder attribute, empty when there is none, so the CSS tells an empty field with :placeholder-shown. The field family's leading icon takes the same tokens. Supersedes field-colors: the box, its border, the value, the placeholder and the description keep their colors there; only the glyph changes, from the tertiary icon color in every state.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 3) among: A, global.icon.on-base.neutral.tertiary in every state, the placeholder's role and the Search field glyph's until now (recommended); B, follow the text beside it, the placeholder's role (tertiary) while the field is empty and the value's (global.icon.on-base.neutral.primary) once something is typed, as the Figma prototype does (chosen); C, global.icon.on-base.neutral.secondary in every state, the Figma prototype's color at rest. The Figma prototype binds the icon to its own variables carrying its placeholder's and its value's colors: #313131 empty (secondary), #616161 active (tertiary), #0E0E0E filled (primary), #8C8C8C disabled; the repository's placeholder is tertiary in every state (step 10), so the Figma logic on the repository's roles is B. B also matches the Button, whose icon takes its label's color. Measured on the medium Text field and the Search field, empty, filled, focused, in error, warning and success (their subtle fills previewed) and disabled, light and dark, surface levels 0 to 3: with B the icon is the placeholder's color when empty (on the fill 5.43:1 at the lowest in light, on the error fill, and 6.40:1 in dark) and the value's when filled (16.91:1 and 11.29:1 at the lowest). WCAG 1.4.11 asks 3:1 of the parts of graphics required to understand the content and the icon only illustrates, the label naming the field; under WCAG 1.1.1 a pure decoration can be ignored by assistive technology: every option clears 3:1 anyway. Disabled, the icon takes global.icon.state.disabled.default, as the text. No raw or semantic token added.",
+      "tokens": [
+        "search-field.icon.color.*",
+        "search-field.icon.placeholder-color.*"
+      ]
+    },
+    {
+      "id": "leading-icon-size",
+      "date": "2026-11-20",
+      "version": "0.10.6",
+      "area": "size",
+      "status": "active",
+      "text": "The search glyph keeps 16 / 20 / 24 px for the small, medium and large sizes (search-field.icon.size, size.2 / 3 / 4): the size of the field family's leading icon, which the Text field and the Number field take.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 2) among: A, keep the Search field's glyph sizes, one Icon step per field size, 16 / 20 / 24 px (chosen); B, the Button's and the Icon button's icon at the same size, 20 / 24 / 24 px (size.3 / 4 / 4), the severity icon's after the control; C, the Icon next to 14 and 16 px text, 16 px at every size (size.2). The Figma prototype draws a 20 / 24 / 28 px glyph in an 18 / 18 / 24 px frame, off the size scale. Measured with A, beside an Icon button and a Button of the same size: the glyph leaves 6 / 8 / 10 px above and below it in the 28 / 36 / 44 px box, 1.14 / 1.25 / 1.50 times the value text, 4 px smaller than the Icon button's glyph in small and medium; with the Search field's gap today (8 px inset, 4 / 8 / 8 px to the text), the text starts at 28 / 36 / 40 px. No new token.",
+      "tokens": [
+        "search-field.icon.size.*"
+      ]
+    },
+    {
+      "id": "leading-icon-optional",
+      "date": "2026-11-20",
+      "version": "0.10.5",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Search field's search glyph is the leading icon of the field family, always on and always search: the known exception to the guideline of no leading icon. When the Text field's leading icon lands (#103 step 15, points 2 to 5), the glyph becomes that same part, with one size, color and gap for every field.",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 1) among: A, keep today (no leading icon, the Search field keeps its own glyph); B, an optional leading icon on the single-line fields, off by default (chosen); C, as B and the Textarea too; D, on by default with a generic glyph, as the Figma prototype's left icon. The team chose B for what the component offers and A for what it advises: the icon must be feasible and optional for designs that want a more precise rendering (a marketing page with a few fields, for example), but the default and the guideline for regular applications is no leading icon, the Search field's glyph being the known exception. D was rejected because a default glyph means nothing for most fields (sell on an email field) and \"on unless switched off\" is the opposite of the Button's leading icon; C because no source and no Figma variant shows an icon in a multi-line field. The icon is decorative: hidden from assistive technology, never the label, which stays visible text (WCAG 1.1.1, 3.3.2, 2.5.3). Material lists a leading icon as optional and Apple lets a text field show an image at its leading end; Windows draws none. Its size, color, gap and accessibility contract are #103 step 15, points 2 to 5, which add the property, the part and its tokens.",
+      "refs": [
+        "wcag:1.1.1",
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "severity-icon",
+      "date": "2026-11-20",
+      "version": "0.10.4",
+      "area": "anatomy",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms step 2b), it takes the Text field's severity icon and the property severityIcon (message by default, after-control, none) with the same tokens. No token today: the mirror check ignores severity-icon.* (scripts/lib/mirrors.mjs).",
+      "rationale": "The Text field decision severity-icon (#103 step 12, points 2, 2b and 2c); the Search field mirrors the Text field but has no severity yet."
+    },
+    {
+      "id": "error-fill-subtle",
+      "date": "2026-11-20",
+      "version": "0.10.3",
+      "area": "color",
+      "status": "active",
+      "text": "When the Search field gets a severity (Forms foundation step 2b), its box in error takes the fill of the Text field: global.bg.subtle.functional.error.default, at rest and on hover alike. No token today: the Search field has no severity yet, so the mirror check ignores control.background.error (scripts/lib/mirrors.mjs).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 1, also the reference rendering of the Forms foundation step 6) between two options, measured on every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, global.bg.subtle.functional.error.default at rest and its hover step global.bg.subtle.functional.error.hover on hover; B, the subtle error fill at rest and on hover alike (chosen). In light mode A's hover fill (#FCCDC6) brings the placeholder to 4.33:1, under the 4.5:1 of WCAG 1.4.3; with B every pair passes: placeholder 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border and outline against the fill 5.45:1 and 5.14:1, against the surface levels 5.79:1 and 3.73:1 at the lowest. The fill is solid, as the team validated in the Forms foundation step 5; the hover tint it gives up was 1.05:1 from rest, and the Figma prototype, whose error fill is the same #FEECEA, has no hover in error. The value and the placeholder keep their roles (global.text.on-base.neutral.primary and .tertiary): the on-subtle neutral role has a single step, which cannot tell the placeholder from the value."
+    },
+    {
+      "id": "variants-modeled-differently",
+      "date": "2026-11-19",
+      "version": "0.10.2",
+      "area": "variant",
+      "status": "active",
+      "text": "The Search field follows the Text field's decision variants-modeled-differently, which holds the departures from the Figma prototype (the value property instead of the filled state, the platform's caret, severity with message, the description, an always visible label) and the options. The Search field has no read-only, so it takes no guideline. No token changes.",
+      "rationale": "Decided by the team on 2026-11-19 (option B of three, see the Text field's decision): the model is kept and the departures are recorded."
+    },
+    {
+      "id": "placeholder-tertiary",
+      "date": "2026-11-19",
+      "version": "0.10.1",
+      "area": "color",
+      "status": "active",
+      "text": "The placeholder of the Search field is global.text.on-base.neutral.tertiary in every enabled state (search-field.control.placeholder-color.default) and global.text.state.disabled.default when disabled, as the Text field's (decision placeholder-tertiary of the Text field, which holds the rule, the options and the measurements). The decision keeps the values the control already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep tertiary in every enabled state (chosen); B, Figma's secondary at rest and tertiary on focus; C, secondary in every state, rejected because it is too close to the typed value and the same color as the help text. See the Text field's decision for the measurements.",
+      "tokens": [
+        "search-field.control.placeholder-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "understanding-contrast-minimum",
+        "mdn-placeholder",
+        "wai-instructions-placeholder",
+        "html-placeholder",
+        "material-text-fields",
+        "hig-color",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "border-base-neutral-5",
+      "date": "2026-11-19",
+      "version": "0.10.0",
+      "area": "color",
+      "status": "active",
+      "text": "The resting border of the box is global.border.base.neutral.5, as the Text field's (decision border-base-neutral-5 of the Text field, which holds the rule, the options and the measurements): #8C8C8C in light and #9C9C9C in dark, 3.30:1 and 6.40:1 on the page, 3.12:1 and 4.80:1 at the lowest on the surface levels. Hover keeps it. Disabled, the focus outline and the severity outlines are unchanged.",
+      "tokens": [
+        "search-field.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-non-text-contrast-boundaries",
+        "material-text-fields",
+        "hig-text-fields",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "fill-page-level",
+      "date": "2026-11-19",
+      "version": "0.9.1",
+      "area": "color",
+      "status": "active",
+      "text": "The fill of the box of the Search field is the page's own level, as the Text field's (decision fill-page-level of the Text field, which holds the rule and its rationale): global.bg.level.0.default at rest, global.bg.level.0.hover on hover. The decision keeps the values the box already had: no token changes. The disabled fill is not decided here.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the page level (chosen); B, Figma's level 1; C, the default Button's translucent subtle fill, rejected because the placeholder fails WCAG 1.4.3 in dark. The fill does not identify the field, the border does. Every form control reads the same fill.",
+      "tokens": [
+        "search-field.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.3",
+        "understanding-non-text-contrast-adjacent-colors",
+        "understanding-contrast-minimum",
+        "material-text-fields-guidelines",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "state-outline-flush",
+      "date": "2026-11-19",
+      "version": "0.9.0",
+      "area": "state",
+      "status": "active",
+      "text": "The Search field draws focus as the Text field does (decision state-outline-flush of the Text field, which holds the rule and its rationale): the border stays 0.6 px in every state and the outline is drawn flush over it, offset minus the border width, so the text never moves. Focus is an outline of focus.ring.width (2.4 px) in color.focus.ring. search-field.control.outline-offset.focus-visible is removed. pnpm validate compares the shared tokens with the Text field's through the mirror check. The Search field has no severity (decision no-error-state), so it has the focus part only.",
+      "rationale": "Decided by the team on 2026-11-19 (E4a at offset minus 0.6 px); see the Text field's decision for the options, the rationale and the known consequences (2.4.13 not met at 1x and 2x).",
+      "tokens": [
+        "search-field.control.outline-width.*",
+        "search-field.control.outline-color.*"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11",
+        "wcag:2.4.13",
+        "understanding-focus-contrast",
+        "mdn-forced-colors"
+      ]
+    },
+    {
+      "id": "radius-button",
+      "date": "2026-11-19",
+      "version": "0.8.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The Search field takes the corner radius of the Button of the same size, as the Text field's (decision radius-button of the Text field, which holds the rule and its rationale): small 2 px, medium and large 4 px (search-field.control.border-radius per size). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the single 4 px radius of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among three options (A, keep 4 px at every size; B, the Shape foundation's radius per size, chosen; C, 2 px at every size); see the Text field's decision for the rationale.",
+      "tokens": [
+        "search-field.control.border-radius.*"
+      ]
+    },
+    {
+      "id": "part-gap-6",
+      "date": "2026-11-19",
+      "version": "0.7.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The parts of the Search field are 6 px apart at every size and in every state (search-field.container.gap, space.4 to space.6), as the Text field's (decision part-gap-6 of the Text field, which holds the rule and its rationale). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the 4 px gap of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options (A, keep 4 px; B and C, Figma's two inconsistent sets of gaps; D, 6 px everywhere, chosen); see the Text field's decision for the rationale.",
+      "tokens": [
+        "search-field.container.gap"
+      ]
+    },
+    {
+      "id": "label-help-text-sizes",
+      "date": "2026-11-19",
+      "version": "0.6.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The label of the Search field takes the text size of the value, and the description the helper sizes, as the Text field's (decision label-help-text-sizes of the Text field, which holds the rule and its rationale): label small 14 px, medium 16 px, large 16 px; description small 12 px, medium 12 px, large 14 px. Each is a typography token per size. pnpm validate compares search-field.label.typography.*, search-field.description.typography.* with the Text field's. Changes the single 14 px style that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep the single 14 px style for the label, the description and the message; B, the label follows the field (14 / 16 / 16 px) and the help text stays 14 px; C, the label follows the field and the help text takes Figma's helper sizes (12 / 12 / 14 px), chosen; D, Figma's sizes (label 12 / 14 / 16 px, help text 12 / 12 / 14 px, compact line height), rejected because the label would be smaller than the value at the small size and the Typography foundation would need an exception. A label above a field reads at the field's own size, and the help text is secondary to what it describes.",
+      "tokens": [
+        "search-field.label.typography.*",
+        "search-field.description.typography.*"
+      ]
+    },
+    {
+      "id": "padding-inline-button",
+      "date": "2026-11-19",
+      "version": "0.5.1",
+      "area": "dimension",
+      "status": "active",
+      "text": "The inline padding of the box of the Search field is the inline padding of the Button without an icon, as the Text field's (decision padding-inline-button of the Text field, which holds the rule and its rationale): small 8 px, medium 12 px, large 16 px, at the end of the text. The start padding that clears the glyph (28, 36 and 40 px) is the Search field's own and sums the glyph's margin, size and gap. The decision keeps the values the box already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the inline padding of the Button without an icon (8 / 12 / 16 px), chosen; B, Figma's 6 / 8 / 10 px; C, the Button's label-side padding (8 / 8 / 10 px), rejected here because it belongs to the question of a leading icon in the field. A field and a Button of the same size start their text at the same inset.",
+      "tokens": [
+        "search-field.control.padding-inline.*"
+      ]
+    },
+    {
+      "id": "box-height-button",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The minimum height of the box of the Search field takes the height of the Button of the same size, as the Text field's (decision box-height-button of the Text field, which holds the rule and its rationale): small 28 px, medium 36 px, large 44 px, so a search field and the button next to it line up. pnpm validate compares search-field.control.min-height.* with the Text field's. The search glyph (16, 20, 24 px) stays centred in the height, and the start padding that clears it is unchanged. Changes the 32 / 40 / 48 px minimum heights that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep 32 / 40 / 48 px (one step taller than the Button of the same size); B, the Button's heights 28 / 36 / 44 px, chosen; C, the height Figma's padding gives with the new text (33.6 / 40 / 44 px), which matches neither the Button nor today's; D, Figma's heights rounded up (36 / 40 / 44 px). A field and a Button of the same size line up (a search field next to its button, a form row), and the large size reaches the 44 pt that Apple recommends. The hit region of the small and medium sizes is a later step, as for the Button.",
+      "tokens": [
+        "search-field.control.min-height.*"
+      ]
+    },
+    {
+      "id": "value-text-button-size",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "typography",
+      "status": "active",
+      "supersedes": [
+        "sizes"
+      ],
+      "text": "The value and placeholder text of the Search field takes the text size of the Button of the same size, as the Text field's (decision value-text-button-size of the Text field, which holds the rule and its rationale): small 14 px, medium 16 px, large 16 px, regular weight, normal letter spacing and the tight line height (1.2). pnpm validate compares search-field.control.typography.* with the Text field's. The search glyph's size is its own tokens (16, 20, 24 px), so the 28 / 36 / 40 px start padding that clears it is unchanged. Supersedes sizes: the heights, inline padding, border, corners and the 14 px label and description of that decision are unchanged here; only the text of the large size (20 to 16 px) and the line height (1.5 to 1.2) change.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep today's text (small 14, medium 16, large 20 px, line height 1.5: the large size breaks the rule); B, the Button's whole label style (medium weight, compact line height 1.0, tight letter spacing), rejected because people's content would look like a control label, descenders and accents would touch the line, and the Typography foundation would need an exception; C, the Button's text size with the Typography foundation's single-line style (regular weight, normal letter spacing, tight line height 1.2), chosen; D, the Button's text size with the line height 1.5, rejected because that line height is meant for running text.",
+      "tokens": [
+        "search-field.control.typography.*"
+      ]
+    },
+    {
+      "id": "same-box-as-text-field",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Search field always renders the same box as the Text field of the same size and state: height, inline padding, text, border, corners, colors, focus ring, label, description and motion are the Text field's (it has no severity, message or read-only state: decision no-error-state). A Text field decision on any of these applies to the Search field in the same change: pnpm validate fails when a Search field token differs from the Text field token at the same place (MIRRORS in scripts/lib/mirrors.mjs, decision field-family-mirrors of the Text field). The glyph and the start padding that clears it are its own: the start padding (control.padding-inline-start.*) is a sum, glyph margin + glyph size + the gap before the text (28, 36, 40 px today), so a step that changes the box's inline padding, the glyph size or the glyph margin recomputes it. The mirror covers rendering only: a contract decision is asked for the Search field too.",
+      "rationale": "Nothing tied the three plain fields to the Text field: a decision on its box left them behind. Mirroring them lets every rendering step of the Text field refinement change the four in the same commit, and pnpm validate prove they agree, where the alternatives (the Text field alone, with a closing step per sibling or an issue for the others) leave the siblings out of step in between. The Select is not mirrored now: it gets its own step later, with the complex controls.",
+      "tokens": [
+        "search-field.container.*",
+        "search-field.control.*",
+        "search-field.label.*",
+        "search-field.description.*",
+        "search-field.icon.*"
+      ]
+    },
+    {
       "id": "field-colors",
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "color",
-      "status": "active",
+      "status": "superseded",
       "text": "The control follows the Text field's colors: a box on the default surface outlined in the accent neutral border color; hover tints it with the surface hover color and keeps the border; disabled takes the shared disabled colors. Value text is primary, the placeholder tertiary, the description secondary, the glyph the tertiary icon color.",
       "rationale": "The Figma library maps no color to form controls. The accent neutral border is the lightest neutral border that keeps 3:1 against the surface in both modes (WCAG 1.4.11); the hover tint reuses the surface's own hover step.",
       "tokens": [
@@ -568,7 +2059,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "size",
-      "status": "active",
+      "status": "superseded",
       "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
       "tokens": [
         "search-field.control.min-height.*",
@@ -599,7 +2090,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "state",
-      "status": "active",
+      "status": "superseded",
       "text": "A search field has no invalid or read-only state and no error message: an empty result is reported by the results. The clear control is the browser's.",
       "refs": [
         "mdn-input-search"
@@ -607,6 +2098,231 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.23.0",
+      "date": "2026-11-27",
+      "note": "Decision focus-severity-outline (#103 step 32, after #105 b3.1): new tokens for two states control.outline-width.focus-visible-error, focus-visible-warning and focus-visible-success (= focus.ring.width), which the CSS reads for a focused field in a severity; the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants now take the focus width there too, and the Figma plan drops the focus half of its hand-written rule. No rendered value changes."
+    },
+    {
+      "version": "0.22.2",
+      "date": "2026-11-27",
+      "note": "Fix (#103 step 34, from Forms step 12): the root's anatomy description names the message, no longer the error message, as the layout note and the content guideline have since 0.21.0 (step 26), where the message says an error, a warning or a success. Text only."
+    },
+    {
+      "version": "0.22.1",
+      "date": "2026-11-27",
+      "note": "Fix (#103 step 33, from Forms step 12): a disabled field never draws the focus ring. The rule that forces focus-visible for review (the playground, the states matrix) now skips a disabled control, as the severity outlines already did, so a disabled field in a severity with focus-visible forced shows no ring on the web, as Figma draws none. A disabled control takes no focus, so real properties render as before."
+    },
+    {
+      "version": "0.22.0",
+      "date": "2026-11-27",
+      "note": "Decision label-placement (#103 step 29; Forms forms-label-column, -alignment, -column-gap, -column-stacking, and the team's forms-label-column-web): property labelPlacement (above, start), token search-field.container.column-gap.start → form.gap.label-column, the subgrid row in the CSS (label end-aligned, first line centred on the box; stacking under a 30 rem container), data-label-placement in the template, the Figma component fixed above. New example: Medium, label at the start. No change with the default, above."
+    },
+    {
+      "version": "0.21.2",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6; #103 step 28): the container gap; the control's fill at rest, on hover and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors alias the Forms family (form.*), 34 tokens, every resolved value unchanged in the base tiers, iOS and Android, light and dark; no override, the border at rest being the family's default."
+    },
+    {
+      "version": "0.21.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5; #103 step 27): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the visible label and its association on the web (label element, aria-describedby); \"the glyph alone is not a label\" moves to the content guideline on the label. The three mark guidelines, checked against the Forms guidelines of the required tier (the web's hidden \"(required)\", Android's and Windows' asterisk), keep only what is the field's own: the mark after the label's words (WCAG 2.5.3), the asterisk's color and when it shows on Android, the asterisk in the UI Automation Name on Windows. The references only they cited are dropped (html-label, wcag-h44, wcag-aria1, accname-hidden, mdn-aria-required). No rendering change."
+    },
+    {
+      "version": "0.21.0",
+      "date": "2026-11-27",
+      "note": "Severities, the Text field's (decision text-field-severities, superseding no-error-state; Forms forms-search-field-severity, #103 step 26): properties severity, message and severityIcon, parts message and severity-icon, states error, warning and success, examples Medium error, warning and success. Tokens: control.background, control.border-color, control.outline-width and control.outline-color for error, warning and success, message.* and severity-icon.*, each the Text field's alias; the mirror check now compares them and ignores only control.background.readonly. The decisions error-fill-subtle, severity-fill-subtle, severity-icon and severity-icon-glyphs get their tokens. Template: data-severity on the root, aria-invalid on the control for an error, aria-describedby = description, then the icon after the control, then the message. The same resolved values as the Text field, so the same ratios, light / dark: message at the lowest error 5.79 / 5.30:1, warning 6.16 / 8.38:1, success 7.44 / 5.92:1; on the severity fills the value at least 16.91 / 11.43:1 and the placeholder 5.42 / 6.48:1; severity borders and outlines at least 5.79 / 3.73:1 (error), 6.16 / 6.07:1 (warning), 7.44 / 4.57:1 (success) on every surface level, against their own fill 5.45 / 5.14:1, 5.86 / 8.27:1, 7.17 / 6.16:1; the icon at least 5.81 / 5.30:1 (error), 6.16 / 8.38:1, 7.44 / 5.92:1. The layout note and the content guideline that said the Search field has no error message now name the message."
+    },
+    {
+      "version": "0.20.1",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation, #105 step 11 point 3); a question keeps its mark. No rendering change."
+    },
+    {
+      "version": "0.20.0",
+      "date": "2026-11-26",
+      "note": "Decision value-line-not-clipped (#103 step 3c): on the web the input's line takes its block padding and is at least 1.5 times the text (new token search-field.control.line-height, font.line-height.normal), so Chromium and WebKit no longer clip the top mark of Ấ, Ỗ, Ẫ (1.6 to 4.7 px before). The box keeps its heights except small at 200 % (+2.4 px). A web guideline and the F69 reference."
+    },
+    {
+      "version": "0.19.2",
+      "date": "2026-11-25",
+      "note": "Fix: the accessibility contract states the Android and Windows asterisk the decisions asterisk-style and required-windows-name already set: an Android guideline (Material's asterisk, explained once, in the accessibility label) and a Windows one (the asterisk in the UI Automation Name, as Microsoft asks, and IsRequiredForForm), citing Material, Windows Forms, the UIA_NamePropertyId page and IsRequiredForForm. No new rule, no rendering change."
+    },
+    {
+      "version": "0.19.1",
+      "date": "2026-11-25",
+      "note": "Fix: the disabled property no longer advises read-only, which the Search field does not have (decision no-error-state); the docs say it has no severity rather than no invalid state, the property invalid having become severity. No rendering change."
+    },
+    {
+      "version": "0.19.0",
+      "date": "2026-11-25",
+      "note": "Decision default-size-medium (#103 step 21): without a size the field stays medium (36 px), like the Button and every component with sizes; Figma's small default (the top-left variant of its set) is recorded as a departure. Nothing renders differently."
+    },
+    {
+      "version": "0.18.0",
+      "date": "2026-11-25",
+      "note": "Decision long-text-wraps (#103 step 20, point 3): the label and the description wrap at every text size and break a word longer than the line (CSS overflow-wrap: anywhere; before, such a word spilled 68 to 111 px past a 343 px field at iOS AX5); the value scrolls; the placeholder may be cut, so it stays a short example. Two guidelines. Nothing changes at the default size; contrast unchanged."
+    },
+    {
+      "version": "0.17.0",
+      "date": "2026-11-25",
+      "note": "Decision icons-at-text-size (#103 step 20, point 2): when people raise the text size, the decorative search glyph and its inset keep their size (Iconography 0.6.0, field-leading-icon-keeps-size). iOS guideline and a Windows guideline. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.16.0",
+      "date": "2026-11-25",
+      "note": "Decision grows-with-text-size (#103 step 20, point 1): new search-field.control.padding-block.small / medium / large (space.3 / 5 / 8, the Button's minimum block padding), read by the control's padding-block (was 0). Nothing moves at the default text size (28 / 36 / 44 px); when the text outgrows the minimum height, the box grows and keeps that space. Platform guidelines for the web (zoom), iOS (Dynamic Type), macOS and Windows (text scaling). Contrast unchanged."
+    },
+    {
+      "version": "0.15.0",
+      "date": "2026-11-25",
+      "note": "Decision search-own-key (#103 step 19, point 3), superseding enter-by-field-kind here: Enter runs the search on every platform, the field labels its own return key for search (the template writes enterkeyhint=\"search\"), no submit button needed when it stands alone, Escape corrected (clears in Chrome only), macOS Option-Command-F. Template: enterkeyhint=\"search\" on the input. No token, CSS or rendering change."
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-11-25",
+      "note": "Decision enter-by-field-kind (#103 step 19, point 2): Enter never adds a line and goes to the form; the form sets the return key's label through each platform's own setting (enterkeyhint through attrs on the web), no new property. Keyboard entries for Enter / Return per platform and a guideline. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-11-25",
+      "note": "Decision keyboard-on-every-platform (#103 step 19, point 1): keyboard access stated on every platform, with the keys each platform's own documentation names for text entry (iPadOS, Android, macOS, Windows) in the keyboard contract, and the generic, iOS, Android and macOS guidelines; Android Developers' Compose focus, keyboard and text pages and Windows' input pages join the trusted sources. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-11-25",
+      "note": "Decision touch-target-hit-region (#103 step 18, point 1): on iOS every size has a hit region of at least 44 x 44 pt and on Android a touch target of at least 48 x 48 dp, centered on the box, extending over the field's own text (its 6 px part gap kept) and kept clear of other controls and of other fields' labels; the drawn field is unchanged. The iOS and Android guidelines state how each size reaches the target instead of the shortfall. No token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.11.0",
+      "date": "2026-11-25",
+      "note": "Decision mark-part: the required mark lands (#103 step 16, point 4). Parts mark and asterisk (Android and Windows) inside the label; property markedFields (none by default); tokens mark.color.*, mark.typography.*, asterisk.color.* and asterisk.margin-inline-start.*; the web template draws the mark, \"(required)\" aria-hidden, and takes markLabel to translate it; the Figma component gains the BOOLEAN \"Mark\" and the TEXT \"Mark text\", no variant axis, and never draws the asterisk."
+    },
+    {
+      "version": "0.10.15",
+      "date": "2026-11-25",
+      "note": "Decision required-windows-name: on Windows the asterisk stays in the accessible name, with IsRequiredForForm (#103 step 16, point 3b). No token or rendering change."
+    },
+    {
+      "version": "0.10.14",
+      "date": "2026-11-25",
+      "note": "Decision asterisk-style: on Android and Windows, the required asterisk in the error message's red (global.text.on-base.functional.error.default), the label's size and weight, 4 px after the label (2 px in small); 5.79 to 6.12:1 light, 5.30 to 7.06:1 dark (#103 step 16, point 3). No token or rendering change yet."
+    },
+    {
+      "version": "0.10.13",
+      "date": "2026-11-25",
+      "note": "Decision mark-style: the required mark at the label's size, regular, in the description's color (global.text.on-base.neutral.secondary), the disabled text color when disabled; 12.09 to 12.78:1 light, 6.65 to 8.86:1 dark (#103 step 16, point 2). No token or rendering change yet."
+    },
+    {
+      "version": "0.10.12",
+      "date": "2026-11-25",
+      "note": "Decision marked-fields: the form setting markedFields (none by default) says which fields carry a mark; the field draws its mark from its own required (#103 step 16, point 1). No token or rendering change yet."
+    },
+    {
+      "version": "0.10.11",
+      "date": "2026-11-25",
+      "note": "Decision severity-icon-glyphs: records the warning and success glyphs of the severity icon for when the Search field has a severity (Forms step 2b). No token or rendering change."
+    },
+    {
+      "version": "0.10.10",
+      "date": "2026-11-25",
+      "note": "Decision severity-fill-subtle: records that the box takes the subtle warning or success fill once the Search field has a severity (Forms step 2b). No token or rendering change."
+    },
+    {
+      "version": "0.10.9",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-decorative: the search glyph is decorative on every platform (VoiceOver and Android guidelines added); its tokens are now mirrored from the Text field's leading icon (#103 step 15, point 5). No token or rendering change."
+    },
+    {
+      "version": "0.10.8",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-spacing: the search glyph keeps 8 px from the border and 4 / 8 / 8 px from the text, the spacing of the field family's leading icon (#103 step 15, point 4). No token or rendering change (a keep decision)."
+    },
+    {
+      "version": "0.10.7",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-color: the search glyph follows the text beside it, global.icon.on-base.neutral.tertiary while the field is empty (new token search-field.icon.placeholder-color) and global.icon.on-base.neutral.primary once something is typed (search-field.icon.color, was tertiary); the template always writes a placeholder attribute, empty when none is given (#103 step 15, point 3)."
+    },
+    {
+      "version": "0.10.6",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-size: the leading icon is 16 / 20 / 24 px, the Search field's glyph sizes (#103 step 15, point 2). No token or rendering change (a keep decision)."
+    },
+    {
+      "version": "0.10.5",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-optional: records that the search glyph is the field family's leading icon, always on (#103 step 15, point 1). No token or rendering change yet."
+    },
+    {
+      "version": "0.10.4",
+      "date": "2026-11-20",
+      "note": "Decision severity-icon: records that the Search field takes the Text field's severity icon with its severity (Forms step 2b). No token or rendering change."
+    },
+    {
+      "version": "0.10.3",
+      "date": "2026-11-20",
+      "note": "Decision error-fill-subtle: records that the box takes the subtle error fill once the Search field has a severity (Forms step 2b). No token or rendering change."
+    },
+    {
+      "version": "0.10.2",
+      "date": "2026-11-19",
+      "note": "Decision variants-modeled-differently (Text field decision of the same name): the departures from the Figma prototype are recorded (the Search field has no read-only). No token or rendering change."
+    },
+    {
+      "version": "0.10.1",
+      "date": "2026-11-19",
+      "note": "Decision placeholder-tertiary (Text field decision of the same name): the placeholder (search-field.control.placeholder-color.*) stays global.text.on-base.neutral.tertiary in every enabled state, rather than Figma's secondary at rest. Distance from the value, light / dark: 3.12:1 / 1.76:1 (secondary 1.48:1 / 1.27:1); contrast against the fill at rest 6.08:1 / 6.40:1 (lowest 5.75:1 / 5.86:1). Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.10.0",
+      "date": "2026-11-19",
+      "note": "Decision border-base-neutral-5 (Text field decision of the same name): the resting border of the box (search-field.control.border-color.default) is global.border.base.neutral.5 instead of global.border.accent.neutral.default: #8C8C8C in light (was #313131) and #9C9C9C in dark (was #CFCFCF). Contrast of the border on the surface levels 0 / 1 / 2 / 3: light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1 (was 12.78 / 12.09 / 12.78 / 12.09:1 and 11.28 / 10.33 / 9.46 / 8.47:1). Disabled, focus and invalid are unchanged."
+    },
+    {
+      "version": "0.9.1",
+      "date": "2026-11-19",
+      "note": "Decision fill-page-level (Text field decision of the same name): the fill of the box (search-field.control.background.*) stays the page's level, global.bg.level.0.default at rest and .hover on hover. Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.9.0",
+      "date": "2026-11-19",
+      "note": "Decision state-outline-flush: focus is an outline of 2.4 px (focus.ring.width, color.focus.ring) drawn flush over the 0.6 px border, offset minus the border width, instead of a ring 4 px away; the border and the text never change; outline-offset.focus-visible removed. Contrast, light / dark: focus outline 5.77:1 / 12.76:1 on the default surface (5.45 / 9.58 on level 3); WCAG 2.4.13 is no longer claimed."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-19",
+      "note": "Decision radius-button: the corner radius of the box is the Button's at the same size (search-field.control.border-radius per size: small corner-radius.2xs, 2 px; medium and large corner-radius.xs, 4 px; it was corner-radius.xs, 4 px, at every size). Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-11-19",
+      "note": "Decision part-gap-6: the parts of the field are 6 px apart at every size and in every state (search-field.container.gap: space.4 to space.6, 4 px to 6 px between the label, the box, the description and the message). The box never moves between states. Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.6.0",
+      "date": "2026-11-19",
+      "note": "Decision label-help-text-sizes (Text field decision of the same name): the label scales with the field (14 / 16 / 16 px) and the help text shrinks (12 / 12 / 14 px) (search-field.label.typography: one 14 px style becomes small, medium and large, font size body.size.sm to sm / md / md, line height normal 1.5 to tight 1.2; search-field.description.typography: body.size.sm to xs / xs / sm, so 14 px becomes 12 / 12 / 14 px; weights, normal line height and letter spacing kept). The Size property now affects the label, the description. pnpm validate now fails when the label and the value alias different font size tokens. Colors unchanged; contrast re-measured on levels 0 to 3: description 12.78:1 (levels 0 and 2) and 12.09:1 (levels 1 and 3) in light mode, 8.86:1, 8.11:1, 7.43:1 and 6.65:1 on levels 0 to 3 in dark mode, the same on every platform; 4.5:1 required (WCAG 1.4.3), the lowest being 6.65:1."
+    },
+    {
+      "version": "0.5.1",
+      "date": "2026-11-19",
+      "note": "Decision padding-inline-button (Text field decision of the same name): the inline padding (search-field.control.padding-inline.*) is the Button's inline padding without an icon at the same size. Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision box-height-button (Text field decision of the same name): the minimum height takes the height of the Button of the same size (search-field.control.min-height.*: 32 / 40 / 48 px become 28 / 36 / 44 px). The glyph and the start padding that clears it are unchanged. Target size (WCAG 2.5.8): every size stays above 24 x 24 CSS px. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Decision value-text-button-size (Text field decision of the same name): the value and placeholder text takes the text size of the Button of the same size (small 14, medium 16, large 16 px; the large size was 20 px), with the tight line height (search-field.control.typography.*: large font size body.size.lg to body.size.md, line height normal to tight). The glyph does not depend on the text size: the start padding sums are unchanged. Supersedes sizes. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "Decision same-box-as-text-field (Text field decision field-family-mirrors): the Search field is a mirror of the Text field, so every Text field decision on the box applies here in the same change and pnpm validate compares the tokens; its glyph tokens and start padding are declared as its own, and the start padding is a sum to recompute with the box. No token, CSS or template change: the tokens already resolve to the Text field's values in every platform and mode, so sizes, colors and contrast are unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-05",

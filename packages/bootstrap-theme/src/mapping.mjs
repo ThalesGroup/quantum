@@ -25,7 +25,8 @@
  * equivalences[] Quantum component (spec id) -> Bootstrap component and classes. `options` maps
  *                every option of a spec property to a class ('' = Bootstrap's default, null = no
  *                equivalent); `combinations` override a pair of options; `states` and `parts` map
- *                spec states and anatomy parts. Each id is checked against the spec.
+ *                spec states and anatomy parts. Each id is checked against the spec. `notMapped`
+ *                names a spec part or property Bootstrap has no class for, with the reason.
  */
 
 const SANS_STACK = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'";
@@ -288,7 +289,7 @@ export default {
         '--bs-radius-2': 'corner-radius.2xs',
         '--bs-radius-3': ['corner-radius.2xs', 'Bootstrap\'s placeholder and kbd radius: the Skeleton text radius.'],
         '--bs-radius-4': 'corner-radius.xs',
-        '--bs-radius-5': ['corner-radius.xs', 'button.container.border-radius.medium and text-field.control.border-radius.'],
+        '--bs-radius-5': ['corner-radius.xs', 'button.container.border-radius.medium and text-field.control.border-radius.medium.'],
         '--bs-radius-6': 'corner-radius.sm',
         '--bs-radius-7': ['corner-radius.sm', 'card.container.border-radius, alert.container.border-radius, dropdown.menu.border-radius.'],
         '--bs-radius-8': 'corner-radius.md',
@@ -359,7 +360,7 @@ export default {
     {
       id: 'btn-input', section: 'Button', component: 'button', title: 'Button and input sizes (root)', selector: ROOT, tier: 'component',
       sass: { map: '$root-tokens', strip: '--bs-' },
-      why: 'Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights differ (32, 40, 48), get their own values on .form-control below.',
+      why: 'Bootstrap sizes buttons, inputs and pagination from one set of --btn-input-* tokens. They take the Button sizes (xsmall, small, medium, large = xs, sm, default, lg); the form controls, whose Quantum heights are those of the Button (28, 36, 44) but whose text style and block padding are their own, get their own values on .form-control below.',
       tokens: {
         '--bs-btn-input-fg': ['text-field.control.color.default', 'Bootstrap\'s shared control foreground (inputs, OTP, chip input): the Text field value color.'],
         '--bs-btn-input-bg': ['text-field.control.background.default', 'Bootstrap\'s shared control background (inputs, OTP, chip input, floating labels): the Text field background.'],
@@ -457,14 +458,14 @@ export default {
       tokens: {
         '--bs-control-min-height': 'text-field.control.min-height.medium',
         '--bs-control-padding-x': 'text-field.control.padding-inline.medium',
-        '--bs-control-padding-y': ['space.7', 'Bootstrap pads inputs and textareas alike; Quantum centers a field\'s line in its min-height (no block padding) and pads only the textarea. The largest space step that keeps a medium input at its 40px min-height (line 24px + 2 x 7px + borders).'],
+        '--bs-control-padding-y': ['space.5', 'Bootstrap pads inputs and textareas alike; Quantum keeps a minimum block padding on a field (text-field.control.padding-block, 3 / 5 / 8px) that shows only once the text outgrows the min-height, and pads the textarea more. The largest space step that keeps a medium input at its 36px min-height (line 24px + 2 x 5px + borders).'],
         '--bs-control-font-size': { token: 'text-field.control.typography.medium', member: 'fontSize' },
-        '--bs-control-line-height': { token: 'text-field.control.typography.medium', member: 'lineHeight' },
+        '--bs-control-line-height': ['text-field.control.line-height', 'The value\'s shortest line on the web (decision value-line-not-clipped): Chromium and WebKit clip an input\'s text to its line box, and a 1.2 line cuts the stacked marks of Ấ or Ỗ. Bootstrap has no input-only selector, so a textarea\'s rows take 1.5 too (README, Not themable).'],
         '--bs-control-fg': 'text-field.control.color.default',
         '--bs-control-bg': 'text-field.control.background.default',
         '--bs-control-border-width': 'text-field.control.border-width',
-        '--bs-control-border-color': 'text-field.control.border-color.default',
-        '--bs-control-border-radius': 'text-field.control.border-radius',
+        '--bs-control-border-color': ['text-field.control.border-color.default', 'The base neutral 5 border: the field\'s border is lighter than the Quantum borders of the checkbox, radio and switch (accent neutral) until those are refined.'],
+        '--bs-control-border-radius': 'text-field.control.border-radius.medium',
         '--bs-control-box-shadow': { literal: 'none', rule: 'effects.shadow', why: 'No shadow is drawn in Quantum: no inset shadow on fields.' },
         '--bs-control-transition-duration': 'text-field.control.transition.duration',
         '--bs-control-transition-timing': 'text-field.control.transition.easing',
@@ -480,10 +481,10 @@ export default {
       tokens: {
         '--bs-control-min-height': 'text-field.control.min-height.small',
         '--bs-control-padding-x': 'text-field.control.padding-inline.small',
-        '--bs-control-padding-y': ['space.4', 'Keeps a small input at its 32px min-height (line 21px).'],
+        '--bs-control-padding-y': ['space.2', 'Keeps a small input at its 28px min-height (line 21px + 2 x 2px + borders).'],
         '--bs-control-font-size': { token: 'text-field.control.typography.small', member: 'fontSize' },
-        '--bs-control-line-height': { token: 'text-field.control.typography.small', member: 'lineHeight' },
-        '--bs-control-border-radius': ['text-field.control.border-radius', 'Bootstrap gives small controls the small button radius; a Quantum field keeps one radius at every size.'],
+        '--bs-control-line-height': 'text-field.control.line-height',
+        '--bs-control-border-radius': 'text-field.control.border-radius.small',
       },
     },
     {
@@ -492,36 +493,51 @@ export default {
       tokens: {
         '--bs-control-min-height': 'text-field.control.min-height.large',
         '--bs-control-padding-x': 'text-field.control.padding-inline.large',
-        '--bs-control-padding-y': ['space.8', 'Keeps a large input at its 48px min-height (line 30px).'],
+        '--bs-control-padding-y': ['space.8', 'Keeps a large input at its 44px min-height (line 24px + 2 x 8px + borders).'],
         '--bs-control-font-size': { token: 'text-field.control.typography.large', member: 'fontSize' },
-        '--bs-control-line-height': { token: 'text-field.control.typography.large', member: 'lineHeight' },
-        '--bs-control-border-radius': 'text-field.control.border-radius',
+        '--bs-control-line-height': 'text-field.control.line-height',
+        '--bs-control-border-radius': 'text-field.control.border-radius.large',
       },
     },
     {
-      id: 'form-control-focus', section: 'Text field', component: 'text-field', title: 'Focus ring offset', tier: 'component',
+      id: 'form-control-focus', section: 'Text field', component: 'text-field', title: 'Focus ring offset (flush)', tier: 'component',
       selector: '.form-control:focus-visible, .form-control:focus-within',
-      tokens: { '--bs-focus-ring-offset': 'text-field.control.outline-offset.focus-visible' },
+      why: 'Quantum draws the ring of a text-entry control flush over its border (Focus foundation, decision text-entry-flush): the offset is minus the border width. Bootstrap draws no outline at rest, so the 1.2 px severity outline of a Quantum field is not themable; the focused one is (below).',
+      tokens: { '--bs-focus-ring-offset': { template: 'calc(-1 * {text-field.control.border-width})', why: 'The ring covers the 0.6px border exactly (a token alias cannot negate a token).' } },
+    },
+    {
+      id: 'form-control-error-focus', section: 'Text field', component: 'text-field', title: 'Error, focused', tier: 'component',
+      selector: '.form-control.is-invalid:focus-visible',
+      also: ['[data-bs-validate] .form-control:user-invalid:focus-visible'],
+      why: 'Bootstrap reads --bs-danger-focus-ring on these rules (the theme sets it on the root to the one focus color for every other use). A focused Quantum field in error keeps the severity color at the focus width (step 7); the ring width is the root --bs-focus-ring-width.',
+      tokens: { '--bs-danger-focus-ring': 'text-field.control.outline-color.error' },
+    },
+    {
+      id: 'form-control-success-focus', section: 'Text field', component: 'text-field', title: 'Success, focused', tier: 'component',
+      selector: '.form-control.is-valid:focus-visible',
+      also: ['[data-bs-validate~=valid] .form-control:user-valid:focus-visible'],
+      why: 'Bootstrap reads --bs-success-focus-ring on these rules: a focused Quantum field in success keeps the severity color at the focus width (step 7).',
+      tokens: { '--bs-success-focus-ring': 'text-field.control.outline-color.success' },
     },
     {
       id: 'form-control-error', section: 'Text field', component: 'text-field', title: 'Error (.is-invalid)', tier: 'component',
       selector: '.form-control.is-invalid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle; every severity: severity-fill-subtle).'] },
     },
     {
       id: 'form-control-user-error', section: 'Text field', component: 'text-field', title: 'Error (:user-invalid)', tier: 'component',
       selector: '[data-bs-validate] .form-control:user-invalid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.error', '--bs-control-bg': ['text-field.control.background.error', 'The subtle error fill, at rest and on hover alike (decision error-fill-subtle; every severity: severity-fill-subtle).'] },
     },
     {
       id: 'form-control-success', section: 'Text field', component: 'text-field', title: 'Success (.is-valid)', tier: 'component',
       selector: '.form-control.is-valid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success', '--bs-control-bg': ['text-field.control.background.success', 'The subtle success fill, at rest and on hover alike (decision severity-fill-subtle).'] },
     },
     {
       id: 'form-control-user-success', section: 'Text field', component: 'text-field', title: 'Success (:user-valid)', tier: 'component',
       selector: '[data-bs-validate~=valid] .form-control:user-valid',
-      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success' },
+      tokens: { '--bs-control-border-color': 'text-field.control.border-color.success', '--bs-control-bg': ['text-field.control.background.success', 'The subtle success fill, at rest and on hover alike (decision severity-fill-subtle).'] },
     },
     {
       id: 'chip-input', section: 'Text field', component: 'text-field', title: '.chip-input', tier: 'component',
@@ -532,28 +548,58 @@ export default {
         '--bs-control-fg': 'text-field.control.color.default',
         '--bs-control-bg': 'text-field.control.background.default',
         '--bs-control-border-width': 'text-field.control.border-width',
-        '--bs-control-border-color': 'text-field.control.border-color.default',
-        '--bs-control-border-radius': 'text-field.control.border-radius',
+        '--bs-control-border-color': ['text-field.control.border-color.default', 'The base neutral 5 border: the field\'s border is lighter than the Quantum borders of the checkbox, radio and switch (accent neutral) until those are refined.'],
+        '--bs-control-border-radius': 'text-field.control.border-radius.medium',
+      },
+    },
+    {
+      id: 'form-adorn', section: 'Text field', component: 'text-field', title: 'Leading icon (.form-adorn)', tier: 'component',
+      selector: '.form-adorn',
+      why: 'Bootstrap draws an icon inside a field with label.form-control.form-adorn > .form-adorn-icon + input.form-ghost: the Quantum leading icon (iconStart; the Search field\'s icon). .form-adorn has no size modifier, so it takes the medium values; the icon size reaches an SVG child only.',
+      tokens: {
+        '--bs-form-adorn-gap': ['space.8', 'The medium gap between the icon and the text: text-field.control.padding-inline-start.medium (36px) - icon.margin-inline (8px) - icon.size.medium (20px). Quantum has no gap token: the gap is what the start padding leaves.'],
+        '--bs-form-adorn-icon-size': 'text-field.icon.size.medium',
+        '--bs-form-adorn-icon-color': ['text-field.icon.placeholder-color.default', 'The empty field\'s icon color (tertiary): Bootstrap has one color, and Quantum turns the icon primary once the field is filled (decision leading-icon-color). .form-adorn-text takes it too.'],
       },
     },
     {
       id: 'labels', section: 'Text field', component: 'text-field', title: 'Labels (.form-label)', selector: ROOT, tier: 'component',
       sass: { map: '$root-tokens', strip: '--bs-' },
-      why: 'Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label.',
+      why: 'Bootstrap reads these with fallbacks on .form-label; declared on the root, they reach every label. A Quantum label scales with its field; Bootstrap has one label size, so it takes the medium one.',
       tokens: {
+        '--bs-label-margin-bottom': ['text-field.container.gap', 'The space between a field\'s parts, under a label set outside .form-field. Inside .form-field, Bootstrap spaces the label, control and texts with a fixed 0.5rem gap and sets this margin to 0 (README, Not themable).'],
         '--bs-label-color': 'text-field.label.color.default',
-        '--bs-label-font-size': { token: 'text-field.label.typography', member: 'fontSize' },
-        '--bs-label-font-weight': { token: 'text-field.label.typography', member: 'fontWeight' },
+        '--bs-label-font-size': { token: 'text-field.label.typography.medium', member: 'fontSize' },
+        '--bs-label-font-weight': { token: 'text-field.label.typography.medium', member: 'fontWeight' },
       },
     },
     {
       id: 'form-text', section: 'Text field', component: 'text-field', title: 'Description (.form-text)', tier: 'component',
       selector: '.form-text',
       sass: { map: '$form-text-tokens', strip: '--bs-' },
+      why: 'A Quantum description is smaller with its field; Bootstrap has one description size, so it takes the medium one (12px).',
       tokens: {
-        '--bs-form-text-margin-top': 'text-field.container.gap',
-        '--bs-form-text-font-size': { token: 'text-field.description.typography', member: 'fontSize' },
+        '--bs-form-text-font-size': { token: 'text-field.description.typography.medium', member: 'fontSize' },
         '--bs-form-text-color': 'text-field.description.color.default',
+      },
+    },
+
+    {
+      id: 'invalid-feedback', section: 'Text field', component: 'text-field', title: 'Error message (.invalid-feedback)', tier: 'component',
+      selector: '.invalid-feedback',
+      why: 'Bootstrap reads --bs-danger-fg and --bs-font-size-sm on this rule; set here, they reach the field message only, while alerts and badges keep the root on-subtle text. A Quantum message scales with its field; Bootstrap has one message size, so it takes the medium one. Its medium weight has no variable (README, Not themable).',
+      tokens: {
+        '--bs-danger-fg': 'text-field.message.color.error',
+        '--bs-font-size-sm': { token: 'text-field.message.typography.medium', member: 'fontSize' },
+      },
+    },
+    {
+      id: 'valid-feedback', section: 'Text field', component: 'text-field', title: 'Success message (.valid-feedback)', tier: 'component',
+      selector: '.valid-feedback',
+      why: 'Bootstrap reads --bs-success-fg and --bs-font-size-sm on this rule: the field message in the on-base success text, at the medium size.',
+      tokens: {
+        '--bs-success-fg': 'text-field.message.color.success',
+        '--bs-font-size-sm': { token: 'text-field.message.typography.medium', member: 'fontSize' },
       },
     },
 
@@ -952,12 +998,31 @@ export default {
       component: 'text-field', bootstrap: 'Form control', base: 'input.form-control',
       options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
       states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
-      parts: { label: '.form-label', control: '.form-control', description: '.form-text', message: '.invalid-feedback' },
+      parts: { label: '.form-label', control: '.form-control', field: 'label.form-control.form-adorn (with iconStart)', icon: '.form-adorn-icon', description: '.form-text', message: '.invalid-feedback' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
     },
-    { component: 'textarea', bootstrap: 'Form control', base: 'textarea.form-control', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
+    {
+      component: 'textarea', bootstrap: 'Form control', base: 'textarea.form-control',
+      options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
+      states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
+      parts: { label: '.form-label', control: '.form-control', description: '.form-text', message: '.invalid-feedback' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
+    },
     { component: 'select', bootstrap: 'Form control', base: 'select.form-control', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
-    { component: 'number-field', bootstrap: 'Form control', base: 'input[type=number].form-control', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
-    { component: 'search-field', bootstrap: 'Form adorn', base: 'label.form-control.form-adorn > .form-adorn-icon + input.form-ghost', options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } } },
+    {
+      component: 'number-field', bootstrap: 'Form control', base: 'input[type=number].form-control',
+      options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
+      states: { error: '.is-invalid', warning: null, success: '.is-valid', readonly: '[readonly]', disabled: ':disabled' },
+      parts: { label: '.form-label', control: '.form-control', field: 'label.form-control.form-adorn (with iconStart)', icon: '.form-adorn-icon', description: '.form-text', message: '.invalid-feedback' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', 'severity-icon': '.invalid-feedback and .valid-feedback draw no icon: put the icon in the message markup.', severityIcon: 'Where the severity icon sits is markup: Bootstrap draws none.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
+    },
+    {
+      component: 'search-field', bootstrap: 'Form adorn', base: 'label.form-control.form-adorn > .form-adorn-icon + input.form-ghost',
+      options: { size: { small: '.form-control-sm', medium: '', large: '.form-control-lg' } },
+      states: { disabled: ':disabled' },
+      parts: { label: '.form-label', field: 'label.form-control.form-adorn', control: 'input.form-ghost', icon: '.form-adorn-icon', description: '.form-text' },
+      notMapped: { mark: 'The optional or required mark is words in the label: write it in the .form-label markup; Bootstrap has no class for it.', asterisk: 'Drawn on Android and Windows only (the web marks fields with words); Bootstrap has no class for it.', markedFields: 'Which fields carry a mark is the form\'s markup: Bootstrap has no setting for it.' },
+    },
     { component: 'progress-bar', bootstrap: 'Progress', base: '.progress > .progress-bar', options: { size: { small: null, medium: '' } }, parts: { track: '.progress', indicator: '.progress-bar' }, bootstrapOnly: ['.progress-stacked', '.progress-bar-striped'] },
     { component: 'spinner', bootstrap: 'Spinners', base: '.spinner-border', options: { size: { small: '.spinner-sm', medium: '', large: null } }, bootstrapOnly: ['.spinner-grow'] },
     { component: 'pagination', bootstrap: 'Pagination', base: '.pagination', options: { size: { small: '.pagination-sm', medium: '' } }, states: { current: '.active', disabled: '.disabled' }, bootstrapOnly: ['.pagination-lg'] },

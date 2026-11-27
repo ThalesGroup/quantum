@@ -24,12 +24,18 @@
   --_control-border-color-hover: var(--checkbox-control-border-color-hover);
   --_control-color: var(--checkbox-control-color-checked);
   --_label-color: var(--checkbox-label-color-default);
+  --_mark-color: var(--checkbox-mark-color-default);
   --_description-color: var(--checkbox-description-color-default);
   --_label-font-family: var(--checkbox-label-typography-medium-font-family);
   --_label-font-size: var(--checkbox-label-typography-medium-font-size);
   --_label-font-weight: var(--checkbox-label-typography-medium-font-weight);
   --_label-line-height: var(--checkbox-label-typography-medium-line-height);
   --_label-letter-spacing: var(--checkbox-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--checkbox-mark-typography-medium-font-family);
+  --_mark-font-size: var(--checkbox-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--checkbox-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--checkbox-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--checkbox-mark-typography-medium-letter-spacing);
   --_description-font-family: var(--checkbox-description-typography-medium-font-family);
   --_description-font-size: var(--checkbox-description-typography-medium-font-size);
   --_description-font-weight: var(--checkbox-description-typography-medium-font-weight);
@@ -60,6 +66,11 @@
   --_label-font-weight: var(--checkbox-label-typography-small-font-weight);
   --_label-line-height: var(--checkbox-label-typography-small-line-height);
   --_label-letter-spacing: var(--checkbox-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--checkbox-mark-typography-small-font-family);
+  --_mark-font-size: var(--checkbox-mark-typography-small-font-size);
+  --_mark-font-weight: var(--checkbox-mark-typography-small-font-weight);
+  --_mark-line-height: var(--checkbox-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--checkbox-mark-typography-small-letter-spacing);
   --_description-font-family: var(--checkbox-description-typography-small-font-family);
   --_description-font-size: var(--checkbox-description-typography-small-font-size);
   --_description-font-weight: var(--checkbox-description-typography-small-font-weight);
@@ -122,6 +133,16 @@
   cursor: pointer;
 }
 
+/* The required mark, inside the label after a word space (markedFields; decision mark-part, Forms forms-mark-style). */
+.ds-checkbox__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
+}
+
 .ds-checkbox__description {
   grid-column: 2;
   margin: 0;
@@ -145,6 +166,41 @@
   font-weight: var(--_message-font-weight);
   line-height: var(--_message-line-height);
   letter-spacing: var(--_message-letter-spacing);
+}
+
+/* ---- Severity icon ---------------------------------------------------------
+   At the start of the message only (severityIcon message): a choice control's label or options follow its box,
+   so it draws no icon after it (Forms decision forms-severity-icon-placement). 16 px, centred on the message's
+   first line, severity-icon.gap.message before the text. */
+
+.ds-checkbox__message:has(> .ds-checkbox__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--checkbox-severity-icon-gap-message);
+}
+
+.ds-checkbox__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--checkbox-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+  color: var(--checkbox-severity-icon-color-error);
+  font-family: var(--checkbox-severity-icon-font-family);
+  font-size: var(--checkbox-severity-icon-size-message);
+  font-weight: var(--checkbox-severity-icon-font-weight);
+  line-height: var(--checkbox-severity-icon-size-message);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--checkbox-severity-icon-fill),
+    "GRAD" var(--checkbox-severity-icon-grade),
+    "opsz" var(--checkbox-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ---- States -------------------------------------------------------------- */
@@ -218,6 +274,7 @@
 .ds-checkbox:where([data-state="disabled"]),
 .ds-checkbox:has(.ds-checkbox__control:disabled) {
   --_label-color: var(--checkbox-label-color-disabled);
+  --_mark-color: var(--checkbox-mark-color-disabled);
   --_description-color: var(--checkbox-description-color-disabled);
 }
 .ds-checkbox:where([data-state="disabled"]) .ds-checkbox__control,

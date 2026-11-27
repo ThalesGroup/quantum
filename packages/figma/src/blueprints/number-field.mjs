@@ -6,11 +6,13 @@
  * Not drawn: the browser's spin buttons, which keep their native look on the web (no token), and
  * the tabular figures of the value (font-variant-numeric, not a token).
  */
-import { CONTENT, TRANSITION, container, content, control, description, message, label } from './text-field.mjs';
+import { CONTENT, LEADING_ICON, TRANSITION, LINE_FLOOR, ICON_AXES, container, content, description, message, labelRow, LONG_LABEL_NOTE, FIELD_SETTINGS, LABEL_COLUMN, ASTERISK, withLeadingIcon, withSeverityIcon, SEVERITY_ICON_AXES } from './text-field.mjs';
 
 export default {
-  axes: [CONTENT],
-  booleans: { 'Show description': false },
-  root: container([label, control({ children: content({ value: '0' }) }), description, message]),
-  notDrawn: [TRANSITION],
+  axes: [CONTENT, LEADING_ICON],
+  fixed: FIELD_SETTINGS,
+  booleans: { Mark: true, 'Show description': false },
+  note: LONG_LABEL_NOTE,
+  root: container([labelRow, withSeverityIcon(withLeadingIcon(content({ value: '0' }), 'euro')), description, message]),
+  notDrawn: [LABEL_COLUMN, TRANSITION, SEVERITY_ICON_AXES, ICON_AXES, ASTERISK, LINE_FLOOR],
 };

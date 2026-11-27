@@ -15,7 +15,7 @@
  * `values` holds the resolved value of each one in the default mode, which the plugin sets first.
  */
 import { cssVarName, isAlias, aliasPath, resolveContext, resolveValue } from '../../../scripts/lib/dtcg.mjs';
-import { activeTokens, parseTokenPath } from '../../../scripts/lib/token-map.mjs';
+import { activeTokens, effectiveStates, isValueState, parseTokenPath } from '../../../scripts/lib/token-map.mjs';
 
 /** Figma variable collection of each token tier. */
 export const COLLECTIONS = {
@@ -48,11 +48,15 @@ const COMPONENT_SCOPES = {
   'border-color': ['STROKE_COLOR'],
   'outline-color': ['STROKE_COLOR'],
   color: ['TEXT_FILL'],
+  'placeholder-color': ['TEXT_FILL'],
   'border-width': ['STROKE_FLOAT'],
   'outline-width': ['STROKE_FLOAT'],
   'border-radius': ['CORNER_RADIUS'],
   'padding-inline': ['GAP'],
   'padding-block': ['GAP'],
+  'padding-inline-start': ['GAP'],
+  'margin-inline': ['GAP'],
+  'margin-inline-start': ['GAP'],
   gap: ['GAP'],
   'outline-offset': ['GAP'],
   'min-height': ['WIDTH_HEIGHT'],
@@ -61,13 +65,10 @@ const COMPONENT_SCOPES = {
   'font-size': ['FONT_SIZE'],
   'font-weight': ['FONT_WEIGHT'],
   'letter-spacing': ['LETTER_SPACING'],
-  // No Figma field takes them: a unitless line height (Figma reads pixels), the icon font's axes.
-  // upstream(figma): no variable binds a font's variation axes (fill, grade, optical size).
   opacity: ['OPACITY'],
+  // No Figma field takes a unitless line height (Figma reads pixels): a typography's member keeps it,
+  // with no scope. The icon font's axes have no variable (#103 step 23, Q4: blueprints list them in `notDrawn`).
   'line-height': [],
-  fill: [],
-  grade: [],
-  'optical-size': [],
 };
 
 /** Figma variable name of a token path (or of its segments). */
@@ -202,18 +203,23 @@ export function figmaVariables(loaded, paths) {
  * scripts/lib/token-map.mjs names them) that drives each field. It holds no value: each variant binds the
  * token its slot makes active for that configuration, exactly as the CSS reads it.
  *
- *   { root, axes?, booleans?, uses?, notDrawn? }
+ *   { root, axes?, fixed?, booleans?, uses?, notDrawn?, note? }
  *
  * - `root`: the component's node (a frame). Every node has a `type` and optionally `name`,
  *   `when(v)` (drawn only when true), `visibleProperty` (the BOOLEAN property showing it),
  *   `context(v)` (`{ props, state }` merged into the configuration of its subtree: a current
  *   page, an expanded item, a menu item's intent), `bind` (key -> slot, or `(v) => slot | null`),
- *   `derive` (key -> `[slot, factor]`: a value computed from a token, set without a variable),
- *   `width` / `height` (`'HUG'`, `'FILL'` or px) and `absolute` (`{ x, y }` in px or `'center'`).
+ *   `derive` (key -> `[slot, factor]`: a value computed from a token, set without a variable; a
+ *   typography slot gives its font size, so `['mark.typography', 0.25]` is a quarter of it, or with
+ *   `'line'` third its line, font size x line height, so `['message.typography', 1, 'line']` is
+ *   the height of one message line; a derived `width` or `height` is the node's fixed size),
+ *   `width` / `height` (`'HUG'`, `'FILL'` or px), `maxWidth` (px: a HUG node grows up to it, a
+ *   text wrapping there) and `absolute` (`{ x, y }` in px or `'center'`).
  *   These layout keys (and `layout`, `align`, `arc`, `path`, `textDecoration`) may also
  *   be `(v) => value`.
  *   - `frame`: `layout` (`'HORIZONTAL'`, `'VERTICAL'` or none), `align` (`{ primary, counter }`,
  *     Figma's MIN, CENTER, MAX, SPACE_BETWEEN, BASELINE),
+ *     `wrap` (true: the children wrap onto further rows, Figma's layoutWrap WRAP),
  *     `children`, `focusRing` (the part whose `outline-*` slots draw a ring outside it).
  *   - `text`: `text` (or `(v) => text`), `property` (the TEXT property it shows),
  *     `textDecoration` (`'UNDERLINE'`).
@@ -229,9 +235,14 @@ export function figmaVariables(loaded, paths) {
  *   An opacity variable holds a percentage (0-100), as Figma reads it.
  * - `axes`: variant properties beyond the spec's enum properties and its states, each
  *   `{ name, values }`, read in `v.axes[name]` (the button's icon slots, whose padding differs).
+ * - `fixed`: enum properties of the spec kept out of the variant axes, id -> the value every variant
+ *   draws (a form setting such as `markedFields`, which a BOOLEAN and a TEXT property show instead).
  * - `booleans`: BOOLEAN properties, name -> default.
+ * - `note`: guidance for the designer, written after the summary in the component set's description
+ *   (Figma) and in the default variant's annotation (Penpot, at most 300 characters).
  * - `notDrawn`: `[{ slot, reason }]`, the token slots Figma cannot draw. Every slot of the
- *   component is bound by the blueprint or listed here (`uncovered` lists the others).
+ *   component is bound by the blueprint or listed here (`uncovered` lists the others). A listed
+ *   slot has no variable (nor Penpot token): the library holds what its components draw.
  *
  * The variants are every enum option x every axis value x every state of the spec (`v` is
  * `{ props, axes, state }`), the default first on each axis: Figma's default variant is the
@@ -268,7 +279,7 @@ const ICON_SIZE = ['width', 'height', 'fontSize', 'lineHeight'];
 const PAINTS = { fill: 'fills', stroke: 'strokes' };
 const NODE_TYPES = new Set(['frame', 'text', 'icon', 'ellipse', 'vector', 'instance']);
 /** Node keys copied as they are into the plan. */
-const PLAIN = ['layout', 'align', 'width', 'height', 'absolute', 'arc', 'path', 'strokeCap', 'textDecoration', 'visibleProperty'];
+const PLAIN = ['layout', 'align', 'wrap', 'width', 'height', 'maxWidth', 'absolute', 'arc', 'path', 'strokeCap', 'textDecoration', 'visibleProperty'];
 
 /** The values of an enum property, its default first. */
 const defaultFirst = (property) => {
@@ -293,7 +304,14 @@ export const slotsOf = (spec, tokens) => new Set(tokens.map((t) => parseTokenPat
 export function figmaComponent(loaded, spec, blueprint) {
   const tokens = loaded.all.filter((t) => t.tier === 'component' && t.segments[0] === spec.id);
   const slots = slotsOf(spec, tokens);
-  const vars = figmaVariables(loaded, tokens.map((t) => t.path));
+  const notDrawn = blueprint.notDrawn ?? [];
+  // A notDrawn entry names slots, or a prefix of slots (`container.transition`).
+  const listed = notDrawn.flatMap((n) => n.slot.split(/,\s*/));
+  const isListed = (slot) => listed.some((l) => slot === l || slot.startsWith(`${l}.`));
+  // The library holds what the components draw (#103 step 23, Q4): a slot not drawn has no variable,
+  // unless a drawn token aliases it (figmaVariables follows the aliases).
+  const notExported = tokens.filter((t) => isListed(parseTokenPath(spec, t.segments).slot)).map((t) => t.path);
+  const vars = figmaVariables(loaded, tokens.map((t) => t.path).filter((p) => !notExported.includes(p)));
   const known = new Set(vars.variables.map((v) => v.name));
   const resolved = (path) => resolveValue(loaded.byPath.get(path).value, loaded.byPath);
   const values = {};
@@ -365,18 +383,40 @@ export function figmaComponent(loaded, spec, blueprint) {
       out.bind ??= {};
       for (const f of fields) out.bind[f] = binding(path);
     }
-    for (const [key, [slot, factor]] of Object.entries(node.derive ?? {})) {
+    for (const [key, [slot, factor, measure = 'font-size']] of Object.entries(node.derive ?? {})) {
       useSlot(slot);
       const path = active.get(slot);
       if (!path) continue;
-      out.set ??= {};
-      for (const f of FIELDS[key]) out.set[f] = +(px(resolved(path)) * factor).toFixed(3);
+      const value = resolved(path);
+      const typo = value && typeof value === 'object' && 'fontSize' in value;
+      // A typography's line: its font size times its line height (unitless, or a length as it is).
+      const line = () => (typeof value.lineHeight === 'number' ? px(value.fontSize) * value.lineHeight : px(value.lineHeight));
+      const base = !typo ? px(value) : measure === 'line' ? line() : px(value.fontSize);
+      const computed = +(base * factor).toFixed(3);
+      // A derived width or height is the node's fixed size, as a size in pixels is.
+      if (key === 'width' || key === 'height') out[key] = computed;
+      else {
+        out.set ??= {};
+        for (const f of FIELDS[key]) out.set[f] = computed;
+      }
     }
     if (node.focusRing) {
-      const ring = ['outline-width', 'outline-offset', 'outline-color'].map((p) => `${node.focusRing}.${p}`);
+      // A part without an `outline-offset` slot draws its ring flush over its border: the offset is
+      // minus the border width, a number (a variable cannot be negated: `upstream(figma)`).
+      const flush = !slots.has(`${node.focusRing}.outline-offset`);
+      const ring = ['outline-width', ...(flush ? [] : ['outline-offset']), 'outline-color'].map((p) => `${node.focusRing}.${p}`);
       ring.forEach(useSlot);
-      const [width, offset, color] = ring.map((s) => active.get(s));
-      if (width) out.focusRing = { strokeWeight: binding(width), offset: binding(offset), stroke: binding(color) };
+      let width = active.get(`${node.focusRing}.outline-width`);
+      // A flush ring follows the CSS of the text-entry controls: a disabled control draws none (not
+      // even its severity's outline). A focused one in a severity takes its token for two states
+      // (`outline-width.focus-visible-<severity>`), which the token rule makes active.
+      if (flush && width && effectiveStates(spec, v.props, v.state).includes('disabled')) width = undefined;
+      const offset = active.get(`${node.focusRing}.outline-offset`);
+      const color = active.get(`${node.focusRing}.outline-color`);
+      if (width) {
+        const border = active.get(`${node.focusRing}.border-width`);
+        out.focusRing = { strokeWeight: binding(width), offset: flush ? -px(resolved(border)) : binding(offset), stroke: binding(color) };
+      }
     }
     for (const [key, prop] of [['text', 'property'], ['glyph', 'property']]) {
       if (node[key] === undefined) continue;
@@ -395,18 +435,28 @@ export function figmaComponent(loaded, spec, blueprint) {
     return out;
   };
 
+  const fixed = blueprint.fixed ?? {};
+  for (const [id, value] of Object.entries(fixed)) {
+    const property = spec.properties.find((p) => p.id === id && p.type === 'enum');
+    if (!property) throw new Error(`${spec.id}: fixed names "${id}", which is no enum property of the spec`);
+    if (!property.options.some((o) => o.value === value)) throw new Error(`${spec.id}: fixed sets ${id} to "${value}", which is not one of its options`);
+  }
   const enums = spec.properties.filter((p) => p.type === 'enum');
+  const enumAxes = enums.filter((p) => !(p.id in fixed));
+  // A state an enum axis already sets (`severity: "error"` sets `error`) is left out of State, so a
+  // variant never names it twice or two contradictory values (`Severity=error, State=warning`).
+  const setByAxis = (s) => isValueState(s) && enumAxes.some((p) => p.id === s.property);
   const axes = [
-    ...enums.map((p) => ({ name: p.name, key: p.id, values: defaultFirst(p) })),
+    ...enumAxes.map((p) => ({ name: p.name, key: p.id, values: defaultFirst(p) })),
     ...(blueprint.axes ?? []).map((a) => ({ name: a.name, key: a.name, values: a.values, extra: true })),
-    { name: 'State', key: 'state', values: spec.states.map((s) => s.id) },
+    { name: 'State', key: 'state', values: spec.states.filter((s) => !setByAxis(s)).map((s) => s.id) },
   ];
   const columnAxes = axes.filter((a) => (a.key === 'size' && !a.extra) || a.key === 'state');
   const rowAxes = axes.filter((a) => !columnAxes.includes(a));
 
   const variants = combinations(axes).map((combo) => {
     const v = {
-      props: Object.fromEntries(enums.map((p) => [p.id, combo[p.id]])),
+      props: Object.fromEntries(enums.map((p) => [p.id, p.id in fixed ? fixed[p.id] : combo[p.id]])),
       axes: Object.fromEntries(axes.filter((a) => a.extra).map((a) => [a.name, combo[a.key]])),
       state: combo.state,
     };
@@ -418,15 +468,13 @@ export function figmaComponent(loaded, spec, blueprint) {
     };
   });
 
-  const notDrawn = blueprint.notDrawn ?? [];
-  // A notDrawn entry names slots, or a prefix of slots (`container.transition`).
-  const listed = notDrawn.flatMap((n) => n.slot.split(/,\s*/));
-  for (const slot of slots) if (listed.some((l) => slot === l || slot.startsWith(`${l}.`))) used.add(slot);
+  for (const slot of slots) if (isListed(slot)) used.add(slot);
   return {
     id: spec.id,
     name: spec.name,
     version: spec.version,
     description: spec.summary,
+    note: blueprint.note ?? null,
     page: spec.name,
     properties: [
       ...axes.map((a) => ({ name: a.name, kind: 'VARIANT', values: a.values.map(String) })),
@@ -437,6 +485,7 @@ export function figmaComponent(loaded, spec, blueprint) {
     variants,
     uses: blueprint.uses ?? [],
     notDrawn,
+    notExported,
     uncovered: [...slots].filter((s) => !used.has(s)).sort(),
     values,
     variables: vars,

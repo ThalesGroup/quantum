@@ -13,6 +13,7 @@ export const meta = {
     CHANGES.collapse,
     CHANGES.rail,
     'The email field of the opt-in form shows its "Email" label (the original only has a placeholder), and the browser requires a value before subscribing.',
+    'A note before the email field says "All fields are required unless marked optional.": the Forms rule marks the fewer fields (the original marks none).',
   ],
   gaps: [
     GAPS.collapse,
@@ -27,6 +28,7 @@ export function render() {
   const optIn = slot(
     ds.card({ title: 'Subscribe to our newsletter', description: 'Opt-in to receive updates and news about the sidebar.', headingLevel: 2 }),
     el('form', { class: 'scr-form', action: '#', method: 'post' }, el('div', { class: 'scr-stack' },
+      el('p', { class: 'scr-hint' }, 'All fields are required unless marked optional.'),
       ds.textField({ label: 'Email', placeholder: 'Email', size: 'small', required: true, id: 'sidebar-06-email', name: 'email', attrs: { autocomplete: 'email', inputmode: 'email' } }),
       ds.button({ label: 'Subscribe', emphasis: 'accent', size: 'small', type: 'submit' }),
     )),

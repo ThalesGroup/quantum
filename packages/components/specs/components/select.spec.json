@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.6.0",
+  "version": "0.9.1",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -24,6 +24,20 @@
       "role": "label",
       "required": true,
       "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
+    },
+    {
+      "id": "mark",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "The required mark of the Forms rule, at the end of the label after a word space: \"(optional)\" on a field that is not required when the form marks optional fields, \"(required)\" on a required field when it marks required fields (markedFields), nothing otherwise. The label's size, regular, the description's color (Forms decision forms-mark-style). On the web \"(required)\" is hidden from assistive technology, the required attribute saying it, and \"(optional)\" is part of the name."
+    },
+    {
+      "id": "asterisk",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "On Android and Windows only, in place of the mark: an asterisk at the end of the label of a required field, 4 px after it (2 px in small), at the label's size and weight (label.typography), in the error message's red (Forms decision forms-asterisk-style), kept in the accessible name. Never drawn on the web, iOS and macOS, so neither the reference rendering nor the Figma component draws it."
     },
     {
       "id": "field",
@@ -99,6 +113,17 @@
         "success"
       ],
       "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), associated with the control as a description. Shown only with a severity."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error",
+        "warning",
+        "success"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\", \"Warning\", \"Success\"): error, warning or check_circle, the Alert's glyphs. Placed by severityIcon: after the field box, centred on it, the box giving up its size and gap while the indicator stays inside; or at the start of the message, before its text. Never inside the box."
     }
   ],
   "properties": [
@@ -113,7 +138,10 @@
         "indicator",
         "label",
         "description",
-        "message"
+        "message",
+        "severity-icon",
+        "mark",
+        "asterisk"
       ],
       "options": [
         {
@@ -170,11 +198,83 @@
       "description": "What the severity means: what is wrong and how to fix it, what to check, or what was confirmed. Shown with a severity, in the color of that severity, and replaces errorMessage."
     },
     {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-severity-icon-placement).",
+      "affects": [
+        "field",
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px; the box keeps its full width (default)."
+        },
+        {
+          "value": "after-control",
+          "description": "After the field box, centred on it, at the size of the Button's icon of the same size; the box gives up the icon and the gap, the indicator stays inside it."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
+        }
+      ]
+    },
+    {
+      "id": "labelPlacement",
+      "name": "Label placement",
+      "type": "enum",
+      "default": "above",
+      "description": "Where the label sits. A rule of the form, not of the field: a form sets it once, to the same value, for all its field-like controls, and sizes one label column for them (Forms decision forms-label-column).",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "above",
+          "description": "Above the control (default)."
+        },
+        {
+          "value": "start",
+          "description": "In the form's label column, at the start: the label ends form.gap.label-column (12 px) from the control, its first line centred on the box; the description and the message stay under the control. The column stacks back above when the form is narrower than 30 rem."
+        }
+      ]
+    },
+    {
+      "id": "markedFields",
+      "name": "Marked fields",
+      "type": "enum",
+      "default": "optional",
+      "description": "Which fields carry the required mark. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-marked-fields); the field draws its mark from its own required.",
+      "affects": [
+        "mark",
+        "asterisk"
+      ],
+      "options": [
+        {
+          "value": "optional",
+          "description": "\"(optional)\" on the field when it is not required, nothing when it is (default). The form says once, before its first field, \"All fields are required unless marked optional.\"."
+        },
+        {
+          "value": "required",
+          "description": "\"(required)\" on the field when it is required, nothing when it is not: for a form where most fields are optional."
+        },
+        {
+          "value": "none",
+          "description": "No mark: a field outside a form, such as a table's filter or a setting applied at once."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "The field must be filled to submit the form."
+      "description": "The field must be filled to submit the form. It draws the mark that markedFields asks for (\"(required)\" on a required field, \"(optional)\" on one that is not), and the asterisk on Android and Windows."
     },
     {
       "id": "severity",
@@ -272,7 +372,8 @@
     "notes": [
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
       "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change.",
-      "The chevron sits over the end edge of the control, which reserves room for it with padding-inline-end."
+      "The chevron sits over the end edge of the control, which reserves room for it with padding-inline-end.",
+      "With labelPlacement start, the Select is a row of the form's grid (a subgrid on the web): the label in the first column, as wide as the form's longest label up to 14 em, aligned to its end; the control, description and message in the second; the label's first line centred on the box. Standalone, it draws its own two columns, the label's as wide as the label. Under 30 rem of the form's width (a size container) the label stacks back above. The form's grid is the product's (the Forms page shows it)."
     ]
   },
   "accessibility": {
@@ -420,6 +521,45 @@
           "wcag:2.3.3",
           "mdn-reduced-motion"
         ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\", \"Warning\", \"Success\") and is part of the description: at the start of the message it is inside the message, which aria-describedby references; after the field box, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 (light) and 5.30:1 (dark); warning 6.16:1 and 8.38:1; success 7.44:1 and 5.92:1).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The mark comes after the label's words, so the visible label starts with the field's name, and so does the accessible name when it ends with \"(optional)\": speech input by the label works.",
+        "refs": [
+          "wcag:2.5.3"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, the Select draws the asterisk of a required field in the error text color whenever markedFields is optional or required, none drawing no mark; an optional field carries none.",
+        "refs": [
+          "material-text-fields-required"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, the asterisk stays in the Select's UI Automation Name: the Name is the label as shown (\"Country*\").",
+        "refs": [
+          "uia-name-property"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -537,6 +677,21 @@
         "id": "aria-hidden",
         "title": "WAI-ARIA 1.2: aria-hidden",
         "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "uia-name-property",
+        "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
       }
     ]
   },
@@ -689,6 +844,70 @@
           }
         ]
       }
+    },
+    {
+      "id": "medium-error-icon-after-control",
+      "name": "Medium, error, icon after the control",
+      "description": "A form that places its severity icons after the controls: the icon follows the box, the indicator stays inside it.",
+      "props": {
+        "size": "medium",
+        "label": "Country",
+        "placeholder": "Choose a country",
+        "options": [
+          {
+            "label": "France",
+            "value": "fr"
+          },
+          {
+            "label": "Germany",
+            "value": "de"
+          }
+        ],
+        "required": true,
+        "severity": "error",
+        "severityIcon": "after-control",
+        "message": "Choose a country"
+      }
+    },
+    {
+      "id": "medium-marked-required",
+      "name": "Medium, in a form that marks required fields",
+      "description": "Most fields of the form are optional, so the form marks the required ones (markedFields required): \"(required)\" after the label, hidden from assistive technology, which the required state already tells.",
+      "props": {
+        "size": "medium",
+        "label": "Country",
+        "placeholder": "Choose a country",
+        "options": [
+          {
+            "label": "France",
+            "value": "fr"
+          },
+          {
+            "label": "Germany",
+            "value": "de"
+          }
+        ],
+        "required": true,
+        "markedFields": "required"
+      }
+    },
+    {
+      "id": "medium-label-start",
+      "name": "Medium, label at the start",
+      "description": "In a form that puts its labels in a column at the start (labelPlacement start): shown here alone, the field draws its own two columns; in a form, the label column is the form's.",
+      "props": {
+        "size": "medium",
+        "label": "Country",
+        "labelPlacement": "start",
+        "description": "The help stays under the control",
+        "placeholder": "Choose a country",
+        "options": [
+          {
+            "label": "France",
+            "value": "fr"
+          }
+        ]
+      }
     }
   ],
   "tokens": {
@@ -704,7 +923,8 @@
       "attributes": {
         "size": "data-size",
         "disabled": "data-disabled",
-        "severity": "data-severity"
+        "severity": "data-severity",
+        "labelPlacement": "data-label-placement"
       },
       "stateAttribute": "data-state",
       "rolePart": "control",
@@ -716,7 +936,9 @@
         "option": ".ds-select__option",
         "control": ".ds-select__control",
         "description": ".ds-select__description",
-        "message": ".ds-select__message"
+        "message": ".ds-select__message",
+        "severity-icon": ".ds-select__severity-icon",
+        "mark": ".ds-select__mark"
       }
     }
   },
@@ -726,6 +948,51 @@
     "text-field"
   ],
   "decisions": [
+    {
+      "id": "label-placement",
+      "date": "2026-11-27",
+      "version": "0.9.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Select takes labelPlacement (above by default, start), a setting of the form passed to every field-like control (Forms decisions forms-label-column, forms-label-alignment, forms-label-column-gap, forms-label-column-stacking). With start, on the web, the Select carries its row of the form's grid (forms-label-column-web): a subgrid row, the label in the first column ending select.container.column-gap.start (form.gap.label-column, 12 px) from the control, its first line centred on the box; the control, description and message in the second column; under a 30 rem size container it stacks back above. The form's grid (fit-content(14em) minmax(0, 1fr), the gap, the size container) is the product's. The Figma component draws the label above (labelPlacement fixed, kept out of the variants, as markedFields). The Select takes it with the field family (decided by the team on 2026-11-27, #103 step 29 Q3: A, now, rather than with its own refinement, #132).",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 29, on review sheets): Q1, A, the fields carry their row (rejected: B, a .ds-form class the system ships; C, each field its own column, which no longer lines up); Q2, B, a multi-line control's label level with its first row (forms-label-multiline); Q3, A, the Select now.",
+      "tokens": [
+        "select.container.column-gap.start"
+      ]
+    },
+    {
+      "id": "mark-part",
+      "date": "2026-11-27",
+      "version": "0.8.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Select draws the required mark of the Forms rule: the property markedFields (optional by default, required, none), set once per form to the same value for all its controls; the part mark at the end of its label after a word space, \"(optional)\" on a field that is not required when the form marks optional fields, \"(required)\" on a required one when it marks required fields, nothing with none; the label's size, regular, in the description's color (select.mark.*, its color aliasing form.mark.color.default); on the web \"(required)\" is hidden from assistive technology, the required state saying it, and \"(optional)\" is part of the name. The part asterisk, on Android and Windows only, ends the label of a required field in the error text color (select.asterisk.*, aliasing form.asterisk.color.default), 4 px after it (2 px in small), kept in the Windows UI Automation Name. The Figma component draws the web specification: a BOOLEAN Mark (on) and a TEXT Mark text, markedFields kept out of the variants (blueprint option fixed); the asterisk is not drawn.",
+      "rationale": "Applies the Forms decisions forms-marked-fields, forms-mark-style, forms-asterisk-style, forms-required-windows-name (#103 step 16, #105 steps 4 and 2b, moved here by #105 step 12), as the field family's mark-part does. Built in #103 step 31.",
+      "tokens": [
+        "select.mark.*",
+        "select.asterisk.*"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "severity-icon",
+      "date": "2026-11-27",
+      "version": "0.7.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Select gets the severity icon (part severity-icon) and the property severityIcon, as the Forms foundation decided for every form control that shows a severity: after the field box (after-control), centred on it with the indicator staying inside the box, at the start of the message (message, default), or none. Its size: after the box the Button's icon of the same size (size.3, size.4, size.4: 20, 24, 24 px), space.8 after it; in the message 16 px (size.2), space.4 before the text. Its glyph is the Alert's, error, warning or check_circle, named \"Error\", \"Warning\" or \"Success\"; its color the on-base icon role of the severity, select.severity-icon.color.* aliasing form.severity-icon.color.*. Drawn with the Text field's rules and Figma helpers.",
+      "rationale": "Applies the Forms decisions forms-severity-icon-placement, forms-severity-icon-size, forms-severity-icon-color and forms-severity-icon-glyphs (#103 step 12 and #105 steps 6 and 12): the Select, the Checkbox and the groups take the field family's severity icon, built in #103 step 30.",
+      "tokens": [
+        "select.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.1.1"
+      ]
+    },
     {
       "id": "severity-fill",
       "date": "2026-11-27",
@@ -884,6 +1151,26 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.9.1",
+      "date": "2026-11-27",
+      "note": "Fix (#103 step 33, from Forms step 12): a disabled Select never draws the focus ring. The rule that forces focus-visible for review (the playground, the states matrix) now skips a disabled control, as in the field family. A disabled control takes no focus, so real properties render as before."
+    },
+    {
+      "version": "0.9.0",
+      "date": "2026-11-27",
+      "note": "Decision label-placement (#103 step 29; Forms forms-label-column, -alignment, -column-gap, -column-stacking, and the team's forms-label-column-web): property labelPlacement (above, start), token select.container.column-gap.start → form.gap.label-column, the subgrid row in the CSS (label end-aligned, first line centred on the box; stacking under a 30 rem container), data-label-placement in the template, the Figma component fixed above. New example: Medium, label at the start. No change with the default, above."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-27",
+      "note": "Decision mark-part (#103 step 31; Forms forms-marked-fields, forms-mark-style, forms-asterisk-style, forms-required-windows-name): property markedFields (optional by default), parts mark and asterisk in the label, tokens select.mark.* and select.asterisk.* (colors aliasing form.mark.color.default and form.asterisk.color.default), the mark in the template (\"(required)\" aria-hidden) and the CSS, a web, an Android and a Windows guideline, the Figma Mark and Mark text with markedFields fixed. New example: Medium, in a form that marks required fields. The mark is 12.09:1 at the lowest in light mode and 6.65:1 in dark mode (forms-mark-style). A field that is not required now shows \"(optional)\" by default; a control outside a form sets markedFields none (the docs site's controls and the dashboard and calendar screens do)."
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-11-27",
+      "note": "Decision severity-icon (#103 step 30; Forms forms-severity-icon-placement, -size, -color, -glyphs): part severity-icon and property severityIcon (message, after-control, none; message by default), tokens select.severity-icon.* (font, size, gap, color aliasing form.severity-icon.color.*), the icon in the template (named after the severity, role img) and the CSS, a web guideline on its name; the Figma blueprint draws it with the Text field's helpers. An error now starts its message with the icon by default. Icon on the surface at the lowest: error 5.81:1 (light) and 5.30:1 (dark); warning 6.16:1 and 8.38:1; success 7.44:1 and 5.92:1. New example: Medium, error, icon after the control."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-27",

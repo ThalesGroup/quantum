@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "color",
   "name": "Color",
-  "version": "7.3.0",
+  "version": "7.4.0",
   "status": "draft",
   "summary": "The palettes the system draws from and the mapped color roles every component paints with, in every mode: the Figma library's colors, as they are.",
   "description": "The color tokens are the Figma library's three color collections, recreated with the same paths (made valid), values and aliases: Colors / Base, the raw palettes; Colors / Palette Switch, the neutral ramp the roles read (ash today); Colors / Mapped, the roles, in a light and a dark mode. Nobody paints with a palette step directly: components alias the mapped roles (global.bg, global.text, global.icon, global.border), so dark mode, and later another neutral palette, change in one place. The Figma library's errors and limitations are kept on purpose, as the starting point the system evolves from; the few colors the design system adds live apart, in tokens/additions/.",
@@ -786,6 +786,21 @@
       "refs": [
         "wcag:1.4.11"
       ]
+    },
+    {
+      "id": "border-base-neutral-5",
+      "description": "The base neutral 5 border on every surface level, the resting border that identifies a text field (a graphical object: 3:1).",
+      "foreground": "global.border.base.neutral.5",
+      "backgrounds": [
+        "global.bg.level.0.default",
+        "global.bg.level.1.default",
+        "global.bg.level.2.default",
+        "global.bg.level.3.default"
+      ],
+      "minimum": 3,
+      "refs": [
+        "wcag:1.4.11"
+      ]
     }
   ],
   "accessibility": {
@@ -975,6 +990,22 @@
   ],
   "decisions": [
     {
+      "id": "border-base-neutral-5-dark",
+      "date": "2026-11-25",
+      "version": "7.4.0",
+      "area": "color",
+      "status": "active",
+      "text": "In dark mode global.border.base.neutral.5 reads dark base 300 (#9C9C9C), not dark base 400 (#767676) as the Figma library maps it. Light mode is unchanged (light base 500, #8C8C8C). This is a departure from the Figma library, kept in src/modes/dark/colors-mapped.tokens.json like any token file evolved by a decision; pnpm tokens:figma-library lists it, and the closing Figma issue of the Text field refinement carries it for the designers.",
+      "rationale": "The Text field family reads this role as the border that identifies an empty field (Text field decision border-base-neutral-5), which needs 3:1 against the surface (Understanding 1.4.11, boundaries). Dark base 400 gives 3.87 / 3.54 / 3.24 / 2.90:1 on the dark surface levels 0 to 3, failing on level 3; dark base 300 gives 6.40 / 5.86 / 5.36 / 4.80:1. Approved by the team on 2026-11-19. No other component, theme or screen reads the role.",
+      "tokens": [
+        "global.border.base.neutral.5"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-ntc-boundaries"
+      ]
+    },
+    {
       "id": "border-accent-warning-600",
       "date": "2026-11-25",
       "version": "7.3.0",
@@ -1122,6 +1153,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "7.4.0",
+      "date": "2026-11-25",
+      "note": "Decision border-base-neutral-5-dark, a departure from the Figma library: in dark mode global.border.base.neutral.5 is dark base 300 #9C9C9C (was dark base 400 #767676), so the border reaches 3:1 on every dark surface level: 6.40 / 5.86 / 5.36 / 4.80:1 on levels 0 to 3 (was 3.87 / 3.54 / 3.24 / 2.90:1, under 3:1 on level 3). Light mode is unchanged (#8C8C8C, 3.30 / 3.12 / 3.30 / 3.12:1). The Text field, Number field, Search field and Textarea read it for their resting border; no other component, framework theme or screen does. New pair border-base-neutral-5."
+    },
     {
       "version": "7.3.0",
       "date": "2026-11-25",

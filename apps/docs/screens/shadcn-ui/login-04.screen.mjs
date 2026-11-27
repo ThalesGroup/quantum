@@ -1,5 +1,5 @@
 import { ds, slot, el, screen } from '../lib/ds.mjs';
-import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, GAPS, CHANGES } from '../lib/auth.mjs';
+import { brand, heading, form, stack, columns, nameField, emailField, passwordField, forgotPassword, submit, secondary, separator, hint, legal, cover, requiredNote, GAPS, CHANGES } from '../lib/auth.mjs';
 
 /** shadcn/ui block login-04: A login page with form and image. */
 export const meta = {
@@ -7,7 +7,7 @@ export const meta = {
   name: 'Login with form and image',
   section: 'login',
   description: 'A login page with form and image.',
-  changes: [CHANGES.forgot, CHANGES.brandIcons, CHANGES.cover, 'The three icon-only brand buttons become text buttons (no brand icon to show).'],
+  changes: [CHANGES.required, CHANGES.forgot, CHANGES.brandIcons, CHANGES.cover, 'The three icon-only brand buttons become text buttons (no brand icon to show).'],
   gaps: [GAPS.password, GAPS.card, GAPS.link, GAPS.separator, { text: 'A card with media: the Card has no media part, so the form and the cover share the Card root in a two-column layout.' }],
 };
 
@@ -16,6 +16,7 @@ export function render() {
     ds.card({ title: 'Welcome back', description: 'Login to your Acme Inc account', headingLevel: 2 }),
     el('div', { class: 'scr-media-card' },
       form(stack(
+        requiredNote(),
         emailField('login-04-email'),
         passwordField('login-04-password'),
         forgotPassword(),

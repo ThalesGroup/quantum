@@ -5,31 +5,61 @@
  *
  * Rules:
  *  - Only --number-field-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (label, control, description, message, stacked); the native
+ *  - The root is a wrapper (label, control or field box with the leading icon, description, message, stacked); the native
  *    number input is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
  *    spec order: default < hover < focus-visible < error < warning < success < readonly < disabled: hover only tints the
- *    background, a severity only recolors the border, so they combine as the token rule combines them.
+ *    background, a severity recolors the border and the fill, which hover keeps, so they combine as the token rule combines them.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
 .ds-number-field {
   /* Defaults = size "medium", state "default". */
   --_control-background: var(--number-field-control-background-default);
+  --_control-background-hover: var(--number-field-control-background-hover);
   --_control-border-color: var(--number-field-control-border-color-default);
   --_control-color: var(--number-field-control-color-default);
   --_placeholder-color: var(--number-field-control-placeholder-color-default);
   --_label-color: var(--number-field-label-color-default);
+  --_mark-color: var(--number-field-mark-color-default);
   --_description-color: var(--number-field-description-color-default);
   --_message-color: var(--number-field-message-color-error);
+  --_severity-icon-color: var(--number-field-severity-icon-color-error);
   --_min-height: var(--number-field-control-min-height-medium);
+  --_padding-block: var(--number-field-control-padding-block-medium);
+  --_severity-icon-size: var(--number-field-severity-icon-size-after-control-medium);
+  --_border-radius: var(--number-field-control-border-radius-medium);
   --_padding-inline: var(--number-field-control-padding-inline-medium);
+  --_padding-inline-start: var(--number-field-control-padding-inline-start-medium);
+  --_icon-size: var(--number-field-icon-size-medium);
+  --_icon-color: var(--number-field-icon-color-default);
+  --_icon-placeholder-color: var(--number-field-icon-placeholder-color-default);
   --_font-family: var(--number-field-control-typography-medium-font-family);
   --_font-size: var(--number-field-control-typography-medium-font-size);
   --_font-weight: var(--number-field-control-typography-medium-font-weight);
   --_line-height: var(--number-field-control-typography-medium-line-height);
   --_letter-spacing: var(--number-field-control-typography-medium-letter-spacing);
+  --_label-font-family: var(--number-field-label-typography-medium-font-family);
+  --_label-font-size: var(--number-field-label-typography-medium-font-size);
+  --_label-font-weight: var(--number-field-label-typography-medium-font-weight);
+  --_label-line-height: var(--number-field-label-typography-medium-line-height);
+  --_label-letter-spacing: var(--number-field-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--number-field-mark-typography-medium-font-family);
+  --_mark-font-size: var(--number-field-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--number-field-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--number-field-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--number-field-mark-typography-medium-letter-spacing);
+  --_description-font-family: var(--number-field-description-typography-medium-font-family);
+  --_description-font-size: var(--number-field-description-typography-medium-font-size);
+  --_description-font-weight: var(--number-field-description-typography-medium-font-weight);
+  --_description-line-height: var(--number-field-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--number-field-description-typography-medium-letter-spacing);
+  --_message-font-family: var(--number-field-message-typography-medium-font-family);
+  --_message-font-size: var(--number-field-message-typography-medium-font-size);
+  --_message-font-weight: var(--number-field-message-typography-medium-font-weight);
+  --_message-line-height: var(--number-field-message-typography-medium-line-height);
+  --_message-letter-spacing: var(--number-field-message-typography-medium-letter-spacing);
 
   box-sizing: border-box;
   display: inline-flex;
@@ -44,33 +74,94 @@
 
 .ds-number-field[data-size="small"] {
   --_min-height: var(--number-field-control-min-height-small);
+  --_padding-block: var(--number-field-control-padding-block-small);
+  --_severity-icon-size: var(--number-field-severity-icon-size-after-control-small);
+  --_border-radius: var(--number-field-control-border-radius-small);
   --_padding-inline: var(--number-field-control-padding-inline-small);
+  --_padding-inline-start: var(--number-field-control-padding-inline-start-small);
+  --_icon-size: var(--number-field-icon-size-small);
   --_font-family: var(--number-field-control-typography-small-font-family);
   --_font-size: var(--number-field-control-typography-small-font-size);
   --_font-weight: var(--number-field-control-typography-small-font-weight);
   --_line-height: var(--number-field-control-typography-small-line-height);
   --_letter-spacing: var(--number-field-control-typography-small-letter-spacing);
+  --_label-font-family: var(--number-field-label-typography-small-font-family);
+  --_label-font-size: var(--number-field-label-typography-small-font-size);
+  --_label-font-weight: var(--number-field-label-typography-small-font-weight);
+  --_label-line-height: var(--number-field-label-typography-small-line-height);
+  --_label-letter-spacing: var(--number-field-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--number-field-mark-typography-small-font-family);
+  --_mark-font-size: var(--number-field-mark-typography-small-font-size);
+  --_mark-font-weight: var(--number-field-mark-typography-small-font-weight);
+  --_mark-line-height: var(--number-field-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--number-field-mark-typography-small-letter-spacing);
+  --_description-font-family: var(--number-field-description-typography-small-font-family);
+  --_description-font-size: var(--number-field-description-typography-small-font-size);
+  --_description-font-weight: var(--number-field-description-typography-small-font-weight);
+  --_description-line-height: var(--number-field-description-typography-small-line-height);
+  --_description-letter-spacing: var(--number-field-description-typography-small-letter-spacing);
+  --_message-font-family: var(--number-field-message-typography-small-font-family);
+  --_message-font-size: var(--number-field-message-typography-small-font-size);
+  --_message-font-weight: var(--number-field-message-typography-small-font-weight);
+  --_message-line-height: var(--number-field-message-typography-small-line-height);
+  --_message-letter-spacing: var(--number-field-message-typography-small-letter-spacing);
 }
 
 .ds-number-field[data-size="large"] {
   --_min-height: var(--number-field-control-min-height-large);
+  --_padding-block: var(--number-field-control-padding-block-large);
+  --_severity-icon-size: var(--number-field-severity-icon-size-after-control-large);
+  --_border-radius: var(--number-field-control-border-radius-large);
   --_padding-inline: var(--number-field-control-padding-inline-large);
+  --_padding-inline-start: var(--number-field-control-padding-inline-start-large);
+  --_icon-size: var(--number-field-icon-size-large);
   --_font-family: var(--number-field-control-typography-large-font-family);
   --_font-size: var(--number-field-control-typography-large-font-size);
   --_font-weight: var(--number-field-control-typography-large-font-weight);
   --_line-height: var(--number-field-control-typography-large-line-height);
   --_letter-spacing: var(--number-field-control-typography-large-letter-spacing);
+  --_label-font-family: var(--number-field-label-typography-large-font-family);
+  --_label-font-size: var(--number-field-label-typography-large-font-size);
+  --_label-font-weight: var(--number-field-label-typography-large-font-weight);
+  --_label-line-height: var(--number-field-label-typography-large-line-height);
+  --_label-letter-spacing: var(--number-field-label-typography-large-letter-spacing);
+  --_mark-font-family: var(--number-field-mark-typography-large-font-family);
+  --_mark-font-size: var(--number-field-mark-typography-large-font-size);
+  --_mark-font-weight: var(--number-field-mark-typography-large-font-weight);
+  --_mark-line-height: var(--number-field-mark-typography-large-line-height);
+  --_mark-letter-spacing: var(--number-field-mark-typography-large-letter-spacing);
+  --_description-font-family: var(--number-field-description-typography-large-font-family);
+  --_description-font-size: var(--number-field-description-typography-large-font-size);
+  --_description-font-weight: var(--number-field-description-typography-large-font-weight);
+  --_description-line-height: var(--number-field-description-typography-large-line-height);
+  --_description-letter-spacing: var(--number-field-description-typography-large-letter-spacing);
+  --_message-font-family: var(--number-field-message-typography-large-font-family);
+  --_message-font-size: var(--number-field-message-typography-large-font-size);
+  --_message-font-weight: var(--number-field-message-typography-large-font-weight);
+  --_message-line-height: var(--number-field-message-typography-large-line-height);
+  --_message-letter-spacing: var(--number-field-message-typography-large-letter-spacing);
 }
 
 /* ---- Parts --------------------------------------------------------------- */
 
 .ds-number-field__label {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   color: var(--_label-color);
-  font-family: var(--number-field-label-typography-font-family);
-  font-size: var(--number-field-label-typography-font-size);
-  font-weight: var(--number-field-label-typography-font-weight);
-  line-height: var(--number-field-label-typography-line-height);
-  letter-spacing: var(--number-field-label-typography-letter-spacing);
+  font-family: var(--_label-font-family);
+  font-size: var(--_label-font-size);
+  font-weight: var(--_label-font-weight);
+  line-height: var(--_label-line-height);
+  letter-spacing: var(--_label-letter-spacing);
+}
+
+/* The required mark, inside the label after a word space (markedFields; decisions mark-style, mark-part). */
+.ds-number-field__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 
 .ds-number-field__control {
@@ -78,16 +169,23 @@
   inline-size: 100%;
   min-height: var(--_min-height);
   margin: 0;
+  /* The block padding is a minimum, inside the value's line: the min-height sets the height until the text
+     outgrows it (decision grows-with-text-size). Chromium and WebKit clip an input's text to its line box, so
+     the line takes the padding and is never shorter than control.line-height times the text: the stacked
+     marks of Ấ, Ỗ, Ẫ stay whole, the text sits where a 1.2 line puts it (decision value-line-not-clipped). */
   padding-block: 0;
   padding-inline: var(--_padding-inline);
   border: var(--number-field-control-border-width) solid var(--_control-border-color);
-  border-radius: var(--number-field-control-border-radius);
+  border-radius: var(--_border-radius);
   background-color: var(--_control-background);
   color: var(--_control-color);
   font-family: var(--_font-family);
   font-size: var(--_font-size);
   font-weight: var(--_font-weight);
-  line-height: var(--_line-height);
+  line-height: max(
+    calc(var(--_line-height) * var(--_font-size) + 2 * var(--_padding-block)),
+    calc(var(--number-field-control-line-height) * var(--_font-size))
+  );
   letter-spacing: var(--_letter-spacing);
   appearance: none;
   -webkit-appearance: none;
@@ -102,23 +200,25 @@
 }
 
 .ds-number-field__description {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   margin: 0;
   color: var(--_description-color);
-  font-family: var(--number-field-description-typography-font-family);
-  font-size: var(--number-field-description-typography-font-size);
-  font-weight: var(--number-field-description-typography-font-weight);
-  line-height: var(--number-field-description-typography-line-height);
-  letter-spacing: var(--number-field-description-typography-letter-spacing);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
 }
 
 .ds-number-field__message {
+  overflow-wrap: anywhere; /* a word longer than the line breaks at large text sizes (decision long-text-wraps) */
   margin: 0;
   color: var(--_message-color);
-  font-family: var(--number-field-message-typography-font-family);
-  font-size: var(--number-field-message-typography-font-size);
-  font-weight: var(--number-field-message-typography-font-weight);
-  line-height: var(--number-field-message-typography-line-height);
-  letter-spacing: var(--number-field-message-typography-letter-spacing);
+  font-family: var(--_message-font-family);
+  font-size: var(--_message-font-size);
+  font-weight: var(--_message-font-weight);
+  line-height: var(--_message-line-height);
+  letter-spacing: var(--_message-letter-spacing);
 }
 
 /* The browser's spin buttons keep their native look (no portable way to draw them from tokens). */
@@ -126,17 +226,125 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ---- Leading icon ----------------------------------------------------------
+   Optional (iconStart), decorative and hidden from assistive technology. The field box wraps the control
+   and the glyph drawn over its start edge, 8 px in; the control reserves control.padding-inline-start for
+   it (the Search field's). The glyph follows the text beside it: the placeholder's color while the field
+   is empty, the value's once something is typed (the template then always writes a placeholder attribute,
+   so :placeholder-shown tells an empty field). */
+
+.ds-number-field__field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.ds-number-field__field > .ds-number-field__control {
+  flex: 1;
+  min-inline-size: 0;
+  padding-inline-start: var(--_padding-inline-start);
+}
+
+.ds-number-field__icon {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--number-field-icon-margin-inline);
+  display: inline-grid;
+  place-content: center;
+  inline-size: var(--_icon-size);
+  color: var(--_icon-placeholder-color);
+  font-family: var(--number-field-icon-font-family);
+  font-size: var(--_icon-size);
+  font-weight: var(--number-field-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--number-field-icon-fill),
+    "GRAD" var(--number-field-icon-grade),
+    "opsz" var(--number-field-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+}
+.ds-number-field__field:has(> .ds-number-field__control:not(:placeholder-shown)) > .ds-number-field__icon {
+  color: var(--_icon-color);
+}
+
+/* ---- Severity icon ---------------------------------------------------------
+   One placement per form (severityIcon). After the control, the root becomes a two-column grid: the
+   control fills the first column and the icon follows it at the severity-icon gap; every other part
+   spans both. At the start of the message, the message becomes a row: the icon, then the text. */
+
+.ds-number-field[data-severity-icon="after-control"] {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--number-field-severity-icon-gap-after-control);
+  row-gap: var(--number-field-container-gap);
+  align-items: center;
+}
+.ds-number-field[data-severity-icon="after-control"] > * {
+  grid-column: 1 / -1;
+}
+.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__control,
+.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__field {
+  grid-column: 1;
+}
+.ds-number-field[data-severity-icon="after-control"] > .ds-number-field__severity-icon {
+  grid-column: 2;
+}
+
+.ds-number-field__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--_severity-icon-size);
+  block-size: var(--_severity-icon-size);
+  color: var(--_severity-icon-color);
+  font-family: var(--number-field-severity-icon-font-family);
+  font-size: var(--_severity-icon-size);
+  font-weight: var(--number-field-severity-icon-font-weight);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--number-field-severity-icon-fill),
+    "GRAD" var(--number-field-severity-icon-grade),
+    "opsz" var(--number-field-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  line-height: var(--_severity-icon-size);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-number-field__message:has(> .ds-number-field__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--number-field-severity-icon-gap-message);
+}
+/* In the message the icon is centred on the first line. */
+.ds-number-field__severity-icon[data-place="message"] {
+  --_severity-icon-size: var(--number-field-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+}
+
 /* ---- States -------------------------------------------------------------- */
 
 .ds-number-field:where([data-state="hover"]) .ds-number-field__control:not(:disabled, [readonly]),
 .ds-number-field:not([data-state]) .ds-number-field__control:hover:not(:disabled, [readonly]) {
-  --_control-background: var(--number-field-control-background-hover);
+  --_control-background: var(--_control-background-hover);
 }
 
-/* Severity: the control's border takes the severity's color and the message its text color. Only the
+/* Severity: the control's border takes the severity's color, the message its text color, and the box the severity's subtle fill. Only the
    error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
 .ds-number-field:where([data-state="error"], [data-severity="error"]) {
   --_message-color: var(--number-field-message-color-error);
+  /* The error fill holds on hover: its hover step would bring the placeholder under 4.5:1. */
+  --_control-background: var(--number-field-control-background-error);
+  --_control-background-hover: var(--number-field-control-background-error);
 }
 .ds-number-field:where([data-state="error"], [data-severity="error"]) .ds-number-field__control,
 .ds-number-field__control[aria-invalid="true"] {
@@ -145,6 +353,10 @@
 
 .ds-number-field:where([data-state="warning"], [data-severity="warning"]) {
   --_message-color: var(--number-field-message-color-warning);
+  --_severity-icon-color: var(--number-field-severity-icon-color-warning);
+  /* The warning fill holds on hover, as the error's. */
+  --_control-background: var(--number-field-control-background-warning);
+  --_control-background-hover: var(--number-field-control-background-warning);
 }
 .ds-number-field:where([data-state="warning"], [data-severity="warning"]) .ds-number-field__control {
   --_control-border-color: var(--number-field-control-border-color-warning);
@@ -152,6 +364,10 @@
 
 .ds-number-field:where([data-state="success"], [data-severity="success"]) {
   --_message-color: var(--number-field-message-color-success);
+  --_severity-icon-color: var(--number-field-severity-icon-color-success);
+  /* The success fill holds on hover, as the error's. */
+  --_control-background: var(--number-field-control-background-success);
+  --_control-background-hover: var(--number-field-control-background-success);
 }
 .ds-number-field:where([data-state="success"], [data-severity="success"]) .ds-number-field__control {
   --_control-border-color: var(--number-field-control-border-color-success);
@@ -165,7 +381,10 @@
 .ds-number-field:where([data-state="disabled"]),
 .ds-number-field:has(.ds-number-field__control:disabled) {
   --_label-color: var(--number-field-label-color-disabled);
+  --_mark-color: var(--number-field-mark-color-disabled);
   --_description-color: var(--number-field-description-color-disabled);
+  --_icon-color: var(--number-field-icon-color-disabled);
+  --_icon-placeholder-color: var(--number-field-icon-placeholder-color-disabled);
 }
 .ds-number-field:where([data-state="disabled"]) .ds-number-field__control,
 .ds-number-field__control:disabled {
@@ -180,10 +399,117 @@
   outline: none;
 }
 
-.ds-number-field:where([data-state="focus-visible"]) .ds-number-field__control,
+/* Focus and a severity are outlines drawn flush over the border: the offset is minus the border
+   width, so the border keeps its width and the text never moves. A severity at rest is a thin line
+   in its color; with focus it takes the focus width, still in the severity's color: each severity sets
+   its token for two states (control.outline-width.focus-visible-<severity>), which the focus rule reads. */
+.ds-number-field:where([data-state="focus-visible"]) .ds-number-field__control:not(:disabled),
 .ds-number-field__control:focus-visible {
   outline: var(--number-field-control-outline-width-focus-visible) solid var(--number-field-control-outline-color-focus-visible);
-  outline-offset: var(--number-field-control-outline-offset-focus-visible);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="error"], [data-severity="error"]) .ds-number-field__control:not(:disabled),
+.ds-number-field__control[aria-invalid="true"]:not(:disabled) {
+  outline: var(--number-field-control-outline-width-error) solid var(--number-field-control-outline-color-error);
+  --_outline-width-focus: var(--number-field-control-outline-width-focus-visible-error);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="warning"], [data-severity="warning"]) .ds-number-field__control:not(:disabled) {
+  outline: var(--number-field-control-outline-width-warning) solid var(--number-field-control-outline-color-warning);
+  --_outline-width-focus: var(--number-field-control-outline-width-focus-visible-warning);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="success"], [data-severity="success"]) .ds-number-field__control:not(:disabled) {
+  outline: var(--number-field-control-outline-width-success) solid var(--number-field-control-outline-color-success);
+  --_outline-width-focus: var(--number-field-control-outline-width-focus-visible-success);
+  outline-offset: calc(-1 * var(--number-field-control-border-width));
+}
+
+.ds-number-field:where([data-state="error"], [data-state="warning"], [data-state="success"], [data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-number-field__control:not(:disabled):focus-visible,
+.ds-number-field:where([data-state="focus-visible"]):where([data-severity="error"], [data-severity="warning"], [data-severity="success"]) .ds-number-field__control:not(:disabled),
+.ds-number-field:where([data-state="focus-visible"]) .ds-number-field__control[aria-invalid="true"]:not(:disabled),
+.ds-number-field__control[aria-invalid="true"]:not(:disabled):focus-visible {
+  outline-width: var(--_outline-width-focus);
+}
+
+
+/* ---- Label at the start (labelPlacement start) --------------------------------------------------------------
+   The form lays its fields out on one grid, [label] fit-content(14em) [control] minmax(0, 1fr), as a size
+   container (product CSS, Forms page). The field carries its row: a subgrid of that grid, the label in the first
+   column, ending against the control, its first line centred on the box; everything else in the second. It sets its own
+   column gap, which would otherwise be its part gap. Standalone (no grid around it), subgrid computes to none and
+   the field draws its own two columns, the label's as wide as the label (the form must be the grid and the size container). With the severity icon after the
+   control, both share the second column. Under 30 rem of the form's width the label stacks back above (Forms
+   decisions forms-label-column, -alignment, -column-gap, -column-stacking, forms-label-column-web). */
+
+.ds-number-field[data-label-placement="start"] {
+  display: inline-grid;
+  grid-column: 1 / -1;
+  grid-auto-columns: auto minmax(0, 1fr);
+  column-gap: var(--number-field-container-column-gap-start);
+  row-gap: var(--number-field-container-gap);
+  align-items: start;
+}
+.ds-number-field[data-label-placement="start"] > * {
+  grid-column: 2;
+}
+.ds-number-field[data-label-placement="start"] > .ds-number-field__label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  text-align: end;
+  margin-block-start: calc((var(--_min-height) - var(--_label-font-size) * var(--_label-line-height)) / 2);
+}
+.ds-number-field[data-label-placement="start"] > .ds-number-field__control,
+.ds-number-field[data-label-placement="start"] > .ds-number-field__field {
+  grid-row: 1;
+}
+.ds-number-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-number-field__control,
+.ds-number-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-number-field__field {
+  grid-column: 2;
+  justify-self: start;
+  inline-size: calc(100% - var(--_severity-icon-size) - var(--number-field-severity-icon-gap-after-control));
+}
+.ds-number-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-number-field__severity-icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin-block-start: calc((var(--_min-height) - var(--_severity-icon-size)) / 2);
+}
+
+/* A subgrid of the form's grid only inside the form, a size container at least 30 rem wide: Chromium sizes a
+   subgrid with no grid around it to its min-content, so alone the field keeps its own two columns. */
+@container (width >= 30rem) {
+  .ds-number-field[data-label-placement="start"] {
+    grid-template-columns: subgrid;
+  }
+}
+
+@container (width < 30rem) {
+  .ds-number-field[data-label-placement="start"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-number-field[data-label-placement="start"] > *,
+  .ds-number-field[data-label-placement="start"][data-severity-icon="after-control"] > * {
+    grid-column: 1;
+  }
+  .ds-number-field[data-label-placement="start"] > .ds-number-field__label {
+    justify-self: start;
+    text-align: start;
+    margin-block-start: 0;
+  }
+  .ds-number-field[data-label-placement="start"] > .ds-number-field__control,
+  .ds-number-field[data-label-placement="start"] > .ds-number-field__field,
+  .ds-number-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-number-field__control,
+  .ds-number-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-number-field__field,
+  .ds-number-field[data-label-placement="start"][data-severity-icon="after-control"] > .ds-number-field__severity-icon {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

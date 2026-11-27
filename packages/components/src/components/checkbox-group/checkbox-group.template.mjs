@@ -8,10 +8,16 @@
  *
  * Extra props: `id` names the group (option ids derive from it; unique in the page; without it
  * instances are numbered in render order); `attrs` adds HTML attributes to every checkbox.
+ * `markLabel` replaces the words of the required mark ("(optional)" or "(required)"), for another language.
+ * `severityIconLabel` names the severity icon (default "Error"), for another language.
  * Extra sandbox-only props: `state` forces a visual state through data-state on the root (every
  * option); an entry's `state` forces it on that option only.
  */
-import { escapeHtml, escapeAttr } from '../../lib/template-utils.mjs';
+import { escapeHtml, escapeAttr, renderIcon } from '../../lib/template-utils.mjs';
+
+/** The glyph of each severity's icon and its default name, the Text field's (decision severity-icon). */
+const SEVERITY_GLYPHS = { error: 'error', warning: 'warning', success: 'check_circle' };
+const SEVERITY_LABELS = { error: 'Error', warning: 'Warning', success: 'Success' };
 
 export const meta = { id: 'checkbox-group', selector: '.ds-checkbox-group' };
 
@@ -27,12 +33,23 @@ export function render(props = {}) {
     size = 'medium',
     options = [{ label: 'Option 1', value: '1' }, { label: 'Option 2', value: '2' }],
     disabled = false,
+    required = false,
+    markedFields = 'optional',
+    markLabel = null,
     severity = 'none',
+    severityIcon = 'message',
+    severityIconLabel = null,
     state = null,
     id = null,
     attrs: extra = {},
   } = props;
   const hasMessage = severity !== 'none' && Boolean(message);
+  // The required mark the form asks for (decision mark-part): "(optional)" on a group that is not required, "(required)" on a
+  // required one, kept in the group's name: no state says that a group is required (Forms decision forms-required-group).
+  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
+  const markHtml = mark ? ` <span class="ds-checkbox-group__mark" data-part="mark">${escapeHtml(markLabel ?? `(${mark})`)}</span>` : '';
+  // A choice control draws its icon at the start of the message only: after-control falls back to it (Forms forms-severity-icon-placement).
+  const iconPlace = SEVERITY_GLYPHS[severity] && severityIcon !== 'none' && hasMessage ? 'message' : null;
 
   const groupId = id ?? `ds-checkbox-group-${++count}`;
   const groupName = name ?? groupId;
@@ -70,9 +87,10 @@ export function render(props = {}) {
     return `<li><div ${optionAttrs.join(' ')}>${parts.join('')}</div></li>`;
   });
 
-  const parts = [`<legend class="ds-checkbox-group__legend" data-part="legend">${escapeHtml(label)}</legend>`];
+  const parts = [`<legend class="ds-checkbox-group__legend" data-part="legend">${escapeHtml(label)}${markHtml}</legend>`];
   if (description) parts.push(`<p class="ds-checkbox-group__description" data-part="description" id="${escapeAttr(descriptionId)}">${escapeHtml(description)}</p>`);
   parts.push(`<ul class="ds-checkbox-group__options">${items.join('')}</ul>`);
-  if (hasMessage) parts.push(`<p class="ds-checkbox-group__message" data-part="message" id="${escapeAttr(messageId)}">${escapeHtml(message)}</p>`);
+  const icon = iconPlace ? `<span class="ds-checkbox-group__severity-icon" data-part="severity-icon" data-place="message" role="img" aria-label="${escapeAttr(severityIconLabel ?? SEVERITY_LABELS[severity])}">${renderIcon(SEVERITY_GLYPHS[severity])}</span>` : '';
+  if (hasMessage) parts.push(`<p class="ds-checkbox-group__message" data-part="message" id="${escapeAttr(messageId)}">${icon}${escapeHtml(message)}</p>`);
   return `<fieldset ${rootAttrs.join(' ')}>${parts.join('')}</fieldset>`;
 }

@@ -41,6 +41,20 @@ Height, inline padding and text size scale together; the label, the description 
 take the sizes of every field of the same size (the Forms foundation's anatomy), so a Select reads
 like the Text field next to it. The exact values are tokens (Tokens tab). Keep one size per form.
 
+## Required mark
+
+A form says once which of its fields carry a mark (**Marked fields**), the same for all its
+controls, and the select draws its own from **Required**, as the Text field does. By default the form
+marks the optional ones: a select that is not required ends its label with "(optional)", a required one carries nothing, and the form says once, before its
+first field, "All fields are required unless marked optional." When most fields are optional, the
+form marks the required ones with "(required)" instead. A select outside a form, such as a page size or a setting applied at once, carries no mark (**Marked fields** none). The rule is the
+[Forms foundation](/foundations/forms/guidelines)'s.
+
+The mark follows the label after a word space, at its size but regular and in the description's
+color. Android and Windows mark a required select with an asterisk instead, in the error
+message's red; the web, iOS and macOS keep the words. In Figma the component draws the web's mark:
+**Mark** shows it and **Mark text** holds its words.
+
 ## Options and placeholder
 
 Options are the repeated part of the component: each has a label, a value, and can be selected
@@ -61,6 +75,27 @@ never be chosen again and is not a valid value.
 | Disabled | `disabled` property. | Box, value, chevron, label and description drop to the shared disabled colors; the select leaves the keyboard order. |
 
 The opened list is not a state of the component: the platform draws it.
+
+### Severity icon
+
+A severity can also show an icon, set by `severityIcon`, a choice the form makes once for all its
+controls ([Forms foundation](/foundations/forms/guidelines)), as on the Text field. By default
+(`message`) it starts the message, 16 px, and the box keeps its full width. With `after-control` it
+follows the box, at the size of the Button's icon of the same size (20, 24 and 24 px), 8 px away: the
+chevron stays inside the box, and the box gives up the icon and the gap. With `none` there is no
+icon, and the message's own words say the severity. It draws the Alert's glyph of the severity
+(`error`, `warning`, `check_circle`) in the color of its message, and is named after it ("Error",
+"Warning", "Success"), so the description reads the severity and then the message.
+
+## Label at the start
+
+A form can put the labels of its fields in a column at the start (**Label placement** `start`),
+set once for all its field-like controls, never per field
+([Forms foundation](/foundations/forms/guidelines)). The select then sits in the form's column: its
+label ends 12 px from the box, its first line centred on the box, and the description and the message stay
+under the box. When the form is narrower than 30 rem, the label goes back above. The form draws the
+column, sized to its longest label, at most 14 em: the Forms page gives the few lines of CSS it
+takes on the web. Alone, the select draws its own two columns. In Figma the label stays above.
 
 ## Content
 

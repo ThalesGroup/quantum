@@ -82,10 +82,10 @@ of the matching Quantum component, so it follows that component's decisions. The
 | `--muted-foreground` | `:root`, `.dark` | `global.text.on-base.neutral.secondary` | `#313131` / `#B8B8B8` | Descriptions and helper texts. shadcn also uses it for placeholders, which Quantum draws tertiary. |
 | `--accent` | `:root`, `.dark` | `global.bg.subtle.neutral.default` | `#B5B5B5 10%` / `#767676 10%` | The hover surface of Quantum ghost buttons, accordion triggers and menu items; shadcn's ghost/outline hover, focused menu item, pressed toggle. |
 | `--accent-foreground` | `:root`, `.dark` | `global.text.on-subtle.neutral.default` | `#313131` / `#DFDFDF` | |
-| `--destructive` | `:root`, `.dark` | `global.bg.accent.functional.error.default` | `#DF2821` / `#DF2821` | Button emphasis accent, intent error; shadcn also colors error text and invalid borders with it. |
+| `--destructive` | `:root`, `.dark` | `global.text.on-base.functional.error.default` | `#C01619` / `#F88275` | The error text role, the Text field message's (`text-field.message.color.error`): shadcn colors error text, invalid borders and the destructive Button and Badge fill with this one variable, and most of its uses are text, which this role keeps above 4.5:1 on levels 0 to 3. |
 | `--destructive-foreground` | `:root`, `.dark` | `global.text.on-accent.functional.error.default` | `#FEFBFA` / `#FEFBFA` | No longer in shadcn's documented set (the v4 components write `text-white`); kept for blocks that read it. |
 | `--border` | `:root`, `.dark` | `card.container.border-color.level-1` (component, = `global.border.level.edge.level.1`) | `#D5D5D5` / `#282828` | The edge of the Card at level 1: shadcn's `--border` is mostly card, popover and table edges. |
-| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.accent.neutral.default`) | `#313131` / `#CFCFCF` | The border of a Quantum form control, also what checkboxes read. |
+| `--input` | `:root`, `.dark` | `text-field.control.border-color.default` (component, = `global.border.base.neutral.5`) | `#8C8C8C` / `#9C9C9C` | The border of a Quantum text field (3:1 or more on every surface). shadcn has no input-specific border variable: `--input` is also read by its checkbox, radio, select, switch and textarea, which Quantum draws with the accent neutral border (`#313131` / `#CFCFCF`) until the complex controls are refined, so they are lighter than the Quantum ones. shadcn also fills with it: the off Switch track, and every field in dark at 30 % (`dark:bg-input/30`), a grey Quantum's fields do not have (Not themable). |
 | `--ring` | `:root`, `.dark` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | The focus ring color. |
 | `--chart-1` … `--chart-5` | `:root`, `.dark` | `dataviz.role.brand.bg.accent.brand-1` … `brand-5` | `#0B2A69` … `#749DE5` / `#9EE7FA` … `#297B8C` | The brand data series. The categorical alternative is `dataviz.role.extended.wood.accent.extended-1..8`. |
 | `--sidebar` | `:root`, `.dark` | `global.bg.level.1.default` | `#F7F7F7` / `#212121` | A sidebar is a level-1 surface beside the level-0 page. |
@@ -125,12 +125,11 @@ Which shadcn component and props render each Quantum component (the `COMPONENTS`
 | Breadcrumb | `breadcrumb` | link = `BreadcrumbLink`, current = `BreadcrumbPage`, separator = `BreadcrumbSeparator`. |
 | Pagination | `pagination` | link = `PaginationLink`, current = `isActive`, previous / next = `PaginationPrevious` / `PaginationNext`. |
 | Progress bar | `progress` | no indeterminate state. |
-| Skeleton, Spinner, Switch, Slider, Textarea | `skeleton`, `spinner`, `switch`, `slider`, `textarea` | one to one; error = `aria-invalid`, disabled = `disabled`. |
+| Skeleton, Spinner, Switch, Slider | `skeleton`, `spinner`, `switch`, `slider` | one to one; error = `aria-invalid`, disabled = `disabled`. |
 | Avatar | `avatar` | circle = `Avatar`, image = `AvatarImage`, initials = `AvatarFallback`; no square shape. |
 | Checkbox | `checkbox` | checked, indeterminate (`checked="indeterminate"`), error (`aria-invalid`), disabled. |
 | Checkbox group, Radio group | `field` + `checkbox`, `radio-group` | `FieldSet`, `FieldLegend`, `Field orientation="horizontal"`, `FieldError`; `RadioGroupItem`. |
-| Text field | `input` (+ `label`, `field`) | control = `Input`, label = `Label`, description = `FieldDescription`, message = `FieldError`, error = `aria-invalid`, readonly = `readOnly`; one size. |
-| Number field | `input` | `type="number"`, no stepper buttons. |
+| Text field, Number field, Textarea | `input`, `textarea` (+ `label`, `field`) | control = `Input` (`type="number"` for the Number field, no stepper buttons) or `Textarea`, label = `Label`, description = `FieldDescription`, message = `FieldError`, error = `aria-invalid`, disabled = `disabled`, readonly = `readOnly`; one size; no warning or success. A leading icon (`iconStart`) is an `InputGroup` with an `InputGroupAddon`, which has no theme variable (its size, gap and color are class strings). Not mapped: the mark (words in the `FieldLabel`), the asterisk (Android and Windows only), the severity icon (`FieldError` draws none). |
 | Search field | `input-group` | `InputGroupInput` with an `InputGroupAddon` icon. |
 | Select | `native-select` | the Quantum Select is native; shadcn's `select` (a Radix listbox) is the custom alternative. |
 | Dropdown | `dropdown-menu` | trigger = `DropdownMenuTrigger` + `Button`, menu = `DropdownMenuContent`, item = `DropdownMenuItem` (`variant="destructive"` for intent error), separator, group. |
@@ -145,8 +144,8 @@ shadcn components with no Quantum component yet: `dialog`, `tabs`, `table`, `too
 These Quantum decisions live in shadcn's class strings, not in its variables, so the theme leaves
 them out rather than restyle the components:
 
-- **Sizes and spacing.** Control heights (Quantum buttons 24 / 28 / 36 / 44 px, text fields 32 / 40 /
-  48 px), paddings, gaps, icon sizes and font sizes are Tailwind utilities in each component (`h-9`,
+- **Sizes and spacing.** Control heights (Quantum buttons 24 / 28 / 36 / 44 px, text fields 28 / 36 /
+  44 px), paddings, gaps, icon sizes and font sizes are Tailwind utilities in each component (`h-9`,
   `px-4`, `text-sm`). Quantum's medium button label is 16 px; shadcn's is 14 px.
 - **The Forms family.** The Forms foundation's `form.*` tokens are the defaults every form control
   aliases: its colors, its text sizes per size, the part gap `form.container.gap`, and the layout
@@ -155,28 +154,66 @@ them out rather than restyle the components:
   controls. The colors reach shadcn through the semantic roles they alias; shadcn's `Field`,
   `FieldGroup` and `FieldSet` set their gaps and text sizes with Tailwind classes in the
   components, not with a theme variable, so the family's sizes and gaps are not mapped.
+- **Field text sizes.** A medium Quantum field writes its value, label and message at 16 px and its
+  description at 12 px (`text-field.*.typography.medium`). shadcn's `Input` writes the value at
+  14 px from 768 px wide (`md:text-sm`, 16 px below), `Label` is 14 px on a `leading-none` line
+  (`FieldLabel` on `leading-snug`; Quantum's label sits on a 1.2 line), and `FieldDescription` and `FieldError` are 14 px
+  (`text-sm`), the message in regular weight where Quantum's is medium.
+- **Spacing between a field's parts.** Quantum spaces the label, control, description and message
+  6 px apart (`text-field.container.gap`); shadcn's `Field` uses `gap-3`, 12 px.
+- **The value's line.** `Input` sets its text with `text-base md:text-sm` (16 px on a 24 px line,
+  14 px on a 20 px line from 768 px), so Chromium and WebKit clip the stacked marks of Ấ or Ỗ: the
+  input keeps about 95 % of their ink. Quantum gives the value a 1.5 line on the web
+  (`text-field.control.line-height`); shadcn's theming variables have no type size or line height,
+  and Tailwind's `--text-*--line-height` would move every text that uses the size.
 - **Border widths.** Quantum draws 0.6 px borders (`stroke-width.sm`); shadcn's `border` is 1 px.
 - **Hover and active colors.** Quantum has a token per state (`global.bg.accent.brand.hover`,
   `.active`); shadcn blends the rest color with opacity (`hover:bg-primary/90`, `bg-secondary/80`),
   so hovers are lighter, not darker, and there is no pressed state.
 - **The focus ring.** The color is Quantum's, but shadcn draws a 3 px ring at 50 % opacity plus a
-  `--ring` border, where Quantum draws a solid 2.4 px outline offset by 4 px (`focus.ring.width`,
-  `focus.ring.offset`).
+  `--ring` border, where Quantum draws a solid 2.4 px outline (`focus.ring.width`), flush over the border of a
+  text-entry control such as `Input` or `Textarea` (Focus foundation, decision `text-entry-flush`)
+  and 4 px outside other controls (`focus.ring.offset`).
 - **Disabled.** shadcn fades the whole control (`opacity-50`); Quantum swaps to the disabled
   tokens (`global.bg.state.disabled.default`, `global.text.state.disabled.default`).
 - **Dark-mode blends.** In dark, shadcn fills inputs and outline buttons with `--input` at 30 %
-  (`dark:bg-input/30`) and dims `destructive` to 60 %; with Quantum's strong control border
-  (`#B9B7B7`) the fields get a grey fill Quantum does not have (its fields sit on level 0).
+  (`dark:bg-input/30`) and dims `destructive` to 60 %; with Quantum's control border
+  (`#9C9C9C` in dark) the fields get a grey fill Quantum does not have (its fields sit on level 0).
 - **Per-component colors one variable carries for several components.** The Quantum menu is 8 px
   round, its controls 4 px, but shadcn rounds both with `rounded-md` (4 px here). The Divider's
   color (`global.border.base.neutral.4`) is darker than the card edge `--border` takes. The
   progress track is `--primary` at 20 % instead of `global.bg.base.neutral.3`; the skeleton is
-  `--accent` instead of `global.bg.state.skeleton.default`; error text is `--destructive`
-  (`#E12A23`) instead of `global.text.on-subtle.functional.error.default`.
+  `--accent` instead of `global.bg.state.skeleton.default`.
+- **The outline Button's border in light.** shadcn's `outline` Button (also the Dropdown, Dialog and
+  Tooltip triggers of the demo) draws its light border with `--border`, the card edge (`#D5D5D5`),
+  1.37 to 1.44:1 against the light surface levels; in dark it reads `--input`. It is left as is:
+  its text label identifies the button, and WCAG 1.4.11 "does not require that controls have a
+  visual boundary" when visible content identifies them ([Understanding 1.4.11,
+  Boundaries](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).
+  Darkening `--border` would darken every card, popover and table edge with it.
+- **One error color.** shadcn paints error text, the `aria-invalid` border and the destructive fill
+  with `--destructive`, which takes the error text role (`global.text.on-base.functional.error.default`).
+  The light destructive Button and Badge fill is therefore `#C01619`, one step darker than Quantum's
+  accent error fill (`global.bg.accent.functional.error.default`, `#DF2821`); in dark the invalid
+  border is `#F88275` where a Quantum field draws `#EE5248` (`text-field.control.border-color.error`),
+  and the destructive Button, `--destructive` at 60 % over the page, is lighter than Quantum's
+  (its label 4.64 to 5.27:1). A focused destructive menu item (`--destructive` at 20 % under the
+  text) is 4.18:1 in dark, under 4.5:1.
+- **Text on a field in dark.** In dark, shadcn fills every field with its own blend,
+  `dark:bg-input/30` (`--input` at 30 % over the page), a grey Quantum's fields do not have. On it,
+  an invalid `Field`'s typed value (`--destructive`) is 3.21 to 4.13:1 on levels 0 to 3, and the
+  placeholder (`--muted-foreground`) 4.40 and 4.03:1 on levels 2 and 3: under the 4.5:1 WCAG 1.4.3
+  asks of text, placeholder text included. `--input` is also the field border, which must keep 3:1:
+  a darker dark `--input` (`#767676`) would pass the value on levels 0 and 1 only and fail the off
+  Switch track on every level and the borders on level 3, so the class string is left as shadcn
+  ships it.
 - **The switch.** shadcn's off track is `--input` with a `--background` thumb (dark track, light
   thumb); Quantum's off switch is a level-0 track with a dark thumb.
 - **Placeholders** read `--muted-foreground` (Quantum's secondary text); Quantum draws them tertiary.
 - **Severities shadcn lacks.** Quantum's fields can show a warning and a success as well as an error (`severity`); shadcn has only `aria-invalid`, so the warning and success borders and message colors are not themable.
+- **Severity fill.** A Quantum field in error, warning or success takes a subtle fill of its
+  severity (`text-field.control.background.error`, …); `aria-invalid` on `Input` changes only its
+  border and ring color.
 - **Intents and levels shadcn lacks**: success, warning and info (badge, alert), neutral accent
   buttons, card level 2, component sizes, the indeterminate progress bar. Adding a variable for
   them would mean adding variants to the components.

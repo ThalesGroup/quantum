@@ -213,6 +213,7 @@ export function penpotComponent(component, values, types) {
       if (node.align?.counter === 'BASELINE') approximations.add(APPROXIMATIONS.baseline);
     }
     for (const key of ['width', 'height']) if (node[key] !== undefined) out[key] = SIZING[node[key]] ?? node[key];
+    if (node.wrap) out.wrap = true;
     if (node.absolute) out.absolute = node.absolute;
     if (node.arc) {
       out.arc = node.arc;
@@ -258,6 +259,8 @@ export function penpotComponent(component, values, types) {
       const property = SIDES[field] ? null : typeof PROPERTIES[field] === 'function' ? PROPERTIES[field](out) : PROPERTIES[field];
       if (property) set[property] = value;
     }
+    // A maximum width in pixels (a HUG node growing up to it): a layout child's limit.
+    if (node.maxWidth !== undefined) set.layoutItemMaxW = node.maxWidth;
     if (Object.keys(bind).length) out.bind = bind;
     if (Object.keys(set).length) out.set = set;
     if (node.typography) {
@@ -276,7 +279,7 @@ export function penpotComponent(component, values, types) {
       };
     }
     if (node.focusRing) {
-      out.focusRing = { width: valueOf(node.focusRing.strokeWeight), offset: valueOf(node.focusRing.offset), color: valueOf(node.focusRing.stroke) };
+      out.focusRing = { width: valueOf(node.focusRing.strokeWeight), offset: typeof node.focusRing.offset === 'number' ? node.focusRing.offset : valueOf(node.focusRing.offset), color: valueOf(node.focusRing.stroke) };
     }
     for (const key of ['text', 'glyph']) if (node[key] !== undefined) out[key] = node[key];
     if (node.textProperty) {
@@ -304,6 +307,7 @@ export function penpotComponent(component, values, types) {
     name: component.name,
     version: component.version,
     description: component.description,
+    note: component.note,
     page: component.page,
     properties: component.properties.filter((p) => p.kind === 'VARIANT').map((p) => ({ name: p.name, values: p.values })),
     grid: component.grid,
@@ -311,6 +315,7 @@ export function penpotComponent(component, values, types) {
     uses: component.uses,
     textLayers,
     notDrawn: component.notDrawn,
+    notExported: component.notExported,
     uncovered: component.uncovered,
     unbound: [...unbound].map(([reason, paths]) => ({ reason, tokens: [...paths].sort() })),
     approximations: [...approximations],
@@ -338,9 +343,12 @@ export function penpotPlan(loaded, specs, blueprints, file) {
   const all = tokensOf(file);
   const types = new Map(all.map((t) => [t.name, t.type]));
   const components = figma.components.map((c) => penpotComponent(c, figma.values, types));
-  // Every token of the drawn components the Penpot file holds (it leaves out durations and easings).
+  // Every token of the drawn components the Penpot file holds (it leaves out durations and easings),
+  // but those of a slot the blueprint does not draw (`notDrawn`): the library holds what its
+  // components draw. A drawn token referencing one still brings it (penpotTokens follows references).
   const ids = new Set(components.map((c) => c.id));
-  const names = new Set(all.filter((t) => ids.has(t.name.split('.')[0]) && t.set === 'Component').map((t) => t.name));
+  const notExported = new Set(figma.components.flatMap((c) => c.notExported));
+  const names = new Set(all.filter((t) => ids.has(t.name.split('.')[0]) && t.set === 'Component' && !notExported.has(t.name)).map((t) => t.name));
   for (const c of components) for (const name of Object.keys(c.values)) names.add(name);
   return {
     tokens: penpotTokens(file, names),

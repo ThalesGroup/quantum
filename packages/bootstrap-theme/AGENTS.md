@@ -18,7 +18,9 @@ the skill `.claude/skills/framework-theme/` walks through creating or regenerati
 ## Rules
 
 - **Theming API only.** The theme reassigns Bootstrap's own custom properties (`--bs-*`), on
-  `:root, :host` or on the exact selectors Bootstrap declares them on, and passes the same values
+  `:root, :host` or on the exact selectors Bootstrap declares or reads them on (`.invalid-feedback`
+  reads `--bs-danger-fg`, as `.form-label` reads `--bs-label-*`, which the theme sets on the root),
+  and passes the same values
   to Bootstrap's Sass maps. Never a plain CSS property, never a selector Bootstrap does not have,
   never new component CSS. A Quantum decision the API cannot express goes to the README's "Not
   themable through Bootstrap's API", not into CSS.

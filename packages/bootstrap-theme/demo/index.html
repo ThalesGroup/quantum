@@ -444,14 +444,14 @@
         <div class="form-field">
           <label for="demo-search" class="form-label">Search (.form-adorn)</label>
           <label class="form-control form-adorn">
-            <span class="form-adorn-icon" aria-hidden="true"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">search</span></span>
+            <span class="form-adorn-icon" aria-hidden="true"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">search</span></span>
             <input type="search" class="form-ghost" id="demo-search" placeholder="Search…">
           </label>
         </div>
         <div class="form-field">
           <label for="demo-adorn-end" class="form-label">Adornment at the end</label>
           <label class="form-control form-adorn form-adorn-end">
-            <span class="form-adorn-icon" aria-hidden="true"><span class="material-symbols-outlined demo-icon-16" aria-hidden="true">mail</span></span>
+            <span class="form-adorn-icon" aria-hidden="true"><span class="material-symbols-outlined demo-icon-20" aria-hidden="true">mail</span></span>
             <input type="email" class="form-ghost" id="demo-adorn-end" placeholder="you@example.com">
           </label>
         </div>
@@ -574,26 +574,26 @@
       <h3>Validation</h3>
       <div class="demo-grid">
         <div class="form-field">
-          <label for="demo-valid" class="form-label">Valid (.is-valid)</label>
-          <input type="text" class="form-control is-valid" id="demo-valid" value="Jane Doe" aria-describedby="demo-valid-feedback">
-          <div class="valid-feedback" id="demo-valid-feedback">Looks good!</div>
+          <label for="demo-valid" class="form-label">Username (.is-valid)</label>
+          <input type="text" class="form-control is-valid" id="demo-valid" value="ada.lovelace" aria-describedby="demo-valid-feedback">
+          <div class="valid-feedback" id="demo-valid-feedback">This one is available</div>
         </div>
         <div class="form-field">
-          <label for="demo-invalid" class="form-label">Invalid (.is-invalid)</label>
-          <input type="email" class="form-control is-invalid" id="demo-invalid" value="not-an-email" aria-describedby="demo-invalid-feedback">
-          <div class="invalid-feedback" id="demo-invalid-feedback">Please enter a valid email address.</div>
+          <label for="demo-invalid" class="form-label">Email (.is-invalid)</label>
+          <input type="email" class="form-control is-invalid" id="demo-invalid" value="ada.example.com" aria-describedby="demo-invalid-feedback">
+          <div class="invalid-feedback" id="demo-invalid-feedback">Include an @, as in name@example.com</div>
         </div>
         <div class="form-field">
           <label for="demo-invalid-select" class="form-label">Invalid select</label>
           <select class="form-control is-invalid" id="demo-invalid-select" aria-describedby="demo-invalid-select-feedback">
             <option selected>Choose…</option>
           </select>
-          <div class="invalid-feedback" id="demo-invalid-select-feedback">Please select an option.</div>
+          <div class="invalid-feedback" id="demo-invalid-select-feedback">Choose one</div>
         </div>
         <div class="form-field">
           <label for="demo-invalid-textarea" class="form-label">Invalid textarea</label>
-          <textarea class="form-control is-invalid" id="demo-invalid-textarea" aria-describedby="demo-invalid-textarea-feedback"></textarea>
-          <div class="invalid-feedback" id="demo-invalid-textarea-feedback">Please enter a message.</div>
+          <textarea class="form-control is-invalid" id="demo-invalid-textarea" aria-describedby="demo-invalid-textarea-feedback">Too short</textarea>
+          <div class="invalid-feedback" id="demo-invalid-textarea-feedback">Enter at least 20 characters</div>
         </div>
         <div class="form-floating is-invalid">
           <label for="demo-floating-invalid">Invalid floating</label>
@@ -603,24 +603,23 @@
           <input type="checkbox" class="check is-invalid" id="demo-invalid-check">
           <div class="form-field-content">
             <label for="demo-invalid-check">Invalid checkbox</label>
-            <div class="invalid-feedback">You must agree before submitting.</div>
+            <div class="invalid-feedback">Check the box to continue</div>
           </div>
         </div>
       </div>
       <h3>Client-side validation (data-bs-validate)</h3>
       <div class="demo-stack">
-        <form class="demo-stack" data-bs-validate="valid" novalidate>
+        <form class="demo-stack" data-bs-validate novalidate>
           <div class="form-field">
             <label for="demo-validate-email" class="form-label">Email address (required)</label>
             <input type="email" class="form-control" id="demo-validate-email" required>
-            <div class="invalid-feedback">Please enter a valid email address.</div>
-            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Enter an address with an @, as in name@example.com</div>
           </div>
           <div class="form-field">
             <input type="checkbox" id="demo-validate-check" class="check" required>
             <div class="form-field-content">
               <label for="demo-validate-check">Agree to terms</label>
-              <div class="invalid-feedback">You must agree before submitting.</div>
+              <div class="invalid-feedback">Check the box to continue</div>
             </div>
           </div>
           <div><button class="btn-solid theme-primary" type="submit">Validate</button></div>

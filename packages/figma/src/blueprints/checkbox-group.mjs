@@ -9,14 +9,19 @@
  *
  * Each option is the Checkbox's two rows (src/blueprints/checkbox.mjs): its box, label and
  * description. A forced state applies, as on the web, to the whole group when it is group-wide
- * (error, disabled) and to the first option only otherwise (hover, focus, checked): the others
- * stay at rest. The description and the options' descriptions are boolean properties (off, as in
- * the template); the message is drawn in the error state only.
+ * (disabled) and to the first option only otherwise (hover, focus, checked): the others stay at
+ * rest. The severity is the `Severity` axis, not a State value (the engine leaves out of State the
+ * states an enum axis sets), so it reaches every option. The description and the options'
+ * descriptions are boolean properties (off, as in the template); the legend ends with the required mark
+ * (`legend-row`, the BOOLEAN `Mark` and TEXT `Mark text`, markedFields `fixed`, decision mark-part); the message is drawn with
+ * Severity=error only, starting with the severity icon when `severityIcon` is message (the Text field's
+ * `messageNode`, decision severity-icon).
  */
 import { TRANSITION, checkboxControl, optionRows } from './checkbox.mjs';
+import { messageNode, withMark, SEVERITY_ICON_AXES, ASTERISK, MARKED_FIELDS } from './text-field.mjs';
 
 /** States that the web forces on the whole group; the others apply to one option. */
-const GROUP_WIDE = new Set(['error', 'disabled']);
+const GROUP_WIDE = new Set(['disabled']);
 
 const option = (control) => (n) =>
   optionRows({
@@ -47,7 +52,8 @@ const options = (control, orientation, layout) => ({
 
 /** A group of options drawn with `control`: the Checkbox group's, and the Radio group's. */
 export const group = (control) => ({
-  booleans: { 'Show description': false, 'Show option descriptions': false },
+  fixed: MARKED_FIELDS,
+  booleans: { Mark: true, 'Show description': false, 'Show option descriptions': false },
   root: {
     type: 'frame',
     name: 'container',
@@ -62,13 +68,13 @@ export const group = (control) => ({
         name: 'heading',
         layout: 'VERTICAL',
         children: [
-          {
+          withMark({
             type: 'text',
             name: 'legend',
             text: 'Options',
             property: 'Legend',
             bind: { fill: 'legend.color', typography: 'legend.typography' },
-          },
+          }, 'legend-row'),
           {
             type: 'text',
             name: 'description',
@@ -81,17 +87,10 @@ export const group = (control) => ({
       },
       options(control, 'vertical', 'VERTICAL'),
       options(control, 'horizontal', 'HORIZONTAL'),
-      {
-        type: 'text',
-        name: 'message',
-        when: (v) => v.state === 'error',
-        text: 'Message',
-        property: 'Message',
-        bind: { fill: 'message.color', typography: 'message.typography' },
-      },
+      messageNode({ fill: false }),
     ],
   },
-  notDrawn: [TRANSITION],
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ASTERISK],
 });
 
 export default group(checkboxControl);

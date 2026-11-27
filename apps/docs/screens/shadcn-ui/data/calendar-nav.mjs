@@ -46,6 +46,7 @@ export function calendarLists(prefix) {
     el('div', { class: 'scr-nav-group' }, el('details', { open: index === 0 },
       el('summary', { class: 'scr-nav__summary' }, el('span', { class: 'scr-nav__label' }, text(calendar.name)), el('span', { class: 'scr-nav__chevron' }, ds.icon({ name: 'chevron_right', size: 'small' }))),
       el('ul', { class: 'scr-checklist' }, calendar.items.map((item, i) => el('li', {}, ds.checkbox({
+        markedFields: 'none',
         label: item,
         size: 'small',
         checked: i < 2,

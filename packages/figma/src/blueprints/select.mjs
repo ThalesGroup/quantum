@@ -11,20 +11,26 @@
  * as wide as the field (FIELD_WIDTH px) positioned absolutely over it and vertically centered,
  * whose right padding is indicator.margin-inline. Figma cannot pin an absolute child to the end
  * edge from the format: if the component is made wider, widen `indicator-inset` with it.
+ *
+ * The severity icon (decision severity-icon) follows the field box in `control-row` (the Text field's
+ * `withSeverityIcon`), the indicator staying inside the box, or starts the message (`message`), by the
+ * `severityIcon` variant. The label row ends with the required mark, the Text field's `labelRow`: markedFields
+ * is kept out of the variants (`fixed`), shown by the BOOLEAN `Mark` and typed in `Mark text` (decision mark-part).
  */
-import { FIELD_WIDTH, TRANSITION, container, control, description, message, label } from './text-field.mjs';
+import { FIELD_WIDTH, TRANSITION, SEVERITY_ICON_AXES, ASTERISK, FIELD_SETTINGS, LABEL_COLUMN, LONG_LABEL_NOTE, container, control, description, message, labelRow, withSeverityIcon } from './text-field.mjs';
 
 export default {
   root: container([
-    label,
-    {
+    labelRow,
+    withSeverityIcon({
       type: 'frame',
       name: 'field',
       layout: 'HORIZONTAL',
       width: 'FILL',
       children: [
         control({
-          bind: { paddingX: null, paddingLeft: 'control.padding-inline', paddingRight: 'control.padding-inline-end' },
+          // The Select is not in the field family yet: no minimum block padding (Text field decision grows-with-text-size).
+          bind: { paddingX: null, paddingY: null, paddingLeft: 'control.padding-inline', paddingRight: 'control.padding-inline-end' },
           children: [
             {
               type: 'text',
@@ -54,13 +60,18 @@ export default {
           ],
         },
       ],
-    },
+    }),
     description,
     message,
   ]),
-  booleans: { 'Show description': false },
+  fixed: FIELD_SETTINGS,
+  booleans: { Mark: true, 'Show description': false },
+  note: LONG_LABEL_NOTE,
   notDrawn: [
+    LABEL_COLUMN,
     TRANSITION,
+    SEVERITY_ICON_AXES,
+    ASTERISK,
     { slot: 'indicator.fill, indicator.grade, indicator.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' },
   ],
 };

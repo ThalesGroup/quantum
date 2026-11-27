@@ -21,8 +21,11 @@
   --_control-border-color: var(--select-control-border-color-default);
   --_control-color: var(--select-control-color-default);
   --_label-color: var(--select-label-color-default);
+  --_mark-color: var(--select-mark-color-default);
   --_description-color: var(--select-description-color-default);
   --_message-color: var(--select-message-color-error);
+  --_severity-icon-color: var(--select-severity-icon-color-error);
+  --_severity-icon-size: var(--select-severity-icon-size-after-control-medium);
   --_min-height: var(--select-control-min-height-medium);
   --_padding-inline: var(--select-control-padding-inline-medium);
   --_font-family: var(--select-control-typography-medium-font-family);
@@ -37,6 +40,11 @@
   --_label-font-weight: var(--select-label-typography-medium-font-weight);
   --_label-line-height: var(--select-label-typography-medium-line-height);
   --_label-letter-spacing: var(--select-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--select-mark-typography-medium-font-family);
+  --_mark-font-size: var(--select-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--select-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--select-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--select-mark-typography-medium-letter-spacing);
   --_description-font-family: var(--select-description-typography-medium-font-family);
   --_description-font-size: var(--select-description-typography-medium-font-size);
   --_description-font-weight: var(--select-description-typography-medium-font-weight);
@@ -60,6 +68,7 @@
 /* ---- Size ---------------------------------------------------------------- */
 
 .ds-select[data-size="small"] {
+  --_severity-icon-size: var(--select-severity-icon-size-after-control-small);
   --_min-height: var(--select-control-min-height-small);
   --_padding-inline: var(--select-control-padding-inline-small);
   --_font-family: var(--select-control-typography-small-font-family);
@@ -74,6 +83,11 @@
   --_label-font-weight: var(--select-label-typography-small-font-weight);
   --_label-line-height: var(--select-label-typography-small-line-height);
   --_label-letter-spacing: var(--select-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--select-mark-typography-small-font-family);
+  --_mark-font-size: var(--select-mark-typography-small-font-size);
+  --_mark-font-weight: var(--select-mark-typography-small-font-weight);
+  --_mark-line-height: var(--select-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--select-mark-typography-small-letter-spacing);
   --_description-font-family: var(--select-description-typography-small-font-family);
   --_description-font-size: var(--select-description-typography-small-font-size);
   --_description-font-weight: var(--select-description-typography-small-font-weight);
@@ -87,6 +101,7 @@
 }
 
 .ds-select[data-size="large"] {
+  --_severity-icon-size: var(--select-severity-icon-size-after-control-large);
   --_min-height: var(--select-control-min-height-large);
   --_padding-inline: var(--select-control-padding-inline-large);
   --_font-family: var(--select-control-typography-large-font-family);
@@ -101,6 +116,11 @@
   --_label-font-weight: var(--select-label-typography-large-font-weight);
   --_label-line-height: var(--select-label-typography-large-line-height);
   --_label-letter-spacing: var(--select-label-typography-large-letter-spacing);
+  --_mark-font-family: var(--select-mark-typography-large-font-family);
+  --_mark-font-size: var(--select-mark-typography-large-font-size);
+  --_mark-font-weight: var(--select-mark-typography-large-font-weight);
+  --_mark-line-height: var(--select-mark-typography-large-line-height);
+  --_mark-letter-spacing: var(--select-mark-typography-large-letter-spacing);
   --_description-font-family: var(--select-description-typography-large-font-family);
   --_description-font-size: var(--select-description-typography-large-font-size);
   --_description-font-weight: var(--select-description-typography-large-font-weight);
@@ -122,6 +142,16 @@
   font-weight: var(--_label-font-weight);
   line-height: var(--_label-line-height);
   letter-spacing: var(--_label-letter-spacing);
+}
+
+/* The required mark, inside the label after a word space (markedFields; decision mark-part, Forms forms-mark-style). */
+.ds-select__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 
 .ds-select__control {
@@ -165,6 +195,64 @@
   font-weight: var(--_message-font-weight);
   line-height: var(--_message-line-height);
   letter-spacing: var(--_message-letter-spacing);
+}
+
+/* ---- Severity icon ---------------------------------------------------------
+   One placement per form (severityIcon), as the Text field's. After the control, the root becomes a two-column
+   grid: the field box (the select and its indicator, which stays inside) fills the first column and the icon
+   follows it at the severity-icon gap; every other part spans both. At the start of the message, the message
+   becomes a row: the icon, then the text. */
+
+.ds-select[data-severity-icon="after-control"] {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--select-severity-icon-gap-after-control);
+  row-gap: var(--select-container-gap);
+  align-items: center;
+}
+.ds-select[data-severity-icon="after-control"] > * {
+  grid-column: 1 / -1;
+}
+.ds-select[data-severity-icon="after-control"] > .ds-select__field {
+  grid-column: 1;
+}
+.ds-select[data-severity-icon="after-control"] > .ds-select__severity-icon {
+  grid-column: 2;
+}
+
+.ds-select__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--_severity-icon-size);
+  block-size: var(--_severity-icon-size);
+  color: var(--_severity-icon-color);
+  font-family: var(--select-severity-icon-font-family);
+  font-size: var(--_severity-icon-size);
+  font-weight: var(--select-severity-icon-font-weight);
+  line-height: var(--_severity-icon-size);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--select-severity-icon-fill),
+    "GRAD" var(--select-severity-icon-grade),
+    "opsz" var(--select-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-select__message:has(> .ds-select__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--select-severity-icon-gap-message);
+}
+/* In the message the icon is centred on the first line. */
+.ds-select__severity-icon[data-place="message"] {
+  --_severity-icon-size: var(--select-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
 }
 
 /* The field wraps the select and the chevron drawn over its end edge. */
@@ -218,6 +306,8 @@
    on the control. Warning and success have none on the web. */
 .ds-select:where([data-state="error"], [data-severity="error"]) {
   --_message-color: var(--select-message-color-error);
+  --_severity-icon-color: var(--select-severity-icon-color-error);
+  --_severity-icon-size: var(--select-severity-icon-size-after-control-medium);
 }
 .ds-select:where([data-state="error"], [data-severity="error"]) .ds-select__control,
 .ds-select__control[aria-invalid="true"] {
@@ -227,6 +317,7 @@
 
 .ds-select:where([data-state="warning"], [data-severity="warning"]) {
   --_message-color: var(--select-message-color-warning);
+  --_severity-icon-color: var(--select-severity-icon-color-warning);
 }
 .ds-select:where([data-state="warning"], [data-severity="warning"]) .ds-select__control {
   --_control-background: var(--select-control-background-warning);
@@ -235,6 +326,7 @@
 
 .ds-select:where([data-state="success"], [data-severity="success"]) {
   --_message-color: var(--select-message-color-success);
+  --_severity-icon-color: var(--select-severity-icon-color-success);
 }
 .ds-select:where([data-state="success"], [data-severity="success"]) .ds-select__control {
   --_control-background: var(--select-control-background-success);
@@ -244,6 +336,7 @@
 .ds-select:where([data-state="disabled"]),
 .ds-select:has(.ds-select__control:disabled) {
   --_label-color: var(--select-label-color-disabled);
+  --_mark-color: var(--select-mark-color-disabled);
   --_description-color: var(--select-description-color-disabled);
 }
 .ds-select:where([data-state="disabled"]) .ds-select__control,
@@ -258,10 +351,83 @@
   outline: none;
 }
 
-.ds-select:where([data-state="focus-visible"]) .ds-select__control,
+.ds-select:where([data-state="focus-visible"]) .ds-select__control:not(:disabled),
 .ds-select__control:focus-visible {
   outline: var(--select-control-outline-width-focus-visible) solid var(--select-control-outline-color-focus-visible);
   outline-offset: var(--select-control-outline-offset-focus-visible);
+}
+
+
+/* ---- Label at the start (labelPlacement start) --------------------------------------------------------------
+   The form lays its fields out on one grid, [label] fit-content(14em) [control] minmax(0, 1fr), as a size
+   container (product CSS, Forms page). The field carries its row: a subgrid of that grid, the label in the first
+   column, ending against the control, its first line centred on the box; everything else in the second. It sets its own
+   column gap, which would otherwise be its part gap. Standalone (no grid around it), subgrid computes to none and
+   the field draws its own two columns, the label's as wide as the label (the form must be the grid and the size container). With the severity icon after the
+   control, both share the second column. Under 30 rem of the form's width the label stacks back above (Forms
+   decisions forms-label-column, -alignment, -column-gap, -column-stacking, forms-label-column-web). */
+
+.ds-select[data-label-placement="start"] {
+  display: inline-grid;
+  grid-column: 1 / -1;
+  grid-auto-columns: auto minmax(0, 1fr);
+  column-gap: var(--select-container-column-gap-start);
+  row-gap: var(--select-container-gap);
+  align-items: start;
+}
+.ds-select[data-label-placement="start"] > * {
+  grid-column: 2;
+}
+.ds-select[data-label-placement="start"] > .ds-select__label {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  text-align: end;
+  margin-block-start: calc((var(--_min-height) - var(--_label-font-size) * var(--_label-line-height)) / 2);
+}
+.ds-select[data-label-placement="start"] > .ds-select__field {
+  grid-row: 1;
+}
+.ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__field {
+  grid-column: 2;
+  justify-self: start;
+  inline-size: calc(100% - var(--_severity-icon-size) - var(--select-severity-icon-gap-after-control));
+}
+.ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__severity-icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  margin-block-start: calc((var(--_min-height) - var(--_severity-icon-size)) / 2);
+}
+
+/* A subgrid of the form's grid only inside the form, a size container at least 30 rem wide: Chromium sizes a
+   subgrid with no grid around it to its min-content, so alone the field keeps its own two columns. */
+@container (width >= 30rem) {
+  .ds-select[data-label-placement="start"] {
+    grid-template-columns: subgrid;
+  }
+}
+
+@container (width < 30rem) {
+  .ds-select[data-label-placement="start"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-select[data-label-placement="start"] > *,
+  .ds-select[data-label-placement="start"][data-severity-icon="after-control"] > * {
+    grid-column: 1;
+  }
+  .ds-select[data-label-placement="start"] > .ds-select__label {
+    justify-self: start;
+    text-align: start;
+    margin-block-start: 0;
+  }
+  .ds-select[data-label-placement="start"] > .ds-select__field,
+  .ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__field,
+  .ds-select[data-label-placement="start"][data-severity-icon="after-control"] > .ds-select__severity-icon {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

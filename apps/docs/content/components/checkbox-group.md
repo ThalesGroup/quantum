@@ -35,6 +35,26 @@ description right under the legend, 6 px between the legend (or its description)
 the message, and 4 px between options in a column
 ([Forms: spacing](/foundations/forms#spacing)).
 
+By default the message starts with the severity icon, the Alert's `error` glyph at 16 px, named
+"Error", in the message's color: `severityIcon`, a choice the form makes once for all its controls
+([Forms foundation](/foundations/forms/guidelines)). With `none` there is no icon and the message's
+own words say the error. A checkbox group never draws the icon after its box, where its options follow it: a
+form set to `after-control` shows it in the message.
+
+## Required mark
+
+A form says once which of its fields carry a mark (**Marked fields**), the same for all its
+controls, and the group draws its own from **Required**, as the Text field does. By default the form
+marks the optional ones: a group that is not required ends its legend with "(optional)", a required one carries nothing, and the form says once, before its
+first field, "All fields are required unless marked optional." When most fields are optional, the
+form marks the required ones with "(required)" instead. A group outside a submitted form, such as a filter applied at once, carries no mark (**Marked fields** none). The rule is the
+[Forms foundation](/foundations/forms/guidelines)'s.
+
+The mark follows the legend after a word space, at its size but regular and in the description's
+color. On the web its "(required)" stays in the group's name: no state says that a group is required, so the word is the only way to say it. Android and Windows mark a required group with an asterisk instead, in the error
+message's red; the web, iOS and macOS keep the words. In Figma the component draws the web's mark:
+**Mark** shows it and **Mark text** holds its words.
+
 ## States
 
 States belong to the options; the group passes its disabled and severity properties down to

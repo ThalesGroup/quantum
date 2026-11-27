@@ -26,8 +26,9 @@ import { checkTokenMap, parseTokenPath, statePair, kindOf, matchesTokenPattern }
 import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
+import { TEXT_SIZE_RULES, checkTextSizeRules } from './lib/text-size-rules.mjs';
 import { loadScreens, screenComponents, checkSections, checkSource, checkScreenMeta, checkScreenHtml, checkScreenSource, checkScreensCssSelectors, definedScreenClasses, screenSourceFiles, SCREEN_OWN_VARS } from './lib/screens.mjs';
-import { SCOPES, followedByScope, componentsInScope, checkInputControl, inheritedGuidelines } from './lib/foundation-scope.mjs';
+import { SCOPES, followedByScope, componentsInScope, checkInputControl, inheritedGuidelines, requiredTokensFor, checkExemptions } from './lib/foundation-scope.mjs';
 import { PATHS, FILES, artifacts, foundationArtifacts } from './lib/paths.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -570,6 +571,7 @@ for (const file of foundationFiles) {
       owned.add(t.path);
     }
   }
+  for (const m of checkExemptions(spec, specs.map((s) => s.spec.id), owned)) error(where, m);
   const ruleIds = spec.rules.map((r) => r.id);
   if (new Set(ruleIds).size !== ruleIds.length) error(where, 'duplicate rule ids');
   for (const r of spec.rules) {
@@ -611,7 +613,7 @@ for (const file of foundationFiles) {
     for (const { spec: comp, where: compWhere } of specs) {
       if (!inScopeSpecs.includes(comp)) continue;
       const refs = new Set(loaded.all.filter((t) => t.tier === 'component' && t.segments[0] === comp.id).flatMap((t) => t.references));
-      for (const p of required) if (!refs.has(p)) error(compWhere, `follows the "${id}" foundation (${spec.appliesTo}): a component token must alias ${p} (${where})`);
+      for (const p of requiredTokensFor(spec, comp.id, required)) if (!refs.has(p)) error(compWhere, `follows the "${id}" foundation (${spec.appliesTo}): a component token must alias ${p} (${where})`);
       if (spec.appliesTo === 'input-components') report(compWhere, checkInputControl(comp).map((p) => ({ ...p, message: `follows the "${id}" foundation (${spec.appliesTo}): ${p.message}` })));
     }
   }
@@ -695,6 +697,9 @@ for (const m of MIRRORS) {
   for (const id of [m.component, m.of]) if (!specIds.has(id)) error('scripts/lib/mirrors.mjs', `names unknown component "${id}"`);
   if (specIds.has(m.component) && specIds.has(m.of)) for (const p of checkMirror(m, contexts)) error(artifacts(m.component).tokens, p.message);
 }
+
+// Text size rules: a component's text takes the size of another component's text (scripts/lib/text-size-rules.mjs)
+if (contexts.length) for (const p of checkTextSizeRules(TEXT_SIZE_RULES, contexts[0].index.byPath)) error('scripts/lib/text-size-rules.mjs', p.message);
 
 // ---------------------------------------------------------------------------
 // 4. Documentation site: built with the design system (apps/docs/AGENTS.md)

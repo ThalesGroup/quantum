@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "textarea",
   "name": "Textarea",
-  "version": "0.2.0",
+  "version": "0.28.0",
   "status": "draft",
   "role": "textarea",
   "summary": "Lets people enter or edit several lines of text.",
@@ -26,6 +26,20 @@
       "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
     },
     {
+      "id": "mark",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "The required mark of the Forms rule, at the end of the label after a word space: \"(optional)\" on a field that is not required when the form marks optional fields, \"(required)\" on a required field when it marks required fields (markedFields), nothing otherwise. The label's size, regular, the description's color (decision mark-style). On the web \"(required)\" is hidden from assistive technology, the required attribute saying it, and \"(optional)\" is part of the name."
+    },
+    {
+      "id": "asterisk",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "On Android and Windows only, in place of the mark: an asterisk at the end of the label of a required field, 4 px after it (2 px in small), at the label's size and weight (label.typography), in the error message's red (decision asterisk-style), kept in the accessible name. Never drawn on the web, iOS and macOS, so neither the reference rendering nor the Figma component draws it."
+    },
+    {
       "id": "control",
       "role": "value",
       "required": true,
@@ -46,7 +60,18 @@
         "warning",
         "success"
       ],
-      "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), associated with the control as a description. Shown only with a severity."
+      "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), under the description (under the control when there is none), associated with the control as a description, after it. Shown only with a severity; the description stays."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error",
+        "warning",
+        "success"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\", \"Warning\", \"Success\"): error, warning or check_circle, the Alert's glyphs. Placed by severityIcon: after the control, level with its first line, the control giving up its size and gap; or at the start of the message, before its text. Never inside the control, where browsers add their own elements."
     }
   ],
   "properties": [
@@ -55,22 +80,28 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Control height, inline padding and text size scale together; label, description and message keep their size.",
+      "description": "Control height, value text and inline padding take the height, the text size and the inline padding of the Button of the same size; the label takes the text size of the value; the description and the message take the helper sizes.",
       "affects": [
-        "control"
+        "control",
+        "label",
+        "mark",
+        "asterisk",
+        "description",
+        "message",
+        "severity-icon"
       ],
       "options": [
         {
           "value": "small",
-          "description": "Dense forms, toolbars, table rows (32 px high)."
+          "description": "Dense forms (at least 28 px high)."
         },
         {
           "value": "medium",
-          "description": "Default (40 px)."
+          "description": "Default (at least 36 px high)."
         },
         {
           "value": "large",
-          "description": "Prominent, single fields: a search page, a sign-in form (48 px)."
+          "description": "Prominent forms (at least 44 px high)."
         }
       ]
     },
@@ -117,18 +148,90 @@
       "description": "What the severity means: what is wrong and how to fix it, what to check, or what was confirmed. Shown with a severity, in the color of that severity, and replaces errorMessage."
     },
     {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-severity-icon-placement).",
+      "affects": [
+        "control",
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px; the control keeps its full width (default)."
+        },
+        {
+          "value": "after-control",
+          "description": "After the control, level with its first line, at the size of the Button's icon of the same size; the control gives up the icon and the gap."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
+        }
+      ]
+    },
+    {
+      "id": "labelPlacement",
+      "name": "Label placement",
+      "type": "enum",
+      "default": "above",
+      "description": "Where the label sits. A rule of the form, not of the field: a form sets it once, to the same value, for all its field-like controls, and sizes one label column for them (Forms decision forms-label-column).",
+      "affects": [
+        "container",
+        "label"
+      ],
+      "options": [
+        {
+          "value": "above",
+          "description": "Above the control (default)."
+        },
+        {
+          "value": "start",
+          "description": "In the form's label column, at the start: the label ends form.gap.label-column (12 px) from the control, its first line level with the first line of text, the control's block padding plus half its line, at any number of rows; the description and the message stay under the control. The column stacks back above when the form is narrower than 30 rem."
+        }
+      ]
+    },
+    {
+      "id": "markedFields",
+      "name": "Marked fields",
+      "type": "enum",
+      "default": "optional",
+      "description": "Which fields carry the required mark. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-marked-fields); the field draws its mark from its own required.",
+      "affects": [
+        "mark",
+        "asterisk"
+      ],
+      "options": [
+        {
+          "value": "optional",
+          "description": "\"(optional)\" on the field when it is not required, nothing when it is (default). The form says once, before its first field, \"All fields are required unless marked optional.\"."
+        },
+        {
+          "value": "required",
+          "description": "\"(required)\" on the field when it is required, nothing when it is not: for a form where most fields are optional."
+        },
+        {
+          "value": "none",
+          "description": "No mark: a field outside a form, such as a table's filter or a setting applied at once."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "The field must be filled to submit the form."
+      "description": "The field must be filled to submit the form. It draws the mark that markedFields asks for (\"(required)\" on a required field, \"(optional)\" on one that is not), and the asterisk on Android and Windows. Ignored on a read-only field, which people cannot fill: the field then has neither the required state nor a mark."
     },
     {
       "id": "readonly",
       "name": "Read-only",
       "type": "boolean",
       "default": false,
-      "description": "The value can be read, focused and copied but not edited (a generated identifier)."
+      "description": "The value can be read, focused and copied but not edited (a generated identifier). Say so in the label or the description."
     },
     {
       "id": "severity",
@@ -138,7 +241,8 @@
       "description": "What the check of the value found. Replaces the invalid boolean: error, warning and success are the three severities of a form control (decision forms-severity); information that holds before any check is the description's job.",
       "affects": [
         "control",
-        "message"
+        "message",
+        "severity-icon"
       ],
       "options": [
         {
@@ -184,28 +288,28 @@
     {
       "id": "focus-visible",
       "trigger": "interaction",
-      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the shared focus ring outside its border however it was focused."
+      "description": "Focus on the control, from the keyboard or a pointer: an editable field shows the focus color as a 2.4 px outline drawn flush over its border however it was focused; the border and the text do not move."
     },
     {
       "id": "error",
       "trigger": "property",
       "property": "severity",
       "value": "error",
-      "description": "Severity error: the border takes the error color and the message is shown under the control, in the error color."
+      "description": "Severity error: the box is filled with the subtle error background, on hover too, an outline in the error color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the error color."
     },
     {
       "id": "warning",
       "trigger": "property",
       "property": "severity",
       "value": "warning",
-      "description": "Severity warning: the border takes the warning color and the message is shown under the control, in the warning color. No web state beyond the data attribute."
+      "description": "Severity warning: the box is filled with the subtle warning background, on hover too, an outline in the warning color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the warning color. No web state beyond the data attribute."
     },
     {
       "id": "success",
       "trigger": "property",
       "property": "severity",
       "value": "success",
-      "description": "Severity success: the border takes the success color and the message is shown under the control, in the success color. No web state beyond the data attribute."
+      "description": "Severity success: the box is filled with the subtle success background, on hover too, an outline in the success color is drawn flush over the border (1.2 px at rest, 2.4 px with focus) and the message is shown under the control, in the success color. No web state beyond the data attribute."
     },
     {
       "id": "readonly",
@@ -228,8 +332,11 @@
     "sizing": "fill",
     "notes": [
       "Label, control, description and message stack, separated by container.gap; the control fills the width of the component, which the layout sizes.",
-      "Inline padding, minimum height and text size come from the size option; the corner radius and the border width do not change.",
-      "The block padding sets the inset of the first and last lines; the control grows with the rows property and can be resized vertically."
+      "Inline padding, minimum height and text size come from the size option; the corner radius (2 px at small, 4 px at medium and large, as the Button's) comes from it too; the border width does not change.",
+      "The block padding sets the inset of the first and last lines; the control grows with the rows property and can be resized vertically.",
+      "With severityIcon after-control and a severity that has an icon, the control and the icon share a row: the control fills it, the icon follows at severity-icon.gap, level with the control's first line.",
+      "When people raise the text size the lines grow and the control grows with them, keeping its own block padding (control.padding-block, 6 / 8 / 12 px) above and below the text (decision grows-with-text-size).",
+      "With labelPlacement start, the Textarea is a row of the form's grid (a subgrid on the web): the label in the first column, as wide as the form's longest label up to 14 em, aligned to its end; the control, description and message in the second; the label's first line level with the first line of text, the control's block padding plus half its line, at any number of rows. Standalone, it draws its own two columns, the label's as wide as the label. Under 30 rem of the form's width (a size container) the label stacks back above. The form's grid is the product's (the Forms page shows it)."
     ]
   },
   "accessibility": {
@@ -255,6 +362,152 @@
         "platforms": [
           "web"
         ]
+      },
+      {
+        "key": "Enter",
+        "action": "Inserts a new line in this multi-line edit control.",
+        "refs": [
+          "html-textarea",
+          "html-enterkeyhint"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "On iPadOS 15 and later with a hardware keyboard, moves focus among focus groups, the field included: iPadOS supports keyboard navigation in text fields and text views.",
+        "refs": [
+          "hig-focus-ipados",
+          "hig-keyboards-best-practices"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "key": "Return",
+        "action": "Goes into the text of the text view, which edits multi-line text; the submit action is triggered by text fields and secure fields only.",
+        "refs": [
+          "swiftui-text-editor",
+          "swiftui-on-submit"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "Inserts a tab character, the platform's default in a multi-line field; Shift+Tab and the arrow keys leave the field, so focus is not trapped.",
+        "refs": [
+          "compose-focus-text-fields",
+          "compose-focus-text-fields-2d"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Shift+Tab",
+        "action": "Moves focus to the previous focus target.",
+        "refs": [
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Arrow keys, D-pad",
+        "action": "Move the caret; at the start or the end of the text (on the first or the last line) they move focus to the adjacent focus target.",
+        "refs": [
+          "compose-focus-text-fields-2d"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Shift+arrow keys, Ctrl+A",
+        "action": "Select characters, select all: the system handles them for a text field with a hardware keyboard.",
+        "refs": [
+          "compose-keyboard-commands"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "Inserts a new line: only a single-line field refuses new lines.",
+        "refs": [
+          "compose-line-limits"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "key": "Tab, Shift-Tab",
+        "action": "On macOS, move focus to the next or the previous view of the key view loop.",
+        "refs": [
+          "appkit-next-key-view",
+          "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Command-A",
+        "action": "On macOS, selects all the characters in the field.",
+        "refs": [
+          "hig-keyboards-shortcuts"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Tab",
+        "action": "On Windows, moves focus in the tab order, which follows the order the controls are added; a disabled field is removed from it.",
+        "refs": [
+          "windows-keyboard-accessibility"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Shift+Tab",
+        "action": "On Windows, moves focus in reverse tab order.",
+        "refs": [
+          "windows-keyboard-navigation"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Arrow keys",
+        "action": "On Windows, move the caret inside the field: in a text field every key goes to entering or navigating the text first.",
+        "refs": [
+          "windows-keyboard-navigation",
+          "windows-keyboard-text-entry"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "key": "Enter",
+        "action": "On Windows, inserts a new line: the Textarea's text box sets AcceptsReturn, which lets it take newline characters.",
+        "refs": [
+          "windows-text-box-multi-line"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "guidelines": [
@@ -272,27 +525,6 @@
           "html-aam-textarea",
           "html-textarea",
           "mdn-textarea"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
-        "text": "Every field has a visible label associated with the control programmatically; help text that people need to fill the field (format, example) is visible too, as the description.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-labels",
-          "wai-instructions",
-          "html-label"
-        ]
-      },
-      {
-        "text": "Associate the label with a label element whose for attribute names the control's id; reference the description and the message with aria-describedby, so they are read after the name.",
-        "refs": [
-          "wcag-h44",
-          "wcag-aria1",
-          "apg-describing"
         ],
         "platforms": [
           "web"
@@ -319,68 +551,179 @@
         ]
       },
       {
-        "text": "Say the severity in text next to the field, whatever it is: the message names what is wrong and how to fix it for an error, what to check for a warning and what was confirmed for a success, and is associated with the control. Color is never the only sign of a severity.",
+        "text": "Apple's recommended minimum text size is 11 pt on iOS and iPadOS; the description (12 pt at its smallest) and the message (14 pt at its smallest) are above it.",
         "refs": [
-          "wcag:3.3.1",
-          "wai-notifications",
-          "wcag-g83",
-          "wcag:1.4.1"
-        ]
-      },
-      {
-        "text": "Say that the value is in error with aria-invalid=\"true\" on the control, for the error severity only, and that a field is required with the required attribute, which the browser exposes as required. The web has no state for a warning or a success: the message says them, and aria-invalid is never set for them.",
-        "refs": [
-          "wcag-aria21",
-          "aria-invalid",
-          "html-required",
-          "html-aam-required",
-          "wai-validation"
+          "hig-typography"
         ],
         "platforms": [
-          "web"
+          "ios"
         ]
       },
       {
-        "text": "Mark required fields in the label or the description, never by the error color alone.",
-        "refs": [
-          "wcag-h90",
-          "wcag-f81",
-          "wcag:1.4.1"
-        ]
-      },
-      {
-        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 13.01:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 12.30:1 and 8.38:1, success 7.44:1 and 5.92:1). Disabled text is inactive and exempt.",
+        "text": "Label, value, description and message text contrast at least 4.5:1 with their background in every color mode and enabled state: label and value 19.03:1 (light) and 11.28:1 (dark) on the default surface, description 12.78:1 and 8.86:1, placeholder 6.08:1 and 6.40:1, message text in its severity color: error 6.12:1 and 7.06:1, warning 6.49:1 and 11.17:1, success 7.87:1 and 7.89:1 (on every surface level the lowest are error 5.79:1 in light mode and 5.30:1 in dark mode, warning 6.16:1 and 8.38:1, success 7.44:1 and 5.92:1). On the severity fills (global.bg.subtle.functional.<severity>.default, at rest and on hover), the value is at least 16.91:1 (light) and 11.43:1 (dark) and the placeholder 5.42:1 and 6.48:1: error 16.91 / 11.67:1 and 5.42 / 6.62:1, warning 17.15 / 11.54:1 and 5.50 / 6.55:1, success 17.30 / 11.43:1 and 5.55 / 6.48:1. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
       },
       {
-        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 12.78:1 (light) and 11.28:1 (dark) on the default surface at rest, 12.09:1 and 10.33:1 on the hover tint; the severity borders (the accent functional border): error 6.12:1 and 4.97:1, warning 3.27:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 3.09:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt. A warning border on the subtle warning fill, which a field may take as its fill in step 6, is 2.95:1 in light mode: a known shortfall (issue #119).",
+        "text": "The border is what identifies the field, so it contrasts at least 3:1 with the adjacent surface in every color mode: 3.30:1 (light) and 6.40:1 (dark) on the default surface at rest (3.12:1 and 4.80:1 at the lowest, on the surface levels 1 and 3 in light mode and level 3 in dark), 3.12:1 and 5.86:1 against the hover fill on the default surface; the severity borders and outlines (the accent functional border): error 6.12:1 and 4.97:1, warning 6.49:1 and 8.09:1, success 7.87:1 and 6.08:1 on the default surface, and at least 5.79:1 and 3.73:1 (error), 6.16:1 and 6.07:1 (warning), 7.44:1 and 4.57:1 (success) on every surface level; the focus outline 5.77:1 and 12.76:1. The outlines are drawn over the border, on the surface around the field, so they are checked against it. Against the error fill, the other color next to it, the error border is 5.45:1 (light) and 5.14:1 (dark). Disabled is exempt. Against the warning fill the warning border is 5.86:1 in light mode and 8.27:1 in dark mode; against the success fill the success border is 7.17:1 and 6.16:1.",
         "refs": [
           "wcag:1.4.11",
-          "understanding-non-text-contrast-boundaries"
+          "understanding-non-text-contrast-boundaries",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "A visible focus indicator appears when the control receives focus, drawn outside its border.",
+        "text": "The field can be reached, edited and left from a keyboard, physical or assistive, on every platform, through the platform's native text control and its keyboard services, and focus is never trapped in it; the keys are the platform's.",
+        "refs": [
+          "wcag:2.1.1",
+          "en-301-549-keyboard",
+          "wcag:2.1.2",
+          "understanding-no-keyboard-trap"
+        ]
+      },
+      {
+        "text": "Use the native text view so Full Keyboard Access reaches it, and test the app with Full Keyboard Access on. Unlike buttons, text fields and text views have keyboard navigation on iPadOS.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "With a hardware keyboard, a D-pad or Switch Access, focus navigation reaches the field and highlights it, in a logical order, and focus can always move away from it: by default Compose does not trap focus in a text field.",
+        "refs": [
+          "orange-android-focus-access",
+          "orange-android-focus-order",
+          "compose-focus-text-fields"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On macOS, Full Keyboard Access lets people navigate to the field and use it with the keyboard alone: use the native control and keep the standard keyboard shortcuts.",
+        "refs": [
+          "hig-keyboards-best-practices",
+          "hig-accessibility-speech"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "Enter adds a line in the Textarea on every platform, so its return key keeps the platform's default label for a new line (enter on the web); the form does not set it.",
+        "refs": [
+          "html-enterkeyhint",
+          "compose-line-limits",
+          "windows-text-box-multi-line"
+        ]
+      },
+      {
+        "text": "A visible focus indicator appears when the control receives focus: a 2.4 px outline in the focus color drawn flush over the border, at every size, so focus is visible by pointer and keyboard alike (WCAG 2.4.7). WCAG 2.4.13 Focus Appearance (AAA) is not met at 1x and 2x, because the part of the outline over the border changes contrast only 2.21:1 in light and 1.13:1 in dark, and the fields do not claim it.",
         "refs": [
           "wcag:2.4.7",
-          "wcag:2.4.13"
+          "wcag:2.4.13",
+          "understanding-focus-contrast"
         ]
       },
       {
-        "text": "The focus ring is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard.",
+        "text": "The focus outline is drawn with :focus-visible, which browsers match whenever an editable field has focus, pointer or keyboard. It is a CSS outline, never a box-shadow, so forced colors mode repaints it in a system color.",
         "refs": [
-          "mdn-focus-visible"
+          "mdn-focus-visible",
+          "mdn-forced-colors"
         ],
         "platforms": [
           "web"
         ]
       },
       {
-        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 32, 40 and 48 pixels.",
+        "text": "The severity outline (1.2 px) and the focus outline (2.4 px) differ by width, so a field with a severity is not mistaken for a focused one, in forced colors too, where both take the same system color. At 1x the severity outline is as wide as the 1 px border at rest: the severity's color and the message say what the severity is, never the color alone.",
+        "refs": [
+          "wcag:1.4.1",
+          "wcag-f78",
+          "wcag-f81"
+        ]
+      },
+      {
+        "text": "Every size is a pointer target of at least 24 x 24 CSS pixels through its minimum height: 28, 36 and 44 pixels.",
         "refs": [
           "wcag:2.5.8"
+        ]
+      },
+      {
+        "text": "The label, description and message are set from 12 to 16 px (the message from 14), under the large text size of the contrast criterion (18 pt, about 24 px), so their colors keep 4.5:1. WCAG sets no minimum text size: it asks that text resize up to 200 % without loss of content or functionality, which the box allows because its height is a minimum that grows with larger text and keeps its block padding.",
+        "refs": [
+          "wcag:1.4.4",
+          "wcag:1.4.3"
+        ]
+      },
+      {
+        "text": "At every text size the label, the description and the message wrap onto as many lines as they need, a word longer than the line breaking, and are never truncated; the value wraps onto the rows. The placeholder may be cut at the box's edge, so it never holds what people need.",
+        "refs": [
+          "wcag:1.4.4",
+          "understanding-resize-text",
+          "hig-typography-dynamic-type",
+          "windows-text-scaling-wrap",
+          "mdn-placeholder"
+        ]
+      },
+      {
+        "text": "Set overflow-wrap: anywhere on the label, the description and the message: a word longer than the line breaks instead of spilling past the field.",
+        "refs": [
+          "mdn-overflow-wrap"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "Text sizes are px lengths today, which a browser's text-only size setting does not change: zoom enlarges the text and the box together, which meets Resize Text.",
+        "refs": [
+          "wcag:1.4.4",
+          "g142",
+          "mdn-absolute-lengths"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with its lines and keeps its own block padding, as Apple asks that layouts adapt to all font sizes.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "The severity icon grows with Dynamic Type with the text it goes with, as Apple asks of meaningful icons.",
+        "refs": [
+          "hig-typography-dynamic-type"
+        ],
+        "platforms": [
+          "ios"
+        ]
+      },
+      {
+        "text": "macOS does not support Dynamic Type: on macOS, the field keeps its size, as text does.",
+        "refs": [
+          "hig-typography-macos"
+        ],
+        "platforms": [
+          "desktop"
+        ]
+      },
+      {
+        "text": "On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize with it: the box grows with its lines and keeps its own block padding.",
+        "refs": [
+          "windows-text-scaling"
+        ],
+        "platforms": [
+          "desktop"
         ]
       },
       {
@@ -394,19 +737,28 @@
         ]
       },
       {
-        "text": "A read-only field keeps its value focusable and selectable and is exposed as read-only; a disabled field leaves the focus order. Prefer read-only when people may need to read or copy the value.",
+        "text": "A read-only field keeps its value focusable and selectable and is exposed as read-only; a disabled field leaves the focus order. Prefer read-only when people may need to read or copy the value. A read-only field is never required: a read-only control does not take part in constraint validation, so required has no effect there, and the template leaves it out, and the mark with it.",
         "refs": [
           "html-readonly",
           "html-aam-readonly",
           "html-disabled",
-          "apg-disabled-focus"
+          "apg-disabled-focus",
+          "mdn-readonly-interactions"
         ],
         "platforms": [
           "web"
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt; the small and medium sizes (32 and 40 pt) fall under it on iOS today: the Figma library has no platform heights.",
+        "text": "A read-only field looks almost the same as an editable one (its fill is 1.05:1 in light and 1.09:1 in dark from the resting fill, the same as the hover fill): say that it is read-only in the label or the description, not by the fill alone.",
+        "refs": [
+          "material-text-fields-read-only",
+          "windows-text-box-read-only",
+          "html-readonly-attribute"
+        ]
+      },
+      {
+        "text": "Apple's default control size on iOS is 44 x 44 pt, and every size has a hit region of at least that: the box keeps its drawn size and the hit region extends above and below it, centered, by what the box lacks of 44 pt (at most 8 and 4 pt at the small and medium minimum heights, nothing at the default three rows), over its own label, description and message, which keep their 6 pt; the layout keeps it clear of other controls and of another field's label. The large box (44 pt) is the hit region.",
         "refs": [
           "hig-accessibility-mobility"
         ],
@@ -415,7 +767,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; the small and medium sizes (32 and 40 dp) fall under it on Android today. Expose an error with the error semantics so the message is announced with the field.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp, and every size reaches it without growing: the box keeps its drawn size and its touch target extends above and below it, centered, by what the box lacks of 48 dp (at most 10, 6 or 2 dp at the minimum heights of 28, 36 and 44 dp, nothing at the default three rows), over its own label, description and message, which keep their 6 dp; the layout keeps it clear of other controls and of another field's label. Compose extends a small clickable's touch target outside its bounds by itself, so the box does not take the minimumInteractiveComponentSize modifier, which would reserve that space and move the label. Expose an error with the error semantics so the message is announced with the field.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -430,6 +782,45 @@
         "refs": [
           "wcag:2.3.3",
           "mdn-reduced-motion"
+        ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\", \"Warning\", \"Success\") and is part of the field's description: at the start of the message it is inside the message, which aria-describedby references; after the control, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 light, 5.30:1 dark; warning 6.16:1 and 8.38:1; success 7.44:1 and 5.92:1).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "The mark comes after the label's words, so the visible label starts with the field's name, and so does the accessible name when it ends with \"(optional)\" (\"Company (optional)\"): speech input by the label works.",
+        "refs": [
+          "wcag:2.5.3"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, the field draws the asterisk of a required field in the error text color whenever markedFields is optional or required, none drawing no mark; an optional field carries none.",
+        "refs": [
+          "material-text-fields-required"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, the asterisk stays in the field's UI Automation Name: the Name is the label as shown (\"Full name*\").",
+        "refs": [
+          "uia-name-property"
+        ],
+        "platforms": [
+          "desktop"
         ]
       }
     ],
@@ -480,16 +871,6 @@
         "url": "https://www.w3.org/TR/html-aam-1.0/#att-readonly"
       },
       {
-        "id": "html-aam-required",
-        "title": "HTML-AAM: required attribute (aria-required)",
-        "url": "https://www.w3.org/TR/html-aam-1.0/#att-required"
-      },
-      {
-        "id": "html-label",
-        "title": "HTML: the label element (for attribute, labeled control)",
-        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
-      },
-      {
         "id": "html-placeholder",
         "title": "HTML: the placeholder attribute (not an alternative to a label)",
         "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder"
@@ -500,9 +881,9 @@
         "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-readonly"
       },
       {
-        "id": "html-required",
-        "title": "HTML: the required attribute",
-        "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-required"
+        "id": "mdn-readonly-interactions",
+        "title": "MDN: the readonly attribute, attribute interactions (a read-only control takes no part in constraint validation)",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/readonly#attribute_interactions"
       },
       {
         "id": "html-textarea",
@@ -550,39 +931,9 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text"
       },
       {
-        "id": "wai-validation",
-        "title": "WAI tutorials: Validating input (the required attribute)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
-      },
-      {
-        "id": "wai-notifications",
-        "title": "WAI tutorials: User notifications (error messages)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-h90",
-        "title": "WCAG technique H90: indicating required form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
-      },
-      {
         "id": "wcag-h98",
         "title": "WCAG technique H98: HTML autocomplete attributes to identify the purpose of input fields",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H98"
-      },
-      {
-        "id": "wcag-g83",
-        "title": "WCAG technique G83: text descriptions for required fields not completed",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G83"
-      },
-      {
-        "id": "wcag-aria1",
-        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
       },
       {
         "id": "wcag-aria21",
@@ -610,6 +961,11 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
       },
       {
+        "id": "hig-typography",
+        "title": "Apple HIG: Typography, specifications (minimum sizes)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Specifications"
+      },
+      {
         "id": "android-large-controls",
         "title": "Android accessibility: use large, simple controls",
         "url": "https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls"
@@ -623,6 +979,236 @@
         "id": "compose-error-components",
         "title": "Jetpack Compose accessibility: error semantics of components",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components"
+      },
+      {
+        "id": "understanding-focus-contrast",
+        "title": "Understanding 1.4.11 Non-text Contrast: relationship with Focus Visible",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#related-focus"
+      },
+      {
+        "id": "wcag-f78",
+        "title": "WCAG failure F78: a focus indicator that is not visible, or looks the same as another outline",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F78"
+      },
+      {
+        "id": "mdn-forced-colors",
+        "title": "MDN: forced-colors, properties affected by forced colors mode",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/forced-colors#properties_affected_by_forced-color_mode"
+      },
+      {
+        "id": "understanding-non-text-contrast-adjacent-colors",
+        "title": "Understanding WCAG 1.4.11 Non-text Contrast: adjacent colors",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast#adjacent-colors"
+      },
+      {
+        "id": "understanding-contrast-minimum",
+        "title": "Understanding WCAG 1.4.3 Contrast (Minimum)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum"
+      },
+      {
+        "id": "material-text-fields-guidelines",
+        "title": "Material Design 3: Text fields, guidelines",
+        "url": "https://m3.material.io/components/text-fields/guidelines"
+      },
+      {
+        "id": "windows-text-box",
+        "title": "Windows apps: Text box",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box"
+      },
+      {
+        "id": "material-text-fields",
+        "title": "Material Design 3: Text fields, specs",
+        "url": "https://m3.material.io/components/text-fields/specs"
+      },
+      {
+        "id": "mdn-placeholder",
+        "title": "MDN: ::placeholder, accessibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#accessibility"
+      },
+      {
+        "id": "hig-color",
+        "title": "Apple HIG: Color, system colors (placeholder text)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+      },
+      {
+        "id": "material-text-fields-read-only",
+        "title": "Material Design 3: Text fields, guidelines, read-only fields",
+        "url": "https://m3.material.io/components/text-fields/guidelines#f572b53d-1a15-4ede-881a-80adbbdc24a5"
+      },
+      {
+        "id": "windows-text-box-read-only",
+        "title": "Windows apps: Text box, make a text box read-only",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#make-a-text-box-read-only"
+      },
+      {
+        "id": "html-readonly-attribute",
+        "title": "HTML: the readonly attribute",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#the-readonly-attribute"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "windows-forms",
+        "title": "Windows apps: Forms",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "winui-is-required-for-form",
+        "title": "Windows App SDK: AutomationProperties.IsRequiredForForm",
+        "url": "https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.automation.automationproperties.isrequiredforform"
+      },
+      {
+        "id": "uia-name-property",
+        "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
+      },
+      {
+        "id": "en-301-549-keyboard",
+        "title": "EN 301 549 V3.2.1, 11.2.1.1.1 Keyboard (open functionality): WCAG 2.1.1 for non-web software",
+        "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf#page=70"
+      },
+      {
+        "id": "understanding-no-keyboard-trap",
+        "title": "Understanding WCAG 2.2: 2.1.2 No Keyboard Trap, intent (standard exit methods)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html#intent"
+      },
+      {
+        "id": "hig-keyboards-best-practices",
+        "title": "Apple HIG: Keyboards, best practices (Full Keyboard Access; iPadOS keyboard navigation in text fields and text views)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Best-practices"
+      },
+      {
+        "id": "hig-keyboards-shortcuts",
+        "title": "Apple HIG: Keyboards, standard keyboard shortcuts (Shift-Tab, Command-A)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/keyboards#Standard-keyboard-shortcuts"
+      },
+      {
+        "id": "hig-accessibility-speech",
+        "title": "Apple HIG: Accessibility, speech (keyboard alone, Full Keyboard Access)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Speech"
+      },
+      {
+        "id": "hig-focus-ipados",
+        "title": "Apple HIG: Focus and selection, iPadOS (Tab moves focus among focus groups)",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/focus-and-selection#iPadOS"
+      },
+      {
+        "id": "appkit-next-key-view",
+        "title": "AppKit: NSView.nextKeyView (the key view loop)",
+        "url": "https://developer.apple.com/documentation/appkit/nsview/nextkeyview"
+      },
+      {
+        "id": "orange-android-focus-access",
+        "title": "Orange accessibility guidelines, Android: access to interactive elements (keyboard navigation)",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#access-to-interactive-elements"
+      },
+      {
+        "id": "orange-android-focus-order",
+        "title": "Orange accessibility guidelines, Android: keyboard navigation order",
+        "url": "https://a11y-guidelines.orange.com/en/mobile/android/development/focus-navigation/#keyboard-navigation-order"
+      },
+      {
+        "id": "compose-focus-text-fields",
+        "title": "Android Developers, Compose: focus in text fields (Tab, Shift+Tab, arrow keys)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#one-dimensional-focus-traversal"
+      },
+      {
+        "id": "compose-focus-text-fields-2d",
+        "title": "Android Developers, Compose: focus in text fields, two-dimensional traversal (arrow keys, D-pad)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/focus/focus-in-text-fields#two-dimensional-focus-traversal"
+      },
+      {
+        "id": "compose-keyboard-commands",
+        "title": "Android Developers, Compose: keyboard commands (default shortcuts of a text field)",
+        "url": "https://developer.android.com/develop/ui/compose/touch-input/keyboard-input/commands"
+      },
+      {
+        "id": "windows-keyboard-accessibility",
+        "title": "Windows apps: keyboard accessibility, navigation among UI elements (tab order)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/design/accessibility/keyboard-accessibility#keyboard-navigation-among-ui-elements"
+      },
+      {
+        "id": "windows-keyboard-navigation",
+        "title": "Windows apps: keyboard interactions, navigation (Shift+Tab, the caret in a text box)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#navigation"
+      },
+      {
+        "id": "windows-keyboard-text-entry",
+        "title": "Windows apps: keyboard interactions, text entry",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/keyboard-interactions#text-entry"
+      },
+      {
+        "id": "html-enterkeyhint",
+        "title": "HTML: the enterkeyhint attribute (the label of the enter key)",
+        "url": "https://html.spec.whatwg.org/multipage/interaction.html#attr-enterkeyhint"
+      },
+      {
+        "id": "swiftui-on-submit",
+        "title": "SwiftUI: onSubmit(of:_:) (text fields and secure fields, on the return key)",
+        "url": "https://developer.apple.com/documentation/swiftui/view/onsubmit(of:_:)"
+      },
+      {
+        "id": "swiftui-text-editor",
+        "title": "SwiftUI: TextEditor (multiline text)",
+        "url": "https://developer.apple.com/documentation/swiftui/texteditor"
+      },
+      {
+        "id": "compose-line-limits",
+        "title": "Android Developers, Compose: line limits (a single-line field allows no new lines)",
+        "url": "https://developer.android.com/develop/ui/compose/text/user-input#line-limits"
+      },
+      {
+        "id": "windows-text-box-multi-line",
+        "title": "Windows apps: text box, enable multi-line input (AcceptsReturn)",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/text-box#enable-multi-line-input"
+      },
+      {
+        "id": "understanding-resize-text",
+        "title": "Understanding 1.4.4 Resize Text: intent",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html#intent"
+      },
+      {
+        "id": "g142",
+        "title": "WCAG technique G142: using a technology that has commonly-available user agents that support zoom",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G142"
+      },
+      {
+        "id": "mdn-absolute-lengths",
+        "title": "MDN: CSS length, absolute length units",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length#absolute_length_units"
+      },
+      {
+        "id": "hig-typography-dynamic-type",
+        "title": "Apple HIG: Typography, supporting Dynamic Type",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type"
+      },
+      {
+        "id": "hig-typography-macos",
+        "title": "Apple HIG: Typography, macOS",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/typography#macOS"
+      },
+      {
+        "id": "windows-text-scaling",
+        "title": "Windows: text scaling, UX guidance",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance"
+      },
+      {
+        "id": "windows-text-scaling-wrap",
+        "title": "Windows: text scaling, use text wrapping",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#use-text-wrapping"
+      },
+      {
+        "id": "mdn-overflow-wrap",
+        "title": "MDN: overflow-wrap",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow-wrap"
       }
     ]
   },
@@ -631,7 +1217,7 @@
       "The label is a noun phrase naming the information asked for: Message, Description, Delivery notes. Sentence case, no colon, no trailing punctuation.",
       "The description says what to include, or a length limit, when it helps: Up to 500 characters.",
       "The placeholder, when any, is a short example, never an instruction and never the label.",
-      "The message of an error says what is wrong and how to fix it: Enter a message of at least 20 characters."
+      "The message of an error says the fix and relies on the label it sits under, without repeating the field's name: Enter at least 20 characters"
     ]
   },
   "examples": [
@@ -651,7 +1237,7 @@
         "size": "medium",
         "label": "Description",
         "placeholder": "What is this project about?",
-        "description": "Up to 500 characters.",
+        "description": "Up to 500 characters",
         "rows": 4
       }
     },
@@ -683,8 +1269,9 @@
         "label": "Message",
         "value": "Hi",
         "rows": 3,
+        "description": "Up to 500 characters",
         "severity": "error",
-        "message": "Enter a message of at least 20 characters.",
+        "message": "Enter at least 20 characters",
         "required": true
       }
     },
@@ -696,6 +1283,7 @@
         "label": "Public key",
         "rows": 3,
         "value": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGx0…",
+        "description": "Read-only: the key is generated when the account is created",
         "readonly": true
       }
     },
@@ -708,6 +1296,17 @@
         "rows": 3,
         "value": "Visible to administrators only.",
         "disabled": true
+      }
+    },
+    {
+      "id": "medium-label-start",
+      "name": "Medium, label at the start",
+      "description": "In a form that puts its labels in a column at the start (labelPlacement start): shown here alone, the field draws its own two columns; in a form, the label column is the form's.",
+      "props": {
+        "size": "medium",
+        "label": "Message",
+        "labelPlacement": "start",
+        "description": "The help stays under the control"
       }
     }
   ],
@@ -725,16 +1324,19 @@
         "size": "data-size",
         "disabled": "data-disabled",
         "severity": "data-severity",
-        "readonly": "data-readonly"
+        "readonly": "data-readonly",
+        "labelPlacement": "data-label-placement"
       },
       "stateAttribute": "data-state",
       "rolePart": "control",
       "partSelectors": {
         "container": ".ds-textarea",
         "label": ".ds-textarea__label",
+        "mark": ".ds-textarea__mark",
         "control": ".ds-textarea__control",
         "description": ".ds-textarea__description",
-        "message": ".ds-textarea__message"
+        "message": ".ds-textarea__message",
+        "severity-icon": ".ds-textarea__severity-icon"
       }
     }
   },
@@ -742,6 +1344,600 @@
     "text-field"
   ],
   "decisions": [
+    {
+      "id": "focus-severity-outline",
+      "date": "2026-11-27",
+      "version": "0.28.0",
+      "area": "state",
+      "status": "active",
+      "text": "A focused Textarea in a severity keeps the focus width, in the severity's color, through a token for two states per severity: control.outline-width.focus-visible-error, focus-visible-warning and focus-visible-success (= focus.ring.width, as control.outline-width.focus-visible). Each applies when the field has focus and is in that severity, and wins over the token of each state alone (packages/tokens/AGENTS.md, Which token applies). The path stays the only thing that says when a component token applies, so the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants with a severity in State=focus-visible take the width the web draws, and the Figma plan no longer sets it by a rule written by hand. A disabled field still draws no outline. No rendered value changes on the web.",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 32, after #105 step 2b, point b3.1): \"A but we'll revisit probably these tokens one day\", as recommended: the team expects to revisit these tokens later. Rejected: B, keep the Figma plan's hand-written rule and add a note to the token inspector (a reader of the tokens alone would still get 1.2 px); C, one token per field for every severity (focus-visible-severity), fewer tokens but a new path grammar, a property standing for its value states. Measured before: the web drew the focus width (focus.ring.width, 2.4 px), while the token rule, and so the inspector, picked control.outline-width.<severity> (stroke-width.md, 1.2 px); Figma and Penpot drew 2.4 px through a rule written by hand in the plan.",
+      "tokens": [
+        "textarea.control.outline-width.focus-visible-error",
+        "textarea.control.outline-width.focus-visible-warning",
+        "textarea.control.outline-width.focus-visible-success"
+      ]
+    },
+    {
+      "id": "label-placement",
+      "date": "2026-11-27",
+      "version": "0.27.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Textarea takes labelPlacement (above by default, start), a setting of the form passed to every field-like control (Forms decisions forms-label-column, forms-label-alignment, forms-label-column-gap, forms-label-column-stacking). With start, on the web, the Textarea carries its row of the form's grid (forms-label-column-web): a subgrid row, the label in the first column ending textarea.container.column-gap.start (form.gap.label-column, 12 px) from the control, its first line level with the first line of text, the control's block padding plus half its line, at any number of rows; the control, description and message in the second column; under a 30 rem size container it stacks back above. The form's grid (fit-content(14em) minmax(0, 1fr), the gap, the size container) is the product's. The Figma component draws the label above (labelPlacement fixed, kept out of the variants, as markedFields).",
+      "rationale": "Decided by the team on 2026-11-27 (#103 step 29, on review sheets): Q1, A, the fields carry their row (rejected: B, a .ds-form class the system ships; C, each field its own column, which no longer lines up); Q2, B, a multi-line control's label level with its first row (forms-label-multiline); Q3, A, the Select now.",
+      "tokens": [
+        "textarea.container.column-gap.start"
+      ]
+    },
+    {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.26.9",
+      "area": "color",
+      "status": "active",
+      "text": "The Textarea's component tokens alias the Forms family (form.*) wherever their value is the family's default: the container gap; the control's fill at rest, on hover, read-only and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors. No value changes, on any platform or in any mode. Its border at rest is the family's own default, global.border.base.neutral.5, the field family's border (decision border-base-neutral-5): no override. Disabled colors, hover and focus, geometry, the leading icon and the value's text style stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases. Applied in #103 step 28.",
+      "tokens": [
+        "textarea.container.gap",
+        "textarea.control.background.*",
+        "textarea.control.border-color.*",
+        "textarea.control.outline-color.*",
+        "textarea.control.color.default",
+        "textarea.control.placeholder-color.default",
+        "textarea.label.*",
+        "textarea.description.*",
+        "textarea.message.*",
+        "textarea.severity-icon.color.*",
+        "textarea.mark.color.default",
+        "textarea.asterisk.color.default"
+      ]
+    },
+    {
+      "id": "default-size-medium",
+      "date": "2026-11-25",
+      "version": "0.26.0",
+      "area": "variant",
+      "status": "active",
+      "text": "Without a size, a textarea is medium (36 px high), like every component with sizes (the Button's and the Icon button's decision default-size-medium); it mirrors the Text field (the Text field's decision field-family-mirrors). The Figma prototype's \"Form - text input\" set defaults to small (28 px): Figma takes the top-left variant of a set as its default, and small is the set's left column (Figma, Create and use variants); the repository keeps medium, a departure recorded for the closing Figma issue.",
+      "rationale": "A field is the Button of the same size (decision box-height-button), so a form whose fields and Buttons set no size lines up at 36 px, as the login and signup screens do; all 21 specs with a size default to medium. Measured: a small default puts 28 px fields under 36 px Buttons, doubles the hit region a default field needs above and below its box on iOS and Android (8 pt and 10 dp instead of 4 and 6, decision touch-target-hit-region), and is a breaking change for every consumer relying on the default. Rejected: B, small for the fields only, as Figma; C, small for every control (still not Figma, whose Button set defaults to xsmall, and a breaking change for every sized component).",
+      "tokens": [
+        "textarea.control.min-height.medium"
+      ]
+    },
+    {
+      "id": "long-text-wraps",
+      "date": "2026-11-25",
+      "version": "0.25.0",
+      "area": "content",
+      "status": "active",
+      "text": "As the Text field (decision long-text-wraps of the Text field, which holds the measurements and the options rejected): When people raise the text size, the label, the description and the message wrap onto as many lines as they need, a word longer than the line breaking rather than spilling past the field, and are never truncated; the value wraps onto the Textarea's rows; the placeholder, a single line, is cut at the box's edge, so it stays a short example that nothing depends on (the label and the description say what people need). ",
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type",
+        "windows-text-scaling-wrap",
+        "compose-line-limits",
+        "mdn-placeholder"
+      ]
+    },
+    {
+      "id": "icons-at-text-size",
+      "date": "2026-11-25",
+      "version": "0.24.0",
+      "area": "size",
+      "status": "active",
+      "text": "As the Text field (decision icons-at-text-size of the Text field, which holds the measurements and the options rejected): when people raise the text size, the severity icon, which is named, grows with the text it goes with (the message, or the first line when it follows the box), as the Iconography foundation asks (icons-follow-text-size). The Textarea has no leading icon. Where nothing scales the text (macOS), and on the web, where zoom scales everything, the icon keeps its proportions.",
+      "tokens": [
+        "textarea.severity-icon.size.*"
+      ],
+      "refs": [
+        "hig-typography-dynamic-type"
+      ]
+    },
+    {
+      "id": "grows-with-text-size",
+      "date": "2026-11-25",
+      "version": "0.23.0",
+      "area": "size",
+      "status": "active",
+      "text": "The textarea grows with the text size as the Text field does (decision grows-with-text-size of the Text field, which holds the rule and the options rejected): its lines grow with the text, so the box grows with them, and it keeps its own block padding (space.6 / 8 / 12, decision rows-and-resize), larger than the field family's minimum (space.3 / 5 / 8), above and below the lines; its minimum height stays 28 / 36 / 44. pnpm validate compares every other token with the Text field's and lets control.padding-block differ (scripts/lib/mirrors.mjs, differs). Where nothing scales the text (macOS), and on the web, where zoom scales text and box together, the textarea keeps its size.",
+      "tokens": [
+        "textarea.control.padding-block.*",
+        "textarea.control.min-height.*"
+      ],
+      "refs": [
+        "wcag:1.4.4",
+        "understanding-resize-text",
+        "hig-typography-dynamic-type",
+        "windows-text-scaling"
+      ]
+    },
+    {
+      "id": "enter-by-field-kind",
+      "date": "2026-11-25",
+      "version": "0.22.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Enter (Return) adds a line in the Textarea on every platform, as a multi-line edit control; the return key keeps the platform's default label for a new line, and the form does not set it. A single-line field passes Enter to the form instead (the Forms foundation says what the form does).",
+      "refs": [
+        "html-textarea",
+        "html-enterkeyhint",
+        "swiftui-text-editor",
+        "compose-line-limits",
+        "windows-text-box-multi-line"
+      ]
+    },
+    {
+      "id": "keyboard-on-every-platform",
+      "date": "2026-11-25",
+      "version": "0.21.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "Being reached, edited and left from a keyboard is a requirement on every platform (WCAG 2.1.1 on the web, EN 301 549 11.2.1.1.1 for native software), met, as on the Button, through the platform's native text control and its keyboard services, and focus is never trapped in the field (WCAG 2.1.2). Unlike the Button, the keys are named on every platform whose own documentation names them for text entry: Tab on the web; on iPadOS, Tab among focus groups (iPadOS supports keyboard navigation in text fields and text views, so the Button's line against keyboard navigation of one's own is not carried) and Full Keyboard Access; on Android, Shift+Tab back, the arrow keys and the D-pad moving the caret then leaving at the edge of the text, the system's selection keys, and on Android Tab inserts a tab character in this multi-line field, the platform's default, and Shift+Tab and the arrow keys leave it; on macOS, Tab and Shift-Tab through the key view loop and Command-A; on Windows, the tab order, Shift+Tab and the arrow keys moving the caret. Each platform keeps its own behaviour. Three prefixes join the trusted sources for it: Android Developers' Compose focus and keyboard pages (develop/ui/compose/touch-input/) and text pages (develop/ui/compose/text/), and Windows' input pages (windows/apps/develop/input/).",
+      "refs": [
+        "wcag:2.1.1",
+        "wcag:2.1.2",
+        "en-301-549-keyboard",
+        "hig-keyboards-best-practices",
+        "hig-focus-ipados",
+        "compose-focus-text-fields",
+        "appkit-next-key-view",
+        "windows-keyboard-accessibility"
+      ]
+    },
+    {
+      "id": "touch-target-hit-region",
+      "date": "2026-11-25",
+      "version": "0.20.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "As on the Button, on iOS and Android every size reaches the platform's touch target without growing: the hit region is at least 44 x 44 pt on iOS and 48 x 48 dp on Android, centered on the box. It may extend over its own label, description and message, which are not targets, so the 6 px between the parts stays on every platform; the layout keeps it clear of every other control and of another field's label. Above and below the box it extends 8, 4 and 0 pt on iOS and 10, 6 and 2 dp on Android at the small, medium and large sizes. A Textarea whose rows make its box at least as tall as the target (the default 3 rows at every size) needs no overhang in height. On Android, Compose extends a small clickable's touch target outside its bounds by itself; the box does not take minimumInteractiveComponentSize, which would reserve the space around it and move the label. The drawn field, its parts and its tokens stay the same on every platform, as in Figma; the web (WCAG 2.5.8, 24 x 24 CSS px) and desktop already meet their targets with the box.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 18, point 1) among: A, the Button's rule as is, the hit region reserved all around the box (on iOS and Android the label would sit 14, 10 and 6 pt or 16, 12 and 8 dp from the box instead of 6, unlike the web and Figma); B, the hit region over the field's own text, reserved only against other controls and other fields' labels (recommended, chosen); C, the whole field as the target, a tap on the label or the help text focusing the field (no platform documents it, and selecting text in a description would focus the field); D, platform heights of 44 pt and 48 dp (a semantic addition; the three sizes would look the same on mobile and no longer line up with the Button, undoing box-height-button there). No trusted source says that tapping a field's label focuses it on iOS or Android, so the label does not count as part of the target. Measured on the review sheet: with 16 px between fields nothing has to be kept; with none, the next small field is kept 8 pt (iOS) or 10 dp (Android) lower; a small Search field 8 px above navigation items keeps 2 dp more on Android.",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "refs": [
+        "hig-accessibility-mobility",
+        "android-large-controls",
+        "compose-target-sizes"
+      ]
+    },
+    {
+      "id": "mark-part",
+      "date": "2026-11-25",
+      "version": "0.19.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Textarea draws the required mark as the mark part, inside the label after a word space, and keeps the asterisk part for Android and Windows. The web template takes markedFields (optional by default) and markLabel, to translate the words; \"(required)\" is aria-hidden. In Figma the component draws the web rendering only: a BOOLEAN \"Mark\" (on by default) shows the mark, whose TEXT \"Mark text\" is \"(optional)\" and is typed \"(required)\" when the form marks required fields; markedFields is not a variant axis and the asterisk is not drawn. Tokens: mark.color.* and mark.typography.* (mark-style); asterisk.color.* and asterisk.margin-inline-start.* (asterisk-style), the asterisk taking label.typography.*.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 4) among: A, a BOOLEAN and a TEXT for the mark and a BOOLEAN for the asterisk, markedFields kept out of the variant axes (recommended); B, markedFields and required as variant axes, six times the variants (6912 for the Text field); C, the Figma prototype's single BOOLEAN drawing the asterisk, the words typed into the label. The team chose A without the asterisk: the Figma components draw the current web specification, not every platform's rendering, so Figma shows \"(optional)\", \"(required)\" or no mark, never the asterisk. Variant counts are unchanged (Text field 1152, Number field 1152, Textarea 576, Search field 24). Departs from the Figma prototype, whose BOOLEAN \"required\" (on by default) draws a red asterisk. The word space before the mark is a quarter of the font size in Figma (3.5 px at 14 px, 4 px at 16 px), as measured on the web.",
+      "tokens": [
+        "textarea.mark.*",
+        "textarea.asterisk.*"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "required-windows-name",
+      "date": "2026-11-25",
+      "version": "0.18.5",
+      "area": "accessibility",
+      "status": "active",
+      "text": "On Windows, a required Textarea keeps its asterisk in its accessible name: the UI Automation Name is the label as shown (\"Full name*\"), and the control sets AutomationProperties.IsRequiredForForm. The words keep their exposure on the other platforms (hidden on the web and macOS, read on iOS).",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 3b) among: A, hide the asterisk from Narrator and let IsRequiredForForm alone say required; B, keep it in the Name (chosen, recommended). The team asked to follow the Windows recommendation for Windows specificities: Microsoft asks that the UI Automation Name be the label on screen, not a modified version of it, and no Microsoft page says Narrator announces IsRequiredForForm, so A could leave required unsaid while B at worst says it twice. Applies the Forms decision forms-required-windows-name, which cites the UI Automation property identifiers and Windows' accessible name guidance.",
+      "platforms": [
+        "desktop"
+      ],
+      "refs": [
+        "winui-is-required-for-form",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "asterisk-style",
+      "date": "2026-11-25",
+      "version": "0.18.4",
+      "area": "color",
+      "status": "active",
+      "text": "On Android and Windows, the Textarea marks a required field with an asterisk at the end of its label, whatever markedFields says when it is optional or required (nothing with none), and draws nothing on an optional field. The asterisk is the color of the error message and of the error icon (global.text.on-base.functional.error.default), at the label's size and weight (14 / 16 / 16 px, medium), 4 px after the label (2 px in small), with no word space; disabled, the label's disabled color (global.text.state.disabled.default). 5.79 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode on levels 0 to 3. The words of the other platforms keep mark-style.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 3) among: A, the mark's own look (mark-style; recommended); B, the label's style; C, the Figma prototype's red asterisk (chosen). The team chose C because a reddish asterisk is the most common rendering of a required field in interfaces, and asked that its red be the color of the severity message and of the severity icon. Applies the Forms decision forms-asterisk-style. Matches the Figma prototype on Android and Windows (its asterisk, color, weight and gap); the words of the web, iOS and macOS stay a departure. The asterisk gets its own tokens (component tokens are never forked per platform), which land with point 4.",
+      "platforms": [
+        "android",
+        "desktop"
+      ],
+      "refs": [
+        "material-text-fields-required",
+        "windows-forms",
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "mark-style",
+      "date": "2026-11-25",
+      "version": "0.18.3",
+      "area": "typography",
+      "status": "active",
+      "text": "The Textarea's required mark (\"(optional)\" or \"(required)\", from marked-fields) follows the label's text after a word space, at the label's size (14 / 16 / 16 px for small, medium, large), in the regular weight (body.weight.regular) and the description's color (global.text.on-base.neutral.secondary); disabled, the label's disabled color (global.text.state.disabled.default). 12.09 to 12.78:1 in light mode, 6.65 to 8.86:1 in dark mode on levels 0 to 3.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 2) among: the Figma prototype's red asterisk (reference: global.text.on-base.functional.error.default, the label's size and weight, 4 px after it, 2 px in small); A, the label's own style; B, the label's size, regular, the description's color (chosen, recommended); C, the label's size and color, regular; D, the description's style (12 / 12 / 14 px). The team hesitated between B and D and chose B: a smaller mark, the only element of a different size, draws the eye before the label itself. Applies the Forms decision forms-mark-style. The word space measures 3.5 px at 14 px and 4.0 px at 16 px, near Figma's 4 px. Departs from Figma (red asterisk). The tokens (mark.color.*, mark.typography.*) land with point 4.",
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
+      "id": "marked-fields",
+      "date": "2026-11-25",
+      "version": "0.18.2",
+      "area": "content",
+      "status": "active",
+      "text": "The Textarea draws the required mark of the Forms rule from a form setting: it carries markedFields (optional, required, none; optional by default), which a form sets once, to the same value, for all its controls, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none. A required textarea never says \"(optional)\". none is for a field outside a form, such as a table's filter or a setting applied at once.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 16, point 1) among: A, a form setting, optional by default (chosen, recommended); B, the same setting, none by default; C, a mark chosen per field, nothing tying it to required; D, no property, the words typed into the label. Applies the Forms decision forms-marked-fields: a form that sets nothing follows the Forms rule (forms-required-marking), a mark can never contradict required, and on the web \"(required)\" can stay hidden from assistive technology (forms-required-mark-exposure) while Android and Windows swap it for their asterisk (forms-required-marking-platforms). The Figma prototype marks each required field with a red asterisk, shown by default: a departure. The mark's look, the platforms' asterisk and the part, its tokens and the Figma axis are #103 step 16, points 2 to 4.",
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:1.3.1"
+      ]
+    },
+    {
+      "id": "message-under-description",
+      "date": "2026-11-25",
+      "version": "0.18.1",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Textarea shows a visible label (above the control by default, Forms rule label-placement), the control, the description under it when there is one and, while a severity shows, the message under the description (under the control when there is no description), for every severity: the description stays visible while a message shows. The control's description lists the description, then the message; on the web aria-describedby references them in that order, with the severity icon's name before the message when the icon is after the control. This applies the Forms foundation's decision forms-message-under-description and departs from the Figma prototype, where the error, warning or success message takes the place of the helper text.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 14) among: A, keep the message under the description (chosen); B, Figma's anatomy, the message replacing the description while a severity shows. A keeps the help (a format, a limit) on the screen and in what assistive technology reads when people fix the value: AccName concatenates every node aria-describedby references, so a screen reader reads the description, then the message. B would reopen the Forms rule and does not even keep the height: since decision message-text-size the message (14 / 16 / 16 px) is larger than the description (12 / 12 / 14 px), so a medium field with a one-line description still grows 6 px when the message replaces it, and 30 px with no description, while the help disappears. Measured on 320 px wide fields: a one-line message adds 30 px under a medium field (the 6 px gap and a 24 px line), a two-line message 48 px under a small one; both parts keep their size, weight and color, 6 px apart (container.gap). Supersedes label-description-error, whose text still named the error message and the invalid state. No token, CSS, template, Figma blueprint or theme change; the error example gains a description, so the docs show both parts together.",
+      "supersedes": [
+        "label-description-error"
+      ],
+      "tokens": [
+        "textarea.container.gap",
+        "textarea.description.typography.*",
+        "textarea.message.typography.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:3.3.2",
+        "apg-describing",
+        "accname-description"
+      ]
+    },
+    {
+      "id": "warning-border-text-step",
+      "date": "2026-11-25",
+      "version": "0.18.0",
+      "area": "color",
+      "status": "active",
+      "text": "The border and outline of a field with a warning keep textarea.control.border-color.warning and textarea.control.outline-color.warning, global.border.accent.functional.warning.default, which the Color foundation sets in light mode to the warning text's step, warning 600 (#765818; decision border-accent-warning-600): the warning's border, outline, icon and message read one color, as the error's and the success's do, and every pair of the warning and success rendering passes WCAG 2.2 AA in both modes. No component token changes.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 4, the closing WCAG check of the warning and success rendering, also the Forms foundation step 6, forms-warning-border-600) between: A, close as landed, the light warning border at warning 500 (2.95:1 on the subtle warning fill, under the 3:1 of WCAG 1.4.11, issue #119); B, the light warning border at its text step, warning 600 (chosen), as the error and success borders take their text's step. Every other pair of the warning and success rendering passed (measured on the Text field, the Number field and the Textarea, light and dark, levels 0 to 3). With B the warning border and outline are 6.49 / 6.16 / 6.49 / 6.16:1 on the light levels (was 3.27 / 3.09:1) and 5.86:1 on the warning fill (was 2.95:1); dark mode unchanged (8.27:1 on its fill, 6.07:1 at the lowest).",
+      "tokens": [
+        "textarea.control.border-color.warning",
+        "textarea.control.outline-color.warning"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "warning-one-color",
+      "date": "2026-11-25",
+      "version": "0.17.0",
+      "area": "color",
+      "status": "active",
+      "text": "The warning severity icon and the warning message read one color, as the error's and the success's do: the tokens keep their roles (textarea.severity-icon.color.warning, global.icon.on-base.functional.warning.default; textarea.message.color.warning, global.text.on-base.functional.warning.default), and the Color foundation maps the warning icon role to the warning text, warning 600 (#765818) in light mode and warning 300 (#FFC61C) in dark mode (decision warning-on-base-600). No component token changes.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 3, also the Forms foundation step 6, forms-warning-one-color) among: A, keep the two roles as the Figma library maps them in light mode (icon warning 500 #BD8107, message warning 800 #3E2D0C, 3.97:1 apart); B, the warning icon in the text color; C, the message in the icon color (3.09:1, under the 4.5:1 of WCAG 1.4.3); D, the message at warning 600 with the icon at 500; F, the message at warning 600 and the icon in the same color (chosen); E, the message on the on-subtle text role. The team asked that the warning work like the error and the success, whose icon role aliases their text role: the Color foundation's decision warning-on-base-600 maps the warning text to warning 600, the lightest step that passes 4.5:1, and the warning icon role to the warning text. Measured on the Text field (every size, both icon placements, light and dark, levels 0 to 3): icon and message 6.49 / 6.16 / 6.49 / 6.16:1 in light mode (the message was 13.02 / 12.36:1, the icon 3.27 / 3.09:1), 11.17 / 10.23 / 9.36 / 8.38:1 in dark mode, unchanged.",
+      "tokens": [
+        "textarea.severity-icon.color.warning",
+        "textarea.message.color.warning"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "severity-icon-glyphs",
+      "date": "2026-11-25",
+      "version": "0.16.0",
+      "area": "content",
+      "status": "active",
+      "text": "The severity icon is drawn for every severity: error for an error, warning for a warning, check_circle for a success (the Alert's glyphs), named \"Error\", \"Warning\" or \"Success\" (severityIconLabel translates it), in the on-base icon role of its severity: textarea.severity-icon.color.warning (global.icon.on-base.functional.warning.default, #BD8107 in light mode, #FFC61C in dark mode) and textarea.severity-icon.color.success (global.icon.on-base.functional.success.default, #075D33 and #11C772). Its place and size do not change.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 2, also the Forms foundation step 6, forms-severity-icon-glyphs) among: A, the Alert's glyphs, warning and check_circle (chosen); B, a plain check for the success; C, no success icon. A is the Figma prototype's and the Alert's glyphs: the three severities differ by shape as well as color, and the message still says the severity in text (WCAG 1.4.1). B departs from the Alert and from Figma and reuses the Checkbox's glyph, thinner at 16 px; C draws icons on some fields and not others under one placement rule, and after the control a field would change width or keep an empty gap when it passes. The color follows the rule decided for the error (forms-severity-icon-color), the on-base icon role of the severity. Measured on the Text field (every size, both placements, light and dark, levels 0 to 3): the warning icon 3.09 to 3.27:1 in light mode and 8.38 to 11.17:1 in dark mode, the success icon 7.44 to 7.87:1 and 5.92 to 7.89:1 (WCAG 1.4.11 asks 3:1).",
+      "tokens": [
+        "textarea.severity-icon.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "severity-fill-subtle",
+      "date": "2026-11-25",
+      "version": "0.15.0",
+      "area": "color",
+      "status": "active",
+      "text": "The box of a field with a warning or a success is filled like the box in error, with the subtle functional background of its severity, at rest and on hover alike: global.bg.subtle.functional.warning.default (textarea.control.background.warning, #FFF1C7 in light mode, #1F1504 in dark mode) and global.bg.subtle.functional.success.default (textarea.control.background.success, #DBFAE6 and #011C16), under the severity border and outline. Read-only and disabled keep their own fills. The value, the placeholder, the label, the description and the message keep their colors.",
+      "rationale": "Decided by the team on 2026-11-25 (#103 step 13, point 1, also the reference rendering of the Forms foundation step 6, forms-severity-fill) among three options, measured at every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, keep the page-level fill for warning and success, only the error tinted; B, the error's rule for every severity, the subtle fill of the severity at rest and on hover alike (chosen); C, the subtle fill at rest and its hover step on hover. B is the Figma prototype's fill (#FFF1C7, #DBFAE6) and one rule for the three severities. On the fills, light / dark: placeholder 5.50 / 6.55:1 (warning) and 5.55 / 6.48:1 (success), value 17.15 / 11.54:1 and 17.30 / 11.43:1 (WCAG 1.4.3); success border on its fill 7.17 / 6.16:1; the light warning border is 2.95:1 on its fill, the shortfall accepted in the Forms foundation step 5b (issue #119), and keeps 3.09:1 against the surface (WCAG 1.4.11). C would make the severities differ on hover and bring the light warning border to 2.66:1 on the hover fill.",
+      "tokens": [
+        "textarea.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "leading-icon-optional",
+      "date": "2026-11-20",
+      "version": "0.14.2",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Textarea has no leading icon: the leading icon of the field family is for the single-line fields only (Text field, Number field, Search field).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 15, point 1) among: A, keep today (no leading icon, the Search field keeps its own glyph); B, an optional leading icon on the single-line fields, off by default (chosen); C, as B and the Textarea too; D, on by default with a generic glyph, as the Figma prototype's left icon. The team chose B for what the component offers and A for what it advises: the icon must be feasible and optional for designs that want a more precise rendering (a marketing page with a few fields, for example), but the default and the guideline for regular applications is no leading icon, the Search field's glyph being the known exception. D was rejected because a default glyph means nothing for most fields (sell on an email field) and \"on unless switched off\" is the opposite of the Button's leading icon; C because no source and no Figma variant shows an icon in a multi-line field. The icon is decorative: hidden from assistive technology, never the label, which stays visible text (WCAG 1.1.1, 3.3.2, 2.5.3). Material lists a leading icon as optional and Apple lets a text field show an image at its leading end; Windows draws none. Its size, color, gap and accessibility contract are #103 step 15, points 2 to 5, which add the property, the part and its tokens.",
+      "refs": [
+        "wcag:1.1.1",
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
+    {
+      "id": "message-color-error",
+      "date": "2026-11-20",
+      "version": "0.14.1",
+      "area": "color",
+      "status": "active",
+      "text": "The message of an error keeps textarea.message.color.error, global.text.on-base.functional.error.default (#C01619 in light mode, #F88275 in dark mode), the color of the severity icon (Forms decision forms-message-color).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 3) among: A, keep the functional error text (chosen); B, the neutral primary text; C, the neutral secondary text, the description's color. A is the Figma prototype's color and the icon's, and sets the message apart from the description by its color too, which matters most with no icon. Measured on the surface levels 0 to 3: 5.81 to 6.12:1 in light mode, 5.30 to 7.06:1 in dark mode (WCAG 1.4.3).",
+      "tokens": [
+        "textarea.message.color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.1"
+      ]
+    },
+    {
+      "id": "severity-icon",
+      "date": "2026-11-20",
+      "version": "0.14.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Textarea gets a severity icon (part severity-icon) and the property severityIcon (message by default, after-control, none), as the Forms foundation decided (forms-severity-icon-placement, -size, -color). At the start of the message it is 16 px (textarea.severity-icon.size.message: size.2), textarea.severity-icon.gap.message (space.4) before the text; after the control it is the size of the Button's icon at the same size (textarea.severity-icon.size.after-control.*: size.3, 4, 4), textarea.severity-icon.gap.after-control (space.8) after the control. Its color is textarea.severity-icon.color.error, global.icon.on-base.functional.error.default. Shown for the error; warning and success follow with step 13. It follows the Text field (decision same-box-as-text-field).",
+      "rationale": "Decided by the team on 2026-11-20 in #103 step 12, points 2 (C with the team's precisions: both placements and none, one rule per form, choice controls in the message), 2b (A, the Button's icon size) and 2c (A, the on-base role, the message's color). Measured on the field family: after the control the box gives up 28 / 32 / 32 px; the icon is 5.81 to 6.12:1 in light mode and 5.30 to 7.06:1 in dark mode on the surface levels 0 to 3. The icon is named so that the severity is in text for assistive technology wherever it sits (AccName 1.2 computes the description from the referenced nodes, the icon's name included); the message keeps saying what is wrong, so the icon is never the only cue (WCAG 1.4.1).",
+      "tokens": [
+        "textarea.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.1",
+        "accname-description"
+      ]
+    },
+    {
+      "id": "message-text-size",
+      "date": "2026-11-20",
+      "version": "0.13.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The message takes the size of the label and the value (textarea.message.typography.*: body.size.sm, md, md, so 14 / 16 / 16 px for small, medium and large), no longer the description's (body.size.xs, xs, sm: 12 / 12 / 14 px). The description keeps its size; the weight (medium), the line height (normal, 1.5) and the letter spacing are unchanged. This replaces the message part of the decision label-help-text-sizes.",
+      "rationale": "Decided by the team on 2026-11-20 while reviewing #103 step 12, point 2b (the error icon's size): at 12 px the message was too small for what it carries, what is wrong and how to fix it. Next to 14 and 16 px text the icon in the message is Icon small (16 px), the Icon spec's size for body text. Contrast is unchanged (text 4.5:1, WCAG 1.4.3): the colors do not depend on the size. The box does not move: the message sits under it and the description.",
+      "tokens": [
+        "textarea.message.typography.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.4"
+      ]
+    },
+    {
+      "id": "error-fill-subtle",
+      "date": "2026-11-20",
+      "version": "0.12.0",
+      "area": "color",
+      "status": "active",
+      "text": "The box of a field in error is filled with global.bg.subtle.functional.error.default (textarea.control.background.error): #FEECEA in light mode, #2B0B08 in dark mode, at rest and on hover alike, under the error border and outline. Read-only and disabled keep their own fills. The value, the placeholder, the label, the description and the message keep their colors. It follows the Text field (decision same-box-as-text-field).",
+      "rationale": "Decided by the team on 2026-11-20 (#103 step 12, point 1, also the reference rendering of the Forms foundation step 6) between two options, measured on every size, at rest, on hover and with focus, light and dark, surface levels 0 to 3: A, global.bg.subtle.functional.error.default at rest and its hover step global.bg.subtle.functional.error.hover on hover; B, the subtle error fill at rest and on hover alike (chosen). In light mode A's hover fill (#FCCDC6) brings the placeholder to 4.33:1, under the 4.5:1 of WCAG 1.4.3; with B every pair passes: placeholder 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border and outline against the fill 5.45:1 and 5.14:1, against the surface levels 5.79:1 and 3.73:1 at the lowest. The fill is solid, as the team validated in the Forms foundation step 5; the hover tint it gives up was 1.05:1 from rest, and the Figma prototype, whose error fill is the same #FEECEA, has no hover in error. The value and the placeholder keep their roles (global.text.on-base.neutral.primary and .tertiary): the on-subtle neutral role has a single step, which cannot tell the placeholder from the value.",
+      "tokens": [
+        "textarea.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "variants-modeled-differently",
+      "date": "2026-11-19",
+      "version": "0.11.0",
+      "area": "variant",
+      "status": "active",
+      "text": "The Textarea follows the Text field's decision variants-modeled-differently, which holds the departures from the Figma prototype, the measurements and the options: the `value` property instead of the `filled` state, the platform's caret, `severity` with `message`, the `description`, an always visible label, and read-only kept. It adds the same guideline: a read-only field looks almost the same as an editable one (1.05:1 in light and 1.09:1 in dark from the resting fill, the same as the hover fill), so say that it is read-only in the label or the description, not by the fill alone. The read-only example and the readonly property say so. No token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the model and record; B, A plus the read-only guideline (chosen); C, read-only styled as rest, rejected because it would remove the only visual cue and is a breaking change. See the Text field's decision for the reasoning.",
+      "tokens": [
+        "textarea.control.background.readonly"
+      ],
+      "refs": [
+        "material-text-fields-read-only",
+        "windows-text-box-read-only",
+        "html-readonly-attribute"
+      ]
+    },
+    {
+      "id": "placeholder-tertiary",
+      "date": "2026-11-19",
+      "version": "0.10.1",
+      "area": "color",
+      "status": "active",
+      "text": "The placeholder of the Textarea is global.text.on-base.neutral.tertiary in every enabled state (textarea.control.placeholder-color.default) and global.text.state.disabled.default when disabled, as the Text field's (decision placeholder-tertiary of the Text field, which holds the rule, the options and the measurements). The decision keeps the values the control already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep tertiary in every enabled state (chosen); B, Figma's secondary at rest and tertiary on focus; C, secondary in every state, rejected because it is too close to the typed value and the same color as the help text. See the Text field's decision for the measurements.",
+      "tokens": [
+        "textarea.control.placeholder-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.3",
+        "understanding-contrast-minimum",
+        "mdn-placeholder",
+        "wai-instructions-placeholder",
+        "html-placeholder",
+        "material-text-fields",
+        "hig-color",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "border-base-neutral-5",
+      "date": "2026-11-19",
+      "version": "0.10.0",
+      "area": "color",
+      "status": "active",
+      "text": "The resting border of the box is global.border.base.neutral.5, as the Text field's (decision border-base-neutral-5 of the Text field, which holds the rule, the options and the measurements): #8C8C8C in light and #9C9C9C in dark, 3.30:1 and 6.40:1 on the page, 3.12:1 and 4.80:1 at the lowest on the surface levels. Hover and read-only keep it. Disabled, the focus outline and the severity outlines are unchanged.",
+      "tokens": [
+        "textarea.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "understanding-non-text-contrast-boundaries",
+        "material-text-fields",
+        "hig-text-fields",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "fill-page-level",
+      "date": "2026-11-19",
+      "version": "0.9.1",
+      "area": "color",
+      "status": "active",
+      "text": "The fill of the box of the Textarea is the page's own level, as the Text field's (decision fill-page-level of the Text field, which holds the rule and its rationale): global.bg.level.0.default at rest, global.bg.level.0.hover on hover, global.bg.level.1.default when read-only. The decision keeps the values the box already had: no token changes. The disabled fill is not decided here.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the page level (chosen); B, Figma's level 1; C, the default Button's translucent subtle fill, rejected because the placeholder fails WCAG 1.4.3 in dark. The fill does not identify the field, the border does. Every form control reads the same fill.",
+      "tokens": [
+        "textarea.control.background.*"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.3",
+        "understanding-non-text-contrast-adjacent-colors",
+        "understanding-contrast-minimum",
+        "material-text-fields-guidelines",
+        "windows-text-box"
+      ]
+    },
+    {
+      "id": "state-outline-flush",
+      "date": "2026-11-19",
+      "version": "0.9.0",
+      "area": "state",
+      "status": "active",
+      "text": "The Textarea draws focus and a severity as the Text field does (decision state-outline-flush of the Text field, which holds the rule and its rationale): the border stays 0.6 px in every state and the outline is drawn flush over it, offset minus the border width, so the text never moves. Focus is an outline of focus.ring.width (2.4 px) in color.focus.ring; a severity (error, warning or success) at rest an outline of stroke-width.md (1.2 px) in the severity's border color; a severity with focus 2.4 px in the severity's color. textarea.control.outline-offset.focus-visible is removed. pnpm validate compares the shared tokens with the Text field's through the mirror check.",
+      "rationale": "Decided by the team on 2026-11-19 (E4a at offset minus 0.6 px); see the Text field's decision for the options, the rationale and the known consequences (2.4.13 not met at 1x and 2x, a severity at 1 px at 1x, the focus color broken for a severity with focus).",
+      "tokens": [
+        "textarea.control.outline-width.*",
+        "textarea.control.outline-color.*"
+      ],
+      "refs": [
+        "wcag:2.4.7",
+        "wcag:1.4.11",
+        "wcag:2.4.13",
+        "understanding-focus-contrast",
+        "mdn-forced-colors"
+      ]
+    },
+    {
+      "id": "radius-button",
+      "date": "2026-11-19",
+      "version": "0.8.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The Textarea takes the corner radius of the Button of the same size, as the Text field's (decision radius-button of the Text field, which holds the rule and its rationale): small 2 px, medium and large 4 px (textarea.control.border-radius per size). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the single 4 px radius of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among three options (A, keep 4 px at every size; B, the Shape foundation's radius per size, chosen; C, 2 px at every size); see the Text field's decision for the rationale.",
+      "tokens": [
+        "textarea.control.border-radius.*"
+      ]
+    },
+    {
+      "id": "part-gap-6",
+      "date": "2026-11-19",
+      "version": "0.7.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The parts of the Textarea are 6 px apart at every size and in every state (textarea.container.gap, space.4 to space.6), as the Text field's (decision part-gap-6 of the Text field, which holds the rule and its rationale). pnpm validate compares the shared tokens with the Text field's through the mirror check. Changes the 4 px gap of the Figma-library import; everything else is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options (A, keep 4 px; B and C, Figma's two inconsistent sets of gaps; D, 6 px everywhere, chosen); see the Text field's decision for the rationale.",
+      "tokens": [
+        "textarea.container.gap"
+      ]
+    },
+    {
+      "id": "label-help-text-sizes",
+      "date": "2026-11-19",
+      "version": "0.6.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The label of the Textarea takes the text size of the value, and the description and the message the helper sizes, as the Text field's (decision label-help-text-sizes of the Text field, which holds the rule and its rationale): label small 14 px, medium 16 px, large 16 px; description and message small 12 px, medium 12 px, large 14 px. Each is a typography token per size. pnpm validate compares textarea.label.typography.*, textarea.description.typography.* and textarea.message.typography.* with the Text field's. Changes the single 14 px style that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep the single 14 px style for the label, the description and the message; B, the label follows the field (14 / 16 / 16 px) and the help text stays 14 px; C, the label follows the field and the help text takes Figma's helper sizes (12 / 12 / 14 px), chosen; D, Figma's sizes (label 12 / 14 / 16 px, help text 12 / 12 / 14 px, compact line height), rejected because the label would be smaller than the value at the small size and the Typography foundation would need an exception. A label above a field reads at the field's own size, and the help text is secondary to what it describes.",
+      "tokens": [
+        "textarea.label.typography.*",
+        "textarea.description.typography.*",
+        "textarea.message.typography.*"
+      ]
+    },
+    {
+      "id": "padding-inline-button",
+      "date": "2026-11-19",
+      "version": "0.5.1",
+      "area": "dimension",
+      "status": "active",
+      "text": "The inline padding of the box of the Textarea is the inline padding of the Button without an icon, as the Text field's (decision padding-inline-button of the Text field, which holds the rule and its rationale): small 8 px, medium 12 px, large 16 px. The block padding stays the Textarea's own. The decision keeps the values the box already had: no token changes.",
+      "rationale": "Decided by the team on 2026-11-19 among three options: A, keep the inline padding of the Button without an icon (8 / 12 / 16 px), chosen; B, Figma's 6 / 8 / 10 px; C, the Button's label-side padding (8 / 8 / 10 px), rejected here because it belongs to the question of a leading icon in the field. A field and a Button of the same size start their text at the same inset.",
+      "tokens": [
+        "textarea.control.padding-inline.*"
+      ]
+    },
+    {
+      "id": "box-height-button",
+      "date": "2026-11-19",
+      "version": "0.5.0",
+      "area": "dimension",
+      "status": "active",
+      "text": "The minimum height of the Textarea takes the height of the Button of the same size, as the Text field's (decision box-height-button of the Text field, which holds the rule and its rationale): small 28 px, medium 36 px, large 44 px. It is a floor under the rows: at the default three rows the control is taller (three lines and the block padding), so the minimum only governs a Textarea of one row or one resized smaller. pnpm validate compares textarea.control.min-height.* with the Text field's. The block padding and the rows stay the Textarea's own. Changes the 32 / 40 / 48 px minimum heights that the decisions sizes and value-text-button-size state; everything else they state is unchanged.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep 32 / 40 / 48 px (one step taller than the Button of the same size); B, the Button's heights 28 / 36 / 44 px, chosen; C, the height Figma's padding gives with the new text (33.6 / 40 / 44 px), which matches neither the Button nor today's; D, Figma's heights rounded up (36 / 40 / 44 px). A field and a Button of the same size line up (a search field next to its button, a form row), and the large size reaches the 44 pt that Apple recommends. The hit region of the small and medium sizes is a later step, as for the Button.",
+      "tokens": [
+        "textarea.control.min-height.*"
+      ]
+    },
+    {
+      "id": "value-text-button-size",
+      "date": "2026-11-19",
+      "version": "0.4.0",
+      "area": "typography",
+      "status": "active",
+      "supersedes": [
+        "sizes"
+      ],
+      "text": "The value and placeholder text of the Textarea takes the text size of the Button of the same size, as the Text field's (decision value-text-button-size of the Text field, which holds the rule and its rationale): small 14 px, medium 16 px, large 16 px, regular weight, normal letter spacing and the tight line height (1.2) of the Text field, which pnpm validate compares with textarea.control.typography.*. The block padding and the rows stay the Textarea's own. Supersedes sizes: the heights, inline padding, border, corners and the 14 px label, description and error message of that decision are unchanged here; only the text of the large size (20 to 16 px) and the line height (1.5 to 1.2) change.",
+      "rationale": "Decided by the team on 2026-11-19 among four options: A, keep today's text (small 14, medium 16, large 20 px, line height 1.5: the large size breaks the rule); B, the Button's whole label style (medium weight, compact line height 1.0, tight letter spacing), rejected because people's content would look like a control label, descenders and accents would touch the line, and the Typography foundation would need an exception; C, the Button's text size with the Typography foundation's single-line style (regular weight, normal letter spacing, tight line height 1.2), chosen; D, the Button's text size with the line height 1.5, rejected because that line height is meant for running text. The Textarea, which holds several lines, takes the same 1.2 line height by team decision (step 3b, option A; rejected: B, its own line height 1.5, the foundation's running-text value), the mirror staying whole.",
+      "tokens": [
+        "textarea.control.typography.*"
+      ]
+    },
+    {
+      "id": "same-box-as-text-field",
+      "date": "2026-11-19",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The Textarea always renders the same box as the Text field of the same size and state: height, inline padding, text, border, corners, colors, focus ring, label, description, message and motion are the Text field's, and only its block padding and its rows are its own. A Text field decision on any of these applies to the Textarea in the same change: pnpm validate fails when a Textarea token differs from the Text field token at the same place (MIRRORS in scripts/lib/mirrors.mjs, decision field-family-mirrors of the Text field). The mirror covers rendering only: a contract decision is asked for the Textarea too.",
+      "rationale": "Nothing tied the three plain fields to the Text field: a decision on its box left them behind. Mirroring them lets every rendering step of the Text field refinement change the four in the same commit, and pnpm validate prove they agree, where the alternatives (the Text field alone, with a closing step per sibling or an issue for the others) leave the siblings out of step in between. The Select is not mirrored now: it gets its own step later, with the complex controls.",
+      "tokens": [
+        "textarea.container.*",
+        "textarea.control.*",
+        "textarea.label.*",
+        "textarea.description.*",
+        "textarea.message.*"
+      ]
+    },
     {
       "id": "forms-severity",
       "date": "2026-11-19",
@@ -783,7 +1979,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "size",
-      "status": "active",
+      "status": "superseded",
       "text": "Three sizes from the Figma library's space and body scales: small (32 px high, 8 px inline padding, 14 px text), medium (40, 12, 16, the default) and large (48, 16, 20); the border is 0.6 px (stroke-width.sm) and the corners 4 px (corner-radius.xs) at every size; label, description and error message keep 14 px.",
       "tokens": [
         "textarea.control.min-height.*",
@@ -798,7 +1994,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "anatomy",
-      "status": "active",
+      "status": "superseded",
       "text": "A field always has a visible label above the control; help text goes under the control as the description, and the error message under it while the field is invalid. Both are exposed as the control's description.",
       "refs": [
         "wcag:3.3.2",
@@ -824,6 +2020,236 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.0",
+      "date": "2026-11-27",
+      "note": "Decision focus-severity-outline (#103 step 32, after #105 b3.1): new tokens for two states control.outline-width.focus-visible-error, focus-visible-warning and focus-visible-success (= focus.ring.width), which the CSS reads for a focused field in a severity; the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants now take the focus width there too, and the Figma plan drops the focus half of its hand-written rule. No rendered value changes."
+    },
+    {
+      "version": "0.27.1",
+      "date": "2026-11-27",
+      "note": "Fix (#103 step 33, from Forms step 12): a disabled field never draws the focus ring. The rule that forces focus-visible for review (the playground, the states matrix) now skips a disabled control, as the severity outlines already did, so a disabled field in a severity with focus-visible forced shows no ring on the web, as Figma draws none. A disabled control takes no focus, so real properties render as before."
+    },
+    {
+      "version": "0.27.0",
+      "date": "2026-11-27",
+      "note": "Decision label-placement (#103 step 29; Forms forms-label-column, -alignment, -column-gap, -column-stacking, and the team's forms-label-column-web, forms-label-multiline): property labelPlacement (above, start), token textarea.container.column-gap.start → form.gap.label-column, the subgrid row in the CSS (label end-aligned, first line level with the first line of text, the control's block padding plus half its line, at any number of rows; stacking under a 30 rem container), data-label-placement in the template, the Figma component fixed above. New example: Medium, label at the start. No change with the default, above."
+    },
+    {
+      "version": "0.26.9",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6; #103 step 28): the container gap; the control's fill at rest, on hover, read-only and in each severity, its border at rest and in each severity, the outline in each severity (form.control.border-color.<severity>), its value and its placeholder; the label's, the description's and the message's colors and font sizes; the severity icon's, the mark's and the asterisk's colors alias the Forms family (form.*), 35 tokens, every resolved value unchanged in the base tiers, iOS and Android, light and dark; no override, the border at rest being the family's default."
+    },
+    {
+      "version": "0.26.8",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5; #103 step 27): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the visible label and its association on the web (label element, aria-describedby), the severity in text, aria-invalid and the required attribute, and the required mark in words. The three mark guidelines, checked against the Forms guidelines of the required tier (the web's hidden \"(required)\", Android's and Windows' asterisk), keep only what is the field's own: the mark after the label's words (WCAG 2.5.3), the asterisk's color and when it shows on Android, the asterisk in the UI Automation Name on Windows. The references only they cited are dropped (html-label, wcag-h44, wcag-aria1, wai-notifications, wcag-g83, html-required, html-aam-required, wai-validation, wcag-h90, accname-hidden, mdn-aria-required). No rendering change."
+    },
+    {
+      "version": "0.26.7",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' messages and the content guideline rely on the label they sit under and no longer repeat the field's name, as the Forms foundation decides (forms-message-relies-on-label, #105 step 11 point 4). No rendering change."
+    },
+    {
+      "version": "0.26.6",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation, #105 step 11 point 3); a question keeps its mark. No rendering change."
+    },
+    {
+      "version": "0.26.5",
+      "date": "2026-11-26",
+      "note": "Fix: the severityIcon option none follows the Forms guideline forms-severity-word-guideline (which supersedes forms-severity-word): without an icon the message's own words say the severity, and the component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon. No template or rendering change."
+    },
+    {
+      "version": "0.26.4",
+      "date": "2026-11-25",
+      "note": "Fix: texts copied from the Text field now describe a Textarea. The sizes are minimum heights (28, 36, 44 px), the large one for a prominent form rather than a search page or a sign-in form; on iOS and Android the hit region extends only by what the box lacks, at most the Text field's 8 / 4 pt and 10 / 6 / 2 dp and nothing at the default three rows (decision touch-target-hit-region); the severity icon after the control sits level with the first line, as the CSS and the docs already draw it, not centred. No rendering change."
+    },
+    {
+      "version": "0.26.3",
+      "date": "2026-11-25",
+      "note": "Fix: the accessibility contract states the Android and Windows asterisk the decisions asterisk-style and required-windows-name already set: an Android guideline (Material's asterisk, explained once, in the accessibility label) and a Windows one (the asterisk in the UI Automation Name, as Microsoft asks, and IsRequiredForForm), citing Material, Windows Forms, the UIA_NamePropertyId page and IsRequiredForForm. No new rule, no rendering change."
+    },
+    {
+      "version": "0.26.2",
+      "date": "2026-11-25",
+      "note": "Fix: a read-only field is never required. The required property says it is ignored with readonly, the web guideline on read-only says why and cites MDN (attribute interactions), and the template writes neither the required attribute nor a mark when both are set. No example or screen sets both; nothing else renders differently."
+    },
+    {
+      "version": "0.26.1",
+      "date": "2026-11-25",
+      "note": "Fix: implementations.web lists the severity-icon part selector (.ds-textarea__severity-icon), which the CSS and the template have used since the severity icon landed, so the playground's token inspector and the anatomy can point at the icon. No rendering change."
+    },
+    {
+      "version": "0.26.0",
+      "date": "2026-11-25",
+      "note": "Decision default-size-medium (#103 step 21): without a size the field stays medium (36 px), like the Button and every component with sizes; Figma's small default (the top-left variant of its set) is recorded as a departure. Nothing renders differently."
+    },
+    {
+      "version": "0.25.0",
+      "date": "2026-11-25",
+      "note": "Decision long-text-wraps (#103 step 20, point 3): the label, the description and the message wrap at every text size and break a word longer than the line (CSS overflow-wrap: anywhere; before, such a word spilled 68 to 111 px past a 343 px field at iOS AX5); the value scrolls (wraps in the Textarea); the placeholder may be cut, so it stays a short example. Two guidelines. Nothing changes at the default size; contrast unchanged."
+    },
+    {
+      "version": "0.24.0",
+      "date": "2026-11-25",
+      "note": "Decision icons-at-text-size (#103 step 20, point 2): when people raise the text size, the severity icon grows with its text (Iconography 0.6.0, field-leading-icon-keeps-size). iOS guideline. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.23.0",
+      "date": "2026-11-25",
+      "note": "Decision grows-with-text-size (#103 step 20, point 1): the textarea grows with the text size and keeps its own block padding (6 / 8 / 12), larger than the field family's new minimum block padding (3 / 5 / 8); pnpm validate lets control.padding-block differ from the Text field's (scripts/lib/mirrors.mjs, differs). Platform guidelines for the web (zoom), iOS (Dynamic Type), macOS and Windows (text scaling). No token, CSS or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.22.0",
+      "date": "2026-11-25",
+      "note": "Decision enter-by-field-kind (#103 step 19, point 2): Enter adds a line on every platform and the return key keeps its default label. Keyboard entries for Enter / Return per platform and a guideline. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.21.0",
+      "date": "2026-11-25",
+      "note": "Decision keyboard-on-every-platform (#103 step 19, point 1): keyboard access stated on every platform, with the keys each platform's own documentation names for text entry (iPadOS, Android, macOS, Windows) in the keyboard contract, and the generic, iOS, Android and macOS guidelines; Android Developers' Compose focus, keyboard and text pages and Windows' input pages join the trusted sources. Text only: no token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.20.0",
+      "date": "2026-11-25",
+      "note": "Decision touch-target-hit-region (#103 step 18, point 1): on iOS every size has a hit region of at least 44 x 44 pt and on Android a touch target of at least 48 x 48 dp, centered on the box, extending over the field's own text (its 6 px part gap kept) and kept clear of other controls and of other fields' labels; the drawn field is unchanged. The iOS and Android guidelines state how each size reaches the target instead of the shortfall. No token, CSS, template or rendering change; contrast unchanged."
+    },
+    {
+      "version": "0.19.0",
+      "date": "2026-11-25",
+      "note": "Decision mark-part: the required mark lands (#103 step 16, point 4). Parts mark and asterisk (Android and Windows) inside the label; property markedFields (optional by default); tokens mark.color.*, mark.typography.*, asterisk.color.* and asterisk.margin-inline-start.*; the web template draws the mark, \"(required)\" aria-hidden, and takes markLabel to translate it; the Figma component gains the BOOLEAN \"Mark\" and the TEXT \"Mark text\", no variant axis, and never draws the asterisk."
+    },
+    {
+      "version": "0.18.5",
+      "date": "2026-11-25",
+      "note": "Decision required-windows-name: on Windows the asterisk stays in the accessible name, with IsRequiredForForm (#103 step 16, point 3b). No token or rendering change."
+    },
+    {
+      "version": "0.18.4",
+      "date": "2026-11-25",
+      "note": "Decision asterisk-style: on Android and Windows, the required asterisk in the error message's red (global.text.on-base.functional.error.default), the label's size and weight, 4 px after the label (2 px in small); 5.79 to 6.12:1 light, 5.30 to 7.06:1 dark (#103 step 16, point 3). No token or rendering change yet."
+    },
+    {
+      "version": "0.18.3",
+      "date": "2026-11-25",
+      "note": "Decision mark-style: the required mark at the label's size, regular, in the description's color (global.text.on-base.neutral.secondary), the disabled text color when disabled; 12.09 to 12.78:1 light, 6.65 to 8.86:1 dark (#103 step 16, point 2). No token or rendering change yet."
+    },
+    {
+      "version": "0.18.2",
+      "date": "2026-11-25",
+      "note": "Decision marked-fields: the form setting markedFields (optional by default) says which fields carry a mark; the field draws its mark from its own required (#103 step 16, point 1). No token or rendering change yet."
+    },
+    {
+      "version": "0.18.1",
+      "date": "2026-11-25",
+      "note": "Decision message-under-description (keep, #103 step 14): the message sits under the description for every severity, both visible, and is read after it, as the Forms foundation decided (forms-message-under-description); a departure from the Figma prototype, where the message replaces the helper text. Supersedes label-description-error. The message part says where it sits; the error example gains a description. No token or rendering change."
+    },
+    {
+      "version": "0.18.0",
+      "date": "2026-11-25",
+      "note": "Decision warning-border-text-step: the light warning border and outline are warning 600 #765818 through the Color foundation's decision border-accent-warning-600 (no component token changes): 6.49:1 on the default surface and 6.16:1 at the lowest (was 3.27:1 and 3.09:1), 5.86:1 on the warning fill (was 2.95:1, under 3:1); dark mode unchanged."
+    },
+    {
+      "version": "0.17.0",
+      "date": "2026-11-25",
+      "note": "Decision warning-one-color: the warning icon and message read one color, warning 600 #765818 in light mode, through the Color foundation's decision warning-on-base-600 (no component token changes): the message 6.49:1 on the default surface and 6.16:1 at the lowest (was 13.01:1 and 12.30:1), the icon 6.16:1 at the lowest (was 3.09:1); dark mode unchanged (11.17:1 and 8.38:1)."
+    },
+    {
+      "version": "0.16.0",
+      "date": "2026-11-25",
+      "note": "Decision severity-icon-glyphs: the severity icon is drawn for a warning (warning, \"Warning\") and a success (check_circle, \"Success\") too, in the on-base icon role of the severity (new tokens severity-icon.color.warning and .success). Warning icon 3.09:1 (light) and 8.38:1 (dark) at the lowest on the surface levels, success 7.44:1 and 5.92:1."
+    },
+    {
+      "version": "0.15.0",
+      "date": "2026-11-25",
+      "note": "Decision severity-fill-subtle: a field with a warning or a success is filled with the subtle background of its severity (new tokens control.background.warning and .success), at rest and on hover alike, as the error is; it kept the page-level fill before. Placeholder on the fills 5.50:1 and 5.55:1 (light), 6.55:1 and 6.48:1 (dark); value 17.15:1 and 17.30:1, 11.54:1 and 11.43:1; success border on its fill 7.17:1 and 6.16:1; the light warning border is 2.95:1 on its fill (known, issue #119)."
+    },
+    {
+      "version": "0.14.2",
+      "date": "2026-11-20",
+      "note": "Decision leading-icon-optional: records that the Textarea has no leading icon (#103 step 15, point 1). No token or rendering change yet."
+    },
+    {
+      "version": "0.14.1",
+      "date": "2026-11-20",
+      "note": "Decision message-color-error: the error message keeps the functional error text color (a keep decision). No token change."
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-11-20",
+      "note": "Decision severity-icon: new part severity-icon and property severityIcon (message by default, after-control, none). New tokens textarea.severity-icon.* (icon font, size 20 / 24 / 24 px after the control, gap space.8, color error the on-base error icon), and in the message textarea.severity-icon.size.message (16 px), textarea.severity-icon.gap.message (space.4)."
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-11-20",
+      "note": "Decision message-text-size: the message (textarea.message.typography.*) is 14 / 16 / 16 px (body.size.sm, md, md), the label's and the value's size, instead of 12 / 12 / 14. The description is unchanged."
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-11-20",
+      "note": "Decision error-fill-subtle: a field in error is filled with global.bg.subtle.functional.error.default (new token textarea.control.background.error), at rest and on hover alike; it kept the page-level fill before. Placeholder on the fill 5.42:1 (light) and 6.62:1 (dark), value 16.91:1 and 11.67:1, the error border against it 5.45:1 and 5.14:1."
+    },
+    {
+      "version": "0.11.0",
+      "date": "2026-11-19",
+      "note": "Decision variants-modeled-differently (Text field decision of the same name): the departures from the Figma prototype are recorded and read-only is kept. New guideline: a read-only field's fill is 1.05:1 in light and 1.09:1 in dark from the resting fill, the same as the hover fill, so say that it is read-only in the label or the description. The readonly property and the read-only example say so. No token or rendering change."
+    },
+    {
+      "version": "0.10.1",
+      "date": "2026-11-19",
+      "note": "Decision placeholder-tertiary (Text field decision of the same name): the placeholder (textarea.control.placeholder-color.*) stays global.text.on-base.neutral.tertiary in every enabled state, rather than Figma's secondary at rest. Distance from the value, light / dark: 3.12:1 / 1.76:1 (secondary 1.48:1 / 1.27:1); contrast against the fill at rest 6.08:1 / 6.40:1 (lowest 5.75:1 / 5.86:1). Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.10.0",
+      "date": "2026-11-19",
+      "note": "Decision border-base-neutral-5 (Text field decision of the same name): the resting border of the box (textarea.control.border-color.default) is global.border.base.neutral.5 instead of global.border.accent.neutral.default: #8C8C8C in light (was #313131) and #9C9C9C in dark (was #CFCFCF). Contrast of the border on the surface levels 0 / 1 / 2 / 3: light 3.30 / 3.12 / 3.30 / 3.12:1, dark 6.40 / 5.86 / 5.36 / 4.80:1 (was 12.78 / 12.09 / 12.78 / 12.09:1 and 11.28 / 10.33 / 9.46 / 8.47:1). Disabled, focus and the severities are unchanged."
+    },
+    {
+      "version": "0.9.1",
+      "date": "2026-11-19",
+      "note": "Decision fill-page-level (Text field decision of the same name): the fill of the box (textarea.control.background.*) stays the page's level, global.bg.level.0.default at rest and .hover on hover, global.bg.level.1.default when read-only. Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.9.0",
+      "date": "2026-11-19",
+      "note": "Decision state-outline-flush: focus is an outline of 2.4 px (focus.ring.width, color.focus.ring) drawn flush over the 0.6 px border, offset minus the border width, instead of a ring 4 px away; a severity (error, warning, success) is an outline of 1.2 px (stroke-width.md) in the severity's border color (global.border.accent.functional.<severity>.default), 2.4 px in that color with focus; the border and the text never change; outline-offset.focus-visible removed. Contrast, light / dark: focus outline 5.77:1 / 12.76:1 on the default surface (5.45 / 9.58 on level 3); severity outlines as the severity borders, on the default surface and at least on every surface level: error 6.12:1 / 4.97:1 and 5.79 / 3.73, warning 3.27:1 / 8.09:1 and 3.09 / 6.07, success 7.87:1 / 6.08:1 and 7.44 / 4.57. WCAG 2.4.13 is no longer claimed."
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-11-19",
+      "note": "Decision radius-button: the corner radius of the box is the Button's at the same size (textarea.control.border-radius per size: small corner-radius.2xs, 2 px; medium and large corner-radius.xs, 4 px; it was corner-radius.xs, 4 px, at every size). Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-11-19",
+      "note": "Decision part-gap-6: the parts of the field are 6 px apart at every size and in every state (textarea.container.gap: space.4 to space.6, 4 px to 6 px between the label, the box, the description and the message). The box never moves between states. Colors, sizes and typography unchanged."
+    },
+    {
+      "version": "0.6.0",
+      "date": "2026-11-19",
+      "note": "Decision label-help-text-sizes (Text field decision of the same name): the label scales with the field (14 / 16 / 16 px) and the help text shrinks (12 / 12 / 14 px) (textarea.label.typography: one 14 px style becomes small, medium and large, font size body.size.sm to sm / md / md, line height normal 1.5 to tight 1.2; textarea.description.typography and textarea.message.typography: body.size.sm to xs / xs / sm, so 14 px becomes 12 / 12 / 14 px; weights, normal line height and letter spacing kept). The Size property now affects the label, the description and the message. pnpm validate now fails when the label and the value alias different font size tokens. Colors unchanged; contrast re-measured on levels 0 to 3: description 12.78:1 (levels 0 and 2) and 12.09:1 (levels 1 and 3) in light mode, 8.86:1, 8.11:1, 7.43:1 and 6.65:1 on levels 0 to 3 in dark mode; error text 6.12:1 and 5.79:1 (levels 0 and 2, then 1 and 3) in light mode, 7.06:1, 6.47:1, 5.92:1 and 5.30:1 in dark mode, the same on every platform; 4.5:1 required (WCAG 1.4.3), the lowest being 6.65:1 (description) and 5.30:1 (error text)."
+    },
+    {
+      "version": "0.5.1",
+      "date": "2026-11-19",
+      "note": "Decision padding-inline-button (Text field decision of the same name): the inline padding (textarea.control.padding-inline.*) is the Button's inline padding without an icon at the same size. Kept as it was: no token or rendering change."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-11-19",
+      "note": "Decision box-height-button (Text field decision of the same name): the minimum height takes the height of the Button of the same size (textarea.control.min-height.*: 32 / 40 / 48 px become 28 / 36 / 44 px). Target size (WCAG 2.5.8): every size stays above 24 x 24 CSS px. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-19",
+      "note": "Decision value-text-button-size (Text field decision of the same name): the value and placeholder text takes the text size of the Button of the same size (small 14, medium 16, large 16 px; the large size was 20 px), with the tight line height of the Text field (textarea.control.typography.*: large font size body.size.lg to body.size.md, line height normal to tight). Supersedes sizes. Colors unchanged, so contrast is unchanged."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-19",
+      "note": "Decision same-box-as-text-field (Text field decision field-family-mirrors): the Textarea is a mirror of the Text field, so every Text field decision on the box applies here in the same change and pnpm validate compares the tokens; its block padding is declared as its own. No token, CSS or template change: the tokens already resolve to the Text field's values in every platform and mode, so sizes, colors and contrast are unchanged."
+    },
     {
       "version": "0.2.0",
       "date": "2026-11-19",

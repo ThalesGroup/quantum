@@ -20,6 +20,7 @@
   --_options-gap: var(--radio-group-container-gap-vertical);
   --_control-size: var(--radio-group-control-size-medium);
   --_legend-color: var(--radio-group-legend-color-default);
+  --_mark-color: var(--radio-group-mark-color-default);
   --_description-color: var(--radio-group-description-color-default);
   --_label-font-family: var(--radio-group-option-label-typography-medium-font-family);
   --_label-font-size: var(--radio-group-option-label-typography-medium-font-size);
@@ -36,6 +37,11 @@
   --_legend-font-weight: var(--radio-group-legend-typography-medium-font-weight);
   --_legend-line-height: var(--radio-group-legend-typography-medium-line-height);
   --_legend-letter-spacing: var(--radio-group-legend-typography-medium-letter-spacing);
+  --_mark-font-family: var(--radio-group-mark-typography-medium-font-family);
+  --_mark-font-size: var(--radio-group-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--radio-group-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--radio-group-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--radio-group-mark-typography-medium-letter-spacing);
   --_description-font-family: var(--radio-group-description-typography-medium-font-family);
   --_description-font-size: var(--radio-group-description-typography-medium-font-size);
   --_description-font-weight: var(--radio-group-description-typography-medium-font-weight);
@@ -74,6 +80,11 @@
   --_legend-font-weight: var(--radio-group-legend-typography-small-font-weight);
   --_legend-line-height: var(--radio-group-legend-typography-small-line-height);
   --_legend-letter-spacing: var(--radio-group-legend-typography-small-letter-spacing);
+  --_mark-font-family: var(--radio-group-mark-typography-small-font-family);
+  --_mark-font-size: var(--radio-group-mark-typography-small-font-size);
+  --_mark-font-weight: var(--radio-group-mark-typography-small-font-weight);
+  --_mark-line-height: var(--radio-group-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--radio-group-mark-typography-small-letter-spacing);
   --_description-font-family: var(--radio-group-description-typography-small-font-family);
   --_description-font-size: var(--radio-group-description-typography-small-font-size);
   --_description-font-weight: var(--radio-group-description-typography-small-font-weight);
@@ -100,6 +111,16 @@
   font-weight: var(--_legend-font-weight);
   line-height: var(--_legend-line-height);
   letter-spacing: var(--_legend-letter-spacing);
+}
+
+/* The required mark, inside the legend after a word space (markedFields; decision mark-part, Forms forms-mark-style). */
+.ds-radio-group__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 /* A legend sits outside the flex flow of its fieldset: the row gap is written as its bottom margin.
    A description sits right under its legend (0), the two read as one heading. */
@@ -144,6 +165,41 @@
   font-weight: var(--_message-font-weight);
   line-height: var(--_message-line-height);
   letter-spacing: var(--_message-letter-spacing);
+}
+
+/* ---- Severity icon ---------------------------------------------------------
+   At the start of the message only (severityIcon message): a choice control's label or options follow its box,
+   so it draws no icon after it (Forms decision forms-severity-icon-placement). 16 px, centred on the message's
+   first line, severity-icon.gap.message before the text. */
+
+.ds-radio-group__message:has(> .ds-radio-group__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--radio-group-severity-icon-gap-message);
+}
+
+.ds-radio-group__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--radio-group-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+  color: var(--radio-group-severity-icon-color-error);
+  font-family: var(--radio-group-severity-icon-font-family);
+  font-size: var(--radio-group-severity-icon-size-message);
+  font-weight: var(--radio-group-severity-icon-font-weight);
+  line-height: var(--radio-group-severity-icon-size-message);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--radio-group-severity-icon-fill),
+    "GRAD" var(--radio-group-severity-icon-grade),
+    "opsz" var(--radio-group-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ---- Option ------------------------------------------------------------- */
@@ -268,6 +324,7 @@
 .ds-radio-group:where([data-state="disabled"]),
 .ds-radio-group:disabled {
   --_legend-color: var(--radio-group-legend-color-disabled);
+  --_mark-color: var(--radio-group-mark-color-disabled);
   --_description-color: var(--radio-group-description-color-disabled);
 }
 :where(.ds-radio-group[data-state="disabled"], .ds-radio-group__option[data-state="disabled"]) .ds-radio-group__option,
