@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -292,7 +292,7 @@
     "wrap": false,
     "sizing": "fill",
     "notes": [
-      "The legend comes first, then the description, the options and the message, separated by container.row-gap.",
+      "The legend comes first, the description right under it (no gap: the two read as one heading), then the options and the message, separated by container.row-gap; on the web the legend's bottom margin carries that gap when no description follows, since a rendered legend sits outside its fieldset's flow.",
       "Options stack vertically, or flow on one line and wrap in the horizontal orientation, separated by container.gap for the orientation.",
       "Within an option, the box sits before the label, centered on its first line; the option's description sits under its label."
     ]
@@ -413,7 +413,7 @@
         ]
       },
       {
-        "text": "A box alone is 16 or 20 CSS pixels, under the 24 pixel minimum; its label is part of the target and brings the option above it, and the spacing exception applies when options are 24 pixels apart.",
+        "text": "A box alone is 16 or 20 CSS pixels, under the 24 pixel minimum; its label is part of the target and brings the option above it, and the spacing exception applies when options are 24 pixels apart: medium options are 24 pixels tall, 28 pixels from one to the next, and small ones 21 pixels tall, 25 pixels apart, so their 24 pixel circles clear each other by 1 pixel.",
         "refs": [
           "wcag:2.5.8"
         ]
@@ -443,7 +443,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt; each option (radio and label) must reach it on iOS. Avoid relying solely on different colors to communicate the state.",
+        "text": "Apple recommends a hit region of at least 44 x 44 pt; each option (box and label) must reach it on iOS. Options 4 pt apart cannot share the space between them as a field's hit region does, so each option row is at least 44 pt tall, its box and label centred in it, with 4 pt between rows; the legend, the description and the message keep their 0 and 6 pt and grow with Dynamic Type. Avoid relying solely on different colors to communicate the state.",
         "refs": [
           "hig-toggles-best-practices",
           "hig-accessibility-mobility"
@@ -453,7 +453,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's Checkbox sets that minimum itself when it can receive actions. Lift the selection to the row with the toggleable modifier and the Checkbox role, so label and radio form one element whose state is announced.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's Checkbox sets that minimum itself when it can receive actions, so each option row is at least 48 dp tall, 4 dp apart. Lift the selection to the row with the toggleable modifier and the Checkbox role, so label and radio form one element whose state is announced.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -462,6 +462,15 @@
         ],
         "platforms": [
           "android"
+        ]
+      },
+      {
+        "text": "On macOS, Apple's minimum control size is 20 x 20 pt (28 x 28 pt by default): an option row, 21 pt small and 24 pt medium, meets the minimum, so the options keep the default spacing, 4 pt apart.",
+        "platforms": [
+          "desktop"
+        ],
+        "refs": [
+          "hig-accessibility-mobility"
         ]
       },
       {
@@ -850,6 +859,27 @@
   ],
   "decisions": [
     {
+      "id": "part-gaps",
+      "date": "2026-11-27",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The group's parts are 6 px apart (container.row-gap = space.6): the legend to the options when there is no description, the description to the options, the options to the message. The description sits right under its legend (0 px): the two read as one heading. Options stack vertically 4 px apart (container.gap.vertical = space.4), closer than the parts around them, so the list reads as one unit; the horizontal orientation keeps one wrapping line, 16 px apart. The values are the same on every platform; on iOS and Android each option row grows to the platform's minimum target and keeps the 4 pt or dp between rows. Before, the parts were 8 px apart, the options 8 px, and the legend touched its next part (0 px), as the gap never reached a rendered legend.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 5, option D, proposed by the team, its three assumed values confirmed: \"Yes, D as assumed, and deduce what's expected for the other platforms\"). It follows the Forms foundation's decision forms-part-gaps. Rejected: today's values (8 between parts and options, the legend at 0 to everything: a bug, the legend + * rule cancelling the margin its comment promised), A (6 everywhere, options 8 apart), B (fields 6, groups 8), C (8 everywhere, reopening the Text field's 6). Measured on the web: medium options 24 px tall, 28 px from one to the next; small options 21 px tall, 25 px apart, so the 24 px circles of WCAG 2.5.8's spacing exception clear each other by 1 px.",
+      "supersedes": [
+        "orientations"
+      ],
+      "tokens": [
+        "checkbox-group.container.row-gap",
+        "checkbox-group.container.gap.*"
+      ],
+      "refs": [
+        "wcag:2.5.8",
+        "hig-accessibility-mobility",
+        "compose-target-sizes"
+      ]
+    },
+    {
       "id": "forms-severity",
       "date": "2026-11-19",
       "version": "0.2.0",
@@ -900,7 +930,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "layout",
-      "status": "active",
+      "status": "superseded",
       "text": "Options stack vertically by default, 8 px apart; the horizontal orientation puts them on one wrapping line, 16 px apart, as the Radio group.",
       "tokens": [
         "checkbox-group.container.gap.*"
@@ -922,6 +952,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.0",
+      "date": "2026-11-27",
+      "note": "Decision part-gaps (supersedes orientations; Forms forms-part-gaps, #105 step 10, point 5): container.row-gap space.8 → space.6 and container.gap.vertical space.8 → space.4; the legend's bottom margin takes the row gap (the legend touched its next part before, 0 px: fixed), 0 when the description follows it. The layout note, the iOS, Android and 2.5.8 guidelines and a new macOS guideline say the platform rows: iOS rows at least 44 pt, Android 48 dp, both 4 apart; macOS meets its 20 pt minimum. Measured: medium options 24 px tall, 28 apart; small 21, 25 apart (2.5.8 spacing exception by 1 px). The Figma blueprint draws the legend and the description in a heading frame with no gap. No color change."
+    },
     {
       "version": "0.2.2",
       "date": "2026-11-26",

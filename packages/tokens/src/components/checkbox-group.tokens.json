@@ -4,14 +4,14 @@
     "container": {
       "row-gap": {
         "$type": "dimension",
-        "$value": "{space.8}",
-        "$description": "Between the legend, the description, the options and the message."
+        "$value": "{space.6}",
+        "$description": "Between the legend and the options when no description follows (the legend's bottom margin), and between the description, the options and the message. A description sits right under its legend (0), the two read as one heading."
       },
       "gap": {
         "$type": "dimension",
-        "$description": "Between two options.",
+        "$description": "Between two options: closer in a column than the parts around them, so the list reads as one unit.",
         "vertical": {
-          "$value": "{space.8}"
+          "$value": "{space.4}"
         },
         "horizontal": {
           "$value": "{space.16}"

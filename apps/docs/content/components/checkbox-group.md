@@ -30,7 +30,10 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 ## Orientation and sizes
 
 Orientation and sizes are the Radio group's: vertical by default, horizontal for two or three
-short options; small (16 px boxes) or medium (20 px boxes, the default).
+short options; small (16 px boxes) or medium (20 px boxes, the default). So is the spacing: the
+description right under the legend, 6 px between the legend (or its description), the options and
+the message, and 4 px between options in a column
+([Forms: spacing](/foundations/forms#spacing)).
 
 ## States
 
@@ -104,17 +107,25 @@ This section explains the decisions behind it.
 ### iOS
 
 - Each option (box and label) must reach the 44 by 44 pt hit region; the state is never shown
-  by color alone
+  by color alone. Options 4 pt apart cannot share the room between them, so each option row is
+  at least 44 pt tall, the box and its label centred in it, 4 pt from the next
   ([Apple HIG: Toggles, best practices](https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices),
   [Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
 ### Android
 
 - Lift the toggle to the row with the `toggleable` modifier and the `Checkbox` role; Material's
-  Checkbox enforces the 48 dp target
+  Checkbox enforces the 48 dp target, so each option row is at least 48 dp tall, 4 dp from the
+  next
   ([Jetpack Compose: interactive elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls)).
+
+### Desktop
+
+- On macOS, an option row (21 pt small, 24 pt medium) meets Apple's 20 by 20 pt minimum control
+  size, so the options keep their 4 pt
+  ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
 ## Related
 

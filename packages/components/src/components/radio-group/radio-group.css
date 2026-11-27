@@ -71,7 +71,14 @@
   line-height: var(--radio-group-legend-typography-line-height);
   letter-spacing: var(--radio-group-legend-typography-letter-spacing);
 }
-/* A legend sits outside the flex flow of its fieldset: the gap is written as a margin. */
+/* A legend sits outside the flex flow of its fieldset: the row gap is written as its bottom margin.
+   A description sits right under its legend (0), the two read as one heading. */
+.ds-radio-group__legend {
+  margin-block-end: var(--radio-group-container-row-gap);
+}
+.ds-radio-group__legend:has(+ .ds-radio-group__description) {
+  margin-block-end: 0;
+}
 .ds-radio-group__legend + * {
   margin-block-start: 0;
 }

@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.51.0",
+  "version": "0.52.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -111,7 +111,7 @@
     {
       "id": "spacing",
       "name": "Spacing",
-      "text": "Two fields of a form stack form.gap.field (space.16, 16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack form.gap.group (space.32, 32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits form.gap.title (space.12, 12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The form's actions (its submit button and the buttons next to it) take the gap of what precedes them: form.gap.field after a form without groups, form.gap.group after a grouped form, with no token of their own, since they act on the whole form and not on its last group; the buttons stand space.8 (8 px) apart. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. The three gaps are semantic tokens the design system adds (the Figma library has none for them), the same on every platform today; a platform may override them, none does. Not decided yet: the space inside a field and a group (step 10, point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
+      "text": "Two fields of a form stack form.gap.field (space.16, 16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack form.gap.group (space.32, 32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits form.gap.title (space.12, 12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The form's actions (its submit button and the buttons next to it) take the gap of what precedes them: form.gap.field after a form without groups, form.gap.group after a grouped form, with no token of their own, since they act on the whole form and not on its last group; the buttons stand space.8 (8 px) apart. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. The three gaps are semantic tokens the design system adds (the Figma library has none for them), the same on every platform today; a platform may override them, none does. Inside a field, the label, the control, the description and the message are 6 px apart (space.6, each component's own gap token). A group takes the same 6 px from its legend to its options when there is no description, from its description to its options and from its options to its message; its description sits right under its legend (0 px), the two read as one heading, and its options stack 4 px apart (16 px in a row), closer than the parts around them, so the list reads as one unit. These are component values, the same on every platform: on iOS each option row is at least 44 pt tall and on Android 48 dp (Material sets it), both keeping 4 between rows; macOS keeps the web's values, its 20 pt minimum met; Windows' Spacing page gives 8 epx between a control and its header and 12 epx between a control and its label, a recorded difference a product may override."
     },
     {
       "id": "keyboard",
@@ -1108,6 +1108,31 @@
         ]
       },
       {
+        "text": "A field's label sits 6 px above its control, nearer to it than to anything else: its own description and message 6 px under it, the next field 16 px away. In a group, the options sit 4 px apart and 6 px from the legend or description above them, so the legend reads as the title of the whole list and each option as one target.",
+        "refs": [
+          "wai-forms-labels-visual-position",
+          "wai-forms-grouping"
+        ]
+      },
+      {
+        "text": "On iOS, each option of a checkbox or radio group reaches Apple's 44 x 44 pt hit region as a row at least 44 pt tall, 4 pt from the next; the other gaps of a field and a group stay as on the web.",
+        "platforms": [
+          "ios"
+        ],
+        "refs": [
+          "hig-accessibility-mobility"
+        ]
+      },
+      {
+        "text": "On Android, Material's Checkbox and RadioButton set a 48 dp minimum themselves when they can receive actions: each option row is at least 48 dp tall, 4 dp from the next; the other gaps stay as on the web.",
+        "platforms": [
+          "android"
+        ],
+        "refs": [
+          "compose-target-sizes"
+        ]
+      },
+      {
         "text": "On Windows, the Forms page spaces individual input controls 24 px apart and groups of input controls 48 px apart; the design system keeps 16 px between fields and 32 px between groups of fields on every platform, Windows included: recorded differences, not platform values.",
         "platforms": [
           "desktop"
@@ -1616,6 +1641,11 @@
         "url": "https://developer.apple.com/design/human-interface-guidelines/layout#Visual-hierarchy"
       },
       {
+        "id": "hig-accessibility-mobility",
+        "title": "Apple HIG: Accessibility, mobility",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility"
+      },
+      {
         "id": "wcag-g139",
         "title": "WCAG technique G139: creating a mechanism that allows users to jump to errors",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G139"
@@ -1774,6 +1804,11 @@
         "id": "windows-programmatic-focus",
         "title": "Windows: Programmatic focus navigation",
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/input/focus-navigation-programmatic"
+      },
+      {
+        "id": "compose-target-sizes",
+        "title": "Compose accessibility: minimum target sizes",
+        "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
       }
     ]
   },
@@ -1877,6 +1912,28 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-part-gaps",
+      "date": "2026-11-27",
+      "version": "0.52.0",
+      "area": "layout",
+      "status": "active",
+      "text": "Every form control spaces its parts 6 px apart (space.6): a field's label → control → description → message; a group's legend → options when it has no description, description → options, options → message. A group's description sits right under its legend (0 px), the two reading as one heading, and its options stack 4 px apart (space.4; 16 px in the horizontal orientation). The Text field family keeps its 6 px (#103 step 5); the Select moves 4 → 6, the Checkbox group and the Radio group 8 → 6 between their parts and 8 → 4 between options, and their legend takes the row gap as its bottom margin (it touched its next part before). These are component tokens, the same on every platform: on iOS each option row is at least 44 pt tall, on Android 48 dp, both 4 apart; macOS keeps the web's values; Windows' own spacing is a recorded difference. iOS's 44 pt rows are a guideline, not a token: component tokens never fork per platform.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 5): D, the team's own proposal for the web, chosen over the recommended A once the sheet showed it. The team's words: \"We'd like to try this instead on the web: Label and field: 6px; Field and description: 6px; Group name and group description: 0px; Group elements between themselves (radios, checkbox): 4px; Group elements and message (severity): 6px\", then, on the three values the proposal left open (description → options 6, legend → options 6 without a description, a field's description → message 6): \"Yes, D as assumed, and deduce what's expected for the other platforms\". Rejected: today (6 / 4 / 8 and a legend at 0 px, a bug), A (6 everywhere, options 8 apart; recommended), B (fields 6, groups 8), C (8 everywhere, reopening #103 step 5). Measured on the web: medium options 24 px tall, 28 apart; small 21 px tall, 25 apart, so WCAG 2.5.8's spacing exception (a 24 px circle on each undersized target) passes by 1 px. Platforms, deduced from their own guidance: iOS, HIG Accessibility (Mobility) gives 44 x 44 pt, and at a 28 pt pitch an option's hit region cannot reach over its neighbours as a field's does (#103 step 18), so the rows grow to 44 pt; Android, Material's Checkbox and RadioButton set 48 dp themselves (Compose accessibility defaults); macOS, HIG gives a 20 x 20 pt minimum (28 by default), which the 21 and 24 pt rows meet; Windows, Spacing and gutters gives 8 epx between a control and its header and 12 epx between a control and its label, and Alignment, margin and padding asks for increments of 4 epx (design pages outside the trusted sources, cited in the rationale only): 6 differs, recorded, and a Windows product may override it (forms-platform-gaps). Sources opened on 2026-11-27: HIG Accessibility (Mobility), Compose accessibility defaults (minimum target sizes), Understanding 2.5.8, Windows Spacing and gutters.",
+      "tokens": [
+        "select.container.gap",
+        "checkbox-group.container.row-gap",
+        "checkbox-group.container.gap.*",
+        "radio-group.container.row-gap",
+        "radio-group.container.gap.*",
+        "text-field.container.gap"
+      ],
+      "refs": [
+        "wcag:2.5.8",
+        "hig-accessibility-mobility",
+        "compose-target-sizes"
+      ]
+    },
     {
       "id": "forms-gap-tokens",
       "date": "2026-11-27",
@@ -2744,6 +2801,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.52.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-part-gaps (#105 step 10, point 5, D): the rule spacing says a field's and a group's parts are 6 px apart, a group's description right under its legend (0), options 4 apart (16 in a row), the same on every platform, iOS rows at least 44 pt and Android 48 dp, both 4 apart, macOS as the web, Windows a recorded difference. Three guidelines (every platform; iOS; Android) and two references (HIG Accessibility mobility, Compose minimum target sizes). Select 0.4.0 (gap 4 → 6), Checkbox group 0.3.0 and Radio group 0.3.0 (parts 8 → 6, options 8 → 4, the legend's 0 px fixed). Step 10 points 1 to 5 now decided; the label column (point 6) is next."
+    },
     {
       "version": "0.51.0",
       "date": "2026-11-27",

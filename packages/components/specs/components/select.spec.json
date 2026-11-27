@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -825,6 +825,18 @@
   ],
   "decisions": [
     {
+      "id": "part-gap",
+      "date": "2026-11-27",
+      "version": "0.4.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The label, the control, the description and the message are 6 px apart (container.gap = space.6, was space.4), as in the Text field family, following the Forms foundation (forms-part-gaps). The same value on every platform.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 5, option D, proposed by the team, its three assumed values confirmed: \"Yes, D as assumed, and deduce what's expected for the other platforms\"). It follows the Forms foundation's decision forms-part-gaps. The Select was the one field at 4 px.",
+      "tokens": [
+        "select.container.gap"
+      ]
+    },
+    {
       "id": "forms-severity",
       "date": "2026-11-19",
       "version": "0.3.0",
@@ -920,6 +932,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.0",
+      "date": "2026-11-27",
+      "note": "Decision part-gap (Forms forms-part-gaps, #105 step 10, point 5): container.gap space.4 → space.6, so label, control, description and message are 6 px apart as in the Text field family. No color change."
+    },
     {
       "version": "0.3.5",
       "date": "2026-11-26",

@@ -855,8 +855,28 @@ and have no token of their own. A form's layout reads these tokens rather than t
 behind them, so a platform can give them its own values, and Figma and Penpot get them as
 variables. They are the same on every platform today; the Tokens tab draws them.
 
-> **Not decided yet (step 10).** The space inside a field and a group. Today each control spaces
-> only its own parts: a field by its container gap, a group by its row gap.
+**Inside a field and a group, the parts are 6 px apart.** A field's label, control, description
+and message stack 6 px apart, so the label sits nearer to its own control than to anything else. A
+group takes the same 6 px from its legend to its options, from its description to its options and
+from its options to its message. Its description sits right under the legend, with no space, so
+the two read as one heading; its options stack 4 px apart (16 px in a row), closer than the parts
+around them, so the list reads as one unit. These are each component's own tokens, the same on
+every platform. At these values a small option is 21 px tall and 25 px from the next one, so the
+24 px circles of the spacing exception clear each other
+([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
+
+### iOS
+
+Each option of a checkbox or radio group reaches Apple's 44 by 44 pt hit region as a row at least
+44 pt tall, 4 pt from the next: options so close cannot share the room between them as a field's
+hit region does ([Apple HIG: accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
+The other gaps stay as on the web and grow with Dynamic Type.
+
+### Android
+
+Material's Checkbox and RadioButton set a 48 dp minimum themselves when they can receive actions
+([Compose: minimum target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)):
+each option row is at least 48 dp tall, 4 dp from the next. The other gaps stay as on the web.
 
 ### Desktop
 
@@ -865,7 +885,13 @@ Windows spaces individual input controls 24 px apart and groups of input control
 The design system keeps 16 px between fields and 32 px between groups on every platform, Windows
 included: recorded differences, not platform values. Windows puts 8 epx between buttons
 ([Windows: spacing and gutters](https://learn.microsoft.com/en-us/windows/apps/design/style/spacing#spacing-and-gutters)),
-the space between a form's actions.
+the space between a form's actions. The same page gives 8 epx between a control and its header and
+12 epx between a control and its label, where the design system keeps 6 px: a recorded difference,
+which a Windows product may override.
+
+On macOS, Apple's minimum control size is 20 by 20 pt
+([Apple HIG: accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)):
+an option row, 21 pt small and 24 pt medium, meets it, so the web's values apply as they are.
 
 ## Keyboard in a form
 

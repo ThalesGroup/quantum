@@ -53,6 +53,11 @@ The legend names the choice and is announced first. A description under the lege
 the whole choice; a description under an option explains that option. When the group shows
 an error, the message appears last and says what to do; every radio is described by it.
 
+The description sits right under the legend, so the two read as one heading; everything else is
+6 px apart, as in a field: the legend (or its description) and the options, the options and the
+message. The options are closer, 4 px apart in a column, so the list reads as one unit
+([Forms: spacing](/foundations/forms#spacing)).
+
 ## States
 
 States belong to the options; the group as a whole only passes its disabled and severity
@@ -115,7 +120,8 @@ This section explains the decisions behind it.
   ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)).
 - **Target size.** A radio alone is under 24 px; the label is part of the target, and options
-  are spaced so the spacing exception applies
+  are spaced so the spacing exception applies: medium options are 24 px tall, 28 px from one to
+  the next, and small ones 21 px tall, 25 px apart, so their 24 px circles clear each other by 1 px
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
 - **Motion.** The color transition is dropped when people ask for less motion
   ([WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html),
@@ -143,7 +149,8 @@ This section explains the decisions behind it.
 ### iOS
 
 - Each option (radio and label) must reach the 44 by 44 pt hit region, and the state is never
-  shown by color alone
+  shown by color alone. Options 4 pt apart cannot share the room between them, so each option
+  row is at least 44 pt tall, the radio and its label centred in it, 4 pt from the next
   ([Apple HIG: Toggles, best practices](https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices),
   [Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
@@ -151,11 +158,18 @@ This section explains the decisions behind it.
 
 - Lift the selection to the row with the `selectable` modifier and the `RadioButton` role, so
   the label and the radio form one element whose state is announced; Material's RadioButton
-  enforces the 48 dp target when it can receive actions
+  enforces the 48 dp target when it can receive actions, so each option row is at least 48 dp
+  tall, 4 dp from the next
   ([Jetpack Compose: interactive elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Jetpack Compose: state description](https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description),
   [Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls)).
+
+### Desktop
+
+- On macOS, an option row (21 pt small, 24 pt medium) meets Apple's 20 by 20 pt minimum control
+  size, so the options keep their 4 pt
+  ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
 ## Related
 

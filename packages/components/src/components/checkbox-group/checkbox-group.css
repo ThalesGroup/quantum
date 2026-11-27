@@ -73,7 +73,14 @@
   line-height: var(--checkbox-group-legend-typography-line-height);
   letter-spacing: var(--checkbox-group-legend-typography-letter-spacing);
 }
-/* A legend sits outside the flex flow of its fieldset: the gap is written as a margin. */
+/* A legend sits outside the flex flow of its fieldset: the row gap is written as its bottom margin.
+   A description sits right under its legend (0), the two read as one heading. */
+.ds-checkbox-group__legend {
+  margin-block-end: var(--checkbox-group-container-row-gap);
+}
+.ds-checkbox-group__legend:has(+ .ds-checkbox-group__description) {
+  margin-block-end: 0;
+}
 .ds-checkbox-group__legend + * {
   margin-block-start: 0;
 }
