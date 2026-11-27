@@ -3,6 +3,8 @@
 // platform scope (universal first, then registry order), the WCAG criteria they cite and the
 // references, each resolved through the same registry `pnpm check` uses. With `guidelines`, only
 // those guidelines, grouped the same way and cited against `spec` (a foundation's, on a component page).
+// On the foundation's own page, a guideline naming a tier (Forms: scripts/lib/foundation-scope.mjs
+// TIERS) shows it: the components following that tier list the guideline on their own page.
 import { cite, criteriaOf, conformanceTarget, publisherName } from '../lib/a11y';
 import { scoped, platforms as allPlatforms } from '../lib/platforms';
 interface Props { spec: any; headingLevel?: 3 | 4 | 5; guidelines?: any[] }
@@ -13,16 +15,18 @@ const a11y = spec.accessibility ?? {};
 const target = conformanceTarget();
 const criteria = criteriaOf(spec);
 const list = guidelines ?? a11y.guidelines ?? [];
+const tiered = !only && list.some((g: any) => g.tier);
 const groups = [
   { label: 'Every platform', items: list.filter((g: any) => !scoped(g)) },
   ...allPlatforms().map((p) => ({ label: p.name, items: list.filter((g: any) => scoped(g) && g.platforms.includes(p.id)) })),
 ].filter((g) => g.items.length);
 ---
+{tiered ? <p class="site-muted site-small">A guideline marked with a tier is listed again, under "From the {spec.name} foundation", on the page of every component that follows that tier (Tokens tab); the others stay on this page.</p> : null}
 {groups.map((group) => (
   <div>
     <H>{group.label}</H>
     <ul>{group.items.map((g: any) => (
-      <li>{g.text} <span class="site-cite">{cite(g.refs, spec).map((c) => <a href={c.url} title={publisherName(c.publisher)}>{c.title}</a>)}</span></li>
+      <li>{tiered && g.tier ? <span class="site-chip">{g.tier}</span> : null}{g.text} <span class="site-cite">{cite(g.refs, spec).map((c) => <a href={c.url} title={publisherName(c.publisher)}>{c.title}</a>)}</span></li>
     ))}</ul>
   </div>
 ))}

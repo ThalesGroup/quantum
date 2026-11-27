@@ -73,22 +73,32 @@ export function inheritedOf(spec: any, foundations: any[]): { foundation: any; g
 /** The sentence saying who must follow the foundation, from its `appliesTo`. */
 export const scopeRule = (spec: { appliesTo?: string }): string | null => (spec.appliesTo ? SCOPES[spec.appliesTo]?.rule ?? null : null);
 
-/**
- * Components following the foundation. A foundation read from the role profiles (Forms: `input`)
- * is followed by every component in scope, each with the tiers of rules its spec asks for. Any
- * other is followed by the components whose tokens alias a token it owns: each component token
- * and the owned tokens it aliases.
- */
-export function followersOf(spec: { tokens: string[]; appliesTo?: string }, components: any[] = []): Follower[] {
-  if (followedByRole(spec)) {
-    return componentsInScope(spec.appliesTo, components, roleProfiles()).map((c: any) => ({ component: c.id, tokens: [], aliases: [], role: c.role, tiers: tiersOf(c) }));
-  }
+/** Per component, its tokens aliasing a token the foundation owns, with the owned tokens each aliases. */
+function aliasesOf(spec: { tokens: string[] }): Map<string, { path: string; owned: string[] }[]> {
   const owned = new Set(tokensOf(spec.tokens).map((r) => r.path));
   const byComponent = new Map<string, { path: string; owned: string[] }[]>();
   for (const r of getTokens().rows) {
     const hits = r.tier === 'component' ? r.references.filter((ref) => owned.has(ref)) : [];
     if (!hits.length) continue;
     byComponent.set(r.segments[0], [...(byComponent.get(r.segments[0]) ?? []), { path: r.path, owned: hits }]);
+  }
+  return byComponent;
+}
+
+/**
+ * Components following the foundation. A foundation read from the role profiles (Forms: `input`)
+ * is followed by every component in scope, each with the tiers of rules its spec asks for, and the
+ * tokens it aliases when the foundation also owns tokens (the Forms family). Any other is followed
+ * by the components whose tokens alias a token it owns: each component token and the owned tokens
+ * it aliases.
+ */
+export function followersOf(spec: { tokens: string[]; appliesTo?: string }, components: any[] = []): Follower[] {
+  const byComponent = aliasesOf(spec);
+  if (followedByRole(spec)) {
+    return componentsInScope(spec.appliesTo, components, roleProfiles()).map((c: any) => {
+      const aliases = byComponent.get(c.id) ?? [];
+      return { component: c.id, tokens: aliases.map((a) => a.path), aliases, role: c.role, tiers: tiersOf(c) };
+    });
   }
   return [...byComponent].map(([component, aliases]) => ({ component, tokens: aliases.map((a) => a.path), aliases }));
 }

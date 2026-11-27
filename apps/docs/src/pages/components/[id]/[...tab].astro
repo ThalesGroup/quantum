@@ -76,12 +76,15 @@ const activeDecisions = decisions.filter((d: any) => d.status === 'active').leng
 // by scope with the guidelines of its tiers (Forms) (derived, never declared).
 const foundationSpecs = (await getCollection('foundations')).map((f) => f.data);
 const inherited = inheritedOf(spec, foundationSpecs);
-const followed = [
-  ...foundationSpecs
-    .map((f) => ({ foundation: f, tokens: followersOf(f).find((x) => x.component === spec.id)?.tokens ?? [], guidelines: 0 }))
-    .filter((f) => f.tokens.length),
-  ...inherited.map((f) => ({ foundation: f.foundation, tokens: [] as string[], guidelines: f.guidelines.length })),
-];
+const followed = foundationSpecs
+  .map((f) => ({
+    foundation: f,
+    tokens: followersOf(f, [spec]).find((x) => x.component === spec.id)?.tokens ?? [],
+    guidelines: inherited.find((i) => i.foundation.id === f.id)?.guidelines.length ?? 0,
+  }))
+  .filter((f) => f.tokens.length || f.guidelines);
+const count = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+const followedCounts = (f: { tokens: string[]; guidelines: number }) => [f.tokens.length ? count(f.tokens.length, 'token') : '', f.guidelines ? count(f.guidelines, 'guideline') : ''].filter(Boolean).join(', ');
 const partProps = spec.anatomy.flatMap((part: any) => (part.properties ?? []).map((p: any) => ({ part: part.id, p })));
 const partStates = spec.states.some((s: any) => s.parts?.length);
 const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')}` : '', scopeLabel(s)].filter(Boolean).join(' · ') || 'every platform and input';
@@ -310,7 +313,7 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
     </details>
 
     {followed.length ? (
-      <p>Follows {followed.map((f, i) => <>{i ? ', ' : ''}the <a href={`${base}/foundations/${f.foundation.id}`}>{f.foundation.name}</a> foundation <span class="site-muted site-small">({f.guidelines ? `${f.guidelines} guideline${f.guidelines === 1 ? '' : 's'}` : `${f.tokens.length} token${f.tokens.length === 1 ? '' : 's'}`})</span></>)}.</p>
+      <p>Follows {followed.map((f, i) => <>{i ? ', ' : ''}the <a href={`${base}/foundations/${f.foundation.id}`}>{f.foundation.name}</a> foundation <span class="site-muted site-small">({followedCounts(f)})</span></>)}.</p>
     ) : null}
 
     <h3>Anatomy</h3>
