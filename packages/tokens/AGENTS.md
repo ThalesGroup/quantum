@@ -12,7 +12,7 @@ Every `*.json` file under a tier directory is loaded, deep-merged and flattened;
 | Tier | Directory | May reference | Purpose |
 | --- | --- | --- | --- |
 | raw | `src/raw/` | other raw tokens | Hidden primitives from the Figma library: the color palettes (Colors / Base) and the palette switch. Never read by a component or the site. |
-| semantic | `src/semantic/`, `src/additions/semantic/` | raw, other semantic tokens | What components and the site read: the Figma library's mapped colors (`global.bg.accent.brand.hover`) and its Dimension, Effect and Typography scales (`space.12`, `corner-radius.xs`, `body.size.md`) in `src/semantic/`; the design system's few additions (`font.line-height.tight`, `duration.fast`, `font.icon.family`, `color.transparent`, `focus.ring.width`, `color.focus.ring`) in `src/additions/semantic/`. |
+| semantic | `src/semantic/`, `src/additions/semantic/` | raw, other semantic tokens | What components and the site read: the Figma library's mapped colors (`global.bg.accent.brand.hover`) and its Dimension, Effect and Typography scales (`space.12`, `corner-radius.xs`, `body.size.md`) in `src/semantic/`; the design system's few additions (`font.line-height.tight`, `duration.fast`, `font.icon.family`, `color.transparent`, `focus.ring.width`, `color.focus.ring`, the Forms family `form.*`: `form.control.background.error`, `form.gap.field`) in `src/additions/semantic/`. |
 | component | `src/components/<id>.tokens.json` | semantic | One file per component. Root group = component id. Never overridden per platform. |
 | overlay | `src/platforms/<id>/` | as the tier it overrides | Platform values of raw or semantic tokens (see below). |
 | mode | `src/modes/<id>/`, `src/additions/modes/<id>/` | raw | Values of semantic tokens in a mode other than the default (`dark`; see below). |
@@ -25,11 +25,15 @@ Every `*.json` file under a tier directory is loaded, deep-merged and flattened;
   may share a top-level group (`color`) as long as full paths differ.
 - Component token path grammar: `<component>.<part>.<property>[.<option>][.<state>]`.
   `<part>` must be an anatomy part id of the spec, `<option>` an enum option value, `<state>` a
-  declared state. `pnpm validate` enforces it. Which token applies to a given configuration
+  declared state, or two joined by a hyphen in the spec's state order (`checked-error`).
+  `pnpm validate` enforces it. Which token applies to a given configuration
   follows from the path alone (see "Which token applies" below).
 - Component tokens alias semantic tokens **only**: a mapped color, a step of a Figma library scale
   or an addition. There is no intermediate layer of sizes, radii or text styles: a component
-  picks scale steps in its own tokens. If nothing fits, that is a decision to ask for (a new
+  picks scale steps in its own tokens. The one exception is the Forms family (`form.*`, Forms
+  foundation, decision `forms-token-family`): its font sizes per control size and its part gap
+  are defaults every form control aliases, as its colors are, and a control overrides them in its
+  own tokens. It covers that family only. If nothing fits, that is a decision to ask for (a new
   addition in `src/additions/semantic/`), never a token created for convenience.
 - The documentation site (`apps/docs/`) is a consumer of the design system like any product: its
   CSS reads **semantic** tokens only (never raw, never another component's tokens). When the
@@ -152,16 +156,26 @@ token inspector shows its result. The web CSS follows the same rule by conventio
    value equal to a state id (`default`) reads as the state once its property is set. The
    instance enum properties of a repeated part (a menu item's `intent`) count as enum
    properties of the parts they affect (`dropdown.item.background.error.hover`); each instance
-   matches with its own value.
+   matches with its own value. The state segment may name **two states**, joined by a hyphen in
+   the spec's state order (`checkbox.control.background.checked-error`): one segment, because a
+   DTCG token cannot also be a group (`checked` holds a value, so it cannot hold `checked.error`).
+   Both must be declared, neither `default` (`pnpm validate`).
 2. **Slots.** Tokens with the same part, property and keys form a slot: one CSS declaration.
 3. **Matching.** In a slot, a token applies when every option it names equals the prop. An
    option it does not name matches any value: `button.container.background.accent.disabled`
    holds for every intent.
-4. **States.** The states that hold are the forced state and every state set through a boolean
-   property that is on (`disabled`); when several hold, the one declared last in the spec wins
+4. **States.** The states that hold are the forced state, every state set through a boolean
+   property that is on (`disabled`) and every state set by an enum property at its option
+   (`error`, `severity: error`); when several hold, the one declared last in the spec wins
    (as the CSS orders its rules). The slot takes a token of the winning state if it has one,
    else of the next state that holds, else its `default` token, else a token without state.
    A slot with none of them is inactive (`outline-width.focus-visible` at rest).
+   A token naming two states applies when both hold. It ranks with the higher of the two and,
+   at that rank, wins over the token of that state alone: a checked box in error takes
+   `control.background.checked-error`, not `.checked` nor `.error`, while a state that outranks
+   both (`disabled`) keeps its own token. Two such tokens of one rank go by their other state.
+   Add one only where two states that hold together need a value neither gives alone, and alias
+   the role that fits (Checkbox, decision `checked-error-fill`: the checked fill's).
 5. **Specificity.** Among the tokens chosen that way, the one naming the most options wins.
    Two tokens that tie for one configuration are an **error** (`pnpm validate`): name one more
    option or state in one of them. A token that never wins is a **warning** (dead token).

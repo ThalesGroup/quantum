@@ -5,12 +5,12 @@
  *
  * Rules:
  *  - Only --number-field-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (label, control, description, error message, stacked); the native
+ *  - The root is a wrapper (label, control, description, message, stacked); the native
  *    number input is the control, drawn by the component.
  *  - Size is a data attribute on the root; states are native pseudo-classes or attributes of the
  *    control, and the root's [data-state="<state>"] forces them for review. Precedence follows the
- *    spec order: default < hover < focus-visible < invalid < readonly < disabled: hover only tints the
- *    background, invalid only recolors the border, so they combine as the token rule combines them.
+ *    spec order: default < hover < focus-visible < error < warning < success < readonly < disabled: hover only tints the
+ *    background, a severity only recolors the border, so they combine as the token rule combines them.
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
 
@@ -22,6 +22,7 @@
   --_placeholder-color: var(--number-field-control-placeholder-color-default);
   --_label-color: var(--number-field-label-color-default);
   --_description-color: var(--number-field-description-color-default);
+  --_message-color: var(--number-field-message-color-error);
   --_min-height: var(--number-field-control-min-height-medium);
   --_padding-inline: var(--number-field-control-padding-inline-medium);
   --_font-family: var(--number-field-control-typography-medium-font-family);
@@ -110,14 +111,14 @@
   letter-spacing: var(--number-field-description-typography-letter-spacing);
 }
 
-.ds-number-field__error-message {
+.ds-number-field__message {
   margin: 0;
-  color: var(--number-field-error-message-color);
-  font-family: var(--number-field-error-message-typography-font-family);
-  font-size: var(--number-field-error-message-typography-font-size);
-  font-weight: var(--number-field-error-message-typography-font-weight);
-  line-height: var(--number-field-error-message-typography-line-height);
-  letter-spacing: var(--number-field-error-message-typography-letter-spacing);
+  color: var(--_message-color);
+  font-family: var(--number-field-message-typography-font-family);
+  font-size: var(--number-field-message-typography-font-size);
+  font-weight: var(--number-field-message-typography-font-weight);
+  line-height: var(--number-field-message-typography-line-height);
+  letter-spacing: var(--number-field-message-typography-letter-spacing);
 }
 
 /* The browser's spin buttons keep their native look (no portable way to draw them from tokens). */
@@ -132,9 +133,28 @@
   --_control-background: var(--number-field-control-background-hover);
 }
 
-.ds-number-field:where([data-state="invalid"]) .ds-number-field__control,
+/* Severity: the control's border takes the severity's color and the message its text color. Only the
+   error is also a native state: aria-invalid on the control. Warning and success have none on the web. */
+.ds-number-field:where([data-state="error"], [data-severity="error"]) {
+  --_message-color: var(--number-field-message-color-error);
+}
+.ds-number-field:where([data-state="error"], [data-severity="error"]) .ds-number-field__control,
 .ds-number-field__control[aria-invalid="true"] {
-  --_control-border-color: var(--number-field-control-border-color-invalid);
+  --_control-border-color: var(--number-field-control-border-color-error);
+}
+
+.ds-number-field:where([data-state="warning"], [data-severity="warning"]) {
+  --_message-color: var(--number-field-message-color-warning);
+}
+.ds-number-field:where([data-state="warning"], [data-severity="warning"]) .ds-number-field__control {
+  --_control-border-color: var(--number-field-control-border-color-warning);
+}
+
+.ds-number-field:where([data-state="success"], [data-severity="success"]) {
+  --_message-color: var(--number-field-message-color-success);
+}
+.ds-number-field:where([data-state="success"], [data-severity="success"]) .ds-number-field__control {
+  --_control-border-color: var(--number-field-control-border-color-success);
 }
 
 .ds-number-field:where([data-state="readonly"]) .ds-number-field__control,

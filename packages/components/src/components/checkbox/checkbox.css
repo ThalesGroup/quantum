@@ -5,11 +5,11 @@
  *
  * Rules:
  *  - Only --checkbox-* custom properties may appear here. No raw values, no semantic tokens.
- *  - The root is a wrapper (grid: control, label, description); the native input is the control,
+ *  - The root is a wrapper (grid: control, label, description, message); the native input is the control,
  *    drawn by the component (appearance: none). The mark is a pseudo-element of the input.
  *  - Size is a data attribute on the root; states are native pseudo-classes of the input, and the
  *    root's [data-state="<state>"] forces them for review. Precedence follows the spec order:
- *    default < hover < focus-visible < checked < indeterminate < invalid < disabled, so hover does not
+ *    default < hover < focus-visible < checked < indeterminate < error < disabled, so hover does not
  *    repaint a checked box and disabled wins over everything (packages/tokens/AGENTS.md "Which token applies").
  *  - Private properties (--_*) are the single place an option or a state writes to.
  */
@@ -19,7 +19,9 @@
   --_control-size: var(--checkbox-control-size-medium);
   --_control-radius: var(--checkbox-control-border-radius-medium);
   --_control-background: var(--checkbox-control-background-default);
+  --_control-background-hover: var(--checkbox-control-background-hover);
   --_control-border-color: var(--checkbox-control-border-color-default);
+  --_control-border-color-hover: var(--checkbox-control-border-color-hover);
   --_control-color: var(--checkbox-control-color-checked);
   --_label-color: var(--checkbox-label-color-default);
   --_description-color: var(--checkbox-description-color-default);
@@ -33,6 +35,11 @@
   --_description-font-weight: var(--checkbox-description-typography-medium-font-weight);
   --_description-line-height: var(--checkbox-description-typography-medium-line-height);
   --_description-letter-spacing: var(--checkbox-description-typography-medium-letter-spacing);
+  --_message-font-family: var(--checkbox-message-typography-medium-font-family);
+  --_message-font-size: var(--checkbox-message-typography-medium-font-size);
+  --_message-font-weight: var(--checkbox-message-typography-medium-font-weight);
+  --_message-line-height: var(--checkbox-message-typography-medium-line-height);
+  --_message-letter-spacing: var(--checkbox-message-typography-medium-letter-spacing);
 
   box-sizing: border-box;
   display: inline-grid;
@@ -58,6 +65,11 @@
   --_description-font-weight: var(--checkbox-description-typography-small-font-weight);
   --_description-line-height: var(--checkbox-description-typography-small-line-height);
   --_description-letter-spacing: var(--checkbox-description-typography-small-letter-spacing);
+  --_message-font-family: var(--checkbox-message-typography-small-font-family);
+  --_message-font-size: var(--checkbox-message-typography-small-font-size);
+  --_message-font-weight: var(--checkbox-message-typography-small-font-weight);
+  --_message-line-height: var(--checkbox-message-typography-small-line-height);
+  --_message-letter-spacing: var(--checkbox-message-typography-small-letter-spacing);
 }
 
 /* ---- Parts --------------------------------------------------------------- */
@@ -121,14 +133,39 @@
   letter-spacing: var(--_description-letter-spacing);
 }
 
+/* The message: in the label's column, container.gap after the description (or the label), the grid's row
+   gap included (Forms decisions forms-message-part-every-control and forms-part-gaps). */
+.ds-checkbox__message {
+  grid-column: 2;
+  margin: 0;
+  margin-block-start: calc(var(--checkbox-container-gap) - var(--checkbox-container-row-gap));
+  color: var(--checkbox-message-color-error);
+  font-family: var(--_message-font-family);
+  font-size: var(--_message-font-size);
+  font-weight: var(--_message-font-weight);
+  line-height: var(--_message-line-height);
+  letter-spacing: var(--_message-letter-spacing);
+}
+
 /* ---- States -------------------------------------------------------------- */
-/* Order matters: hover < checked < indeterminate < invalid < disabled. Hover never repaints a checked,
-   indeterminate or disabled box (the checked token wins over hover, as in the token rule). */
+/* Order matters: hover < error fill < checked < checked in error < indeterminate < indeterminate in error
+   < error border < disabled. Hover never
+   repaints a checked, indeterminate or disabled box (the checked token wins over hover, as in the token
+   rule); it reads the hover values through private properties, which an error keeps at its own. */
 
 .ds-checkbox:where([data-state="hover"]) .ds-checkbox__control:not(:checked, :indeterminate, :disabled),
 .ds-checkbox:not([data-state]) .ds-checkbox__control:hover:not(:checked, :indeterminate, :disabled) {
-  --_control-background: var(--checkbox-control-background-hover);
-  --_control-border-color: var(--checkbox-control-border-color-hover);
+  --_control-background: var(--_control-background-hover);
+  --_control-border-color: var(--_control-border-color-hover);
+}
+
+/* An unchecked box in error takes the subtle error fill inside its error border, at rest and on hover
+   (decision error-fill; Forms forms-choice-error-fill). Before the checked rules, at low specificity,
+   so a checked or indeterminate box keeps its brand fill. */
+:where(.ds-checkbox[data-state="error"] .ds-checkbox__control, .ds-checkbox[data-severity="error"] .ds-checkbox__control, .ds-checkbox__control[aria-invalid="true"]):not(:checked, :indeterminate) {
+  --_control-background: var(--checkbox-control-background-error);
+  --_control-background-hover: var(--checkbox-control-background-error);
+  --_control-border-color-hover: var(--checkbox-control-border-color-error);
 }
 
 .ds-checkbox:where([data-state="checked"]) .ds-checkbox__control,
@@ -140,6 +177,15 @@
 .ds-checkbox:where([data-state="checked"]) .ds-checkbox__control::after,
 .ds-checkbox__control:checked::after {
   opacity: 1;
+}
+
+/* A checked box in error keeps its brand fill, through the token for both states (decision
+   checked-error-fill), as the token rule says: after the checked rule, at its specificity, so a
+   disabled box still wins. The indeterminate one follows the indeterminate rule. */
+:where(.ds-checkbox[data-state="error"], .ds-checkbox[data-severity="error"]) .ds-checkbox__control:checked,
+.ds-checkbox__control:where([aria-invalid="true"]):checked,
+.ds-checkbox:where([data-state="checked"][data-severity="error"]) .ds-checkbox__control {
+  --_control-background: var(--checkbox-control-background-checked-error);
 }
 
 .ds-checkbox:where([data-state="indeterminate"]) .ds-checkbox__control,
@@ -158,9 +204,15 @@
   opacity: 1;
 }
 
-.ds-checkbox:where([data-state="invalid"]) .ds-checkbox__control,
+:where(.ds-checkbox[data-state="error"], .ds-checkbox[data-severity="error"]) .ds-checkbox__control:indeterminate,
+.ds-checkbox__control:where([aria-invalid="true"]):indeterminate,
+.ds-checkbox:where([data-state="indeterminate"][data-severity="error"]) .ds-checkbox__control {
+  --_control-background: var(--checkbox-control-background-indeterminate-error);
+}
+
+.ds-checkbox:where([data-state="error"], [data-severity="error"]) .ds-checkbox__control,
 .ds-checkbox__control[aria-invalid="true"] {
-  --_control-border-color: var(--checkbox-control-border-color-invalid);
+  --_control-border-color: var(--checkbox-control-border-color-error);
 }
 
 .ds-checkbox:where([data-state="disabled"]),

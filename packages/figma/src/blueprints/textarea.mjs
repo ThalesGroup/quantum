@@ -9,7 +9,7 @@
  * is three lines tall in every size. Designers set the number of rows by the number of lines.
  * The vertical resize handle is not drawn.
  */
-import { CONTENT, TRANSITION, container, content, control, description, errorMessage, label } from './text-field.mjs';
+import { CONTENT, TRANSITION, container, content, control, description, message, label } from './text-field.mjs';
 
 export default {
   axes: [CONTENT],
@@ -22,7 +22,7 @@ export default {
       children: content({ value: 'Value\n\n', placeholder: 'Placeholder\n\n' }),
     }),
     description,
-    errorMessage,
+    message,
   ]),
   notDrawn: [TRANSITION],
 };

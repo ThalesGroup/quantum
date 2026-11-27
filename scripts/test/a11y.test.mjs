@@ -145,3 +145,14 @@ test('checkCitations: foundation specs (no role) are checked for sources, contra
   assert.match(msgs, /contrast "ring" cites unknown WCAG success criterion/);
   assert.match(msgs, /"focus-contrast" is never cited/);
 });
+
+test('the criteria of inherited foundation guidelines count for the role profile and the docs', () => {
+  const a = complete();
+  a.guidelines = [{ text: 'Rules.', refs: ['wcag:1.4.3', 'wcag:1.4.11', 'wcag:2.1.1', 'wcag:2.5.8', 'wcag:4.1.2'] }];
+  assert.match(errors(checkSpecA11y(spec(a), registry)).join('\n'), /requires WCAG 2\.4\.7/);
+  const inherited = [{ text: 'Focus.', refs: ['wcag:2.4.7'], tier: 'presentation' }];
+  assert.deepEqual(errors(checkSpecA11y(spec(a), registry, inherited)), []);
+  const md = '## Accessibility\n\n[2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)\n';
+  assert.match(errors(checkDocsA11y(md, spec(a), registry)).join('\n'), /relies on WCAG 2\.4\.7/);
+  assert.deepEqual(errors(checkDocsA11y(md, spec(a), registry, inherited)), []);
+});

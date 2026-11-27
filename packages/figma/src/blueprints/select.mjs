@@ -12,7 +12,7 @@
  * whose right padding is indicator.margin-inline. Figma cannot pin an absolute child to the end
  * edge from the format: if the component is made wider, widen `indicator-inset` with it.
  */
-import { FIELD_WIDTH, TRANSITION, container, control, description, errorMessage, label } from './text-field.mjs';
+import { FIELD_WIDTH, TRANSITION, container, control, description, message, label } from './text-field.mjs';
 
 export default {
   root: container([
@@ -56,7 +56,7 @@ export default {
       ],
     },
     description,
-    errorMessage,
+    message,
   ]),
   booleans: { 'Show description': false },
   notDrawn: [

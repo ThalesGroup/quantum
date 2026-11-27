@@ -44,18 +44,24 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Small | Dense panels and tables, with a 14 px label. |
 | Medium | Forms and settings, the default, with a 16 px label. |
 
-The radio, the option label and its description scale together; the legend keeps one size.
+The radio, the option label and its description scale together; the legend, the description and
+the message take the sizes of every field of the same size (the Forms foundation's anatomy).
 The exact values are tokens (Tokens tab).
 
-## Legend, descriptions and error
+## Legend, descriptions and message
 
 The legend names the choice and is announced first. A description under the legend helps for
-the whole choice; a description under an option explains that option. When the group is
-invalid, the error message appears last and says what to do; every radio is described by it.
+the whole choice; a description under an option explains that option. When the group shows
+an error, the message appears last and says what to do; every radio is described by it.
+
+The description sits right under the legend, so the two read as one heading; everything else is
+6 px apart, as in a field: the legend (or its description) and the options, the options and the
+message. The options are closer, 4 px apart in a column, so the list reads as one unit
+([Forms: spacing](/foundations/forms#spacing)).
 
 ## States
 
-States belong to the options; the group as a whole only passes its disabled and invalid
+States belong to the options; the group as a whole only passes its disabled and severity
 properties down to them.
 
 | State | How it happens | What changes |
@@ -64,7 +70,7 @@ properties down to them.
 | Hover | A pointer rests over a radio or its label. Needs a pointing device: there is no hover on touch. | The empty circle takes a light tint. A checked radio does not change. |
 | Focus visible | Keyboard focus on a radio. | The shared focus ring appears outside it. Pointer focus shows no ring. |
 | Checked | The option's `checked` property, or activation. | The circle fills with the brand color and shows a dot. |
-| Invalid | The group's `invalid` property, after validation. | Every radio border takes the error color; the error message is shown. |
+| Error | The group's `severity` property set to error, after validation. | Every radio border takes the error color, every unchecked radio the subtle error fill (a checked radio keeps its brand fill); the message is shown, in the error color. A group of choices has no warning or success. |
 | Disabled | The group's `disabled` property, or an option's. | Radio, label and description drop to the shared disabled colors. |
 
 ## Content
@@ -76,7 +82,7 @@ properties down to them.
 - Costs, delays and consequences go to the option's description.
 - Order options logically, and offer a neutral option (**None**, **Not sure**) when people
   may have no preference. Pre-check the most common option only when a default is safe.
-- The error message says what to do: **Choose a delivery method.**
+- The message of an error says what to do, under the legend it relies on: **Choose one**
 
 ## Accessibility
 
@@ -91,7 +97,7 @@ This section explains the decisions behind it.
   [APG Radio group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/),
   [WAI tutorial: Grouping controls](https://www.w3.org/WAI/tutorials/forms/grouping/)).
 - **Labels and instructions.** The visible legend and the visible option labels are the
-  labels the group needs; descriptions and the error message are read as descriptions after an
+  labels the group needs; descriptions and the message are read as descriptions after an
   option's name, not as part of it
   ([WCAG 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html),
   [WCAG 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html),
@@ -115,7 +121,8 @@ This section explains the decisions behind it.
   ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)).
 - **Target size.** A radio alone is under 24 px; the label is part of the target, and options
-  are spaced so the spacing exception applies
+  are spaced so the spacing exception applies: medium options are 24 px tall, 28 px from one to
+  the next, and small ones 21 px tall, 25 px apart, so their 24 px circles clear each other by 1 px
   ([WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).
 - **Motion.** The color transition is dropped when people ask for less motion
   ([WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html),
@@ -130,8 +137,8 @@ This section explains the decisions behind it.
   [HTML: radio button group](https://html.spec.whatwg.org/multipage/input.html#radio-button-group)).
   The browser keeps one option checked and moves the check with the arrow keys. It never sets
   `aria-checked`, which ARIA in HTML forbids on a native radio.
-- Help text and the error message are referenced by `aria-describedby` from every radio
-  ([ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1)); an invalid group sets
+- Help text and the message are referenced by `aria-describedby` from every radio
+  ([ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1)); a group in error sets
   `aria-invalid="true"` on them ([ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
 - Disabling the group uses the fieldset's `disabled` attribute, which disables every radio
   ([HTML: fieldset disabled](https://html.spec.whatwg.org/multipage/form-elements.html#attr-fieldset-disabled)).
@@ -143,7 +150,8 @@ This section explains the decisions behind it.
 ### iOS
 
 - Each option (radio and label) must reach the 44 by 44 pt hit region, and the state is never
-  shown by color alone
+  shown by color alone. Options 4 pt apart cannot share the room between them, so each option
+  row is at least 44 pt tall, the radio and its label centred in it, 4 pt from the next
   ([Apple HIG: Toggles, best practices](https://developer.apple.com/design/human-interface-guidelines/toggles#Best-practices),
   [Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
@@ -151,11 +159,18 @@ This section explains the decisions behind it.
 
 - Lift the selection to the row with the `selectable` modifier and the `RadioButton` role, so
   the label and the radio form one element whose state is announced; Material's RadioButton
-  enforces the 48 dp target when it can receive actions
+  enforces the 48 dp target when it can receive actions, so each option row is at least 48 dp
+  tall, 4 dp from the next
   ([Jetpack Compose: interactive elements](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#interactive-elements),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Jetpack Compose: state description](https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description),
   [Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls)).
+
+### Desktop
+
+- On macOS, an option row (21 pt small, 24 pt medium) meets Apple's 20 by 20 pt minimum control
+  size, so the options keep their 4 pt
+  ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 
 ## Related
 

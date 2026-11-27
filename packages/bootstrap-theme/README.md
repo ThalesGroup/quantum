@@ -146,7 +146,7 @@ and the full radius, which stay in px.
 | `--bs-danger-bg` | `global.bg.accent.functional.error.default` | `#DF2821` |  |
 | `--bs-danger-bg-subtle` | `global.bg.subtle.functional.error.default` | `#FEECEA` / `#2B0B08` |  |
 | `--bs-danger-bg-muted` | `global.bg.subtle.functional.error.hover` | `#FCCDC6` / `#3E130F` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
-| `--bs-danger-border` | `global.border.accent.functional.error.default` | `#C01619` | The alert and accent badge border. |
+| `--bs-danger-border` | `global.border.accent.functional.error.default` | `#C01619` / `#EE5248` | The alert and accent badge border. |
 | `--bs-danger-focus-ring` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | Quantum has one focus ring color for every intent (Focus foundation). |
 | `--bs-danger-contrast` | `global.text.on-accent.functional.error.default` | `#FEFBFA` |  |
 
@@ -160,7 +160,7 @@ and the full radius, which stay in px.
 | `--bs-warning-bg` | `global.bg.accent.functional.warning.default` | `#FFC61C` |  |
 | `--bs-warning-bg-subtle` | `global.bg.subtle.functional.warning.default` | `#FFF1C7` / `#1F1504` |  |
 | `--bs-warning-bg-muted` | `global.bg.subtle.functional.warning.hover` | `#FFE495` / `#2D2107` | The next step of the subtle ramp, Quantum's hover step. Bootstrap mixes it 50/50 with bg-subtle for the subtle button hover, a little lighter than Quantum's hover. |
-| `--bs-warning-border` | `global.border.accent.functional.warning.default` | `#DFA700` | The alert and accent badge border. |
+| `--bs-warning-border` | `global.border.accent.functional.warning.default` | `#765818` / `#DFA700` | The alert and accent badge border. |
 | `--bs-warning-focus-ring` | `color.focus.ring` | `#175DD6` / `#9EE7FA` | Quantum has one focus ring color for every intent (Focus foundation). |
 | `--bs-warning-contrast` | `global.text.on-accent.functional.warning.default` | `#1F1504` |  |
 
@@ -533,17 +533,29 @@ Focus ring offset, on `.form-control:focus-visible, .form-control:focus-within`;
 | --- | --- | --- | --- |
 | `--bs-focus-ring-offset` | `text-field.control.outline-offset.focus-visible` | `4px` |  |
 
-Invalid (.is-invalid), on `.form-control.is-invalid`; Sass: written after the @use.
+Error (.is-invalid), on `.form-control.is-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-border-color` | `text-field.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.error` | `#C01619` / `#EE5248` |  |
 
-Invalid (:user-invalid), on `[data-bs-validate] .form-control:user-invalid`; Sass: written after the @use.
+Error (:user-invalid), on `[data-bs-validate] .form-control:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-control-border-color` | `text-field.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
+| `--bs-control-border-color` | `text-field.control.border-color.error` | `#C01619` / `#EE5248` |  |
+
+Success (.is-valid), on `.form-control.is-valid`; Sass: written after the @use.
+
+| Bootstrap | ← Quantum | Light / dark | Why |
+| --- | --- | --- | --- |
+| `--bs-control-border-color` | `text-field.control.border-color.success` | `#075D33` / `#16AE64` |  |
+
+Success (:user-valid), on `[data-bs-validate~=valid] .form-control:user-valid`; Sass: written after the @use.
+
+| Bootstrap | ← Quantum | Light / dark | Why |
+| --- | --- | --- | --- |
+| `--bs-control-border-color` | `text-field.control.border-color.success` | `#075D33` / `#16AE64` |  |
 
 .chip-input, on `.chip-input`; Sass `$chip-input-tokens`. Bootstrap's chip input is a field holding chips: it takes the Text field control.
 
@@ -603,17 +615,19 @@ Selection controls (root), on root; Sass `$root-tokens`.
 | --- | --- | --- | --- |
 | `--bs-check-size` | `checkbox.control.size.small` | `1rem` |  |
 
-Invalid (.is-invalid), on `.check.is-invalid`; Sass: written after the @use.
+Error (.is-invalid), on `.check.is-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-check-border-color` | `checkbox.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
+| `--bs-check-border-color` | `checkbox.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-check-bg` | `checkbox.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
-Invalid (:user-invalid), on `[data-bs-validate] .check:user-invalid`; Sass: written after the @use.
+Error (:user-invalid), on `[data-bs-validate] .check:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-check-border-color` | `checkbox.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
+| `--bs-check-border-color` | `checkbox.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-check-bg` | `checkbox.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
 
 #### Radio group
@@ -635,17 +649,19 @@ Invalid (:user-invalid), on `[data-bs-validate] .check:user-invalid`; Sass: writ
 | --- | --- | --- | --- |
 | `--bs-radio-size` | `radio-group.control.size.small` | `1rem` |  |
 
-Invalid (.is-invalid), on `.radio.is-invalid`; Sass: written after the @use.
+Error (.is-invalid), on `.radio.is-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-radio-border-color` | `radio-group.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
+| `--bs-radio-border-color` | `radio-group.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-radio-bg` | `radio-group.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
-Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: written after the @use.
+Error (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: written after the @use.
 
 | Bootstrap | ← Quantum | Light / dark | Why |
 | --- | --- | --- | --- |
-| `--bs-radio-border-color` | `radio-group.control.border-color.invalid` | `#C01619` / `#DF2821` |  |
+| `--bs-radio-border-color` | `radio-group.control.border-color.error` | `#C01619` / `#EE5248` |  |
+| `--bs-radio-bg` | `radio-group.control.background.error` | `#FEECEA` / `#2B0B08` |  |
 
 
 #### Switch
@@ -911,12 +927,12 @@ Invalid (:user-invalid), on `[data-bs-validate] .radio:user-invalid`; Sass: writ
 | Accordion (`accordion`) | Accordion (`.accordion`) | size: small = `.accordion-sm`, medium = default; states: expanded = `[open]`; parts: item = `.accordion-item (<details>)`, trigger = `.accordion-header (<summary>)`, indicator = `.accordion-icon`, panel = `.accordion-body` |
 | Avatar (`avatar`) | Avatar (`.avatar`) | size: small = `.avatar-xs`, medium = `.avatar-sm`, large = default; shape: circle = default, square = none; parts: image = `.avatar-img`, initials = `text inside .avatar`; Bootstrap only: `.avatar-lg`, `.avatar-xl`, `.avatar-status`, `.avatar-stack` |
 | Breadcrumb (`breadcrumb`) | Breadcrumb (`.breadcrumb`) | size: small = none, medium = default; parts: item = `.breadcrumb-item`, link = `.breadcrumb-link`, separator = `.breadcrumb-divider` |
-| Checkbox (`checkbox`) | Checks (`input.check`) | size: small = `.check-sm`, medium = default; states: checked = `:checked`, indeterminate = `:indeterminate`, invalid = `.is-invalid`, disabled = `:disabled` |
+| Checkbox (`checkbox`) | Checks (`input.check`) | size: small = `.check-sm`, medium = default; states: checked = `:checked`, indeterminate = `:indeterminate`, error = `.is-invalid`, disabled = `:disabled` |
 | Checkbox group (`checkbox-group`) | Checks (`fieldset.form-group of input.check`) | orientation: vertical = default, horizontal = none; size: small = `.check-sm`, medium = default |
-| Radio group (`radio-group`) | Radios (`fieldset.form-group of input.radio`) | orientation: vertical = default, horizontal = none; size: small = `.radio-sm`, medium = default; states: checked = `:checked`, invalid = `.is-invalid`, disabled = `:disabled` |
+| Radio group (`radio-group`) | Radios (`fieldset.form-group of input.radio`) | orientation: vertical = default, horizontal = none; size: small = `.radio-sm`, medium = default; states: checked = `:checked`, error = `.is-invalid`, disabled = `:disabled` |
 | Switch (`switch`) | Switch (`.switch`) | size: small = `.switch-sm`, medium = default; states: checked = `:has(input:checked)`, disabled = `:has(input:disabled)` |
 | Slider (`slider`) | Range (`.form-range > .form-range-input`) | size: small = none, medium = default; states: disabled = `:disabled` |
-| Text field (`text-field`) | Form control (`input.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg`; states: invalid = `.is-invalid`, readonly = `[readonly]`, disabled = `:disabled`; parts: label = `.form-label`, control = `.form-control`, description = `.form-text`, error-message = `.invalid-feedback` |
+| Text field (`text-field`) | Form control (`input.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg`; states: error = `.is-invalid`, warning = `null`, success = `.is-valid`, readonly = `[readonly]`, disabled = `:disabled`; parts: label = `.form-label`, control = `.form-control`, description = `.form-text`, message = `.invalid-feedback` |
 | Textarea (`textarea`) | Form control (`textarea.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg` |
 | Select (`select`) | Form control (`select.form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg` |
 | Number field (`number-field`) | Form control (`input[type=number].form-control`) | size: small = `.form-control-sm`, medium = default, large = `.form-control-lg` |
@@ -967,8 +983,22 @@ them, and the theme restyles nothing directly.
   Quantum's `stroke-width.md` border and `checkbox.control.border-radius.*` are not applied.
 - **Field states.** Hover and read-only backgrounds (`text-field.control.background.hover`,
   `.readonly`, the controls' `background.hover`): Bootstrap has no hover or read-only token. The
-  error message (`.invalid-feedback`) reads `--bs-danger-fg` (Quantum's on-subtle error text), not
-  `text-field.error-message.color` (on-base error text).
+  message (`.invalid-feedback`, `.valid-feedback`) reads `--bs-danger-fg` or `--bs-success-fg`
+  (Quantum's on-subtle text), not `text-field.message.color.error` and `.success` (on-base text).
+- **Warning severity.** Quantum's fields can show a warning (`severity`); Bootstrap has no
+  `.is-warning` state, only `.is-valid` and `.is-invalid`. Bootstrap builds more validation states
+  from its Sass `$validation-states` map, which the CSS-variable theme does not reach, so the
+  warning border and message (`text-field.control.border-color.warning`, `text-field.message.color.warning`)
+  are not mapped.
+- **The Forms family.** The Forms foundation's `form.*` tokens are the defaults every form control
+  aliases (its colors, its text sizes per size, the part gap `form.container.gap`). The theme maps
+  each control's own tokens, whose values are the family's (`--bs-form-text-margin-top` reads
+  `text-field.container.gap`), so the family itself is not mapped. Its layout gaps space fields
+  `form.gap.field` apart, groups of fields `form.gap.group`, a group's title `form.gap.title` above
+  its first field and a label column `form.gap.label-column` from its controls: Bootstrap spaces
+  form rows with spacing utilities in the markup (`.mb-3`) and builds a horizontal form's label
+  column from grid classes in the markup, with no custom property or Sass setting for these gaps,
+  so the four gap tokens are not mapped.
 - **Input group sizes.** `.input-group-sm` and `.input-group-lg` size their controls from the
   button sizes (28px, 44px), not from Quantum's small and large fields (32px, 48px).
 - **Field padding.** Bootstrap pads inputs and textareas alike, where Quantum centers a field's

@@ -282,15 +282,6 @@
         }
       }
     },
-    "icon": {
-      "on-base": {
-        "functional": {
-          "warning": {
-            "default": {"$type":"color","$value":"{functional.warning.300}"}
-          }
-        }
-      }
-    },
     "border": {
       "level": {
         "edge": {
@@ -377,6 +368,16 @@
             "default": {"$type":"color","$value":"{functional.success.400}"},
             "hover": {"$type":"color","$value":"{functional.success.500}"},
             "active": {"$type":"color","$value":"{functional.success.600}"}
+          },
+          "warning": {
+            "default": {"$type":"color","$value":"{functional.warning.400}"},
+            "hover": {"$type":"color","$value":"{functional.warning.500}"},
+            "active": {"$type":"color","$value":"{functional.warning.600}"}
+          },
+          "error": {
+            "default": {"$type":"color","$value":"{functional.error.400}"},
+            "hover": {"$type":"color","$value":"{functional.error.500}"},
+            "active": {"$type":"color","$value":"{functional.error.600}"}
           },
           "info": {
             "default": {"$type":"color","$value":"{functional.info.400}"},

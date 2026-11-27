@@ -5,7 +5,7 @@
       "gap": {
         "$type": "dimension",
         "$value": "{space.4}",
-        "$description": "Between the label, the control, the description and the error message."
+        "$description": "Between the label, the control, the description and the message."
       }
     },
     "label": {
@@ -83,8 +83,14 @@
         "default": {
           "$value": "{global.border.accent.neutral.default}"
         },
-        "invalid": {
-          "$value": "{global.border.base.functional.error.default}"
+        "error": {
+          "$value": "{global.border.accent.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.border.accent.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.border.accent.functional.success.default}"
         },
         "disabled": {
           "$value": "{global.border.state.disabled.default}"
@@ -201,10 +207,18 @@
         }
       }
     },
-    "error-message": {
+    "message": {
       "color": {
         "$type": "color",
-        "$value": "{global.text.on-base.functional.error.default}"
+        "error": {
+          "$value": "{global.text.on-base.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.text.on-base.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.text.on-base.functional.success.default}"
+        }
       },
       "typography": {
         "$type": "typography",

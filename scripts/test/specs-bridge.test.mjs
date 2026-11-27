@@ -200,3 +200,46 @@ test('list properties: part instances stay out of Specs props and their tokens g
   assert.deepEqual(back.spec.examples[0].props, menu.examples[0].props);
   assert.deepEqual(flatMap(back.tokens), flat(tree));
 });
+
+test('a state set by an enum value is that value of the property and round-trips', () => {
+  const field = {
+    ...spec,
+    properties: [
+      ...spec.properties,
+      { id: 'severity', name: 'Severity', type: 'enum', default: 'none', options: [{ value: 'none' }, { value: 'error' }, { value: 'warning' }] },
+    ],
+    states: [
+      ...spec.states,
+      { id: 'error', trigger: 'property', property: 'severity', value: 'error' },
+      { id: 'warning', trigger: 'property', property: 'severity', value: 'warning' },
+    ],
+  };
+  const fieldTokens = { chip: { ...tokens.chip, label: { ...tokens.chip.label, color: { ...tokens.chip.label.color, error: { $type: 'color', $value: '{s.error}' } } } } };
+  const { component, sidecar } = toSpecs(field, fieldTokens);
+  assert.deepEqual(component.props.state.enum, ['default', 'hover', 'long-press']);
+  assert.deepEqual(component.props.severity.enum, ['none', 'error', 'warning']);
+  assert.ok(component.variants.some((v) => v.configuration.severity === 'error'));
+  const back = fromSpecs(JSON.parse(JSON.stringify(component)), JSON.parse(JSON.stringify(sidecar)));
+  assert.deepEqual(back.spec.states, field.states);
+  assert.deepEqual(back.spec.properties, field.properties);
+});
+
+test('a token naming two states is one layer setting both, and round-trips', () => {
+  const field = {
+    ...spec,
+    properties: [...spec.properties, { id: 'severity', name: 'Severity', type: 'enum', default: 'none', options: [{ value: 'none' }, { value: 'error' }] }],
+    states: [...spec.states, { id: 'error', trigger: 'property', property: 'severity', value: 'error' }],
+  };
+  const background = { ...tokens.chip.container.background, 'selected-error': alias('c.s-e'), 'hover-long-press': alias('c.h-l') };
+  const fieldTokens = { chip: { ...tokens.chip, container: { ...tokens.chip.container, background } } };
+  const { component, sidecar } = toSpecs(field, fieldTokens);
+  assert.equal(validate(component), true, JSON.stringify(validate.errors));
+  const layer = component.variants.find((v) => v.configuration.selected === true && v.configuration.severity === 'error');
+  assert.deepEqual(layer.configuration, { selected: true, severity: 'error' });
+  assert.equal(layer.elements.container.styles.backgroundColor.$token, 'c.s-e');
+  // Two values of the one state prop cannot be one layer: the token travels in the sidecar.
+  assert.ok(sidecar.tokens.residue.some((r) => r.path === 'chip.container.background.hover-long-press'));
+  const back = fromSpecs(clone(component), clone(sidecar));
+  assert.deepEqual(back.spec, field);
+  assert.deepEqual(flatMap(back.tokens), flat(fieldTokens));
+});

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon-button",
   "name": "Icon button",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "status": "draft",
   "role": "button",
   "summary": "Triggers an action with an icon alone; its label is given to assistive technology.",
@@ -1176,6 +1176,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.15.1",
+      "date": "2026-11-19",
+      "note": "Fix, no decision changed: the Color foundation 7.1.0 changes the dark accent functional error border role; the tokens, CSS and template are unchanged. The border of the accent error icon button at rest (container.border-color.accent.error.default) is functional error 400 #EE5248 in dark mode (was #C01619), as the Button, which it mirrors; its hover and active borders are error 500 and 600 in dark mode (were 700 and 800). Light mode is unchanged."
+    },
     {
       "version": "0.15.0",
       "date": "2026-11-16",

@@ -11,6 +11,9 @@ import { allContexts, evaluateContrast, formatRatio } from '../../../../scripts/
 import { DISPLAYS, specimenTokens, nearestFamily, easingPath } from '../../../../scripts/lib/specimens.mjs';
 import { memo, repoPath } from './repo';
 import { getTokens, type TokenRow } from './tokens';
+import { roleProfiles } from './a11y';
+// @ts-ignore - plain ESM without types
+import { followedByScope, componentsInScope, tiersOf, inheritedGuidelines, SCOPES } from '../../../../scripts/lib/foundation-scope.mjs';
 import { platformName, platforms as allPlatforms } from './platforms';
 
 const getContexts = memo((): any[] => allContexts(loadAll(repoPath(PATHS.tokens))));
@@ -44,14 +47,58 @@ export function contrastOf(spec: { contrast?: any[] }): ContrastRow[] {
   return evaluateContrast(spec.contrast ?? [], getContexts()).map((r: any) => ({ ...r, ratio: formatRatio(r.ratio) }));
 }
 
-/** Components whose tokens alias a token the foundation owns: each component token and the owned tokens it aliases. */
-export function followersOf(spec: { tokens: string[] }): { component: string; tokens: string[]; aliases: { path: string; owned: string[] }[] }[] {
+export interface Follower {
+  component: string;
+  tokens: string[];
+  aliases: { path: string; owned: string[] }[];
+  /** Scope followers only: the component's role, and the foundation's rule tiers it follows, read from its spec. */
+  role?: string;
+  tiers?: string[];
+}
+
+/** True when the foundation's followers are the components in its scope (`appliesTo`), not the ones aliasing its tokens. */
+export const followedByRole = (spec: { appliesTo?: string }): boolean => Boolean(spec.appliesTo && followedByScope(spec.appliesTo));
+
+/**
+ * The foundation guidelines a component follows, per foundation: a foundation followed by scope
+ * (Forms) gives each component in its scope its guidelines of the tiers the component's spec asks
+ * for (scripts/lib/foundation-scope.mjs). Derived, never declared by the component.
+ */
+export function inheritedOf(spec: any, foundations: any[]): { foundation: any; guidelines: any[] }[] {
+  return foundations
+    .map((foundation) => ({ foundation, guidelines: inheritedGuidelines(foundation, spec, roleProfiles()) as any[] }))
+    .filter((f) => f.guidelines.length);
+}
+
+/** The sentence saying who must follow the foundation, from its `appliesTo`. */
+export const scopeRule = (spec: { appliesTo?: string }): string | null => (spec.appliesTo ? SCOPES[spec.appliesTo]?.rule ?? null : null);
+
+/** Per component, its tokens aliasing a token the foundation owns, with the owned tokens each aliases. */
+function aliasesOf(spec: { tokens: string[] }): Map<string, { path: string; owned: string[] }[]> {
   const owned = new Set(tokensOf(spec.tokens).map((r) => r.path));
   const byComponent = new Map<string, { path: string; owned: string[] }[]>();
   for (const r of getTokens().rows) {
     const hits = r.tier === 'component' ? r.references.filter((ref) => owned.has(ref)) : [];
     if (!hits.length) continue;
     byComponent.set(r.segments[0], [...(byComponent.get(r.segments[0]) ?? []), { path: r.path, owned: hits }]);
+  }
+  return byComponent;
+}
+
+/**
+ * Components following the foundation. A foundation read from the role profiles (Forms: `input`)
+ * is followed by every component in scope, each with the tiers of rules its spec asks for, and the
+ * tokens it aliases when the foundation also owns tokens (the Forms family). Any other is followed
+ * by the components whose tokens alias a token it owns: each component token and the owned tokens
+ * it aliases.
+ */
+export function followersOf(spec: { tokens: string[]; appliesTo?: string }, components: any[] = []): Follower[] {
+  const byComponent = aliasesOf(spec);
+  if (followedByRole(spec)) {
+    return componentsInScope(spec.appliesTo, components, roleProfiles()).map((c: any) => {
+      const aliases = byComponent.get(c.id) ?? [];
+      return { component: c.id, tokens: aliases.map((a) => a.path), aliases, role: c.role, tiers: tiersOf(c) };
+    });
   }
   return [...byComponent].map(([component, aliases]) => ({ component, tokens: aliases.map((a) => a.path), aliases }));
 }

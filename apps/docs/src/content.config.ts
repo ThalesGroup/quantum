@@ -45,7 +45,7 @@ const specs = defineCollection({
           of: z.array(z.string()).optional(),
         }),
       ),
-      states: z.array(z.object({ id: z.string(), trigger: z.string(), description: z.string().optional(), property: z.string().optional(), platforms: z.array(z.string()).optional(), inputs: z.array(z.string()).optional(), parts: z.array(z.string()).optional() })),
+      states: z.array(z.object({ id: z.string(), trigger: z.string(), description: z.string().optional(), property: z.string().optional(), value: z.string().optional(), platforms: z.array(z.string()).optional(), inputs: z.array(z.string()).optional(), parts: z.array(z.string()).optional() })),
       slots: z.array(z.any()).optional(),
       layout: z.record(z.any()).optional(),
       accessibility: z.record(z.any()).optional(),
@@ -102,11 +102,11 @@ const foundations = defineCollection({
       description: z.string().optional(),
       tags: z.array(z.string()).optional(),
       tokens: z.array(z.string()),
-      appliesTo: z.enum(['every-component', 'focusable-components']).optional(),
+      appliesTo: z.enum(['every-component', 'focusable-components', 'input-components']).optional(),
       rules: z.array(z.object({ id: z.string(), name: z.string(), text: z.string(), tokens: z.array(z.string()).optional(), names: z.array(z.string()).optional(), platforms })),
       specimens: z.array(z.object({ id: z.string(), name: z.string(), description: z.string().optional(), display: z.string(), tokens: z.array(z.string()), tier: z.enum(['raw', 'semantic']).optional() })).optional(),
       contrast: z.array(z.object({ id: z.string(), description: z.string().optional(), foreground: z.string(), backgrounds: z.array(z.string()), on: z.array(z.string()).optional(), minimum: z.number().optional(), knownIssue: z.string().optional(), refs })).optional(),
-      accessibility: z.object({ guidelines: z.array(z.object({ text: z.string(), refs, platforms })), references: z.array(z.object({ id: z.string(), title: z.string(), url: z.string() })) }),
+      accessibility: z.object({ guidelines: z.array(z.object({ text: z.string(), refs, platforms, tier: z.enum(['presentation', 'required', 'validation']).optional() })), references: z.array(z.object({ id: z.string(), title: z.string(), url: z.string() })) }),
       // Component renderings or code samples (`source`, a file in specs/foundations/<id>/).
       examples: z.array(z.union([
         z.object({ id: z.string(), name: z.string(), description: z.string().optional(), component: z.string(), props: z.record(z.any()), platforms }),

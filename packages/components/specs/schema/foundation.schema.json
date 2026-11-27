@@ -22,8 +22,8 @@
       "items": { "type": "string", "pattern": "^[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.\\*)?$" }
     },
     "appliesTo": {
-      "enum": ["every-component", "focusable-components"],
-      "description": "Components that must follow the foundation. focusable-components: every component whose role profile is focusable aliases every exact token path of `tokens` (validated). Omit when following it is a choice."
+      "enum": ["every-component", "focusable-components", "input-components"],
+      "description": "Components that must follow the foundation. focusable-components: every component whose role profile is focusable aliases every exact token path of `tokens` (validated). input-components: every component whose role profile is marked `input` (a control through which people enter or choose a value the product keeps) follows the foundation, whether or not it owns tokens: followers are read from the roles, not from token aliases (validated). Omit when following it is a choice."
     },
     "rules": {
       "type": "array",
@@ -83,9 +83,26 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["guidelines", "references"],
-      "description": "Same grammar as a component's guidelines and references (component.schema.json); no role, name or keyboard.",
+      "description": "Same grammar as a component's guidelines and references (component.schema.json), plus a guideline's tier; no role, name or keyboard.",
       "properties": {
-        "guidelines": { "$ref": "component.schema.json#/$defs/accessibility/properties/guidelines" },
+        "guidelines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["text", "refs"],
+            "additionalProperties": false,
+            "properties": {
+              "text": { "type": "string", "minLength": 1 },
+              "refs": { "$ref": "component.schema.json#/$defs/refs" },
+              "platforms": { "$ref": "component.schema.json#/$defs/platforms" },
+              "tier": {
+                "enum": ["presentation", "required", "validation"],
+                "description": "A foundation followed by scope (appliesTo input-components): the tier of rules the guideline belongs to (scripts/lib/foundation-scope.mjs tiersOf). Each component page lists, under its own guidelines, the foundation's guidelines of the tiers the component follows. Without a tier, the guideline is about the form as a whole and stays on the foundation's page."
+              }
+            }
+          }
+        },
         "references": { "$ref": "component.schema.json#/$defs/accessibility/properties/references" }
       }
     },

@@ -14,8 +14,10 @@ repository's spec stays the **source of truth**; Specs is an export target and a
   without a Specs style (focus outline, transition). Our property metadata and each token's
   exact path travel inside Specs `$extensions` under the `io.quantum` key.
 - **States** become a Specs prop named `state` (interaction and system states); a state set
-  through a boolean property stays that boolean and appears in `invalidPropCombinations`.
-  `state` is therefore a reserved property id.
+  through a boolean property stays that boolean and appears in `invalidPropCombinations`; one set by an enum value (`error`, set by `severity: error`) stays a value of that property, in the property's `valueStates` extension.
+  `state` is therefore a reserved property id. A token naming two states (`checked-error`)
+  becomes one layer setting both (`{ checked: true, severity: "error" }`); two values of `state`
+  cannot share a layer, so such a token travels in the sidecar.
 - **Import** with the sidecar restores the spec and tokens exactly. Without it (a
   Figma-generated file) it infers anatomy, properties, states and token paths, and leaves
   prose empty.

@@ -1,0 +1,187 @@
+{
+  "$description": "The Forms family (Forms foundation, decision forms-token-family): the defaults every form control takes, which a control's own component tokens alias and may override for its own case, and the gaps of a form's layout. The family follows the component token grammar, form.<part>.<property>[.<option>][.<state>], with a control's part names (control, label, description, message, severity-icon, mark, asterisk, container); the layout gaps keep their names, form.gap.<role> (rule spacing). Each default aliases the semantic role or the scale step it stands for, so it carries the role's dark value and needs no mode or platform file. Not in the Figma library: added by the design system (decisions forms-token-family, forms-gap-tokens and forms-label-column-gap). The Forms family is the one exception to the rule that no semantic layer of sizes is added: its font sizes and its part gap are form defaults, approved with forms-token-family. A platform may override them in src/platforms/<id>/; none does today.",
+  "form": {
+    "gap": {
+      "$type": "dimension",
+      "field": {
+        "$value": "{space.16}",
+        "$description": "Between two fields of a form, at every field size, from the bottom of a field's last part (control, description or message) to the next field's label; a Checkbox group or a Radio group is one field. Also before the actions of a form without groups."
+      },
+      "group": {
+        "$value": "{space.32}",
+        "$description": "Between two groups of fields (sections with their own title), from the bottom of a group's last field to the next group's title. Also before the actions of a grouped form."
+      },
+      "title": {
+        "$value": "{space.12}",
+        "$description": "Between a group's title and its first field."
+      },
+      "label-column": {
+        "$value": "{space.12}",
+        "$description": "In a label column (labelPlacement start), between the end of the column, where every label ends, and its control. Not form.gap.title: a title introduces the fields under it, a label in the column names the control beside it; the two share a value today, not a meaning."
+      }
+    },
+    "container": {
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.6}",
+        "$description": "Between the parts of a form control: its label (or a group's legend), its control (or a group's options), its description and its message (rule spacing, decision forms-part-gaps). A control's container gap aliases it; a group's other gaps (between its options, under its legend) stay its own."
+      }
+    },
+    "control": {
+      "$type": "color",
+      "background": {
+        "$description": "The control's fill: at rest and on hover the page's level 0, read-only the level 1, and in a severity the subtle functional background of the severity, at rest and on hover alike (rule severity-fill). A choice control takes the error fill in its empty boxes only (decision forms-choice-error-fill).",
+        "default": {
+          "$value": "{global.bg.level.0.default}"
+        },
+        "hover": {
+          "$value": "{global.bg.level.0.hover}"
+        },
+        "readonly": {
+          "$value": "{global.bg.level.1.default}"
+        },
+        "error": {
+          "$value": "{global.bg.subtle.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.bg.subtle.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.bg.subtle.functional.success.default}"
+        }
+      },
+      "border-color": {
+        "$description": "The control's border, and its outline in a severity. At rest the base neutral border, the field family's; the Select, the Checkbox, the Checkbox group and the Radio group keep global.border.accent.neutral.default at rest until their own refinement. In a severity the accent functional border of the severity (rule statuses).",
+        "default": {
+          "$value": "{global.border.base.neutral.5}"
+        },
+        "error": {
+          "$value": "{global.border.accent.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.border.accent.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.border.accent.functional.success.default}"
+        }
+      },
+      "color": {
+        "default": {
+          "$value": "{global.text.on-base.neutral.primary}",
+          "$description": "The value people typed or chose."
+        }
+      },
+      "placeholder-color": {
+        "default": {
+          "$value": "{global.text.on-base.neutral.tertiary}",
+          "$description": "The placeholder hint, lighter than the value."
+        }
+      }
+    },
+    "label": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.primary}",
+          "$description": "A control's label, a group's legend and the label of a box (a checkbox, a radio)."
+        }
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$description": "The label's (or a group's legend's) font size per control size: 14, 16 and 16 px (rule anatomy, decision forms-text-sizes). A control with two sizes takes small and medium; option labels keep their own sizes.",
+        "small": {
+          "$value": "{body.size.sm}"
+        },
+        "medium": {
+          "$value": "{body.size.md}"
+        },
+        "large": {
+          "$value": "{body.size.md}"
+        }
+      }
+    },
+    "description": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.secondary}",
+          "$description": "A control's description, and an option's."
+        }
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$description": "The description's font size per control size: 12, 12 and 14 px (rule anatomy, decision forms-text-sizes). The Checkbox keeps 14 px for its medium description until its own refinement.",
+        "small": {
+          "$value": "{body.size.xs}"
+        },
+        "medium": {
+          "$value": "{body.size.xs}"
+        },
+        "large": {
+          "$value": "{body.size.sm}"
+        }
+      }
+    },
+    "message": {
+      "color": {
+        "$type": "color",
+        "$description": "The message in each severity: the on-base functional text of the severity, the severity icon's color (decision forms-message-color).",
+        "error": {
+          "$value": "{global.text.on-base.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.text.on-base.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.text.on-base.functional.success.default}"
+        }
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$description": "The message's font size per control size: 14, 16 and 16 px, larger than the description (rule anatomy, decision forms-text-sizes).",
+        "small": {
+          "$value": "{body.size.sm}"
+        },
+        "medium": {
+          "$value": "{body.size.md}"
+        },
+        "large": {
+          "$value": "{body.size.md}"
+        }
+      }
+    },
+    "severity-icon": {
+      "color": {
+        "$type": "color",
+        "$description": "The severity icon in each severity: the on-base icon role of the severity, the message's color (rule severity-icon, decision forms-severity-icon-color).",
+        "error": {
+          "$value": "{global.icon.on-base.functional.error.default}"
+        },
+        "warning": {
+          "$value": "{global.icon.on-base.functional.warning.default}"
+        },
+        "success": {
+          "$value": "{global.icon.on-base.functional.success.default}"
+        }
+      }
+    },
+    "mark": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.neutral.secondary}",
+          "$description": "The mark after a label or a legend, \"(optional)\" or \"(required)\", in the description's color (rule required)."
+        }
+      }
+    },
+    "asterisk": {
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{global.text.on-base.functional.error.default}",
+          "$description": "The asterisk of a required field on Android and Windows, and of the note explaining it, in the error message's color (rule required)."
+        }
+      }
+    }
+  }
+}

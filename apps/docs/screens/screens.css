@@ -66,6 +66,10 @@
 .scr-stack { display: grid; gap: var(--space-16); align-content: start; }
 .scr-columns, .scr-button-row { display: grid; gap: var(--space-16); }
 .scr-button-row { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--space-8); }
+/* Inside a form, a stack is a column of fields and actions: the Forms foundation's field gap
+   (form.gap.field); fields side by side keep it between their rows when they stack. */
+.scr-form .scr-stack { gap: var(--form-gap-field); }
+.scr-form .scr-columns { row-gap: var(--form-gap-field); }
 @container screen (min-width: 36rem) {
   .scr-columns { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }
 }

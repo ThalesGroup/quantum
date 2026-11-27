@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.1.1",
+  "version": "0.6.1",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -97,13 +97,13 @@
       "description": "Optional help text under the option's label."
     },
     {
-      "id": "error-message",
+      "id": "message",
       "role": "errormessage",
       "required": false,
       "visibleIn": [
-        "invalid"
+        "error"
       ],
-      "description": "Text describing the error when the group is invalid (no option chosen in a required group). Associated with every option as a description."
+      "description": "Text saying what is wrong and what to do, associated with every option as a description. Shown only with a severity."
     }
   ],
   "properties": [
@@ -132,12 +132,15 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Radio size, option label and description text size scale together.",
+      "description": "Radio size, option label and description text size scale together; the legend, the description and the message take the field family's sizes per size (Forms rule anatomy).",
       "affects": [
         "option",
         "control",
         "option-label",
-        "option-description"
+        "option-description",
+        "legend",
+        "description",
+        "message"
       ],
       "options": [
         {
@@ -183,11 +186,11 @@
       "description": "The options, in order."
     },
     {
-      "id": "errorMessage",
-      "name": "Error message",
+      "id": "message",
+      "name": "Message",
       "type": "string",
-      "bindsTo": "error-message",
-      "description": "What is wrong and what to do, shown when the group is invalid."
+      "bindsTo": "message",
+      "description": "What is wrong and what to do, shown with a severity. Replaces errorMessage."
     },
     {
       "id": "required",
@@ -197,11 +200,25 @@
       "description": "An option must be chosen to submit the form."
     },
     {
-      "id": "invalid",
-      "name": "Invalid",
-      "type": "boolean",
-      "default": false,
-      "description": "Validation failed: every radio takes the error border and the error message is shown."
+      "id": "severity",
+      "name": "Severity",
+      "type": "enum",
+      "default": "none",
+      "description": "What the check of the value found. A choice has nothing to confirm or to warn about, so only error exists (decision forms-severity).",
+      "affects": [
+        "control",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No severity (default)."
+        },
+        {
+          "value": "error",
+          "description": "Validation failed on the group: every radio takes the error border, the message says what to do and every option is exposed as in error (aria-invalid on the web)."
+        }
+      ]
     },
     {
       "id": "disabled",
@@ -252,13 +269,14 @@
       "description": "The chosen option (the entry's checked property): the circle fills with the brand color and shows a dot."
     },
     {
-      "id": "invalid",
+      "id": "error",
       "trigger": "property",
-      "property": "invalid",
+      "property": "severity",
+      "value": "error",
       "parts": [
         "option"
       ],
-      "description": "Validation failed on the group: every radio border takes the error color and the error message is shown."
+      "description": "Severity error on the group: every radio border takes the error color, every unchecked radio the subtle error fill (a checked radio keeps its brand fill), and the message is shown."
     },
     {
       "id": "disabled",
@@ -277,7 +295,7 @@
     "wrap": false,
     "sizing": "fill",
     "notes": [
-      "The legend comes first, then the description, the options and the error message, separated by container.row-gap.",
+      "The legend comes first, the description right under it (no gap: the two read as one heading), then the options and the message, separated by container.row-gap; on the web the legend's bottom margin carries that gap when no description follows, since a rendered legend sits outside its fieldset's flow.",
       "Options stack vertically, or flow on one line and wrap in the horizontal orientation, separated by container.gap for the orientation.",
       "Within an option, the radio sits before the label, centered on its first line; the option's description sits under its label."
     ]
@@ -285,7 +303,7 @@
   "accessibility": {
     "ariaRole": "group",
     "name": {
-      "text": "The group is named by its legend (the fieldset's first legend element on the web). Each option is named by its own label, associated as its label element; descriptions and the error message are exposed as descriptions of the radios, not as part of their names.",
+      "text": "The group is named by its legend (the fieldset's first legend element on the web). Each option is named by its own label, associated as its label element; descriptions and the message are exposed as descriptions of the radios, not as part of their names.",
       "refs": [
         "html-aam-fieldset-name",
         "apg-naming-legends",
@@ -353,18 +371,7 @@
         ]
       },
       {
-        "text": "The legend is visible and names the choice; each option has a visible label associated with its radio. Together they are the labels or instructions the group needs.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-grouping",
-          "wcag-h71",
-          "wai-labels",
-          "wcag-h44"
-        ]
-      },
-      {
-        "text": "Help text and the error message are referenced by aria-describedby from every radio, so they are read as descriptions after an option's name.",
+        "text": "Help text and the message are referenced by aria-describedby from every radio, so they are read as descriptions after an option's name.",
         "refs": [
           "wcag-aria1",
           "apg-describing"
@@ -387,7 +394,7 @@
         ]
       },
       {
-        "text": "Each radio is what identifies its option and shows its state, so its border, its fill and its dot contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.78:1 (light) and 11.28:1 (dark) on the default surface; checked fill 5.77:1 and 12.76:1; the dot on the fill 5.72:1 and 13.05:1; the error border 6.12:1 and 3.73:1; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
+        "text": "Each radio is what identifies its option and shows its state, so its border, its fill and its dot contrast at least 3:1 with adjacent colors in every color mode: unchecked border 12.78:1 (light) and 11.28:1 (dark) on the default surface; checked fill 5.77:1 and 12.76:1; the dot on the fill 5.72:1 and 13.05:1; the error border (the accent functional border) 6.12:1 and 4.97:1, at least 5.79:1 and 3.73:1 on every surface level; the focus ring 5.77:1 and 12.76:1. Disabled is exempt.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-boundaries"
@@ -410,7 +417,7 @@
         ]
       },
       {
-        "text": "A radio alone is 16 or 20 CSS pixels, under the 24 pixel minimum; its label is part of the target and brings the option above it, and the spacing exception applies when options are 24 pixels apart.",
+        "text": "A radio alone is 16 or 20 CSS pixels, under the 24 pixel minimum; its label is part of the target and brings the option above it, and the spacing exception applies when options are 24 pixels apart: medium options are 24 pixels tall, 28 pixels from one to the next, and small ones 21 pixels tall, 25 pixels apart, so their 24 pixel circles clear each other by 1 pixel.",
         "refs": [
           "wcag:2.5.8"
         ]
@@ -440,7 +447,7 @@
         ]
       },
       {
-        "text": "Apple recommends a hit region of at least 44 x 44 pt; each option (radio and label) must reach it on iOS. Avoid relying solely on different colors to communicate the state.",
+        "text": "Apple recommends a hit region of at least 44 x 44 pt; each option (radio and label) must reach it on iOS. Options 4 pt apart cannot share the space between them as a field's hit region does, so each option row is at least 44 pt tall, its radio and label centred in it, with 4 pt between rows; the legend, the description and the message keep their 0 and 6 pt and grow with Dynamic Type. Avoid relying solely on different colors to communicate the state.",
         "refs": [
           "hig-toggles-best-practices",
           "hig-accessibility-mobility"
@@ -450,7 +457,7 @@
         ]
       },
       {
-        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's RadioButton sets that minimum itself when it can receive actions. Lift the selection to the row with the selectable modifier and the RadioButton role, so label and radio form one element whose state is announced.",
+        "text": "Android recommends a touch target of at least 48 x 48 dp; Material's RadioButton sets that minimum itself when it can receive actions, so each option row is at least 48 dp tall, 4 dp apart. Lift the selection to the row with the selectable modifier and the RadioButton role, so label and radio form one element whose state is announced.",
         "refs": [
           "android-large-controls",
           "compose-target-sizes",
@@ -459,6 +466,15 @@
         ],
         "platforms": [
           "android"
+        ]
+      },
+      {
+        "text": "On macOS, Apple's minimum control size is 20 x 20 pt (28 x 28 pt by default): an option row, 21 pt small and 24 pt medium, meets the minimum, so the options keep the default spacing, 4 pt apart.",
+        "platforms": [
+          "desktop"
+        ],
+        "refs": [
+          "hig-accessibility-mobility"
         ]
       },
       {
@@ -561,11 +577,6 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
       },
       {
-        "id": "wai-grouping",
-        "title": "WAI tutorials: Grouping controls",
-        "url": "https://www.w3.org/WAI/tutorials/forms/grouping/"
-      },
-      {
         "id": "wai-validation",
         "title": "WAI tutorials: Validating input (the required attribute)",
         "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
@@ -574,16 +585,6 @@
         "id": "wai-notifications",
         "title": "WAI tutorials: User notifications (error messages)",
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-h71",
-        "title": "WCAG technique H71: fieldset and legend for groups of form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
       },
       {
         "id": "wcag-g83",
@@ -648,7 +649,7 @@
       "Option labels are short, parallel and mutually exclusive: Standard, Express, Pickup. Sentence case, no trailing punctuation.",
       "Put costs, delays and consequences in an option's description, not in its label.",
       "Order options logically (most common first, or a natural scale); offer a neutral option (None, Not sure) when people may have no preference.",
-      "The error message says what to do: Choose a delivery method."
+      "The message of an error says what to do, relying on the legend it sits under: Choose one"
     ]
   },
   "examples": [
@@ -736,7 +737,7 @@
         "orientation": "vertical",
         "size": "medium",
         "label": "Plan",
-        "description": "You can change plans at any time.",
+        "description": "You can change plans at any time",
         "name": "plan",
         "options": [
           {
@@ -759,17 +760,17 @@
       }
     },
     {
-      "id": "vertical-medium-invalid",
-      "name": "Vertical, medium, required and invalid",
-      "description": "No option chosen in a required group; the error message says what to do.",
+      "id": "vertical-medium-error",
+      "name": "Vertical, medium, required and error",
+      "description": "No option chosen in a required group; the message says what to do.",
       "props": {
         "orientation": "vertical",
         "size": "medium",
         "label": "Delivery method",
-        "name": "delivery-invalid",
+        "name": "delivery-error",
         "required": true,
-        "invalid": true,
-        "errorMessage": "Choose a delivery method.",
+        "severity": "error",
+        "message": "Choose one",
         "options": [
           {
             "label": "Standard",
@@ -789,7 +790,7 @@
         "orientation": "vertical",
         "size": "medium",
         "label": "Billing cycle",
-        "description": "Managed by your organization.",
+        "description": "Managed by your organization",
         "name": "billing",
         "disabled": true,
         "options": [
@@ -820,7 +821,7 @@
         "orientation": "data-orientation",
         "size": "data-size",
         "disabled": "disabled",
-        "invalid": "data-invalid"
+        "severity": "data-severity"
       },
       "stateAttribute": "data-state",
       "partSelectors": {
@@ -831,7 +832,7 @@
         "control": ".ds-radio-group__control",
         "option-label": ".ds-radio-group__option-label",
         "option-description": ".ds-radio-group__option-description",
-        "error-message": ".ds-radio-group__error-message"
+        "message": ".ds-radio-group__message"
       }
     }
   },
@@ -841,6 +842,109 @@
     "switch"
   ],
   "decisions": [
+    {
+      "id": "checked-error-fill",
+      "date": "2026-11-27",
+      "version": "0.6.0",
+      "area": "color",
+      "status": "active",
+      "text": "A checked radio in error keeps its brand fill through a token for both states, control.background.checked-error (= global.bg.accent.brand.default, the role of the checked fill), inside its error border: a token path may name two states, joined by a hyphen in the spec's state order, and such a token applies when both hold and wins over the token of each state alone (packages/tokens/AGENTS.md, Which token applies). The path stays the only thing that says when a component token applies, so the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants Severity=error, State=checked (4 variants) take the brand fill the web always drew; since error-fill they took control.background.error. No rendered value changes on the web.",
+      "rationale": "Decided by the team on 2026-11-27 (#105 step 2b, point b3.1): \"A\", as recommended, a token for two states. Rejected: B, a precedence per slot declared in the spec's states (no token, but a reader of the tokens alone, such as Tokens Studio, the Style Dictionary outputs or a Specs reader without the sidecar, would still get the error fill); C, accept the inspector's simplification and give the Figma plan a hand-written rule. The state segment is one, checked-error, not two (checked.error): a DTCG token cannot also be a group, and checked already holds a value; the CSS variable is the same either way. Measured on the review sheet: the mark on the brand fill 5.72:1 in light mode and 13.06:1 in dark mode, on the error fill the Figma variants drew 1.11:1 and 1.01:1 (WCAG 1.4.11 asks 3:1).",
+      "tokens": [
+        "radio-group.control.background.checked-error"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.5.2",
+      "area": "color",
+      "status": "active",
+      "text": "The Radio group's component tokens alias the Forms family (form.*) wherever their value is the family's default: the part gap (container.row-gap), the legend's color and font sizes, the description's and the message's colors and font sizes, the radios' fill at rest, on hover and in error and their border in error, the option labels' and descriptions' colors. No value changes. Overrides, kept until this component's own refinement: the radios' border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5; the gaps between the options and under the legend stay this group's own. Disabled colors, geometry and checked colors stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases.",
+      "tokens": [
+        "radio-group.container.row-gap",
+        "radio-group.legend.*",
+        "radio-group.description.*",
+        "radio-group.message.*",
+        "radio-group.control.background.*",
+        "radio-group.control.border-color.*",
+        "radio-group.option-label.color.default",
+        "radio-group.option-description.color.default"
+      ]
+    },
+    {
+      "id": "text-sizes",
+      "date": "2026-11-27",
+      "version": "0.5.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The legend, the description and the message take the field family's text sizes per size (small and medium): the legend 14 / 16 px (medium, tight line height), the description 12 / 12 px, the message 14 / 16 px (medium). Before, all three were 14 px at every size. Option labels and option descriptions keep their sizes. A default, which this component's own refinement may revisit.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b4, option A as recommended); it follows the Forms foundation's decision forms-text-sizes. The team's words: \"We choose A but we'll probably refine them properly when we'll tackle the Select, Checkbox Group, etc. form controls.\"",
+      "tokens": [
+        "radio-group.legend.typography.*",
+        "radio-group.description.typography.*",
+        "radio-group.message.typography.*"
+      ]
+    },
+    {
+      "id": "error-fill",
+      "date": "2026-11-27",
+      "version": "0.4.0",
+      "area": "color",
+      "status": "active",
+      "text": "Every unchecked radio in error takes the subtle error fill (control.background.error = global.bg.subtle.functional.error.default) inside its error border, at rest and on hover alike; a checked radio keeps its brand fill, so checked still reads checked. On hover an empty box in error keeps its fill and its error border (before, hover turned its border back to the neutral one).",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b3, option B chosen over the recommended A, border only); it follows the Forms foundation's decision forms-choice-error-fill, where the options and their reasons are recorded. Measured: The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue.",
+      "tokens": [
+        "radio-group.control.background.error"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.1"
+      ]
+    },
+    {
+      "id": "part-gaps",
+      "date": "2026-11-27",
+      "version": "0.3.0",
+      "area": "layout",
+      "status": "active",
+      "text": "The group's parts are 6 px apart (container.row-gap = space.6): the legend to the options when there is no description, the description to the options, the options to the message. The description sits right under its legend (0 px): the two read as one heading. Options stack vertically 4 px apart (container.gap.vertical = space.4), closer than the parts around them, so the list reads as one unit; the horizontal orientation keeps one wrapping line, 16 px apart. The values are the same on every platform; on iOS and Android each option row grows to the platform's minimum target and keeps the 4 pt or dp between rows. Before, the parts were 8 px apart, the options 8 px, and the legend touched its next part (0 px), as the gap never reached a rendered legend.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 5, option D, proposed by the team, its three assumed values confirmed: \"Yes, D as assumed, and deduce what's expected for the other platforms\"). It follows the Forms foundation's decision forms-part-gaps. Rejected: today's values (8 between parts and options, the legend at 0 to everything: a bug, the legend + * rule cancelling the margin its comment promised), A (6 everywhere, options 8 apart), B (fields 6, groups 8), C (8 everywhere, reopening the Text field's 6). Measured on the web: medium options 24 px tall, 28 px from one to the next; small options 21 px tall, 25 px apart, so the 24 px circles of WCAG 2.5.8's spacing exception clear each other by 1 px.",
+      "supersedes": [
+        "orientations"
+      ],
+      "tokens": [
+        "radio-group.container.row-gap",
+        "radio-group.container.gap.*"
+      ],
+      "refs": [
+        "wcag:2.5.8",
+        "hig-accessibility-mobility",
+        "compose-target-sizes"
+      ]
+    },
+    {
+      "id": "forms-severity",
+      "date": "2026-11-19",
+      "version": "0.2.0",
+      "area": "state",
+      "status": "active",
+      "text": "The group shows the error severity, set by the severity property (none by default, error): every box takes the accent functional error border color and the message, shown only with a severity, takes the error text color. Warning and success do not exist for a group of choices: that is our judgment, not a source's. Severity replaces the invalid property and message replaces errorMessage. On the web the error is aria-invalid=\"true\" on every option and data-severity on the root. The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1).",
+      "rationale": "The team validated the Forms foundation's three severities (decision forms-validation-severities) and named the property severity; \"error\" is the word every platform uses (WCAG 3.3.1 Error Identification, Compose error semantics, Material error text), where \"invalid\" is the web's technical term. The clean break is deliberate: the packages are alpha and unreleased, and a deprecated alias would cost a schema field and support in the validator, the bridge and the templates. This amends decisions field-colors and label-description-error, whose text still says invalid and error message.",
+      "tokens": [
+        "radio-group.control.border-color.*",
+        "radio-group.message.color.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.1",
+        "wcag-aria21"
+      ]
+    },
     {
       "id": "group-of-native-radios",
       "date": "2026-10-03",
@@ -875,7 +979,7 @@
       "date": "2026-10-03",
       "version": "0.1.0",
       "area": "layout",
-      "status": "active",
+      "status": "superseded",
       "text": "Options stack vertically by default, 8 px apart; the horizontal orientation puts them on one wrapping line, 16 px apart.",
       "tokens": [
         "radio-group.container.gap.*"
@@ -898,6 +1002,56 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.1",
+      "date": "2026-11-27",
+      "note": "#105 step 12, seen on the b3.1 sheet: the states the playground forces now render as the properties do. A forced disabled state turns a checked box and a box in error to the disabled fill, border and mark, and a forced error state gives a checked box the error border: those selectors are written at the specificity of :checked and of the error rule (the root or the option class outside :where), as the Checkbox writes them. Nothing changes with real properties."
+    },
+    {
+      "version": "0.6.0",
+      "date": "2026-11-27",
+      "note": "Decision checked-error-fill (#105 step 2b, point b3.1): a checked radio in error keeps its brand fill through a new token for two states, control.background.checked-error, which the CSS reads; the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants now take it too. No rendered value changes."
+    },
+    {
+      "version": "0.5.2",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6): the part gap (container.row-gap), the legend's color and font sizes, the description's and the message's colors and font sizes, the radios' fill at rest, on hover and in error and their border in error, the option labels' and descriptions' colors alias the Forms family (form.*), every resolved value unchanged; the radios' border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5; the gaps between the options and under the legend stay this group's own."
+    },
+    {
+      "version": "0.5.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the legend and option labels guideline. The references only they cited are dropped. No rendering change."
+    },
+    {
+      "version": "0.5.0",
+      "date": "2026-11-27",
+      "note": "Decision text-sizes (Forms forms-text-sizes, #105 step 2b, point b4): legend.typography, description.typography and message.typography become one token per size (small and medium): the legend 14 / 16 px (medium, tight line height), the description 12 / 12 px, the message 14 / 16 px (medium), all 14 px before; the size property now affects these parts. No color change."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-27",
+      "note": "Decision error-fill (Forms forms-choice-error-fill, #105 step 2b, point b3): new token control.background.error → global.bg.subtle.functional.error.default, every unchecked radio in error filled with it inside its error border, a checked radio keeps its brand fill. The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue. On hover an empty box in error keeps its fill and its error border (before, hover turned its border back to the neutral one)."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-27",
+      "note": "Decision part-gaps (supersedes orientations; Forms forms-part-gaps, #105 step 10, point 5): container.row-gap space.8 → space.6 and container.gap.vertical space.8 → space.4; the legend's bottom margin takes the row gap (the legend touched its next part before, 0 px: fixed), 0 when the description follows it. The layout note, the iOS, Android and 2.5.8 guidelines and a new macOS guideline say the platform rows: iOS rows at least 44 pt, Android 48 dp, both 4 apart; macOS meets its 20 pt minimum. Measured: medium options 24 px tall, 28 apart; small 21, 25 apart (2.5.8 spacing exception by 1 px). The Figma blueprint draws the legend and the description in a heading frame with no gap. No color change."
+    },
+    {
+      "version": "0.2.2",
+      "date": "2026-11-26",
+      "note": "Fix: the example's error message and the content guideline rely on the label it sits under and no longer repeat the field's name (\"Choose one\"), as the Forms foundation decides (forms-message-relies-on-label). No rendering change."
+    },
+    {
+      "version": "0.2.1",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation). No rendering change."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-11-19",
+      "note": "Breaking, decision forms-severity: the invalid property is replaced by severity (none, error), errorMessage by message and the part error-message by message, the state invalid by error; the web attribute data-invalid by data-severity. Tokens: control.border-color.invalid is control.border-color.error and reads the accent functional border (global.border.accent.functional.<severity>.default) instead of the base error border; error-message.* is message.*, and message.color.<severity> reads global.text.on-base.functional.<severity>.default. CSS: [data-severity=\"<severity>\"] and [data-state=\"<severity>\"], radio-group__error-message is radio-group__message. The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1)."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

@@ -472,7 +472,9 @@
             "pressed",
             "expanded",
             "collapsed",
-            "invalid",
+            "error",
+            "warning",
+            "success",
             "readonly",
             "loading",
             "dragging",
@@ -487,7 +489,7 @@
             "property",
             "system"
           ],
-          "description": "interaction = pointer/keyboard; property = set through a property (disabled, selected); system = environment (loading, invalid)."
+          "description": "interaction = pointer/keyboard; property = set through a property (disabled, selected); system = environment (loading)."
         },
         "description": {
           "type": "string"
@@ -495,6 +497,10 @@
         "property": {
           "$ref": "#/$defs/camel",
           "description": "For trigger = property: the property id that sets this state."
+        },
+        "value": {
+          "$ref": "#/$defs/kebab",
+          "description": "For a state set by an enum property: the option of that property that sets it (state error, property severity, value error). Omit for a state set by a boolean property, which is on when the property is true."
         },
         "platforms": {
           "$ref": "#/$defs/platforms"

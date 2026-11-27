@@ -15,6 +15,7 @@ import { render as breadcrumb } from '../../../../packages/components/src/compon
 import { render as button } from '../../../../packages/components/src/components/button/button.template.mjs';
 import { render as card } from '../../../../packages/components/src/components/card/card.template.mjs';
 import { render as checkbox } from '../../../../packages/components/src/components/checkbox/checkbox.template.mjs';
+import { render as checkboxGroup } from '../../../../packages/components/src/components/checkbox-group/checkbox-group.template.mjs';
 import { render as divider } from '../../../../packages/components/src/components/divider/divider.template.mjs';
 import { render as dropdown } from '../../../../packages/components/src/components/dropdown/dropdown.template.mjs';
 import { render as icon } from '../../../../packages/components/src/components/icon/icon.template.mjs';
@@ -40,6 +41,7 @@ export const ds = {
   button,
   card,
   checkbox,
+  checkboxGroup,
   divider,
   dropdown,
   icon,

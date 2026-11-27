@@ -20,6 +20,11 @@ const tokens = inspectorTokens(spec);
 const tokensHref = `${base}/components/${spec.id}/tokens`;
 const decisionsHref = `${base}/components/${spec.id}/decisions`;
 const kinds = KINDS.filter((k: any) => tokens.some((t) => t.kind === k.id));
+// States an entry of a list sets (a group's option checked through `options`): the token rule reads
+// the forced state and the enum and boolean properties, not the entries, so it sees them only forced.
+const listStates = spec.states
+  .filter((s: any) => s.trigger === 'property' && spec.properties.some((p: any) => p.id === s.property && p.type === 'list'))
+  .map((s: any) => ({ id: s.id, property: s.property }));
 const groups = spec.anatomy.map((p: any) => ({ part: p, tokens: tokens.filter((t) => t.part === p.id) }));
 const data = {
   spec: inspectorSpec(spec),
@@ -42,6 +47,12 @@ const display = (t: (typeof tokens)[number], value: string) => {
     <h3 class="site-inspector__title" id={`${id}-title`}>Token inspector</h3>
     <p class="site-inspector__config" data-inspector-config></p>
     <p class="site-muted site-small" role="status" data-inspector-count></p>
+    {listStates.map((s: any) => (
+      <p class="site-muted site-small" data-inspector-limit>
+        The state <code>{s.id}</code> set by an entry of <code>{s.property}</code> is not read here: force
+        the state <code>{s.id}</code> to see its tokens.
+      </p>
+    ))}
   </div>
 
   <div class="site-inspector__kinds" role="group" aria-label="Show tokens of kind">

@@ -3,7 +3,8 @@
   "checkbox": {
     "container": {
       "column-gap": { "$type": "dimension", "$value": "{space.8}", "$description": "Between the control and the label column." },
-      "row-gap": { "$type": "dimension", "$value": "{space.2}", "$description": "Between the label and its description." }
+      "row-gap": { "$type": "dimension", "$value": "{space.2}", "$description": "Between the label and its description." },
+      "gap": { "$type": "dimension", "$value": "{form.container.gap}", "$description": "Before the message, after the description or, without one, the label: the Forms family's part gap (form.container.gap, 6 px; rule spacing, decision forms-part-gaps)." }
     },
     "control": {
       "$description": "The box: a native checkbox drawn by the component. The mark (check or bar) is drawn in its color token.",
@@ -20,19 +21,32 @@
       "border-width": { "$type": "dimension", "$value": "{stroke-width.md}" },
       "background": {
         "$type": "color",
-        "default": { "$value": "{global.bg.level.0.default}" },
-        "hover": { "$value": "{global.bg.level.0.hover}" },
+        "default": { "$value": "{form.control.background.default}" },
+        "hover": { "$value": "{form.control.background.hover}" },
         "checked": { "$value": "{global.bg.accent.brand.default}" },
         "indeterminate": { "$value": "{global.bg.accent.brand.default}" },
+        "checked-error": {
+          "$value": "{global.bg.accent.brand.default}",
+          "$description": "The fill of a checked box in error: its brand fill, the role of control.background.checked, inside its error border; the border and the message carry the error (decision checked-error-fill, Forms forms-choice-error-fill). A token for two states: it applies when the box is checked and in error, and wins over control.background.checked and control.background.error (packages/tokens/AGENTS.md, Which token applies)."
+        },
+        "indeterminate-error": {
+          "$value": "{global.bg.accent.brand.default}",
+          "$description": "The fill of an indeterminate box in error: its brand fill, the role of control.background.indeterminate, inside its error border (decision checked-error-fill, Forms forms-choice-error-fill). A token for two states: it applies when the box is indeterminate and in error, and wins over control.background.indeterminate and control.background.error."
+        },
+        "error": {
+          "$value": "{form.control.background.error}",
+          "$description": "The fill of an unchecked box in error, inside its error border, at rest and on hover alike: the subtle error background, as a field in error (Forms foundation, decisions forms-severity-fill and forms-choice-error-fill); a checked or indeterminate box keeps its brand fill (control.background.checked-error, indeterminate-error). The border and the message carry the error, the tint is not the cue."
+        },
         "disabled": { "$value": "{global.bg.state.disabled.default}" }
       },
       "border-color": {
         "$type": "color",
+        "$description": "The border at rest keeps global.border.accent.neutral.default, an override of the Forms family's default (form.control.border-color.default, the field family's base neutral border) until this control's own refinement (decision form-family-aliases).",
         "default": { "$value": "{global.border.accent.neutral.default}" },
         "hover": { "$value": "{global.border.accent.neutral.default}" },
         "checked": { "$value": "{global.border.accent.brand.default}" },
         "indeterminate": { "$value": "{global.border.accent.brand.default}" },
-        "invalid": { "$value": "{global.border.base.functional.error.default}" },
+        "error": { "$value": "{form.control.border-color.error}" },
         "disabled": { "$value": "{global.border.state.disabled.default}" }
       },
       "color": {
@@ -53,25 +67,39 @@
     "label": {
       "color": {
         "$type": "color",
-        "default": { "$value": "{global.text.on-base.neutral.primary}" },
+        "default": { "$value": "{form.label.color.default}" },
         "disabled": { "$value": "{global.text.state.disabled.default}" }
       },
       "typography": {
         "$type": "typography",
-        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
-        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.md}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.label.font-size.small}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.label.font-size.medium}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
       }
     },
     "description": {
       "color": {
         "$type": "color",
-        "default": { "$value": "{global.text.on-base.neutral.secondary}" },
+        "default": { "$value": "{form.description.color.default}" },
         "disabled": { "$value": "{global.text.state.disabled.default}" }
       },
       "typography": {
         "$type": "typography",
-        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.xs}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "$description": "Description text per control size: small takes the Forms family's size (form.description.font-size.small, 12 px); medium keeps body.size.sm (14 px), an override of the family's 12 px until the Checkbox's own refinement (decision form-family-aliases).",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.description.font-size.small}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
         "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{body.size.sm}", "fontWeight": "{body.weight.regular}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
+      }
+    },
+    "message": {
+      "$description": "What is wrong and what to do, under the description, aligned with the label (Forms decision forms-message-part-every-control).",
+      "color": {
+        "$type": "color",
+        "error": { "$value": "{form.message.color.error}" }
+      },
+      "typography": {
+        "$type": "typography",
+        "$description": "Message text: the Forms family's message sizes per control size (form.message.font-size: body.size.sm, md), larger than the description, so the message that says what to fix reads as easily as the control; medium weight, the normal line height and the normal letter spacing (Forms foundation, rule anatomy, decisions forms-text-sizes and forms-token-family).",
+        "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.message.font-size.small}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
+        "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.message.font-size.medium}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
       }
     }
   }

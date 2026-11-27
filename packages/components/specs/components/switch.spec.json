@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "switch",
   "name": "Switch",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "status": "draft",
   "role": "switch",
   "summary": "Turns a setting on or off, with immediate effect.",
@@ -466,7 +466,7 @@
       "props": {
         "size": "medium",
         "label": "Two-factor authentication",
-        "description": "Ask for a code from your authenticator app at sign-in.",
+        "description": "Ask for a code from your authenticator app at sign-in",
         "checked": true
       }
     },
@@ -484,7 +484,7 @@
       "props": {
         "size": "medium",
         "label": "Location services",
-        "description": "Managed by your organization.",
+        "description": "Managed by your organization",
         "checked": true,
         "disabled": true
       }
@@ -567,6 +567,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.2",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' description of one sentence ends with no period, as the Forms foundation decides (forms-message-punctuation). No rendering change."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

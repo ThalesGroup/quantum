@@ -90,7 +90,7 @@ source it comes from. This section explains the decisions behind it.
   [WAI tutorial: Functional images](https://www.w3.org/WAI/tutorials/images/functional/)).
 - **Contrast for named icons.** A named icon is a graphical object and needs 3:1 against the
   surface. Every color option passes on every surface level and on its own colored fill, hover
-  and active fills included, in both modes (warning 3.09:1 at the lowest, in light mode).
+  and active fills included, in both modes (warning 6.16:1 at the lowest in light mode, brand 5.45:1 the lowest of all).
   `current` inherits the contrast of the text around it:
   every text role of the system reaches 3:1 on the surface levels (4.80:1 at the lowest, and
   3.12:1 for disabled text), so a named icon in `current` does too

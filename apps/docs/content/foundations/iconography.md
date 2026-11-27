@@ -102,8 +102,8 @@ macOS has no Dynamic Type, so icons keep their sizes there, like the text.
   [symbolic characters](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#symbolic-or-graphical-text-characters)).
   Icons take the icon role of their context, which has the value of the text next to them
   (Color foundation). Since the Figma library's POC2 export that text reaches 4.5:1 everywhere,
-  and since its export of 2026-11-12 every icon role on the page reaches 3:1, the warning icon
-  in light mode at 3.09:1 the lowest.
+  and every icon role on the page reaches 3:1, the warning icon in light mode at 6.16:1 the
+  lowest since it reads the warning text's color (Color foundation).
 - **Icons complement color.** Apple suggests distinct shapes or icons in addition to color to
   show differences in function and state
   ([Apple HIG: Accessibility, vision](https://developer.apple.com/design/human-interface-guidelines/accessibility#Vision));

@@ -10,7 +10,7 @@ order: 21
 A number field collects a numeric value within optional bounds and steps: a quantity, a number
 of seats, a year. It looks like the Text field and adds the platform's stepping: arrow keys and
 a spin control, which keeps its native look. The browser validates the bounds; the field shows
-the error message the form gives it.
+the message the form gives it.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
 sub-heading named after it (Web, iOS, Android, Desktop); everything else holds everywhere.
@@ -30,10 +30,10 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 ## Sizes, states and content
 
-Sizes (small, medium, large), states (default, hover, focus visible, invalid, read-only,
-disabled) and the label, description and error message follow the Text field. The label names
+Sizes (small, medium, large), states (default, hover, focus visible, error, warning, success, read-only,
+disabled) and the label, description and message follow the Text field. The label names
 the quantity and its unit when it has one (**Weight (kg)**); the description gives the bounds
-(**Between 1 and 99**); the error message says how to fix the value.
+(**Between 1 and 99**); the message of an error says how to fix the value.
 
 ## Accessibility
 
@@ -65,8 +65,8 @@ This section explains the decisions behind it.
 ### Web
 
 - The implementation renders an `<input type="number">` with `min`, `max` and `step`, a
-  `<label for>`, a description and an error message referenced by `aria-describedby`, and
-  `aria-invalid="true"` when invalid. The spin control keeps its native look: there is no
+  `<label for>`, a description and a message referenced by `aria-describedby`, and
+  `aria-invalid="true"` for an error only. The spin control keeps its native look: there is no
   portable way to draw it from tokens
   ([ARIA in HTML: input type=number](https://www.w3.org/TR/html-aria/#el-input-number),
   [HTML-AAM: input type=number](https://www.w3.org/TR/html-aam-1.0/#el-input-number),
@@ -93,7 +93,7 @@ This section explains the decisions behind it.
 ### Android
 
 - Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under
-  it today. Expose an invalid value with the error semantics
+  it today. Expose an error with the error semantics
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
   [Jetpack Compose: error semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components)).

@@ -1,5 +1,5 @@
 {
-  "$description": "Accessibility profile of each component role: the obligations every spec with that role must meet. Every obligation is backed by the cited references (trusted sources only, see sources.json). A spec whose role has no profile fails validation: add the profile, from its APG pattern and the WAI-ARIA role definition, before specifying the component.",
+  "$description": "Accessibility profile of each component role: the obligations every spec with that role must meet. Every obligation is backed by the cited references (trusted sources only, see sources.json). `input: true` marks a role through which people enter or choose a value the product keeps: it requires WCAG 3.3.2 (checked) and puts every component with the role in the scope of the Forms foundation (appliesTo input-components). A spec whose role has no profile fails validation: add the profile, from its APG pattern and the WAI-ARIA role definition, before specifying the component.",
   "roles": {
     "button": {
       "ariaRole": "button",
@@ -58,6 +58,7 @@
       "ariaRole": "checkbox",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": ["Space"],
       "requiredCriteria": {
         "1.3.1": "The label is associated with the control programmatically (label element), not by position only.",
@@ -85,6 +86,7 @@
       "ariaRole": "group",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": ["Space"],
       "requiredCriteria": {
         "1.3.1": "The grouping and the group's name are programmatic (fieldset and legend), not visual only; each option has an associated label.",
@@ -113,6 +115,7 @@
       "ariaRole": "switch",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": ["Space"],
       "requiredCriteria": {
         "1.3.1": "The label is associated with the control programmatically (label element).",
@@ -140,6 +143,7 @@
       "ariaRole": "textbox",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": [],
       "requiredCriteria": {
         "1.3.1": "The label, the description and the error message are associated with the control programmatically (label element, aria-describedby).",
@@ -168,6 +172,7 @@
       "ariaRole": "textbox",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": [],
       "requiredCriteria": {
         "1.3.1": "The label, the description and the error message are associated with the control programmatically (label element, aria-describedby).",
@@ -195,6 +200,7 @@
       "ariaRole": "combobox",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": [],
       "requiredCriteria": {
         "1.3.1": "The label, the description and the error message are associated with the control programmatically (label element, aria-describedby).",
@@ -283,6 +289,7 @@
       "ariaRole": "spinbutton",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": ["Arrow keys"],
       "requiredCriteria": {
         "1.3.1": "The label, the description and the error message are associated with the field programmatically (label element, aria-describedby).",
@@ -311,6 +318,7 @@
       "ariaRole": "searchbox",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": [],
       "requiredCriteria": {
         "1.3.1": "The label, the description and the error message are associated with the field programmatically (label element, aria-describedby).",
@@ -337,6 +345,7 @@
       "ariaRole": "slider",
       "nameRequired": true,
       "focusable": true,
+      "input": true,
       "keyboard": ["Arrow keys", "Home", "End"],
       "requiredCriteria": {
         "1.3.1": "The label is associated with the control programmatically (label element), and the value is exposed as a value with its bounds.",

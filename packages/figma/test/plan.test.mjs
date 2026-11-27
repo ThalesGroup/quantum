@@ -123,6 +123,22 @@ test('the Icon draws its current color as neutral on each surface', () => {
   assert.equal(glyph('Size=medium, Color=current, Surface=base, State=default').fills, 'icon/container/color/neutral');
 });
 
+test('a checked box in error binds the token for both states, its brand fill', () => {
+  const find = (node, f) => (f(node) ? node : (node.children ?? []).map((c) => find(c, f)).find(Boolean));
+  const fillOf = (v) => find(v.root, (n) => typeof n.fills === 'string' && n.fills.includes('/control/background/')).fills;
+  for (const id of ['checkbox', 'checkbox-group', 'radio-group']) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const inError = plan.variants.filter((v) => /Severity=error/.test(v.name));
+    const checked = inError.filter((v) => /State=checked/.test(v.name));
+    assert.equal(checked.length, id === 'checkbox' ? 2 : 4, id);
+    for (const v of checked) assert.equal(fillOf(v), `${id}/control/background/checked-error`, v.name);
+    for (const v of inError.filter((v) => /State=indeterminate/.test(v.name))) assert.equal(fillOf(v), `${id}/control/background/indeterminate-error`, v.name);
+    // An empty box in error keeps the error fill; the brand value is the checked fill's.
+    assert.equal(fillOf(inError.find((v) => /State=default/.test(v.name))), `${id}/control/background/error`, id);
+    assert.deepEqual(plan.values[`${id}/control/background/checked-error`], plan.values[`${id}/control/background/checked`], id);
+  }
+});
+
 test('figmaComponent refuses a slot the component has no token for', () => {
   const blueprint = { root: { type: 'frame', bind: { fill: 'container.backgroud' } } };
   assert.throws(() => figmaComponent(loaded, button, blueprint), /"container.backgroud", which no token of the component has/);

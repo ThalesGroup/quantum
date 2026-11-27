@@ -213,8 +213,9 @@ export const COMPONENTS = [
     configs: [
       { state: 'checked', props: { checked: true } },
       { state: 'indeterminate', props: { checked: 'indeterminate' } },
-      { state: 'invalid', props: { 'aria-invalid': true } },
+      { state: 'error', props: { 'aria-invalid': true } },
       { set: { disabled: true }, props: { disabled: true } },
+      { part: 'message', props: { component: 'FieldError (field)' } },
     ],
   },
   {
@@ -223,7 +224,7 @@ export const COMPONENTS = [
       { part: 'container', props: { component: 'FieldSet' } },
       { part: 'legend', props: { component: 'FieldLegend' } },
       { part: 'option', props: { component: 'Field orientation="horizontal" + Checkbox' } },
-      { part: 'error-message', props: { component: 'FieldError' } },
+      { part: 'message', props: { component: 'FieldError' } },
     ],
   },
   {
@@ -231,7 +232,7 @@ export const COMPONENTS = [
     configs: [
       { part: 'control', props: { component: 'RadioGroupItem' } },
       { part: 'legend', props: { component: 'FieldLegend (field)' } },
-      { state: 'invalid', props: { 'aria-invalid': true } },
+      { state: 'error', props: { 'aria-invalid': true } },
     ],
   },
   {
@@ -254,8 +255,10 @@ export const COMPONENTS = [
       { part: 'control', props: { component: 'Input' } },
       { part: 'label', props: { component: 'Label' } },
       { part: 'description', props: { component: 'FieldDescription (field)' } },
-      { part: 'error-message', props: { component: 'FieldError (field)' } },
-      { state: 'invalid', props: { 'aria-invalid': true } },
+      { part: 'message', props: { component: 'FieldError (field)' } },
+      { state: 'error', props: { 'aria-invalid': true } },
+      { state: 'warning', props: null, note: 'shadcn has no warning state: only aria-invalid.' },
+      { state: 'success', props: null, note: 'shadcn has no success state: only aria-invalid.' },
       { set: { disabled: true }, props: { disabled: true } },
       { set: { readonly: true }, props: { readOnly: true } },
       { set: { size: 'small' }, props: null, note: 'One control height in shadcn.' },
@@ -266,7 +269,9 @@ export const COMPONENTS = [
     quantum: 'textarea', shadcn: 'textarea',
     configs: [
       { part: 'control', props: { component: 'Textarea' } },
-      { state: 'invalid', props: { 'aria-invalid': true } },
+      { state: 'error', props: { 'aria-invalid': true } },
+      { state: 'warning', props: null, note: 'shadcn has no warning state: only aria-invalid.' },
+      { state: 'success', props: null, note: 'shadcn has no success state: only aria-invalid.' },
     ],
   },
   { quantum: 'number-field', shadcn: 'input', configs: [{ part: 'control', props: { type: 'number' }, note: 'A plain input: no stepper buttons.' }] },
@@ -282,7 +287,9 @@ export const COMPONENTS = [
     configs: [
       { part: 'control', props: { component: 'NativeSelect' }, note: 'The Quantum Select is a native select; shadcn\'s Select (Radix listbox) is the custom alternative.' },
       { part: 'option', props: { component: 'NativeSelectOption' } },
-      { state: 'invalid', props: { 'aria-invalid': true } },
+      { state: 'error', props: { 'aria-invalid': true } },
+      { state: 'warning', props: null, note: 'shadcn has no warning state: only aria-invalid.' },
+      { state: 'success', props: null, note: 'shadcn has no success state: only aria-invalid.' },
     ],
   },
   {

@@ -28,17 +28,19 @@ button.label.typography.md
 ```
 - `<part>` must be a part id from the spec's anatomy.
 - `<property>` is a kebab-case CSS-like property name (`background`, `border-color`, `min-height`, `typography`).
-- `<option>` is an option value of an enum property (`primary`, `sm`); `<state>` a declared state id.
+- `<option>` is an option value of an enum property (`primary`, `sm`); `<state>` a declared state id,
+  or two joined by a hyphen in the spec's state order for a value that holds only when both do
+  (`checkbox.control.background.checked-error`).
 - Which token applies to a configuration follows from the path alone: an option missing from
-  the path matches any value, a state without a token falls back to `default`, the token naming
-  the most options wins. Rule and checks: `packages/tokens/AGENTS.md` "Which token applies".
+  the path matches any value, a state without a token falls back to `default`, a token naming two
+  states wins over each of them alone when both hold, the token naming the most options wins. Rule and checks: `packages/tokens/AGENTS.md` "Which token applies".
 - Values **alias semantic tokens only**. Never a raw token, never a literal.
 - The generated CSS variable is the path joined with `-`: `--button-container-background-primary-hover`.
   Typography composites expand to `-font-family`, `-font-size`, `-font-weight`, `-line-height`, `-letter-spacing`.
 
 ### States vocabulary
 `default`, `hover`, `active`, `focus-visible`, `disabled`, `selected`, `checked`, `unchecked`,
-`indeterminate`, `pressed`, `expanded`, `collapsed`, `invalid`, `readonly`, `loading`,
+`indeterminate`, `pressed`, `expanded`, `collapsed`, `error`, `warning`, `success`, `readonly`, `loading`,
 `dragging`, `visited`, `current`. Every spec declares `default`. A state used in a token path
 must be declared in the spec.
 
@@ -71,7 +73,7 @@ must be declared in the spec.
 
 ### Web implementation
 - Root class `.ds-<id>` on the native element named in `implementations.web.element`. A form
-  control with a label, a description or an error message as parts has a wrapper root and names
+  control with a label, a description or a message as parts has a wrapper root and names
   the native control as `implementations.web.rolePart` (`packages/components/AGENTS.md` "Form controls with a
   wrapper root"); the accessibility checks then apply to that element.
 - Enum properties become `data-<prop>="<option>"` attributes; booleans become native attributes when one exists (`disabled`), otherwise `data-<prop>`.

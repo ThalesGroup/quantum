@@ -82,10 +82,15 @@ export function citedCriteria(spec, registry) {
   return [...scs].sort((a, b) => num(a).localeCompare(num(b))).map((sc) => criterion(sc, registry)).filter(Boolean);
 }
 
+/** WCAG criteria cited by inherited guidelines (a foundation's, scripts/lib/foundation-scope.mjs inheritedGuidelines). */
+const inheritedCriteria = (inherited) => new Set(inherited.flatMap((g) => g.refs ?? []).filter((r) => r.startsWith('wcag:')).map((r) => r.slice(5)));
+
 /**
  * Spec-level accessibility checks (no file access). Returns [{ level: 'error' | 'warn', message }].
+ * `inherited`: the foundation guidelines the component follows; the criteria they cite count as
+ * cited for the role profile, since its page lists them.
  */
-export function checkSpecA11y(spec, registry) {
+export function checkSpecA11y(spec, registry, inherited = []) {
   const problems = checkCitations(spec, registry);
   if (!spec.accessibility) return problems;
   const error = (message) => problems.push({ level: 'error', message });
@@ -102,7 +107,7 @@ export function checkSpecA11y(spec, registry) {
   const keys = new Set((a.keyboard ?? []).map((k) => k.key));
   for (const k of profile.keyboard ?? []) if (!keys.has(k)) error(`role "${spec.role}" requires a keyboard entry for "${k}"`);
   if (profile.focusable && !spec.states.some((s) => s.id === 'focus-visible')) error(`role "${spec.role}" is focusable: declare the "focus-visible" state (WCAG 2.4.7)`);
-  const cited = new Set(citedCriteria(spec, registry).map((c) => c.sc));
+  const cited = new Set([...citedCriteria(spec, registry).map((c) => c.sc), ...inheritedCriteria(inherited)]);
   for (const [sc, why] of Object.entries(profile.requiredCriteria ?? {})) {
     if (!cited.has(sc)) error(`role "${spec.role}" requires WCAG ${sc} (${registry.wcag.criteria[sc]?.title}) to be cited: ${why}`);
   }
@@ -153,6 +158,8 @@ export function checkRegistry(registry) {
   for (const [role, p] of Object.entries(registry.roles)) {
     if (!p.references?.length) error(`roles.json "${role}" cites no references`);
     for (const r of p.references ?? []) if (!trustedPublisher(r.url, registry)) error(`roles.json "${role}" cites ${r.url}, which is not a trusted source`);
+    if (p.input !== undefined && typeof p.input !== 'boolean') error(`roles.json "${role}" input must be true or false`);
+    if (p.input && !p.requiredCriteria?.['3.3.2']) error(`roles.json "${role}" is marked input but does not require 3.3.2 (labels or instructions): an input has a visible label`);
     for (const sc of Object.keys(p.requiredCriteria ?? {})) {
       const c = registry.wcag.criteria[sc];
       if (!c?.inWcag22) error(`roles.json "${role}" requires ${sc}, which is not a WCAG ${registry.wcag.version} success criterion`);
@@ -168,14 +175,14 @@ export function docsAccessibilitySection(markdown) {
 }
 
 /** Docs checks: a sourced Accessibility section, trusted links only, WCAG links consistent with the spec. */
-export function checkDocsA11y(markdown, spec, registry) {
+export function checkDocsA11y(markdown, spec, registry, inherited = []) {
   const problems = [];
   const error = (message) => problems.push({ level: 'error', message });
   const section = docsAccessibilitySection(markdown);
   if (section === null) return [{ level: 'error', message: 'needs a "## Accessibility" section' }];
   const links = [...section.matchAll(/\]\((https?:[^)\s]+)\)/g)].map((m) => m[1]);
   if (links.length === 0) error('the Accessibility section must link the trusted sources that back it');
-  const cited = new Set(citedCriteria(spec, registry).map((c) => c.sc));
+  const cited = new Set([...citedCriteria(spec, registry).map((c) => c.sc), ...inheritedCriteria(inherited)]);
   for (const url of links) {
     if (!trustedPublisher(url, registry)) error(`Accessibility section links ${url}, which is not a trusted source (specs/a11y/sources.json)`);
     const sc = criterionFromUrl(url, registry);

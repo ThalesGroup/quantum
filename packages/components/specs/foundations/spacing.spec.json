@@ -2,10 +2,10 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "spacing",
   "name": "Spacing and sizing",
-  "version": "0.2.1",
+  "version": "0.5.0",
   "status": "draft",
   "summary": "The spacing scale and the element sizes from the Figma library, which components pick their paddings, gaps, heights and icon sizes from.",
-  "description": "Two scales from the Figma library (Dimension), as they are, measure everything: space, the room inside and between elements, on a 4 px grid; and size, the dimensions of elements such as icons and avatars. Components and the docs site read them directly: each component picks its padding, gaps, heights and icon sizes from them in its own tokens. There is no semantic spacing layer in between.",
+  "description": "Two scales from the Figma library (Dimension), as they are, measure everything: space, the room inside and between elements, on a 4 px grid; and size, the dimensions of elements such as icons and avatars. Components and the docs site read them directly: each component picks its padding, gaps, heights and icon sizes from them in its own tokens. There is no semantic spacing layer in between, except in forms, which the Forms foundation owns: the gaps of a form's layout (form.gap.*) and the gap between a form control's parts (form.container.gap), a default of the Forms family.",
   "tags": [
     "spacing",
     "dimension",
@@ -45,7 +45,7 @@
     {
       "id": "layout",
       "name": "Layout",
-      "text": "There are no page layout tokens (page margins, section spacing): layouts pick from the spacing scale until a decision names them."
+      "text": "There are no page layout tokens (page margins, section spacing): layouts pick from the spacing scale until a decision names them. The gaps of a form are the exception, semantic additions owned by the Forms foundation: form.gap.field, form.gap.group, form.gap.title and form.gap.label-column, aliasing space.16, space.32, space.12 and space.12 (Forms decisions forms-gap-tokens and forms-label-column-gap). The gap between a form control's parts is a default of the Forms family, form.container.gap (space.6), which each form control's own gap token aliases and may override (Forms decision forms-token-family)."
     }
   ],
   "specimens": [
@@ -201,6 +201,21 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-27",
+      "note": "The description and the rule layout name the Forms family's part gap, form.container.gap (space.6), the gap between a form control's parts that each form control aliases (Forms decision forms-token-family, #105 step 2b, point b6). The spacing scale itself does not change."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-27",
+      "note": "The rule layout names the fourth form gap, form.gap.label-column (space.12), between a label column and its controls (Forms decision forms-label-column-gap, #105 step 10, point 7b). The spacing scale itself does not change."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-27",
+      "note": "The rule layout and the description name the first layout tokens, the form gaps form.gap.field, form.gap.group and form.gap.title (space.16, space.32, space.12), semantic additions owned by the Forms foundation (Forms decision forms-gap-tokens, #105 step 10, point 4). The spacing scale itself does not change."
+    },
     {
       "version": "0.2.1",
       "date": "2026-11-05",

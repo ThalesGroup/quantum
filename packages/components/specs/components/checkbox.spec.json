@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox",
   "name": "Checkbox",
-  "version": "0.1.1",
+  "version": "0.5.0",
   "status": "draft",
   "role": "checkbox",
   "summary": "Lets people turn one option on or off, or pick any number of options from a list.",
@@ -17,7 +17,7 @@
       "id": "container",
       "role": "container",
       "required": true,
-      "description": "Root. Lays out the control, the label and the description on a grid; carries the size and the forced state."
+      "description": "Root. Lays out the control, the label, the description and the message on a grid; carries the size and the forced state."
     },
     {
       "id": "control",
@@ -36,6 +36,15 @@
       "role": "description",
       "required": false,
       "description": "Optional help text under the label, associated with the control as its description."
+    },
+    {
+      "id": "message",
+      "role": "errormessage",
+      "required": false,
+      "visibleIn": [
+        "error"
+      ],
+      "description": "Text saying what is wrong and what to do, under the description (or the label), aligned with the label, associated with the control as a description after the description. Shown only with a severity."
     }
   ],
   "properties": [
@@ -48,7 +57,8 @@
       "affects": [
         "control",
         "label",
-        "description"
+        "description",
+        "message"
       ],
       "options": [
         {
@@ -91,11 +101,32 @@
       "description": "The box must be checked to submit the form (accepting terms)."
     },
     {
-      "id": "invalid",
-      "name": "Invalid",
-      "type": "boolean",
-      "default": false,
-      "description": "The value failed validation (a required box left unchecked). The form explains the error in text next to the box or at the top of the form."
+      "id": "message",
+      "name": "Message",
+      "type": "string",
+      "bindsTo": "message",
+      "description": "What is wrong and what to do, shown with a severity."
+    },
+    {
+      "id": "severity",
+      "name": "Severity",
+      "type": "enum",
+      "default": "none",
+      "description": "What the check of the value found. A choice has nothing to confirm or to warn about, so only error exists (decision forms-severity).",
+      "affects": [
+        "control",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "none",
+          "description": "No severity (default)."
+        },
+        {
+          "value": "error",
+          "description": "Validation failed: the box takes the error border, the message says what to do and the control is exposed as in error (aria-invalid on the web)."
+        }
+      ]
     },
     {
       "id": "disabled",
@@ -139,10 +170,11 @@
       "description": "Partially checked: the box stands for a group of options of which some are on. Set by the application through the platform's API (there is no attribute for it on the web); the box fills and shows a bar instead of a check. Toggling it checks or unchecks the whole group."
     },
     {
-      "id": "invalid",
+      "id": "error",
       "trigger": "property",
-      "property": "invalid",
-      "description": "Validation failed: the box border takes the error color. The error is also stated in text by the form."
+      "property": "severity",
+      "value": "error",
+      "description": "Severity error: the box border takes the error color and, while the box is unchecked, the subtle error fill (a checked or indeterminate box keeps its brand fill); the message says the error in text."
     },
     {
       "id": "disabled",
@@ -158,7 +190,7 @@
     "wrap": false,
     "sizing": "hug",
     "notes": [
-      "The box sits before the label, centered on the label's first line; the description sits under the label, aligned with it.",
+      "The box sits before the label, centered on the label's first line; the description sits under the label, aligned with it, and the message under the description (or the label), aligned with it, container.gap (6 px) after it.",
       "A list of checkboxes stacks them vertically; the layout owns the spacing between them.",
       "The whole row (box and label) toggles the value: the label is part of the target."
     ]
@@ -166,7 +198,7 @@
   "accessibility": {
     "ariaRole": "checkbox",
     "name": {
-      "text": "Computed from the label, associated with the control as its label element on the web. The description is exposed as the accessible description, not as part of the name.",
+      "text": "Computed from the label, associated with the control as its label element on the web. The description and the message are exposed as the accessible description, not as part of the name.",
       "refs": [
         "apg-checkbox-roles",
         "wai-labels",
@@ -219,26 +251,6 @@
         ]
       },
       {
-        "text": "Every checkbox has a visible label, associated with the control programmatically: the label is what names the control and activating it toggles the box.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-labels",
-          "html-label"
-        ]
-      },
-      {
-        "text": "Associate the label with a label element whose for attribute names the input's id. Put help text in a separate element referenced by aria-describedby, so it is read as a description and does not lengthen the name.",
-        "refs": [
-          "wcag-h44",
-          "wcag-aria1",
-          "apg-describing"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
         "text": "Group related checkboxes under a visible group name, so people know what the set of options is about.",
         "refs": [
           "wai-grouping",
@@ -265,7 +277,7 @@
         ]
       },
       {
-        "text": "Label and description contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.03:1 and 12.78:1 in light mode, 11.28:1 and 8.86:1 in dark mode on the default surface. Disabled text is inactive and exempt.",
+        "text": "Label, description and message contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.03:1 and 12.78:1 in light mode, 11.28:1 and 8.86:1 in dark mode on the default surface; the error message 6.12:1 (light) and 7.06:1 (dark), at least 5.82:1 and 5.31:1 on every surface level. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -278,7 +290,7 @@
         ]
       },
       {
-        "text": "The error border contrasts 6.12:1 (light) and 3.73:1 (dark) with the default surface.",
+        "text": "The error border (the accent functional border) contrasts 6.12:1 (light) and 4.97:1 (dark) with the default surface, and at least 5.79:1 and 3.73:1 on every surface level.",
         "refs": [
           "wcag:1.4.11"
         ]
@@ -306,11 +318,12 @@
         ]
       },
       {
-        "text": "When the value is invalid, say so with aria-invalid on the input and describe the error in text associated with it or listed at the top of the form.",
+        "text": "When the value is in error, say so with aria-invalid on the input and say the error in the message, which aria-describedby references after the description. A checkbox has only the error severity: a choice has nothing to confirm or to warn about.",
         "refs": [
           "wcag:3.3.1",
           "wcag-aria21",
-          "wai-notifications"
+          "wcag-aria1",
+          "apg-describing"
         ],
         "platforms": [
           "web"
@@ -413,11 +426,6 @@
         "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
       },
       {
-        "id": "html-label",
-        "title": "HTML: the label element (for attribute, labeled control)",
-        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
-      },
-      {
         "id": "html-indeterminate",
         "title": "HTML: the indeterminate IDL attribute",
         "url": "https://html.spec.whatwg.org/multipage/input.html#dom-input-indeterminate"
@@ -463,16 +471,6 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
       },
       {
-        "id": "wai-notifications",
-        "title": "WAI tutorials: User notifications (error messages)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
         "id": "wcag-h71",
         "title": "WCAG technique H71: fieldset and legend for groups of form controls",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
@@ -481,11 +479,6 @@
         "id": "wcag-h90",
         "title": "WCAG technique H90: indicating required form controls",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
-      },
-      {
-        "id": "wcag-aria1",
-        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
       },
       {
         "id": "wcag-aria21",
@@ -531,6 +524,11 @@
         "id": "compose-state-description",
         "title": "Jetpack Compose accessibility: state description",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description"
+      },
+      {
+        "id": "wcag-aria1",
+        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
       }
     ]
   },
@@ -566,7 +564,7 @@
       "props": {
         "size": "medium",
         "label": "Enable notifications",
-        "description": "You can change this at any time in Settings."
+        "description": "You can change this at any time in Settings"
       }
     },
     {
@@ -578,15 +576,15 @@
       }
     },
     {
-      "id": "medium-required-invalid",
-      "name": "Medium, required and invalid",
-      "description": "A required consent left unchecked; the form states the error in text.",
+      "id": "medium-required-error",
+      "name": "Medium, required and error",
+      "description": "A required consent left unchecked; the message says what to do.",
       "props": {
         "size": "medium",
         "label": "I accept the terms of service",
-        "description": "Check the box to continue.",
         "required": true,
-        "invalid": true
+        "severity": "error",
+        "message": "Check the box to continue"
       }
     },
     {
@@ -595,7 +593,7 @@
       "props": {
         "size": "medium",
         "label": "Two-factor authentication",
-        "description": "Managed by your organization.",
+        "description": "Managed by your organization",
         "checked": true,
         "disabled": true
       }
@@ -614,7 +612,7 @@
       "attributes": {
         "size": "data-size",
         "disabled": "data-disabled",
-        "invalid": "data-invalid"
+        "severity": "data-severity"
       },
       "stateAttribute": "data-state",
       "rolePart": "control",
@@ -622,7 +620,8 @@
         "container": ".ds-checkbox",
         "control": ".ds-checkbox__control",
         "label": ".ds-checkbox__label",
-        "description": ".ds-checkbox__description"
+        "description": ".ds-checkbox__description",
+        "message": ".ds-checkbox__message"
       }
     }
   },
@@ -631,6 +630,87 @@
     "radio-group"
   ],
   "decisions": [
+    {
+      "id": "message-part",
+      "date": "2026-11-27",
+      "version": "0.5.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Checkbox has a message part (role errormessage), shown with a severity: under the description, or under the label without one, aligned with the label, container.gap (form.container.gap, 6 px) after what precedes it, in the Forms family's message color and sizes (message.color.error = form.message.color.error; message.typography small and medium at form.message.font-size.small and medium, 14 and 16 px, medium weight). The control's aria-describedby lists the description, then the message. It follows the Forms decisions forms-message-part-every-control (\"every form control that can show a severity has a message part, after its description\"), forms-part-gaps (\"description → message\", 6 px) and forms-text-sizes.",
+      "rationale": "Applied in #105 step 12 (spec and docs fixes) from forms-message-part-every-control, decided by the team in #105 step 3 point 3 (A: the Checkbox gets its part with the complex controls). Measured then: the message reads 5.82 to 6.13:1 in light mode and 5.31 to 7.07:1 in dark mode on surface levels 0 to 3.",
+      "tokens": [
+        "checkbox.message.*",
+        "checkbox.container.gap"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.3"
+      ]
+    },
+    {
+      "id": "checked-error-fill",
+      "date": "2026-11-27",
+      "version": "0.4.0",
+      "area": "color",
+      "status": "active",
+      "text": "A checked or indeterminate box in error keeps its brand fill through a token for both states, control.background.checked-error and control.background.indeterminate-error (= global.bg.accent.brand.default, the role of the checked fill), inside its error border: a token path may name two states, joined by a hyphen in the spec's state order, and such a token applies when both hold and wins over the token of each state alone (packages/tokens/AGENTS.md, Which token applies). The path stays the only thing that says when a component token applies, so the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants Severity=error, State=checked and State=indeterminate (4 variants) take the brand fill the web always drew; since error-fill they took control.background.error. No rendered value changes on the web.",
+      "rationale": "Decided by the team on 2026-11-27 (#105 step 2b, point b3.1): \"A\", as recommended, a token for two states. Rejected: B, a precedence per slot declared in the spec's states (no token, but a reader of the tokens alone, such as Tokens Studio, the Style Dictionary outputs or a Specs reader without the sidecar, would still get the error fill); C, accept the inspector's simplification and give the Figma plan a hand-written rule. The state segment is one, checked-error, not two (checked.error): a DTCG token cannot also be a group, and checked already holds a value; the CSS variable is the same either way. Measured on the review sheet: the mark on the brand fill 5.72:1 in light mode and 13.06:1 in dark mode, on the error fill the Figma variants drew 1.11:1 and 1.01:1 (WCAG 1.4.11 asks 3:1).",
+      "tokens": [
+        "checkbox.control.background.checked-error",
+        "checkbox.control.background.indeterminate-error"
+      ],
+      "refs": [
+        "wcag:1.4.11"
+      ]
+    },
+    {
+      "id": "form-family-aliases",
+      "date": "2026-11-27",
+      "version": "0.3.2",
+      "area": "color",
+      "status": "active",
+      "text": "The Checkbox's component tokens alias the Forms family (form.*) wherever their value is the family's default: the box's fill at rest, on hover and in error, its border in error, the label's color and font sizes, the description's color and its small font size. No value changes. Overrides, kept until this component's own refinement: the box's border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5, and the medium description stays 14 px (body.size.sm), where the family has 12 px. Disabled colors, geometry and checked colors stay its own.",
+      "rationale": "Follows the Forms foundation's decision forms-token-family (#105 step 2b, point b6, decided by the team on 2026-11-27): the default decisions for a form control rely on form.* tokens, which a control can override for specific use cases.",
+      "tokens": [
+        "checkbox.control.background.*",
+        "checkbox.control.border-color.*",
+        "checkbox.label.*",
+        "checkbox.description.*"
+      ]
+    },
+    {
+      "id": "error-fill",
+      "date": "2026-11-27",
+      "version": "0.3.0",
+      "area": "color",
+      "status": "active",
+      "text": "An unchecked box in error takes the subtle error fill (control.background.error = global.bg.subtle.functional.error.default) inside its error border, at rest and on hover alike; a checked or indeterminate box keeps its brand fill, so checked still reads checked. On hover an empty box in error keeps its fill and its error border (before, hover turned its border back to the neutral one).",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b3, option B chosen over the recommended A, border only); it follows the Forms foundation's decision forms-choice-error-fill, where the options and their reasons are recorded. Measured: The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue.",
+      "tokens": [
+        "checkbox.control.background.error"
+      ],
+      "refs": [
+        "wcag:1.4.11",
+        "wcag:1.4.1"
+      ]
+    },
+    {
+      "id": "forms-severity",
+      "date": "2026-11-19",
+      "version": "0.2.0",
+      "area": "state",
+      "status": "active",
+      "text": "The box shows the error severity, set by the severity property (none by default, error): its border takes the accent functional error border color. Warning and success do not exist for a single choice (our judgment, not a source's). Severity replaces the invalid property. On the web the error is aria-invalid=\"true\" and data-severity on the root. The Checkbox still has no message part: the form says the error in text next to the box (Forms step 2b). The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1).",
+      "rationale": "The team validated the Forms foundation's three severities (decision forms-validation-severities) and named the property severity; \"error\" is the word every platform uses (WCAG 3.3.1 Error Identification, Compose error semantics, Material error text), where \"invalid\" is the web's technical term. The clean break is deliberate: the packages are alpha and unreleased, and a deprecated alias would cost a schema field and support in the validator, the bridge and the templates. This amends decisions field-colors and label-description-error, whose text still says invalid and error message.",
+      "tokens": [
+        "checkbox.control.border-color.*"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.1",
+        "wcag-aria21"
+      ]
+    },
     {
       "id": "selection-control-colors",
       "date": "2026-10-03",
@@ -690,6 +770,41 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-27",
+      "note": "Decision message-part, after the Forms decisions forms-message-part-every-control, forms-part-gaps and forms-text-sizes (#105 step 12): a message part and a message property; the message sits under the description (or the label), aligned with the label, 6 px after it (container.gap = form.container.gap), in form.message.color.error at form.message.font-size.small and medium (14 and 16 px), medium weight; aria-describedby lists the description, then the message. The required-and-error example says its error in the message (\"Check the box to continue\"), not in the description. Message on the surfaces: 5.82 to 6.13:1 in light mode, 5.31 to 7.07:1 in dark mode (levels 0 to 3)."
+    },
+    {
+      "version": "0.4.0",
+      "date": "2026-11-27",
+      "note": "Decision checked-error-fill (#105 step 2b, point b3.1): a checked or indeterminate box in error keeps its brand fill through new tokens for two states, control.background.checked-error and control.background.indeterminate-error, which the CSS reads; the token inspector, pnpm validate, the Specs export and the Figma and Penpot variants now take it too. No rendered value changes."
+    },
+    {
+      "version": "0.3.2",
+      "date": "2026-11-27",
+      "note": "Decision form-family-aliases, after the Forms decision forms-token-family (#105 step 2b, point b6): the box's fill at rest, on hover and in error, its border in error, the label's color and font sizes, the description's color and its small font size alias the Forms family (form.*), every resolved value unchanged; the box's border at rest stays global.border.accent.neutral.default, where the family has the field family's global.border.base.neutral.5, and the medium description stays 14 px (body.size.sm), where the family has 12 px."
+    },
+    {
+      "version": "0.3.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the visible label and its association on the web (label element, aria-describedby). The references only they cited are dropped. No rendering change."
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-11-27",
+      "note": "Decision error-fill (Forms forms-choice-error-fill, #105 step 2b, point b3): new token control.background.error → global.bg.subtle.functional.error.default, an unchecked box in error filled with it inside its error border, a checked or indeterminate box keeps its brand fill. The error border on the fill 5.45:1 in light mode and 5.14:1 in dark mode (WCAG 1.4.11 asks 3:1), on the surface levels 0 to 3 unchanged (6.12 / 5.79 / 6.12 / 5.79:1 light, 4.97 / 4.55 / 4.16 / 3.73:1 dark); the fill against the surface 1.12 / 1.06 / 1.12 / 1.06:1 light and 1.03 / 1.12 / 1.23 / 1.37:1 dark, decoration, not the cue. On hover an empty box in error keeps its fill and its error border (before, hover turned its border back to the neutral one)."
+    },
+    {
+      "version": "0.2.1",
+      "date": "2026-11-26",
+      "note": "Fix: the examples' message and description of one sentence end with no period, as the Forms foundation decides (forms-message-punctuation). No rendering change."
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-11-19",
+      "note": "Breaking, decision forms-severity: the invalid property is replaced by severity (none, error), errorMessage by message (the Checkbox has no message part), the state invalid by error; the web attribute data-invalid by data-severity. Tokens: control.border-color.invalid is control.border-color.error and reads the accent functional border (global.border.accent.functional.<severity>.default) instead of the base error border. CSS: [data-severity=\"<severity>\"] and [data-state=\"<severity>\"]. The accent error border reaches 3:1 on every surface level since the Color foundation 7.1.0 (decision border-accent-functional-3-to-1)."
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-06",

@@ -10,7 +10,7 @@ order: 15
 A select shows the current choice in a closed box with a chevron, and opens a list of options
 when activated. The list belongs to the platform: the browser or the operating system draws
 it, moves through it with the keyboard and announces it. The component owns the closed box,
-its label, its help text and its error message, so a select looks like the other fields of a
+its label, its help text and its message, so a select looks like the other fields of a
 form.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
@@ -37,8 +37,9 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Medium | Forms, the default: 40 px high with 16 px text. |
 | Large | A prominent single field, such as a search page or a sign-in form: 48 px high with 20 px text. |
 
-Height, inline padding and text size scale together; the label, the description and the error
-message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
+Height, inline padding and text size scale together; the label, the description and the message
+take the sizes of every field of the same size (the Forms foundation's anatomy), so a Select reads
+like the Text field next to it. The exact values are tokens (Tokens tab). Keep one size per form.
 
 ## Options and placeholder
 
@@ -52,9 +53,11 @@ never be chosen again and is not a valid value.
 | State | How it happens | What changes |
 | --- | --- | --- |
 | Default | Resting, closed. | An outlined box with the chosen option and a chevron. |
-| Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint; the border does not change. |
+| Hover | A pointer rests over the box. Needs a pointing device: there is no hover on touch. | The box takes the surface hover tint, unless it shows a severity, whose fill stays; the border does not change. |
 | Focus visible | Keyboard focus on the closed box. | The shared focus ring appears outside the border. Pointer focus shows no ring. |
-| Invalid | `invalid` property, after validation. | The border takes the error color and the error message appears under the box. |
+| Error | `severity` property set to error, after validation. | The box takes the subtle error fill and the error border, and the message appears under the box, in the error color. The control is exposed as in error. |
+| Warning | `severity` property set to warning. | The box takes the subtle warning fill and the warning border, and the message appears under the box, in the warning color. No web state: the message says it. |
+| Success | `severity` property set to success. | The box takes the subtle success fill and the success border, and the message appears under the box, in the success color. No web state: the message says it. |
 | Disabled | `disabled` property. | Box, value, chevron, label and description drop to the shared disabled colors; the select leaves the keyboard order. |
 
 The opened list is not a state of the component: the platform draws it.
@@ -65,7 +68,7 @@ The opened list is not a state of the component: the platform draws it.
 - Option labels are short and parallel; order them logically (alphabetical for long lists,
   most common first for short ones).
 - The placeholder is an invitation to choose (**Choose a country**), never a value.
-- The error message says what to do: **Choose a country.**
+- The message of an error says what to do, under the label it relies on: **Choose one**
 
 ## Accessibility
 
@@ -74,20 +77,21 @@ platform and what is specific to one. Each statement there links the source it c
 This section explains the decisions behind it.
 
 - **Native control first.** The platform's native select exposes the role, the name, the value
-  and the required, disabled and invalid states to assistive technology; a custom view has to
+  and the required, disabled and error states to assistive technology; a custom view has to
   rebuild all of it ([WCAG 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html),
   [WAI-ARIA: combobox role](https://www.w3.org/TR/wai-aria-1.2/#combobox)).
 - **A visible label, always.** The label above the control is its accessible name; help text is
-  the description, read after the name, and so is the error message while the field is invalid.
+  the description, read after the name, and so is the message while the field shows a severity.
   The chevron is decorative and hidden, so it adds nothing to the name
   ([WCAG 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html),
   [WCAG 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html),
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/),
   [WAI tutorial: Form instructions](https://www.w3.org/WAI/tutorials/forms/instructions/),
   [APG: describing with aria-describedby](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/#describing_with_aria-describedby)).
-- **Errors are identified in text.** When validation fails, the border turns to the error color
-  and the error message under the control says what is wrong and how to fix it. Color never
-  carries the error alone, and required fields are marked in words
+- **Severities are identified in text.** When validation finds something, the box takes the
+  severity's subtle fill and border color, and the message under the control says what is wrong and how to fix it (an
+  error), what to check (a warning) or what was confirmed (a success). Color never carries a
+  severity alone, and required fields are marked in words
   ([WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
   [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
   [WAI tutorial: User notifications](https://www.w3.org/WAI/tutorials/forms/notifications/),
@@ -117,7 +121,7 @@ This section explains the decisions behind it.
 ### Web
 
 - The implementation renders a `<select>` in a wrapper with a `<label for>`, a description and an
-  error message referenced by `aria-describedby`, `aria-invalid="true"` when invalid, and the
+  message referenced by `aria-describedby` for every severity, `aria-invalid="true"` for an error only, and the
   native `required` attribute. A select rendered as a drop-down box has the implicit combobox
   role ([ARIA in HTML: select](https://www.w3.org/TR/html-aria/#el-select),
   [HTML-AAM: select as a drop-down box](https://www.w3.org/TR/html-aam-1.0/#el-select-combobox),
@@ -146,7 +150,7 @@ This section explains the decisions behind it.
 ### Android
 
 - Interactive elements need a 48 by 48 dp touch target; the small and medium sizes fall under it
-  today. Expose an invalid value with the error semantics so the message
+  today. Expose an error with the error semantics so the message
   is announced with the field
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
   [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),

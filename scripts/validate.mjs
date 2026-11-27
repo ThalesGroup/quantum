@@ -22,11 +22,12 @@ import { allContexts, evaluateContrast, formatRatio } from './lib/contrast.mjs';
 import { checkSiteCss, checkSiteMarkup } from './lib/site-check.mjs';
 import { checkLogicalCss } from './lib/logical-css.mjs';
 import { checkBlueprint } from './lib/blueprint.mjs';
-import { checkTokenMap, parseTokenPath, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
+import { checkTokenMap, parseTokenPath, statePair, kindOf, matchesTokenPattern } from './lib/token-map.mjs';
 import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
 import { loadScreens, screenComponents, checkSections, checkSource, checkScreenMeta, checkScreenHtml, checkScreenSource, checkScreensCssSelectors, definedScreenClasses, screenSourceFiles, SCREEN_OWN_VARS } from './lib/screens.mjs';
+import { SCOPES, followedByScope, componentsInScope, checkInputControl, inheritedGuidelines } from './lib/foundation-scope.mjs';
 import { PATHS, FILES, artifacts, foundationArtifacts } from './lib/paths.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -185,6 +186,19 @@ const specsDir = path.join(root, PATHS.specs, 'components');
 const specFiles = fs.readdirSync(specsDir).filter((f) => f.endsWith('.spec.json')).sort();
 if (specFiles.length === 0) warn(PATHS.specs, 'no component specs found');
 
+// The foundation guidelines each component follows (Forms: those of the tiers its spec asks for),
+// read before the components: the criteria they cite count for its role profile and its docs, as
+// its page lists them (scripts/lib/foundation-scope.mjs inheritedGuidelines). Invalid foundation
+// files are reported with the foundations below.
+const inheritingFoundations = (() => {
+  const dir = path.join(root, PATHS.specs, 'foundations');
+  if (!exists(dir)) return [];
+  return fs.readdirSync(dir).filter((f) => f.endsWith('.spec.json')).flatMap((f) => {
+    try { return [JSON.parse(read(path.join(dir, f)))]; } catch { return []; }
+  }).filter((f) => f.appliesTo && followedByScope(f.appliesTo));
+})();
+const inheritedOf = (spec) => inheritingFoundations.flatMap((f) => inheritedGuidelines(f, spec, a11y?.roles ?? {}));
+
 const specs = [];
 for (const file of specFiles) {
   const where = `${PATHS.specs}/components/${file}`;
@@ -281,7 +295,7 @@ for (const { spec, where } of specs) {
   if (!(spec.changelog ?? []).some((c) => c.version === spec.version)) error(where, `changelog has no entry for version ${spec.version}`);
   else if (spec.changelog[0].version !== spec.version) error(where, `changelog must list the newest entry (${spec.version}) first`);
   checkDecisions(where, spec);
-  if (a11y) report(where, checkSpecA11y(spec, a11y));
+  if (a11y) report(where, checkSpecA11y(spec, a11y, inheritedOf(spec)));
   const profile = a11y?.roles[spec.role];
   if (spec.tokens.prefix !== id) error(where, `tokens.prefix "${spec.tokens.prefix}" must equal id "${id}"`);
   if (spec.tokens.source !== artifacts(id).tokens) error(where, `tokens.source must be ${artifacts(id).tokens}`);
@@ -295,6 +309,7 @@ for (const { spec, where } of specs) {
     error(where, `missing token file ${spec.tokens.source}`);
   } else if (loaded) {
     const tokens = loaded.all.filter((t) => t.tier === 'component' && t.segments[0] === id);
+    const optionValues = new Set([...spec.properties, ...spec.anatomy.flatMap((p) => p.properties ?? [])].filter((p) => p.type === 'enum').flatMap((p) => p.options.map((o) => o.value)));
     if (tokens.length === 0) error(rel(tokenFile), `defines no tokens under root group "${id}"`);
     const usedParts = new Set();
     for (const t of tokens) {
@@ -303,7 +318,11 @@ for (const { spec, where } of specs) {
       usedParts.add(part);
       if (rest.length === 0) error(rel(tokenFile), `${t.path}: needs a property segment after the part`);
       for (const seg of rest.slice(1)) {
-        if (stateVocabulary.has(seg) && !stateIds.includes(seg)) error(rel(tokenFile), `${t.path}: state "${seg}" is not declared in the spec`);
+        // A word of the state vocabulary that an enum property owns as an option (an intent `error`) is that option.
+        if (stateVocabulary.has(seg) && !stateIds.includes(seg) && !optionValues.has(seg)) error(rel(tokenFile), `${t.path}: state "${seg}" is not declared in the spec`);
+        // Two states in one segment (`checked-error`): both declared, neither `default`, in the spec's state order.
+        const pairOf = [...stateVocabulary].map((a) => seg.startsWith(`${a}-`) && stateVocabulary.has(seg.slice(a.length + 1)) && [a, seg.slice(a.length + 1)]).find(Boolean);
+        if (pairOf && !stateVocabulary.has(seg) && !optionValues.has(seg) && !statePair(spec, seg)) error(rel(tokenFile), `${t.path}: "${seg}" names two states, which must both be declared in the spec, other than default, in the spec's state order`);
         if (enumOptions.has(seg)) continue;
         // A segment that matches an option of NO property but looks like a variant is suspicious only if states/options exist with similar names; keep permissive.
       }
@@ -315,7 +334,9 @@ for (const { spec, where } of specs) {
     // except the options of properties that only affect subcomponent parts (forwarded to that component).
     const segs = new Set(tokens.flatMap((t) => t.segments.slice(2)));
     const forwarded = new Set(spec.properties.filter((p) => p.affects?.length && p.affects.every(inSubcomponent)).map((p) => p.id));
-    for (const [opt, prop] of enumOptions) if (!segs.has(opt) && !forwarded.has(prop)) warn(rel(tokenFile), `option "${opt}" of property "${prop}" never appears in a token path`);
+    // The options of a property whose states carry them (severity: error, warning, success) are the state segments; its default option (none) has no state, so no token.
+    const stateless = new Set(spec.states.filter((s) => s.property && s.value !== undefined).map((s) => `${s.property}.${spec.properties.find((p) => p.id === s.property)?.default}`));
+    for (const [opt, prop] of enumOptions) if (!segs.has(opt) && !forwarded.has(prop) && !stateless.has(`${prop}.${opt}`)) warn(rel(tokenFile), `option "${opt}" of property "${prop}" never appears in a token path`);
     for (const s of stateIds) if (s !== 'default' && !segs.has(s)) warn(rel(tokenFile), `state "${s}" never appears in a token path`);
     // Active-token rule (scripts/lib/token-map.mjs, packages/tokens/AGENTS.md): one token per slot in every configuration.
     const map = checkTokenMap(spec, tokens);
@@ -339,7 +360,7 @@ for (const { spec, where } of specs) {
     const front = fm ? fm[1] : '';
     if (!new RegExp(`^component:\\s*${id}\\s*$`, 'm').test(front)) error(docRel, `frontmatter must declare "component: ${id}"`);
     if (!/^title:\s*\S/m.test(front)) error(docRel, 'frontmatter must declare a title');
-    if (a11y) report(docRel, checkDocsA11y(read(docFile), spec, a11y));
+    if (a11y) report(docRel, checkDocsA11y(read(docFile), spec, a11y, inheritedOf(spec)));
     checkPlatformHeadings(docRel, read(docFile));
   }
   const blueprintRel = artifacts(id).blueprint;
@@ -579,14 +600,19 @@ for (const file of foundationFiles) {
   }
   for (const [id, k] of known) if (k.failing === 0) error(where, `contrast "${id}" passes everywhere: remove its knownIssue (${k.issue})`);
 
-  // Components that must follow the foundation alias every exact path it owns.
+  // Components in the scope of `appliesTo` (role profiles: scripts/lib/foundation-scope.mjs) alias
+  // every exact path the foundation owns. The scope input-components is read from the roles, not
+  // from token aliases (Forms owns no token): each of its components must also meet what the
+  // foundation asks of an input (a label, a message part with a `severity`).
   if (spec.appliesTo && loaded) {
     const required = spec.tokens.filter((p) => !p.endsWith('.*'));
+    const inScopeSpecs = componentsInScope(spec.appliesTo, specs.map((s) => s.spec), a11y?.roles ?? {});
+    if (followedByScope(spec.appliesTo) && inScopeSpecs.length === 0) error(where, `appliesTo "${spec.appliesTo}" (${SCOPES[spec.appliesTo].rule}) matches no component`);
     for (const { spec: comp, where: compWhere } of specs) {
-      const inScope = spec.appliesTo === 'every-component' || (spec.appliesTo === 'focusable-components' && a11y?.roles[comp.role]?.focusable);
-      if (!inScope) continue;
+      if (!inScopeSpecs.includes(comp)) continue;
       const refs = new Set(loaded.all.filter((t) => t.tier === 'component' && t.segments[0] === comp.id).flatMap((t) => t.references));
       for (const p of required) if (!refs.has(p)) error(compWhere, `follows the "${id}" foundation (${spec.appliesTo}): a component token must alias ${p} (${where})`);
+      if (spec.appliesTo === 'input-components') report(compWhere, checkInputControl(comp).map((p) => ({ ...p, message: `follows the "${id}" foundation (${spec.appliesTo}): ${p.message}` })));
     }
   }
 

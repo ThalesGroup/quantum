@@ -28,7 +28,8 @@ AAA criteria may be cited as extra quality but are not mandatory.
   decoration are `decorative: true`.
 - **Role profiles.** `packages/components/specs/a11y/roles.json` states what a component role obliges: ARIA role,
   accessible name, keys, focusability, the WCAG criteria that must be cited, and the native web
-  elements that carry the role. Each profile cites its sources. A role without a profile
+  elements that carry the role. Each profile cites its sources. A profile marked `input` (a role through which people enter or choose a value; it must require WCAG 3.3.2)
+  puts its components in the scope of the Forms foundation. A role without a profile
   cannot be specified; write the profile first from the APG pattern and WAI-ARIA.
 - **Docs.** The Accessibility section explains *why*, and links the trusted sources behind each
   explanation. Every WCAG criterion it links must be cited in the spec.

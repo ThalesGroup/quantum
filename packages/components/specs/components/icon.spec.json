@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "icon",
   "name": "Icon",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "status": "draft",
   "role": "presentation",
   "summary": "A glyph of the system's icon set, decorative or named.",
@@ -187,7 +187,7 @@
         ]
       },
       {
-        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 12.76:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info); warning 3.27:1 and 11.17:1. On every surface level and on sunken, the lowest are warning 3.09:1 (light) and error 5.30:1 (dark); the lowest of the other colors in light mode is brand 5.45:1. A decorative icon has no contrast requirement. On a colored fill (surface accent or subtle), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes; the lowest is error on the error accent fill at rest, 4.56:1 in both modes. With current, the icon takes the color of the text around it, and so its contrast: on a surface level every on-base text role gives at least 4.80:1 (neutral tertiary, dark mode, level 3) and disabled text 3.12:1, so a named icon in current reaches 3:1 wherever that text uses a system text role; on a fill, it takes the text color that the fill's container sets.",
+        "text": "A named icon is a graphical object required to understand the content: it contrasts at least 3:1 with the surface in every color mode. On the default surface the system's icon roles give 12.78:1 (neutral, light) and 8.86:1 (dark), 5.77:1 and 12.76:1 (brand), 7.87:1 and 7.89:1 (success), 6.12:1 and 7.06:1 (error), 7.70:1 and 8.58:1 (info), 6.49:1 and 11.17:1 (warning). On every surface level and on sunken, the lowest are brand 5.45:1 (light) and error 5.30:1 (dark); warning is 6.16:1 and 8.38:1 at the lowest. A decorative icon has no contrast requirement. On a colored fill (surface accent or subtle), each color reads that fill's icon role: every color passes on its own fill, hover and active fills included, in both modes; the lowest is error on the error accent fill at rest, 4.56:1 in both modes. With current, the icon takes the color of the text around it, and so its contrast: on a surface level every on-base text role gives at least 4.80:1 (neutral tertiary, dark mode, level 3) and disabled text 3.12:1, so a named icon in current reaches 3:1 wherever that text uses a system text role; on a fill, it takes the text color that the fill's container sets.",
         "refs": [
           "wcag:1.4.11",
           "understanding-non-text-contrast-graphics"
@@ -764,6 +764,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.10.2",
+      "date": "2026-11-25",
+      "note": "Fix, no decision of the Icon changed: the Color foundation's decision warning-on-base-600 maps the on-base warning icon role to the warning text, warning 600 #765818 in light mode (was warning 500 #BD8107): container.color.warning is 6.49 / 6.16 / 6.49 / 6.16 / 6.16:1 on the levels 0 to 3 and sunken (was 3.27 / 3.09:1); dark mode is unchanged. The tokens, CSS and template are unchanged."
+    },
     {
       "version": "0.10.1",
       "date": "2026-11-16",

@@ -1,21 +1,22 @@
 /**
  * Checkbox group (packages/components/src/components/checkbox-group/checkbox-group.css): a
- * vertical auto layout (the fieldset) stacking the legend, the description, the `options` and the
- * error message, separated by container.row-gap as the spec's layout notes say. `options` (the
+ * vertical auto layout (the fieldset) stacking the `heading` (the legend with the description right
+ * under it), the `options` and the message, separated by container.row-gap as the spec's layout
+ * notes say. `options` (the
  * web's list) stacks three options vertically, or lines them up in the horizontal orientation,
  * separated by container.gap; the web wraps them when they do not fit, Figma's auto layout here
  * does not. The group hugs its content.
  *
  * Each option is the Checkbox's two rows (src/blueprints/checkbox.mjs): its box, label and
  * description. A forced state applies, as on the web, to the whole group when it is group-wide
- * (invalid, disabled) and to the first option only otherwise (hover, focus, checked): the others
+ * (error, disabled) and to the first option only otherwise (hover, focus, checked): the others
  * stay at rest. The description and the options' descriptions are boolean properties (off, as in
- * the template); the error message is drawn in the invalid state only.
+ * the template); the message is drawn in the error state only.
  */
 import { TRANSITION, checkboxControl, optionRows } from './checkbox.mjs';
 
 /** States that the web forces on the whole group; the others apply to one option. */
-const GROUP_WIDE = new Set(['invalid', 'disabled']);
+const GROUP_WIDE = new Set(['error', 'disabled']);
 
 const option = (control) => (n) =>
   optionRows({
@@ -54,29 +55,39 @@ export const group = (control) => ({
     bind: { gap: 'container.row-gap' },
     children: [
       {
-        type: 'text',
-        name: 'legend',
-        text: 'Options',
-        property: 'Legend',
-        bind: { fill: 'legend.color', typography: 'legend.typography' },
-      },
-      {
-        type: 'text',
-        name: 'description',
-        text: 'Description',
-        property: 'Description',
-        visibleProperty: 'Show description',
-        bind: { fill: 'description.color', typography: 'description.typography' },
+        // The web's legend and description: the description sits right under the legend (no
+        // gap), and container.row-gap separates the pair from the options (the legend's bottom
+        // margin on the web when no description follows).
+        type: 'frame',
+        name: 'heading',
+        layout: 'VERTICAL',
+        children: [
+          {
+            type: 'text',
+            name: 'legend',
+            text: 'Options',
+            property: 'Legend',
+            bind: { fill: 'legend.color', typography: 'legend.typography' },
+          },
+          {
+            type: 'text',
+            name: 'description',
+            text: 'Description',
+            property: 'Description',
+            visibleProperty: 'Show description',
+            bind: { fill: 'description.color', typography: 'description.typography' },
+          },
+        ],
       },
       options(control, 'vertical', 'VERTICAL'),
       options(control, 'horizontal', 'HORIZONTAL'),
       {
         type: 'text',
-        name: 'error-message',
-        when: (v) => v.state === 'invalid',
-        text: 'Error message',
-        property: 'Error message',
-        bind: { fill: 'error-message.color', typography: 'error-message.typography' },
+        name: 'message',
+        when: (v) => v.state === 'error',
+        text: 'Message',
+        property: 'Message',
+        bind: { fill: 'message.color', typography: 'message.typography' },
       },
     ],
   },
