@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "text-field",
   "name": "Text field",
-  "version": "0.28.3",
+  "version": "0.28.4",
   "status": "draft",
   "role": "textbox",
   "summary": "Lets people enter or edit a single line of text.",
@@ -531,27 +531,6 @@
         ]
       },
       {
-        "text": "Every field has a visible label associated with the control programmatically; help text that people need to fill the field (format, example) is visible too, as the description.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-labels",
-          "wai-instructions",
-          "html-label"
-        ]
-      },
-      {
-        "text": "Associate the label with a label element whose for attribute names the control's id; reference the description and the message with aria-describedby, so they are read after the name.",
-        "refs": [
-          "wcag-h44",
-          "wcag-aria1",
-          "apg-describing"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
         "text": "The placeholder is a short hint, never the label and never an instruction: it disappears as soon as people type, and is not exposed as the name when a label exists.",
         "refs": [
           "html-placeholder",
@@ -578,36 +557,6 @@
         ],
         "platforms": [
           "ios"
-        ]
-      },
-      {
-        "text": "Say the severity in text next to the field, whatever it is: the message names what is wrong and how to fix it for an error, what to check for a warning and what was confirmed for a success, and is associated with the control. Color is never the only sign of a severity.",
-        "refs": [
-          "wcag:3.3.1",
-          "wai-notifications",
-          "wcag-g83",
-          "wcag:1.4.1"
-        ]
-      },
-      {
-        "text": "Say that the value is in error with aria-invalid=\"true\" on the control, for the error severity only, and that a field is required with the required attribute, which the browser exposes as required. The web has no state for a warning or a success: the message says them, and aria-invalid is never set for them.",
-        "refs": [
-          "wcag-aria21",
-          "aria-invalid",
-          "html-required",
-          "html-aam-required",
-          "wai-validation"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
-        "text": "Mark required fields in the label or the description, never by the error color alone.",
-        "refs": [
-          "wcag-h90",
-          "wcag-f81",
-          "wcag:1.4.1"
         ]
       },
       {
@@ -906,19 +855,16 @@
         ]
       },
       {
-        "text": "Hide \"(required)\" with aria-hidden=\"true\": the required attribute says the field is required, once. \"(optional)\" stays in the label element, so the name ends with it (\"Company (optional)\"): no attribute says that a field is optional. The visible label still starts with the name, so speech input by the label works.",
+        "text": "The mark comes after the label's words, so the visible label starts with the field's name, and so does the accessible name when it ends with \"(optional)\" (\"Company (optional)\"): speech input by the label works.",
         "refs": [
-          "wcag:2.5.3",
-          "wcag:1.3.1",
-          "accname-hidden",
-          "mdn-aria-required"
+          "wcag:2.5.3"
         ],
         "platforms": [
           "web"
         ]
       },
       {
-        "text": "On Android, a required field ends its label with an asterisk, in the error text color, whenever markedFields is optional or required (none draws no mark), and an optional field carries none; the asterisk is explained once, in a note before the first field or in supporting text, and the field's accessibility label includes it.",
+        "text": "On Android, the field draws the asterisk of a required field in the error text color whenever markedFields is optional or required, none drawing no mark; an optional field carries none.",
         "refs": [
           "material-text-fields-required"
         ],
@@ -927,11 +873,9 @@
         ]
       },
       {
-        "text": "On Windows, a required field ends its label with an asterisk, explained once before the first field, which stays in the UI Automation Name: the Name is the label as shown (\"Full name*\"), and the control also sets AutomationProperties.IsRequiredForForm.",
+        "text": "On Windows, the asterisk stays in the field's UI Automation Name: the Name is the label as shown (\"Full name*\").",
         "refs": [
-          "windows-forms",
-          "uia-name-property",
-          "winui-is-required-for-form"
+          "uia-name-property"
         ],
         "platforms": [
           "desktop"
@@ -985,16 +929,6 @@
         "url": "https://www.w3.org/TR/html-aam-1.0/#att-readonly"
       },
       {
-        "id": "html-aam-required",
-        "title": "HTML-AAM: required attribute (aria-required)",
-        "url": "https://www.w3.org/TR/html-aam-1.0/#att-required"
-      },
-      {
-        "id": "html-label",
-        "title": "HTML: the label element (for attribute, labeled control)",
-        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
-      },
-      {
         "id": "html-placeholder",
         "title": "HTML: the placeholder attribute (not an alternative to a label)",
         "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder"
@@ -1008,11 +942,6 @@
         "id": "mdn-readonly-interactions",
         "title": "MDN: the readonly attribute, attribute interactions (required has no effect on a read-only field)",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/readonly#attribute_interactions"
-      },
-      {
-        "id": "html-required",
-        "title": "HTML: the required attribute",
-        "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-required"
       },
       {
         "id": "html-disabled",
@@ -1050,39 +979,9 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text"
       },
       {
-        "id": "wai-validation",
-        "title": "WAI tutorials: Validating input (the required attribute)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
-      },
-      {
-        "id": "wai-notifications",
-        "title": "WAI tutorials: User notifications (error messages)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-h90",
-        "title": "WCAG technique H90: indicating required form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
-      },
-      {
         "id": "wcag-h98",
         "title": "WCAG technique H98: HTML autocomplete attributes to identify the purpose of input fields",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H98"
-      },
-      {
-        "id": "wcag-g83",
-        "title": "WCAG technique G83: text descriptions for required fields not completed",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G83"
-      },
-      {
-        "id": "wcag-aria1",
-        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
       },
       {
         "id": "wcag-aria21",
@@ -1243,16 +1142,6 @@
         "id": "uia-name-property",
         "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
         "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
-      },
-      {
-        "id": "accname-hidden",
-        "title": "AccName 1.2: step 2A, hidden nodes are not part of the name",
-        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
-      },
-      {
-        "id": "mdn-aria-required",
-        "title": "MDN: aria-required (a label that already says required)",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples"
       },
       {
         "id": "en-301-549-keyboard",
@@ -2287,6 +2176,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.28.4",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5; #103 step 27): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the visible label and its association on the web (label element, aria-describedby), the severity in text, aria-invalid and the required attribute, and the required mark in words. The three mark guidelines, checked against the Forms guidelines of the required tier (the web's hidden \"(required)\", Android's and Windows' asterisk), keep only what is the field's own: the mark after the label's words (WCAG 2.5.3), the asterisk's color and when it shows on Android, the asterisk in the UI Automation Name on Windows. The references only they cited are dropped (html-label, wcag-h44, wcag-aria1, wai-notifications, wcag-g83, html-required, html-aam-required, wai-validation, wcag-h90, accname-hidden, mdn-aria-required). No rendering change."
+    },
     {
       "version": "0.28.3",
       "date": "2026-11-26",

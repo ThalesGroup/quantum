@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "search-field",
   "name": "Search field",
-  "version": "0.21.0",
+  "version": "0.21.1",
   "status": "draft",
   "role": "searchbox",
   "summary": "Lets people type what they are looking for.",
@@ -535,26 +535,6 @@
         ]
       },
       {
-        "text": "Every search field has a visible label associated with the control programmatically, even when it is just Search; the glyph alone is not a label.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-labels",
-          "html-label"
-        ]
-      },
-      {
-        "text": "Associate the label with a label element whose for attribute names the control's id; reference the description and the message with aria-describedby, so they are read after the name.",
-        "refs": [
-          "wcag-h44",
-          "wcag-aria1",
-          "apg-describing"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
         "text": "The placeholder is a short hint of what can be searched, never the label: it disappears as soon as people type, and is not exposed as the name when a label exists.",
         "refs": [
           "html-placeholder",
@@ -844,19 +824,16 @@
         ]
       },
       {
-        "text": "Hide \"(required)\" with aria-hidden=\"true\": the required attribute says the field is required, once. \"(optional)\" stays in the label element, so the name ends with it (\"Company (optional)\"): no attribute says that a field is optional. The visible label still starts with the name, so speech input by the label works.",
+        "text": "The mark comes after the label's words, so the visible label starts with the field's name, and so does the accessible name when it ends with \"(optional)\" (\"Company (optional)\"): speech input by the label works.",
         "refs": [
-          "wcag:2.5.3",
-          "wcag:1.3.1",
-          "accname-hidden",
-          "mdn-aria-required"
+          "wcag:2.5.3"
         ],
         "platforms": [
           "web"
         ]
       },
       {
-        "text": "On Android, a required field ends its label with an asterisk, in the error text color, whenever markedFields is optional or required (none draws no mark), and an optional field carries none; the asterisk is explained once, in a note before the first field or in supporting text, and the field's accessibility label includes it.",
+        "text": "On Android, the field draws the asterisk of a required field in the error text color whenever markedFields is optional or required, none drawing no mark; an optional field carries none.",
         "refs": [
           "material-text-fields-required"
         ],
@@ -865,11 +842,9 @@
         ]
       },
       {
-        "text": "On Windows, a required field ends its label with an asterisk, explained once before the first field, which stays in the UI Automation Name: the Name is the label as shown (\"Full name*\"), and the control also sets AutomationProperties.IsRequiredForForm.",
+        "text": "On Windows, the asterisk stays in the field's UI Automation Name: the Name is the label as shown (\"Full name*\").",
         "refs": [
-          "windows-forms",
-          "uia-name-property",
-          "winui-is-required-for-form"
+          "uia-name-property"
         ],
         "platforms": [
           "desktop"
@@ -896,11 +871,6 @@
         "id": "html-aam-placeholder",
         "title": "HTML-AAM: placeholder attribute (aria-placeholder, a last-resort name)",
         "url": "https://www.w3.org/TR/html-aam-1.0/#att-placeholder"
-      },
-      {
-        "id": "html-label",
-        "title": "HTML: the label element (for attribute, labeled control)",
-        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
       },
       {
         "id": "html-placeholder",
@@ -936,16 +906,6 @@
         "id": "wai-instructions-placeholder",
         "title": "WAI tutorials: Form instructions, placeholder text",
         "url": "https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-aria1",
-        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
       },
       {
         "id": "understanding-non-text-contrast-boundaries",
@@ -1091,16 +1051,6 @@
         "id": "uia-name-property",
         "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
         "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
-      },
-      {
-        "id": "accname-hidden",
-        "title": "AccName 1.2: step 2A, hidden nodes are not part of the name",
-        "url": "https://www.w3.org/TR/accname-1.2/#comp_hidden_not_referenced"
-      },
-      {
-        "id": "mdn-aria-required",
-        "title": "MDN: aria-required (a label that already says required)",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-required#examples"
       },
       {
         "id": "en-301-549-keyboard",
@@ -1326,7 +1276,7 @@
   },
   "content": {
     "guidelines": [
-      "The label says what is searched: Search, Search projects, Filter by name. Sentence case, no colon.",
+      "The label says what is searched, even when it is just Search: Search, Search projects, Filter by name; the glyph alone is never the label. Sentence case, no colon.",
       "The placeholder gives an example of a query or the scope (Name, email or role), never the label.",
       "An empty result is reported next to the results, with what to try next, never as a severity: the message says what is wrong with the query itself, a required search left empty or a term too short to check.",
       "The message of an error says the fix and relies on the label it sits under, without repeating the field's name: Enter a company name or number"
@@ -2065,6 +2015,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.21.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5; #103 step 27): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the visible label and its association on the web (label element, aria-describedby); \"the glyph alone is not a label\" moves to the content guideline on the label. The three mark guidelines, checked against the Forms guidelines of the required tier (the web's hidden \"(required)\", Android's and Windows' asterisk), keep only what is the field's own: the mark after the label's words (WCAG 2.5.3), the asterisk's color and when it shows on Android, the asterisk in the UI Automation Name on Windows. The references only they cited are dropped (html-label, wcag-h44, wcag-aria1, accname-hidden, mdn-aria-required). No rendering change."
+    },
     {
       "version": "0.21.0",
       "date": "2026-11-27",
