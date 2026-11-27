@@ -801,16 +801,30 @@ Neither gives a value; the 16 px are the team's choice, the space the screens al
 A message appears under its field after validation, so the field grows and the fields below move
 down; the 16 px between fields stay the same.
 
-> **Not decided yet (step 10).** The space between groups of fields and before the form's
-> actions, whether these values become tokens, and the space inside a field and a group. Today
-> each control spaces only its own parts: a field by its container gap, a group by its row gap.
+**Groups of fields are 32 px apart, and a group's title sits 12 px above its first field.** A
+group of fields is a section of the form with its own title, such as a delivery address. Two
+groups stand twice as far apart as two fields (`space.32`), from the bottom of a group's last field
+to the next group's title, so the space alone shows where a group ends. The title sits closer to
+its first field (`space.12`) than the fields are to each other, so it reads as theirs and not as
+the end of the group above. Apple groups related items with "negative space, container shapes, or
+separator lines" ([HIG: layout, visual hierarchy](https://developer.apple.com/design/human-interface-guidelines/layout#Visual-hierarchy));
+here the space does it. A Checkbox group or a Radio group is not a group of fields: it is one
+control and keeps the field gap.
+
+The space is not the only sign: the grouping is also in the code, a fieldset and its legend on the
+web, as the WAI forms tutorial asks
+([WAI forms tutorial: grouping controls](https://www.w3.org/WAI/tutorials/forms/grouping/)).
+
+> **Not decided yet (step 10).** The space before the form's actions, whether these values become
+> tokens, and the space inside a field and a group. Today each control spaces only its own parts:
+> a field by its container gap, a group by its row gap.
 
 ### Desktop
 
-Windows spaces individual input controls 24 px apart
+Windows spaces individual input controls 24 px apart and groups of input controls 48 px apart
 ([Windows: Forms, spacing](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#spacing)).
-The design system keeps 16 px on every platform, Windows included: a recorded difference, not a
-platform value.
+The design system keeps 16 px between fields and 32 px between groups on every platform, Windows
+included: recorded differences, not platform values.
 
 ## Keyboard in a form
 

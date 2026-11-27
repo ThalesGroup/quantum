@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.47.0",
+  "version": "0.48.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -98,7 +98,7 @@
     {
       "id": "spacing",
       "name": "Spacing",
-      "text": "Two fields of a form stack space.16 (16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. The value holds on every platform: Windows, whose Forms page spaces input controls 24 px apart, keeps 16 px, a recorded difference and not a platform value. Not decided yet: the space between groups of fields and before the form's actions (step 10, points 2 and 3), whether these values become tokens (point 4) and the space inside a field and a group (point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
+      "text": "Two fields of a form stack space.16 (16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. Two groups of fields, sections of a form with their own title (such as a delivery address), stack space.32 (32 px) apart, twice the field gap, from the bottom of a group's last field to the next group's title, and a group's title sits space.12 (12 px) above its first field, closer to its fields than they are to each other, so it reads as theirs. A Checkbox group or a Radio group is not a group of fields: it takes the field gap. The space shows the grouping, and the structure carries it too (a fieldset and its legend on the web), never the space alone. The values hold on every platform: Windows, whose Forms page spaces input controls 24 px apart and groups of controls 48 px apart, keeps 16 and 32 px, recorded differences and not platform values. Not decided yet: the space before the form's actions (step 10, point 3), whether these values become tokens (point 4) and the space inside a field and a group (point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
     },
     {
       "id": "keyboard",
@@ -1048,7 +1048,14 @@
         ]
       },
       {
-        "text": "On Windows, the Forms page spaces individual input controls 24 px apart; the design system keeps 16 px between fields on every platform, Windows included: a recorded difference, not a platform value.",
+        "text": "Groups of fields stand further apart than fields: 32 px between two groups, and a group's title 12 px above its first field, so the space shows where a group ends and which fields its title introduces. The grouping is also carried in the code, a fieldset and its legend on the web, never by the space alone.",
+        "refs": [
+          "wai-forms-grouping",
+          "hig-layout-visual-hierarchy"
+        ]
+      },
+      {
+        "text": "On Windows, the Forms page spaces individual input controls 24 px apart and groups of input controls 48 px apart; the design system keeps 16 px between fields and 32 px between groups of fields on every platform, Windows included: recorded differences, not platform values.",
         "platforms": [
           "desktop"
         ],
@@ -1526,6 +1533,11 @@
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#spacing"
       },
       {
+        "id": "hig-layout-visual-hierarchy",
+        "title": "Apple HIG: Layout, visual hierarchy",
+        "url": "https://developer.apple.com/design/human-interface-guidelines/layout#Visual-hierarchy"
+      },
+      {
         "id": "wcag-g139",
         "title": "WCAG technique G139: creating a mechanism that allows users to jump to errors",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G139"
@@ -1787,6 +1799,24 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-group-gap",
+      "date": "2026-11-27",
+      "version": "0.48.0",
+      "area": "layout",
+      "status": "active",
+      "text": "Two groups of fields, sections of a form with their own title, are space.32 (32 px) apart, from the bottom of a group's last field to the next group's title, and a group's title sits space.12 (12 px) above its first field. A Checkbox group or a Radio group is one control and takes the field gap (forms-field-gap). The values hold on every platform: Windows' own guidance, groups of input controls 48 px apart, is recorded as a difference, not a platform value.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 2): A, as recommended, among: A, groups space.32 apart, twice the 16 px between fields as Windows doubles its own (24 to 48), a title space.12 above its first field (recommended, chosen); B, groups space.48 apart, Windows' value, three times the field gap on 16 px fields, title 12 (rejected); C, a Divider with 16 px on each side, title 12 (rejected: a line more to draw, a divider being a choice a product can add over A). No words from the team beyond the choice. The title is closer to its fields (12) than they are to each other (16) and than to the group above (32), so it reads as theirs. No trusted source gives a value: Windows Forms gives 48 px with controls 24 px apart; HIG Layout groups related items with negative space, container shapes or separator lines; the WAI forms tutorial says grouping is carried out visually and in the code (a fieldset and its legend). Sources opened on 2026-11-27: Windows Forms (Spacing), HIG Layout (Visual hierarchy), WAI forms tutorial (grouping controls).",
+      "tokens": [
+        "space.32",
+        "space.12"
+      ],
+      "refs": [
+        "windows-forms-spacing",
+        "hig-layout-visual-hierarchy",
+        "wai-forms-grouping"
+      ]
+    },
     {
       "id": "forms-field-gap",
       "date": "2026-11-27",
@@ -2587,6 +2617,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.48.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-group-gap (#105 step 10, point 2): the rule spacing says two groups of fields are space.32 (32 px) apart and a group's title space.12 (12 px) above its first field, a Checkbox or Radio group keeping the field gap, the grouping carried in the code too; Windows' 48 px is a recorded difference. One guideline (every platform) and one reference (HIG Layout, visual hierarchy); the Windows guideline names both differences. Points 3 to 5 of step 10 still open. No component, token or rendering change: no screen groups its fields under titles."
+    },
     {
       "version": "0.47.0",
       "date": "2026-11-27",
