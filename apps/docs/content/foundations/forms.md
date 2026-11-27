@@ -537,7 +537,8 @@ it.
 After a failed submit, the summary's title takes focus with `focus()`; `tabindex="-1"` makes it
 focusable without adding it to the tab order
 ([MDN: tabindex](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/tabindex)).
-Without a summary, the first field in error takes focus.
+Without a summary, the first field in error takes focus. On a page the server sends back, the
+`autofocus` attribute does it without script (see [Error summary](#error-summary)).
 
 ### iOS
 
@@ -764,8 +765,25 @@ so a summary there lists values to fix, never empty required fields. No Apple, A
 page speaks of a list of errors: each platform's use is the system's judgment, drawn from when
 that platform checks a value.
 
-> **Not decided yet (step 9, point 6b).** On the web, a page the server sends back with errors:
-> how focus reaches the summary, and the error count in the page's title.
+**On the web, a page the server sends back focuses it with `autofocus`, no script.** When the
+server checks the form and sends the page back with errors, the summary's title carries the
+`autofocus` attribute next to its `tabindex="-1"`, or, with one error, that field's control does.
+The attribute applies to every element, not only to form controls, and one element per page carries
+it ([HTML: the autofocus attribute](https://html.spec.whatwg.org/multipage/interaction.html#the-autofocus-attribute)):
+the browser focuses the title as the page loads, with no script, as the native-first rule asks.
+Screen readers then take people straight to it without reading what comes before
+([MDN: autofocus](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus)),
+and the title says how many errors there are. One limit: when the page's URL holds a fragment that
+names an element, the browser skips autofocus, so the URL of that page, the form's action or a
+redirect, carries no fragment. A browser may also skip it when people have already started typing.
+
+**On iOS, Android and desktop, the app moves focus when the server answers.** No page is sent
+back: the server's answer reaches the same screen, and when it brings errors, focus moves as after
+any failed submit, with the means each platform part of [How errors are
+announced](#how-errors-are-announced) names. No Apple, Android or Windows page says where focus goes
+after a failed submit, so this is the system's judgment.
+
+> **Not decided yet (step 9, point 6b-2).** The error count in the page's title.
 
 ## Spacing
 
