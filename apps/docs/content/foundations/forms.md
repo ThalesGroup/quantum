@@ -783,7 +783,33 @@ any failed submit, with the means each platform part of [How errors are
 announced](#how-errors-are-announced) names. No Apple, Android or Windows page says where focus goes
 after a failed submit, so this is the system's judgment.
 
-> **Not decided yet (step 9, point 6b-2).** The error count in the page's title.
+**On the web, that page's title starts with the count.** A page the server sends back with errors
+starts its `<title>` with the number of errors, then the page's own title: "3 errors – Delivery
+details – Checkout", and "1 error – Delivery details – Checkout" with one. Screen reader users
+receive the page's title as soon as the page loads, even when the main heading sits deep in the
+content
+([WAI forms tutorial: using the page title](https://www.w3.org/WAI/tutorials/forms/notifications/#using-the-page-title)),
+and the tab and the history show it too. The page's own title follows the count, so the title
+still describes the page's topic or purpose
+([Understanding 2.4.2](https://www.w3.org/WAI/WCAG22/Understanding/page-titled.html#intent)). The
+count is one plural string per language held by the product, as the summary's title is. After a
+check the browser runs, or a live update of the summary, no page is loaded: the title stays as it
+is, and the focused summary gives the count.
+
+**On iOS, Android and desktop, the title keeps naming the place.** An app never loads a new screen
+for a submit, so a screen or a window keeps its title, which tells people where they are, and the
+focused summary gives the count:
+
+- **iOS and macOS.** A useful title for each window helps people confirm their location, and stays
+  concise
+  ([HIG: Toolbars, titles](https://developer.apple.com/design/human-interface-guidelines/toolbars#Titles)).
+- **Android.** A window-like pane is named with `paneTitle`, so accessibility services can
+  represent its changes
+  ([Compose semantics: window-like components](https://developer.android.com/develop/ui/compose/accessibility/semantics#window-like)).
+- **Windows.** The title bar identifies the app with its icon and title, and may show a document's
+  title ([Windows: Title bar](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/title-bar)).
+
+No Apple, Android or Windows page speaks of errors in a title, so this is the system's judgment.
 
 ## Spacing
 
