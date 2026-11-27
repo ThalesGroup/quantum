@@ -17,7 +17,7 @@ export const meta = {
     'Messages say the fix and rely on their label: "Choose one" for the billing period and "Choose at least one" for the add-ons, where the original says "Please select a billing period" and "Please select at least one add-on".',
     'Labels and descriptions are in sentence case, and a description of one sentence takes no period ("Subscription plan", "Choose your subscription plan").',
     'The plans are a Radio group with a description under each option; the original draws each plan as a bordered card with the radio at its end.',
-    'Email notifications is a Checkbox, where the original has a Switch: the value is saved with "Save preferences", and a form submitted with a button holds no Switch (Forms rule form-control, decision forms-no-switch-in-submitted-form), since a switch acts at once. Its label and description follow the box, where the original puts them before the switch.',
+    'Email notifications is a Checkbox, where the original has a Switch: its value takes effect only when people press "Save preferences", and an on/off value saved by a submit button is a Checkbox, a Switch being for a setting that takes effect at once (Forms rule form-control, decision forms-on-off-saved-by-button). Its label and description follow the box, where the original puts them before the switch.',
     'The actions follow the last field inside the form, at the field gap, with Reset as a native reset button; the original puts them in the card footer under a border.',
   ],
   gaps: [

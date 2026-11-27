@@ -41,8 +41,10 @@ value applies at once or with the rest of the form depends on how the control is
 the component: a settings page applies each change as it is made, a sign-up form collects the
 values and applies them when people submit.
 
-**A form submitted with a button holds no Switch.** A switch acts at once, while a value saved
-with the form waits for the button, so an on/off value saved with the form is a Checkbox. Material
+**An on/off value saved by a submit button is a Checkbox, not a Switch.** A switch acts at once,
+so it is for a setting that takes effect immediately, also inside a form or a settings page that
+saves each change as it happens; an on/off value that takes effect only when people press a
+submit or save button waits for that button, so it is a Checkbox. Material
 asks that the effects of a switch start immediately, without needing to save, and to use
 checkboxes for options people must save
 ([Material: switch](https://m3.material.io/components/switch/guidelines)); Windows asks for a
@@ -364,9 +366,10 @@ technology, and nothing relies on color
 [WAI forms tutorial: validation](https://www.w3.org/WAI/tutorials/forms/validation/#validating-required-input),
 [H90](https://www.w3.org/WAI/WCAG22/Techniques/html/H90),
 [F81](https://www.w3.org/WAI/WCAG22/Techniques/failures/F81)).
-The note holds for every control of the form with no exception: none of them is a Switch, which
-can be neither required nor marked, since an on/off value saved with the form is a Checkbox
-([What a form control is](#what-a-form-control-is)).
+The note covers the controls whose values wait for the submit button. An on/off value among
+them is a Checkbox, which can be required and marked like any field, and a Switch, which takes
+effect at once, is not one of them
+([What a form control is](#what-a-form-control-is)), so the note stays true.
 
 **The form says which fields it marks, once.** Every control that can be marked required carries
 the same property, `markedFields` (`optional`, `required`, `none`; `optional` by default), and a
