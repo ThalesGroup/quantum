@@ -249,6 +249,20 @@ the state is exposed another way
 "(optional)" stays part of the label's text, so it is read with the name: no attribute says that
 a field is optional.
 
+**A required Checkbox group asks for at least one option.** No box carries `required`: on a
+checkbox it requires that very box, so on one box the browser asks for that option and on every
+box for all of them, never for one of several
+([HTML: Checkbox state](https://html.spec.whatwg.org/multipage/input.html#checkbox-state-(type=checkbox))).
+The product checks the group when the form is submitted and its message says "Choose at least
+one". Its legend's "(required)" is not hidden: no state says that a group is required, since
+`aria-required` is not supported on the `group` role of a fieldset
+([WAI-ARIA 1.2: aria-required](https://www.w3.org/TR/wai-aria-1.2/#aria-required),
+[HTML-AAM: fieldset](https://www.w3.org/TR/html-aam-1.0/#el-fieldset)), so the word is part of
+the group's name. A set of consents that must all be accepted is a set of separate required
+Checkboxes. A Radio group keeps `required` on its radios, which makes the whole group required
+([HTML: Radio Button state](https://html.spec.whatwg.org/multipage/input.html#radio-button-state-(type=radio))),
+and its legend's "(required)" stays hidden like a field's.
+
 ### iOS
 
 Apple's guidance draws no required mark: it asks that people understand what is required before

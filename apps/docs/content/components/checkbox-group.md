@@ -55,6 +55,9 @@ them.
 - Option labels are short, parallel and positive: **Email**, **Push**, **Text message**.
 - Say when a choice is required or limited in the description: **Choose at least one**,
   **Choose up to three**. The message of an error says what to do.
+- A required group asks for at least one option, never all of them. A set of consents that must
+  all be accepted (**I accept the terms**, **I accept the privacy policy**) is not a group: each
+  is a separate required Checkbox.
 
 ## Accessibility
 
@@ -91,12 +94,19 @@ This section explains the decisions behind it.
 
 - The implementation renders a `<fieldset>` with a `<legend>` and `<input type="checkbox">`
   elements sharing one `name`, each with a `<label for>`; help text and the message are
-  referenced by `aria-describedby`, a group in error sets `aria-invalid="true"` on the boxes,
-  and a required group puts `required` on the first box
+  referenced by `aria-describedby`, and a group in error sets `aria-invalid="true"` on the boxes
   ([ARIA in HTML: fieldset](https://www.w3.org/TR/html-aria/#el-fieldset),
   [ARIA in HTML: input type=checkbox](https://www.w3.org/TR/html-aria/#el-input-checkbox),
   [ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1),
   [ARIA21](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21)).
+- A required group puts `required` on no box: on a checkbox it requires that very box, so the
+  browser would ask for one given option, or for all of them, never for one of several
+  ([HTML: Checkbox state](https://html.spec.whatwg.org/multipage/input.html#checkbox-state-(type=checkbox))).
+  The product checks the group when the form is submitted and says "Choose at least one" in its
+  message. A "(required)" in the legend stays in the group's name: no state says that a group is
+  required, since `aria-required` is not supported on the `group` role of a fieldset
+  ([WAI-ARIA 1.2: aria-required](https://www.w3.org/TR/wai-aria-1.2/#aria-required),
+  [HTML-AAM: fieldset](https://www.w3.org/TR/html-aam-1.0/#el-fieldset)).
 - Disabling the group uses the fieldset's `disabled` attribute
   ([HTML: fieldset disabled](https://html.spec.whatwg.org/multipage/form-elements.html#attr-fieldset-disabled));
   the focus ring uses `:focus-visible`

@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.57.0",
+  "version": "0.58.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -61,7 +61,7 @@
     {
       "id": "required",
       "name": "Required fields",
-      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. The mark follows the label (or the legend) after a word space, at its size, in the regular weight and the description's color, the disabled text color when the control is disabled. On Android and Windows the asterisk is red, the color of the error message and icon, at the label's size and weight, 4 px after the label (2 px in small), and so is the asterisk of the note that explains it. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on Windows the asterisk stays in the accessible name, since Microsoft asks that the name be the label as shown; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label."
+      "text": "A required field is exposed as required to assistive technology (the required attribute on the web) and marked visibly before people submit, never by color alone. The generic rule, applied as is on the web, marks the fewer fields: by default, when a form has more required fields than optional ones (or as many), required fields carry no mark, each optional field ends its label (or its group's legend) with \"(optional)\", and a note before the first field says \"All fields are required unless marked optional.\"; when a form has more optional fields than required ones, each required field ends its label (or legend) with \"(required)\" instead, and no note is needed. No asterisk. Which fields a form marks is a rule of the form: every control that can be marked required carries the same property, markedFields (optional, required, none; optional by default), set once per form to the same value, and draws its mark from its own required: \"(optional)\" when it is not required and the form marks optional fields, \"(required)\" when it is required and the form marks required fields, nothing with none (a control outside a form, such as a filter; the default of the Search field, which usually stands alone). The note before the first field is the form's. The mark follows the label (or the legend) after a word space, at its size, in the regular weight and the description's color, the disabled text color when the control is disabled. On Android and Windows the asterisk is red, the color of the error message and icon, at the label's size and weight, 4 px after the label (2 px in small), and so is the asterisk of the note that explains it. On the web, \"(required)\" is hidden from assistive technology, since the required attribute already exposes the state, so it is said once; \"(optional)\" stays in the label's text, so it is part of the accessible name, since no attribute says that a field is optional. Each platform applies its own guidance where it has some, and the generic rule where it has none: on Android, as Material asks, each required field ends its label (or legend) with an asterisk, explained once before the first field and included in the accessibility label; on Windows, as its Forms guidance asks, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm; iOS and macOS, where Apple gives no mark, apply the generic rule. Wherever the platform exposes a required state (the required attribute on the web, IsRequiredForForm on Windows, accessibilityRequired on macOS), the state says the field is required and a visible \"(required)\" is hidden from assistive technology; on Windows the asterisk stays in the accessible name, since Microsoft asks that the name be the label as shown; on iOS, where no accessibility trait says required, \"(required)\" stays in the accessibility label. A required Checkbox group means at least one option checked: no box carries the required state, since on a checkbox it requires that very box (on one box, that option; on every box, all of them); the product checks the group when the form is submitted and its error says so (\"Choose at least one\"). Its legend's \"(required)\" is not hidden from assistive technology on the web, since no state says that a group is required (aria-required is not supported on the group role of a fieldset), so it is part of the group's name. A set of consents that must all be accepted is a set of separate required Checkboxes, not a required group. A Radio group keeps the platform's required state: a required radio makes its whole group required, and its legend's \"(required)\" stays hidden on the web."
     },
     {
       "id": "statuses",
@@ -1868,6 +1868,26 @@
         "id": "compose-target-sizes",
         "title": "Compose accessibility: minimum target sizes",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes"
+      },
+      {
+        "id": "aria-required",
+        "title": "WAI-ARIA 1.2: aria-required (used in roles checkbox, combobox, gridcell, listbox, radiogroup, spinbutton, textbox, tree; not group)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-required"
+      },
+      {
+        "id": "html-checkbox-state",
+        "title": "HTML: Checkbox state (a required checkbox that is not checked is suffering from being missing)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#checkbox-state-(type=checkbox)"
+      },
+      {
+        "id": "html-radio-state",
+        "title": "HTML: Radio Button state (a radio button group with a required radio and none checked is suffering from being missing)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#radio-button-state-(type=radio)"
+      },
+      {
+        "id": "html-aam-fieldset",
+        "title": "HTML-AAM: fieldset maps to the group role",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-fieldset"
       }
     ]
   },
@@ -1971,6 +1991,24 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-required-group",
+      "date": "2026-11-27",
+      "version": "0.58.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A required Checkbox group means at least one option checked. No box carries the required state (the template stops putting it on the first box): on a checkbox it requires that very box, so on one box it asks for one given option and on every box for all of them, never one of several. The product checks the group when the form is submitted (forms-validation-timing) and shows its error in the group's message, \"Choose at least one\". On the web the legend's \"(required)\" is not hidden from assistive technology: no state says that a group is required, since aria-required is not supported on the group role a fieldset maps to, so the word is part of the group's name (the principle of forms-required-mark-exposure: hide the word only where a state says it). A set of consents that must all be accepted is a set of separate required Checkboxes. The Radio group is unchanged: a required radio makes its group required natively, and its legend's \"(required)\" stays hidden.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b2): A, at least one, said in words, as recommended, among: A (chosen); B, aria-required on the fieldset with \"(required)\" hidden (rejected: aria-required is not supported on group, so \"required\" may never be said while the visible word is hidden); C, required on every box (rejected: the browser then asks for every option, \"all\", which the legend's \"at least one\" never means; consents that must all be accepted are separate Checkboxes); D, today, required on the first box only (rejected: a bug found in step 4 point 1, the browser blocks the submit until that one option is checked, even when another one is). No words from the team beyond the choice. Sources opened on 2026-11-27: WAI-ARIA 1.2 aria-required (Used in Roles), HTML Checkbox state and Radio Button state (constraint validation), HTML-AAM fieldset (group role), MDN input type checkbox (validation).",
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.3.1",
+        "aria-required",
+        "html-checkbox-state",
+        "html-radio-state",
+        "html-aam-fieldset",
+        "mdn-aria-required"
+      ]
+    },
     {
       "id": "forms-search-field-severity",
       "date": "2026-11-27",
@@ -2942,6 +2980,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.58.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-required-group (#105 step 2b, point b2): a required Checkbox group means at least one option checked, no box carries the required state, the product checks the group and its message says \"Choose at least one\"; on the web its legend's \"(required)\" stays in the group's name (aria-required is not supported on group); consents that must all be accepted are separate required Checkboxes; the Radio group is unchanged. The rule required says so; four references (WAI-ARIA aria-required, HTML Checkbox and Radio Button states, HTML-AAM fieldset). The Checkbox group template stops putting required on its first box (Checkbox group 0.4.0)."
+    },
     {
       "version": "0.57.0",
       "date": "2026-11-27",

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -194,7 +194,7 @@
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "At least one option must be checked to submit the form (the first box carries the native requirement)."
+      "description": "At least one option must be checked. No box carries the native requirement, which would require that very box; the product checks the group when the form is submitted and says so in the message (Choose at least one)."
     },
     {
       "id": "severity",
@@ -419,16 +419,34 @@
         ]
       },
       {
-        "text": "When no option is chosen in a required group, say so with aria-invalid on the boxes and describe the error in text; the required attribute on the boxes lets the browser enforce it.",
+        "text": "When no option is chosen in a required group, say so with aria-invalid on the boxes and describe the error in text (Choose at least one). No box carries the required attribute: on a checkbox it requires that very box, so the browser would ask for one given option, or for every option, never for one of several; the product checks the group when the form is submitted.",
         "refs": [
           "wcag:3.3.1",
           "wcag-aria21",
           "wai-notifications",
           "wcag-g83",
-          "wai-validation"
+          "html-checkbox-state"
         ],
         "platforms": [
           "web"
+        ]
+      },
+      {
+        "text": "A required group's \"(required)\" stays in its legend's text, so it is part of the group's name: no state says that a group is required, since aria-required is not supported on the group role a fieldset maps to.",
+        "refs": [
+          "wcag:1.3.1",
+          "aria-required",
+          "html-aam-fieldset"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "A set of consents that must all be accepted is not a required group: each consent is a separate required Checkbox, which the platform requires checked.",
+        "refs": [
+          "wcag:3.3.2",
+          "html-checkbox-state"
         ]
       },
       {
@@ -543,11 +561,6 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/grouping/"
       },
       {
-        "id": "wai-validation",
-        "title": "WAI tutorials: Validating input (the required attribute)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
-      },
-      {
         "id": "wai-notifications",
         "title": "WAI tutorials: User notifications (error messages)",
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
@@ -646,6 +659,21 @@
         "id": "html-focusable-area",
         "title": "HTML: focusable area",
         "url": "https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"
+      },
+      {
+        "id": "aria-required",
+        "title": "WAI-ARIA 1.2: aria-required (used in roles checkbox, combobox, gridcell, listbox, radiogroup, spinbutton, textbox, tree; not group)",
+        "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-required"
+      },
+      {
+        "id": "html-checkbox-state",
+        "title": "HTML: Checkbox state (a required checkbox that is not checked is suffering from being missing)",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#checkbox-state-(type=checkbox)"
+      },
+      {
+        "id": "html-aam-fieldset",
+        "title": "HTML-AAM: fieldset maps to the group role",
+        "url": "https://www.w3.org/TR/html-aam-1.0/#el-fieldset"
       }
     ]
   },
@@ -859,6 +887,22 @@
   ],
   "decisions": [
     {
+      "id": "required-at-least-one",
+      "date": "2026-11-27",
+      "version": "0.4.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "A required Checkbox group means at least one option checked. No box carries the required attribute (before, the first box did, so the browser blocked the submit until that one option was checked, even when another was); the product checks the group when the form is submitted and its message says \"Choose at least one\". On the web the legend's \"(required)\" stays in the group's name, since no state says that a group is required. Consents that must all be accepted are separate required Checkboxes.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b2, option A as recommended); it follows the Forms foundation's decision forms-required-group, where the options and their reasons are recorded. Sources opened on 2026-11-27: WAI-ARIA 1.2 aria-required, HTML Checkbox state, HTML-AAM fieldset.",
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.3.1",
+        "aria-required",
+        "html-checkbox-state",
+        "html-aam-fieldset"
+      ]
+    },
+    {
       "id": "part-gaps",
       "date": "2026-11-27",
       "version": "0.3.0",
@@ -952,6 +996,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.4.0",
+      "date": "2026-11-27",
+      "note": "Decision required-at-least-one (Forms forms-required-group, #105 step 2b, point b2): the template no longer puts required on the first box (the browser asked for that one option, a bug); the required property means at least one option, checked by the product. The required-group guideline is rewritten and two guidelines are added: the legend's \"(required)\" stays in the name on the web, consents are separate Checkboxes; the WAI validation tutorial, cited only for the required attribute, is dropped. No token or rendering change."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-27",

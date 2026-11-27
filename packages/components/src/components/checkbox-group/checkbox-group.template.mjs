@@ -3,6 +3,8 @@
  * Pure function of the spec properties (packages/components/specs/components/checkbox-group.spec.json) -> HTML string.
  * Used by the docs site (server and client side). No DOM, no framework, no script: native
  * checkboxes in a fieldset whose legend names the group; each option is checked independently.
+ * `required` means at least one option (decision required-at-least-one): no box carries the native
+ * `required`, which would require that very box; the product checks the group on submit.
  *
  * Extra props: `id` names the group (option ids derive from it; unique in the page; without it
  * instances are numbered in render order); `attrs` adds HTML attributes to every radio.
@@ -24,7 +26,6 @@ export function render(props = {}) {
     orientation = 'vertical',
     size = 'medium',
     options = [{ label: 'Option 1', value: '1' }, { label: 'Option 2', value: '2' }],
-    required = false,
     disabled = false,
     severity = 'none',
     state = null,
@@ -54,7 +55,6 @@ export function render(props = {}) {
     const inputAttrs = ['type="checkbox"', 'class="ds-checkbox-group__control"', 'data-part="control"', `id="${escapeAttr(optionId)}"`, `name="${escapeAttr(groupName)}"`, `value="${escapeAttr(value)}"`];
     if (checked) inputAttrs.push('checked');
     if (optionDisabled) inputAttrs.push('disabled');
-    if (required && i === 0) inputAttrs.push('required');
     if (severity === 'error') inputAttrs.push('aria-invalid="true"');
     const ownDescribedBy = [optionDescription ? optionDescriptionId : null, describedBy || null].filter(Boolean).join(' ');
     if (ownDescribedBy) inputAttrs.push(`aria-describedby="${escapeAttr(ownDescribedBy)}"`);
