@@ -217,6 +217,8 @@ export const COMPONENTS = [
       { set: { disabled: true }, props: { disabled: true } },
       { part: 'message', props: { component: 'FieldError (field)' } },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLabel.' },
+      { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
     ],
   },
   {
@@ -227,6 +229,8 @@ export const COMPONENTS = [
       { part: 'option', props: { component: 'Field orientation="horizontal" + Checkbox' } },
       { part: 'message', props: { component: 'FieldError' } },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLegend.' },
+      { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
     ],
   },
   {
@@ -236,6 +240,8 @@ export const COMPONENTS = [
       { part: 'legend', props: { component: 'FieldLegend (field)' } },
       { state: 'error', props: { 'aria-invalid': true } },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLegend.' },
+      { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
     ],
   },
   {
@@ -330,6 +336,8 @@ export const COMPONENTS = [
       { state: 'warning', props: null, note: 'shadcn has no warning state: only aria-invalid.' },
       { state: 'success', props: null, note: 'shadcn has no success state: only aria-invalid.' },
       { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
+      { part: 'mark', props: null, note: 'The optional or required mark is words in the label: write them in the FieldLabel.' },
+      { part: 'asterisk', props: null, note: 'Drawn on Android and Windows only; the web marks fields with words.' },
     ],
   },
   {

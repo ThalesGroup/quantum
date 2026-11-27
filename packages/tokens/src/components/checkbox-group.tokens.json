@@ -338,6 +338,63 @@
           "$value": "{form.severity-icon.color.error}"
         }
       }
+    },
+    "mark": {
+      "$description": "The required mark, \"(optional)\" or \"(required)\" at the end of the label (markedFields; decision mark-style).",
+      "color": {
+        "$type": "color",
+        "default": {
+          "$value": "{form.mark.color.default}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "typography": {
+        "$type": "typography",
+        "$description": "The legend's typography in the regular weight: the mark is the legend's size, regular (Forms decision forms-mark-style).",
+        "small": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{form.label.font-size.small}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        },
+        "medium": {
+          "$value": {
+            "fontFamily": "{body.family}",
+            "fontSize": "{form.label.font-size.medium}",
+            "fontWeight": "{body.weight.regular}",
+            "lineHeight": "{font.line-height.tight}",
+            "letterSpacing": "{font.letter-spacing.normal}"
+          }
+        }
+      }
+    },
+    "asterisk": {
+      "$description": "Android and Windows only: the asterisk of a required group, in place of the mark (Forms decision forms-asterisk-style). It takes the legend's typography (legend.typography.*). Neither the web reference rendering nor the Figma component draws it.",
+      "color": {
+        "$type": "color",
+        "default": {
+          "$description": "The error message's and the error icon's red.",
+          "$value": "{form.asterisk.color.default}"
+        },
+        "disabled": {
+          "$value": "{global.text.state.disabled.default}"
+        }
+      },
+      "margin-inline-start": {
+        "$type": "dimension",
+        "$description": "Between the label and the asterisk, with no word space.",
+        "small": {
+          "$value": "{space.2}"
+        },
+        "medium": {
+          "$value": "{space.4}"
+        }
+      }
     }
   }
 }

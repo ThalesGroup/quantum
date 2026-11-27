@@ -20,6 +20,7 @@
   --_options-gap: var(--radio-group-container-gap-vertical);
   --_control-size: var(--radio-group-control-size-medium);
   --_legend-color: var(--radio-group-legend-color-default);
+  --_mark-color: var(--radio-group-mark-color-default);
   --_description-color: var(--radio-group-description-color-default);
   --_label-font-family: var(--radio-group-option-label-typography-medium-font-family);
   --_label-font-size: var(--radio-group-option-label-typography-medium-font-size);
@@ -36,6 +37,11 @@
   --_legend-font-weight: var(--radio-group-legend-typography-medium-font-weight);
   --_legend-line-height: var(--radio-group-legend-typography-medium-line-height);
   --_legend-letter-spacing: var(--radio-group-legend-typography-medium-letter-spacing);
+  --_mark-font-family: var(--radio-group-mark-typography-medium-font-family);
+  --_mark-font-size: var(--radio-group-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--radio-group-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--radio-group-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--radio-group-mark-typography-medium-letter-spacing);
   --_description-font-family: var(--radio-group-description-typography-medium-font-family);
   --_description-font-size: var(--radio-group-description-typography-medium-font-size);
   --_description-font-weight: var(--radio-group-description-typography-medium-font-weight);
@@ -74,6 +80,11 @@
   --_legend-font-weight: var(--radio-group-legend-typography-small-font-weight);
   --_legend-line-height: var(--radio-group-legend-typography-small-line-height);
   --_legend-letter-spacing: var(--radio-group-legend-typography-small-letter-spacing);
+  --_mark-font-family: var(--radio-group-mark-typography-small-font-family);
+  --_mark-font-size: var(--radio-group-mark-typography-small-font-size);
+  --_mark-font-weight: var(--radio-group-mark-typography-small-font-weight);
+  --_mark-line-height: var(--radio-group-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--radio-group-mark-typography-small-letter-spacing);
   --_description-font-family: var(--radio-group-description-typography-small-font-family);
   --_description-font-size: var(--radio-group-description-typography-small-font-size);
   --_description-font-weight: var(--radio-group-description-typography-small-font-weight);
@@ -100,6 +111,16 @@
   font-weight: var(--_legend-font-weight);
   line-height: var(--_legend-line-height);
   letter-spacing: var(--_legend-letter-spacing);
+}
+
+/* The required mark, inside the legend after a word space (markedFields; decision mark-part, Forms forms-mark-style). */
+.ds-radio-group__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 /* A legend sits outside the flex flow of its fieldset: the row gap is written as its bottom margin.
    A description sits right under its legend (0), the two read as one heading. */
@@ -303,6 +324,7 @@
 .ds-radio-group:where([data-state="disabled"]),
 .ds-radio-group:disabled {
   --_legend-color: var(--radio-group-legend-color-disabled);
+  --_mark-color: var(--radio-group-mark-color-disabled);
   --_description-color: var(--radio-group-description-color-disabled);
 }
 :where(.ds-radio-group[data-state="disabled"], .ds-radio-group__option[data-state="disabled"]) .ds-radio-group__option,

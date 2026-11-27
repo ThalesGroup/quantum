@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -24,6 +24,20 @@
       "role": "label",
       "required": true,
       "description": "Text naming the field. Provides the accessible name; activating it focuses the control."
+    },
+    {
+      "id": "mark",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "The required mark of the Forms rule, at the end of the label after a word space: \"(optional)\" on a field that is not required when the form marks optional fields, \"(required)\" on a required field when it marks required fields (markedFields), nothing otherwise. The label's size, regular, the description's color (Forms decision forms-mark-style). On the web \"(required)\" is hidden from assistive technology, the required attribute saying it, and \"(optional)\" is part of the name."
+    },
+    {
+      "id": "asterisk",
+      "role": "indicator",
+      "required": false,
+      "parent": "label",
+      "description": "On Android and Windows only, in place of the mark: an asterisk at the end of the label of a required field, 4 px after it (2 px in small), at the label's size and weight (label.typography), in the error message's red (Forms decision forms-asterisk-style), kept in the accessible name. Never drawn on the web, iOS and macOS, so neither the reference rendering nor the Figma component draws it."
     },
     {
       "id": "field",
@@ -125,7 +139,9 @@
         "label",
         "description",
         "message",
-        "severity-icon"
+        "severity-icon",
+        "mark",
+        "asterisk"
       ],
       "options": [
         {
@@ -208,11 +224,36 @@
       ]
     },
     {
+      "id": "markedFields",
+      "name": "Marked fields",
+      "type": "enum",
+      "default": "optional",
+      "description": "Which fields carry the required mark. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-marked-fields); the field draws its mark from its own required.",
+      "affects": [
+        "mark",
+        "asterisk"
+      ],
+      "options": [
+        {
+          "value": "optional",
+          "description": "\"(optional)\" on the field when it is not required, nothing when it is (default). The form says once, before its first field, \"All fields are required unless marked optional.\"."
+        },
+        {
+          "value": "required",
+          "description": "\"(required)\" on the field when it is required, nothing when it is not: for a form where most fields are optional."
+        },
+        {
+          "value": "none",
+          "description": "No mark: a field outside a form, such as a table's filter or a setting applied at once."
+        }
+      ]
+    },
+    {
       "id": "required",
       "name": "Required",
       "type": "boolean",
       "default": false,
-      "description": "The field must be filled to submit the form."
+      "description": "The field must be filled to submit the form. It draws the mark that markedFields asks for (\"(required)\" on a required field, \"(optional)\" on one that is not), and the asterisk on Android and Windows."
     },
     {
       "id": "severity",
@@ -470,6 +511,33 @@
         "platforms": [
           "web"
         ]
+      },
+      {
+        "text": "The mark comes after the label's words, so the visible label starts with the field's name, and so does the accessible name when it ends with \"(optional)\": speech input by the label works.",
+        "refs": [
+          "wcag:2.5.3"
+        ],
+        "platforms": [
+          "web"
+        ]
+      },
+      {
+        "text": "On Android, the Select draws the asterisk of a required field in the error text color whenever markedFields is optional or required, none drawing no mark; an optional field carries none.",
+        "refs": [
+          "material-text-fields-required"
+        ],
+        "platforms": [
+          "android"
+        ]
+      },
+      {
+        "text": "On Windows, the asterisk stays in the Select's UI Automation Name: the Name is the label as shown (\"Country*\").",
+        "refs": [
+          "uia-name-property"
+        ],
+        "platforms": [
+          "desktop"
+        ]
       }
     ],
     "references": [
@@ -592,6 +660,16 @@
         "id": "accname-description",
         "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
         "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
+      },
+      {
+        "id": "material-text-fields-required",
+        "title": "Material Design 3: Text fields, guidelines (required text indicator)",
+        "url": "https://m3.material.io/components/text-fields/guidelines#6c36a812-273d-4f5d-9102-2f00386c9145"
+      },
+      {
+        "id": "uia-name-property",
+        "title": "UI Automation: automation element property identifiers (UIA_NamePropertyId: the Name is the label text on screen)",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-automation-element-propids"
       }
     ]
   },
@@ -768,6 +846,28 @@
         "severityIcon": "after-control",
         "message": "Choose a country"
       }
+    },
+    {
+      "id": "medium-marked-required",
+      "name": "Medium, in a form that marks required fields",
+      "description": "Most fields of the form are optional, so the form marks the required ones (markedFields required): \"(required)\" after the label, hidden from assistive technology, which the required state already tells.",
+      "props": {
+        "size": "medium",
+        "label": "Country",
+        "placeholder": "Choose a country",
+        "options": [
+          {
+            "label": "France",
+            "value": "fr"
+          },
+          {
+            "label": "Germany",
+            "value": "de"
+          }
+        ],
+        "required": true,
+        "markedFields": "required"
+      }
     }
   ],
   "tokens": {
@@ -796,7 +896,8 @@
         "control": ".ds-select__control",
         "description": ".ds-select__description",
         "message": ".ds-select__message",
-        "severity-icon": ".ds-select__severity-icon"
+        "severity-icon": ".ds-select__severity-icon",
+        "mark": ".ds-select__mark"
       }
     }
   },
@@ -806,6 +907,23 @@
     "text-field"
   ],
   "decisions": [
+    {
+      "id": "mark-part",
+      "date": "2026-11-27",
+      "version": "0.8.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Select draws the required mark of the Forms rule: the property markedFields (optional by default, required, none), set once per form to the same value for all its controls; the part mark at the end of its label after a word space, \"(optional)\" on a field that is not required when the form marks optional fields, \"(required)\" on a required one when it marks required fields, nothing with none; the label's size, regular, in the description's color (select.mark.*, its color aliasing form.mark.color.default); on the web \"(required)\" is hidden from assistive technology, the required state saying it, and \"(optional)\" is part of the name. The part asterisk, on Android and Windows only, ends the label of a required field in the error text color (select.asterisk.*, aliasing form.asterisk.color.default), 4 px after it (2 px in small), kept in the Windows UI Automation Name. The Figma component draws the web specification: a BOOLEAN Mark (on) and a TEXT Mark text, markedFields kept out of the variants (blueprint option fixed); the asterisk is not drawn.",
+      "rationale": "Applies the Forms decisions forms-marked-fields, forms-mark-style, forms-asterisk-style, forms-required-windows-name (#103 step 16, #105 steps 4 and 2b, moved here by #105 step 12), as the field family's mark-part does. Built in #103 step 31.",
+      "tokens": [
+        "select.mark.*",
+        "select.asterisk.*"
+      ],
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:2.5.3"
+      ]
+    },
     {
       "id": "severity-icon",
       "date": "2026-11-27",
@@ -980,6 +1098,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.8.0",
+      "date": "2026-11-27",
+      "note": "Decision mark-part (#103 step 31; Forms forms-marked-fields, forms-mark-style, forms-asterisk-style, forms-required-windows-name): property markedFields (optional by default), parts mark and asterisk in the label, tokens select.mark.* and select.asterisk.* (colors aliasing form.mark.color.default and form.asterisk.color.default), the mark in the template (\"(required)\" aria-hidden) and the CSS, a web, an Android and a Windows guideline, the Figma Mark and Mark text with markedFields fixed. New example: Medium, in a form that marks required fields. The mark is 12.09:1 at the lowest in light mode and 6.65:1 in dark mode (forms-mark-style). A field that is not required now shows \"(optional)\" by default; a control outside a form sets markedFields none (the docs site's controls and the dashboard and calendar screens do)."
+    },
     {
       "version": "0.7.0",
       "date": "2026-11-27",

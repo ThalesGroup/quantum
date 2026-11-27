@@ -26,7 +26,9 @@ const widths = [
   { label: 'Tablet (768 px)', value: '768' },
   { label: 'Mobile (390 px)', value: '390' },
 ];
-const select = getTemplate('select')!;
+// The frame's controls apply at once, outside a submitted form: no required mark (Forms rule required, markedFields none).
+const selectTemplate = getTemplate('select')!;
+const select = { render: (props: Record<string, unknown>) => selectTemplate.render({ markedFields: 'none', ...props }) };
 // Reading direction of the frame (its dir attribute; ?dir=rtl presets it): the screen mirrors, the docs stay left to right.
 const directions = [
   { label: 'Left to right (ltr)', value: 'ltr' },

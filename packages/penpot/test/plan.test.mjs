@@ -66,7 +66,8 @@ test('a slot a blueprint does not draw has no Penpot token, unless a drawn token
   // The Search field's severities (#103 step 26) add 29: 12 control, 6 message, 11 severity icon.
   // Step 28: the field family aliases form.*, which adds the 7 family tokens no other control reached.
   // Step 30: the severity icon of the Select (11 tokens) and of the Checkbox and the groups (5 each) adds 26.
-  assert.equal(names.size, 1398);
+  // Step 31: the required mark of the Select (5 tokens) and of the Checkbox and the groups (4 each) adds 17.
+  assert.equal(names.size, 1415);
 });
 
 test('penpotTokens gives a number as text where Penpot\'s plugin API takes only text', () => {

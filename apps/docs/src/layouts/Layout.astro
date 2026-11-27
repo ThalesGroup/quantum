@@ -68,7 +68,7 @@ const followed = Object.fromEntries(platformIds.map((p) => {
 }));
 
 // The chrome's controls are the design system's components, rendered by their templates.
-const modeSwitch = attribute && choices.length > 1 ? getTemplate('select')?.render({ label: 'Mode', id: 'site-mode-switch', size: 'small', options: choices.map((c) => ({ label: c.label, value: c.value, selected: c.value === initial })), attrs: { 'data-mode-switch': attribute } }) : null;
+const modeSwitch = attribute && choices.length > 1 ? getTemplate('select')?.render({ markedFields: 'none', label: 'Mode', id: 'site-mode-switch', size: 'small', options: choices.map((c) => ({ label: c.label, value: c.value, selected: c.value === initial })), attrs: { 'data-mode-switch': attribute } }) : null;
 const banner = getTemplate('alert')?.render({ intent: 'warning', message: 'Experimental: Quantum NextGen, the future Quantum Design System. These docs will be part of the next version of quantum.thalesdigital.io.' });
 const year = new Date().getFullYear();
 ---

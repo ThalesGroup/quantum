@@ -21,6 +21,7 @@
   --_control-border-color: var(--select-control-border-color-default);
   --_control-color: var(--select-control-color-default);
   --_label-color: var(--select-label-color-default);
+  --_mark-color: var(--select-mark-color-default);
   --_description-color: var(--select-description-color-default);
   --_message-color: var(--select-message-color-error);
   --_severity-icon-color: var(--select-severity-icon-color-error);
@@ -39,6 +40,11 @@
   --_label-font-weight: var(--select-label-typography-medium-font-weight);
   --_label-line-height: var(--select-label-typography-medium-line-height);
   --_label-letter-spacing: var(--select-label-typography-medium-letter-spacing);
+  --_mark-font-family: var(--select-mark-typography-medium-font-family);
+  --_mark-font-size: var(--select-mark-typography-medium-font-size);
+  --_mark-font-weight: var(--select-mark-typography-medium-font-weight);
+  --_mark-line-height: var(--select-mark-typography-medium-line-height);
+  --_mark-letter-spacing: var(--select-mark-typography-medium-letter-spacing);
   --_description-font-family: var(--select-description-typography-medium-font-family);
   --_description-font-size: var(--select-description-typography-medium-font-size);
   --_description-font-weight: var(--select-description-typography-medium-font-weight);
@@ -77,6 +83,11 @@
   --_label-font-weight: var(--select-label-typography-small-font-weight);
   --_label-line-height: var(--select-label-typography-small-line-height);
   --_label-letter-spacing: var(--select-label-typography-small-letter-spacing);
+  --_mark-font-family: var(--select-mark-typography-small-font-family);
+  --_mark-font-size: var(--select-mark-typography-small-font-size);
+  --_mark-font-weight: var(--select-mark-typography-small-font-weight);
+  --_mark-line-height: var(--select-mark-typography-small-line-height);
+  --_mark-letter-spacing: var(--select-mark-typography-small-letter-spacing);
   --_description-font-family: var(--select-description-typography-small-font-family);
   --_description-font-size: var(--select-description-typography-small-font-size);
   --_description-font-weight: var(--select-description-typography-small-font-weight);
@@ -105,6 +116,11 @@
   --_label-font-weight: var(--select-label-typography-large-font-weight);
   --_label-line-height: var(--select-label-typography-large-line-height);
   --_label-letter-spacing: var(--select-label-typography-large-letter-spacing);
+  --_mark-font-family: var(--select-mark-typography-large-font-family);
+  --_mark-font-size: var(--select-mark-typography-large-font-size);
+  --_mark-font-weight: var(--select-mark-typography-large-font-weight);
+  --_mark-line-height: var(--select-mark-typography-large-line-height);
+  --_mark-letter-spacing: var(--select-mark-typography-large-letter-spacing);
   --_description-font-family: var(--select-description-typography-large-font-family);
   --_description-font-size: var(--select-description-typography-large-font-size);
   --_description-font-weight: var(--select-description-typography-large-font-weight);
@@ -126,6 +142,16 @@
   font-weight: var(--_label-font-weight);
   line-height: var(--_label-line-height);
   letter-spacing: var(--_label-letter-spacing);
+}
+
+/* The required mark, inside the label after a word space (markedFields; decision mark-part, Forms forms-mark-style). */
+.ds-select__mark {
+  color: var(--_mark-color);
+  font-family: var(--_mark-font-family);
+  font-size: var(--_mark-font-size);
+  font-weight: var(--_mark-font-weight);
+  line-height: var(--_mark-line-height);
+  letter-spacing: var(--_mark-letter-spacing);
 }
 
 .ds-select__control {
@@ -310,6 +336,7 @@
 .ds-select:where([data-state="disabled"]),
 .ds-select:has(.ds-select__control:disabled) {
   --_label-color: var(--select-label-color-disabled);
+  --_mark-color: var(--select-mark-color-disabled);
   --_description-color: var(--select-description-color-disabled);
 }
 .ds-select:where([data-state="disabled"]) .ds-select__control,

@@ -68,7 +68,7 @@ function chart() {
   });
   return slot(ds.card({ title: 'Total Visitors', description: 'Visitors per day on desktop and mobile', headingLevel: 2 }),
     el('div', { class: 'scr-chart' },
-      ds.radioGroup({ label: 'Time range', name: 'dashboard-01-range', id: 'dashboard-01-range', orientation: 'horizontal', size: 'small', options: RANGES.map((r, i) => ({ label: r.label, value: r.value, checked: i === 0 })) }),
+      ds.radioGroup({ markedFields: 'none', label: 'Time range', name: 'dashboard-01-range', id: 'dashboard-01-range', orientation: 'horizontal', size: 'small', options: RANGES.map((r, i) => ({ label: r.label, value: r.value, checked: i === 0 })) }),
       plots,
       legend([{ label: 'Mobile' }, { label: 'Desktop' }]),
     ),
@@ -79,7 +79,7 @@ const STATUS = { Done: { intent: 'success' }, 'In Process': { intent: 'neutral' 
 
 function table() {
   const rows = OUTLINE.map((r) => el('tr', {},
-    el('td', {}, ds.checkbox({ label: r.header, id: `dashboard-01-row-${r.id}`, name: 'rows', size: 'small' })),
+    el('td', {}, ds.checkbox({ markedFields: 'none', label: r.header, id: `dashboard-01-row-${r.id}`, name: 'rows', size: 'small' })),
     el('td', {}, ds.badge({ label: r.type, size: 'small' })),
     el('td', {}, ds.badge({ label: r.status, size: 'small', ...STATUS[r.status] })),
     el('td', { class: 'scr-num' }, text(r.target)),
@@ -111,7 +111,7 @@ function table() {
     el('div', { class: 'scr-row scr-table-footer', 'data-justify': 'between' },
       el('p', { class: 'scr-muted' }, text(`0 of ${OUTLINE_TOTAL} row(s) selected.`)),
       el('div', { class: 'scr-row' },
-        ds.select({ label: 'Rows per page', size: 'small', id: 'dashboard-01-rows-per-page', options: [10, 20, 30, 40, 50].map((n) => ({ label: String(n), value: String(n), selected: n === 10 })) }),
+        ds.select({ markedFields: 'none', label: 'Rows per page', size: 'small', id: 'dashboard-01-rows-per-page', options: [10, 20, 30, 40, 50].map((n) => ({ label: String(n), value: String(n), selected: n === 10 })) }),
         el('p', { class: 'scr-strong' }, text(`Page 1 of ${pages}`)),
         ds.pagination({ size: 'small', label: 'Outline pages', next: '#', pages: Array.from({ length: pages }, (_, i) => (i === 0 ? { label: '1', current: true } : { label: String(i + 1), href: '#' })) }),
       ),

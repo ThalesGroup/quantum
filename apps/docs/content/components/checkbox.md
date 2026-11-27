@@ -45,6 +45,20 @@ the box, so the whole row is the target. The description adds help under the lab
 checking the box does, or why it cannot change. It is read by assistive technology as the
 control's description, after the name.
 
+## Required mark
+
+A form says once which of its fields carry a mark (**Marked fields**), the same for all its
+controls, and the checkbox draws its own from **Required**, as the Text field does. By default the form
+marks the optional ones: a checkbox that is not required ends its label with "(optional)", since its value waits for the form's submit button like a field's, a required one carries nothing, and the form says once, before its
+first field, "All fields are required unless marked optional." When most fields are optional, the
+form marks the required ones with "(required)" instead. A checkbox outside a submitted form, such as a table's row selection or a setting applied at once, carries no mark (**Marked fields** none). The rule is the
+[Forms foundation](/foundations/forms/guidelines)'s.
+
+The mark follows the label after a word space, at its size but regular and in the description's
+color. Android and Windows mark a required checkbox with an asterisk instead, in the error
+message's red; the web, iOS and macOS keep the words. In Figma the component draws the web's mark:
+**Mark** shows it and **Mark text** holds its words.
+
 ## Message
 
 With a severity, a message says what is wrong and what to do, under the description (or under

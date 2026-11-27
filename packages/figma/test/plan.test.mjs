@@ -149,7 +149,8 @@ test('a slot a blueprint does not draw has no variable, unless a drawn token ali
   // 1840 before #103 step 26; the Search field's severities add 41: 12 control, 18 message (each typography in five), 11 severity icon.
   // Step 28: the field family aliases form.*, which adds the 7 family tokens no other control reached (asterisk not drawn).
   // Step 30: the severity icon of the Select (11 variables) and of the Checkbox and the groups (5 each) adds 26.
-  assert.equal(plan.variables.variables.length, 1914);
+  // Step 31: the required mark of the Select (17 variables) and of the Checkbox and the groups (12 each) adds 53; the asterisk is not drawn.
+  assert.equal(plan.variables.variables.length, 1967);
 });
 
 test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
@@ -594,7 +595,8 @@ test('the plugin draws every component, instances of the components they use inc
 });
 
 test('the fields\' label row wraps, the label hugging up to the field\'s width; their description says how to keep the mark after the last word', async () => {
-  for (const id of ['text-field', 'number-field', 'search-field', 'textarea']) {
+  // The Select has the field family's label row since #103 step 31.
+  for (const id of ['text-field', 'number-field', 'search-field', 'textarea', 'select']) {
     const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
     const row = findNode(plan.variants[0].root, 'label-row');
     assert.equal(row.wrap, true, id);
@@ -602,9 +604,17 @@ test('the fields\' label row wraps, the label hugging up to the field\'s width; 
     assert.match(plan.note, /hide Mark and type the mark at the end of the label/, id);
   }
   // No other component takes a note, a wrap or a max width it did not ask for.
-  const select = figmaComponent(loaded, specOf('select'), BLUEPRINTS.select);
-  assert.equal(select.note, null);
-  assert.equal(findNode(select.variants[0].root, 'label').maxWidth, undefined);
+  const button = figmaComponent(loaded, specOf('button'), BLUEPRINTS.button);
+  assert.equal(button.note, null);
+  assert.equal(findNode(button.variants[0].root, 'label').maxWidth, undefined);
+  // The Checkbox and the groups end their label or legend with the mark in a wrapping row, with no max width (#103 step 31).
+  for (const [id, name, text] of [['checkbox', 'label-row', 'label'], ['checkbox-group', 'legend-row', 'legend'], ['radio-group', 'legend-row', 'legend']]) {
+    const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
+    const row = findNode(plan.variants[0].root, name);
+    assert.equal(row.wrap, true, id);
+    assert.deepEqual(row.children.map((c) => c.name), [text, 'mark'], id);
+    assert.deepEqual(plan.properties.find((p) => p.name === 'Mark'), { name: 'Mark', kind: 'BOOLEAN', default: true }, id);
+  }
   const fake = fakeFigma({ fonts: FONTS });
   const { logs } = await runPlugin(fake, ['search-field']);
   assert.deepEqual(logs, []);

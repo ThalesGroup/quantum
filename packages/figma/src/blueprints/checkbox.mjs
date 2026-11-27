@@ -21,10 +21,13 @@
  * template shows it with a severity, starting with the severity icon when `severityIcon` is message (the Text
  * field's `messageNode`, decision severity-icon).
  *
+ * The label ends with the required mark (the Text field's `mark`, in a wrapping `label-row`): markedFields is
+ * kept out of the variants (`fixed`), shown by the BOOLEAN `Mark` and typed in `Mark text` (decision mark-part).
+ *
  * The group blueprints (checkbox-group, radio-group) build on the helpers exported here.
  */
 
-import { messageNode, SEVERITY_ICON_AXES } from './text-field.mjs';
+import { messageNode, withMark, SEVERITY_ICON_AXES, ASTERISK, MARKED_FIELDS } from './text-field.mjs';
 
 /** Center lines of the CSS check, in a 24 x 24 box the size of the control. */
 const CHECK = 'M 5.806 11.663 L 9.879 15.736 L 18.194 7.42';
@@ -59,11 +62,12 @@ export const box = (marks) => ({
 export const checkboxControl = box([mark('check', CHECK, 'checked'), mark('bar', BAR, 'indeterminate')]);
 
 /**
- * The control, its label and its description as two rows. `parts` names the label and
+ * The control, its label (followed by the required mark when `marked`) and its description as two rows.
+ * `parts` names the label and
  * description parts, `gaps` the row and column gap slots, `texts` their default texts and
  * properties.
  */
-export const optionRows = ({ control, parts, gaps, texts, extra = {} }) => ({
+export const optionRows = ({ control, parts, gaps, texts, extra = {}, marked = false }) => ({
   type: 'frame',
   layout: 'VERTICAL',
   bind: { gap: gaps.row },
@@ -77,13 +81,13 @@ export const optionRows = ({ control, parts, gaps, texts, extra = {} }) => ({
       bind: { gap: gaps.column },
       children: [
         control,
-        {
+        ((node) => (marked ? withMark(node) : node))({
           type: 'text',
           name: parts.label,
           text: texts.label,
           property: texts.labelProperty,
           bind: { fill: `${parts.label}.color`, typography: `${parts.label}.typography` },
-        },
+        }),
       ],
     },
     {
@@ -109,7 +113,8 @@ export const optionRows = ({ control, parts, gaps, texts, extra = {} }) => ({
 export const TRANSITION = { slot: 'control.transition', reason: 'Figma variables have no duration or easing.' };
 
 export default {
-  booleans: { 'Show description': false },
+  fixed: MARKED_FIELDS,
+  booleans: { Mark: true, 'Show description': false },
   root: {
     type: 'frame',
     name: 'container',
@@ -121,6 +126,7 @@ export default {
         parts: { label: 'label', description: 'description' },
         gaps: { row: 'container.row-gap', column: 'container.column-gap' },
         extra: { name: 'rows' },
+        marked: true,
         texts: {
           label: 'Label',
           labelProperty: 'Label',
@@ -142,5 +148,5 @@ export default {
       },
     ],
   },
-  notDrawn: [TRANSITION, SEVERITY_ICON_AXES],
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES, ASTERISK],
 };

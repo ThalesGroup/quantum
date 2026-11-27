@@ -73,6 +73,20 @@ export const labelRow = {
   children: [{ ...label, width: 'HUG', maxWidth: FIELD_WIDTH }, mark],
 };
 
+/**
+ * A text part (the Checkbox's label, a group's legend) followed by the required mark after a word space, in a
+ * row that wraps: the Checkbox and the groups draw their mark this way (decision mark-part of each).
+ */
+export const withMark = (textNode, name = 'label-row') => ({
+  type: 'frame',
+  name,
+  layout: 'HORIZONTAL',
+  wrap: true,
+  align: { primary: 'MIN', counter: 'MIN' },
+  derive: { gap: ['mark.typography', 0.25] },
+  children: [textNode, mark],
+});
+
 /** The designer's way to the web's long label (#103 step 23, Q2: B as a technique), in the component's description. */
 export const LONG_LABEL_NOTE = 'To keep "(optional)" right after a long label\'s last word, as on the web, hide Mark and type the mark at the end of the label, styled like the mark.';
 

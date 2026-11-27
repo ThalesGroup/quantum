@@ -7,6 +7,7 @@
  *
  * Extra props: `id` names the select (unique in the page; without it instances are numbered in
  * render order); `name` is the form field's; `attrs` adds HTML attributes to the select.
+ * `markLabel` replaces the words of the required mark ("(optional)" or "(required)"), for another language.
  * `severityIconLabel` names the severity icon (default "Error", "Warning" or "Success"), for another language.
  * Extra sandbox-only prop: `state` forces a visual state through data-state on the root.
  */
@@ -29,6 +30,8 @@ export function render(props = {}) {
     message = null,
     size = 'medium',
     required = false,
+    markedFields = 'optional',
+    markLabel = null,
     disabled = false,
     severity = 'none',
     severityIcon = 'message',
@@ -39,6 +42,10 @@ export function render(props = {}) {
     attrs: extra = {},
   } = props;
   const hasMessage = severity !== 'none' && Boolean(message);
+  // The required mark the form asks for (decision mark-part): "(optional)" on a field that is not required, "(required)" on a
+  // required one, hidden from assistive technology since the required state says it.
+  const mark = markedFields === 'optional' && !required ? 'optional' : markedFields === 'required' && required ? 'required' : null;
+  const markHtml = mark ? ` <span class="ds-select__mark" data-part="mark"${mark === 'required' ? ' aria-hidden="true"' : ''}>${escapeHtml(markLabel ?? `(${mark})`)}</span>` : '';
   const glyph = SEVERITY_GLYPHS[severity] ?? null;
   const iconPlace = glyph ? (severityIcon === 'after-control' ? 'after-control' : severityIcon === 'message' && hasMessage ? 'message' : null) : null;
 
@@ -79,7 +86,7 @@ export function render(props = {}) {
   const iconLabel = severityIconLabel ?? SEVERITY_LABELS[severity];
   const icon = (where) => `<span class="ds-select__severity-icon" data-part="severity-icon" data-place="${where}"${where === 'after-control' ? ` id="${escapeAttr(iconId)}"` : ''} role="img" aria-label="${escapeAttr(iconLabel)}">${renderIcon(glyph)}</span>`;
   const parts = [
-    `<label class="ds-select__label" data-part="label" for="${escapeAttr(controlId)}">${escapeHtml(label)}</label>`,
+    `<label class="ds-select__label" data-part="label" for="${escapeAttr(controlId)}">${escapeHtml(label)}${markHtml}</label>`,
     `<div class="ds-select__field" data-part="field"><select ${controlAttrs.join(' ')}>${items.join('')}</select><span class="ds-select__indicator" data-part="indicator" aria-hidden="true">${renderIcon('expand_more')}</span></div>${iconPlace === 'after-control' ? icon('after-control') : ''}`,
   ];
   if (description) parts.push(`<p class="ds-select__description" data-part="description" id="${escapeAttr(descriptionId)}">${escapeHtml(description)}</p>`);

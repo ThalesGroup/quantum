@@ -34,7 +34,8 @@ const backdropAttr = backdrop ? JSON.stringify({ spec: inspectorSpec(spec), ...b
 const copyButton = getTemplate('button')?.render({ emphasis: 'subtle', intent: 'neutral', size: 'xsmall', label: 'Copy', iconStart: 'content_copy' }) ?? '';
 // The form is built with the design system's form controls (apps/docs/AGENTS.md "Built with the design system"):
 // Select, Checkbox, Textarea, Text field and Number field render their own label; the script reads them by name.
-const field = (id: string, props: Record<string, unknown>) => getTemplate(id)?.render(props) ?? '';
+// The playground's controls apply at once, outside a submitted form: no required mark (Forms rule required, markedFields none).
+const field = (id: string, props: Record<string, unknown>) => getTemplate(id)?.render({ markedFields: 'none', ...props }) ?? '';
 // Vision simulation of the stage: Chromium's own "Emulate vision deficiencies" filters, copied as they are
 // (third_party/blink/renderer/core/css/vision_deficiency.cc): the color matrices of Machado, Oliveira and
 // Fernandes (2009), derived for linear light, so color-interpolation-filters keeps its linearRGB default.
