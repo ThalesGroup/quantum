@@ -206,7 +206,10 @@ rules (`scripts/lib/site-check.mjs`):
   the values per mode, the CSS variable, the link to the Tokens tab and the decisions sit in a
   "Details" disclosure. Part groups are `data-anatomy-item`s of @component-anatomy/core on the
   stage: hovering or focusing inside a group outlines the part, hovering the stage marks the
-  group. "from default" marks a slot without a token for the current state.
+  group. "from default" marks a slot without a token for the current state. The rule reads the
+  forced state and the enum and boolean properties, not the entries of a list: a state an entry
+  sets (`checked` through a group's `options`, `expanded` through an Accordion's `items`) shows
+  only when forced, and a note under the header says so for every such state of the spec.
 - Foundation specimens (`Specimen.astro`) draw token values as data: the value is set inline
   (`--_value`, `--swatch`, font declarations), never in `site.css`, and the chrome around it
   reads semantic tokens. One branch per display of `scripts/lib/specimens.mjs`; a new display
