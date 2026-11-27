@@ -9,9 +9,9 @@ order: 22
 
 A search field collects a search term: a query for a whole site, a filter for a list. It is a
 Text field with a search glyph at its start, announced as a search box, whose clear control the
-platform provides. It has a visible label, even when that label is just **Search**, and an
-optional description. It has no error state: a search that finds nothing is reported by the
-results.
+platform provides. It has a visible label, even when that label is just **Search**, an optional
+description and, when the query is checked, the Text field's severities with a message. A search
+that finds nothing is still reported by the results, never by the field.
 
 This page applies to every platform. Where a platform differs, the difference sits under a
 sub-heading named after it (Web, iOS, Android, Desktop); everything else holds everywhere.
@@ -28,11 +28,20 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 
 ## Sizes and states
 
-Sizes follow the Text field (small, medium, large; medium when none is set), their touch targets on iOS and Android included. States are default, hover, focus visible
-and disabled: no severity (error, warning or success), no read-only. When people raise the text size the box grows as the
+Sizes follow the Text field (small, medium, large; medium when none is set), their touch targets on iOS and Android included. States are default, hover, focus visible,
+error, warning, success and disabled, as the Text field's: a severity fills the box with its subtle
+background, on hover too, draws an outline in its color flush over the border (1.2 px at rest,
+2.4 px with focus) and shows the message under the description, in its color. The Search field has
+no read-only state. When people raise the text size the box grows as the
 Text field's does, keeping the Button's minimum space above and below the text; the glyph keeps
-its size, so the search text keeps its room. The label and the description wrap, even inside a
-long word, and the search text scrolls.
+its size, so the search text keeps its room, while the severity icon grows with its text. The label,
+the description and the message wrap, even inside a long word, and the search text scrolls.
+
+A severity says something about the query itself, not about what it found: a required search left
+empty, a term too short to check, a number checked against a register. It can show the Text
+field's severity icon, set by `severityIcon`, the choice the form makes once for all its controls
+([Forms foundation](/foundations/forms/guidelines)): at the start of the message by default, after
+the box, or none.
 
 The search glyph follows the text beside it: as light as the placeholder while the field is
 empty, as dark as the value once people type. It never stands out from the text it introduces.
@@ -41,7 +50,10 @@ empty, as dark as the value once people type. It never stands out from the text 
 
 - The label says what is searched: **Search**, **Search projects**, **Filter by name**.
 - The placeholder gives an example or the scope (**Name, email or role**), never the label.
-- An empty result is reported next to the results, with what to try next.
+- An empty result is reported next to the results, with what to try next, never as a severity.
+- The message of an error is the instruction that fixes it, relying on the label it sits under:
+  **Enter a company name or number** under **Company**. A warning says what to check, a success what
+  was confirmed.
 - A search field usually stands alone, so it carries no required mark by default. Inside a form
   that marks its fields, it takes the form's **Marked fields**, as the Text field does.
 
@@ -62,6 +74,16 @@ This section explains the decisions behind it.
   [WCAG 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html),
   [WAI tutorial: Labeling controls](https://www.w3.org/WAI/tutorials/forms/labels/),
   [WAI tutorial: placeholder text](https://www.w3.org/WAI/tutorials/forms/instructions/#placeholder-text)).
+- **Severities, said in text.** A severity's color is never the only sign: the message says what is
+  wrong, what to check or what was confirmed, and the severity icon is named after the severity, so
+  the description reads "Error" and then the message. The severity outline (1.2 px) and the focus
+  outline (2.4 px) differ by width, in forced colors too
+  ([WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
+  [WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
+  [F78](https://www.w3.org/WAI/WCAG22/Techniques/failures/F78),
+  [AccName: computing the description](https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description)).
+  A search inside a form can be required, as a search input can
+  ([MDN: input type=search, making input required](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/search#making_input_required)).
 - **Contrast, text size, focus and target size** follow the Text field
   ([WCAG 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text),
   [WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries),
@@ -95,8 +117,10 @@ This section explains the decisions behind it.
 
 ### Web
 
-- The implementation renders an `<input type="search">` with a `<label for>`, a description
-  referenced by `aria-describedby`, and the search glyph in `aria-hidden="true"`. The clear
+- The implementation renders an `<input type="search">` with a `<label for>`, a description and
+  a message referenced by `aria-describedby` (the description, then the severity icon after the box,
+  then the message), `aria-invalid="true"` for an error only, and the search glyph in
+  `aria-hidden="true"`. The clear
   control is the browser's: the component neither styles nor removes it
   ([ARIA in HTML: input type=search](https://www.w3.org/TR/html-aria/#el-input-search),
   [HTML-AAM: input type=search](https://www.w3.org/TR/html-aam-1.0/#el-input-search),
@@ -121,13 +145,13 @@ This section explains the decisions behind it.
 
 ### iOS
 
-- The recommended minimum text size is 11 pt; the help text at 12 pt is above it
+- The recommended minimum text size is 11 pt; the description at 12 pt and the message at 14 pt are above it
   ([Apple HIG: Typography](https://developer.apple.com/design/human-interface-guidelines/typography#Specifications)).
 - A search field displays a search icon, a clear button and placeholder text; use the
   placeholder to help people know what they can search for
   ([Apple HIG: Search fields](https://developer.apple.com/design/human-interface-guidelines/search-fields)).
   Every size reaches a 44 by 44 pt hit region as on the Text field: it extends above and below the
-  box, over the field's own label and help text, which keep their 6 pt
+  box, over the field's own label, description and message, which keep their 6 pt
   ([Apple HIG: Accessibility, mobility](https://developer.apple.com/design/human-interface-guidelines/accessibility#Mobility)).
 - With a hardware keyboard on iPadOS 15 and later, Tab moves focus among focus groups, and
   iPadOS supports keyboard navigation in text fields and text views, unlike buttons. On iPhone,
@@ -136,17 +160,20 @@ This section explains the decisions behind it.
 - The text grows with Dynamic Type, up to the larger accessibility sizes, and the box grows with it and keeps its block padding:
   Apple asks that layouts adapt to all font sizes
   ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
-- The search glyph, decorative, keeps its size, and so does the inset before the text, so the
-  search text keeps its room; Apple asks to grow the icons that carry meaning
+- The severity icon grows with the text it goes with, as Apple asks of meaningful icons; the
+  search glyph, decorative, keeps its size, and so does the inset before the text, so the search
+  text keeps its room
   ([Apple HIG: Typography, supporting Dynamic Type](https://developer.apple.com/design/human-interface-guidelines/typography#Supporting-Dynamic-Type)).
 
 ### Android
 
 - Interactive elements need a 48 by 48 dp touch target, and every size reaches it as on the Text
-  field: the touch target extends above and below the box, over the field's own label and help text,
-  and the box does not take `minimumInteractiveComponentSize`, which would move the label
+  field: the touch target extends above and below the box, over the field's own label, description
+  and message, and the box does not take `minimumInteractiveComponentSize`, which would move the label.
+  Expose an error with the error semantics so the message is announced with the field
   ([Android accessibility: use large, simple controls](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls),
-  [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes)).
+  [Jetpack Compose: minimum touch target sizes](https://developer.android.com/develop/ui/compose/accessibility/api-defaults#minimum-target-sizes),
+  [Jetpack Compose: error semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics#error-components)).
 - With a hardware keyboard, a D-pad or Switch Access, focus navigation reaches the field in a
   logical order and can always leave it. Tab moves focus to the next focus target; Shift+Tab moves back; the arrow keys and the
   D-pad move the caret, then move focus at the start or end of the text; Shift with the arrows
@@ -169,7 +196,7 @@ This section explains the decisions behind it.
 - On Windows, people can enlarge text alone up to 225 %, and controls and containers must resize
   with it: the box grows with it and keeps its block padding ([Windows: text scaling](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#ux-guidance)).
 - On Windows, the search glyph keeps its size when text scales (`IsTextScaleFactorEnabled` set to
-  false), as Windows asks of font icons used for decoration
+  false), as Windows asks of font icons used for decoration; the severity icon scales with the text
   ([Windows: don't scale font-based icons or symbols](https://learn.microsoft.com/en-us/windows/apps/develop/input/text-scaling#dont-scale-font-based-icons-or-symbols)).
 
 ## Related

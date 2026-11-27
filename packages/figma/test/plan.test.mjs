@@ -146,7 +146,8 @@ test('a slot a blueprint does not draw has no variable, unless a drawn token ali
   // A token a drawn slot reads stays (space/2: the asterisk's margin and drawn gaps alike).
   assert.ok(names.has('space/2'));
   assert.ok(names.has('text-field/label/typography/medium/line-height'));
-  assert.equal(plan.variables.variables.length, 1840);
+  // 1840 before #103 step 26; the Search field's severities add 41: 12 control, 18 message (each typography in five), 11 severity icon.
+  assert.equal(plan.variables.variables.length, 1881);
 });
 
 test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
@@ -251,7 +252,7 @@ test('State leaves out a state an enum axis sets: no variant names a severity tw
       assert.ok(axes.get(property.name).includes(String(s.value)), `${id}: ${property.name} draws ${s.value}`);
     }
   }
-  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, select: 48, checkbox: 24, 'checkbox-group': 40, 'radio-group': 40, 'search-field': 24 };
+  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, select: 48, checkbox: 24, 'checkbox-group': 40, 'radio-group': 40, 'search-field': 288 };
   for (const [id, count] of Object.entries(counts)) assert.equal(figmaComponent(loaded, specOf(id), BLUEPRINTS[id]).variants.length, count, id);
   const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
   assert.deepEqual(plan.properties.find((p) => p.name === 'State').values, ['default', 'hover', 'focus-visible', 'readonly', 'disabled']);
@@ -306,7 +307,7 @@ test('a checked box in error binds the token for both states, its brand fill', (
 });
 
 test('the fields draw the required mark with a BOOLEAN and a TEXT, markedFields out of the variant axes, never the asterisk', () => {
-  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, 'search-field': 24 };
+  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, 'search-field': 288 };
   for (const [id, count] of Object.entries(counts)) {
     const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
     assert.equal(plan.variants.length, count, `${id}: markedFields adds no variant`);

@@ -311,6 +311,11 @@ export const COMPONENTS = [
     configs: [
       { part: 'control', props: { component: 'InputGroupInput' } },
       { part: 'icon', props: { component: 'InputGroupAddon' } },
+      { part: 'message', props: { component: 'FieldError (field)' } },
+      { state: 'error', props: { 'aria-invalid': true } },
+      { state: 'warning', props: null, note: 'shadcn has no warning state: only aria-invalid.' },
+      { state: 'success', props: null, note: 'shadcn has no success state: only aria-invalid.' },
+      { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
     ],
   },
   {

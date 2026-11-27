@@ -54,7 +54,8 @@ test('only input-components resolves its followers by scope', () => {
 test('tiers are read from the spec: required property, severity property or error state', () => {
   const by = (id) => tiersOf(specs.find((s) => s.id === id));
   assert.deepEqual(by('text-field'), ['presentation', 'required', 'validation']);
-  assert.deepEqual(by('search-field'), ['presentation', 'required']);
+  assert.deepEqual(by('search-field'), ['presentation', 'required', 'validation']);
+  assert.deepEqual(tiersOf({ properties: [{ id: 'required' }] }), ['presentation', 'required']);
   assert.deepEqual(by('slider'), ['presentation']);
   assert.deepEqual(by('switch'), ['presentation']);
   assert.deepEqual(tiersOf({}), ['presentation']);

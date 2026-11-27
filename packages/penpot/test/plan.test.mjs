@@ -63,7 +63,8 @@ test('a slot a blueprint does not draw has no Penpot token, unless a drawn token
   assert.ok(names.has('space.2'));
   assert.ok(names.has('text-field.label.typography.medium'));
   // 1362 token names before #103 step 23 Q4, 76 left out (a mode token is one name in each mode set).
-  assert.equal(names.size, 1336);
+  // The Search field's severities (#103 step 26) add 29: 12 control, 6 message, 11 severity icon.
+  assert.equal(names.size, 1365);
 });
 
 test('penpotTokens gives a number as text where Penpot\'s plugin API takes only text', () => {

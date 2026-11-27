@@ -18,7 +18,7 @@ import { resolveValue } from './dtcg.mjs';
  *   the first match wins, any other path is the same in both.
  * - `ignore`: patterns (`group.*` or exact, paths of the original without its id) of the original
  *   with no counterpart in the mirror, because they place what the mirror does not have (the
- *   button's label, the message of the search field).
+ *   button's label, the read-only fill of the search field).
  * - `own`: patterns (`group.*` or exact, paths of the mirror without its id, before `paths` maps
  *   them) of the mirror with no counterpart in the original, because they place what only the
  *   mirror has (the search glyph, the textarea's block padding). They are not compared. A pattern
@@ -49,8 +49,9 @@ export const MIRRORS = [
     component: 'search-field',
     of: 'text-field',
     paths: [],
-    // A search field has no severity and no read-only state, so no message (decision no-error-state).
-    ignore: ['control.background.readonly', 'control.background.error', 'control.background.warning', 'control.background.success', 'control.border-color.error', 'control.border-color.warning', 'control.border-color.success', 'control.outline-width.error', 'control.outline-width.warning', 'control.outline-width.success', 'control.outline-color.error', 'control.outline-color.warning', 'control.outline-color.success', 'message.*', 'severity-icon.*'],
+    // A search field has no read-only state; its severities, message and severity icon are the Text
+    // field's, compared like the rest (decision text-field-severities of the search field).
+    ignore: ['control.background.readonly'],
     // The search glyph is the Text field's leading icon (decision leading-icon-optional): icon.* and
     // control.padding-inline-start.* are compared like the rest. padding-inline-start is a SUM, not an
     // independent value: icon.margin-inline + icon.size + the gap before the text (8 + 16 + 4,
