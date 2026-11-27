@@ -787,9 +787,30 @@ after a failed submit, so this is the system's judgment.
 
 ## Spacing
 
-> **Not decided yet (step 10).** The space between fields, between groups of fields and before
-> the form's actions, and whether they become tokens. Today each control spaces only its own
-> parts: a field by its container gap, a group by its row gap.
+**Two fields are 16 px apart, at every size.** The space runs from the bottom of a field's last
+part (its control, its description or its message) to the next field's label, `space.16` on the
+spacing scale. A Checkbox group or a Radio group is one field here: its options form one control,
+so it stands 16 px from its neighbours like a Text field. The label then sits much closer to its own
+control than to the field above it, so people see at once which control each label names: the WAI
+forms tutorial asks for "a close and distinct visual relationship between the label and the form
+control" ([WAI forms tutorial: visual position of label text](https://www.w3.org/WAI/tutorials/forms/labels/#visual-position-of-label-text)),
+and Apple asks to leave enough space between text fields that people can see which field belongs
+with each label ([HIG: text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields#Best-practices)).
+Neither gives a value; the 16 px are the team's choice, the space the screens already use.
+
+A message appears under its field after validation, so the field grows and the fields below move
+down; the 16 px between fields stay the same.
+
+> **Not decided yet (step 10).** The space between groups of fields and before the form's
+> actions, whether these values become tokens, and the space inside a field and a group. Today
+> each control spaces only its own parts: a field by its container gap, a group by its row gap.
+
+### Desktop
+
+Windows spaces individual input controls 24 px apart
+([Windows: Forms, spacing](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#spacing)).
+The design system keeps 16 px on every platform, Windows included: a recorded difference, not a
+platform value.
 
 ## Keyboard in a form
 
@@ -986,4 +1007,4 @@ On macOS, Apple's guidance above applies.
 - [Alert](/components/alert): a brief message that never moves focus, so not the error summary,
   which a component of its own renders ([#129](https://github.com/ThalesGroup/quantum/issues/129)).
 - [Color](/foundations/color): the error, warning and success colors.
-- [Spacing](/foundations/spacing): the scale the spacing between fields will use.
+- [Spacing](/foundations/spacing): the scale the spacing between fields uses.

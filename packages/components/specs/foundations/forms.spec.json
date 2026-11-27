@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.46.0",
+  "version": "0.47.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -98,7 +98,7 @@
     {
       "id": "spacing",
       "name": "Spacing",
-      "text": "Not decided yet: the space between fields, between groups of fields and before the form's actions. Today a field spaces its own parts by its container gap, and a group by its row gap."
+      "text": "Two fields of a form stack space.16 (16 px) apart, at every field size, from the bottom of a field's last part (its control, description or message) to the next field's label. A field here is any form control with its label, a Checkbox group or a Radio group included: a group of options is one control. The label then sits closer to its own control than to the field above it. The value holds on every platform: Windows, whose Forms page spaces input controls 24 px apart, keeps 16 px, a recorded difference and not a platform value. Not decided yet: the space between groups of fields and before the form's actions (step 10, points 2 and 3), whether these values become tokens (point 4) and the space inside a field and a group (point 5); today a field spaces its own parts by its container gap, and a group by its row gap."
     },
     {
       "id": "keyboard",
@@ -1041,6 +1041,22 @@
         ]
       },
       {
+        "text": "Fields stand far enough apart that each label reads as its own control's: 16 px between two fields, more than the space between a field's label and its control, so the label stays visually close to and distinct from its control and is not taken for the field above.",
+        "refs": [
+          "wai-forms-labels-visual-position",
+          "hig-text-fields-best-practices"
+        ]
+      },
+      {
+        "text": "On Windows, the Forms page spaces individual input controls 24 px apart; the design system keeps 16 px between fields on every platform, Windows included: a recorded difference, not a platform value.",
+        "platforms": [
+          "desktop"
+        ],
+        "refs": [
+          "windows-forms-spacing"
+        ]
+      },
+      {
         "text": "The fields of a form take keyboard focus in their reading order, on every platform, so the order keeps their meaning.",
         "refs": [
           "wcag:2.4.3",
@@ -1123,6 +1139,11 @@
         "id": "wai-forms-labels",
         "title": "WAI tutorials: Forms, labeling controls",
         "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
+      },
+      {
+        "id": "wai-forms-labels-visual-position",
+        "title": "WAI forms tutorial: visual position of label text",
+        "url": "https://www.w3.org/WAI/tutorials/forms/labels/#visual-position-of-label-text"
       },
       {
         "id": "wcag-g162",
@@ -1500,6 +1521,11 @@
         "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#2-submitting-with-button"
       },
       {
+        "id": "windows-forms-spacing",
+        "title": "Windows: Forms, spacing",
+        "url": "https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#spacing"
+      },
+      {
         "id": "wcag-g139",
         "title": "WCAG technique G139: creating a mechanism that allows users to jump to errors",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G139"
@@ -1761,6 +1787,23 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-field-gap",
+      "date": "2026-11-27",
+      "version": "0.47.0",
+      "area": "layout",
+      "status": "active",
+      "text": "Two fields of a form are space.16 (16 px) apart, at every field size, from the bottom of a field's last part (control, description or message) to the next field's label; a Checkbox group and a Radio group are one field each. The value holds on every platform: Windows' own guidance, input controls 24 px apart, is recorded as a difference, not a platform value.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 10, point 1): A, chosen over the recommended B, among: A, space.16 at every field size, the value of the screens' stack today (chosen); B, space.24 at every field size, Windows' \"should be spaced 24px apart\", the only value a trusted page gives (recommended, rejected); C, by field size, 16 / 20 / 24 px for small / medium / large fields (rejected: a form mixing sizes has no single rhythm, three values to keep in step). No words from the team beyond the choice. No W3C source gives a value: the WAI forms tutorial asks for a close and distinct visual relationship between a label and its control, and HIG Text fields asks to leave enough space between fields that people see which field belongs with each label. With 6 px between a field's own parts (#103 step 5), the next label stands more than twice as far from the field above as from its own control. From #103 step 18: any space of 10 px or more between fields keeps the iOS and Android hit regions of two fields apart, so 16 needs nothing more. Sources opened on 2026-11-27: Windows Forms (Spacing), HIG Text fields (Best practices), WAI forms tutorial (visual position of label text).",
+      "tokens": [
+        "space.16"
+      ],
+      "refs": [
+        "windows-forms-spacing",
+        "hig-text-fields-best-practices",
+        "wai-forms-labels-visual-position"
+      ]
+    },
     {
       "id": "forms-summary-server-focus",
       "date": "2026-11-27",
@@ -2544,6 +2587,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.47.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-field-gap (#105 step 10, point 1): the rule spacing says two fields are space.16 (16 px) apart at every field size, from a field's last part to the next label, a Checkbox group or a Radio group being one field; Windows' 24 px is a recorded difference. Two guidelines (every platform; Windows) and two references (Windows Forms spacing, WAI forms tutorial visual position of label text). Points 2 to 5 of step 10 still open. No component, token or rendering change: the screens already stack their fields 16 px apart."
+    },
     {
       "version": "0.46.0",
       "date": "2026-11-27",
