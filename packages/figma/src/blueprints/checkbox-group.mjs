@@ -13,9 +13,11 @@
  * rest. The severity is the `Severity` axis, not a State value (the engine leaves out of State the
  * states an enum axis sets), so it reaches every option. The description and the options'
  * descriptions are boolean properties (off, as in the template); the message is drawn with
- * Severity=error only.
+ * Severity=error only, starting with the severity icon when `severityIcon` is message (the Text field's
+ * `messageNode`, decision severity-icon).
  */
 import { TRANSITION, checkboxControl, optionRows } from './checkbox.mjs';
+import { messageNode, SEVERITY_ICON_AXES } from './text-field.mjs';
 
 /** States that the web forces on the whole group; the others apply to one option. */
 const GROUP_WIDE = new Set(['disabled']);
@@ -83,17 +85,10 @@ export const group = (control) => ({
       },
       options(control, 'vertical', 'VERTICAL'),
       options(control, 'horizontal', 'HORIZONTAL'),
-      {
-        type: 'text',
-        name: 'message',
-        when: (v) => v.props.severity === 'error',
-        text: 'Message',
-        property: 'Message',
-        bind: { fill: 'message.color', typography: 'message.typography' },
-      },
+      messageNode({ fill: false }),
     ],
   },
-  notDrawn: [TRANSITION],
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES],
 });
 
 export default group(checkboxControl);

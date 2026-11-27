@@ -35,6 +35,12 @@ description right under the legend, 6 px between the legend (or its description)
 the message, and 4 px between options in a column
 ([Forms: spacing](/foundations/forms#spacing)).
 
+By default the message starts with the severity icon, the Alert's `error` glyph at 16 px, named
+"Error", in the message's color: `severityIcon`, a choice the form makes once for all its controls
+([Forms foundation](/foundations/forms/guidelines)). With `none` there is no icon and the message's
+own words say the error. A checkbox group never draws the icon after its box, where its options follow it: a
+form set to `after-control` shows it in the message.
+
 ## States
 
 States belong to the options; the group passes its disabled and severity properties down to

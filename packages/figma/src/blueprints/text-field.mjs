@@ -31,7 +31,7 @@
  * it, and the drawn field is the same on every platform.
  *
  * The other field blueprints (textarea, number-field, search-field, select) build on the helpers
- * exported here.
+ * exported here, and so do the Checkbox and the groups for their severity icon (`messageNode`).
  */
 export const FIELD_WIDTH = 240;
 
@@ -131,14 +131,17 @@ const messageIcon = {
   children: [severityIcon('message')],
 };
 
-/** The message: its text, after the severity icon when the form places it there. */
-export const message = {
+/**
+ * The message: its text, after the severity icon when the form places it there. `fill` stretches it to the
+ * component's width (the fields); without it, it hugs its text (the Checkbox and the groups, which hug theirs).
+ */
+export const messageNode = ({ fill = true } = {}) => ({
   type: 'frame',
   name: 'message',
   layout: 'HORIZONTAL',
   align: { primary: 'MIN', counter: 'MIN' },
   when: (v) => severityOf(v) !== null,
-  width: 'FILL',
+  ...(fill ? { width: 'FILL' } : {}),
   bind: { gap: (v) => (v.props.severityIcon === 'message' ? 'severity-icon.gap' : null) },
   children: [
     messageIcon,
@@ -147,11 +150,13 @@ export const message = {
       name: 'message-text',
       text: 'Message',
       property: 'Message',
-      width: 'FILL',
+      ...(fill ? { width: 'FILL' } : {}),
       bind: { fill: 'message.color', typography: 'message.typography' },
     },
   ],
-};
+});
+
+export const message = messageNode();
 
 /**
  * The control and, when the form places it there, the severity icon after it (the web lays them out on a grid

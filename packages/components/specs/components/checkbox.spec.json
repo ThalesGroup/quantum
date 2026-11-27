@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox",
   "name": "Checkbox",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "status": "draft",
   "role": "checkbox",
   "summary": "Lets people turn one option on or off, or pick any number of options from a list.",
@@ -45,6 +45,15 @@
         "error"
       ],
       "description": "Text saying what is wrong and what to do, under the description (or the label), aligned with the label, associated with the control as a description after the description. Shown only with a severity."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\"): error, the Alert's glyph. At the start of the message, before its text, when severityIcon is message (or after-control, which a choice control draws in the message); never after the box, where the label or the options follow it."
     }
   ],
   "properties": [
@@ -106,6 +115,27 @@
       "type": "string",
       "bindsTo": "message",
       "description": "What is wrong and what to do, shown with a severity."
+    },
+    {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes, a rule of the form set once for all its controls (Forms decision forms-severity-icon-placement). A choice control offers message and none: its label or options follow the box, so a form set to after-control shows its icon in the message.",
+      "affects": [
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px (default; also what after-control draws here)."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
+        }
+      ]
     },
     {
       "id": "severity",
@@ -377,6 +407,18 @@
           "wcag:2.3.3",
           "mdn-reduced-motion"
         ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\") and is part of the description: at the start of the message it is inside the message, which aria-describedby references. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 (light) and 5.30:1 (dark)).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
+        ]
       }
     ],
     "references": [
@@ -529,6 +571,11 @@
         "id": "wcag-aria1",
         "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
       }
     ]
   },
@@ -621,7 +668,8 @@
         "control": ".ds-checkbox__control",
         "label": ".ds-checkbox__label",
         "description": ".ds-checkbox__description",
-        "message": ".ds-checkbox__message"
+        "message": ".ds-checkbox__message",
+        "severity-icon": ".ds-checkbox__severity-icon"
       }
     }
   },
@@ -630,6 +678,22 @@
     "radio-group"
   ],
   "decisions": [
+    {
+      "id": "severity-icon",
+      "date": "2026-11-27",
+      "version": "0.6.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Checkbox gets the severity icon (part severity-icon) and the property severityIcon, as the Forms foundation decided for every form control that shows a severity: at the start of the message only: it offers message (default) and none, and draws a form's after-control in the message, its label or options following the box. Its size: 16 px (size.2), space.4 before the text. Its glyph is the Alert's, error, named \"Error\"; its color the on-base icon role of the severity, checkbox.severity-icon.color.* aliasing form.severity-icon.color.*. Drawn with the Text field's rules and Figma helpers.",
+      "rationale": "Applies the Forms decisions forms-severity-icon-placement, forms-severity-icon-size, forms-severity-icon-color and forms-severity-icon-glyphs (#103 step 12 and #105 steps 6 and 12): the Select, the Checkbox and the groups take the field family's severity icon, built in #103 step 30.",
+      "tokens": [
+        "checkbox.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.1.1"
+      ]
+    },
     {
       "id": "message-part",
       "date": "2026-11-27",
@@ -770,6 +834,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.0",
+      "date": "2026-11-27",
+      "note": "Decision severity-icon (#103 step 30; Forms forms-severity-icon-placement, -size, -color, -glyphs): part severity-icon and property severityIcon (message, none; message by default), tokens checkbox.severity-icon.* (font, size, gap, color aliasing form.severity-icon.color.*), the icon in the template (named after the severity, role img) and the CSS, a web guideline on its name; the Figma blueprint draws it with the Text field's helpers. An error now starts its message with the icon by default. Icon on the surface at the lowest: error 5.81:1 (light) and 5.30:1 (dark)."
+    },
     {
       "version": "0.5.0",
       "date": "2026-11-27",

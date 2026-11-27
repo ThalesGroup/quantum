@@ -147,6 +147,41 @@
   letter-spacing: var(--_message-letter-spacing);
 }
 
+/* ---- Severity icon ---------------------------------------------------------
+   At the start of the message only (severityIcon message): a choice control's label or options follow its box,
+   so it draws no icon after it (Forms decision forms-severity-icon-placement). 16 px, centred on the message's
+   first line, severity-icon.gap.message before the text. */
+
+.ds-checkbox__message:has(> .ds-checkbox__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--checkbox-severity-icon-gap-message);
+}
+
+.ds-checkbox__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--checkbox-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+  color: var(--checkbox-severity-icon-color-error);
+  font-family: var(--checkbox-severity-icon-font-family);
+  font-size: var(--checkbox-severity-icon-size-message);
+  font-weight: var(--checkbox-severity-icon-font-weight);
+  line-height: var(--checkbox-severity-icon-size-message);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--checkbox-severity-icon-fill),
+    "GRAD" var(--checkbox-severity-icon-grade),
+    "opsz" var(--checkbox-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
 /* ---- States -------------------------------------------------------------- */
 /* Order matters: hover < error fill < checked < checked in error < indeterminate < indeterminate in error
    < error border < disabled. Hover never

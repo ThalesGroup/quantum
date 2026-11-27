@@ -146,6 +146,41 @@
   letter-spacing: var(--_message-letter-spacing);
 }
 
+/* ---- Severity icon ---------------------------------------------------------
+   At the start of the message only (severityIcon message): a choice control's label or options follow its box,
+   so it draws no icon after it (Forms decision forms-severity-icon-placement). 16 px, centred on the message's
+   first line, severity-icon.gap.message before the text. */
+
+.ds-radio-group__message:has(> .ds-radio-group__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--radio-group-severity-icon-gap-message);
+}
+
+.ds-radio-group__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--radio-group-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+  color: var(--radio-group-severity-icon-color-error);
+  font-family: var(--radio-group-severity-icon-font-family);
+  font-size: var(--radio-group-severity-icon-size-message);
+  font-weight: var(--radio-group-severity-icon-font-weight);
+  line-height: var(--radio-group-severity-icon-size-message);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--radio-group-severity-icon-fill),
+    "GRAD" var(--radio-group-severity-icon-grade),
+    "opsz" var(--radio-group-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
 /* ---- Option ------------------------------------------------------------- */
 
 .ds-radio-group__option {

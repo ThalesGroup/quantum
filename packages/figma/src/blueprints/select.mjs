@@ -11,13 +11,17 @@
  * as wide as the field (FIELD_WIDTH px) positioned absolutely over it and vertically centered,
  * whose right padding is indicator.margin-inline. Figma cannot pin an absolute child to the end
  * edge from the format: if the component is made wider, widen `indicator-inset` with it.
+ *
+ * The severity icon (decision severity-icon) follows the field box in `control-row` (the Text field's
+ * `withSeverityIcon`), the indicator staying inside the box, or starts the message (`message`), by the
+ * `severityIcon` variant.
  */
-import { FIELD_WIDTH, TRANSITION, container, control, description, message, label } from './text-field.mjs';
+import { FIELD_WIDTH, TRANSITION, SEVERITY_ICON_AXES, container, control, description, message, label, withSeverityIcon } from './text-field.mjs';
 
 export default {
   root: container([
     label,
-    {
+    withSeverityIcon({
       type: 'frame',
       name: 'field',
       layout: 'HORIZONTAL',
@@ -55,13 +59,14 @@ export default {
           ],
         },
       ],
-    },
+    }),
     description,
     message,
   ]),
   booleans: { 'Show description': false },
   notDrawn: [
     TRANSITION,
+    SEVERITY_ICON_AXES,
     { slot: 'indicator.fill, indicator.grade, indicator.optical-size', reason: 'Figma cannot bind a variable to a font variation axis.' },
   ],
 };

@@ -148,7 +148,8 @@ test('a slot a blueprint does not draw has no variable, unless a drawn token ali
   assert.ok(names.has('text-field/label/typography/medium/line-height'));
   // 1840 before #103 step 26; the Search field's severities add 41: 12 control, 18 message (each typography in five), 11 severity icon.
   // Step 28: the field family aliases form.*, which adds the 7 family tokens no other control reached (asterisk not drawn).
-  assert.equal(plan.variables.variables.length, 1888);
+  // Step 30: the severity icon of the Select (11 variables) and of the Checkbox and the groups (5 each) adds 26.
+  assert.equal(plan.variables.variables.length, 1914);
 });
 
 test('the Text field draws its outline flush, a severity at its own width at rest and at the focus width when focused', () => {
@@ -253,16 +254,20 @@ test('State leaves out a state an enum axis sets: no variant names a severity tw
       assert.ok(axes.get(property.name).includes(String(s.value)), `${id}: ${property.name} draws ${s.value}`);
     }
   }
-  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, select: 48, checkbox: 24, 'checkbox-group': 40, 'radio-group': 40, 'search-field': 288 };
+  const counts = { 'text-field': 720, 'number-field': 720, textarea: 360, select: 144, checkbox: 48, 'checkbox-group': 80, 'radio-group': 80, 'search-field': 288 };
   for (const [id, count] of Object.entries(counts)) assert.equal(figmaComponent(loaded, specOf(id), BLUEPRINTS[id]).variants.length, count, id);
   const plan = figmaComponent(loaded, specOf('text-field'), BLUEPRINTS['text-field']);
   assert.deepEqual(plan.properties.find((p) => p.name === 'State').values, ['default', 'hover', 'focus-visible', 'readonly', 'disabled']);
   assert.equal(new Set(plan.variants.map((v) => JSON.stringify(v.root))).size, 552);
   // The group's message follows the Severity axis, and the severity reaches every option.
   const group = figmaComponent(loaded, specOf('checkbox-group'), BLUEPRINTS['checkbox-group']);
-  const g = (severity) => group.variants.find((v) => v.name === `Orientation=vertical, Size=medium, Severity=${severity}, State=default`).root;
+  const g = (severity, icon = 'message') => group.variants.find((v) => v.name === `Orientation=vertical, Size=medium, Severity icon=${icon}, Severity=${severity}, State=default`).root;
   assert.ok(g('error').children.some((c) => c.name === 'message'));
   assert.ok(!g('none').children.some((c) => c.name === 'message'));
+  // The severity icon starts the message with severityIcon message, and is not drawn with none (#103 step 30).
+  const icon = (root) => root.children.find((c) => c.name === 'message').children.find((c) => c.name === 'severity-icon-line');
+  assert.equal(icon(g('error')).children[0].glyph, 'error');
+  assert.equal(icon(g('error', 'none')), undefined);
 });
 
 test('the Text field draws its leading icon over the start of the control, in the color of the text beside it', () => {
@@ -298,7 +303,8 @@ test('a checked box in error binds the token for both states, its brand fill', (
     const plan = figmaComponent(loaded, specOf(id), BLUEPRINTS[id]);
     const inError = plan.variants.filter((v) => /Severity=error/.test(v.name));
     const checked = inError.filter((v) => /State=checked/.test(v.name));
-    assert.equal(checked.length, id === 'checkbox' ? 2 : 4, id);
+    // Two placements of the severity icon (message, none) since #103 step 30.
+    assert.equal(checked.length, id === 'checkbox' ? 4 : 8, id);
     for (const v of checked) assert.equal(fillOf(v), `${id}/control/background/checked-error`, v.name);
     for (const v of inError.filter((v) => /State=indeterminate/.test(v.name))) assert.equal(fillOf(v), `${id}/control/background/indeterminate-error`, v.name);
     // An empty box in error keeps the error fill; the brand value is the checked fill's.

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -99,6 +99,17 @@
         "success"
       ],
       "description": "Text saying what the severity means (what is wrong and how to fix it, what to check, what was confirmed), associated with the control as a description. Shown only with a severity."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error",
+        "warning",
+        "success"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\", \"Warning\", \"Success\"): error, warning or check_circle, the Alert's glyphs. Placed by severityIcon: after the field box, centred on it, the box giving up its size and gap while the indicator stays inside; or at the start of the message, before its text. Never inside the box."
     }
   ],
   "properties": [
@@ -113,7 +124,8 @@
         "indicator",
         "label",
         "description",
-        "message"
+        "message",
+        "severity-icon"
       ],
       "options": [
         {
@@ -168,6 +180,32 @@
       "type": "string",
       "bindsTo": "message",
       "description": "What the severity means: what is wrong and how to fix it, what to check, or what was confirmed. Shown with a severity, in the color of that severity, and replaces errorMessage."
+    },
+    {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes. A rule of the form, not of the field: a form sets it once, to the same value, for all its controls (Forms decision forms-severity-icon-placement).",
+      "affects": [
+        "field",
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px; the box keeps its full width (default)."
+        },
+        {
+          "value": "after-control",
+          "description": "After the field box, centred on it, at the size of the Button's icon of the same size; the box gives up the icon and the gap, the indicator stays inside it."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
+        }
+      ]
     },
     {
       "id": "required",
@@ -420,6 +458,18 @@
           "wcag:2.3.3",
           "mdn-reduced-motion"
         ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\", \"Warning\", \"Success\") and is part of the description: at the start of the message it is inside the message, which aria-describedby references; after the field box, aria-describedby references it too, before the message, so the description reads \"Error\" and then the message. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 (light) and 5.30:1 (dark); warning 6.16:1 and 8.38:1; success 7.44:1 and 5.92:1).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
+        ]
       }
     ],
     "references": [
@@ -537,6 +587,11 @@
         "id": "aria-hidden",
         "title": "WAI-ARIA 1.2: aria-hidden",
         "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-hidden"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
       }
     ]
   },
@@ -689,6 +744,30 @@
           }
         ]
       }
+    },
+    {
+      "id": "medium-error-icon-after-control",
+      "name": "Medium, error, icon after the control",
+      "description": "A form that places its severity icons after the controls: the icon follows the box, the indicator stays inside it.",
+      "props": {
+        "size": "medium",
+        "label": "Country",
+        "placeholder": "Choose a country",
+        "options": [
+          {
+            "label": "France",
+            "value": "fr"
+          },
+          {
+            "label": "Germany",
+            "value": "de"
+          }
+        ],
+        "required": true,
+        "severity": "error",
+        "severityIcon": "after-control",
+        "message": "Choose a country"
+      }
     }
   ],
   "tokens": {
@@ -716,7 +795,8 @@
         "option": ".ds-select__option",
         "control": ".ds-select__control",
         "description": ".ds-select__description",
-        "message": ".ds-select__message"
+        "message": ".ds-select__message",
+        "severity-icon": ".ds-select__severity-icon"
       }
     }
   },
@@ -726,6 +806,22 @@
     "text-field"
   ],
   "decisions": [
+    {
+      "id": "severity-icon",
+      "date": "2026-11-27",
+      "version": "0.7.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Select gets the severity icon (part severity-icon) and the property severityIcon, as the Forms foundation decided for every form control that shows a severity: after the field box (after-control), centred on it with the indicator staying inside the box, at the start of the message (message, default), or none. Its size: after the box the Button's icon of the same size (size.3, size.4, size.4: 20, 24, 24 px), space.8 after it; in the message 16 px (size.2), space.4 before the text. Its glyph is the Alert's, error, warning or check_circle, named \"Error\", \"Warning\" or \"Success\"; its color the on-base icon role of the severity, select.severity-icon.color.* aliasing form.severity-icon.color.*. Drawn with the Text field's rules and Figma helpers.",
+      "rationale": "Applies the Forms decisions forms-severity-icon-placement, forms-severity-icon-size, forms-severity-icon-color and forms-severity-icon-glyphs (#103 step 12 and #105 steps 6 and 12): the Select, the Checkbox and the groups take the field family's severity icon, built in #103 step 30.",
+      "tokens": [
+        "select.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.1.1"
+      ]
+    },
     {
       "id": "severity-fill",
       "date": "2026-11-27",
@@ -884,6 +980,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-27",
+      "note": "Decision severity-icon (#103 step 30; Forms forms-severity-icon-placement, -size, -color, -glyphs): part severity-icon and property severityIcon (message, after-control, none; message by default), tokens select.severity-icon.* (font, size, gap, color aliasing form.severity-icon.color.*), the icon in the template (named after the severity, role img) and the CSS, a web guideline on its name; the Figma blueprint draws it with the Text field's helpers. An error now starts its message with the icon by default. Icon on the surface at the lowest: error 5.81:1 (light) and 5.30:1 (dark); warning 6.16:1 and 8.38:1; success 7.44:1 and 5.92:1. New example: Medium, error, icon after the control."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-27",

@@ -148,6 +148,41 @@
   letter-spacing: var(--_message-letter-spacing);
 }
 
+/* ---- Severity icon ---------------------------------------------------------
+   At the start of the message only (severityIcon message): a choice control's label or options follow its box,
+   so it draws no icon after it (Forms decision forms-severity-icon-placement). 16 px, centred on the message's
+   first line, severity-icon.gap.message before the text. */
+
+.ds-checkbox-group__message:has(> .ds-checkbox-group__severity-icon) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--checkbox-group-severity-icon-gap-message);
+}
+
+.ds-checkbox-group__severity-icon {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  inline-size: var(--checkbox-group-severity-icon-size-message);
+  block-size: calc(var(--_message-font-size) * var(--_message-line-height));
+  color: var(--checkbox-group-severity-icon-color-error);
+  font-family: var(--checkbox-group-severity-icon-font-family);
+  font-size: var(--checkbox-group-severity-icon-size-message);
+  font-weight: var(--checkbox-group-severity-icon-font-weight);
+  line-height: var(--checkbox-group-severity-icon-size-message);
+  font-style: normal;
+  font-variation-settings:
+    "FILL" var(--checkbox-group-severity-icon-fill),
+    "GRAD" var(--checkbox-group-severity-icon-grade),
+    "opsz" var(--checkbox-group-severity-icon-optical-size);
+  font-feature-settings: "liga";
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
 /* ---- Option ------------------------------------------------------------- */
 
 .ds-checkbox-group__option {

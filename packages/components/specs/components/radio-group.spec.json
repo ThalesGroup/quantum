@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -104,6 +104,15 @@
         "error"
       ],
       "description": "Text saying what is wrong and what to do, associated with every option as a description. Shown only with a severity."
+    },
+    {
+      "id": "severity-icon",
+      "role": "icon",
+      "required": false,
+      "visibleIn": [
+        "error"
+      ],
+      "description": "Glyph of the icon font saying the severity, named after it (\"Error\"): error, the Alert's glyph. At the start of the message, before its text, when severityIcon is message (or after-control, which a choice control draws in the message); never after the box, where the label or the options follow it."
     }
   ],
   "properties": [
@@ -191,6 +200,27 @@
       "type": "string",
       "bindsTo": "message",
       "description": "What is wrong and what to do, shown with a severity. Replaces errorMessage."
+    },
+    {
+      "id": "severityIcon",
+      "name": "Severity icon",
+      "type": "enum",
+      "default": "message",
+      "description": "Where the severity icon goes, a rule of the form set once for all its controls (Forms decision forms-severity-icon-placement). A choice control offers message and none: its label or options follow the box, so a form set to after-control shows its icon in the message.",
+      "affects": [
+        "severity-icon",
+        "message"
+      ],
+      "options": [
+        {
+          "value": "message",
+          "description": "At the start of the message, before its text, 16 px (default; also what after-control draws here)."
+        },
+        {
+          "value": "none",
+          "description": "No icon: the message's own words say the severity (the fix of an error, what to check, what was confirmed). The component writes no severity word; a project whose messages do not say it starts them with the word and its language's colon (\"Error: …\")."
+        }
+      ]
     },
     {
       "id": "required",
@@ -483,6 +513,18 @@
           "wcag:2.3.3",
           "mdn-reduced-motion"
         ]
+      },
+      {
+        "text": "The severity icon is named after the severity (\"Error\") and is part of the description: at the start of the group's message it is inside the message, which every option's aria-describedby references. It is never the only cue: the message says what is wrong. The icon reaches 3:1 on every surface level (at the lowest: error 5.81:1 (light) and 5.30:1 (dark)).",
+        "refs": [
+          "accname-description",
+          "wcag:1.1.1",
+          "wcag:1.4.1",
+          "wcag:1.4.11"
+        ],
+        "platforms": [
+          "web"
+        ]
       }
     ],
     "references": [
@@ -640,6 +682,11 @@
         "id": "compose-state-description",
         "title": "Jetpack Compose accessibility: state description",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description"
+      },
+      {
+        "id": "accname-description",
+        "title": "AccName 1.2: computing the description (aria-describedby, the text of each referenced node)",
+        "url": "https://www.w3.org/TR/accname-1.2/#mapping_additional_nd_description"
       }
     ]
   },
@@ -832,7 +879,8 @@
         "control": ".ds-radio-group__control",
         "option-label": ".ds-radio-group__option-label",
         "option-description": ".ds-radio-group__option-description",
-        "message": ".ds-radio-group__message"
+        "message": ".ds-radio-group__message",
+        "severity-icon": ".ds-radio-group__severity-icon"
       }
     }
   },
@@ -842,6 +890,22 @@
     "switch"
   ],
   "decisions": [
+    {
+      "id": "severity-icon",
+      "date": "2026-11-27",
+      "version": "0.7.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Radio group gets the severity icon (part severity-icon) and the property severityIcon, as the Forms foundation decided for every form control that shows a severity: at the start of the message only: it offers message (default) and none, and draws a form's after-control in the message, its label or options following the box. Its size: 16 px (size.2), space.4 before the text. Its glyph is the Alert's, error, named \"Error\"; its color the on-base icon role of the severity, radio-group.severity-icon.color.* aliasing form.severity-icon.color.*. Drawn with the Text field's rules and Figma helpers.",
+      "rationale": "Applies the Forms decisions forms-severity-icon-placement, forms-severity-icon-size, forms-severity-icon-color and forms-severity-icon-glyphs (#103 step 12 and #105 steps 6 and 12): the Select, the Checkbox and the groups take the field family's severity icon, built in #103 step 30.",
+      "tokens": [
+        "radio-group.severity-icon.*"
+      ],
+      "refs": [
+        "wcag:1.4.1",
+        "wcag:1.1.1"
+      ]
+    },
     {
       "id": "checked-error-fill",
       "date": "2026-11-27",
@@ -1002,6 +1066,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.7.0",
+      "date": "2026-11-27",
+      "note": "Decision severity-icon (#103 step 30; Forms forms-severity-icon-placement, -size, -color, -glyphs): part severity-icon and property severityIcon (message, none; message by default), tokens radio-group.severity-icon.* (font, size, gap, color aliasing form.severity-icon.color.*), the icon in the template (named after the severity, role img) and the CSS, a web guideline on its name; the Figma blueprint draws it with the Text field's helpers. An error now starts its message with the icon by default. Icon on the surface at the lowest: error 5.81:1 (light) and 5.30:1 (dark)."
+    },
     {
       "version": "0.6.1",
       "date": "2026-11-27",

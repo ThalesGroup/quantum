@@ -18,10 +18,13 @@
  * With a severity, the message follows the two rows container.gap below them (the web's grid row gap plus
  * the message's margin), in a `message-row` that starts with an empty `control-column`, so it aligns with
  * the label as the description does; it is drawn with Severity=error (or the error State), as the
- * template shows it with a severity.
+ * template shows it with a severity, starting with the severity icon when `severityIcon` is message (the Text
+ * field's `messageNode`, decision severity-icon).
  *
  * The group blueprints (checkbox-group, radio-group) build on the helpers exported here.
  */
+
+import { messageNode, SEVERITY_ICON_AXES } from './text-field.mjs';
 
 /** Center lines of the CSS check, in a 24 x 24 box the size of the control. */
 const CHECK = 'M 5.806 11.663 L 9.879 15.736 L 18.194 7.42';
@@ -134,16 +137,10 @@ export default {
         bind: { gap: 'container.column-gap' },
         children: [
           { type: 'frame', name: 'control-column', height: 1, bind: { width: 'control.size' } },
-          {
-            type: 'text',
-            name: 'message',
-            text: 'Message',
-            property: 'Message',
-            bind: { fill: 'message.color', typography: 'message.typography' },
-          },
+          messageNode({ fill: false }),
         ],
       },
     ],
   },
-  notDrawn: [TRANSITION],
+  notDrawn: [TRANSITION, SEVERITY_ICON_AXES],
 };

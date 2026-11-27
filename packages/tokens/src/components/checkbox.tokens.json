@@ -101,6 +101,50 @@
         "small": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.message.font-size.small}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } },
         "medium": { "$value": { "fontFamily": "{body.family}", "fontSize": "{form.message.font-size.medium}", "fontWeight": "{body.weight.medium}", "lineHeight": "{font.line-height.normal}", "letterSpacing": "{font.letter-spacing.normal}" } }
       }
+    },
+    "severity-icon": {
+      "$description": "The severity icon, a glyph of the icon font, at the start of the message (severityIcon message; a choice control draws none after its box, Forms decision forms-severity-icon-placement; size and color, forms-severity-icon-size, -color). Only the font, the size, the gap and the color are tokenized.",
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.icon.family}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font.icon.weight.light}"
+      },
+      "fill": {
+        "$type": "number",
+        "$value": "{font.icon.fill.off}"
+      },
+      "grade": {
+        "$type": "number",
+        "$value": "{font.icon.grade.normal}"
+      },
+      "optical-size": {
+        "$type": "number",
+        "$value": "{font.icon.optical-size.24}"
+      },
+      "size": {
+        "$type": "dimension",
+        "message": {
+          "$description": "At the start of the message: the Icon's size next to 14 and 16 px body text (16 px).",
+          "$value": "{size.2}"
+        }
+      },
+      "gap": {
+        "$type": "dimension",
+        "message": {
+          "$description": "Between the icon and the message text.",
+          "$value": "{space.4}"
+        }
+      },
+      "color": {
+        "$type": "color",
+        "$description": "The on-base icon role of the severity: the icon sits on the surface, beside the control or in the message, and takes the message text's color.",
+        "error": {
+          "$value": "{form.severity-icon.color.error}"
+        }
+      }
     }
   }
 }

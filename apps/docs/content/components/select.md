@@ -62,6 +62,17 @@ never be chosen again and is not a valid value.
 
 The opened list is not a state of the component: the platform draws it.
 
+### Severity icon
+
+A severity can also show an icon, set by `severityIcon`, a choice the form makes once for all its
+controls ([Forms foundation](/foundations/forms/guidelines)), as on the Text field. By default
+(`message`) it starts the message, 16 px, and the box keeps its full width. With `after-control` it
+follows the box, at the size of the Button's icon of the same size (20, 24 and 24 px), 8 px away: the
+chevron stays inside the box, and the box gives up the icon and the gap. With `none` there is no
+icon, and the message's own words say the severity. It draws the Alert's glyph of the severity
+(`error`, `warning`, `check_circle`) in the color of its message, and is named after it ("Error",
+"Warning", "Success"), so the description reads the severity and then the message.
+
 ## Content
 
 - The label is a noun phrase naming the choice: **Country**, **Time zone**, **Sort by**.

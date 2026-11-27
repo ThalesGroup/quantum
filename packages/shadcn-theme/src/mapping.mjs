@@ -216,6 +216,7 @@ export const COMPONENTS = [
       { state: 'error', props: { 'aria-invalid': true } },
       { set: { disabled: true }, props: { disabled: true } },
       { part: 'message', props: { component: 'FieldError (field)' } },
+      { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
     ],
   },
   {
@@ -225,6 +226,7 @@ export const COMPONENTS = [
       { part: 'legend', props: { component: 'FieldLegend' } },
       { part: 'option', props: { component: 'Field orientation="horizontal" + Checkbox' } },
       { part: 'message', props: { component: 'FieldError' } },
+      { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
     ],
   },
   {
@@ -233,6 +235,7 @@ export const COMPONENTS = [
       { part: 'control', props: { component: 'RadioGroupItem' } },
       { part: 'legend', props: { component: 'FieldLegend (field)' } },
       { state: 'error', props: { 'aria-invalid': true } },
+      { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
     ],
   },
   {
@@ -326,6 +329,7 @@ export const COMPONENTS = [
       { state: 'error', props: { 'aria-invalid': true } },
       { state: 'warning', props: null, note: 'shadcn has no warning state: only aria-invalid.' },
       { state: 'success', props: null, note: 'shadcn has no success state: only aria-invalid.' },
+      { part: 'severity-icon', props: null, note: 'FieldError draws no icon: put one in its children.' },
     ],
   },
   {

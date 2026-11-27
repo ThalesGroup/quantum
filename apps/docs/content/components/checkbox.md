@@ -53,6 +53,12 @@ weight of every form control's message, larger than the description, so the fix 
 as the option. Assistive technology reads it after the description. A checkbox shows only the
 error: a single choice has nothing to warn about or to confirm.
 
+By default the message starts with the severity icon, the Alert's `error` glyph at 16 px, named
+"Error", in the message's color: `severityIcon`, a choice the form makes once for all its controls
+([Forms foundation](/foundations/forms/guidelines)). With `none` there is no icon and the message's
+own words say the error. A checkbox never draws the icon after its box, where its label follows it: a
+form set to `after-control` shows it in the message.
+
 ## States
 
 | State | How it happens | What changes |
