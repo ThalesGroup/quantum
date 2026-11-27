@@ -166,15 +166,45 @@ whatever the setting. In a design tool the setting is not one of the component's
 **In the column, each label sits against its control.** Every label and every group legend aligns
 to the end of the column, so it ends 12 px from its control whatever the length of the others; the
 column is as wide as the longest label, at most 14 em, and a longer label wraps. The 12 px are
-`form.gap.label-column`, with the other gaps of a form in [Spacing](#spacing). Each label is then
-immediately before its field, where people expect it and where a screen magnifier finds it
-([G162](https://www.w3.org/WAI/WCAG22/Techniques/general/G162)); RGAA asks the same, a label
-"visuellement accolée immédiatement" to the left of its field
-([RGAA 11.4](https://accessibilite.numerique.gouv.fr/methode/criteres-et-tests/#11.4)). The cost
-is a ragged start edge: the labels are less easy to scan down than labels aligned to the start,
-but no short label ends far from its control. A label's first line is centred on the control's
-box, and the description and the message stay under the control. In a right-to-left language the
-column mirrors: the labels sit to the right of their fields.
+`form.gap.label-column`, with the other gaps of a form in [Spacing](#spacing). A label's first line
+is centred on the control's box, and the description and the message stay under the control. In a
+right-to-left language the column mirrors: the labels sit to the right of their fields.
+
+**Why against the control.** What a label column must keep is the bond between each label and its
+field:
+
+- **Adjacency.** Every label stays immediately before its field, as G162 places labels, which also
+  makes them easier to locate with a screen magnifier
+  ([G162](https://www.w3.org/WAI/WCAG22/Techniques/general/G162)). With labels
+  aligned to the start instead, one long label widens the column and pushes every short label away
+  from its field.
+- **RGAA.** Test 11.4.2 asks for a label "visuellement accolée immédiatement" to the left of its
+  field, to the right in a right-to-left language
+  ([RGAA 11.4](https://accessibilite.numerique.gouv.fr/methode/criteres-et-tests/#11.4)): every
+  label at 12 px meets it, whatever the others' lengths.
+- **Usability research.** In Matteo Penzo's eye-tracking study of short forms, right-aligned labels
+  to the left of the fields cut the number of fixations and the completion time nearly in half compared
+  with left-aligned ones, and the eye's jump from a label to its field fell from about 500 ms to
+  about 170 to 240 ms ([Penzo, "Label Placement in Forms", UXmatters,
+  2006](https://www.uxmatters.com/mt/archives/2006/07/label-placement-in-forms.php); a usability
+  study, not an accessibility source, listed among G162's related resources).
+
+**The trade-off: the labels no longer line up.** Their start edge is ragged, so they are harder to
+read down as a list. Luke Wroblewski, whose form layouts that study tested, puts it this way: right
+alignment makes the association between label and field clear, but the ragged edge weakens a quick
+scan of what the form asks for ([Wroblewski, "Web Application Form
+Design", 2005](https://www.lukew.com/ff/entry.asp?1502), also listed among G162's related
+resources). G162 itself values labels that line up.
+
+**When to keep the labels above.** The column is the form's choice, never the default: a form sets
+`labelPlacement: start` to get it, and a narrow form stacks it anyway (below). Labels above, the
+default, keep both strengths: each label sits right over its field and the labels read down in one
+line. Penzo's study found them best, read with the field in a single eye movement, and advises
+right-aligned labels only for forms that put them to the left. Keep them above for a long form or
+one people do not know yet, where they first scan the labels to see what is asked; Wroblewski
+recommends a left-justified column for unfamiliar data that people scan, which the ragged edge of a
+label column would hamper. Choose the column for a short form of familiar fields, where each label
+must sit next to its field and vertical space is tight.
 
 **A narrow form stacks its labels above its fields.** By default the column stacks when the form
 itself is narrower than 30 rem (480 px), wherever it sits: a page, a dialog, a side panel. On the
