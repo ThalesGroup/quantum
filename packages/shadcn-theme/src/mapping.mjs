@@ -215,6 +215,7 @@ export const COMPONENTS = [
       { state: 'indeterminate', props: { checked: 'indeterminate' } },
       { state: 'error', props: { 'aria-invalid': true } },
       { set: { disabled: true }, props: { disabled: true } },
+      { part: 'message', props: { component: 'FieldError (field)' } },
     ],
   },
   {

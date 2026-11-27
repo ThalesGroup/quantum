@@ -116,8 +116,8 @@ refinement may revisit them.
 
 **Every control that can show a severity has a message part**, after its description, so its
 error is said in text next to it and associated with it. A form-wide summary may repeat the
-error, never replace it. The standalone Checkbox has the error severity but no message part
-yet: it gets one with the complex controls (step 2b). A Switch shows no severity, so it has no
+error, never replace it. The standalone Checkbox has its message under its description, aligned
+with its label, as its only severity is the error. A Switch shows no severity, so it has no
 message; a Slider gets one only if it is given a severity. WCAG asks that an error be indicated
 in text ([Understanding 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification#intent)),
 and WAI-ARIA lets a checkbox reference its error message

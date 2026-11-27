@@ -35,7 +35,7 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Small | Dense lists, tables and filter panels, with a 14 px label. |
 | Medium | Forms and settings, the default, with a 16 px label. |
 
-The box, its corner radius, the label and the description scale together. The exact values
+The box, its corner radius, the label, the description and the message scale together. The exact values
 are tokens (Tokens tab). Never mix sizes within one list.
 
 ## Label and description
@@ -44,6 +44,14 @@ The label names the option and is the accessible name of the control. Activating
 the box, so the whole row is the target. The description adds help under the label: what
 checking the box does, or why it cannot change. It is read by assistive technology as the
 control's description, after the name.
+
+## Message
+
+With a severity, a message says what is wrong and what to do, under the description (or under
+the label when there is none), aligned with the label, 6 px after it. It takes the size and the
+weight of every form control's message, larger than the description, so the fix reads as easily
+as the option. Assistive technology reads it after the description. A checkbox shows only the
+error: a single choice has nothing to warn about or to confirm.
 
 ## States
 
@@ -54,7 +62,7 @@ control's description, after the name.
 | Focus visible | Keyboard focus on the box. | The shared focus ring appears outside the box. Pointer focus shows no ring. |
 | Checked | `checked` property. | The box fills with the brand color and shows a check mark. |
 | Indeterminate | Set by the application when the box stands for a group of options of which some are on. | The box fills and shows a bar instead of a check. Toggling it checks or unchecks the whole group. |
-| Error | `severity` property set to error, after validation. | The box border takes the error color and, while unchecked, the box the subtle error fill (checked or indeterminate, it keeps its brand fill); the form states the error in text. A single choice has no warning or success. |
+| Error | `severity` property set to error, after validation. | The box border takes the error color and, while unchecked, the box the subtle error fill (checked or indeterminate, it keeps its brand fill); the message says the error in text. A single choice has no warning or success. |
 | Disabled | `disabled` property. | Box, label and description drop to the shared disabled colors, checked or not. |
 
 A checkbox cannot be in two states at once from the tokens' point of view: a checked box keeps
@@ -102,13 +110,12 @@ This section explains the decisions behind it.
   is why the unchecked border is the dark accent neutral border rather than a light grey: it is
   the lightest neutral border of the system that keeps 3:1 in dark mode
   ([WCAG 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html#boundaries)).
-  Label and description need 4.5:1 as text
+  Label, description and message need 4.5:1 as text
   ([WCAG 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
 - **State and errors are never color alone.** The check and the bar show the state; an error is
-  stated in text next to the box or at the top of the form, not only by a red border
+  stated in text, in the message next to the box, not only by a red border
   ([WCAG 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
-  [WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html),
-  [WAI tutorial: User notifications](https://www.w3.org/WAI/tutorials/forms/notifications/)).
+  [WCAG 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html)).
 - **Visible focus.** Keyboard focus shows the shared ring outside the box; pointer focus shows
   none ([WCAG 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html),
   [WCAG 2.4.13 Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)).
@@ -125,7 +132,9 @@ This section explains the decisions behind it.
 ### Web
 
 - The implementation renders an `<input type="checkbox">` in a wrapper, with a `<label for>`
-  pointing at it and an optional description referenced by `aria-describedby`. It never sets
+  pointing at it, an optional description and, with a severity, the message, referenced in that
+  order by `aria-describedby`
+  ([ARIA1](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1)). It never sets
   `aria-checked`, which ARIA in HTML forbids on a native checkbox
   ([ARIA in HTML: input type=checkbox](https://www.w3.org/TR/html-aria/#el-input-checkbox),
   [HTML-AAM: input type=checkbox](https://www.w3.org/TR/html-aam-1.0/#el-input-checkbox)).

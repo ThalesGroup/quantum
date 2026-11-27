@@ -15,6 +15,11 @@
  * wide) as a horizontal vector, both stroked in control.color, centered, in the states that show
  * them. The description is a boolean property (off, as in the template).
  *
+ * With a severity, the message follows the two rows container.gap below them (the web's grid row gap plus
+ * the message's margin), in a `message-row` that starts with an empty `control-column`, so it aligns with
+ * the label as the description does; it is drawn with Severity=error (or the error State), as the
+ * template shows it with a severity.
+ *
  * The group blueprints (checkbox-group, radio-group) build on the helpers exported here.
  */
 
@@ -102,18 +107,43 @@ export const TRANSITION = { slot: 'control.transition', reason: 'Figma variables
 
 export default {
   booleans: { 'Show description': false },
-  root: optionRows({
-    control: checkboxControl,
-    parts: { label: 'label', description: 'description' },
-    gaps: { row: 'container.row-gap', column: 'container.column-gap' },
-    extra: { name: 'container' },
-    texts: {
-      label: 'Label',
-      labelProperty: 'Label',
-      description: 'Description',
-      descriptionProperty: 'Description',
-      descriptionVisible: 'Show description',
-    },
-  }),
+  root: {
+    type: 'frame',
+    name: 'container',
+    layout: 'VERTICAL',
+    bind: { gap: 'container.gap' },
+    children: [
+      optionRows({
+        control: checkboxControl,
+        parts: { label: 'label', description: 'description' },
+        gaps: { row: 'container.row-gap', column: 'container.column-gap' },
+        extra: { name: 'rows' },
+        texts: {
+          label: 'Label',
+          labelProperty: 'Label',
+          description: 'Description',
+          descriptionProperty: 'Description',
+          descriptionVisible: 'Show description',
+        },
+      }),
+      {
+        type: 'frame',
+        name: 'message-row',
+        layout: 'HORIZONTAL',
+        when: (v) => v.state === 'error' || v.props.severity === 'error',
+        bind: { gap: 'container.column-gap' },
+        children: [
+          { type: 'frame', name: 'control-column', height: 1, bind: { width: 'control.size' } },
+          {
+            type: 'text',
+            name: 'message',
+            text: 'Message',
+            property: 'Message',
+            bind: { fill: 'message.color', typography: 'message.typography' },
+          },
+        ],
+      },
+    ],
+  },
   notDrawn: [TRANSITION],
 };

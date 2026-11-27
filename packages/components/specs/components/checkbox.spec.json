@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox",
   "name": "Checkbox",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "role": "checkbox",
   "summary": "Lets people turn one option on or off, or pick any number of options from a list.",
@@ -17,7 +17,7 @@
       "id": "container",
       "role": "container",
       "required": true,
-      "description": "Root. Lays out the control, the label and the description on a grid; carries the size and the forced state."
+      "description": "Root. Lays out the control, the label, the description and the message on a grid; carries the size and the forced state."
     },
     {
       "id": "control",
@@ -36,6 +36,15 @@
       "role": "description",
       "required": false,
       "description": "Optional help text under the label, associated with the control as its description."
+    },
+    {
+      "id": "message",
+      "role": "errormessage",
+      "required": false,
+      "visibleIn": [
+        "error"
+      ],
+      "description": "Text saying what is wrong and what to do, under the description (or the label), aligned with the label, associated with the control as a description after the description. Shown only with a severity."
     }
   ],
   "properties": [
@@ -48,7 +57,8 @@
       "affects": [
         "control",
         "label",
-        "description"
+        "description",
+        "message"
       ],
       "options": [
         {
@@ -91,13 +101,21 @@
       "description": "The box must be checked to submit the form (accepting terms)."
     },
     {
+      "id": "message",
+      "name": "Message",
+      "type": "string",
+      "bindsTo": "message",
+      "description": "What is wrong and what to do, shown with a severity."
+    },
+    {
       "id": "severity",
       "name": "Severity",
       "type": "enum",
       "default": "none",
       "description": "What the check of the value found. A choice has nothing to confirm or to warn about, so only error exists (decision forms-severity).",
       "affects": [
-        "control"
+        "control",
+        "message"
       ],
       "options": [
         {
@@ -106,7 +124,7 @@
         },
         {
           "value": "error",
-          "description": "Validation failed: the box takes the error border and the control is exposed as in error (aria-invalid on the web). The form says the error in text."
+          "description": "Validation failed: the box takes the error border, the message says what to do and the control is exposed as in error (aria-invalid on the web)."
         }
       ]
     },
@@ -156,7 +174,7 @@
       "trigger": "property",
       "property": "severity",
       "value": "error",
-      "description": "Severity error: the box border takes the error color and, while the box is unchecked, the subtle error fill (a checked or indeterminate box keeps its brand fill). The error is also stated in text by the form."
+      "description": "Severity error: the box border takes the error color and, while the box is unchecked, the subtle error fill (a checked or indeterminate box keeps its brand fill); the message says the error in text."
     },
     {
       "id": "disabled",
@@ -172,7 +190,7 @@
     "wrap": false,
     "sizing": "hug",
     "notes": [
-      "The box sits before the label, centered on the label's first line; the description sits under the label, aligned with it.",
+      "The box sits before the label, centered on the label's first line; the description sits under the label, aligned with it, and the message under the description (or the label), aligned with it, container.gap (6 px) after it.",
       "A list of checkboxes stacks them vertically; the layout owns the spacing between them.",
       "The whole row (box and label) toggles the value: the label is part of the target."
     ]
@@ -180,7 +198,7 @@
   "accessibility": {
     "ariaRole": "checkbox",
     "name": {
-      "text": "Computed from the label, associated with the control as its label element on the web. The description is exposed as the accessible description, not as part of the name.",
+      "text": "Computed from the label, associated with the control as its label element on the web. The description and the message are exposed as the accessible description, not as part of the name.",
       "refs": [
         "apg-checkbox-roles",
         "wai-labels",
@@ -259,7 +277,7 @@
         ]
       },
       {
-        "text": "Label and description contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.03:1 and 12.78:1 in light mode, 11.28:1 and 8.86:1 in dark mode on the default surface. Disabled text is inactive and exempt.",
+        "text": "Label, description and message contrast at least 4.5:1 with the surface in every color mode and enabled state: 19.03:1 and 12.78:1 in light mode, 11.28:1 and 8.86:1 in dark mode on the default surface; the error message 6.12:1 (light) and 7.06:1 (dark), at least 5.82:1 and 5.31:1 on every surface level. Disabled text is inactive and exempt.",
         "refs": [
           "wcag:1.4.3"
         ]
@@ -300,11 +318,12 @@
         ]
       },
       {
-        "text": "When the value is in error, say so with aria-invalid on the input and describe the error in text associated with it or listed at the top of the form. A checkbox has only the error severity: a choice has nothing to confirm or to warn about.",
+        "text": "When the value is in error, say so with aria-invalid on the input and say the error in the message, which aria-describedby references after the description. A checkbox has only the error severity: a choice has nothing to confirm or to warn about.",
         "refs": [
           "wcag:3.3.1",
           "wcag-aria21",
-          "wai-notifications"
+          "wcag-aria1",
+          "apg-describing"
         ],
         "platforms": [
           "web"
@@ -452,11 +471,6 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
       },
       {
-        "id": "wai-notifications",
-        "title": "WAI tutorials: User notifications (error messages)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
         "id": "wcag-h71",
         "title": "WCAG technique H71: fieldset and legend for groups of form controls",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
@@ -510,6 +524,11 @@
         "id": "compose-state-description",
         "title": "Jetpack Compose accessibility: state description",
         "url": "https://developer.android.com/develop/ui/compose/accessibility/semantics#state-description"
+      },
+      {
+        "id": "wcag-aria1",
+        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
+        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
       }
     ]
   },
@@ -559,13 +578,13 @@
     {
       "id": "medium-required-error",
       "name": "Medium, required and error",
-      "description": "A required consent left unchecked; the form states the error in text.",
+      "description": "A required consent left unchecked; the message says what to do.",
       "props": {
         "size": "medium",
         "label": "I accept the terms of service",
-        "description": "Check the box to continue",
         "required": true,
-        "severity": "error"
+        "severity": "error",
+        "message": "Check the box to continue"
       }
     },
     {
@@ -601,7 +620,8 @@
         "container": ".ds-checkbox",
         "control": ".ds-checkbox__control",
         "label": ".ds-checkbox__label",
-        "description": ".ds-checkbox__description"
+        "description": ".ds-checkbox__description",
+        "message": ".ds-checkbox__message"
       }
     }
   },
@@ -610,6 +630,23 @@
     "radio-group"
   ],
   "decisions": [
+    {
+      "id": "message-part",
+      "date": "2026-11-27",
+      "version": "0.5.0",
+      "area": "anatomy",
+      "status": "active",
+      "text": "The Checkbox has a message part (role errormessage), shown with a severity: under the description, or under the label without one, aligned with the label, container.gap (form.container.gap, 6 px) after what precedes it, in the Forms family's message color and sizes (message.color.error = form.message.color.error; message.typography small and medium at form.message.font-size.small and medium, 14 and 16 px, medium weight). The control's aria-describedby lists the description, then the message. It follows the Forms decisions forms-message-part-every-control (\"every form control that can show a severity has a message part, after its description\"), forms-part-gaps (\"description → message\", 6 px) and forms-text-sizes.",
+      "rationale": "Applied in #105 step 12 (spec and docs fixes) from forms-message-part-every-control, decided by the team in #105 step 3 point 3 (A: the Checkbox gets its part with the complex controls). Measured then: the message reads 5.82 to 6.13:1 in light mode and 5.31 to 7.07:1 in dark mode on surface levels 0 to 3.",
+      "tokens": [
+        "checkbox.message.*",
+        "checkbox.container.gap"
+      ],
+      "refs": [
+        "wcag:3.3.1",
+        "wcag:1.4.3"
+      ]
+    },
     {
       "id": "checked-error-fill",
       "date": "2026-11-27",
@@ -733,6 +770,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-27",
+      "note": "Decision message-part, after the Forms decisions forms-message-part-every-control, forms-part-gaps and forms-text-sizes (#105 step 12): a message part and a message property; the message sits under the description (or the label), aligned with the label, 6 px after it (container.gap = form.container.gap), in form.message.color.error at form.message.font-size.small and medium (14 and 16 px), medium weight; aria-describedby lists the description, then the message. The required-and-error example says its error in the message (\"Check the box to continue\"), not in the description. Message on the surfaces: 5.82 to 6.13:1 in light mode, 5.31 to 7.07:1 in dark mode (levels 0 to 3)."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-27",

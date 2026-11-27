@@ -77,10 +77,10 @@ test('an input needs a required label part of the whole control', () => {
   assert.deepEqual(checkInputControl(field({ anatomy: [{ id: 'container', role: 'container', required: true }, { id: 'legend', role: 'label', required: true }] })), []);
 });
 
-test('a severity needs a message part, as a warning', () => {
+test('a severity needs a message part', () => {
   const severity = { properties: [{ id: 'severity', type: 'enum' }], states: [{ id: 'default' }, { id: 'error', trigger: 'property', property: 'severity', value: 'error' }] };
   const problems = checkInputControl(field(severity));
-  assert.deepEqual(problems.map((p) => p.level), ['warn']);
+  assert.deepEqual(problems.map((p) => p.level), ['error']);
   assert.match(problems[0].message, /errormessage/);
   assert.match(problems[0].message, /severity/);
   const withMessage = field({ ...severity, anatomy: [...field().anatomy, { id: 'message', role: 'errormessage', required: false }] });
@@ -91,10 +91,10 @@ test('a severity needs a message part, as a warning', () => {
   assert.ok(!tiersOf({ states: [{ id: 'invalid' }] }).includes('validation'));
 });
 
-test('today every input has a label, and only the checkbox lacks an error message part', () => {
+test('today every input has a label and, with a severity, a message part', () => {
   const inputs = componentsInScope('input-components', specs, registry.roles);
   const problems = inputs.flatMap((s) => checkInputControl(s).map((p) => `${s.id}: ${p.level}`));
-  assert.deepEqual(problems, ['checkbox: warn']);
+  assert.deepEqual(problems, []);
 });
 
 test('the registry rejects an input role that does not require labels or instructions', () => {

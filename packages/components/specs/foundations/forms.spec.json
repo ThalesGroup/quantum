@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.62.0",
+  "version": "0.62.1",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced; and the tokens every form control starts from, the Forms family (form.*). Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -102,7 +102,7 @@
     {
       "id": "anatomy",
       "name": "Anatomy of a field",
-      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10). Every form control that can show a severity has a message part, after its description: the Checkbox, which has the error severity but no message part yet, gets it with the complex controls (step 2b); until then it is a known gap the validator warns about. Every form control sets its name, help and message at one size per control size, the field family's: the label (or a group's legend) form.label.font-size.<size>, body.size.sm, md, md for small, medium and large (14, 16 and 16 px), medium weight, the tight line height; the description form.description.font-size.<size>, body.size.xs, xs, sm (12, 12, 14 px), regular; the message form.message.font-size.<size>, body.size.sm, md, md, medium weight, larger than the description so the fix reads as easily as the field. A control with two sizes takes the small and medium steps. Options and their labels keep their own styles: they are choices, not names. A default, which each control's own refinement may revisit (forms-text-sizes); the sizes are tokens of the Forms family (rule token-family)."
+      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10). Every form control that can show a severity has a message part, after its description (the Checkbox's under its description, aligned with its label); the validator refuses a control with a severity and no message part. Every form control sets its name, help and message at one size per control size, the field family's: the label (or a group's legend) form.label.font-size.<size>, body.size.sm, md, md for small, medium and large (14, 16 and 16 px), medium weight, the tight line height; the description form.description.font-size.<size>, body.size.xs, xs, sm (12, 12, 14 px), regular; the message form.message.font-size.<size>, body.size.sm, md, md, medium weight, larger than the description so the fix reads as easily as the field. A control with two sizes takes the small and medium steps. Options and their labels keep their own styles: they are choices, not names. A default, which each control's own refinement may revisit (forms-text-sizes); the sizes are tokens of the Forms family (rule token-family)."
     },
     {
       "id": "label",
@@ -3138,6 +3138,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.62.1",
+      "date": "2026-11-27",
+      "note": "#105 step 12: the Checkbox has its message part (Checkbox 0.5.0, decision message-part), so the rule anatomy loses its known gap and pnpm validate refuses a control with a severity and no message part (it warned), as forms-message-part-every-control said it would. Text only."
+    },
     {
       "version": "0.62.0",
       "date": "2026-11-27",

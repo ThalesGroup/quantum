@@ -67,9 +67,8 @@ export function inheritedGuidelines(foundation, spec, roles) {
 /**
  * What the tiers ask of an input control's anatomy: a visible label part of the whole control
  * (the label of a field, the legend of a group), and, with a `severity`, a part to say
- * the message in text. A missing message part is a warning, not an error: a control
- * without one reports an error by color alone (WCAG 3.3.1), a known gap the team has set aside
- * until the complex controls are aligned (decision `forms-input-components`).
+ * the message in text. A missing message part is an error: a control without one reports an
+ * error by color alone (WCAG 3.3.1; Forms decision `forms-message-part-every-control`).
  */
 export function checkInputControl(spec) {
   const problems = [];
@@ -77,7 +76,7 @@ export function checkInputControl(spec) {
   const label = anatomy.find((p) => p.role === 'label' && p.required && !p.parent);
   if (!label) problems.push({ level: 'error', message: 'is an input but has no required part with role "label" (its label, or the legend of a group) that is not inside another part: every input has a visible label' });
   if (tiersOf(spec).includes('validation') && !anatomy.some((p) => p.role === 'errormessage')) {
-    problems.push({ level: 'warn', message: 'has a severity but no part with role "errormessage" (the message): an error cannot be said in text next to the control, only by its color (WCAG 3.3.1); a known gap, set aside until the complex controls are aligned' });
+    problems.push({ level: 'error', message: 'has a severity but no part with role "errormessage" (the message): an error cannot be said in text next to the control, only by its color (WCAG 3.3.1; Forms decision forms-message-part-every-control)' });
   }
   return problems;
 }
