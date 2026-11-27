@@ -37,8 +37,9 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Medium | Forms, the default: 40 px high with 16 px text. |
 | Large | A prominent single field, such as a search page or a sign-in form: 48 px high with 20 px text. |
 
-Height, inline padding and text size scale together; the label, the description and the error
-message keep one size. The exact values are tokens (Tokens tab). Keep one size per form.
+Height, inline padding and text size scale together; the label, the description and the message
+take the sizes of every field of the same size (the Forms foundation's anatomy), so a Select reads
+like the Text field next to it. The exact values are tokens (Tokens tab). Keep one size per form.
 
 ## Options and placeholder
 

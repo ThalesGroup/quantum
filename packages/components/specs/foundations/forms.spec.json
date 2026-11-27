@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.59.0",
+  "version": "0.60.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -46,7 +46,7 @@
     {
       "id": "anatomy",
       "name": "Anatomy of a field",
-      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10). Every form control that can show a severity has a message part, after its description: the Checkbox, which has the error severity but no message part yet, gets it with the complex controls (step 2b); until then it is a known gap the validator warns about."
+      "text": "A field stacks a visible label, the control, an optional description (format, example, constraint) and, when it shows a severity, a message saying what is wrong and how to fix it, what to check or what was confirmed. The message sits under the description, for every severity: the help and the message are both visible, and the control's aria-describedby lists the description, then the message. A group of checkboxes or radios takes the same parts around its options, with a legend as its label and the message after the options. The message is never in place of the description, the description is not moved above the control, and no line is reserved for the message (that may come back as a choice of the form's layout in step 10). Every form control that can show a severity has a message part, after its description: the Checkbox, which has the error severity but no message part yet, gets it with the complex controls (step 2b); until then it is a known gap the validator warns about. Every form control sets its name, help and message at one size per control size, the field family's: the label (or a group's legend) body.size.sm, md, md for small, medium and large (14, 16 and 16 px), medium weight, the tight line height; the description body.size.xs, xs, sm (12, 12, 14 px), regular; the message body.size.sm, md, md, medium weight, larger than the description so the fix reads as easily as the field. A control with two sizes takes the small and medium steps. Options and their labels keep their own styles: they are choices, not names. A default, which each control's own refinement may revisit (forms-text-sizes)."
     },
     {
       "id": "label",
@@ -1992,6 +1992,22 @@
   ],
   "decisions": [
     {
+      "id": "forms-text-sizes",
+      "date": "2026-11-27",
+      "version": "0.60.0",
+      "area": "typography",
+      "status": "active",
+      "text": "Every form control takes the field family's text sizes per control size, stated once in the rule anatomy: the label or legend body.size.sm, md, md (small, medium, large), medium weight, the tight line height; the description body.size.xs, xs, sm, regular weight, the normal line height; the message body.size.sm, md, md, medium weight, the normal line height. The Select takes all three steps; the Checkbox group and the Radio group, which have a small and a medium size, take the first two (before, every one of these parts was 14 px at every size). Option labels and option descriptions keep their own styles. The Select's 6 px part gap, the other half of the recommendation, was already decided with the form's spacing (forms-part-gaps, step 10 point 5). A default: each control's own refinement may revisit it.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b4): A, every control, a Forms rule, as recommended, among: A (chosen); B, the Select only, the groups waiting for their own refinement (rejected: a Radio group's 14 px legend next to 16 px labels); C, today, every name, help and message at 14 px. The team's words: \"We choose A but we'll probably refine them properly when we'll tackle the Select, Checkbox Group, etc. form controls.\" Hence a default each control's refinement may revisit. The sizes are the Text field's, decided in #103 (the label at the value's size, the description at the helper size, the message at the label's size). Token paths per size: a change of the component tokens at 0.x, a minor bump.",
+      "tokens": [
+        "body.size.xs",
+        "body.size.sm",
+        "body.size.md",
+        "font.line-height.tight",
+        "font.line-height.normal"
+      ]
+    },
+    {
       "id": "forms-choice-error-fill",
       "date": "2026-11-27",
       "version": "0.59.0",
@@ -2999,6 +3015,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.60.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-text-sizes (#105 step 2b, point b4): the rule anatomy states the field family's text sizes per control size (label or legend sm / md / md, medium, tight; description xs / xs / sm; message sm / md / md), a default each control's refinement may revisit. The Select (0.5.0), the Checkbox group (0.6.0) and the Radio group (0.5.0) take them; the Select's 6 px gap came with forms-part-gaps (0.52.0)."
+    },
     {
       "version": "0.59.0",
       "date": "2026-11-27",

@@ -44,7 +44,8 @@ sub-heading named after it (Web, iOS, Android, Desktop); everything else holds e
 | Small | Dense panels and tables, with a 14 px label. |
 | Medium | Forms and settings, the default, with a 16 px label. |
 
-The radio, the option label and its description scale together; the legend keeps one size.
+The radio, the option label and its description scale together; the legend, the description and
+the message take the sizes of every field of the same size (the Forms foundation's anatomy).
 The exact values are tokens (Tokens tab).
 
 ## Legend, descriptions and message

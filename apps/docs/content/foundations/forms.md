@@ -95,6 +95,20 @@ A field stacks four parts, top to bottom:
 A group of checkboxes or radios has the same parts around its options, with a legend as its
 label, and the message after the options.
 
+**Every control sets its name, help and message at the same sizes**, one per control size, so a
+Select or a Radio group under a Text field does not look smaller:
+
+| Part | Small | Medium | Large |
+| --- | --- | --- | --- |
+| Label or legend (medium weight, tight line height) | 14 px | 16 px | 16 px |
+| Description | 12 px | 12 px | 14 px |
+| Message (medium weight) | 14 px | 16 px | 16 px |
+
+A control with two sizes takes the small and medium columns. The message is larger than the
+description, so the fix reads as easily as the field. Options and their labels keep their own
+styles: they are choices, not names. These are defaults: each control's own refinement may
+revisit them.
+
 **Every control that can show a severity has a message part**, after its description, so its
 error is said in text next to it and associated with it. A form-wide summary may repeat the
 error, never replace it. The standalone Checkbox has the error severity but no message part

@@ -32,6 +32,21 @@
   --_option-description-font-weight: var(--checkbox-group-option-description-typography-medium-font-weight);
   --_option-description-line-height: var(--checkbox-group-option-description-typography-medium-line-height);
   --_option-description-letter-spacing: var(--checkbox-group-option-description-typography-medium-letter-spacing);
+  --_legend-font-family: var(--checkbox-group-legend-typography-medium-font-family);
+  --_legend-font-size: var(--checkbox-group-legend-typography-medium-font-size);
+  --_legend-font-weight: var(--checkbox-group-legend-typography-medium-font-weight);
+  --_legend-line-height: var(--checkbox-group-legend-typography-medium-line-height);
+  --_legend-letter-spacing: var(--checkbox-group-legend-typography-medium-letter-spacing);
+  --_description-font-family: var(--checkbox-group-description-typography-medium-font-family);
+  --_description-font-size: var(--checkbox-group-description-typography-medium-font-size);
+  --_description-font-weight: var(--checkbox-group-description-typography-medium-font-weight);
+  --_description-line-height: var(--checkbox-group-description-typography-medium-line-height);
+  --_description-letter-spacing: var(--checkbox-group-description-typography-medium-letter-spacing);
+  --_message-font-family: var(--checkbox-group-message-typography-medium-font-family);
+  --_message-font-size: var(--checkbox-group-message-typography-medium-font-size);
+  --_message-font-weight: var(--checkbox-group-message-typography-medium-font-weight);
+  --_message-line-height: var(--checkbox-group-message-typography-medium-line-height);
+  --_message-letter-spacing: var(--checkbox-group-message-typography-medium-letter-spacing);
 
   box-sizing: border-box;
   display: flex;
@@ -56,6 +71,21 @@
   --_option-description-font-weight: var(--checkbox-group-option-description-typography-small-font-weight);
   --_option-description-line-height: var(--checkbox-group-option-description-typography-small-line-height);
   --_option-description-letter-spacing: var(--checkbox-group-option-description-typography-small-letter-spacing);
+  --_legend-font-family: var(--checkbox-group-legend-typography-small-font-family);
+  --_legend-font-size: var(--checkbox-group-legend-typography-small-font-size);
+  --_legend-font-weight: var(--checkbox-group-legend-typography-small-font-weight);
+  --_legend-line-height: var(--checkbox-group-legend-typography-small-line-height);
+  --_legend-letter-spacing: var(--checkbox-group-legend-typography-small-letter-spacing);
+  --_description-font-family: var(--checkbox-group-description-typography-small-font-family);
+  --_description-font-size: var(--checkbox-group-description-typography-small-font-size);
+  --_description-font-weight: var(--checkbox-group-description-typography-small-font-weight);
+  --_description-line-height: var(--checkbox-group-description-typography-small-line-height);
+  --_description-letter-spacing: var(--checkbox-group-description-typography-small-letter-spacing);
+  --_message-font-family: var(--checkbox-group-message-typography-small-font-family);
+  --_message-font-size: var(--checkbox-group-message-typography-small-font-size);
+  --_message-font-weight: var(--checkbox-group-message-typography-small-font-weight);
+  --_message-line-height: var(--checkbox-group-message-typography-small-line-height);
+  --_message-letter-spacing: var(--checkbox-group-message-typography-small-letter-spacing);
 }
 
 .ds-checkbox-group[data-orientation="horizontal"] {
@@ -67,11 +97,11 @@
 .ds-checkbox-group__legend {
   padding: 0;
   color: var(--_legend-color);
-  font-family: var(--checkbox-group-legend-typography-font-family);
-  font-size: var(--checkbox-group-legend-typography-font-size);
-  font-weight: var(--checkbox-group-legend-typography-font-weight);
-  line-height: var(--checkbox-group-legend-typography-line-height);
-  letter-spacing: var(--checkbox-group-legend-typography-letter-spacing);
+  font-family: var(--_legend-font-family);
+  font-size: var(--_legend-font-size);
+  font-weight: var(--_legend-font-weight);
+  line-height: var(--_legend-line-height);
+  letter-spacing: var(--_legend-letter-spacing);
 }
 /* A legend sits outside the flex flow of its fieldset: the row gap is written as its bottom margin.
    A description sits right under its legend (0), the two read as one heading. */
@@ -88,11 +118,11 @@
 .ds-checkbox-group__description {
   margin: 0;
   color: var(--_description-color);
-  font-family: var(--checkbox-group-description-typography-font-family);
-  font-size: var(--checkbox-group-description-typography-font-size);
-  font-weight: var(--checkbox-group-description-typography-font-weight);
-  line-height: var(--checkbox-group-description-typography-line-height);
-  letter-spacing: var(--checkbox-group-description-typography-letter-spacing);
+  font-family: var(--_description-font-family);
+  font-size: var(--_description-font-size);
+  font-weight: var(--_description-font-weight);
+  line-height: var(--_description-line-height);
+  letter-spacing: var(--_description-letter-spacing);
 }
 
 .ds-checkbox-group__options {
@@ -111,11 +141,11 @@
 .ds-checkbox-group__message {
   margin: 0;
   color: var(--checkbox-group-message-color-error);
-  font-family: var(--checkbox-group-message-typography-font-family);
-  font-size: var(--checkbox-group-message-typography-font-size);
-  font-weight: var(--checkbox-group-message-typography-font-weight);
-  line-height: var(--checkbox-group-message-typography-line-height);
-  letter-spacing: var(--checkbox-group-message-typography-letter-spacing);
+  font-family: var(--_message-font-family);
+  font-size: var(--_message-font-size);
+  font-weight: var(--_message-font-weight);
+  line-height: var(--_message-line-height);
+  letter-spacing: var(--_message-letter-spacing);
 }
 
 /* ---- Option ------------------------------------------------------------- */

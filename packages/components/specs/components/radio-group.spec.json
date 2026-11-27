@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -132,12 +132,15 @@
       "name": "Size",
       "type": "enum",
       "default": "medium",
-      "description": "Radio size, option label and description text size scale together.",
+      "description": "Radio size, option label and description text size scale together; the legend, the description and the message take the field family's sizes per size (Forms rule anatomy).",
       "affects": [
         "option",
         "control",
         "option-label",
-        "option-description"
+        "option-description",
+        "legend",
+        "description",
+        "message"
       ],
       "options": [
         {
@@ -866,6 +869,20 @@
   ],
   "decisions": [
     {
+      "id": "text-sizes",
+      "date": "2026-11-27",
+      "version": "0.5.0",
+      "area": "typography",
+      "status": "active",
+      "text": "The legend, the description and the message take the field family's text sizes per size (small and medium): the legend 14 / 16 px (medium, tight line height), the description 12 / 12 px, the message 14 / 16 px (medium). Before, all three were 14 px at every size. Option labels and option descriptions keep their sizes. A default, which this component's own refinement may revisit.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b4, option A as recommended); it follows the Forms foundation's decision forms-text-sizes. The team's words: \"We choose A but we'll probably refine them properly when we'll tackle the Select, Checkbox Group, etc. form controls.\"",
+      "tokens": [
+        "radio-group.legend.typography.*",
+        "radio-group.description.typography.*",
+        "radio-group.message.typography.*"
+      ]
+    },
+    {
       "id": "error-fill",
       "date": "2026-11-27",
       "version": "0.4.0",
@@ -977,6 +994,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.0",
+      "date": "2026-11-27",
+      "note": "Decision text-sizes (Forms forms-text-sizes, #105 step 2b, point b4): legend.typography, description.typography and message.typography become one token per size (small and medium): the legend 14 / 16 px (medium, tight line height), the description 12 / 12 px, the message 14 / 16 px (medium), all 14 px before; the size property now affects these parts. No color change."
+    },
     {
       "version": "0.4.0",
       "date": "2026-11-27",
