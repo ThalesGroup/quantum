@@ -14,6 +14,8 @@ export interface PlatformCoverage {
   states: number;
   /** Accessibility statements and keyboard entries scoped to this platform (on top of the shared ones). */
   accessibility: number;
+  /** Foundation guidelines it follows scoped to this platform (Forms, by its tiers: lib/foundations.ts inheritedOf). */
+  inherited: number;
   /** Where its token values come from: the web CSS, the platform's overlay, or the base values. */
   tokens: 'css' | 'overlay' | 'base';
   /** How the docs draw it: the web reference rendering, or not at all (no native rendering is drawn or approximated). */
@@ -30,7 +32,7 @@ export interface Coverage {
 
 const own = (x: { platforms?: string[] }, p: string) => Array.isArray(x.platforms) && x.platforms.includes(p);
 
-export function coverageOf(spec: any, guidelinesHtml: string | null): Coverage {
+export function coverageOf(spec: any, guidelinesHtml: string | null, inherited: any[] = []): Coverage {
   const sections = guidelinesHtml ? platformSections(guidelinesHtml) : null;
   const a11y = spec.accessibility ?? {};
   return {
@@ -41,6 +43,7 @@ export function coverageOf(spec: any, guidelinesHtml: string | null): Coverage {
       examples: (spec.examples ?? []).filter((x: any) => onPlatform(x, p.id)).length,
       states: spec.states.filter((s: any) => stateOn(s, p.id)).length,
       accessibility: [...(a11y.guidelines ?? []), ...(a11y.keyboard ?? [])].filter((x: any) => own(x, p.id)).length,
+      inherited: inherited.filter((x: any) => own(x, p.id)).length,
       tokens: p.id === 'web' ? 'css' : hasOverlay(p.id) ? 'overlay' : 'base',
       rendering: p.id === 'web' ? 'reference' : 'none',
       implementation: p.id === 'web' ? `<${spec.implementations.web.element}>` : spec.implementations[p.id]?.control ?? null,

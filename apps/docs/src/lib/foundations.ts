@@ -13,7 +13,7 @@ import { memo, repoPath } from './repo';
 import { getTokens, type TokenRow } from './tokens';
 import { roleProfiles } from './a11y';
 // @ts-ignore - plain ESM without types
-import { followedByScope, componentsInScope, tiersOf, SCOPES } from '../../../../scripts/lib/foundation-scope.mjs';
+import { followedByScope, componentsInScope, tiersOf, inheritedGuidelines, SCOPES } from '../../../../scripts/lib/foundation-scope.mjs';
 import { platformName, platforms as allPlatforms } from './platforms';
 
 const getContexts = memo((): any[] => allContexts(loadAll(repoPath(PATHS.tokens))));
@@ -58,6 +58,17 @@ export interface Follower {
 
 /** True when the foundation's followers are the components in its scope (`appliesTo`), not the ones aliasing its tokens. */
 export const followedByRole = (spec: { appliesTo?: string }): boolean => Boolean(spec.appliesTo && followedByScope(spec.appliesTo));
+
+/**
+ * The foundation guidelines a component follows, per foundation: a foundation followed by scope
+ * (Forms) gives each component in its scope its guidelines of the tiers the component's spec asks
+ * for (scripts/lib/foundation-scope.mjs). Derived, never declared by the component.
+ */
+export function inheritedOf(spec: any, foundations: any[]): { foundation: any; guidelines: any[] }[] {
+  return foundations
+    .map((foundation) => ({ foundation, guidelines: inheritedGuidelines(foundation, spec, roleProfiles()) as any[] }))
+    .filter((f) => f.guidelines.length);
+}
 
 /** The sentence saying who must follow the foundation, from its `appliesTo`. */
 export const scopeRule = (spec: { appliesTo?: string }): string | null => (spec.appliesTo ? SCOPES[spec.appliesTo]?.rule ?? null : null);

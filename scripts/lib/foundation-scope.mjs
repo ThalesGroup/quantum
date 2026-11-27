@@ -48,6 +48,22 @@ export function tiersOf(spec) {
   ];
 }
 
+/** The tiers a foundation guideline may name (`tier`), in the order `tiersOf` returns them. */
+export const TIERS = ['presentation', 'required', 'validation'];
+
+/**
+ * The guidelines of a foundation that a component follows, derived with no list of its own: the
+ * foundation is followed by scope (Forms), the component is in its scope, and the guideline names
+ * a tier the component follows (`tier`, read against `tiersOf`). A guideline without a tier is
+ * about the form as a whole (its summary, its spacing, its keyboard): it stays on the foundation's
+ * page and is not listed on a component's.
+ */
+export function inheritedGuidelines(foundation, spec, roles) {
+  if (!foundation?.appliesTo || !followedByScope(foundation.appliesTo) || !inScope(foundation.appliesTo, spec, roles)) return [];
+  const tiers = new Set(tiersOf(spec));
+  return (foundation.accessibility?.guidelines ?? []).filter((g) => g.tier && tiers.has(g.tier));
+}
+
 /**
  * What the tiers ask of an input control's anatomy: a visible label part of the whole control
  * (the label of a field, the legend of a group), and, with a `severity`, a part to say

@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox-group",
   "name": "Checkbox group",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "status": "draft",
   "role": "group",
   "summary": "Lets people pick any number of options from a short, visible set, under one legend.",
@@ -359,17 +359,6 @@
         ]
       },
       {
-        "text": "The legend is visible and names the choice; each option has a visible label associated with its radio. Together they are the labels or instructions the group needs.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-grouping",
-          "wcag-h71",
-          "wai-labels",
-          "wcag-h44"
-        ]
-      },
-      {
         "text": "Help text and the message are referenced by aria-describedby from every box, so they are read as descriptions after an option's name.",
         "refs": [
           "wcag-aria1",
@@ -567,16 +556,6 @@
         "id": "wai-notifications",
         "title": "WAI tutorials: User notifications (error messages)",
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-h71",
-        "title": "WCAG technique H71: fieldset and legend for groups of form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
       },
       {
         "id": "wcag-g83",
@@ -1029,6 +1008,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.6.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the legend and option labels guideline. The references only they cited are dropped. No rendering change."
+    },
     {
       "version": "0.6.0",
       "date": "2026-11-27",

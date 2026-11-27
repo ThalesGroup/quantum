@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "radio-group",
   "name": "Radio group",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "status": "draft",
   "role": "group",
   "summary": "Lets people choose exactly one option from a short, visible set.",
@@ -371,17 +371,6 @@
         ]
       },
       {
-        "text": "The legend is visible and names the choice; each option has a visible label associated with its radio. Together they are the labels or instructions the group needs.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-grouping",
-          "wcag-h71",
-          "wai-labels",
-          "wcag-h44"
-        ]
-      },
-      {
         "text": "Help text and the message are referenced by aria-describedby from every radio, so they are read as descriptions after an option's name.",
         "refs": [
           "wcag-aria1",
@@ -588,11 +577,6 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/labels/"
       },
       {
-        "id": "wai-grouping",
-        "title": "WAI tutorials: Grouping controls",
-        "url": "https://www.w3.org/WAI/tutorials/forms/grouping/"
-      },
-      {
         "id": "wai-validation",
         "title": "WAI tutorials: Validating input (the required attribute)",
         "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
@@ -601,16 +585,6 @@
         "id": "wai-notifications",
         "title": "WAI tutorials: User notifications (error messages)",
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-h71",
-        "title": "WCAG technique H71: fieldset and legend for groups of form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
       },
       {
         "id": "wcag-g83",
@@ -994,6 +968,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the legend and option labels guideline. The references only they cited are dropped. No rendering change."
+    },
     {
       "version": "0.5.0",
       "date": "2026-11-27",

@@ -20,7 +20,7 @@ import { readRepoFile } from '../../../lib/repo';
 import { highlight, langOfFile } from '../../../lib/highlight';
 import { cite, conformanceTarget, publisherName } from '../../../lib/a11y';
 import { SHARED_TABS, platformTabs, componentHref } from '../../../lib/tabs';
-import { followersOf } from '../../../lib/foundations';
+import { followersOf, inheritedOf } from '../../../lib/foundations';
 import { platforms, platformName, scopeLabel, scoped, stateOn, onPlatform } from '../../../lib/platforms';
 import { guidelinesFor } from '../../../lib/guidelines';
 import { coverageOf } from '../../../lib/coverage';
@@ -72,14 +72,20 @@ const a11y = spec.accessibility as any;
 const target = conformanceTarget();
 const decisions = spec.decisions ?? [];
 const activeDecisions = decisions.filter((d: any) => d.status === 'active').length;
-// Foundations this component follows: those whose tokens its own tokens alias (derived, never declared).
-const followed = (await getCollection('foundations'))
-  .map((f) => ({ foundation: f.data, tokens: followersOf(f.data).find((x) => x.component === spec.id)?.tokens ?? [] }))
-  .filter((f) => f.tokens.length);
+// Foundations this component follows: those whose tokens its own tokens alias, and those it follows
+// by scope with the guidelines of its tiers (Forms) (derived, never declared).
+const foundationSpecs = (await getCollection('foundations')).map((f) => f.data);
+const inherited = inheritedOf(spec, foundationSpecs);
+const followed = [
+  ...foundationSpecs
+    .map((f) => ({ foundation: f, tokens: followersOf(f).find((x) => x.component === spec.id)?.tokens ?? [], guidelines: 0 }))
+    .filter((f) => f.tokens.length),
+  ...inherited.map((f) => ({ foundation: f.foundation, tokens: [] as string[], guidelines: f.guidelines.length })),
+];
 const partProps = spec.anatomy.flatMap((part: any) => (part.properties ?? []).map((p: any) => ({ part: part.id, p })));
 const partStates = spec.states.some((s: any) => s.parts?.length);
 const stateScope = (s: any) => [s.inputs?.length ? `input: ${s.inputs.join(', ')}` : '', scopeLabel(s)].filter(Boolean).join(' · ') || 'every platform and input';
-const coverage = coverageOf(spec, guidelinesHtml);
+const coverage = coverageOf(spec, guidelinesHtml, inherited.flatMap((f) => f.guidelines));
 const mappedBy = coverage.themes.filter((t) => t.maps);
 
 const outputs = platform ? platformTokens().find((p) => p.id === platform)?.outputs ?? [] : [];
@@ -304,7 +310,7 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
     </details>
 
     {followed.length ? (
-      <p>Follows {followed.map((f, i) => <>{i ? ', ' : ''}the <a href={`${base}/foundations/${f.foundation.id}`}>{f.foundation.name}</a> foundation <span class="site-muted site-small">({f.tokens.length} token{f.tokens.length === 1 ? "" : "s"})</span></>)}.</p>
+      <p>Follows {followed.map((f, i) => <>{i ? ', ' : ''}the <a href={`${base}/foundations/${f.foundation.id}`}>{f.foundation.name}</a> foundation <span class="site-muted site-small">({f.guidelines ? `${f.guidelines} guideline${f.guidelines === 1 ? '' : 's'}` : `${f.tokens.length} token${f.tokens.length === 1 ? '' : 's'}`})</span></>)}.</p>
     ) : null}
 
     <h3>Anatomy</h3>
@@ -422,6 +428,13 @@ const keyboard = platform ? (a11y?.keyboard ?? []).filter((k: any) => onPlatform
           </div>
         ) : null}
         <A11yStatements spec={spec} />
+        {inherited.map(({ foundation, guidelines }) => (
+          <div>
+            <h4>From the {foundation.name} foundation</h4>
+            <p class="site-muted site-small">The {foundation.name} guidelines {spec.name} follows, read from its specification (the rules on labels{guidelines.some((g: any) => g.tier === 'required') ? ', required fields' : ''}{guidelines.some((g: any) => g.tier === 'validation') ? ', severities and errors' : ''}); they are said once, on the <a href={`${base}/foundations/${foundation.id}/spec`}>{foundation.name} foundation</a>, with the rules about the form as a whole.</p>
+            <A11yStatements spec={foundation} guidelines={guidelines} headingLevel={5} />
+          </div>
+        ))}
       </div>
     ) : null}
 

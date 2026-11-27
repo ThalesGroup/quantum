@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "checkbox",
   "name": "Checkbox",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "status": "draft",
   "role": "checkbox",
   "summary": "Lets people turn one option on or off, or pick any number of options from a list.",
@@ -233,26 +233,6 @@
         ]
       },
       {
-        "text": "Every checkbox has a visible label, associated with the control programmatically: the label is what names the control and activating it toggles the box.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-labels",
-          "html-label"
-        ]
-      },
-      {
-        "text": "Associate the label with a label element whose for attribute names the input's id. Put help text in a separate element referenced by aria-describedby, so it is read as a description and does not lengthen the name.",
-        "refs": [
-          "wcag-h44",
-          "wcag-aria1",
-          "apg-describing"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
         "text": "Group related checkboxes under a visible group name, so people know what the set of options is about.",
         "refs": [
           "wai-grouping",
@@ -427,11 +407,6 @@
         "url": "https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-number-input-type-search-input-type-tel-input-type-email-input-type-url-and-textarea-elements-accessible-name-computation"
       },
       {
-        "id": "html-label",
-        "title": "HTML: the label element (for attribute, labeled control)",
-        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
-      },
-      {
         "id": "html-indeterminate",
         "title": "HTML: the indeterminate IDL attribute",
         "url": "https://html.spec.whatwg.org/multipage/input.html#dom-input-indeterminate"
@@ -482,11 +457,6 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
       },
       {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
         "id": "wcag-h71",
         "title": "WCAG technique H71: fieldset and legend for groups of form controls",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H71"
@@ -495,11 +465,6 @@
         "id": "wcag-h90",
         "title": "WCAG technique H90: indicating required form controls",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
-      },
-      {
-        "id": "wcag-aria1",
-        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
       },
       {
         "id": "wcag-aria21",
@@ -737,6 +702,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.3.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the visible label and its association on the web (label element, aria-describedby). The references only they cited are dropped. No rendering change."
+    },
     {
       "version": "0.3.0",
       "date": "2026-11-27",

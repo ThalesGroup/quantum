@@ -27,7 +27,7 @@ import { missingFills } from './lib/backdrop.mjs';
 import { DISPLAYS, checkSpecimen, uncoveredTokens } from './lib/specimens.mjs';
 import { MIRRORS, checkMirror } from './lib/mirrors.mjs';
 import { loadScreens, screenComponents, checkSections, checkSource, checkScreenMeta, checkScreenHtml, checkScreenSource, checkScreensCssSelectors, definedScreenClasses, screenSourceFiles, SCREEN_OWN_VARS } from './lib/screens.mjs';
-import { SCOPES, followedByScope, componentsInScope, checkInputControl } from './lib/foundation-scope.mjs';
+import { SCOPES, followedByScope, componentsInScope, checkInputControl, inheritedGuidelines } from './lib/foundation-scope.mjs';
 import { PATHS, FILES, artifacts, foundationArtifacts } from './lib/paths.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -186,6 +186,19 @@ const specsDir = path.join(root, PATHS.specs, 'components');
 const specFiles = fs.readdirSync(specsDir).filter((f) => f.endsWith('.spec.json')).sort();
 if (specFiles.length === 0) warn(PATHS.specs, 'no component specs found');
 
+// The foundation guidelines each component follows (Forms: those of the tiers its spec asks for),
+// read before the components: the criteria they cite count for its role profile and its docs, as
+// its page lists them (scripts/lib/foundation-scope.mjs inheritedGuidelines). Invalid foundation
+// files are reported with the foundations below.
+const inheritingFoundations = (() => {
+  const dir = path.join(root, PATHS.specs, 'foundations');
+  if (!exists(dir)) return [];
+  return fs.readdirSync(dir).filter((f) => f.endsWith('.spec.json')).flatMap((f) => {
+    try { return [JSON.parse(read(path.join(dir, f)))]; } catch { return []; }
+  }).filter((f) => f.appliesTo && followedByScope(f.appliesTo));
+})();
+const inheritedOf = (spec) => inheritingFoundations.flatMap((f) => inheritedGuidelines(f, spec, a11y?.roles ?? {}));
+
 const specs = [];
 for (const file of specFiles) {
   const where = `${PATHS.specs}/components/${file}`;
@@ -282,7 +295,7 @@ for (const { spec, where } of specs) {
   if (!(spec.changelog ?? []).some((c) => c.version === spec.version)) error(where, `changelog has no entry for version ${spec.version}`);
   else if (spec.changelog[0].version !== spec.version) error(where, `changelog must list the newest entry (${spec.version}) first`);
   checkDecisions(where, spec);
-  if (a11y) report(where, checkSpecA11y(spec, a11y));
+  if (a11y) report(where, checkSpecA11y(spec, a11y, inheritedOf(spec)));
   const profile = a11y?.roles[spec.role];
   if (spec.tokens.prefix !== id) error(where, `tokens.prefix "${spec.tokens.prefix}" must equal id "${id}"`);
   if (spec.tokens.source !== artifacts(id).tokens) error(where, `tokens.source must be ${artifacts(id).tokens}`);
@@ -344,7 +357,7 @@ for (const { spec, where } of specs) {
     const front = fm ? fm[1] : '';
     if (!new RegExp(`^component:\\s*${id}\\s*$`, 'm').test(front)) error(docRel, `frontmatter must declare "component: ${id}"`);
     if (!/^title:\s*\S/m.test(front)) error(docRel, 'frontmatter must declare a title');
-    if (a11y) report(docRel, checkDocsA11y(read(docFile), spec, a11y));
+    if (a11y) report(docRel, checkDocsA11y(read(docFile), spec, a11y, inheritedOf(spec)));
     checkPlatformHeadings(docRel, read(docFile));
   }
   const blueprintRel = artifacts(id).blueprint;

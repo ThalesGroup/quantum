@@ -65,8 +65,12 @@ enter or choose a value with it
 ([WCAG 3.2.2](https://www.w3.org/WAI/WCAG22/Understanding/on-input)). It does not follow this
 page as a control; the rules about the actions of a form, when they are decided, name it.
 
-> **Not decided yet (step 2b).** Whether the label, required and message guidelines the
-> controls repeat move into this page.
+**The guidelines every control follows are said once, here.** A control's own page keeps what
+is its own (its role, its native control, its contrast, focus, targets and motion) and lists,
+under it, "From the Forms foundation": the guidelines on labels, and on required fields and
+severities when the control has them, read from its specification. The guidelines about the form
+as a whole (its actions, its error summary, its announcements, its spacing, its keyboard) stay on
+this page.
 
 ### Web
 

@@ -2,7 +2,7 @@
   "$schema": "../schema/foundation.schema.json",
   "id": "forms",
   "name": "Forms",
-  "version": "0.60.0",
+  "version": "0.61.0",
   "status": "draft",
   "summary": "What a form control is, and how every form control is labelled, described, marked as required and validated, and how a form reports its errors, on every platform.",
   "description": "A form control is a component through which people enter or choose a value the product keeps, whether or not it sits in a form that is submitted. Each control is specified on its own page; this foundation says which components are form controls and holds what they share, so that a field behaves the same way next to its neighbours and on every platform: its anatomy (label, description, message), how a required field is marked, which validation statuses exist and how they render, when a value is checked, how errors are announced and summarised, and how fields are spaced. Draft: the rules below describe what the controls do today and what every trusted source agrees on; each open point is decided one step at a time with the team.",
@@ -36,7 +36,7 @@
     {
       "id": "tiers",
       "name": "Which rules a control follows",
-      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can show a severity (it has the severity property, or the error state it sets) also follows the rules on severities, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its severity property and its message part, with no list of exceptions. A control that can be marked required can also show a severity, so a missing or wrong value is said in text next to it: the Search field takes the Text field's severities (forms-search-field-severity). Not decided yet (step 2b): whether the label, required and message guidelines the controls repeat move into this foundation."
+      "text": "Every form control follows the rules on its anatomy and its label. A control that can be marked required also follows the rules on required fields, and a control that can show a severity (it has the severity property, or the error state it sets) also follows the rules on severities, errors and their announcement. Which rules a control follows is read from its specification: its label part, its required property, its severity property and its message part, with no list of exceptions. A control that can be marked required can also show a severity, so a missing or wrong value is said in text next to it: the Search field takes the Text field's severities (forms-search-field-severity). The guidelines that hold for every control live here, said once, each tagged with its tier (presentation, required, validation); a control's specification keeps only its own (its role, its native control, its contrast figures, focus, targets, motion). Each component page lists, under its own, the guidelines of the tiers it follows, \"From the Forms foundation\", derived from appliesTo and its specification; the guidelines about the form as a whole (its actions, summary, announcements, spacing, label column, keyboard) carry no tier and stay on this page (forms-guidelines-once)."
     },
     {
       "id": "form-actions",
@@ -393,7 +393,8 @@
         "text": "A control through which people enter or choose a value has a visible label or instructions whether or not it sits in a form that is submitted; a link or a control not associated with data entry does not.",
         "refs": [
           "wcag:3.3.2"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "Activating a button that submits a form is not changing the setting of a control: entering text, checking a box or choosing an option in a list is, and does not submit the form by itself.",
@@ -434,14 +435,16 @@
           "wcag:3.3.2",
           "wcag:1.3.1",
           "wai-forms-labels"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "Related controls are grouped, and the group has a name: a set of radios always, a set of checkboxes or related fields when it helps.",
         "refs": [
           "wcag:1.3.1",
           "wai-forms-grouping"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "A required field is indicated visibly, not only programmatically and never by color alone; a symbol used to mark it is explained before its first use.",
@@ -451,7 +454,8 @@
           "wcag-h90",
           "wcag-aria2",
           "wai-forms-validation-required"
-        ]
+        ],
+        "tier": "required"
       },
       {
         "text": "When an input error is detected, the field in error is identified and the error is described in text; color or an icon may add to the text, never replace it.",
@@ -459,7 +463,8 @@
           "wcag:3.3.1",
           "wcag:1.4.1",
           "wai-forms-notifications"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "A warning and a success are said in text like an error, never by color or an icon alone, and a confirmation that appears without moving focus is exposed as a status message.",
@@ -467,7 +472,8 @@
           "wcag:1.4.1",
           "wcag:4.1.3",
           "wai-forms-notifications"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "Set aria-invalid=\"true\" for an error only: it has no value for a warning or a success, which the message text says.",
@@ -477,13 +483,15 @@
         ],
         "platforms": [
           "web"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "When a correction is known, the error message suggests it, unless that would jeopardize the security or purpose of the content.",
         "refs": [
           "wcag:3.3.3"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "An error message tells people how to fix the error, close to the field and without blame, rather than only saying what is wrong; a warning says what to check and a success what was confirmed.",
@@ -492,14 +500,16 @@
           "hig-writing-best-practices",
           "material-text-fields-guidelines",
           "wai-forms-notifications"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "A message or a description is one sentence, a second only when the fix needs it, about one line at the field's default width and two lines at most. A single sentence ends with no period, two or more sentences each end with their period, and a question keeps its question mark.",
         "refs": [
           "material-grammar-punctuation",
           "material-text-fields-guidelines"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "A message relies on the label it sits under and does not repeat the field's name. An error summary references the label of each field: its entry is the label, a colon, then the message, as an in-page link to the field; an entry without a message is the label alone, still a link.",
@@ -508,13 +518,15 @@
           "wcag-g139",
           "wcag-g83",
           "wcag:3.3.1"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "A control is marked as in error only after its value was validated, not before people used it.",
         "refs": [
           "wcag-aria21"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "By default, a field shows an error when people leave it after changing it, and every field is checked on submit; checking a format while people type would show an error most of the time, so a new error waits until they leave the field, while an error clears as soon as the value is right. A check people try values against, such as an available user name, may run as they type.",
@@ -523,7 +535,8 @@
           "wai-forms-after-submit",
           "wai-forms-during-typing",
           "wcag-aria21"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "platforms": [
@@ -535,7 +548,8 @@
           "html-form-submission",
           "html-user-invalid",
           "mdn-user-invalid"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "platforms": [
@@ -546,7 +560,8 @@
         "refs": [
           "hig-text-fields-best-practices",
           "hig-entering-data-best-practices"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "platforms": [
@@ -555,7 +570,8 @@
         "text": "On Android, a field can be checked as people move on from it, in the action of the keyboard's Next key, which keeps moving focus to the next field.",
         "refs": [
           "compose-keyboard-action-logic"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "platforms": [
@@ -566,7 +582,8 @@
           "windows-number-box-validation",
           "windows-password-box",
           "windows-forms-submitting"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "A warning shows and clears when an error would, when people leave a field they changed or submit the form, since its value is checked the same way; no source gives a warning a timing of its own, and the value being accepted, it never blocks the submit. A success shows only for a check people cannot make themselves, such as an available user name, when that check runs; a field whose value merely passes gets no success, since people only need to know when something is wrong.",
@@ -577,7 +594,8 @@
           "hig-feedback-best-practices",
           "wcag:4.1.3",
           "wcag-understanding-status-messages"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "platforms": [
@@ -587,7 +605,8 @@
         "text": "Apple confirms that a task has completed only when it is significant enough, since people only need to know when it does not: a field confirms only a check people cannot make themselves, and shows no success when its value merely passes.",
         "refs": [
           "hig-feedback-best-practices"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "platforms": [
@@ -933,7 +952,8 @@
         "platforms": [
           "ios",
           "desktop"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "Make sure people understand that they must provide the required data before they can continue, for example by enabling the Next or Continue button only once the required fields are filled in.",
@@ -953,7 +973,8 @@
         ],
         "platforms": [
           "android"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "Material gives a text field's error text an alert role, so it is announced when it appears, on its own, without the field's label: a message that relies on its label then does not say which field it concerns. Focused, the field reads its error with it through its error semantics, and an error summary names the field in each entry; no source gives a way to add the label to the announcement itself.",
@@ -963,7 +984,8 @@
         ],
         "platforms": [
           "android"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "Error identification, labels or instructions and error suggestion apply to non-web software as they do to web content.",
@@ -972,7 +994,8 @@
         ],
         "platforms": [
           "desktop"
-        ]
+        ],
+        "tier": "validation"
       },
       {
         "text": "On the web, the label of most fields sits immediately before the field, above it or to its left (to its right or above it in a right-to-left language), and the label of a checkbox or a radio after it; labels above the fields reduce horizontal scrolling for people who zoom and on small screens.",
@@ -983,7 +1006,8 @@
         ],
         "platforms": [
           "web"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "On Android, Material's text field label sits inside the container, in the middle while the field is empty and at its top once the field is selected or filled, always visible; a separate adjacent label aligned to the container's leading edge may take its place.",
@@ -992,7 +1016,8 @@
         ],
         "platforms": [
           "android"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "Apple gives no rule on where a text field's label sits; because a placeholder disappears when people start typing, a separate label describing the field can be useful.",
@@ -1002,7 +1027,8 @@
         "platforms": [
           "ios",
           "desktop"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "On macOS, a checkbox typically has its title on its trailing side, and a radio button is followed by its label.",
@@ -1011,7 +1037,8 @@
         ],
         "platforms": [
           "desktop"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "In a label column, each label sits immediately before its field: aligned to the end of the column, 12 px from the control, to the left of the field in a left-to-right language and to the right in a right-to-left one, so a screen magnifier finds it next to the field and no label can be taken for its neighbour's.",
@@ -1068,7 +1095,8 @@
         ],
         "platforms": [
           "web"
-        ]
+        ],
+        "tier": "required"
       },
       {
         "text": "On the web, a \"(required)\" mark is hidden from assistive technology (aria-hidden), because the required attribute already exposes the state and the parenthetical may stay out of the accessible name; an \"(optional)\" mark stays in the label's text, so it is part of the accessible name, because no attribute exposes that a field is optional. Each fact is said once.",
@@ -1081,7 +1109,8 @@
         ],
         "platforms": [
           "web"
-        ]
+        ],
+        "tier": "required"
       },
       {
         "text": "On Android, each required field ends its label with an asterisk, as Material asks; the asterisk is explained once, in supporting text or in a note before the first field, and the accessibility label includes it.",
@@ -1092,7 +1121,8 @@
         ],
         "platforms": [
           "android"
-        ]
+        ],
+        "tier": "required"
       },
       {
         "text": "On Windows, each required field ends its label with an asterisk, explained once before the first field, and sets AutomationProperties.IsRequiredForForm so assistive technology knows it is required.",
@@ -1103,7 +1133,8 @@
         ],
         "platforms": [
           "desktop"
-        ]
+        ],
+        "tier": "required"
       },
       {
         "text": "On iOS and macOS, Apple gives no mark for a required field, so the generic rule applies: \"(optional)\" with a note, or \"(required)\" when most fields are optional.",
@@ -1113,7 +1144,8 @@
         "platforms": [
           "ios",
           "desktop"
-        ]
+        ],
+        "tier": "required"
       },
       {
         "text": "On macOS, a required control sets accessibilityRequired, so VoiceOver knows it is required and a visible \"(required)\" is hidden from it; on iOS, no accessibility trait says required, so \"(required)\" stays in the accessibility label. Each fact is said once.",
@@ -1125,7 +1157,8 @@
         "platforms": [
           "ios",
           "desktop"
-        ]
+        ],
+        "tier": "required"
       },
       {
         "text": "Fields stand far enough apart that each label reads as its own control's: 16 px between two fields, more than the space between a field's label and its control, so the label stays visually close to and distinct from its control and is not taken for the field above.",
@@ -1146,7 +1179,8 @@
         "refs": [
           "wai-forms-labels-visual-position",
           "wai-forms-grouping"
-        ]
+        ],
+        "tier": "presentation"
       },
       {
         "text": "On iOS, each option of a checkbox or radio group reaches Apple's 44 x 44 pt hit region as a row at least 44 pt tall, 4 pt from the next; the other gaps of a field and a group stay as on the web.",
@@ -1991,6 +2025,20 @@
     }
   ],
   "decisions": [
+    {
+      "id": "forms-guidelines-once",
+      "date": "2026-11-27",
+      "version": "0.61.0",
+      "area": "accessibility",
+      "status": "active",
+      "text": "The form-wide guidelines the control specifications repeated (a visible label associated with the control, its association on the web, a group named by its legend, the severity said in text, aria-invalid for the error only and the required attribute, the required mark) leave them and are said once, in this foundation. Each guideline here that holds for a control names its tier: presentation (every form control), required (a control with the required property), validation (a control with a severity); 34 of them do. Each component page's Accessibility section lists, under its own guidelines, \"From the Forms foundation\": the guidelines of the tiers the control follows, derived from appliesTo and the control's specification (scripts/lib/foundation-scope.mjs inheritedGuidelines), with no list of its own. The coverage counts include them, and the WCAG criteria they cite count for the control's role profile and its docs. The guidelines about the form as a whole carry no tier and stay on the foundation's page. A control keeps its own guidelines: its role, its native control, its contrast figures, focus, targets, motion.",
+      "rationale": "Decided by the team on 2026-11-26 (#105 step 2b, point b5): A, move, shown on the component page, as recommended, among: A (chosen); B, move, a link only (rejected: the label, error and required guidance would disappear from the page people read first); C, keep the copies, a validator check that each matches its Forms guideline (rejected: a new check and still four to six edits per change, and the copies already lagged, the Select still said \"Mark required fields in the label or the description\", superseded by forms-required-marking); D, today, copies in each spec, unchecked. No words from the team beyond the choice. Applied here to the Select (5 guidelines), the Checkbox (2), the Checkbox group (1) and the Radio group (1); the Text field, the Number field, the Search field and the Textarea drop theirs in #103, where the field family is refined. Which tier each guideline belongs to is the system's reading of what it is about, reviewable on this page.",
+      "refs": [
+        "wcag:3.3.2",
+        "wcag:1.3.1",
+        "wcag:3.3.1"
+      ]
+    },
     {
       "id": "forms-text-sizes",
       "date": "2026-11-27",
@@ -3015,6 +3063,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.61.0",
+      "date": "2026-11-27",
+      "note": "Decision forms-guidelines-once (#105 step 2b, point b5): 34 guidelines name their tier (presentation 8, required 7, validation 19); the rule tiers says they are said once here and listed on each follower's page, \"From the Forms foundation\", derived from appliesTo and its specification. The Select, the Checkbox, the Checkbox group and the Radio group drop their copies (patch versions). The foundation schema gains the guideline field tier."
+    },
     {
       "version": "0.60.0",
       "date": "2026-11-27",

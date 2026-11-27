@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SCOPES, inScope, followedByScope, componentsInScope, tiersOf, checkInputControl } from '../lib/foundation-scope.mjs';
+import { SCOPES, TIERS, inScope, followedByScope, componentsInScope, tiersOf, inheritedGuidelines, checkInputControl } from '../lib/foundation-scope.mjs';
 import { loadA11y, checkRegistry } from '../lib/a11y.mjs';
 import { PATHS } from '../lib/paths.mjs';
 
@@ -101,4 +101,27 @@ test('the registry rejects an input role that does not require labels or instruc
   const broken = { ...registry, roles: { ...registry.roles, button: { ...registry.roles.button, input: true } } };
   assert.match(checkRegistry(broken).map((p) => p.message).join('\n'), /"button" is marked input but does not require 3\.3\.2/);
   assert.deepEqual(checkRegistry(registry).filter((p) => p.level === 'error'), []);
+});
+
+test('a follower inherits the foundation guidelines of the tiers it follows, never one about the form', () => {
+  const foundation = {
+    appliesTo: 'input-components',
+    accessibility: { guidelines: [
+      { text: 'label', refs: ['wcag:3.3.2'], tier: 'presentation' },
+      { text: 'required', refs: ['wcag:3.3.2'], tier: 'required' },
+      { text: 'error', refs: ['wcag:3.3.1'], tier: 'validation' },
+      { text: 'the form', refs: ['wcag:3.3.1'] },
+    ] },
+  };
+  const text = (id) => inheritedGuidelines(foundation, specs.find((s) => s.id === id), registry.roles).map((g) => g.text);
+  assert.deepEqual(text('switch'), ['label']);
+  assert.deepEqual(text('select'), ['label', 'required', 'error']);
+  assert.deepEqual(text('button'), []);
+  assert.deepEqual(inheritedGuidelines({ ...foundation, appliesTo: 'every-component' }, specs.find((s) => s.id === 'select'), registry.roles), []);
+  assert.deepEqual(TIERS, ['presentation', 'required', 'validation']);
+});
+
+test('the Forms guidelines name only known tiers', () => {
+  const forms = JSON.parse(fs.readFileSync(path.join(root, PATHS.specs, 'foundations/forms.spec.json'), 'utf8'));
+  for (const g of forms.accessibility.guidelines) if (g.tier) assert.ok(TIERS.includes(g.tier), g.tier);
 });

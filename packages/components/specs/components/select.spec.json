@@ -2,7 +2,7 @@
   "$schema": "../schema/component.schema.json",
   "id": "select",
   "name": "Select",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "status": "draft",
   "role": "combobox",
   "summary": "Lets people choose one option from a list that opens on demand.",
@@ -331,27 +331,6 @@
         ]
       },
       {
-        "text": "Every field has a visible label associated with the control programmatically; help text that people need to fill the field (format, example) is visible too, as the description.",
-        "refs": [
-          "wcag:3.3.2",
-          "wcag:1.3.1",
-          "wai-labels",
-          "wai-instructions",
-          "html-label"
-        ]
-      },
-      {
-        "text": "Associate the label with a label element whose for attribute names the control's id; reference the description and the message with aria-describedby, so they are read after the name.",
-        "refs": [
-          "wcag-h44",
-          "wcag-aria1",
-          "apg-describing"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
         "text": "Use a pop-up button to present a flat list of mutually exclusive options or states.",
         "refs": [
           "hig-pop-up-buttons"
@@ -368,36 +347,6 @@
         ],
         "platforms": [
           "web"
-        ]
-      },
-      {
-        "text": "Say the severity in text next to the field, whatever it is: the message names what is wrong and how to fix it for an error, what to check for a warning and what was confirmed for a success, and is associated with the control. Color is never the only sign of a severity.",
-        "refs": [
-          "wcag:3.3.1",
-          "wai-notifications",
-          "wcag-g83",
-          "wcag:1.4.1"
-        ]
-      },
-      {
-        "text": "Say that the value is in error with aria-invalid=\"true\" on the control, for the error severity only, and that a field is required with the required attribute, which the browser exposes as required. The web has no state for a warning or a success: the message says them, and aria-invalid is never set for them.",
-        "refs": [
-          "wcag-aria21",
-          "aria-invalid",
-          "html-required",
-          "html-aam-required",
-          "wai-validation"
-        ],
-        "platforms": [
-          "web"
-        ]
-      },
-      {
-        "text": "Mark required fields in the label or the description, never by the error color alone.",
-        "refs": [
-          "wcag-h90",
-          "wcag-f81",
-          "wcag:1.4.1"
         ]
       },
       {
@@ -510,21 +459,6 @@
         "url": "https://www.w3.org/TR/html-aam-1.0/#other-form-elements-accessible-name-computation"
       },
       {
-        "id": "html-aam-required",
-        "title": "HTML-AAM: required attribute (aria-required)",
-        "url": "https://www.w3.org/TR/html-aam-1.0/#att-required"
-      },
-      {
-        "id": "html-label",
-        "title": "HTML: the label element (for attribute, labeled control)",
-        "url": "https://html.spec.whatwg.org/multipage/forms.html#the-label-element"
-      },
-      {
-        "id": "html-required",
-        "title": "HTML: the required attribute",
-        "url": "https://html.spec.whatwg.org/multipage/input.html#attr-input-required"
-      },
-      {
         "id": "html-select",
         "title": "HTML: the select element",
         "url": "https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element"
@@ -565,44 +499,9 @@
         "url": "https://www.w3.org/WAI/tutorials/forms/instructions/"
       },
       {
-        "id": "wai-validation",
-        "title": "WAI tutorials: Validating input (the required attribute)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/validation/"
-      },
-      {
-        "id": "wai-notifications",
-        "title": "WAI tutorials: User notifications (error messages)",
-        "url": "https://www.w3.org/WAI/tutorials/forms/notifications/"
-      },
-      {
-        "id": "wcag-h44",
-        "title": "WCAG technique H44: label elements to associate text labels with form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H44"
-      },
-      {
-        "id": "wcag-h90",
-        "title": "WCAG technique H90: indicating required form controls",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H90"
-      },
-      {
-        "id": "wcag-g83",
-        "title": "WCAG technique G83: text descriptions for required fields not completed",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G83"
-      },
-      {
-        "id": "wcag-aria1",
-        "title": "WCAG technique ARIA1: aria-describedby for a descriptive label",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA1"
-      },
-      {
         "id": "wcag-aria21",
         "title": "WCAG technique ARIA21: aria-invalid to indicate an error field",
         "url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21"
-      },
-      {
-        "id": "wcag-f81",
-        "title": "WCAG failure F81: required or error fields identified by color only",
-        "url": "https://www.w3.org/WAI/WCAG22/Techniques/failures/F81"
       },
       {
         "id": "understanding-non-text-contrast-boundaries",
@@ -949,6 +848,11 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.5.1",
+      "date": "2026-11-27",
+      "note": "Forms decision forms-guidelines-once (#105 step 2b, point b5): the form-wide guidelines leave this specification, said once in the Forms foundation and listed on this page under \"From the Forms foundation\", by the tiers this control follows: the visible label, its association on the web (label element, aria-describedby), the severity in text, aria-invalid and the required attribute, the required mark (the last stale since forms-required-marking). The references only they cited are dropped. No rendering change."
+    },
     {
       "version": "0.5.0",
       "date": "2026-11-27",
