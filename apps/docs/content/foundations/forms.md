@@ -126,9 +126,8 @@ not the placement. The generic rule, applied as is on the web:
 - **Above** a field-like control (Text field, Number field, Search field, Textarea, Select), by
   default. Labels above the fields reduce horizontal scrolling for people who zoom and on small
   screens ([WAI forms tutorial: visual position](https://www.w3.org/WAI/tutorials/forms/labels/#visual-position-of-label-text)).
-- **In a column at the start**, when the form's layout asks for it: labels before the fields are
-  as predictable as labels above them ([G162](https://www.w3.org/WAI/WCAG22/Techniques/general/G162)).
-  The column, its width and whether a field exposes the placement are the form's layout (step 10).
+- **In a column at the start**, when the form asks for it: labels before the fields are as
+  predictable as labels above them ([G162](https://www.w3.org/WAI/WCAG22/Techniques/general/G162)).
 - **After the box** of a checkbox, a radio or a switch.
 - **Never inside the box.** No floating label on the web: it needs a taller box (Material's is
   56 px, 20 px taller than a medium Button), and a raised label and the value do not fit in the
@@ -136,6 +135,15 @@ not the placement. The generic rule, applied as is on the web:
 
 Above and in a column, a field lines up with a Button of the same size (28, 36 or 44 px), and a
 label in a column is centred on the box.
+
+**The form sets where its labels sit, never a field.** A form chooses once, with its
+`labelPlacement` setting (`above`, the default, or `start`), and passes it to every field-like
+control it holds, as it passes `markedFields`: a form never mixes labels above and labels at the
+start, and with `start` it sizes one column for all its labels. A group's legend sits in that
+column, as a field's label does; a checkbox, a radio or a switch keeps its label after the box
+whatever the setting. In a design tool the setting is not one of the component's variants, as
+`markedFields` is not. How the labels align in the column and when the column stacks above the
+fields are decided in step 10, points 7 and 8.
 
 The other platforms follow their own requirements and constraints where they have some, and
 the generic rule where they have none. A floating label is allowed where it is the platform's
@@ -151,7 +159,8 @@ standard way.
   On macOS a checkbox has its title on its trailing side, and a radio button is followed by its
   label ([HIG: Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles#Checkboxes)).
 - **Windows.** Labels are left-aligned and placed above the input control; labels on the left
-  are shown as what not to do ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#labels)).
+  are shown as what not to do ([Windows: Forms](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/forms#labels)), so a form's `labelPlacement` stays
+  `above` on Windows, whatever the form sets.
 
 ## Required fields
 
